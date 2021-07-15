@@ -1,7 +1,6 @@
 package com.custom.rgs_android_dom.di
 
-import com.custom.rgs_android_dom.data.DemoRepository
-import okhttp3.logging.HttpLoggingInterceptor
+import com.custom.rgs_android_dom.data.repositories.DemoRepository
 import org.koin.dsl.module
 
 val dataModule = module {

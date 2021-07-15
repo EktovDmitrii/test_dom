@@ -1,6 +1,6 @@
-package com.custom.rgs_android_dom.data.mappers
+package com.custom.rgs_android_dom.data.network.mappers
 
-import com.custom.rgs_android_dom.data.response.DemoResponse
+import com.custom.rgs_android_dom.data.network.responses.DemoResponse
 import com.custom.rgs_android_dom.domain.model.DemoModel
 
 object DemoMapper {

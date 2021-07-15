@@ -1,6 +1,6 @@
 package com.custom.rgs_android_dom.domain
 
-import com.custom.rgs_android_dom.data.DemoRepository
+import com.custom.rgs_android_dom.data.repositories.DemoRepository
 import com.custom.rgs_android_dom.domain.model.DemoModel
 import io.reactivex.Single
 
