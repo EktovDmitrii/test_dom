@@ -9,11 +9,14 @@ class BasicAuthInterceptor : Interceptor {
 
     companion object {
         private const val HEADER_AUTHORIZATION = "Authorization"
+        //TODO Maybe put these constants inside build gradle ??
+        private const val USERNAME = ""
+        private const val PASSWORD = ""
     }
 
     override fun intercept(chain: Interceptor.Chain): Response =
         chain.proceed(chain.request().newBuilder()
-            .header(HEADER_AUTHORIZATION, Credentials.basic("rgsadmin", "RGSmed!!"))
+            .header(HEADER_AUTHORIZATION, Credentials.basic(USERNAME, PASSWORD))
             .build())
 
 

@@ -16,8 +16,8 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
     }
 
     private val noAuthorizationPaths = listOf(
-        "/api/registration",
-        "/api/token"
+        "",
+        ""
     )
 
     override fun intercept(chain: Interceptor.Chain): Response {
