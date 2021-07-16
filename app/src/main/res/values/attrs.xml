@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <declare-styleable name="MSDTextView">
         <attr name="translationTextKey" format="string" />
     </declare-styleable>
+
+    <declare-styleable name="MSDPhoneInput">
+        <attr name="countryCode" format="string"/>
+        <attr name="phoneMask" format="string"/>
+        <attr name="countryImage" format="reference"/>
+    </declare-styleable>
+
 </resources>

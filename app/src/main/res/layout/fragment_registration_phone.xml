@@ -46,6 +46,15 @@
             android:layout_marginTop="16dp"
             android:text="Номер телефона" />
 
+        <com.custom.rgs_android_dom.views.MSDPhoneInput
+            android:id="@+id/phoneInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:phoneMask="[000] [000]-[00]-[00]"
+            app:countryCode="+7"
+            app:countryImage="@drawable/flag_ru"/>
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <com.custom.rgs_android_dom.views.text.MSDTextView

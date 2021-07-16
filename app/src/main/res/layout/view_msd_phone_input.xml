@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="48dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:paddingStart="14dp"
     android:paddingTop="12dp"
     android:paddingBottom="12dp"
@@ -22,7 +23,7 @@
             android:id="@+id/countryImageView"
             android:layout_width="28dp"
             android:layout_height="20dp"
-            app:srcCompat="@drawable/flag_ru"/>
+            tools:srcCompat="@drawable/flag_ru"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="16dp"
@@ -39,12 +40,13 @@
         android:layout_marginStart="8dp"
         android:textSize="16sp"
         android:textColor="@color/secondary900"
-        android:text="+7"
         android:fontFamily="@font/suisse_regular"
         android:gravity="center_vertical"
+        android:paddingTop="2dp"
         android:includeFontPadding="false"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/countryPickerLinearLayout"/>
+        app:layout_constraintStart_toEndOf="@+id/countryPickerLinearLayout"
+        tools:text="+7"/>
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/phoneEditText"
@@ -57,13 +59,14 @@
         android:fontFamily="@font/suisse_regular"
         android:gravity="center_vertical"
         android:inputType="phone"
+        android:paddingTop="2dp"
         android:includeFontPadding="false"
         android:maxLines="1"
         android:textCursorDrawable="@drawable/cursor_primary_500"
         android:textColorHint="@color/secondary300"
-        android:hint="999 999-99-99"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@+id/countryCodeTextView"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:hint="999 999-99-99"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
