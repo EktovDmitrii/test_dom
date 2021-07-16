@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            style="@style/TextTitleStyle"
+            style="@style/SplashTextTitleStyle"
             android:text="@string/my_service_text" />
 
         <TextView
@@ -31,7 +31,7 @@
             android:paddingBottom="8dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
-            style="@style/TextTitleStyle"
+            style="@style/SplashTextTitleStyle"
             android:background="@drawable/home_background"
             android:text="@string/home_text" />
 
@@ -48,15 +48,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/TextTitleStyle"
+            style="@style/SplashTextTitleStyle"
             android:textColor="@color/secondary500"
-            android:text="@string/rgs_name" />
+            android:text="@string/rgs_name_text" />
 
         <TextView
             android:layout_width="wrap_content"
-            style="@style/TextTitleStyle2"
+            style="@style/SplashTextSubTitleStyle"
             android:layout_height="wrap_content"
-            android:text="@string/slogan_splash" />
+            android:text="@string/slogan_splash_text" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

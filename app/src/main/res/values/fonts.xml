@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="TextTitleStyle">
+    <style name="SplashTextTitleStyle">
         <item name="android:fontFamily">@font/my_service_bold</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">24sp</item>
@@ -9,7 +9,7 @@
         <item name="android:textColor">@color/secondary900</item>
     </style>
 
-    <style name="TextTitleStyle2">
+    <style name="SplashTextSubTitleStyle">
         <item name="android:fontFamily">@font/suisse_regular</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">14sp</item>
