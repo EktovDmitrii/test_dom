@@ -16,11 +16,12 @@ class SplashFragment() :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.loadingStateObserver.observe(viewLifecycleOwner) {
-            when (it) {
+            when (it!!) {
+                BaseViewModel.LoadingState.LOADING -> { }
                 BaseViewModel.LoadingState.CONTENT -> {
                     goToDemoFragment()
                 }
-                else -> "nothing"
+                BaseViewModel.LoadingState.ERROR -> { }
             }
         }
     }
