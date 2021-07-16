@@ -39,7 +39,7 @@ class MSDPhoneInput @JvmOverloads constructor(
             formattedValue: String
         ) {
             if (isFromUser){
-                onPhoneChangedListener("$countryCode $formattedValue", maskFilled)
+                onPhoneChangedListener("$countryCode$formattedValue", maskFilled)
 
                 if (maskFilled){
                     removeErrorState()
@@ -94,10 +94,7 @@ class MSDPhoneInput @JvmOverloads constructor(
 
         binding.phoneEditText.addTextChangedListener(maskedTextChangedListener)
 
-        val hint = mask.replace("[0-9]+/*\\.*[0-9]*", DEFAULT_DIGIT.toString())
-            .replace("[", "")
-            .replace("]","")
-
+        val hint = makeHint(mask)
         binding.phoneEditText.hint = hint
     }
 
@@ -115,10 +112,7 @@ class MSDPhoneInput @JvmOverloads constructor(
 
         binding.phoneEditText.addTextChangedListener(maskedTextChangedListener)
 
-        val hint = mask.replace("[0-9]".toRegex(), DEFAULT_DIGIT.toString())
-            .replace("[", "")
-            .replace("]","")
-
+        val hint = makeHint(mask)
         binding.phoneEditText.hint = hint
     }
 
@@ -131,6 +125,11 @@ class MSDPhoneInput @JvmOverloads constructor(
 
     private fun extractCountryCode(phoneMask: String): String{
         return phoneMask.substring(0, phoneMask.indexOf("["))
+    }
+
+    private fun makeHint(mask: String): String {
+        return mask.replace("\\d".toRegex(), DEFAULT_DIGIT.toString())
+            .replace("[\\[\\]]".toRegex(), "")
     }
 
     private fun setErrorState(){

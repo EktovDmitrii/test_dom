@@ -3,6 +3,8 @@
     <style name="Theme.Rgsandroiddom" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowSoftInputMode">adjustResize|stateVisible</item>
     </style>
 
     <style name="Button.Filled" parent="Widget.AppCompat.TextView">

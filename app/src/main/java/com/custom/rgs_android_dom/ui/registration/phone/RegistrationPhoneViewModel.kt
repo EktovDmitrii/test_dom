@@ -1,24 +1,28 @@
 package com.custom.rgs_android_dom.ui.registration.phone
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.custom.rgs_android_dom.domain.DemoInteractor
+import com.custom.rgs_android_dom.domain.countries.CountriesInteractor
+import com.custom.rgs_android_dom.domain.countries.model.CountryModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class RegistrationPhoneViewModel : BaseViewModel() {
 
-    private val demoTextController = MutableLiveData<String>()
-    val demoTextObserver = demoTextController
+    private val countriesInteractor: CountriesInteractor by inject()
 
-    private val demoInteractor: DemoInteractor by inject()
+    private val isNextTextViewEnabledController = MutableLiveData<Boolean>()
+    private val countryController = MutableLiveData<CountryModel>()
+
+    val isNextTextViewEnabledObserver: LiveData<Boolean> = isNextTextViewEnabledController
+    val countryObserver: LiveData<CountryModel> = countryController
 
     init {
-        loadData()
+        loadDefaultCountry()
     }
 
     fun onCountryClick(countryCode: String){
@@ -29,8 +33,16 @@ class RegistrationPhoneViewModel : BaseViewModel() {
 
     }
 
-    private fun loadData(){
-        demoInteractor.getDemoModel()
+    fun onCloseClick(){
+
+    }
+
+    fun onPhoneChanged(phone: String, isMaskFilled: Boolean) {
+        isNextTextViewEnabledController.value = isMaskFilled
+    }
+
+    private fun loadDefaultCountry(){
+        countriesInteractor.getDefaultCountry()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
@@ -38,7 +50,7 @@ class RegistrationPhoneViewModel : BaseViewModel() {
             .doOnSuccess { loadingStateController.value = LoadingState.CONTENT }
             .subscribeBy(
                 onSuccess = {
-                    demoTextController.value = it.text
+                    countryController.value = it
                 },
                 onError = {
                     //todo обработка ошибки

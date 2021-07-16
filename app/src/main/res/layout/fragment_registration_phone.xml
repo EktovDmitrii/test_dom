@@ -11,6 +11,7 @@
         android:layout_height="@dimen/toolbar_height">
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/closeImageView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end"
@@ -50,9 +51,7 @@
             android:id="@+id/phoneInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:countryImage="@drawable/flag_ru"
-            app:phoneMask="+7 [000] [000]-[00]-[00]" />
+            android:layout_marginTop="8dp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
