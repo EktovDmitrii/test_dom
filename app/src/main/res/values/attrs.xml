@@ -6,7 +6,6 @@
     </declare-styleable>
 
     <declare-styleable name="MSDPhoneInput">
-        <attr name="countryCode" format="string"/>
         <attr name="phoneMask" format="string"/>
         <attr name="countryImage" format="reference"/>
     </declare-styleable>

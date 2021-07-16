@@ -10,7 +10,7 @@ import io.reactivex.schedulers.Schedulers
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class RegistrationPhoneViewModel : BaseViewModel(), KoinComponent {
+class RegistrationPhoneViewModel : BaseViewModel() {
 
     private val demoTextController = MutableLiveData<String>()
     val demoTextObserver = demoTextController
@@ -19,6 +19,14 @@ class RegistrationPhoneViewModel : BaseViewModel(), KoinComponent {
 
     init {
         loadData()
+    }
+
+    fun onCountryClick(countryCode: String){
+
+    }
+
+    fun onNextClick(){
+
     }
 
     private fun loadData(){

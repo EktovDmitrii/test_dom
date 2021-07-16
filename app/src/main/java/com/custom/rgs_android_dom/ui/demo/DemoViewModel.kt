@@ -10,7 +10,7 @@ import io.reactivex.schedulers.Schedulers
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class DemoViewModel: BaseViewModel(), KoinComponent {
+class DemoViewModel: BaseViewModel() {
 
     private val demoTextController = MutableLiveData<String>()
     val demoTextObserver = demoTextController
