@@ -16,11 +16,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         ScreenManager.init(this, R.id.vgScreensContainer)
-        demoScreen()
+        startSplash()
     }
 
     private fun demoScreen(){
         ScreenManager.setMenu(NavigationMenu.HOME)
+    }
+
+    private fun startSplash(){
+        ScreenManager.showScreen(SplashFragment())
     }
 
 
