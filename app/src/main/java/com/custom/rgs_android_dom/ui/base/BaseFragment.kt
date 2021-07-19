@@ -7,10 +7,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
-
+import kotlin.random.Random
 
 
 abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(private val mViewModelClass: Class<VM>) : Fragment() {
+
+    private val navigateId: Int = Random.nextInt()
+
+    fun getNavigateId(): Int{
+        return navigateId
+    }
+
     lateinit var viewModel: VM
 
     protected lateinit var binding: VB
