@@ -9,6 +9,7 @@ import com.custom.rgs_android_dom.ui.demo.DemoFragment
 import com.custom.rgs_android_dom.ui.navigation.NavigationMenu
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.navigation.ScreenScope
+import com.custom.rgs_android_dom.ui.splash.SplashFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
