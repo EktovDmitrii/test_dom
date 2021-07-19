@@ -2,13 +2,10 @@ package com.custom.rgs_android_dom.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.demo.DemoFragment
 import com.custom.rgs_android_dom.ui.navigation.NavigationMenu
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
-import com.custom.rgs_android_dom.ui.navigation.ScreenScope
 import com.custom.rgs_android_dom.ui.splash.SplashFragment
 
 class MainActivity : AppCompatActivity() {
@@ -27,7 +24,6 @@ class MainActivity : AppCompatActivity() {
         ScreenManager.showScreen(SplashFragment())
     }
 
-
     override fun onBackPressed() {
         val fragmentList = supportFragmentManager.fragments
         val topFragment = fragmentList.last { it is BaseFragment<*,*> } as? BaseFragment<*,*>
@@ -36,6 +32,5 @@ class MainActivity : AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
-
     }
 }

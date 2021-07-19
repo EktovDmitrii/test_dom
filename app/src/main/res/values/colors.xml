@@ -14,4 +14,5 @@
     <color name="secondary100">#F3F5F7</color>
     <color name="success500">#51CD9D</color>
     <color name="dangerousRed">#FF6868</color>
+    <color name="white">#FFFFFF</color>
 </resources>

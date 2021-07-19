@@ -1,14 +1,28 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Rgsandroiddom" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/primary600</item>
-        <item name="colorPrimaryVariant">@color/primary500</item>
-        <item name="colorOnPrimary">@color/primary100</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/secondary900</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+    <style name="Theme.Rgsandroiddom" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowSoftInputMode">adjustResize|stateVisible</item>
     </style>
+
+    <style name="Button.Filled" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:fontFamily">@font/my_service_bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingStart">32dp</item>
+        <item name="android:paddingEnd">32dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="Button.Filled.Primary500" parent="Button.Filled">
+        <item name="android:background">@drawable/button_primary_500_background</item>
+        <item name="android:textColor">@color/button_primary_500_text_color</item>
+    </style>
+
 </resources>

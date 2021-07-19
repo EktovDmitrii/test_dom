@@ -1,7 +1,7 @@
 package com.custom.rgs_android_dom.data.network.provider
 
 import com.custom.rgs_android_dom.BuildConfig
-import com.custom.rgs_android_dom.data.network.DomServiceApi
+import com.custom.rgs_android_dom.data.network.MyServiceDomApi
 import com.google.gson.Gson
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -14,18 +14,18 @@ class ApiProvider(
     private val gson: Gson
 ) {
 
-    private lateinit var api: DomServiceApi
+    private lateinit var domApi: MyServiceDomApi
 
     init {
         initMyServiceApi()
     }
 
-    fun getApi(): DomServiceApi {
-        return api
+    fun getApi(): MyServiceDomApi {
+        return domApi
     }
 
     private fun initMyServiceApi() {
-        api = Retrofit.Builder()
+        domApi = Retrofit.Builder()
             .baseUrl("${BuildConfig.BASE_URL}/api/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(
@@ -45,6 +45,6 @@ class ApiProvider(
                     .build()
             )
             .build()
-            .create(DomServiceApi::class.java)
+            .create(MyServiceDomApi::class.java)
     }
 }

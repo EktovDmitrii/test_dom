@@ -164,4 +164,7 @@ dependencies {
     // data binding
     annotationProcessor "com.android.databinding:compiler:3.1.2"
 
+    //Input mask
+    implementation "com.redmadrobot:input-mask-android:6.0.0"
+
 }
