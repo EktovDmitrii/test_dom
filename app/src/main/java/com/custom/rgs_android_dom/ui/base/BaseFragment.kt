@@ -7,10 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.ParametersDefinition
+import org.koin.core.parameter.emptyParametersHolder
 import kotlin.random.Random
 
 
-abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(private val mViewModelClass: Class<VM>) : Fragment() {
+abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(mViewModelClass: Class<VM>) : Fragment() {
 
     private val navigateId: Int = Random.nextInt()
 
@@ -18,14 +21,9 @@ abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(private val mVi
         return navigateId
     }
 
-    lateinit var viewModel: VM
+    protected val viewModel: VM by viewModel(clazz = mViewModelClass.kotlin, parameters = getParameters())
 
     protected lateinit var binding: VB
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(mViewModelClass)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,6 +32,10 @@ abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(private val mVi
     ): View? {
         binding = getViewBinding(inflater, container)
         return binding.root
+    }
+
+    open fun getParameters(): ParametersDefinition = {
+        emptyParametersHolder()
     }
 
     abstract fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB

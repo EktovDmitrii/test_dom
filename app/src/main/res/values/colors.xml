@@ -13,6 +13,6 @@
     <color name="secondary200">#E4E4E4</color>
     <color name="secondary100">#F3F5F7</color>
     <color name="success500">#51CD9D</color>
-    <color name="dangerousRed">#FF6868</color>
+    <color name="error500">#FF6868</color>
     <color name="white">#FFFFFF</color>
 </resources>

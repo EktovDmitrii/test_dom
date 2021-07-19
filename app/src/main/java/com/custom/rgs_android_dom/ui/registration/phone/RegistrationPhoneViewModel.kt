@@ -11,9 +11,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.component.inject
 
-class RegistrationPhoneViewModel : BaseViewModel() {
-
-    private val countriesInteractor: CountriesInteractor by inject()
+class RegistrationPhoneViewModel(private val countriesInteractor: CountriesInteractor) : BaseViewModel() {
 
     private val isNextTextViewEnabledController = MutableLiveData<Boolean>()
     private val countryController = MutableLiveData<CountryModel>()

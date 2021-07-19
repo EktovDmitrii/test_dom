@@ -118,9 +118,7 @@ dependencies {
     implementation "net.danlew:android.joda:2.10.3"
 
     // Koin
-    def koin_version = "2.2.0"
-    implementation "org.koin:koin-android:$koin_version"
-    implementation "org.koin:koin-android-scope:$koin_version"
+    implementation "io.insert-koin:koin-android:3.1.0"
 
     // RxJava
     implementation "io.reactivex.rxjava2:rxjava:2.2.12"

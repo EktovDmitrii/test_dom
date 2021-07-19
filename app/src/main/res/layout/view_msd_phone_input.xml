@@ -85,7 +85,7 @@
         android:fontFamily="@font/suisse_regular"
         android:text="Проверьте, правильно ли вы ввели номер телефона"
         android:includeFontPadding="false"
-        android:textColor="@color/dangerousRed"
+        android:textColor="@color/error500"
         android:textSize="13sp"
         android:visibility="gone"
         tools:visibility="visible"/>

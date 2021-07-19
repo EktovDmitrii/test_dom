@@ -133,9 +133,9 @@ class MSDPhoneInput @JvmOverloads constructor(
     }
 
     private fun setErrorState(){
-        binding.phoneContainerConstraintLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_dangerous_red_radius_8dp)
-        binding.countryCodeTextView.setTextColor(context.getColor(R.color.dangerousRed))
-        binding.phoneEditText.setTextColor(context.getColor(R.color.dangerousRed))
+        binding.phoneContainerConstraintLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_error_500_radius_8dp)
+        binding.countryCodeTextView.setTextColor(context.getColor(R.color.error500))
+        binding.phoneEditText.setTextColor(context.getColor(R.color.error500))
         binding.errorTextView.visible()
     }
 
