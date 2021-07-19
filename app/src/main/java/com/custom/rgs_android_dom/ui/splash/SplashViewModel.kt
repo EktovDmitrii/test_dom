@@ -19,9 +19,9 @@ class SplashViewModel : BaseViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
             .subscribe({
-                loadingStateObserver.value = LoadingState.CONTENT
+                loadingStateController.value = LoadingState.CONTENT
             }, {
-                loadingStateObserver.value = LoadingState.ERROR
+                loadingStateController.value = LoadingState.ERROR
             }).addTo(dataCompositeDisposable)
     }
 }

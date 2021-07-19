@@ -8,8 +8,7 @@ import com.custom.rgs_android_dom.databinding.FragmentDemoBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 
-
-class DemoFragment(val scopeId: Int? = null) : BaseFragment<DemoViewModel, FragmentDemoBinding>(DemoViewModel::class.java) {
+class DemoFragment(val scopeId: Int? = null) : BaseFragment<DemoViewModel, FragmentDemoBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

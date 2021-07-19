@@ -5,15 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.emptyParametersHolder
+import java.lang.reflect.ParameterizedType
 import kotlin.random.Random
+import kotlin.reflect.KClass
 
-
-abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(mViewModelClass: Class<VM>) : Fragment() {
+abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>() : Fragment() {
 
     private val navigateId: Int = Random.nextInt()
 
@@ -21,7 +21,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(mViewModelClass
         return navigateId
     }
 
-    protected val viewModel: VM by viewModel(clazz = mViewModelClass.kotlin, parameters = getParameters())
+    protected val viewModel: VM by viewModel(clazz = getViewModelKClass(), parameters = getParameters())
 
     protected lateinit var binding: VB
 
@@ -39,4 +39,10 @@ abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(mViewModelClass
     }
 
     abstract fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB
+
+    @Suppress("UNCHECKED_CAST")
+    protected fun getViewModelKClass(): KClass<VM> {
+        val actualClass = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0] as Class<VM>
+        return actualClass.kotlin
+    }
 }

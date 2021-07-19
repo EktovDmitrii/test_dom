@@ -23,7 +23,6 @@ class App: Application() {
                 dataModule,
                 domainModule,
                 networkModule,
-                repositoryModule,
                 viewModelModule
             )
         }

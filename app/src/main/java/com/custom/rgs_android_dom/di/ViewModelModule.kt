@@ -8,7 +8,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelModule = module {
-    viewModel { parameters -> RegistrationCodeViewModel(phone = parameters.get()) }
+    viewModel { parameters -> RegistrationCodeViewModel(phone = parameters.get(), registrationInteractor = get()) }
     viewModel { RegistrationPhoneViewModel(countriesInteractor = get()) }
     viewModel { SplashViewModel() }
     viewModel { DemoViewModel() }

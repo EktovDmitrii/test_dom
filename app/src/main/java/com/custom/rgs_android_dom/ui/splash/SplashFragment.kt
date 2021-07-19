@@ -4,16 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentSplashBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.ui.demo.DemoFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 
 //ToDo: запретить закрытие
 class SplashFragment() :
-    BaseFragment<SplashViewModel, FragmentSplashBinding>(SplashViewModel::class.java) {
+    BaseFragment<SplashViewModel, FragmentSplashBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

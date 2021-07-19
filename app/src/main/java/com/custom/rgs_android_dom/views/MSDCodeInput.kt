@@ -55,24 +55,25 @@ class MSDCodeInput @JvmOverloads constructor(
 
             editTextViews[i].addTextChangedListener {
                 if (editTextViews[i].text.toString() != "") {
+                    editTextViews[i].unFocus()
                     if (i != editTextViews.size -1){
                         editTextViews[i + 1].focus()
                     } else {
+                        editTextViews[i].hideKeyboard()
                         onCodeCompleteListener(editTextViews.joinToString(""){it.text.toString()})
                     }
-                    editTextViews[i].unFocus()
                 }
             }
-        }
 
-        binding.codeInputLinearLayout.setOnDebouncedClickListener {
-            Log.d("MyLog", "On debounced click")
-            if (editTextViews.find { it.text.toString().isEmpty() } != null){
-                editTextViews.find { it.text.toString().isEmpty() }?.focus()
-            } else {
-                editTextViews.last().focus()
+            editTextViews[i].setOnDebouncedClickListener {
+                editTextViews.find { it.isFocusable }?.showKeyboard()
             }
 
+        }
+
+        binding.errorStubFrameLayout.setOnDebouncedClickListener {
+            removeErrorState()
+            reset()
         }
     }
 
@@ -82,13 +83,23 @@ class MSDCodeInput @JvmOverloads constructor(
 
     fun setErrorState(){
         binding.errorTextView.visible()
+        binding.errorStubFrameLayout.visible()
         editTextViews.forEach {
             it.setBackgroundResource(R.drawable.code_input_background_error)
         }
     }
 
-    fun removeErrorState(){
+    private fun reset(){
+        editTextViews.forEach {
+            it.text?.clear()
+        }
+        editTextViews.first().focus()
+        editTextViews.first().showKeyboard()
+    }
+
+    private fun removeErrorState(){
         binding.errorTextView.gone()
+        binding.errorStubFrameLayout.gone()
         editTextViews.forEach {
             it.setBackgroundResource(R.drawable.code_input_selector)
         }

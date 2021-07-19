@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.base
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
@@ -9,7 +10,10 @@ open class BaseViewModel : ViewModel(), KoinComponent {
     protected val dataCompositeDisposable = CompositeDisposable()
 
     protected val loadingStateController = MutableLiveData<LoadingState>()
-    val loadingStateObserver = loadingStateController
+    val loadingStateObserver: LiveData<LoadingState> = loadingStateController
+
+    protected val closeController = MutableLiveData<Unit>()
+    val closeObserver: LiveData<Unit> = closeController
 
     override fun onCleared() {
         dataCompositeDisposable.clear()

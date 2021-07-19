@@ -5,53 +5,63 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/codeInputLinearLayout"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:clickable="true"
-        android:focusable="true">
-        
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/firstDigitEditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginEnd="6dp"
-            android:clickable="false"
-            style="@style/CodeInput"/>
+        android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/secondDigitEditText"
-            android:layout_width="0dp"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/codeInputLinearLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="6dp"
-            android:clickable="false"
-            style="@style/CodeInput"/>
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:focusable="true">
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/thirdDigitEditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="6dp"
-            android:clickable="false"
-            style="@style/CodeInput"/>
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/firstDigitEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="6dp"
+                style="@style/CodeInput"/>
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/fourthDigitEditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="6dp"
-            android:clickable="false"
-            style="@style/CodeInput"/>
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/secondDigitEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                style="@style/CodeInput"/>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/thirdDigitEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                style="@style/CodeInput"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/fourthDigitEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="6dp"
+                style="@style/CodeInput"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <FrameLayout
+            android:id="@+id/errorStubFrameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+
+    </FrameLayout>
+
+
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/errorTextView"

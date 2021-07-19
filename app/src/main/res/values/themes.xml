@@ -39,7 +39,6 @@
         <item name="android:paddingTop">12dp</item>
         <item name="android:paddingBottom">12dp</item>
         <item name="android:focusableInTouchMode">false</item>
-        <item name="android:duplicateParentState">false</item>
         <item name="android:background">@drawable/code_input_selector</item>
         <item name="android:textAlignment">center</item>
         <item name="android:minHeight">64dp</item>
