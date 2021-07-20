@@ -9,4 +9,8 @@ class RegistrationInteractor(private val registrationRepository: RegistrationRep
         return registrationRepository.sendCode(code)
     }
 
+    fun resendCode(phone: String) : Single<Boolean> {
+        return registrationRepository.resendCode(phone)
+    }
+
 }

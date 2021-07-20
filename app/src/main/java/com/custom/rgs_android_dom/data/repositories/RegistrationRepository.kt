@@ -17,4 +17,15 @@ class RegistrationRepository(private val api: MyServiceDomApi) {
         }
     }
 
+    fun resendCode(phone: String): Single<Boolean> {
+        return Single.fromCallable {
+            Thread.sleep(2000)
+            if (phone.endsWith("9")){
+                throw InvalidPropertiesFormatException("Wrong format")
+            } else {
+                true
+            }
+        }
+    }
+
 }

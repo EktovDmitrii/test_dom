@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.custom.rgs_android_dom.databinding.FragmentRegistrationCodeBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
@@ -48,11 +49,6 @@ class RegistrationCodeFragment : BaseFragment<RegistrationCodeViewModel, Fragmen
             viewModel.onResendCodeClick()
         }
 
-        subscribe(viewModel.setErrorStateObserver){
-            requireContext().vibratePhone()
-            binding.codeInput.setErrorState()
-        }
-
         subscribe(viewModel.phoneObserver){phone->
             binding.phoneTextView.text = "Мы отправили СМС на номер $phone"
         }
@@ -71,11 +67,14 @@ class RegistrationCodeFragment : BaseFragment<RegistrationCodeViewModel, Fragmen
             stopTimer()
             binding.countdownTextView.gone()
             binding.resendCodeTextView.visible()
-            Log.d("MyLog", "Show resend code observer")
         }
 
         subscribe(viewModel.loadingStateObserver){
             handleState(it)
+        }
+
+        subscribe(viewModel.errorMessageObserver){
+            requireActivity().toast(it)
         }
     }
 
@@ -90,6 +89,7 @@ class RegistrationCodeFragment : BaseFragment<RegistrationCodeViewModel, Fragmen
     private fun startCountdownTimer(){
         binding.countdownTextView.visible()
         binding.resendCodeTextView.gone()
+        binding.codeInput.reset()
         stopTimer()
         timer = object : CountDownTimer(TIMER_MILLIS, 1000) {
             override fun onTick(millisUntilFinished: Long) {
@@ -106,6 +106,33 @@ class RegistrationCodeFragment : BaseFragment<RegistrationCodeViewModel, Fragmen
     }
 
     private fun handleState(state: BaseViewModel.LoadingState){
-        Log.d("MyLog", "State " + state.name)
+        when (state){
+            BaseViewModel.LoadingState.LOADING -> {
+                binding.codeInput.isEnabled = false
+                binding.countdownTextView.isEnabled = false
+                binding.phoneTextView.isEnabled = false
+                binding.resendCodeTextView.isEnabled = false
+
+                binding.nextTextView.setLoading(true)
+            }
+            BaseViewModel.LoadingState.CONTENT -> {
+                binding.codeInput.isEnabled = true
+                binding.countdownTextView.isEnabled = true
+                binding.phoneTextView.isEnabled = true
+                binding.resendCodeTextView.isEnabled = true
+
+                binding.nextTextView.setLoading(false)
+            }
+            BaseViewModel.LoadingState.ERROR -> {
+                requireContext().vibratePhone()
+                binding.codeInput.isEnabled = true
+                binding.codeInput.setErrorState()
+                binding.countdownTextView.isEnabled = true
+                binding.phoneTextView.isEnabled = true
+                binding.resendCodeTextView.isEnabled = true
+
+                binding.nextTextView.setLoading(false)
+            }
+        }
     }
 }

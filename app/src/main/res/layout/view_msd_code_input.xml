@@ -54,7 +54,7 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <FrameLayout
-            android:id="@+id/errorStubFrameLayout"
+            android:id="@+id/clickProxyFrameLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"/>

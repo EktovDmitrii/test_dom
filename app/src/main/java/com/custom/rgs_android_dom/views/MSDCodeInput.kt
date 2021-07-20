@@ -7,6 +7,7 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdCodeInputBinding
@@ -38,7 +39,25 @@ class MSDCodeInput @JvmOverloads constructor(
         binding.fourthDigitEditText
     )
 
+    private val originalTextColor = editTextViews.first().currentTextColor
+    private val originalBackground = editTextViews.first().background
+
+    private var disabledTextColor = originalTextColor
+    private var disabledBackground = originalBackground
+    private var errorBackground = ContextCompat.getDrawable(context, R.drawable.code_input_background_error)
+
     init {
+        val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDCodeInput, 0, 0)
+        disabledTextColor = attrs.getColor(R.styleable.MSDCodeInput_disabledTextColor, originalTextColor)
+
+        attrs.getDrawable(R.styleable.MSDCodeInput_disabledBackground)?.let {
+            disabledBackground = it
+        }
+
+        attrs.getDrawable(R.styleable.MSDCodeInput_errorBackground)?.let {
+            errorBackground = it
+        }
+
         editTextViews.first().focus()
 
         editTextViews.forEachIndexed { i, _ ->
@@ -71,8 +90,7 @@ class MSDCodeInput @JvmOverloads constructor(
 
         }
 
-        binding.errorStubFrameLayout.setOnDebouncedClickListener {
-            removeErrorState()
+        binding.clickProxyFrameLayout.setOnDebouncedClickListener {
             reset()
         }
     }
@@ -83,13 +101,14 @@ class MSDCodeInput @JvmOverloads constructor(
 
     fun setErrorState(){
         binding.errorTextView.visible()
-        binding.errorStubFrameLayout.visible()
+        binding.clickProxyFrameLayout.visible()
         editTextViews.forEach {
-            it.setBackgroundResource(R.drawable.code_input_background_error)
+            it.background = errorBackground
         }
     }
 
-    private fun reset(){
+    fun reset(){
+        removeErrorState()
         editTextViews.forEach {
             it.text?.clear()
         }
@@ -97,11 +116,29 @@ class MSDCodeInput @JvmOverloads constructor(
         editTextViews.first().showKeyboard()
     }
 
+    override fun setEnabled(isEnabled: Boolean){
+        if (isEnabled){
+            binding.clickProxyFrameLayout.gone()
+            binding.clickProxyFrameLayout.isEnabled = true
+            editTextViews.forEach {
+                it.background = originalBackground
+                it.setTextColor(originalTextColor)
+            }
+        } else {
+            editTextViews.forEach {
+                it.background = disabledBackground
+                it.setTextColor(disabledTextColor)
+            }
+            binding.clickProxyFrameLayout.visible()
+            binding.clickProxyFrameLayout.isEnabled = false
+        }
+    }
+
     private fun removeErrorState(){
         binding.errorTextView.gone()
-        binding.errorStubFrameLayout.gone()
+        binding.clickProxyFrameLayout.gone()
         editTextViews.forEach {
-            it.setBackgroundResource(R.drawable.code_input_selector)
+            it.background = originalBackground
         }
     }
 }
