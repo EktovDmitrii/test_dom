@@ -9,7 +9,7 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
     viewModel { parameters -> RegistrationCodeViewModel(phone = parameters.get(), registrationInteractor = get()) }
-    viewModel { RegistrationPhoneViewModel(countriesInteractor = get()) }
+    viewModel { RegistrationPhoneViewModel(countriesInteractor = get(), registrationInteractor = get()) }
     viewModel { SplashViewModel() }
     viewModel { DemoViewModel() }
 }

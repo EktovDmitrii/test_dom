@@ -1,6 +1,9 @@
 package com.custom.rgs_android_dom.ui.splash
 
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
+import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -20,6 +23,9 @@ class SplashViewModel : BaseViewModel() {
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
             .subscribe({
                 loadingStateController.value = LoadingState.CONTENT
+                closeController.value = Unit
+                ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+
             }, {
                 loadingStateController.value = LoadingState.ERROR
             }).addTo(dataCompositeDisposable)

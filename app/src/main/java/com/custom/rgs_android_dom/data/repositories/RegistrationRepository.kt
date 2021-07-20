@@ -6,6 +6,13 @@ import java.util.*
 
 class RegistrationRepository(private val api: MyServiceDomApi) {
 
+    fun sendPhone(phone: String): Single<Boolean> {
+        return Single.fromCallable {
+            Thread.sleep(2000)
+            true
+        }
+    }
+
     fun sendCode(code: String): Single<Boolean> {
         return Single.fromCallable{
             Thread.sleep(4000)

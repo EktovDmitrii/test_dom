@@ -55,9 +55,8 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <com.custom.rgs_android_dom.views.text.MSDTextView
+    <com.custom.rgs_android_dom.views.text.MSDTextViewLoader
         android:id="@+id/nextTextView"
-        style="@style/Button.Filled.Primary500"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

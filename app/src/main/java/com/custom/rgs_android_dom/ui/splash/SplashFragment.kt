@@ -1,39 +1,21 @@
 package com.custom.rgs_android_dom.ui.splash
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentSplashBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.utils.subscribe
 
 //ToDo: запретить закрытие
-class SplashFragment() :
-    BaseFragment<SplashViewModel, FragmentSplashBinding>() {
+class SplashFragment() : BaseFragment<SplashViewModel, FragmentSplashBinding>(R.layout.fragment_splash) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.loadingStateObserver.observe(viewLifecycleOwner) {
-            when (it!!) {
-                BaseViewModel.LoadingState.LOADING -> { }
-                BaseViewModel.LoadingState.CONTENT -> {
-                    close()
-                }
-                BaseViewModel.LoadingState.ERROR -> { }
-            }
+
+        subscribe(viewModel.closeObserver){
+            ScreenManager.back(this.getNavigateId())
         }
-    }
-
-    private fun close() {
-        ScreenManager.back(this.getNavigateId())
-    }
-
-    override fun getViewBinding(
-        inflater: LayoutInflater,
-        container: ViewGroup?
-    ): FragmentSplashBinding {
-        return FragmentSplashBinding.inflate(inflater, container, false)
     }
 }

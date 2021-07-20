@@ -5,6 +5,10 @@ import io.reactivex.Single
 
 class RegistrationInteractor(private val registrationRepository: RegistrationRepository){
 
+    fun sendPhone(phone: String): Single<Boolean> {
+        return registrationRepository.sendPhone(phone)
+    }
+
     fun sendCode(code: String): Single<Boolean> {
         return registrationRepository.sendCode(code)
     }

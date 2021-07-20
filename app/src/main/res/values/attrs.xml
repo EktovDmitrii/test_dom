@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="disabledTextColor" format="color" />
     <attr name="translationTextKey" format="string" />
-
     <declare-styleable name="MSDTextView">
         <attr name="translationTextKey"/>
-        <attr name="disabledTextColor"/>
     </declare-styleable>
 
     <declare-styleable name="MSDPhoneInput">
@@ -16,7 +13,7 @@
     <declare-styleable name="MSDCodeInput">
         <attr name="disabledBackground" format="reference"/>
         <attr name="errorBackground" format="reference"/>
-        <attr name="disabledTextColor" />
+        <attr name="disabledTextColor" format="color" />
     </declare-styleable>
 
     <declare-styleable name="MSDTextViewLoader">

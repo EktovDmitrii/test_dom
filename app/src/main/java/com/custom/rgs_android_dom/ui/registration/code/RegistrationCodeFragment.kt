@@ -2,20 +2,19 @@ package com.custom.rgs_android_dom.ui.registration.code
 
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
+import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentRegistrationCodeBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-class RegistrationCodeFragment : BaseFragment<RegistrationCodeViewModel, FragmentRegistrationCodeBinding>() {
+class RegistrationCodeFragment : BaseFragment<RegistrationCodeViewModel, FragmentRegistrationCodeBinding>(
+    R.layout.fragment_registration_code) {
 
     companion object {
         private const val ARG_PHONE = "ARG_PHONE"
@@ -56,7 +55,7 @@ class RegistrationCodeFragment : BaseFragment<RegistrationCodeViewModel, Fragmen
         subscribe(viewModel.closeObserver){
             stopTimer()
             hideSoftwareKeyboard()
-            ScreenManager.back(getNavigateId())
+            ScreenManager.closeScope(REGISTRATION)
         }
 
         subscribe(viewModel.startTimerObserver){
@@ -78,8 +77,9 @@ class RegistrationCodeFragment : BaseFragment<RegistrationCodeViewModel, Fragmen
         }
     }
 
-    override fun getViewBinding(inflater: LayoutInflater,container: ViewGroup?): FragmentRegistrationCodeBinding {
-        return FragmentRegistrationCodeBinding.inflate(inflater, container, false)
+    override fun onDestroy() {
+        super.onDestroy()
+        stopTimer()
     }
 
     private fun stopTimer(){

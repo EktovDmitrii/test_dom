@@ -54,9 +54,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:fontFamily="@font/suisse_regular"
-            android:textColor="@color/secondary600"
+            android:textColor="@color/secondary_600_secondary_400_text_color"
             android:textSize="14sp"
-            app:disabledTextColor="@color/secondary400"
             tools:text="Мы отправили СМС на номер +7 926 417-70-54" />
 
         <FrameLayout
@@ -69,9 +68,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/suisse_regular"
-                android:textColor="@color/secondary600"
+                android:textColor="@color/secondary_600_secondary_400_text_color"
                 android:textSize="14sp"
-                app:disabledTextColor="@color/secondary400"
                 tools:text="Вы сможете повторно запросить код через 00:03" />
 
             <com.custom.rgs_android_dom.views.text.MSDTextView
@@ -80,10 +78,9 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/suisse_regular"
                 android:text="Отправить код повторно"
-                android:textColor="@color/primary500"
+                android:textColor="@color/primary_500_secondary_400_text_color"
                 android:textSize="14sp"
-                android:visibility="gone"
-                app:disabledTextColor="@color/secondary400"/>
+                android:visibility="gone" />
         </FrameLayout>
 
 
