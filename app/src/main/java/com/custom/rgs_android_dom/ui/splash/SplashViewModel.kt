@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui.splash
 
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.demo.DemoRegistrationFlowFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
@@ -24,7 +25,7 @@ class SplashViewModel : BaseViewModel() {
             .subscribe({
                 loadingStateController.value = LoadingState.CONTENT
                 closeController.value = Unit
-                ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+                ScreenManager.showScreen(DemoRegistrationFlowFragment())
 
             }, {
                 loadingStateController.value = LoadingState.ERROR

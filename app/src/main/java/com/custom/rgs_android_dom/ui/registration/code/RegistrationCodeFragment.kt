@@ -35,6 +35,10 @@ class RegistrationCodeFragment : BaseFragment<RegistrationCodeViewModel, Fragmen
             viewModel.onCloseClick()
         }
 
+        binding.backImageView.setOnDebouncedClickListener {
+            ScreenManager.back(getNavigateId())
+        }
+
         binding.codeInput.setOnCodeCompleteListener {
             viewModel.onCodeComplete(it)
         }
@@ -101,7 +105,6 @@ class RegistrationCodeFragment : BaseFragment<RegistrationCodeViewModel, Fragmen
     }
 
     override fun onClose() {
-        //super.onClose()
         hideSoftwareKeyboard()
         ScreenManager.closeScope(REGISTRATION)
     }
