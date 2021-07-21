@@ -14,8 +14,5 @@ class SplashFragment() : BaseFragment<SplashViewModel, FragmentSplashBinding>(R.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        subscribe(viewModel.closeObserver){
-            ScreenManager.back(this.getNavigateId())
-        }
     }
 }

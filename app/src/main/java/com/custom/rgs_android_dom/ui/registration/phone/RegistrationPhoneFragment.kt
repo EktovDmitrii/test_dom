@@ -5,11 +5,10 @@ import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentRegistrationPhoneBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.hideSoftwareKeyboard
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
+import com.custom.rgs_android_dom.utils.toast
 
 class RegistrationPhoneFragment : BaseFragment<RegistrationPhoneViewModel, FragmentRegistrationPhoneBinding>(
     R.layout.fragment_registration_phone
@@ -34,14 +33,6 @@ class RegistrationPhoneFragment : BaseFragment<RegistrationPhoneViewModel, Fragm
             }
         }
 
-        subscribe(viewModel.closeObserver) {
-            ScreenManager.back(getNavigateId())
-        }
-
-        subscribe(viewModel.loadingStateObserver){
-            handleState(it)
-        }
-
         binding.phoneInput.setOnCountryClickListener {
             viewModel.onCountryClick(it)
         }
@@ -56,15 +47,19 @@ class RegistrationPhoneFragment : BaseFragment<RegistrationPhoneViewModel, Fragm
         }
     }
 
+    override fun onContent() {
+        super.onContent()
+        binding.nextTextView.setLoading(false)
+    }
 
-    private fun handleState(state: BaseViewModel.LoadingState){
-        when (state){
-            BaseViewModel.LoadingState.CONTENT -> {
-                binding.nextTextView.setLoading(false)
-            }
-            BaseViewModel.LoadingState.LOADING -> {
-                binding.nextTextView.setLoading(true)
-            }
-        }
+    override fun onLoading() {
+        super.onLoading()
+        binding.nextTextView.setLoading(true)
+    }
+
+    override fun onError() {
+        super.onError()
+        binding.nextTextView.setLoading(false)
+        toast("Произошла ошибка")
     }
 }

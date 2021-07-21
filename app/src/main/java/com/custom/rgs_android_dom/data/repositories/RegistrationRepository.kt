@@ -9,7 +9,11 @@ class RegistrationRepository(private val api: MyServiceDomApi) {
     fun sendPhone(phone: String): Single<Boolean> {
         return Single.fromCallable {
             Thread.sleep(2000)
-            true
+            if (phone.endsWith("9")){
+                throw InvalidPropertiesFormatException("Wrong format")
+            } else {
+                true
+            }
         }
     }
 

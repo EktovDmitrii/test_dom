@@ -1,9 +1,13 @@
 package com.custom.rgs_android_dom.ui.registration.code
 
+import android.os.CountDownTimer
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.utils.gone
+import com.custom.rgs_android_dom.utils.visible
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -14,19 +18,27 @@ class RegistrationCodeViewModel(
     private val registrationInteractor: RegistrationInteractor
 ) : BaseViewModel() {
 
+    companion object {
+        private const val TIMER_MILLIS: Long = 60000
+    }
+
     private val phoneController = MutableLiveData<String>()
-    private val startTimerController = MutableLiveData<Unit>()
+    private val onTimerStartController = MutableLiveData<Unit>()
     private val showResendCodeController = MutableLiveData<Unit>()
-    private val errorMessageController = MutableLiveData<String>()
+    private val countdownTextController = MutableLiveData<String>()
+    private val codeErrorController = MutableLiveData<Unit>()
 
     val phoneObserver: LiveData<String> = phoneController
-    val startTimerObserver: LiveData<Unit> = startTimerController
+    val onTimerStartObserver: LiveData<Unit> = onTimerStartController
     val showResendCodeObserver: LiveData<Unit> = showResendCodeController
-    val errorMessageObserver: LiveData<String> = errorMessageController
+    val countdownTextObserver: LiveData<String> = countdownTextController
+    val codeErrorObserver: LiveData<Unit> = codeErrorController
+
+    private var timer: CountDownTimer? = null
 
     init {
-        phoneController.value = phone
-        startTimerController.value = Unit
+        phoneController.value = "Мы отправили СМС на номер $phone"
+        startCountdownTimer()
     }
 
     fun onCloseClick(){
@@ -39,13 +51,13 @@ class RegistrationCodeViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
             .doOnSuccess { loadingStateController.value = LoadingState.CONTENT }
+            .doOnError { loadingStateController.value = LoadingState.ERROR }
             .subscribeBy(
                 onSuccess = {
-                    startTimerController.value = Unit
+                    startCountdownTimer()
                 },
                 onError = {
-                    loadingStateController.value = LoadingState.CONTENT
-                    errorMessageController.value = "Не удалось запросить код"
+
                 }
             ).addTo(dataCompositeDisposable)
     }
@@ -56,18 +68,34 @@ class RegistrationCodeViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
             .doOnSuccess { loadingStateController.value = LoadingState.CONTENT }
-            .doOnError { loadingStateController.value = LoadingState.ERROR  }
             .subscribeBy(
                 onSuccess = {
                     closeController.value = Unit
                 },
                 onError = {
-
+                    codeErrorController.value = Unit
                 }
             ).addTo(dataCompositeDisposable)
     }
 
-    fun onTimerFinished(){
+    private fun startCountdownTimer(){
+        onTimerStartController.value = Unit
+        timer?.cancel()
+        timer = object : CountDownTimer(TIMER_MILLIS, 1000) {
+
+            override fun onTick(millisUntilFinished: Long) {
+                val secondsLeft = String.format("%02d", millisUntilFinished.div(1000))
+                countdownTextController.value = "Вы сможете повторно запросить код через 00:$secondsLeft"
+            }
+
+            override fun onFinish() {
+                onTimerFinished()
+            }
+        }
+        timer?.start()
+    }
+
+    private fun onTimerFinished(){
         showResendCodeController.value = Unit
     }
 

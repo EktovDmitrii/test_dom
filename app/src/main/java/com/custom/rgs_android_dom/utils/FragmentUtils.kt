@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.utils
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 
 fun Fragment.showSoftwareKeyboard(view: View) {
@@ -30,8 +31,12 @@ fun Fragment.hideSoftwareKeyboard(delay: Long = 300L, action: (() -> Unit)? = nu
 
     action?.let { view?.postDelayed(it, delay) }
 }
+
 inline fun <T : Fragment> T.args(builder: Bundle.() -> Unit): T {
     arguments = arguments ?: Bundle()
         .apply(builder)
     return this
 }
+
+fun Fragment.toast(text: String, length: Int = Toast.LENGTH_SHORT) =
+    run { requireActivity().toast(text, length) }

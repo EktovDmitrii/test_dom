@@ -1,12 +1,10 @@
 package com.custom.rgs_android_dom.ui.registration.code
 
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentRegistrationCodeBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.*
@@ -18,7 +16,6 @@ class RegistrationCodeFragment : BaseFragment<RegistrationCodeViewModel, Fragmen
 
     companion object {
         private const val ARG_PHONE = "ARG_PHONE"
-        private const val TIMER_MILLIS: Long = 60000
 
         fun newInstance(phone: String): RegistrationCodeFragment {
             return RegistrationCodeFragment().args {
@@ -26,8 +23,6 @@ class RegistrationCodeFragment : BaseFragment<RegistrationCodeViewModel, Fragmen
             }
         }
     }
-
-    private var timer: CountDownTimer? = null
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(requireArguments().getString(ARG_PHONE))
@@ -48,91 +43,77 @@ class RegistrationCodeFragment : BaseFragment<RegistrationCodeViewModel, Fragmen
             viewModel.onResendCodeClick()
         }
 
-        subscribe(viewModel.phoneObserver){phone->
-            binding.phoneTextView.text = "Мы отправили СМС на номер $phone"
+        subscribe(viewModel.phoneObserver){
+            binding.phoneTextView.text = it
         }
 
-        subscribe(viewModel.closeObserver){
-            stopTimer()
-            hideSoftwareKeyboard()
-            ScreenManager.closeScope(REGISTRATION)
+        subscribe(viewModel.countdownTextObserver){
+            binding.countdownTextView.text = it
         }
 
-        subscribe(viewModel.startTimerObserver){
-            startCountdownTimer()
+        subscribe(viewModel.onTimerStartObserver){
+            binding.countdownTextView.visible()
+            binding.resendCodeTextView.gone()
+            binding.codeInput.reset()
         }
 
         subscribe(viewModel.showResendCodeObserver){
-            stopTimer()
             binding.countdownTextView.gone()
             binding.resendCodeTextView.visible()
         }
 
-        subscribe(viewModel.loadingStateObserver){
-            handleState(it)
+        subscribe(viewModel.codeErrorObserver){
+            onCodeError()
         }
 
-        subscribe(viewModel.errorMessageObserver){
-            requireActivity().toast(it)
-        }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        stopTimer()
+    override fun onLoading() {
+        super.onLoading()
+        binding.codeInput.isEnabled = false
+        binding.countdownTextView.isEnabled = false
+        binding.phoneTextView.isEnabled = false
+        binding.resendCodeTextView.isEnabled = false
+
+        binding.nextTextView.setLoading(true)
     }
 
-    private fun stopTimer(){
-        timer?.cancel()
+    override fun onContent() {
+        super.onContent()
+        binding.codeInput.isEnabled = true
+        binding.countdownTextView.isEnabled = true
+        binding.phoneTextView.isEnabled = true
+        binding.resendCodeTextView.isEnabled = true
+
+        binding.nextTextView.setLoading(false)
     }
 
-    private fun startCountdownTimer(){
-        binding.countdownTextView.visible()
-        binding.resendCodeTextView.gone()
-        binding.codeInput.reset()
-        stopTimer()
-        timer = object : CountDownTimer(TIMER_MILLIS, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
+    override fun onError() {
+        super.onError()
+        binding.codeInput.isEnabled = true
+        binding.countdownTextView.isEnabled = true
+        binding.phoneTextView.isEnabled = true
+        binding.resendCodeTextView.isEnabled = true
 
-                val secondsLeft = String.format("%02d", millisUntilFinished.div(1000))
-                binding.countdownTextView.text = "Вы сможете повторно запросить код через 00:$secondsLeft"
-            }
+        binding.nextTextView.setLoading(false)
 
-            override fun onFinish() {
-                viewModel.onTimerFinished()
-            }
-        }
-        timer?.start()
+        toast("Произошла ошибка")
     }
 
-    private fun handleState(state: BaseViewModel.LoadingState){
-        when (state){
-            BaseViewModel.LoadingState.LOADING -> {
-                binding.codeInput.isEnabled = false
-                binding.countdownTextView.isEnabled = false
-                binding.phoneTextView.isEnabled = false
-                binding.resendCodeTextView.isEnabled = false
+    override fun onClose() {
+        //super.onClose()
+        hideSoftwareKeyboard()
+        ScreenManager.closeScope(REGISTRATION)
+    }
 
-                binding.nextTextView.setLoading(true)
-            }
-            BaseViewModel.LoadingState.CONTENT -> {
-                binding.codeInput.isEnabled = true
-                binding.countdownTextView.isEnabled = true
-                binding.phoneTextView.isEnabled = true
-                binding.resendCodeTextView.isEnabled = true
+    private fun onCodeError() {
+        requireContext().vibratePhone()
+        binding.codeInput.isEnabled = true
+        binding.codeInput.setErrorState()
+        binding.countdownTextView.isEnabled = true
+        binding.phoneTextView.isEnabled = true
+        binding.resendCodeTextView.isEnabled = true
 
-                binding.nextTextView.setLoading(false)
-            }
-            BaseViewModel.LoadingState.ERROR -> {
-                requireContext().vibratePhone()
-                binding.codeInput.isEnabled = true
-                binding.codeInput.setErrorState()
-                binding.countdownTextView.isEnabled = true
-                binding.phoneTextView.isEnabled = true
-                binding.resendCodeTextView.isEnabled = true
-
-                binding.nextTextView.setLoading(false)
-            }
-        }
+        binding.nextTextView.setLoading(false)
     }
 }

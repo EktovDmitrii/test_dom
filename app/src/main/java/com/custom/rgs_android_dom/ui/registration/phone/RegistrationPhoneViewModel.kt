@@ -77,12 +77,13 @@ class RegistrationPhoneViewModel(private val countriesInteractor: CountriesInter
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
+            .doOnError { loadingStateController.value = LoadingState.ERROR }
+            .doOnSuccess { loadingStateController.value = LoadingState.CONTENT }
             .subscribeBy(
                 onSuccess = {
                     ScreenManager.showScreenScope(RegistrationCodeFragment.newInstance(phone), REGISTRATION)
                 },
                 onError = {
-                    loadingStateController.value = LoadingState.CONTENT
                     //todo обработка ошибки
                 }
             ).addTo(dataCompositeDisposable)
