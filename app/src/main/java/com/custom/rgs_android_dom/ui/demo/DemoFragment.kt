@@ -1,15 +1,13 @@
 package com.custom.rgs_android_dom.ui.demo
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentDemoBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 
-
-class DemoFragment(val scopeId: Int? = null) : BaseFragment<DemoViewModel, FragmentDemoBinding>(DemoViewModel::class.java) {
+class DemoFragment(val scopeId: Int? = null) : BaseFragment<DemoViewModel, FragmentDemoBinding>(R.layout.fragment_demo) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,10 +32,4 @@ class DemoFragment(val scopeId: Int? = null) : BaseFragment<DemoViewModel, Fragm
         }
     }
 
-    override fun getViewBinding(
-        inflater: LayoutInflater,
-        container: ViewGroup?
-    ): FragmentDemoBinding {
-        return FragmentDemoBinding.inflate(inflater, container, false)
-    }
 }

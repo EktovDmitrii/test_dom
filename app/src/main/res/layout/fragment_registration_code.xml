@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white">
 
     <FrameLayout
@@ -34,24 +35,54 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/my_service_medium"
-            android:text="Вход и регистрация"
+            android:text="Введите код из СМС"
             android:textColor="@color/secondary900"
             android:textSize="20sp" />
 
-        <com.custom.rgs_android_dom.views.text.MSDTextView
+        <com.custom.rgs_android_dom.views.MSDCodeInput
+            android:id="@+id/codeInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:fontFamily="@font/suisse_regular"
-            android:text="Номер телефона"
-            android:textColor="@color/secondary600"
-            android:textSize="16sp" />
+            app:disabledBackground="@drawable/code_input_background_disabled"
+            app:disabledTextColor="@color/secondary500"
+            app:errorBackground="@drawable/code_input_background_error" />
 
-        <com.custom.rgs_android_dom.views.MSDPhoneInput
-            android:id="@+id/phoneInput"
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/phoneTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/suisse_regular"
+            android:textColor="@color/secondary_600_secondary_400_text_color"
+            android:textSize="14sp"
+            tools:text="Мы отправили СМС на номер +7 926 417-70-54" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp">
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/countdownTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/suisse_regular"
+                android:textColor="@color/secondary_600_secondary_400_text_color"
+                android:textSize="14sp"
+                tools:text="Вы сможете повторно запросить код через 00:03" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/resendCodeTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/suisse_regular"
+                android:text="Отправить код повторно"
+                android:textColor="@color/primary_500_secondary_400_text_color"
+                android:textSize="14sp"
+                android:visibility="gone" />
+        </FrameLayout>
+
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

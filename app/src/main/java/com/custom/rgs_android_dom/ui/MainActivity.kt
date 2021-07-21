@@ -6,6 +6,8 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.navigation.NavigationMenu
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.registration.code.RegistrationCodeFragment
+import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.ui.splash.SplashFragment
 
 class MainActivity : AppCompatActivity() {
@@ -21,14 +23,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startSplash(){
-        ScreenManager.showScreen(SplashFragment())
+        //ScreenManager.showScreen(RegistrationCodeFragment.newInstance("+7 095 222-22-22"))
+        ScreenManager.showScreen(RegistrationPhoneFragment())
     }
 
     override fun onBackPressed() {
         val fragmentList = supportFragmentManager.fragments
         val topFragment = fragmentList.last { it is BaseFragment<*,*> } as? BaseFragment<*,*>
         if (topFragment != null){
-            ScreenManager.back(topFragment.getNavigateId())
+            topFragment.onClose()
         } else {
             super.onBackPressed()
         }

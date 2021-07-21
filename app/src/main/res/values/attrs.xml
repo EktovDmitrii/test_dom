@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <attr name="translationTextKey" format="string" />
     <declare-styleable name="MSDTextView">
-        <attr name="translationTextKey" format="string" />
+        <attr name="translationTextKey"/>
     </declare-styleable>
 
     <declare-styleable name="MSDPhoneInput">
         <attr name="phoneMask" format="string"/>
         <attr name="countryImage" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="MSDCodeInput">
+        <attr name="disabledBackground" format="reference"/>
+        <attr name="errorBackground" format="reference"/>
+        <attr name="disabledTextColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="MSDTextViewLoader">
+        <attr name="translationTextKey"/>
+        <attr name="android:text"/>
     </declare-styleable>
 
 </resources>

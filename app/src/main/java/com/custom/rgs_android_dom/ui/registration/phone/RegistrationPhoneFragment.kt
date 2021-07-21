@@ -1,16 +1,18 @@
 package com.custom.rgs_android_dom.ui.registration.phone
 
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentRegistrationPhoneBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.utils.hideSoftwareKeyboard
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
+import com.custom.rgs_android_dom.utils.toast
 
-class RegistrationPhoneFragment : BaseFragment<RegistrationPhoneViewModel, FragmentRegistrationPhoneBinding>(RegistrationPhoneViewModel::class.java) {
+class RegistrationPhoneFragment : BaseFragment<RegistrationPhoneViewModel, FragmentRegistrationPhoneBinding>(
+    R.layout.fragment_registration_phone
+) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -18,26 +20,46 @@ class RegistrationPhoneFragment : BaseFragment<RegistrationPhoneViewModel, Fragm
         subscribe(viewModel.isNextTextViewEnabledObserver){
             binding.nextTextView.isEnabled = it
         }
+
         subscribe(viewModel.countryObserver){
             binding.phoneInput.setCountryImage(it.image)
 
             binding.phoneInput.setMask(it.mask){phone, isMaskFilled ->
                 viewModel.onPhoneChanged(phone, isMaskFilled)
             }
+
+            binding.phoneInput.setOnDoneClickListener {
+                viewModel.onDoneClick()
+            }
         }
 
         binding.phoneInput.setOnCountryClickListener {
             viewModel.onCountryClick(it)
         }
+
         binding.nextTextView.setOnDebouncedClickListener {
             viewModel.onNextClick()
+            hideSoftwareKeyboard()
         }
+
         binding.closeImageView.setOnDebouncedClickListener {
             viewModel.onCloseClick()
         }
     }
 
-    override fun getViewBinding(inflater: LayoutInflater,container: ViewGroup?): FragmentRegistrationPhoneBinding {
-        return FragmentRegistrationPhoneBinding.inflate(inflater, container, false)
+    override fun onContent() {
+        super.onContent()
+        binding.nextTextView.setLoading(false)
+    }
+
+    override fun onLoading() {
+        super.onLoading()
+        binding.nextTextView.setLoading(true)
+    }
+
+    override fun onError() {
+        super.onError()
+        binding.nextTextView.setLoading(false)
+        toast("Произошла ошибка")
     }
 }

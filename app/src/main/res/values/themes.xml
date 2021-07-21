@@ -25,4 +25,23 @@
         <item name="android:textColor">@color/button_primary_500_text_color</item>
     </style>
 
+    <style name="CodeInput">
+        <item name="android:textCursorDrawable">@drawable/cursor_primary_500</item>
+        <item name="android:fontFamily">@font/my_service_regular</item>
+        <item name="android:inputType">number</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLength">1</item>
+        <item name="android:textSize">36sp</item>
+        <item name="android:textColor">@color/secondary900</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:paddingStart">25dp</item>
+        <item name="android:paddingEnd">25dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:background">@drawable/code_input_selector</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:minHeight">64dp</item>
+    </style>
+
 </resources>

@@ -3,14 +3,14 @@ package com.custom.rgs_android_dom.views
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.view.KeyEvent
 import android.view.LayoutInflater
+import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdPhoneInputBinding
-import com.custom.rgs_android_dom.utils.GlideApp
-import com.custom.rgs_android_dom.utils.gone
-import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
-import com.custom.rgs_android_dom.utils.visible
+import com.custom.rgs_android_dom.utils.*
 import com.redmadrobot.inputmask.MaskedTextChangedListener
 
 class MSDPhoneInput @JvmOverloads constructor(
@@ -27,6 +27,8 @@ class MSDPhoneInput @JvmOverloads constructor(
 
     private var onCountryClickListener: (String) -> Unit = {}
     private var onPhoneChangedListener: (String, Boolean) -> Unit = { _, _ -> }
+    private var onDoneClickListener: () -> Unit = {}
+
     private var isFromUser = true
     private var countryCode = ""
 
@@ -60,6 +62,14 @@ class MSDPhoneInput @JvmOverloads constructor(
             setCountryImage(countryImage)
         }
 
+        binding.phoneEditText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                binding.phoneEditText.hideKeyboard()
+                onDoneClickListener()
+            }
+            true
+        }
+
         binding.countryLinearLayout.setOnDebouncedClickListener {
             onCountryClickListener(countryCode)
         }
@@ -67,6 +77,10 @@ class MSDPhoneInput @JvmOverloads constructor(
 
     fun setOnCountryClickListener(onCountryClickListener: (String) -> Unit){
         this.onCountryClickListener = onCountryClickListener
+    }
+
+    fun setOnDoneClickListener(onDoneClickListener: () -> Unit = {}) {
+        this.onDoneClickListener = onDoneClickListener
     }
 
     fun setCountryImage(image: Int){
@@ -133,9 +147,9 @@ class MSDPhoneInput @JvmOverloads constructor(
     }
 
     private fun setErrorState(){
-        binding.phoneContainerConstraintLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_dangerous_red_radius_8dp)
-        binding.countryCodeTextView.setTextColor(context.getColor(R.color.dangerousRed))
-        binding.phoneEditText.setTextColor(context.getColor(R.color.dangerousRed))
+        binding.phoneContainerConstraintLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_error_500_radius_8dp)
+        binding.countryCodeTextView.setTextColor(context.getColor(R.color.error500))
+        binding.phoneEditText.setTextColor(context.getColor(R.color.error500))
         binding.errorTextView.visible()
     }
 
