@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="translationTextKey" format="string" />
+    <attr name="translationLabelKey" format="string" />
+
     <declare-styleable name="MSDTextView">
         <attr name="translationTextKey"/>
     </declare-styleable>
@@ -18,7 +20,10 @@
 
     <declare-styleable name="MSDTextViewLoader">
         <attr name="translationTextKey"/>
-        <attr name="android:text"/>
+    </declare-styleable>
+
+    <declare-styleable name="MSDLabelTextView">
+        <attr name="translationLabelKey"/>
     </declare-styleable>
 
 </resources>

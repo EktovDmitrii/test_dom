@@ -27,10 +27,7 @@ class MSDTextViewLoader @JvmOverloads constructor(
 
         attrs.getString(R.styleable.MSDTextViewLoader_translationTextKey)?.let { translationTextKey ->
             //TODO Add handling translation logic here
-        }
-
-        attrs.getString(R.styleable.MSDTextViewLoader_android_text)?.let { text ->
-            setText(text)
+            setText(translationTextKey)
         }
     }
 
