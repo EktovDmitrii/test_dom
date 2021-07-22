@@ -17,7 +17,7 @@ class MSDLabelTextView @JvmOverloads constructor(
     private val binding: ViewMsdLabelTextViewBinding = ViewMsdLabelTextViewBinding.inflate(LayoutInflater.from(context), this, true)
 
     init {
-        val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDTextViewLoader, 0, 0)
+        val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDLabelTextView, 0, 0)
         attrs.getString(R.styleable.MSDLabelTextView_translationLabelKey)?.let { translationTextKey ->
             //TODO Add handling translation logic here
             binding.labelTextView.text = translationTextKey

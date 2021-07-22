@@ -2,6 +2,7 @@
 <resources>
     <attr name="translationTextKey" format="string" />
     <attr name="translationLabelKey" format="string" />
+    <attr name="translationHintKey" format="string" />
 
     <declare-styleable name="MSDTextView">
         <attr name="translationTextKey"/>
@@ -24,6 +25,21 @@
 
     <declare-styleable name="MSDLabelTextView">
         <attr name="translationLabelKey"/>
+    </declare-styleable>
+
+    <declare-styleable name="MSDLabelIconTextView">
+        <attr name="icon" format="reference"/>
+        <attr name="translationLabelKey"/>
+    </declare-styleable>
+
+    <declare-styleable name="MSDEditText">
+        <attr name="translationHintKey"/>
+        <attr name="android:imeOptions"/>
+        <attr name="android:inputType" />
+        <attr name="android:textAllCaps" />
+        <attr name="prefix" format="string"/>
+        <attr name="prefixVisible" format="boolean"/>
+        <attr name="android:lines"/>
     </declare-styleable>
 
 </resources>
