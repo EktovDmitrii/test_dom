@@ -1,13 +1,13 @@
-package com.custom.rgs_android_dom.data.repositories
+package com.custom.rgs_android_dom.data.repositories.countries
 
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.MyServiceDomApi
 import com.custom.rgs_android_dom.domain.countries.model.CountryModel
 import io.reactivex.Single
 
-class CountriesRepository(private val api: MyServiceDomApi) {
+class MockCountriesRepositoryImpl(private val api: MyServiceDomApi) : CountriesRepository {
 
-    fun getDefaultCountry(): Single<CountryModel> {
+    override fun getDefaultCountry(): Single<CountryModel> {
         return Single.fromCallable {
             CountryModel(
                 id = 1,

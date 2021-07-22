@@ -1,13 +1,10 @@
 package com.custom.rgs_android_dom.ui.registration.code
 
 import android.os.CountDownTimer
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.utils.gone
-import com.custom.rgs_android_dom.utils.visible
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -37,7 +34,7 @@ class RegistrationCodeViewModel(
     private var timer: CountDownTimer? = null
 
     init {
-        phoneController.value = "Мы отправили СМС на номер $phone"
+        phoneController.value = "Мы отправили СМС на номер\n$phone"
         startCountdownTimer()
     }
 
@@ -85,7 +82,7 @@ class RegistrationCodeViewModel(
 
             override fun onTick(millisUntilFinished: Long) {
                 val secondsLeft = String.format("%02d", millisUntilFinished.div(1000))
-                countdownTextController.value = "Вы сможете повторно запросить код через 00:$secondsLeft"
+                countdownTextController.value = "Вы сможете повторно запросить\nкод через 00:$secondsLeft"
             }
 
             override fun onFinish() {

@@ -4,10 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.navigation.NavigationMenu
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
-import com.custom.rgs_android_dom.ui.registration.code.RegistrationCodeFragment
-import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.ui.splash.SplashFragment
 
 class MainActivity : AppCompatActivity() {
@@ -18,13 +15,8 @@ class MainActivity : AppCompatActivity() {
         startSplash()
     }
 
-    private fun demoScreen(){
-        ScreenManager.setMenu(NavigationMenu.HOME)
-    }
-
     private fun startSplash(){
-        //ScreenManager.showScreen(RegistrationCodeFragment.newInstance("+7 095 222-22-22"))
-        ScreenManager.showScreen(RegistrationPhoneFragment())
+        ScreenManager.showScreen(SplashFragment())
     }
 
     override fun onBackPressed() {

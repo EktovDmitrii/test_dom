@@ -1,8 +1,8 @@
 package com.custom.rgs_android_dom.views
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -39,16 +39,17 @@ class MSDCodeInput @JvmOverloads constructor(
         binding.fourthDigitEditText
     )
 
-    private val originalTextColor = editTextViews.first().currentTextColor
-    private val originalBackground = editTextViews.first().background
+    private val normalTextColor = R.color.secondary900
+    private var normalBackground = R.drawable.code_input_selector
 
-    private var disabledTextColor = originalTextColor
-    private var disabledBackground = originalBackground
-    private var errorBackground = ContextCompat.getDrawable(context, R.drawable.code_input_background_error)
+    private var disabledTextColor: Int
+    private var disabledBackground: Drawable? = null
+
+    private var errorBackground: Drawable? = null
 
     init {
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDCodeInput, 0, 0)
-        disabledTextColor = attrs.getColor(R.styleable.MSDCodeInput_disabledTextColor, originalTextColor)
+        disabledTextColor = attrs.getColor(R.styleable.MSDCodeInput_disabledTextColor, ContextCompat.getColor(context, R.color.secondary900))
 
         attrs.getDrawable(R.styleable.MSDCodeInput_disabledBackground)?.let {
             disabledBackground = it
@@ -73,26 +74,29 @@ class MSDCodeInput @JvmOverloads constructor(
             }
 
             editTextViews[i].addTextChangedListener {
-                if (editTextViews[i].text.toString() != "") {
+                if (editTextViews[i].text.toString() != "" && i != 3) {
+                    editTextViews[i + 1].focus()
                     editTextViews[i].unFocus()
-                    if (i != editTextViews.size -1){
-                        editTextViews[i + 1].focus()
-                    } else {
-                        editTextViews[i].hideKeyboard()
-                        onCodeCompleteListener(editTextViews.joinToString(""){it.text.toString()})
-                    }
                 }
             }
 
             editTextViews[i].setOnDebouncedClickListener {
                 editTextViews.find { it.isFocusable }?.showKeyboard()
             }
+        }
 
+        editTextViews.last().addTextChangedListener {
+            if (it.toString() != "") {
+                editTextViews.last().unFocus()
+                editTextViews.last().hideKeyboard()
+                onCodeCompleteListener(editTextViews.joinToString(""){it.text.toString()})
+            }
         }
 
         binding.clickProxyFrameLayout.setOnDebouncedClickListener {
             reset()
         }
+
     }
 
     fun setOnCodeCompleteListener(onCodeCompleteListener: (String) -> Unit){
@@ -111,6 +115,7 @@ class MSDCodeInput @JvmOverloads constructor(
         removeErrorState()
         editTextViews.forEach {
             it.text?.clear()
+            it.unFocus()
         }
         editTextViews.first().focus()
         editTextViews.first().showKeyboard()
@@ -121,8 +126,8 @@ class MSDCodeInput @JvmOverloads constructor(
             binding.clickProxyFrameLayout.gone()
             binding.clickProxyFrameLayout.isEnabled = true
             editTextViews.forEach {
-                it.background = originalBackground
-                it.setTextColor(originalTextColor)
+                it.background = ContextCompat.getDrawable(context, normalBackground)
+                it.setTextColor(ContextCompat.getColor(context, normalTextColor))
             }
         } else {
             editTextViews.forEach {
@@ -138,7 +143,8 @@ class MSDCodeInput @JvmOverloads constructor(
         binding.errorTextView.gone()
         binding.clickProxyFrameLayout.gone()
         editTextViews.forEach {
-            it.background = originalBackground
+            it.background = ContextCompat.getDrawable(context, normalBackground)
+            it.setTextColor(ContextCompat.getColor(context, normalTextColor))
         }
     }
 }

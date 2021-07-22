@@ -12,6 +12,15 @@
         android:layout_height="@dimen/toolbar_height">
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/backImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:paddingHorizontal="14dp"
+            android:tint="@color/secondary800"
+            app:srcCompat="@drawable/ic_back_24px"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/closeImageView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -46,7 +55,7 @@
             android:layout_marginTop="16dp"
             app:disabledBackground="@drawable/code_input_background_disabled"
             app:disabledTextColor="@color/secondary500"
-            app:errorBackground="@drawable/code_input_background_error" />
+            app:errorBackground="@drawable/code_input_background_error"/>
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/phoneTextView"
