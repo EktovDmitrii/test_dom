@@ -18,6 +18,10 @@ class DemoRegistrationFlowFragment: BaseFragment<DemoViewModel, FragmentDemoRegi
         binding.registrationButton.setOnDebouncedClickListener {
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
         }
+
+        binding.inputsButton.setOnDebouncedClickListener {
+            ScreenManager.showScreen(DemoInputsFragment())
+        }
     }
 
 }

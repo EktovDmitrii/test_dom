@@ -17,8 +17,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startSplash(){
-        //ScreenManager.showScreen(SplashFragment())
-        ScreenManager.showScreen(DemoInputsFragment())
+        ScreenManager.showScreen(SplashFragment())
     }
 
     override fun onBackPressed() {

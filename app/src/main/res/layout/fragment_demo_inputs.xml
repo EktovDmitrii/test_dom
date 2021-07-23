@@ -1,64 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:padding="20dp">
+    android:background="@color/white">
 
-    <com.custom.rgs_android_dom.views.text.MSDLabelTextView
-        android:id="@+id/labelTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:translationLabelKey="ФИО"/>
-
-    <com.custom.rgs_android_dom.views.text.MSDLabelIconTextView
-        android:id="@+id/labelIconTextView"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:translationLabelKey="Способ оплаты"
-        android:layout_marginTop="10dp"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
 
-    <com.custom.rgs_android_dom.views.edit_text.MSDEditText
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:prefixVisible="false"
-        app:translationHintKey="Placeholder"/>
+        <com.custom.rgs_android_dom.views.text.MSDLabelTextView
+            android:id="@+id/labelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:translationLabelKey="ФИО"/>
 
-    <com.custom.rgs_android_dom.views.edit_text.MSDEditText
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:inputType="phone"
-        app:prefixVisible="true"
-        app:prefix="S"
-        app:translationHintKey="Placeholder"/>
+        <com.custom.rgs_android_dom.views.text.MSDLabelIconTextView
+            android:id="@+id/labelIconTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:translationLabelKey="Способ оплаты"
+            android:layout_marginTop="10dp"/>
 
-    <com.custom.rgs_android_dom.views.edit_text.MSDEditText
-        android:id="@+id/firstEt"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:inputType="text"
-        app:prefixVisible="false"
-        app:translationHintKey="Placeholder"/>
+        <com.custom.rgs_android_dom.views.edit_text.MSDEditText
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:prefixVisible="false"
+            app:translationHintKey="Placeholder"/>
 
-    <com.custom.rgs_android_dom.views.edit_text.MSDEditText
-        android:id="@+id/secondEt"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:prefixVisible="false"
-        android:imeOptions="actionDone"
-        app:translationHintKey="Placeholder"/>
+        <com.custom.rgs_android_dom.views.edit_text.MSDEditText
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:inputType="phone"
+            app:prefixVisible="true"
+            app:prefix="S"
+            app:translationHintKey="Placeholder"/>
 
-    <com.custom.rgs_android_dom.views.edit_text.MSDEditText
-        android:id="@+id/thirdEt"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:prefixVisible="false"
-        app:translationHintKey="Placeholder"/>
+        <com.custom.rgs_android_dom.views.edit_text.MSDEditText
+            android:id="@+id/firstEt"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:inputType="text"
+            app:prefixVisible="false"
+            app:translationHintKey="Placeholder"/>
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+        <com.custom.rgs_android_dom.views.edit_text.MSDEditText
+            android:id="@+id/secondEt"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:prefixVisible="false"
+            android:imeOptions="actionDone"
+            app:translationHintKey="Placeholder"/>
+
+        <com.custom.rgs_android_dom.views.edit_text.MSDEditText
+            android:id="@+id/thirdEt"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:prefixVisible="false"
+            app:translationHintKey="Placeholder"/>
+
+        <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
+            android:id="@+id/fourthEt"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:translationLabelKey="Подпись"
+            app:translationHintKey="Placeholder"/>
+
+        <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
+            android:id="@+id/fivthEt"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:translationLabelKey="Подпись"
+            app:translationHintKey="Placeholder"/>
+
+        <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
+            android:id="@+id/sixthEt"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:translationLabelKey="Подпись"
+            app:translationHintKey="Placeholder"/>
+
+        <com.custom.rgs_android_dom.views.edit_text.MSDIconEditText
+            android:id="@+id/iconEditText"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:inputType="date"
+            app:icon="@drawable/ic_calendar_24px"
+            app:mask="[00].[00].[0000]"
+            app:translationHintKey="дд.мм.гггг"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.core.widget.NestedScrollView>
