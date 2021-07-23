@@ -19,6 +19,7 @@
     <declare-styleable name="MSDTextViewLoader">
         <attr name="translationTextKey"/>
         <attr name="android:text"/>
+        <attr name="android:enabled"/>
     </declare-styleable>
 
 </resources>

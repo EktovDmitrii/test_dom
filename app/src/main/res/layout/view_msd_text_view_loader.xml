@@ -6,10 +6,10 @@
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/actionTextView"
-        style="@style/Button.Filled.Primary500"
+        style="@style/Button.Filled.Primary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:enabled="false"
+        android:clickable="true"
         tools:text="Далее" />
 
     <ProgressBar
