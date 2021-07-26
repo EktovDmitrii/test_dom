@@ -33,4 +33,9 @@
         <attr name="android:enabled"/>
     </declare-styleable>
 
+    <declare-styleable name="MSDTextViewIcon">
+        <attr name="translationTextKey"/>
+        <attr name="icon" format="reference"/>
+    </declare-styleable>
+
 </resources>

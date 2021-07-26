@@ -19,4 +19,6 @@
     <color name="secondary900_alpha50">#1F20201F</color>
     <color name="secondary900_alpha56">#8F20201F</color>
     <color name="secondary_default">#7D7E7E</color>
+    <!-- TODO This is temorary name -->
+    <color name="primary_200">#33F6A636</color>
 </resources>
