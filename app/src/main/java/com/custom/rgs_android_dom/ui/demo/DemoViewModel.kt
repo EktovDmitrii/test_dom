@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.demo
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.DemoInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
@@ -10,10 +11,10 @@ import io.reactivex.schedulers.Schedulers
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class DemoViewModel: BaseViewModel(), KoinComponent {
+class DemoViewModel: BaseViewModel() {
 
     private val demoTextController = MutableLiveData<String>()
-    val demoTextObserver = demoTextController
+    val demoTextObserver : LiveData<String> = demoTextController
 
     private val demoInteractor: DemoInteractor by inject()
 

@@ -1,16 +1,48 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Rgsandroiddom" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+    <style name="Theme.Rgsandroiddom" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowSoftInputMode">adjustResize|stateVisible</item>
     </style>
+
+    <style name="Button.Filled" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:fontFamily">@font/my_service_bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingStart">32dp</item>
+        <item name="android:paddingEnd">32dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="Button.Filled.Primary500" parent="Button.Filled">
+        <item name="android:background">@drawable/button_primary_500_background</item>
+        <item name="android:textColor">@color/button_primary_500_text_color</item>
+    </style>
+
+    <style name="CodeInput">
+        <item name="android:textCursorDrawable">@drawable/cursor_primary_500</item>
+        <item name="android:fontFamily">@font/my_service_regular</item>
+        <item name="android:inputType">number</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLength">1</item>
+        <item name="android:textSize">36sp</item>
+        <item name="android:textColor">@color/secondary900</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:paddingStart">25dp</item>
+        <item name="android:paddingEnd">25dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:background">@drawable/code_input_selector</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:minHeight">64dp</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:duplicateParentState">false</item>
+    </style>
+
 </resources>

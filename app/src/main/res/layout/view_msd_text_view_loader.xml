@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/actionTextView"
+        style="@style/Button.Filled.Primary500"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        tools:text="Далее" />
+
+    <ProgressBar
+        android:id="@+id/loadingProgressBar"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/primary500"
+        android:indeterminate="true"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
+</FrameLayout>

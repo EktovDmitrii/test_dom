@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
@@ -17,7 +16,7 @@ android {
         minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
-        versionName "1.0"
+        versionName "0.0.0.1"
     }
 
     signingConfigs {
@@ -118,9 +117,7 @@ dependencies {
     implementation "net.danlew:android.joda:2.10.3"
 
     // Koin
-    def koin_version = "2.2.0"
-    implementation "org.koin:koin-android:$koin_version"
-    implementation "org.koin:koin-android-scope:$koin_version"
+    implementation "io.insert-koin:koin-android:3.1.0"
 
     // RxJava
     implementation "io.reactivex.rxjava2:rxjava:2.2.12"
@@ -163,5 +160,8 @@ dependencies {
 
     // data binding
     annotationProcessor "com.android.databinding:compiler:3.1.2"
+
+    //Input mask
+    implementation "com.redmadrobot:input-mask-android:6.0.0"
 
 }

@@ -1,9 +1,7 @@
 package com.custom.rgs_android_dom.ui
 
 import android.app.Application
-import com.custom.rgs_android_dom.di.appModule
-import com.custom.rgs_android_dom.di.dataModule
-import com.custom.rgs_android_dom.di.domainModule
+import com.custom.rgs_android_dom.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -23,7 +21,9 @@ class App: Application() {
             modules(
                 appModule,
                 dataModule,
-                domainModule
+                domainModule,
+                networkModule,
+                viewModelModule
             )
         }
     }
