@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/rectangle_stroke_1dp_secondary_900_alpha_20_radius_8dp" android:state_pressed="true"></item>
+    <item android:drawable="@drawable/rectangle_stroke_1dp_secondary_900_alpha_50_radius_8dp" android:state_enabled="false"></item>
+    <item android:drawable="@drawable/rectangle_stroke_1dp_secondary_200_radius_8dp"/>
+</selector>

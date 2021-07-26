@@ -8,8 +8,6 @@
         android:id="@+id/actionTextView"
         style="@style/Button.Filled.Primary"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
         tools:text="Далее" />
 
     <ProgressBar

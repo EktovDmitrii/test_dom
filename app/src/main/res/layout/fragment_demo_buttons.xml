@@ -16,35 +16,129 @@
       <com.custom.rgs_android_dom.views.text.MSDTextViewLoader
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="Регистрация"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintBottom_toBottomOf="parent"/>
+          android:text="Далее"/>
 
       <com.custom.rgs_android_dom.views.text.MSDTextView
           android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="Регистрация"
+          android:text="Далее"
           style="@style/Button.Filled.Primary"
           android:enabled="false"
-          android:layout_marginTop="10dp"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintBottom_toBottomOf="parent"/>
+          android:layout_marginTop="10dp"/>
 
       <com.custom.rgs_android_dom.views.text.MSDTextViewLoader
           android:id="@+id/firstTv"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="Регистрация"
+          android:text="Далее"
           android:enabled="false"
+          android:layout_marginTop="10dp"/>
+
+      <com.custom.rgs_android_dom.views.text.MSDTextView
+          android:layout_width="wrap_content"
+          android:text="Зарегистрироваться"
+          style="@style/Button.Stroke.Primary"
+          android:layout_marginTop="10dp"/>
+
+
+      <com.custom.rgs_android_dom.views.text.MSDTextView
+          android:layout_width="wrap_content"
+          android:text="Помощь"
+          style="@style/Button.WithoutBg.Primary"
+          android:layout_marginTop="10dp"/>
+
+      <com.custom.rgs_android_dom.views.text.MSDTextView
+          android:layout_width="wrap_content"
+          android:text="Помощь"
+          style="@style/Button.WithoutBg.Primary"
+          android:enabled="false"
+          android:layout_marginTop="10dp"/>
+
+      <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderDoubleText
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          app:translationPrimaryTextKey="Оплатить"
+          app:translationSecondaryTextKey="4100 ₽"
+          android:layout_marginTop="10dp"/>
+
+      <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderDoubleText
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          app:translationPrimaryTextKey="Оплатить"
+          app:translationSecondaryTextKey="4100 ₽"
           android:layout_marginTop="10dp"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintBottom_toBottomOf="parent"/>
+          android:enabled="false"/>
+
+      <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderDoubleText
+          android:id="@+id/secondTv"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          app:translationPrimaryTextKey="Оплатить"
+          app:translationSecondaryTextKey="4100 ₽"
+          android:layout_marginTop="10dp"
+          android:enabled="false"/>
+
+      <com.custom.rgs_android_dom.views.text.MSDTextView
+          android:layout_width="wrap_content"
+          android:text="Оплатить"
+          style="@style/Button.Filled.Small.Primary"
+          android:layout_marginTop="10dp"/>
+
+
+      <com.custom.rgs_android_dom.views.text.MSDTextView
+          android:layout_width="wrap_content"
+          android:text="Оплатить"
+          style="@style/Button.Filled.Small.Primary"
+          android:enabled="false"
+          android:layout_marginTop="10dp"/>
+
+      <com.custom.rgs_android_dom.views.text.MSDTextViewSecondary
+          android:layout_width="wrap_content"
+          android:text="Оплатить"
+          style="@style/Button.Stroke.Small.Secondary"
+          android:layout_marginTop="10dp"/>
+
+      <com.custom.rgs_android_dom.views.text.MSDTextViewSecondary
+          android:layout_width="wrap_content"
+          android:text="Оплатить"
+          style="@style/Button.Stroke.Small.Secondary"
+          android:enabled="false"
+          android:layout_marginTop="10dp"/>
+
+      <com.custom.rgs_android_dom.views.text.MSDTextView
+          android:layout_width="wrap_content"
+          android:text="Открыть спор"
+          style="@style/Button.Chat.Primary.Filled"
+          android:layout_marginTop="10dp"/>
+
+      <com.custom.rgs_android_dom.views.text.MSDTextView
+          android:layout_width="wrap_content"
+          android:text="Отказаться"
+          style="@style/Button.Chat.Primary.Stroke"
+          android:layout_marginTop="10dp"/>
+
+      <com.custom.rgs_android_dom.views.text.MSDTextViewSecondary
+          android:layout_width="wrap_content"
+          android:text="Войти по номеру полиса"
+          style="@style/Button.WithoutBg.Secondary"
+          android:layout_marginTop="10dp"/>
+
+      <com.custom.rgs_android_dom.views.text.MSDTextViewSecondary
+          android:layout_width="wrap_content"
+          android:text="Оплатить"
+          style="@style/Button.WithoutBg.Secondary"
+          android:enabled="false"
+          android:layout_marginTop="10dp"/>
+
+      <com.custom.rgs_android_dom.views.MSDImageView
+          style="@style/Icon.Filled.Primary"
+          app:srcCompat="@drawable/ic_send_20px"
+          android:layout_marginTop="10dp"/>
+
+      <com.custom.rgs_android_dom.views.MSDImageView
+          style="@style/Icon.Filled.Primary"
+          app:srcCompat="@drawable/ic_send_20px"
+          android:enabled="false"
+          android:layout_marginTop="10dp"/>
 
    </androidx.appcompat.widget.LinearLayoutCompat>
 

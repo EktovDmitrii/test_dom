@@ -18,7 +18,7 @@ class DemoButtonsFragment: BaseFragment<DemoViewModel, FragmentDemoButtonsBindin
         super.onViewCreated(view, savedInstanceState)
 
         binding.firstTv.setLoading(true)
-
+        binding.secondTv.setLoading(true)
     }
 
 }

@@ -22,4 +22,15 @@
         <attr name="android:enabled"/>
     </declare-styleable>
 
+    <declare-styleable name="MSDTextViewLoaderDoubleText">
+        <attr name="translationPrimaryTextKey" format="string" />
+        <attr name="translationSecondaryTextKey" format="string" />
+        <attr name="android:text"/>
+        <attr name="android:enabled"/>
+    </declare-styleable>
+
+    <declare-styleable name="MSDImageView">
+        <attr name="android:enabled"/>
+    </declare-styleable>
+
 </resources>
