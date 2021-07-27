@@ -17,4 +17,8 @@ class RegistrationInteractor(private val registrationRepository: RegistrationRep
         return registrationRepository.resendCode(phone)
     }
 
+    fun acceptAgreement(): Single<Boolean> {
+        return registrationRepository.acceptAgreement()
+    }
+
 }
