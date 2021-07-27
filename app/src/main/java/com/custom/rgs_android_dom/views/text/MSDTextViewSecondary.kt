@@ -8,9 +8,10 @@ import com.custom.rgs_android_dom.R
 class MSDTextViewSecondary(context: Context, attributeSet: AttributeSet) : AppCompatTextView(context, attributeSet) {
 
     init {
-        val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDTextView, 0, 0)
-        attrs.getString(R.styleable.MSDTextView_translationTextKey)?.let { translationTextKey ->
+        val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDTextViewSecondary, 0, 0)
+        attrs.getString(R.styleable.MSDTextViewSecondary_translationTextKey)?.let { translationTextKey ->
             //TODO Add handling translation logic here
+            text = translationTextKey
         }
         if (!isEnabled){
             alpha = 0.5f

@@ -16,11 +16,11 @@
       <com.custom.rgs_android_dom.views.text.MSDTextViewLoader
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="Далее"/>
+          app:translationTextKey="Далее"/>
 
       <com.custom.rgs_android_dom.views.text.MSDTextView
           android:layout_width="wrap_content"
-          android:text="Далее"
+          app:translationTextKey="Далее"
           style="@style/Button.Filled.Primary"
           android:enabled="false"
           android:layout_marginTop="10dp"/>
@@ -29,26 +29,25 @@
           android:id="@+id/firstTv"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="Далее"
+          app:translationTextKey="Далее"
           android:enabled="false"
           android:layout_marginTop="10dp"/>
 
       <com.custom.rgs_android_dom.views.text.MSDTextView
           android:layout_width="wrap_content"
-          android:text="Зарегистрироваться"
+          app:translationTextKey="Зарегистрироваться"
           style="@style/Button.Stroke.Primary"
           android:layout_marginTop="10dp"/>
 
-
       <com.custom.rgs_android_dom.views.text.MSDTextView
           android:layout_width="wrap_content"
-          android:text="Помощь"
+          app:translationTextKey="Помощь"
           style="@style/Button.WithoutBg.Primary"
           android:layout_marginTop="10dp"/>
 
       <com.custom.rgs_android_dom.views.text.MSDTextView
           android:layout_width="wrap_content"
-          android:text="Помощь"
+          app:translationTextKey="Помощь"
           style="@style/Button.WithoutBg.Primary"
           android:enabled="false"
           android:layout_marginTop="10dp"/>
@@ -79,52 +78,52 @@
 
       <com.custom.rgs_android_dom.views.text.MSDTextView
           android:layout_width="wrap_content"
-          android:text="Оплатить"
+          app:translationTextKey="Оплатить"
           style="@style/Button.Filled.Small.Primary"
           android:layout_marginTop="10dp"/>
 
 
       <com.custom.rgs_android_dom.views.text.MSDTextView
           android:layout_width="wrap_content"
-          android:text="Оплатить"
+          app:translationTextKey="Оплатить"
           style="@style/Button.Filled.Small.Primary"
           android:enabled="false"
           android:layout_marginTop="10dp"/>
 
       <com.custom.rgs_android_dom.views.text.MSDTextViewSecondary
           android:layout_width="wrap_content"
-          android:text="Оплатить"
+          app:translationTextKey="Оплатить"
           style="@style/Button.Stroke.Small.Secondary"
           android:layout_marginTop="10dp"/>
 
       <com.custom.rgs_android_dom.views.text.MSDTextViewSecondary
           android:layout_width="wrap_content"
-          android:text="Оплатить"
+          app:translationTextKey="Оплатить"
           style="@style/Button.Stroke.Small.Secondary"
           android:enabled="false"
           android:layout_marginTop="10dp"/>
 
       <com.custom.rgs_android_dom.views.text.MSDTextView
           android:layout_width="wrap_content"
-          android:text="Открыть спор"
+          app:translationTextKey="Открыть спор"
           style="@style/Button.Chat.Primary.Filled"
           android:layout_marginTop="10dp"/>
 
       <com.custom.rgs_android_dom.views.text.MSDTextView
           android:layout_width="wrap_content"
-          android:text="Отказаться"
+          app:translationTextKey="Отказаться"
           style="@style/Button.Chat.Primary.Stroke"
           android:layout_marginTop="10dp"/>
 
       <com.custom.rgs_android_dom.views.text.MSDTextViewSecondary
           android:layout_width="wrap_content"
-          android:text="Войти по номеру полиса"
+          app:translationTextKey="Войти по номеру полиса"
           style="@style/Button.WithoutBg.Secondary"
           android:layout_marginTop="10dp"/>
 
       <com.custom.rgs_android_dom.views.text.MSDTextViewSecondary
           android:layout_width="wrap_content"
-          android:text="Оплатить"
+          app:translationTextKey="Оплатить"
           style="@style/Button.WithoutBg.Secondary"
           android:enabled="false"
           android:layout_marginTop="10dp"/>

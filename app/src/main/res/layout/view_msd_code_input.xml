@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <FrameLayout
@@ -69,7 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/suisse_regular"
-        android:text="Неправильный код"
+        app:translationTextKey="Неправильный код"
         android:includeFontPadding="false"
         android:textColor="@color/error500"
         android:textSize="13sp"

@@ -21,4 +21,5 @@
     <color name="secondary_default">#7D7E7E</color>
     <!-- TODO This is temorary name -->
     <color name="primary_200">#33F6A636</color>
+    <color name="secondary900_alpha14">#1420201F</color>
 </resources>

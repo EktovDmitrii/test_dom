@@ -21,9 +21,3 @@ infix fun View.visibleIf(expr: Boolean) {
 infix fun View.invisibleIf(expr: Boolean) {
     visibility = if (expr) View.INVISIBLE else View.VISIBLE
 }
-
-val View.isGone: Boolean
-    get() = visibility == View.GONE
-
-val View.isVisible: Boolean
-    get() = visibility == View.VISIBLE
