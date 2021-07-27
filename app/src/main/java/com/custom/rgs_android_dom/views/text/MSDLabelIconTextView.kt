@@ -20,9 +20,9 @@ class MSDLabelIconTextView @JvmOverloads constructor(
 
     init {
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDLabelIconTextView, 0, 0)
-        attrs.getString(R.styleable.MSDLabelTextView_translationLabelKey)?.let { translationTextKey ->
+        attrs.getString(R.styleable.MSDLabelIconTextView_translationLabelKey)?.let { translationLabelKey->
             //TODO Add handling translation logic here
-            binding.labelTextView.text = translationTextKey
+            binding.labelTextView.text = translationLabelKey
         }
 
         attrs.getDrawable(R.styleable.MSDLabelIconTextView_icon)?.let {

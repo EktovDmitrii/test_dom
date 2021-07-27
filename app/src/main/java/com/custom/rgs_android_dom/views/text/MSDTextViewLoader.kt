@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdTextViewLoaderBinding
 import com.custom.rgs_android_dom.utils.gone
@@ -29,6 +30,11 @@ class MSDTextViewLoader @JvmOverloads constructor(
             //TODO Add handling translation logic here
             setText(translationTextKey)
         }
+
+        val enabled = attrs.getBoolean(R.styleable.MSDTextViewLoader_android_enabled, true)
+        isEnabled = enabled
+
+        binding.actionTextView.background = ContextCompat.getDrawable(context, R.drawable.button_filled_primary_background)
     }
 
     fun setLoading(isLoading: Boolean){

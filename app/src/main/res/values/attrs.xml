@@ -5,6 +5,7 @@
     <attr name="translationHintKey" format="string" />
     <attr name="isFocused" format="boolean"/>
     <attr name="icon" format="reference"/>
+    <attr name="translationSecondaryTextKey"/>
 
     <declare-styleable name="MSDTextView">
         <attr name="translationTextKey"/>
@@ -23,6 +24,28 @@
 
     <declare-styleable name="MSDTextViewLoader">
         <attr name="translationTextKey"/>
+        <attr name="android:text"/>
+        <attr name="android:enabled"/>
+    </declare-styleable>
+
+    <declare-styleable name="MSDTextViewLoaderDoubleText">
+        <attr name="translationPrimaryTextKey" format="string" />
+        <attr name="translationSecondaryTextKey"/>
+        <attr name="android:text"/>
+        <attr name="android:enabled"/>
+    </declare-styleable>
+
+    <declare-styleable name="MSDTextViewSecondary">
+        <attr name="translationTextKey"/>
+    </declare-styleable>
+
+    <declare-styleable name="MSDImageView">
+        <attr name="android:enabled"/>
+    </declare-styleable>
+
+    <declare-styleable name="MSDTextViewIcon">
+        <attr name="translationTextKey"/>
+        <attr name="icon"/>
     </declare-styleable>
 
     <declare-styleable name="MSDLabelTextView">
@@ -48,7 +71,7 @@
     <declare-styleable name="MSDLabelEditText">
         <attr name="translationHintKey"/>
         <attr name="translationLabelKey"/>
-        <attr name="translationSecondaryTextKey" format="string"/>
+        <attr name="translationSecondaryTextKey"/>
         <attr name="android:imeOptions"/>
         <attr name="android:inputType" />
         <attr name="android:textAllCaps" />
