@@ -44,9 +44,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/my_service_medium"
-            android:text="Введите код из СМС"
             android:textColor="@color/secondary900"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            app:translationTextKey="Введите код из СМС" />
 
         <com.custom.rgs_android_dom.views.MSDCodeInput
             android:id="@+id/codeInput"
@@ -55,7 +55,7 @@
             android:layout_marginTop="16dp"
             app:disabledBackground="@drawable/code_input_background_disabled"
             app:disabledTextColor="@color/secondary500"
-            app:errorBackground="@drawable/code_input_background_error"/>
+            app:errorBackground="@drawable/code_input_background_error" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/phoneTextView"
@@ -86,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/suisse_regular"
-                android:text="Отправить код повторно"
+                app:translationTextKey="Отправить код повторно"
                 android:textColor="@color/primary_500_secondary_400_text_color"
                 android:textSize="14sp"
                 android:visibility="gone" />
@@ -104,6 +104,6 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:enabled="false"
-        android:text="Далее" />
+        app:translationTextKey="Далее" />
 
 </RelativeLayout>

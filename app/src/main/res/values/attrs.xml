@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="translationTextKey" format="string" />
+    <attr name="translationLabelKey" format="string" />
+    <attr name="translationHintKey" format="string" />
+    <attr name="isFocused" format="boolean"/>
+    <attr name="icon" format="reference"/>
+
     <declare-styleable name="MSDTextView">
         <attr name="translationTextKey"/>
     </declare-styleable>
@@ -18,7 +23,48 @@
 
     <declare-styleable name="MSDTextViewLoader">
         <attr name="translationTextKey"/>
-        <attr name="android:text"/>
+    </declare-styleable>
+
+    <declare-styleable name="MSDLabelTextView">
+        <attr name="translationLabelKey"/>
+    </declare-styleable>
+
+    <declare-styleable name="MSDLabelIconTextView">
+        <attr name="icon"/>
+        <attr name="translationLabelKey"/>
+    </declare-styleable>
+
+    <declare-styleable name="MSDEditText">
+        <attr name="translationHintKey"/>
+        <attr name="android:imeOptions"/>
+        <attr name="android:inputType" />
+        <attr name="android:textAllCaps" />
+        <attr name="prefix" format="string"/>
+        <attr name="prefixVisible" format="boolean"/>
+        <attr name="android:lines"/>
+        <attr name="isFocused"/>
+    </declare-styleable>
+
+    <declare-styleable name="MSDLabelEditText">
+        <attr name="translationHintKey"/>
+        <attr name="translationLabelKey"/>
+        <attr name="translationSecondaryTextKey" format="string"/>
+        <attr name="android:imeOptions"/>
+        <attr name="android:inputType" />
+        <attr name="android:textAllCaps" />
+        <attr name="android:lines"/>
+        <attr name="isFocused"/>
+    </declare-styleable>
+
+    <declare-styleable name="MSDIconEditText">
+        <attr name="translationHintKey"/>
+        <attr name="mask" format="string"/>
+        <attr name="icon"/>
+        <attr name="android:imeOptions"/>
+        <attr name="android:inputType" />
+        <attr name="android:textAllCaps" />
+        <attr name="android:lines"/>
+        <attr name="isFocused"/>
     </declare-styleable>
 
 </resources>

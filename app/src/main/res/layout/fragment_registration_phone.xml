@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/my_service_medium"
-            android:text="Вход и регистрация"
+            app:translationTextKey="Вход и регистрация"
             android:textColor="@color/secondary900"
             android:textSize="20sp" />
 
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/suisse_regular"
-            android:text="Номер телефона"
+            app:translationTextKey="Номер телефона"
             android:textColor="@color/secondary600"
             android:textSize="16sp" />
 
@@ -64,6 +64,6 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:enabled="false"
-        android:text="Далее" />
+        app:translationTextKey="Далее" />
 
 </RelativeLayout>

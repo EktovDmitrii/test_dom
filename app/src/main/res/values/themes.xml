@@ -5,6 +5,7 @@
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowSoftInputMode">adjustResize|stateVisible</item>
+        <item name="android:datePickerDialogTheme">@style/DatePickerTheme</item>
     </style>
 
     <style name="Button.Filled" parent="Widget.AppCompat.TextView">
@@ -43,6 +44,36 @@
         <item name="android:minHeight">64dp</item>
         <item name="android:focusableInTouchMode">false</item>
         <item name="android:duplicateParentState">false</item>
+    </style>
+
+    <style name="EditText">
+        <item name="android:textCursorDrawable">@drawable/cursor_primary_500</item>
+        <item name="android:fontFamily">@font/my_service_regular</item>
+        <item name="android:textColorHint">@color/secondary300</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:background">@null</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+
+    <style name="DatePickerTheme" parent="Theme.MaterialComponents.DayNight.Dialog">
+        <item name="android:colorAccent">@color/primary500</item>
+        <item name="android:colorControlActivated">@color/primary500</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/AppTheme.Alert.Button.Positive</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/AppTheme.Alert.Button.Negative</item>
+        <item name="android:buttonBarNeutralButtonStyle">@style/AppTheme.Alert.Button.Neutral</item>
+    </style>
+
+    <style name="AppTheme.Alert.Button.Positive" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/primary500</item>
+    </style>
+
+    <style name="AppTheme.Alert.Button.Negative" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/primary500</item>
+    </style>
+
+    <style name="AppTheme.Alert.Button.Neutral" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/primary500</item>
     </style>
 
 </resources>
