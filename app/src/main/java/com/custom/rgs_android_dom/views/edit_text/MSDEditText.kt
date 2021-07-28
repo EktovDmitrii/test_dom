@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.views.edit_text
 
 import android.content.Context
+import android.text.InputFilter
 import android.text.InputType
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -10,8 +11,6 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdEditTextBinding
-import com.custom.rgs_android_dom.utils.focus
-import com.custom.rgs_android_dom.utils.unFocus
 
 class MSDEditText @JvmOverloads constructor(
     context: Context,
@@ -51,6 +50,12 @@ class MSDEditText @JvmOverloads constructor(
         val isFocused = attrs.getBoolean(R.styleable.MSDEditText_isFocused, false)
         if (isFocused) {
             binding.valueEditText.requestFocus()
+        }
+
+        attrs.getInt(R.styleable.MSDEditText_android_maxLength, -1).let { maxLength->
+            if (maxLength != -1){
+                binding.valueEditText.filters += InputFilter.LengthFilter(maxLength)
+            }
         }
 
         binding.valueEditText.addTextChangedListener {

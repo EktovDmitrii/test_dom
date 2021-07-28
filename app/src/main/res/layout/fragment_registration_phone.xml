@@ -34,18 +34,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/my_service_medium"
-            app:translationTextKey="Вход и регистрация"
             android:textColor="@color/secondary900"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            app:translationTextKey="Вход и регистрация" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/suisse_regular"
-            app:translationTextKey="Номер телефона"
             android:textColor="@color/secondary600"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:translationTextKey="Номер телефона" />
 
         <com.custom.rgs_android_dom.views.MSDPhoneInput
             android:id="@+id/phoneInput"

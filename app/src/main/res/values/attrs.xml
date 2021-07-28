@@ -68,6 +68,7 @@
         <attr name="prefixVisible" format="boolean"/>
         <attr name="android:lines"/>
         <attr name="isFocused"/>
+        <attr name="android:maxLength"/>
     </declare-styleable>
 
     <declare-styleable name="MSDLabelEditText">
@@ -79,6 +80,7 @@
         <attr name="android:textAllCaps" />
         <attr name="android:lines"/>
         <attr name="isFocused"/>
+        <attr name="android:maxLength"/>
     </declare-styleable>
 
     <declare-styleable name="MSDIconEditText">
@@ -90,6 +92,7 @@
         <attr name="android:textAllCaps" />
         <attr name="android:lines"/>
         <attr name="isFocused"/>
+        <attr name="android:maxLength"/>
     </declare-styleable>
 
     <declare-styleable name="MSDLabelIconEditText">
@@ -102,6 +105,19 @@
         <attr name="android:textAllCaps" />
         <attr name="android:lines"/>
         <attr name="isFocused"/>
+        <attr name="android:maxLength"/>
+    </declare-styleable>
+
+    <declare-styleable name="MSDMaskedLabelEditText">
+        <attr name="translationHintKey"/>
+        <attr name="translationLabelKey"/>
+        <attr name="mask"/>
+        <attr name="android:imeOptions"/>
+        <attr name="android:inputType" />
+        <attr name="android:textAllCaps" />
+        <attr name="android:lines"/>
+        <attr name="isFocused"/>
+        <attr name="android:maxLength"/>
     </declare-styleable>
 
     <declare-styleable name="MSDGenderSelector">

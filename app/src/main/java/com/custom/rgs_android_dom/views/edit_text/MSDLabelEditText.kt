@@ -11,6 +11,8 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdLabelEditTextBinding
 import com.custom.rgs_android_dom.utils.gone
 import com.custom.rgs_android_dom.utils.visible
+import android.text.InputFilter.LengthFilter
+
 
 class MSDLabelEditText @JvmOverloads constructor(
     context: Context,
@@ -53,6 +55,12 @@ class MSDLabelEditText @JvmOverloads constructor(
         val isFocused = attrs.getBoolean(R.styleable.MSDLabelEditText_isFocused, false)
         if (isFocused) {
             binding.valueEditText.requestFocus()
+        }
+
+        attrs.getInt(R.styleable.MSDLabelEditText_android_maxLength, -1).let { maxLength->
+            if (maxLength != -1){
+                binding.valueEditText.filters += LengthFilter(maxLength)
+            }
         }
 
         binding.valueEditText.addTextChangedListener {

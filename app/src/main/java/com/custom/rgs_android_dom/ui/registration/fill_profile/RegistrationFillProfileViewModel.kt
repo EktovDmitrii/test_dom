@@ -16,8 +16,32 @@ import java.lang.StringBuilder
 
 class RegistrationFillProfileViewModel(private val registrationInteractor: RegistrationInteractor) : BaseViewModel() {
 
+    private val isAgentInfoLinearLayoutVisibleControler = MutableLiveData<Boolean>()
+    private val knowAgentCodeTextController = MutableLiveData<String>()
+
+    val isAgentInfoLinearLayoutVisibleObserver: LiveData<Boolean> = isAgentInfoLinearLayoutVisibleControler
+    val knowAgentCodeTextObserver: LiveData<String> = knowAgentCodeTextController
+
     init {
 
     }
 
+    fun onKnowAgentCodeClick(){
+        var isAgentInfoLinearLayoutVisible = isAgentInfoLinearLayoutVisibleControler.value ?: false
+        isAgentInfoLinearLayoutVisible = !isAgentInfoLinearLayoutVisible
+
+        val knowAgentCodeText = if (isAgentInfoLinearLayoutVisible) "Свернуть информацию об агенте"
+            else "Знаю код агента"
+
+        isAgentInfoLinearLayoutVisibleControler.value = isAgentInfoLinearLayoutVisible
+        knowAgentCodeTextController.value = knowAgentCodeText
+    }
+
+    fun onSkipClick(){
+        closeController.value = Unit
+    }
+
+    fun onCloseClick(){
+        closeController.value = Unit
+    }
 }

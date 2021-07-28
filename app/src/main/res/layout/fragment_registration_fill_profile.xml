@@ -25,7 +25,11 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbarFrameLayout">
+        android:layout_below="@+id/toolbarFrameLayout"
+        android:layout_above="@+id/actionsFrameLayout"
+        android:paddingBottom="24dp"
+        android:clipToPadding="false"
+        android:overScrollMode="never">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -47,47 +51,103 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:translationLabelKey="Фамилия"
-                app:translationHintKey="Иванов"/>
+                android:maxLength="50"
+                app:translationHintKey="Иванов"
+                app:translationLabelKey="Фамилия" />
 
             <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
                 android:id="@+id/nameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:translationLabelKey="Имя"
-                app:translationHintKey="Иван"/>
+                android:maxLength="25"
+                app:translationHintKey="Иван"
+                app:translationLabelKey="Имя" />
 
             <com.custom.rgs_android_dom.views.edit_text.MSDLabelIconEditText
                 android:id="@+id/birthdayEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:imeOptions="actionDone"
                 android:inputType="date"
                 app:icon="@drawable/ic_calendar_24px"
                 app:mask="[00].[00].[0000]"
-                android:imeOptions="actionDone"
-                app:translationLabelKey="Дата рождения"
-                app:translationHintKey="24.04.1990"/>
+                app:translationHintKey="24.04.1990"
+                app:translationLabelKey="Дата рождения" />
 
             <com.custom.rgs_android_dom.views.MSDGenderSelector
                 android:id="@+id/genderSelector"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:translationLabelKey="Пол"/>
+                app:translationLabelKey="Пол" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextViewSecondary
+                android:id="@+id/knowAgentCodeTextView"
+                style="@style/Button.WithoutBg.Secondary"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="16dp"
+                app:translationTextKey="Знаю код агента" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/agentInfoLinearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
+                    android:id="@+id/agentCodeEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:maxLength="12"
+                    app:translationLabelKey="Введите код агента" />
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/rectangle_filled_primary_100_radius_8dp"
+                    android:fontFamily="@font/suisse_regular"
+                    android:lineSpacingExtra="24dp"
+                    android:lineSpacingMultiplier="0"
+                    android:paddingStart="16dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="36dp"
+                    android:paddingBottom="8dp"
+                    android:textColor="@color/primary500"
+                    android:textSize="13sp"
+                    app:translationTextKey="Введите код агента, если он вам известен\nЭтот шаг можно пропустить" />
+
+                <com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
+                    android:id="@+id/agentЗрщтуEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:inputType="phone"
+                    app:mask="+7 [000] [000]-[00]-[00]"
+                    app:translationHintKey="+7 999 999-99-99"
+                    app:translationLabelKey="Ведите номер телефона агента" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.core.widget.NestedScrollView>
 
     <FrameLayout
+        android:id="@+id/actionsFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="82dp"
         android:layout_alignParentBottom="true"
         android:paddingHorizontal="20dp"
         android:paddingTop="12dp"
-        android:paddingBottom="22dp">
+        android:paddingBottom="22dp"
+        android:background="@color/white">
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/skipTextView"

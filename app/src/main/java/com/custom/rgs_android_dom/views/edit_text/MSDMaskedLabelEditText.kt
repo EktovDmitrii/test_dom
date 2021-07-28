@@ -5,26 +5,24 @@ import android.graphics.drawable.Drawable
 import android.text.InputFilter
 import android.text.InputType
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
 import android.widget.RelativeLayout
 import androidx.core.widget.addTextChangedListener
 import com.custom.rgs_android_dom.R
-import com.custom.rgs_android_dom.databinding.ViewMsdLabelIconEditTextBinding
-import com.custom.rgs_android_dom.utils.GlideApp
-import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
+import com.custom.rgs_android_dom.databinding.ViewMsdMaskedLabelEditTextBinding
 import com.redmadrobot.inputmask.MaskedTextChangedListener
 
-class MSDLabelIconEditText @JvmOverloads constructor(
+class MSDMaskedLabelEditText @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : RelativeLayout(context, attributeSet, defStyleAttr) {
 
-    private val binding: ViewMsdLabelIconEditTextBinding = ViewMsdLabelIconEditTextBinding.inflate(LayoutInflater.from(context), this, true)
+    private val binding: ViewMsdMaskedLabelEditTextBinding = ViewMsdMaskedLabelEditTextBinding.inflate(LayoutInflater.from(context), this, true)
 
     private var textWatcher: (String) -> Unit = {}
-    private var onIconClickListener: () -> Unit = {}
     private var onTextChangedListener: (String, Boolean) -> Unit = { _, _ -> }
 
     private var isFromUser = true
@@ -43,55 +41,53 @@ class MSDLabelIconEditText @JvmOverloads constructor(
     private var maskedTextChangedListener: MaskedTextChangedListener? = null
 
     init {
-        val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDLabelIconEditText, 0, 0)
-        attrs.getString(R.styleable.MSDLabelIconEditText_translationHintKey)?.let { translationHintKey ->
+        val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDMaskedLabelEditText, 0, 0)
+        attrs.getString(R.styleable.MSDMaskedLabelEditText_translationHintKey)?.let { translationHintKey ->
             //TODO Add handling translation logic here
             binding.valueEditText.hint = translationHintKey
         }
 
-        attrs.getString(R.styleable.MSDLabelIconEditText_translationLabelKey)?.let { translationLabelKey ->
+        attrs.getString(R.styleable.MSDMaskedLabelEditText_translationLabelKey)?.let { translationLabelKey ->
             //TODO Add handling translation logic here
             binding.labelTextView.text = translationLabelKey
         }
 
-        attrs.getString(R.styleable.MSDLabelIconEditText_mask)?.let {mask->
+        attrs.getString(R.styleable.MSDMaskedLabelEditText_mask)?.let {mask->
             setMask(mask)
         }
 
-        attrs.getDrawable(R.styleable.MSDLabelIconEditText_icon)?.let {icon->
-            setIcon(icon)
-        }
-
-        val imeOptions = attrs.getInt(R.styleable.MSDLabelIconEditText_android_imeOptions, EditorInfo.IME_ACTION_NEXT)
+        val imeOptions = attrs.getInt(R.styleable.MSDMaskedLabelEditText_android_imeOptions, EditorInfo.IME_ACTION_NEXT)
         binding.valueEditText.imeOptions = imeOptions
 
-        val inputType = attrs.getInt(R.styleable.MSDLabelIconEditText_android_inputType, InputType.TYPE_CLASS_TEXT)
+        val inputType = attrs.getInt(R.styleable.MSDMaskedLabelEditText_android_inputType, InputType.TYPE_CLASS_TEXT)
         binding.valueEditText.inputType = inputType
 
-        val lines = attrs.getInt(R.styleable.MSDLabelIconEditText_android_lines, 1)
+        val lines = attrs.getInt(R.styleable.MSDMaskedLabelEditText_android_lines, 1)
         binding.valueEditText.maxLines = lines
 
-        val textAllCaps = attrs.getBoolean(R.styleable.MSDLabelIconEditText_android_textAllCaps, false)
+        val textAllCaps = attrs.getBoolean(R.styleable.MSDMaskedLabelEditText_android_textAllCaps, false)
         binding.valueEditText.isAllCaps = textAllCaps
 
-        val isFocused = attrs.getBoolean(R.styleable.MSDLabelIconEditText_isFocused, false)
+        val isFocused = attrs.getBoolean(R.styleable.MSDMaskedLabelEditText_isFocused, false)
         if (isFocused) {
             binding.valueEditText.requestFocus()
         }
 
-        attrs.getInt(R.styleable.MSDLabelIconEditText_android_maxLength, -1).let { maxLength->
+        attrs.getInt(R.styleable.MSDMaskedLabelEditText_android_maxLength, -1).let { maxLength->
             if (maxLength != -1){
                 binding.valueEditText.filters += InputFilter.LengthFilter(maxLength)
             }
         }
 
+        //TODO Find out why masked listener manually place +7 at the start of ET
+        binding.valueEditText.setText("")
+
         binding.valueEditText.addTextChangedListener {
             textWatcher(it.toString())
         }
 
-        binding.iconImageView.setOnDebouncedClickListener {
-            onIconClickListener()
-        }
+
+
     }
 
     fun setText(text: String){
@@ -114,24 +110,6 @@ class MSDLabelIconEditText @JvmOverloads constructor(
 
     fun removeTextWatcher(){
         textWatcher = {}
-    }
-
-    fun setIcon(image: Int){
-        binding.iconImageView.setImageResource(image)
-    }
-
-    fun setIcon(image: Drawable){
-        binding.iconImageView.setImageDrawable(image)
-    }
-
-    fun setIcon(image: String){
-        GlideApp.with(context)
-            .load(image)
-            .into(binding.iconImageView)
-    }
-
-    fun setOnIconClickListener(onIconClickListener: () -> Unit){
-        this.onIconClickListener = onIconClickListener
     }
 
     fun addOnTextChangedListener(onTextChangedListener: (String, Boolean) -> Unit){
