@@ -39,4 +39,11 @@ class MockRegistrationRepositoryImpl(private val api: MyServiceDomApi) : Registr
         }
     }
 
+    override fun acceptAgreement(): Single<Boolean> {
+        return Single.fromCallable {
+            Thread.sleep(2000)
+            true
+        }
+    }
+
 }

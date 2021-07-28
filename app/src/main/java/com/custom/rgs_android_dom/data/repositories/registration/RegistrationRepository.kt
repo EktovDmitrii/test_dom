@@ -10,4 +10,6 @@ interface RegistrationRepository {
 
     fun resendCode(phone: String): Single<Boolean>
 
+    fun acceptAgreement(): Single<Boolean>
+
 }
