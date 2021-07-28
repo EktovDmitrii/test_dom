@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white">
+
+    <FrameLayout
+        android:id="@+id/toolbarFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/closeImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:paddingHorizontal="14dp"
+            android:tint="@color/secondary800"
+            app:srcCompat="@drawable/ic_close_24px"/>
+
+    </FrameLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbarFrameLayout">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="12dp">
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/my_service_medium"
+                android:textColor="@color/secondary900"
+                android:textSize="20sp"
+                app:translationTextKey="Расскажите о себе" />
+
+            <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
+                android:id="@+id/surnameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:translationLabelKey="Фамилия"
+                app:translationHintKey="Иванов"/>
+
+            <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
+                android:id="@+id/nameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:translationLabelKey="Имя"
+                app:translationHintKey="Иван"/>
+
+            <com.custom.rgs_android_dom.views.edit_text.MSDLabelIconEditText
+                android:id="@+id/birthdayEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:inputType="date"
+                app:icon="@drawable/ic_calendar_24px"
+                app:mask="[00].[00].[0000]"
+                android:imeOptions="actionDone"
+                app:translationLabelKey="Дата рождения"
+                app:translationHintKey="24.04.1990"/>
+
+            <com.custom.rgs_android_dom.views.MSDGenderSelector
+                android:id="@+id/genderSelector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:translationLabelKey="Пол"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="82dp"
+        android:layout_alignParentBottom="true"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="22dp">
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/skipTextView"
+            style="@style/Button.WithoutBg.Primary"
+            android:layout_width="wrap_content"
+            android:layout_gravity="start"
+            app:translationTextKey="Пропустить"/>
+
+        <com.custom.rgs_android_dom.views.text.MSDTextViewLoader
+            android:id="@+id/saveTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:enabled="false"
+            app:translationTextKey="Сохранить" />
+
+    </FrameLayout>
+
+</RelativeLayout>

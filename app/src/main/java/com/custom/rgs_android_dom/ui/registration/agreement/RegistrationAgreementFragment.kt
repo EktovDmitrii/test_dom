@@ -32,8 +32,8 @@ class RegistrationAgreementFragment : BaseFragment<RegistrationAgreementViewMode
             viewModel.onBackClick()
         }
 
-        subscribe(viewModel.isLegalNotAcceptedErrorObserver){
-            toast(it)
+        subscribe(viewModel.isNextTextViewEnabledObserver){
+            binding.nextTextView.isEnabled = it
         }
 
         subscribe(viewModel.legalTextObserver){

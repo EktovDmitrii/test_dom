@@ -37,7 +37,7 @@
     </style>
 
     <style name="Button.WithoutBg" parent="Widget.AppCompat.TextView">
-        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_height">48dp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">14sp</item>
@@ -209,4 +209,19 @@
         <item name="android:textColor">@color/primary500</item>
     </style>
 
+    <style name="GenderSelector" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:fontFamily">@font/suisse_regular</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:clickable">true</item>
+        <item name="android:background">@drawable/gender_selector_background</item>
+        <item name="android:textColor">@color/gender_selector_text_color</item>
+    </style>
 </resources>

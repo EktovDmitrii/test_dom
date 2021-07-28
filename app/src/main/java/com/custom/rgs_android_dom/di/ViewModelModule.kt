@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.di
 import com.custom.rgs_android_dom.ui.demo.DemoViewModel
 import com.custom.rgs_android_dom.ui.registration.code.RegistrationCodeViewModel
 import com.custom.rgs_android_dom.ui.registration.agreement.RegistrationAgreementViewModel
+import com.custom.rgs_android_dom.ui.registration.fill_profile.RegistrationFillProfileViewModel
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneViewModel
 import com.custom.rgs_android_dom.ui.splash.SplashViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -14,4 +15,5 @@ val viewModelModule = module {
     viewModel { SplashViewModel() }
     viewModel { DemoViewModel() }
     viewModel { RegistrationAgreementViewModel(registrationInteractor = get()) }
+    viewModel { RegistrationFillProfileViewModel(registrationInteractor = get()) }
 }

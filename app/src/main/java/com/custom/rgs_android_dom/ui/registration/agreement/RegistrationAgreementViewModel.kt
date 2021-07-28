@@ -18,26 +18,21 @@ class RegistrationAgreementViewModel(private val registrationInteractor: Registr
 
     private val isAgreementNotAcceptedErrorController = MutableLiveData<String>()
     private val agreementTextController = MutableLiveData<CharSequence>()
+    private val isNextTextViewEnabledController = MutableLiveData<Boolean>()
 
-    private var isAgreementAccepted = false
-
-    val isLegalNotAcceptedErrorObserver: LiveData<String> = isAgreementNotAcceptedErrorController
     val legalTextObserver: LiveData<CharSequence> = agreementTextController
+    val isNextTextViewEnabledObserver: LiveData<Boolean> = isNextTextViewEnabledController
 
     init {
         agreementTextController.value = createAgreementText()
     }
 
     fun onAcceptAgreementCheckedChanged(isChecked: Boolean){
-        isAgreementAccepted = isChecked
+        isNextTextViewEnabledController.value = isChecked
     }
 
     fun onNextClick(){
-        if (isAgreementAccepted){
-            acceptAgreement()
-        } else {
-            isAgreementNotAcceptedErrorController.value = "Нельзя зайти в приложение, пока не согласитесь с офертами"
-        }
+       acceptAgreement()
     }
 
     fun onCloseClick(){

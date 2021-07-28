@@ -5,7 +5,8 @@
     <attr name="translationHintKey" format="string" />
     <attr name="isFocused" format="boolean"/>
     <attr name="icon" format="reference"/>
-    <attr name="translationSecondaryTextKey"/>
+    <attr name="translationSecondaryTextKey" format="string"/>
+    <attr name="mask" format="string"/>
 
     <declare-styleable name="MSDTextView">
         <attr name="translationTextKey"/>
@@ -14,6 +15,7 @@
     <declare-styleable name="MSDPhoneInput">
         <attr name="phoneMask" format="string"/>
         <attr name="countryImage" format="reference"/>
+        <attr name="errorTranslationTextKey" format="string"/>
     </declare-styleable>
 
     <declare-styleable name="MSDCodeInput">
@@ -81,13 +83,29 @@
 
     <declare-styleable name="MSDIconEditText">
         <attr name="translationHintKey"/>
-        <attr name="mask" format="string"/>
+        <attr name="mask"/>
         <attr name="icon"/>
         <attr name="android:imeOptions"/>
         <attr name="android:inputType" />
         <attr name="android:textAllCaps" />
         <attr name="android:lines"/>
         <attr name="isFocused"/>
+    </declare-styleable>
+
+    <declare-styleable name="MSDLabelIconEditText">
+        <attr name="translationHintKey"/>
+        <attr name="translationLabelKey"/>
+        <attr name="mask"/>
+        <attr name="icon"/>
+        <attr name="android:imeOptions"/>
+        <attr name="android:inputType" />
+        <attr name="android:textAllCaps" />
+        <attr name="android:lines"/>
+        <attr name="isFocused"/>
+    </declare-styleable>
+
+    <declare-styleable name="MSDGenderSelector">
+        <attr name="translationLabelKey"/>
     </declare-styleable>
 
 </resources>
