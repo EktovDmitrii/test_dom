@@ -58,6 +58,18 @@ class MSDEditText @JvmOverloads constructor(
             }
         }
 
+        attrs.getString(R.styleable.MSDEditText_android_digits)?.let {digits->
+            val digitsRegex = Regex("[^${digits}]")
+            val filter = InputFilter { inputText, _, _, _, _, _ ->
+                var str: String = inputText.toString()
+                str = str.replace(digitsRegex, "")
+
+                if (str.length == inputText.length) null else str
+            }
+
+            binding.valueEditText.filters += filter
+        }
+
         binding.valueEditText.addTextChangedListener {
             textWatcher(it.toString())
         }

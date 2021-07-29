@@ -52,6 +52,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:maxLength="50"
+                android:digits="@string/acceptable_name_chars"
+                android:inputType="textPersonName|textCapSentences"
                 app:translationHintKey="Иванов"
                 app:translationLabelKey="Фамилия" />
 
@@ -61,6 +63,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:maxLength="25"
+                android:digits="@string/acceptable_name_chars"
+                android:inputType="textPersonName|textCapSentences"
                 app:translationHintKey="Иван"
                 app:translationLabelKey="Имя" />
 
@@ -124,13 +128,14 @@
                     app:translationTextKey="Введите код агента, если он вам известен\nЭтот шаг можно пропустить" />
 
                 <com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
-                    android:id="@+id/agentЗрщтуEditText"
+                    android:id="@+id/agentPhoneEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:inputType="phone"
                     app:mask="+7 [000] [000]-[00]-[00]"
                     app:translationHintKey="+7 999 999-99-99"
+                    android:imeOptions="actionDone"
                     app:translationLabelKey="Ведите номер телефона агента" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>

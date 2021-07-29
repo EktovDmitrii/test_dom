@@ -69,6 +69,7 @@
         <attr name="android:lines"/>
         <attr name="isFocused"/>
         <attr name="android:maxLength"/>
+        <attr name="android:digits"/>
     </declare-styleable>
 
     <declare-styleable name="MSDLabelEditText">
@@ -81,6 +82,7 @@
         <attr name="android:lines"/>
         <attr name="isFocused"/>
         <attr name="android:maxLength"/>
+        <attr name="android:digits"/>
     </declare-styleable>
 
     <declare-styleable name="MSDIconEditText">
@@ -93,6 +95,7 @@
         <attr name="android:lines"/>
         <attr name="isFocused"/>
         <attr name="android:maxLength"/>
+        <attr name="android:digits"/>
     </declare-styleable>
 
     <declare-styleable name="MSDLabelIconEditText">
@@ -106,6 +109,7 @@
         <attr name="android:lines"/>
         <attr name="isFocused"/>
         <attr name="android:maxLength"/>
+        <attr name="android:digits"/>
     </declare-styleable>
 
     <declare-styleable name="MSDMaskedLabelEditText">

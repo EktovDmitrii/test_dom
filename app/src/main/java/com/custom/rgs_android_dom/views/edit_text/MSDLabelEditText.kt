@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.views.edit_text
 
 import android.content.Context
+import android.text.InputFilter
 import android.text.InputType
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -12,7 +13,6 @@ import com.custom.rgs_android_dom.databinding.ViewMsdLabelEditTextBinding
 import com.custom.rgs_android_dom.utils.gone
 import com.custom.rgs_android_dom.utils.visible
 import android.text.InputFilter.LengthFilter
-
 
 class MSDLabelEditText @JvmOverloads constructor(
     context: Context,
@@ -63,6 +63,18 @@ class MSDLabelEditText @JvmOverloads constructor(
             }
         }
 
+        attrs.getString(R.styleable.MSDLabelEditText_android_digits)?.let {digits->
+            val digitsRegex = Regex("[^${digits}]")
+            val filter = InputFilter { inputText, _, _, _, _, _ ->
+                var str: String = inputText.toString()
+                str = str.replace(digitsRegex, "")
+
+                if (str.length == inputText.length) null else str
+            }
+
+            binding.valueEditText.filters += filter
+        }
+
         binding.valueEditText.addTextChangedListener {
             textWatcher(it.toString())
         }
@@ -99,19 +111,19 @@ class MSDLabelEditText @JvmOverloads constructor(
     fun setState(state: State, secondaryText: String = "") {
         when(state){
             State.NORMAL -> {
-                binding.containerLinearLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_secondary_250_radius_8dp)
+                binding.containerRelativeLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_secondary_250_radius_8dp)
                 binding.valueEditText.setTextColor(context.getColor(R.color.secondary900))
                 binding.secondaryTextView.gone()
                 super.setEnabled(true)
             }
             State.DISABLED -> {
-                binding.containerLinearLayout.setBackgroundResource(R.drawable.rectangle_filled_secondary_900_alpha14_stroke_seconday_250_1dp_radius_8dp)
+                binding.containerRelativeLayout.setBackgroundResource(R.drawable.rectangle_filled_secondary_900_alpha14_stroke_seconday_250_1dp_radius_8dp)
                 binding.valueEditText.setTextColor(context.getColor(R.color.secondary400))
                 binding.secondaryTextView.gone()
                 super.setEnabled(false)
             }
             State.ERROR -> {
-                binding.containerLinearLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_error_500_radius_8dp)
+                binding.containerRelativeLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_error_500_radius_8dp)
                 binding.valueEditText.setTextColor(context.getColor(R.color.error500))
                 binding.secondaryTextView.text = secondaryText
                 binding.secondaryTextView.setTextColor(context.getColor(R.color.error500))
@@ -119,7 +131,7 @@ class MSDLabelEditText @JvmOverloads constructor(
                 super.setEnabled(true)
             }
             State.SUCCESS -> {
-                binding.containerLinearLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_success_500_radius_8dp)
+                binding.containerRelativeLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_success_500_radius_8dp)
                 binding.valueEditText.setTextColor(context.getColor(R.color.success500))
                 binding.secondaryTextView.text = secondaryText
                 binding.secondaryTextView.setTextColor(context.getColor(R.color.success500))

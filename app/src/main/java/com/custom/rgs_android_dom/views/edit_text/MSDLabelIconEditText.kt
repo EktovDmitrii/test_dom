@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.text.InputFilter
 import android.text.InputType
+import android.text.method.DigitsKeyListener
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
@@ -12,7 +13,9 @@ import androidx.core.widget.addTextChangedListener
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdLabelIconEditTextBinding
 import com.custom.rgs_android_dom.utils.GlideApp
+import com.custom.rgs_android_dom.utils.gone
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
+import com.custom.rgs_android_dom.utils.visible
 import com.redmadrobot.inputmask.MaskedTextChangedListener
 
 class MSDLabelIconEditText @JvmOverloads constructor(
@@ -85,6 +88,18 @@ class MSDLabelIconEditText @JvmOverloads constructor(
             }
         }
 
+        attrs.getString(R.styleable.MSDLabelIconEditText_android_digits)?.let {digits->
+            val digitsRegex = Regex("[^${digits}]")
+            val filter = InputFilter { inputText, _, _, _, _, _ ->
+                var str: String = inputText.toString()
+                str = str.replace(digitsRegex, "")
+
+                if (str.length == inputText.length) null else str
+            }
+
+            binding.valueEditText.filters += filter
+        }
+
         binding.valueEditText.addTextChangedListener {
             textWatcher(it.toString())
         }
@@ -98,6 +113,10 @@ class MSDLabelIconEditText @JvmOverloads constructor(
         isFromUser = false
         binding.valueEditText.setText(text)
         isFromUser = true
+    }
+
+    fun setTextFromUser(text: String){
+        binding.valueEditText.setText(text)
     }
 
     fun setHint(hint: String){
@@ -149,4 +168,43 @@ class MSDLabelIconEditText @JvmOverloads constructor(
         binding.valueEditText.addTextChangedListener(maskedTextChangedListener)
     }
 
+    fun setState(state: State, secondaryText: String = "") {
+        when(state){
+            State.NORMAL -> {
+                binding.containerRelativeLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_secondary_250_radius_8dp)
+                binding.valueEditText.setTextColor(context.getColor(R.color.secondary900))
+                binding.secondaryTextView.gone()
+                super.setEnabled(true)
+            }
+            State.DISABLED -> {
+                binding.containerRelativeLayout.setBackgroundResource(R.drawable.rectangle_filled_secondary_900_alpha14_stroke_seconday_250_1dp_radius_8dp)
+                binding.valueEditText.setTextColor(context.getColor(R.color.secondary400))
+                binding.secondaryTextView.gone()
+                super.setEnabled(false)
+            }
+            State.ERROR -> {
+                binding.containerRelativeLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_error_500_radius_8dp)
+                binding.valueEditText.setTextColor(context.getColor(R.color.error500))
+                binding.secondaryTextView.text = secondaryText
+                binding.secondaryTextView.setTextColor(context.getColor(R.color.error500))
+                binding.secondaryTextView.visible()
+                super.setEnabled(true)
+            }
+            State.SUCCESS -> {
+                binding.containerRelativeLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_success_500_radius_8dp)
+                binding.valueEditText.setTextColor(context.getColor(R.color.success500))
+                binding.secondaryTextView.text = secondaryText
+                binding.secondaryTextView.setTextColor(context.getColor(R.color.success500))
+                binding.secondaryTextView.visible()
+                super.setEnabled(true)
+            }
+        }
+    }
+
+    override fun setEnabled(isEnabled: Boolean){
+        val state = if (isEnabled) State.NORMAL else State.DISABLED
+        setState(state)
+    }
+
+    enum class State { NORMAL, DISABLED, ERROR, SUCCESS }
 }

@@ -223,6 +223,6 @@
         <item name="android:includeFontPadding">false</item>
         <item name="android:clickable">true</item>
         <item name="android:background">@drawable/gender_selector_background</item>
-        <item name="android:textColor">@color/gender_selector_text_color</item>
+        <item name="android:textColor">@color/secondary900</item>
     </style>
 </resources>

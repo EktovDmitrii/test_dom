@@ -39,5 +39,17 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/secondaryTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/suisse_regular"
+        android:textSize="13sp"
+        android:textColor="@color/error500"
+        android:includeFontPadding="false"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        tools:text="Текст ошибки"/>
+
 </androidx.appcompat.widget.LinearLayoutCompat>
 

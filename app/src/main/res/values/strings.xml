@@ -1,2 +1,3 @@
 <resources>
+    <string name="acceptable_name_chars">абвгдеёжзийклмнопрстуфхцчшщъыьэюя \'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ-</string>
 </resources>

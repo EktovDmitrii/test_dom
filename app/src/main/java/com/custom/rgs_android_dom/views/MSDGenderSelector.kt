@@ -1,19 +1,13 @@
 package com.custom.rgs_android_dom.views
 
 import android.content.Context
-import android.graphics.drawable.Drawable
-import android.text.InputType
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.inputmethod.EditorInfo
 import android.widget.RelativeLayout
-import androidx.core.widget.addTextChangedListener
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdGenderSelectorBinding
-import com.custom.rgs_android_dom.databinding.ViewMsdLabelIconEditTextBinding
-import com.custom.rgs_android_dom.utils.GlideApp
+import com.custom.rgs_android_dom.domain.profile.models.Gender
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
-import com.redmadrobot.inputmask.MaskedTextChangedListener
 
 class MSDGenderSelector @JvmOverloads constructor(
     context: Context,
@@ -68,7 +62,5 @@ class MSDGenderSelector @JvmOverloads constructor(
         binding.maleTextView.isSelected = false
         binding.femaleTextView.isSelected= true
     }
-
-    enum class Gender {MALE, FEMALE}
 
 }

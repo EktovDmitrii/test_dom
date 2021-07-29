@@ -87,6 +87,18 @@ class MSDIconEditText @JvmOverloads constructor(
                 binding.valueEditText.filters += InputFilter.LengthFilter(maxLength)
             }
         }
+
+        attrs.getString(R.styleable.MSDIconEditText_android_digits)?.let {digits->
+            val digitsRegex = Regex("[^${digits}]")
+            val filter = InputFilter { inputText, _, _, _, _, _ ->
+                var str: String = inputText.toString()
+                str = str.replace(digitsRegex, "")
+
+                if (str.length == inputText.length) null else str
+            }
+
+            binding.valueEditText.filters += filter
+        }
     }
 
     fun setText(text: String){

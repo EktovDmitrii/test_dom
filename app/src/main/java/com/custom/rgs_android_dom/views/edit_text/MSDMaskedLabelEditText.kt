@@ -12,6 +12,8 @@ import android.widget.RelativeLayout
 import androidx.core.widget.addTextChangedListener
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdMaskedLabelEditTextBinding
+import com.custom.rgs_android_dom.utils.gone
+import com.custom.rgs_android_dom.utils.visible
 import com.redmadrobot.inputmask.MaskedTextChangedListener
 
 class MSDMaskedLabelEditText @JvmOverloads constructor(
@@ -126,5 +128,45 @@ class MSDMaskedLabelEditText @JvmOverloads constructor(
 
         binding.valueEditText.addTextChangedListener(maskedTextChangedListener)
     }
+
+    fun setState(state: State, secondaryText: String = "") {
+        when(state){
+            State.NORMAL -> {
+                binding.containerRelativeLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_secondary_250_radius_8dp)
+                binding.valueEditText.setTextColor(context.getColor(R.color.secondary900))
+                binding.secondaryTextView.gone()
+                super.setEnabled(true)
+            }
+            State.DISABLED -> {
+                binding.containerRelativeLayout.setBackgroundResource(R.drawable.rectangle_filled_secondary_900_alpha14_stroke_seconday_250_1dp_radius_8dp)
+                binding.valueEditText.setTextColor(context.getColor(R.color.secondary400))
+                binding.secondaryTextView.gone()
+                super.setEnabled(false)
+            }
+            State.ERROR -> {
+                binding.containerRelativeLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_error_500_radius_8dp)
+                binding.valueEditText.setTextColor(context.getColor(R.color.error500))
+                binding.secondaryTextView.text = secondaryText
+                binding.secondaryTextView.setTextColor(context.getColor(R.color.error500))
+                binding.secondaryTextView.visible()
+                super.setEnabled(true)
+            }
+            State.SUCCESS -> {
+                binding.containerRelativeLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_success_500_radius_8dp)
+                binding.valueEditText.setTextColor(context.getColor(R.color.success500))
+                binding.secondaryTextView.text = secondaryText
+                binding.secondaryTextView.setTextColor(context.getColor(R.color.success500))
+                binding.secondaryTextView.visible()
+                super.setEnabled(true)
+            }
+        }
+    }
+
+    override fun setEnabled(isEnabled: Boolean){
+        val state = if (isEnabled) State.NORMAL else State.DISABLED
+        setState(state)
+    }
+
+    enum class State { NORMAL, DISABLED, ERROR, SUCCESS }
 
 }
