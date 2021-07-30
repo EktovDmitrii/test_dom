@@ -11,6 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height">
 
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/titleSecondaryTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/my_service_medium"
+            android:textColor="@color/secondary900"
+            android:textSize="16sp"
+            android:alpha="0.0"
+            app:translationTextKey="Расскажите о себе" />
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/closeImageView"
             android:layout_width="wrap_content"
@@ -18,18 +29,19 @@
             android:layout_gravity="end"
             android:paddingHorizontal="14dp"
             android:tint="@color/secondary800"
-            app:srcCompat="@drawable/ic_close_24px"/>
+            app:srcCompat="@drawable/ic_close_24px" />
 
     </FrameLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/contentNestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbarFrameLayout"
         android:layout_above="@+id/actionsFrameLayout"
-        android:paddingBottom="24dp"
+        android:layout_below="@+id/toolbarFrameLayout"
         android:clipToPadding="false"
-        android:overScrollMode="never">
+        android:overScrollMode="never"
+        android:paddingBottom="24dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -39,6 +51,7 @@
             android:paddingTop="12dp">
 
             <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/titlePrimaryTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/my_service_medium"
@@ -51,9 +64,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:maxLength="50"
                 android:digits="@string/acceptable_name_chars"
                 android:inputType="textPersonName|textCapSentences"
+                android:maxLength="50"
                 app:translationHintKey="Иванов"
                 app:translationLabelKey="Фамилия" />
 
@@ -62,9 +75,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:maxLength="25"
                 android:digits="@string/acceptable_name_chars"
                 android:inputType="textPersonName|textCapSentences"
+                android:maxLength="25"
                 app:translationHintKey="Иван"
                 app:translationLabelKey="Имя" />
 
@@ -132,10 +145,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:imeOptions="actionDone"
                     android:inputType="phone"
                     app:mask="+7 [000] [000]-[00]-[00]"
                     app:translationHintKey="+7 999 999-99-99"
-                    android:imeOptions="actionDone"
                     app:translationLabelKey="Ведите номер телефона агента" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>

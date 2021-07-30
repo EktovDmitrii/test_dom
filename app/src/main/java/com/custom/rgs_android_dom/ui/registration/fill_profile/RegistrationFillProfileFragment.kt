@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.registration.fill_profile
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -87,6 +88,12 @@ class RegistrationFillProfileFragment : BaseFragment<RegistrationFillProfileView
         binding.agentPhoneEditText.addOnTextChangedListener { agentPhone, isMaskFilled ->
             binding.agentPhoneEditText.setState(MSDMaskedLabelEditText.State.NORMAL)
             viewModel.onAgentPhoneChanged(agentPhone, isMaskFilled)
+        }
+
+        binding.contentNestedScrollView.viewTreeObserver.addOnScrollChangedListener {
+            val scrollBounds = Rect()
+            binding.contentNestedScrollView.getHitRect(scrollBounds)
+            CrossfadeAnimator.crossfade(binding.titlePrimaryTextView, binding.titleSecondaryTextView, scrollBounds)
         }
 
         subscribe(viewModel.isAgentInfoLinearLayoutVisibleObserver){
