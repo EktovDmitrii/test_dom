@@ -29,6 +29,7 @@ class MSDPhoneInput @JvmOverloads constructor(
 
     private var isFromUser = true
     private var countryCode = ""
+    private var letterCode = ""
 
     private var maskedTextChangedListener: MaskedTextChangedListener? = null
 
@@ -66,7 +67,7 @@ class MSDPhoneInput @JvmOverloads constructor(
         }
 
         binding.countryLinearLayout.setOnDebouncedClickListener {
-            onCountryClickListener(countryCode)
+            onCountryClickListener(letterCode)
         }
     }
 
@@ -90,6 +91,10 @@ class MSDPhoneInput @JvmOverloads constructor(
         GlideApp.with(context)
             .load(image)
             .into(binding.countryImageView)
+    }
+
+    fun setLetterCode(letterCode: String){
+        this.letterCode = letterCode
     }
 
     fun setMask(phoneMask: String, onPhoneChangedListener:(String, Boolean) -> Unit){

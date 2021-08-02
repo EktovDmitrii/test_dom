@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white">
+
+    <FrameLayout
+        android:id="@+id/toolbarFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height">
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/titleSecondaryTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/my_service_medium"
+            android:textColor="@color/secondary900"
+            android:textSize="16sp"
+            android:alpha="0.0"
+            app:translationTextKey="Выберите страну" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/closeImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:paddingHorizontal="14dp"
+            android:tint="@color/secondary800"
+            app:srcCompat="@drawable/ic_close_24px" />
+
+    </FrameLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/contentNestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbarFrameLayout"
+        android:clipToPadding="false"
+        android:overScrollMode="never">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="12dp">
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/titlePrimaryTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/my_service_medium"
+                android:textColor="@color/secondary900"
+                android:textSize="20sp"
+                app:translationTextKey="Выберите страну" />
+
+            <com.custom.rgs_android_dom.views.edit_text.MSDSearchInput
+                android:id="@+id/searchInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:translationHintKey="Поиск страны" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/countriesRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_country" />
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.core.widget.NestedScrollView>
+</RelativeLayout>

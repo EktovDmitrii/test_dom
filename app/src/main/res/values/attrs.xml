@@ -128,4 +128,8 @@
         <attr name="translationLabelKey"/>
     </declare-styleable>
 
+    <declare-styleable name="MSDSearchInput">
+        <attr name="translationHintKey"/>
+    </declare-styleable>
+
 </resources>
