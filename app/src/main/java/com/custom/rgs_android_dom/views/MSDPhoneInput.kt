@@ -3,9 +3,7 @@ package com.custom.rgs_android_dom.views
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.view.KeyEvent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.custom.rgs_android_dom.R
@@ -42,12 +40,6 @@ class MSDPhoneInput @JvmOverloads constructor(
         ) {
             if (isFromUser){
                 onPhoneChangedListener("$countryCode$formattedValue", maskFilled)
-
-                if (maskFilled){
-                    removeErrorState()
-                } else {
-                    setErrorState()
-                }
             }
         }
     }
@@ -60,6 +52,9 @@ class MSDPhoneInput @JvmOverloads constructor(
         }
         attrs.getDrawable(R.styleable.MSDPhoneInput_countryImage)?.let { countryImage->
             setCountryImage(countryImage)
+        }
+        attrs.getString(R.styleable.MSDPhoneInput_errorTranslationTextKey)?.let { translationErrorKey->
+            binding.errorTextView.text = translationErrorKey
         }
 
         binding.phoneEditText.setOnEditorActionListener { _, actionId, _ ->
@@ -137,6 +132,30 @@ class MSDPhoneInput @JvmOverloads constructor(
         isFromUser = true
     }
 
+    fun setErrorText(error: String){
+        binding.errorTextView.text = error
+    }
+
+    fun setState(state: State, error: String = ""){
+        when (state){
+            State.ERROR -> {
+                if (error.isNotEmpty()){
+                    binding.errorTextView.text = error
+                }
+                binding.phoneContainerConstraintLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_error_500_radius_8dp)
+                binding.countryCodeTextView.setTextColor(context.getColor(R.color.error500))
+                binding.phoneEditText.setTextColor(context.getColor(R.color.error500))
+                binding.errorTextView.visible()
+            }
+            State.NORMAL -> {
+                binding.phoneContainerConstraintLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_secondary_250_radius_8dp)
+                binding.countryCodeTextView.setTextColor(context.getColor(R.color.secondary900))
+                binding.phoneEditText.setTextColor(context.getColor(R.color.secondary900))
+                binding.errorTextView.gone()
+            }
+        }
+    }
+
     private fun extractCountryCode(phoneMask: String): String{
         return phoneMask.substring(0, phoneMask.indexOf("["))
     }
@@ -146,17 +165,5 @@ class MSDPhoneInput @JvmOverloads constructor(
             .replace("[\\[\\]]".toRegex(), "")
     }
 
-    private fun setErrorState(){
-        binding.phoneContainerConstraintLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_error_500_radius_8dp)
-        binding.countryCodeTextView.setTextColor(context.getColor(R.color.error500))
-        binding.phoneEditText.setTextColor(context.getColor(R.color.error500))
-        binding.errorTextView.visible()
-    }
-
-    private fun removeErrorState(){
-        binding.phoneContainerConstraintLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_secondary_250_radius_8dp)
-        binding.countryCodeTextView.setTextColor(context.getColor(R.color.secondary900))
-        binding.phoneEditText.setTextColor(context.getColor(R.color.secondary900))
-        binding.errorTextView.gone()
-    }
+    enum class State {NORMAL, ERROR}
 }

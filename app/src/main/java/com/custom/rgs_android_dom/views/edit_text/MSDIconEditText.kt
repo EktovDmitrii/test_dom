@@ -2,20 +2,17 @@ package com.custom.rgs_android_dom.views.edit_text
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.text.InputFilter
 import android.text.InputType
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
 import android.widget.RelativeLayout
-import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.custom.rgs_android_dom.R
-import com.custom.rgs_android_dom.databinding.ViewMsdEditTextBinding
 import com.custom.rgs_android_dom.databinding.ViewMsdIconEditTextBinding
 import com.custom.rgs_android_dom.utils.GlideApp
-import com.custom.rgs_android_dom.utils.focus
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
-import com.custom.rgs_android_dom.utils.unFocus
 import com.redmadrobot.inputmask.MaskedTextChangedListener
 
 class MSDIconEditText @JvmOverloads constructor(
@@ -83,6 +80,24 @@ class MSDIconEditText @JvmOverloads constructor(
 
         binding.iconImageView.setOnDebouncedClickListener {
             onIconClickListener()
+        }
+
+        attrs.getInt(R.styleable.MSDIconEditText_android_maxLength, -1).let { maxLength->
+            if (maxLength != -1){
+                binding.valueEditText.filters += InputFilter.LengthFilter(maxLength)
+            }
+        }
+
+        attrs.getString(R.styleable.MSDIconEditText_android_digits)?.let {digits->
+            val digitsRegex = Regex("[^${digits}]")
+            val filter = InputFilter { inputText, _, _, _, _, _ ->
+                var str: String = inputText.toString()
+                str = str.replace(digitsRegex, "")
+
+                if (str.length == inputText.length) null else str
+            }
+
+            binding.valueEditText.filters += filter
         }
     }
 

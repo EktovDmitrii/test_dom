@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.views.edit_text
 
 import android.content.Context
+import android.text.InputFilter
 import android.text.InputType
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -10,8 +11,6 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdEditTextBinding
-import com.custom.rgs_android_dom.utils.focus
-import com.custom.rgs_android_dom.utils.unFocus
 
 class MSDEditText @JvmOverloads constructor(
     context: Context,
@@ -51,6 +50,24 @@ class MSDEditText @JvmOverloads constructor(
         val isFocused = attrs.getBoolean(R.styleable.MSDEditText_isFocused, false)
         if (isFocused) {
             binding.valueEditText.requestFocus()
+        }
+
+        attrs.getInt(R.styleable.MSDEditText_android_maxLength, -1).let { maxLength->
+            if (maxLength != -1){
+                binding.valueEditText.filters += InputFilter.LengthFilter(maxLength)
+            }
+        }
+
+        attrs.getString(R.styleable.MSDEditText_android_digits)?.let {digits->
+            val digitsRegex = Regex("[^${digits}]")
+            val filter = InputFilter { inputText, _, _, _, _, _ ->
+                var str: String = inputText.toString()
+                str = str.replace(digitsRegex, "")
+
+                if (str.length == inputText.length) null else str
+            }
+
+            binding.valueEditText.filters += filter
         }
 
         binding.valueEditText.addTextChangedListener {
@@ -93,25 +110,25 @@ class MSDEditText @JvmOverloads constructor(
     fun setState(state: State) {
         when(state){
             State.NORMAL -> {
-                binding.containerLinearLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_secondary_250_radius_8dp)
+                binding.containerRelativeLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_secondary_250_radius_8dp)
                 binding.prefixTextView.setTextColor(context.getColor(R.color.secondary900))
                 binding.valueEditText.setTextColor(context.getColor(R.color.secondary900))
                 super.setEnabled(true)
             }
             State.DISABLED -> {
-                binding.containerLinearLayout.setBackgroundResource(R.drawable.rectangle_filled_secondary_900_alpha14_stroke_seconday_250_1dp_radius_8dp)
+                binding.containerRelativeLayout.setBackgroundResource(R.drawable.rectangle_filled_secondary_900_alpha14_stroke_seconday_250_1dp_radius_8dp)
                 binding.prefixTextView.setTextColor(context.getColor(R.color.secondary400))
                 binding.valueEditText.setTextColor(context.getColor(R.color.secondary400))
                 super.setEnabled(false)
             }
             State.ERROR -> {
-                binding.containerLinearLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_error_500_radius_8dp)
+                binding.containerRelativeLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_error_500_radius_8dp)
                 binding.prefixTextView.setTextColor(context.getColor(R.color.error500))
                 binding.valueEditText.setTextColor(context.getColor(R.color.error500))
                 super.setEnabled(true)
             }
             State.SUCCESS -> {
-                binding.containerLinearLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_success_500_radius_8dp)
+                binding.containerRelativeLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_success_500_radius_8dp)
                 binding.prefixTextView.setTextColor(context.getColor(R.color.success500))
                 binding.valueEditText.setTextColor(context.getColor(R.color.success500))
                 super.setEnabled(true)

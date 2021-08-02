@@ -1,7 +1,9 @@
 package com.custom.rgs_android_dom.data.repositories.registration
 
 import com.custom.rgs_android_dom.data.network.MyServiceDomApi
+import com.custom.rgs_android_dom.domain.profile.models.Gender
 import io.reactivex.Single
+import org.joda.time.LocalDate
 import java.util.*
 
 class MockRegistrationRepositoryImpl(private val api: MyServiceDomApi) : RegistrationRepository {
@@ -43,6 +45,26 @@ class MockRegistrationRepositoryImpl(private val api: MyServiceDomApi) : Registr
         return Single.fromCallable {
             Thread.sleep(2000)
             true
+        }
+    }
+
+    override fun updateProfile(
+        phone: String,
+        name: String,
+        surname: String,
+        birthday: LocalDate,
+        gender: Gender,
+        agentCode: String?,
+        agentPhone: String?
+    ): Single<Boolean> {
+        return Single.fromCallable {
+            Thread.sleep(3000)
+            val agentPhone = agentPhone
+            if (agentPhone != null && agentPhone.endsWith("9")){
+                throw InvalidPropertiesFormatException("Wrong format")
+            } else {
+                true
+            }
         }
     }
 

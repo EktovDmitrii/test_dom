@@ -19,19 +19,18 @@
         android:id="@+id/containerRelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rectangle_stroke_1dp_secondary_250_radius_8dp"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="12dp"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rectangle_stroke_1dp_secondary_250_radius_8dp">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/valueEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:background="@null"
             android:fontFamily="@font/suisse_regular"
             android:includeFontPadding="false"
+            android:paddingVertical="14dp"
+            android:paddingStart="16dp"
             android:textColor="@color/secondary900"
             android:textColorHint="@color/secondary300"
             android:textCursorDrawable="@drawable/cursor_primary_500"
@@ -53,3 +52,4 @@
         tools:text="Текст ошибки"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>
+

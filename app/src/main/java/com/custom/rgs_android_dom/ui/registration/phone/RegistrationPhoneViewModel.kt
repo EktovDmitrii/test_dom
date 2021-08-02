@@ -22,10 +22,13 @@ class RegistrationPhoneViewModel(private val countriesInteractor: CountriesInter
 
     private val isNextTextViewEnabledController = MutableLiveData<Boolean>()
     private val countryController = MutableLiveData<CountryModel>()
-    private var phone: String = ""
+    private val phoneErrorController = MutableLiveData<String>()
 
     val isNextTextViewEnabledObserver: LiveData<Boolean> = isNextTextViewEnabledController
     val countryObserver: LiveData<CountryModel> = countryController
+    val phoneErrorObserver: LiveData<String> = phoneErrorController
+
+    private var phone: String = ""
 
     init {
         loadDefaultCountry()
@@ -45,6 +48,7 @@ class RegistrationPhoneViewModel(private val countriesInteractor: CountriesInter
 
     fun onPhoneChanged(phone: String, isMaskFilled: Boolean) {
         isNextTextViewEnabledController.value = isMaskFilled
+        phoneErrorController.value = ""
         this.phone = phone
     }
 
@@ -60,7 +64,6 @@ class RegistrationPhoneViewModel(private val countriesInteractor: CountriesInter
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
-            .doOnError { loadingStateController.value = LoadingState.ERROR }
             .doOnSuccess { loadingStateController.value = LoadingState.CONTENT }
             .subscribeBy(
                 onSuccess = {
@@ -76,15 +79,19 @@ class RegistrationPhoneViewModel(private val countriesInteractor: CountriesInter
         registrationInteractor.sendPhone(phone)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
-            .doOnError { loadingStateController.value = LoadingState.ERROR }
+            .doOnSubscribe {
+                loadingStateController.value = LoadingState.LOADING
+                phoneErrorController.value = ""
+            }
             .doOnSuccess { loadingStateController.value = LoadingState.CONTENT }
+            .doOnError { loadingStateController.value = LoadingState.ERROR }
             .subscribeBy(
                 onSuccess = {
                     ScreenManager.showScreenScope(RegistrationCodeFragment.newInstance(phone), REGISTRATION)
                 },
                 onError = {
                     //todo обработка ошибки
+                    phoneErrorController.value = "Проверьте, правильно ли вы ввели номер телефона"
                 }
             ).addTo(dataCompositeDisposable)
     }
