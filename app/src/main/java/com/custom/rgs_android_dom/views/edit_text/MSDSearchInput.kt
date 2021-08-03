@@ -7,7 +7,7 @@ import android.widget.RelativeLayout
 import androidx.core.widget.addTextChangedListener
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdSearchInputBinding
-import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
+import com.custom.rgs_android_dom.utils.*
 
 class MSDSearchInput @JvmOverloads constructor(
     context: Context,
@@ -26,6 +26,9 @@ class MSDSearchInput @JvmOverloads constructor(
             //TODO Add handling translation logic here
             binding.searchEditText.hint = translationHintKey
         }
+
+        val isEnabled = attrs.getBoolean(R.styleable.MSDSearchInput_android_enabled, true)
+        setEnabled(isEnabled)
 
         binding.searchEditText.addTextChangedListener {
             textWatcher(it.toString())
@@ -62,12 +65,41 @@ class MSDSearchInput @JvmOverloads constructor(
         this.onClearClickListener = onClearClickListener
     }
 
+    fun setOnClickListener(onClickListener: () -> Unit){
+        binding.clickerLinearLayout.setOnDebouncedClickListener {
+            onClickListener()
+        }
+    }
+
     fun setFocus(isFocused: Boolean){
         if (isFocused){
             binding.searchEditText.requestFocus()
         } else {
             binding.searchEditText.clearFocus()
         }
+    }
+
+    override fun setEnabled(enabled: Boolean) {
+        if (enabled){
+            binding.clickerLinearLayout.gone()
+        } else {
+            binding.clickerLinearLayout.visible()
+        }
+    }
+
+    fun focus(){
+        binding.searchEditText.focus()
+        binding.searchEditText.showKeyboard()
+    }
+
+    fun unfocus(){
+        binding.searchEditText.unFocus()
+        binding.searchEditText.hideKeyboard()
+        binding.searchEditText.text?.clear()
+    }
+
+    override fun isFocused(): Boolean {
+        return binding.searchEditText.isFocused
     }
 
 }

@@ -192,13 +192,16 @@
 
     <style name="SearchEditText">
         <item name="android:textCursorDrawable">@drawable/cursor_primary_500</item>
-        <item name="android:fontFamily">@font/my_service_regular</item>
+        <item name="android:fontFamily">@font/suisse_regular</item>
         <item name="android:textColorHint">@color/secondary400</item>
         <item name="android:textColor">@color/secondary900</item>
         <item name="android:textSize">16sp</item>
         <item name="android:background">@null</item>
         <item name="android:maxLines">1</item>
         <item name="android:inputType">text</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 
     <style name="DatePickerTheme" parent="Theme.MaterialComponents.DayNight.Dialog">

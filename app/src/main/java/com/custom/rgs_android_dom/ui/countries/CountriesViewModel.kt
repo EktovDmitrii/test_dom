@@ -6,11 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.countries.CountriesInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.countries.model.CountryPresentationModel
-
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 
 class CountriesViewModel(
     private val selectedCountryLetterCode: String,
@@ -19,11 +19,15 @@ class CountriesViewModel(
 
     private val countriesController = MutableLiveData<List<CountryPresentationModel>>()
     private val isSearchInputFocusedController = MutableLiveData<Boolean>()
+    private val isEmptyResultsVisibleController = MutableLiveData<Boolean>()
+    private val isSearchModeActivatedController = MutableLiveData<Boolean>()
+
     private var countries = listOf<CountryPresentationModel>()
 
     val countriesObserver: LiveData<List<CountryPresentationModel>> = countriesController
     val isSearchInputFocusedObserver: LiveData<Boolean> = isSearchInputFocusedController
-
+    val isEmptyResultsVisibleObserver: LiveData<Boolean> = isEmptyResultsVisibleController
+    val isSearchModeActivatedObserver: LiveData<Boolean> = isSearchModeActivatedController
 
     init {
         loadCountries()
@@ -33,7 +37,6 @@ class CountriesViewModel(
         countriesInteractor.getCountries()
             .map { countries->
                 countries.map {
-                    Log.d("MyLog", "Selected code " + selectedCountryLetterCode)
                     CountryPresentationModel.from(it, selectedCountryLetterCode)
                 }
             }
@@ -54,7 +57,11 @@ class CountriesViewModel(
     }
 
     fun onSearchQueryChanged(query: String){
-        countriesController.value = if (query.isNotEmpty()) countries.filter { it.name.contains(query) } else countries
+        countriesController.value = if (query.isNotEmpty()) countries.filter {
+            it.name.toLowerCase(Locale.getDefault()).contains(query.toLowerCase(Locale.getDefault()))
+        } else countries
+
+        isEmptyResultsVisibleController.value = countriesController.value?.isEmpty() ?: false
     }
 
     fun onClearClick(){
@@ -68,6 +75,14 @@ class CountriesViewModel(
 
     fun onCloseClick(){
         closeController.value = Unit
+    }
+
+    fun onSecondarySearchInputClick(){
+        isSearchModeActivatedController.value = true
+    }
+
+    fun onPrimarySearchInputFocusChanged(isFocused: Boolean){
+        isSearchModeActivatedController.value = isFocused
     }
 
 

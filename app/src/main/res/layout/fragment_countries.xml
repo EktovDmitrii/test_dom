@@ -9,27 +9,61 @@
     <FrameLayout
         android:id="@+id/toolbarFrameLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height">
+        android:layout_height="wrap_content">
 
-        <com.custom.rgs_android_dom.views.text.MSDTextView
-            android:id="@+id/titleSecondaryTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/my_service_medium"
-            android:textColor="@color/secondary900"
-            android:textSize="16sp"
-            android:alpha="0.0"
-            app:translationTextKey="Выберите страну" />
+        <FrameLayout
+            android:id="@+id/titleFrameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:visibility="visible">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/closeImageView"
-            android:layout_width="wrap_content"
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/titleSecondaryTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/my_service_medium"
+                android:textColor="@color/secondary900"
+                android:textSize="16sp"
+                android:alpha="0.0"
+                app:translationTextKey="Выберите страну" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/closeImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:paddingHorizontal="14dp"
+                android:tint="@color/secondary800"
+                app:srcCompat="@drawable/ic_close_24px" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/searchFrameLayout"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:paddingHorizontal="14dp"
-            android:tint="@color/secondary800"
-            app:srcCompat="@drawable/ic_close_24px" />
+            android:visibility="gone">
+
+            <com.custom.rgs_android_dom.views.edit_text.MSDSearchInput
+                android:id="@+id/primarySearchInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="20dp"
+                android:layout_gravity="center"
+                android:paddingTop="14dp"
+                android:paddingBottom="14dp"
+                app:translationHintKey="Поиск страны" />
+
+            <View
+                android:id="@+id/toolbarDividerView"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/secondary200"
+                android:layout_gravity="bottom"/>
+
+        </FrameLayout>
+
 
     </FrameLayout>
 
@@ -45,23 +79,24 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingHorizontal="20dp"
-            android:paddingTop="12dp">
+            android:paddingHorizontal="20dp">
 
             <com.custom.rgs_android_dom.views.text.MSDTextView
                 android:id="@+id/titlePrimaryTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/my_service_medium"
+                android:paddingTop="12dp"
                 android:textColor="@color/secondary900"
                 android:textSize="20sp"
                 app:translationTextKey="Выберите страну" />
 
             <com.custom.rgs_android_dom.views.edit_text.MSDSearchInput
-                android:id="@+id/searchInput"
+                android:id="@+id/secondarySearchInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:enabled="false"
                 app:translationHintKey="Поиск страны" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -74,6 +109,18 @@
                 tools:itemCount="2"
                 tools:listitem="@layout/item_country" />
 
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/emptyResultsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/suisse_regular"
+                android:lineSpacingExtra="28dp"
+                android:lineSpacingMultiplier="0"
+                android:textColor="@color/secondary600"
+                android:textSize="16sp"
+                android:visibility="gone"
+                app:translationTextKey="Такой страны нет в списке. Пожалуйста, проверьте запрос и попробуйте ещё раз." />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

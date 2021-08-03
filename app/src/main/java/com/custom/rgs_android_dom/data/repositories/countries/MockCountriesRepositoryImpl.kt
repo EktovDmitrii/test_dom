@@ -49,6 +49,7 @@ class MockCountriesRepositoryImpl(private val api: MyServiceDomApi) : CountriesR
             "UZ" to R.drawable.flag_uz
         )
 
+        // TODO This is mocked data, especially last few models. I was testing how scroller is working in countries screen
         private val mockedCountriesResponse = listOf(
             CountryResponse(
                 id = 1,
@@ -119,7 +120,29 @@ class MockCountriesRepositoryImpl(private val api: MyServiceDomApi) : CountriesR
                 letterCode = "UA",
                 numberCode = "+380",
                 mask = "+380 [000] [000]-[00]-[00]"
-            )
+            ),
+            /*CountryResponse(
+                id = 10,
+                name = "Украина1",
+                letterCode = "UA1",
+                numberCode = "+380",
+                mask = "+380 [000] [000]-[00]-[00]"
+            ),
+            CountryResponse(
+                id = 11,
+                name = "Украина2",
+                letterCode = "UA2",
+                numberCode = "+380",
+                mask = "+380 [000] [000]-[00]-[00]"
+            ),
+            CountryResponse(
+                id = 12,
+                name = "Украина3",
+                letterCode = "UA3",
+                numberCode = "+380",
+                mask = "+380 [000] [000]-[00]-[00]"
+            )*/
+
 
         )
     }
