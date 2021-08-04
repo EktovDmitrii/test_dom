@@ -14,6 +14,6 @@ interface RegistrationRepository {
 
     fun acceptAgreement(): Single<Boolean>
 
-    fun updateProfile(phone: String, name: String, surname: String, birthday: LocalDate, gender: Gender, agentCode: String?, agentPhone: String?): Single<Boolean>
+    fun updateProfile(phone: String, name: String?, surname: String?, birthday: LocalDate?, gender: Gender?, agentCode: String?, agentPhone: String?): Single<Boolean>
 
 }
