@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.views
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.LinearLayoutCompat
@@ -29,6 +30,7 @@ class MSDPhoneInput @JvmOverloads constructor(
 
     private var isFromUser = true
     private var countryCode = ""
+    private var letterCode = ""
 
     private var maskedTextChangedListener: MaskedTextChangedListener? = null
 
@@ -66,7 +68,7 @@ class MSDPhoneInput @JvmOverloads constructor(
         }
 
         binding.countryLinearLayout.setOnDebouncedClickListener {
-            onCountryClickListener(countryCode)
+            onCountryClickListener(letterCode)
         }
     }
 
@@ -92,10 +94,13 @@ class MSDPhoneInput @JvmOverloads constructor(
             .into(binding.countryImageView)
     }
 
+    fun setLetterCode(letterCode: String){
+        this.letterCode = letterCode
+    }
+
     fun setMask(phoneMask: String, onPhoneChangedListener:(String, Boolean) -> Unit){
         countryCode = extractCountryCode(phoneMask)
         val mask = phoneMask.replace(countryCode, "")
-        binding.countryCodeTextView.text = countryCode
 
         binding.phoneEditText.removeTextChangedListener(maskedTextChangedListener)
         this.onPhoneChangedListener = onPhoneChangedListener
@@ -105,6 +110,11 @@ class MSDPhoneInput @JvmOverloads constructor(
 
         val hint = makeHint(mask)
         binding.phoneEditText.hint = hint
+
+        binding.countryCodeTextView.text = countryCode
+        binding.countryCodeTextView.requestLayout()
+        binding.countryCodeTextView.invalidate()
+
     }
 
     fun setOnPhoneChangedListener(onPhoneChangedListener:(String, Boolean) -> Unit){
@@ -114,7 +124,6 @@ class MSDPhoneInput @JvmOverloads constructor(
     fun setMask(phoneMask: String){
         countryCode = extractCountryCode(phoneMask)
         val mask = phoneMask.replace(countryCode, "")
-        binding.countryCodeTextView.text = countryCode
 
         binding.phoneEditText.removeTextChangedListener(maskedTextChangedListener)
         maskedTextChangedListener = MaskedTextChangedListener(mask, binding.phoneEditText, maskedValueChangedListener)
@@ -123,6 +132,9 @@ class MSDPhoneInput @JvmOverloads constructor(
 
         val hint = makeHint(mask)
         binding.phoneEditText.hint = hint
+
+        binding.countryCodeTextView.requestLayout()
+        binding.countryCodeTextView.invalidate()
     }
 
     fun setPhone(phone: String) {

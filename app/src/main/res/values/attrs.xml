@@ -128,4 +128,9 @@
         <attr name="translationLabelKey"/>
     </declare-styleable>
 
+    <declare-styleable name="MSDSearchInput">
+        <attr name="translationHintKey"/>
+        <attr name="android:enabled"/>
+    </declare-styleable>
+
 </resources>

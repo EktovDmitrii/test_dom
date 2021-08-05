@@ -73,7 +73,10 @@ class RegistrationCodeViewModel(
             .subscribeBy(
                 onSuccess = {
                     closeController.value = Unit
-                    ScreenManager.showScreenScope(RegistrationAgreementFragment(), REGISTRATION)
+                    // If phone ends with 55 this is a mocked "registered" user
+                    if (!phone.endsWith("55")){
+                        ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(phone), REGISTRATION)
+                    }
                 },
                 onError = {
                     codeErrorController.value = Unit

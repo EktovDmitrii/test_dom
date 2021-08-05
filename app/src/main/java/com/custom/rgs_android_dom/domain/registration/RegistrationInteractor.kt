@@ -25,10 +25,10 @@ class RegistrationInteractor(private val registrationRepository: RegistrationRep
 
     fun updateProfile(
         phone: String,
-        name: String,
-        surname: String,
-        birthday: LocalDate,
-        gender: Gender,
+        name: String?,
+        surname: String?,
+        birthday: LocalDate?,
+        gender: Gender?,
         agentCode: String?,
         agentPhone: String?
     ): Single<Boolean> {

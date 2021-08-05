@@ -3,10 +3,12 @@ package com.custom.rgs_android_dom.ui.registration.fill_profile
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
+import android.view.ViewTreeObserver
 import androidx.core.view.isVisible
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentRegistrationFillProfileBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.views.edit_text.MSDLabelIconEditText
@@ -27,6 +29,12 @@ class RegistrationFillProfileFragment : BaseFragment<RegistrationFillProfileView
                 putString(ARG_PHONE, phone)
             }
         }
+    }
+
+    private val scrollChangedListener = ViewTreeObserver.OnScrollChangedListener {
+        val scrollBounds = Rect()
+        binding.contentNestedScrollView.getHitRect(scrollBounds)
+        CrossfadeAnimator.crossfade(binding.titlePrimaryTextView, binding.titleSecondaryTextView, scrollBounds)
     }
 
     override fun getParameters(): ParametersDefinition = {
@@ -90,12 +98,6 @@ class RegistrationFillProfileFragment : BaseFragment<RegistrationFillProfileView
             viewModel.onAgentPhoneChanged(agentPhone, isMaskFilled)
         }
 
-        binding.contentNestedScrollView.viewTreeObserver.addOnScrollChangedListener {
-            val scrollBounds = Rect()
-            binding.contentNestedScrollView.getHitRect(scrollBounds)
-            CrossfadeAnimator.crossfade(binding.titlePrimaryTextView, binding.titleSecondaryTextView, scrollBounds)
-        }
-
         subscribe(viewModel.isAgentInfoLinearLayoutVisibleObserver){
             binding.agentInfoLinearLayout.isVisible = it
         }
@@ -117,10 +119,19 @@ class RegistrationFillProfileFragment : BaseFragment<RegistrationFillProfileView
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        binding.contentNestedScrollView.viewTreeObserver.addOnScrollChangedListener(scrollChangedListener)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        binding.contentNestedScrollView.viewTreeObserver.removeOnScrollChangedListener(scrollChangedListener)
+    }
+
     override fun onClose() {
         hideSoftwareKeyboard()
-        //ScreenManager.closeScope(REGISTRATION)
-        ScreenManager.back(getNavigateId())
+        ScreenManager.closeScope(REGISTRATION)
     }
 
     override fun onLoading() {

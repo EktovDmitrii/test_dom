@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.registration.fill_profile.RegistrationFillProfileFragment
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -14,7 +15,8 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import java.lang.StringBuilder
 
-class RegistrationAgreementViewModel(private val registrationInteractor: RegistrationInteractor) : BaseViewModel() {
+class RegistrationAgreementViewModel(private val phone: String,
+                                     private val registrationInteractor: RegistrationInteractor) : BaseViewModel() {
 
     private val isAgreementNotAcceptedErrorController = MutableLiveData<String>()
     private val agreementTextController = MutableLiveData<CharSequence>()
@@ -53,7 +55,8 @@ class RegistrationAgreementViewModel(private val registrationInteractor: Registr
             .doOnError { loadingStateController.value = LoadingState.ERROR }
             .subscribeBy(
                 onSuccess = {
-                    ScreenManager.closeScope(REGISTRATION)
+                    closeController.value = Unit
+                    ScreenManager.showScreenScope(RegistrationFillProfileFragment.newInstance(phone),REGISTRATION)
                 }
             ).addTo(dataCompositeDisposable)
     }

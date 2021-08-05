@@ -154,7 +154,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
 
     // View Binding
-    implementation 'com.kirich1409.viewbindingpropertydelegate:viewbindingpropertydelegate:1.4.0'
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate:1.4.7'
 
     //Scrolling pager indicator
     implementation "ru.tinkoff.scrollingpagerindicator:scrollingpagerindicator:1.0.6"

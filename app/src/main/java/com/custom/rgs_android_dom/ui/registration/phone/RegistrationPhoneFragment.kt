@@ -29,9 +29,15 @@ class RegistrationPhoneFragment : BaseFragment<RegistrationPhoneViewModel, Fragm
                 viewModel.onPhoneChanged(phone, isMaskFilled)
             }
 
+            binding.phoneInput.setLetterCode(it.letterCode)
+
             binding.phoneInput.setOnDoneClickListener {
                 viewModel.onDoneClick()
             }
+        }
+
+        binding.phoneInput.setOnCountryClickListener {
+            viewModel.onCountryClick(it)
         }
 
         subscribe(viewModel.phoneErrorObserver){error->
