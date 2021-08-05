@@ -99,7 +99,7 @@ class RegistrationCodeFragment : BaseFragment<RegistrationCodeViewModel, Fragmen
         }
 
         subscribe(viewModel.codeErrorObserver){
-            onCodeError()
+            onCodeError(it)
         }
 
         subscribe(viewModel.otcReceivedObserver){otc->
@@ -144,10 +144,10 @@ class RegistrationCodeFragment : BaseFragment<RegistrationCodeViewModel, Fragmen
         ScreenManager.closeScope(REGISTRATION)
     }
 
-    private fun onCodeError() {
+    private fun onCodeError(error: String) {
         requireContext().vibratePhone()
         binding.codeInput.isEnabled = true
-        binding.codeInput.setErrorState()
+        binding.codeInput.setErrorState(error)
         binding.countdownTextView.isEnabled = true
         binding.phoneTextView.isEnabled = true
         binding.resendCodeTextView.isEnabled = true

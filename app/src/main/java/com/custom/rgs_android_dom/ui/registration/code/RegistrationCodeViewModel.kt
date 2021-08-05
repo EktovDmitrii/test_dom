@@ -1,8 +1,10 @@
 package com.custom.rgs_android_dom.ui.registration.code
 
 import android.os.CountDownTimer
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.custom.rgs_android_dom.data.network.toNetworkException
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
@@ -26,14 +28,14 @@ class RegistrationCodeViewModel(
     private val onTimerStartController = MutableLiveData<Unit>()
     private val showResendCodeController = MutableLiveData<Unit>()
     private val countdownTextController = MutableLiveData<String>()
-    private val codeErrorController = MutableLiveData<Unit>()
+    private val codeErrorController = MutableLiveData<String>()
     private val otcReceivedController = MutableLiveData<String>()
 
     val phoneObserver: LiveData<String> = phoneController
     val onTimerStartObserver: LiveData<Unit> = onTimerStartController
     val showResendCodeObserver: LiveData<Unit> = showResendCodeController
     val countdownTextObserver: LiveData<String> = countdownTextController
-    val codeErrorObserver: LiveData<Unit> = codeErrorController
+    val codeErrorObserver: LiveData<String> = codeErrorController
     val otcReceivedObserver: LiveData<String> = otcReceivedController
 
     private var timer: CountDownTimer? = null
@@ -48,14 +50,14 @@ class RegistrationCodeViewModel(
     }
 
     fun onResendCodeClick(){
-        registrationInteractor.resendCode(phone)
+        registrationInteractor.requestCode(phone)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
-            .doOnSuccess { loadingStateController.value = LoadingState.CONTENT }
+            .doOnComplete { loadingStateController.value = LoadingState.CONTENT }
             .doOnError { loadingStateController.value = LoadingState.ERROR }
             .subscribeBy(
-                onSuccess = {
+                onComplete = {
                     startCountdownTimer()
                 },
                 onError = {
@@ -65,21 +67,24 @@ class RegistrationCodeViewModel(
     }
 
     fun onCodeComplete(code: String){
-        registrationInteractor.sendCode(code)
+        registrationInteractor.sendCode(phone, code)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
             .doOnSuccess { loadingStateController.value = LoadingState.CONTENT }
             .subscribeBy(
-                onSuccess = {
+                onSuccess = {authModel->
+                    registrationInteractor.saveAuth(authModel)
                     closeController.value = Unit
+                    ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(phone), REGISTRATION)
                     // If phone ends with 55 this is a mocked "registered" user
-                    if (!phone.endsWith("55")){
-                        ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(phone), REGISTRATION)
-                    }
+//                    if (!phone.endsWith("55")){
+//                        ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(phone), REGISTRATION)
+//                    }
                 },
                 onError = {
-                    codeErrorController.value = Unit
+                    //it.printStackTrace()
+                    codeErrorController.value = it.toNetworkException()?.message ?: "Неправильный код"
                 }
             ).addTo(dataCompositeDisposable)
     }

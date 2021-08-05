@@ -119,7 +119,7 @@ class MockCountriesRepositoryImpl(private val api: MyServiceDomApi) : CountriesR
                 name = "Украина",
                 letterCode = "UA",
                 numberCode = "+380",
-                mask = "+380 [000] [000]-[00]-[00]"
+                mask = "+380 [00] [000]-[00]-[00]"
             ),
             /*CountryResponse(
                 id = 10,

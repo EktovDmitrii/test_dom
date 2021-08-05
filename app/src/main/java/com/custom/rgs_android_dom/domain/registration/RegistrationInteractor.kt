@@ -2,21 +2,23 @@ package com.custom.rgs_android_dom.domain.registration
 
 import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepository
 import com.custom.rgs_android_dom.domain.profile.models.Gender
+import com.custom.rgs_android_dom.domain.registration.models.AuthModel
+import io.reactivex.Completable
 import io.reactivex.Single
 import org.joda.time.LocalDate
 
 class RegistrationInteractor(private val registrationRepository: RegistrationRepository){
 
-    fun sendPhone(phone: String): Single<Boolean> {
-        return registrationRepository.sendPhone(phone)
+    fun requestCode(phone: String): Completable {
+        return registrationRepository.requestCode(phone)
     }
 
-    fun sendCode(code: String): Single<Boolean> {
-        return registrationRepository.sendCode(code)
+    fun sendCode(phone: String, code: String): Single<AuthModel> {
+        return registrationRepository.sendCode(phone, code)
     }
 
-    fun resendCode(phone: String) : Single<Boolean> {
-        return registrationRepository.resendCode(phone)
+    fun saveAuth(auth: AuthModel){
+        registrationRepository.saveAuth(auth)
     }
 
     fun acceptAgreement(): Single<Boolean> {
