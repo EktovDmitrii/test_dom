@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.domain.countries.CountriesInteractor
 import com.custom.rgs_android_dom.domain.countries.model.CountryModel
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.countries.CountriesFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.navigation.ScreenScope
@@ -16,8 +17,9 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.component.inject
 
-class RegistrationPhoneViewModel(private val countriesInteractor: CountriesInteractor,
-                                 private val registrationInteractor: RegistrationInteractor
+class RegistrationPhoneViewModel(
+    private val countriesInteractor: CountriesInteractor,
+    private val registrationInteractor: RegistrationInteractor
 ) : BaseViewModel() {
 
     private val isNextTextViewEnabledController = MutableLiveData<Boolean>()
@@ -32,10 +34,11 @@ class RegistrationPhoneViewModel(private val countriesInteractor: CountriesInter
 
     init {
         loadDefaultCountry()
+        subscribeSelectedCountrySubject()
     }
 
     fun onCountryClick(countryCode: String){
-
+        ScreenManager.showScreen(CountriesFragment.newInstance(countryCode))
     }
 
     fun onNextClick(){
@@ -92,6 +95,16 @@ class RegistrationPhoneViewModel(private val countriesInteractor: CountriesInter
                 onError = {
                     //todo обработка ошибки
                     phoneErrorController.value = "Проверьте, правильно ли вы ввели номер телефона"
+                }
+            ).addTo(dataCompositeDisposable)
+    }
+
+    private fun subscribeSelectedCountrySubject(){
+        countriesInteractor.getSelectedCountrySubject()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    countryController.value = it
                 }
             ).addTo(dataCompositeDisposable)
     }

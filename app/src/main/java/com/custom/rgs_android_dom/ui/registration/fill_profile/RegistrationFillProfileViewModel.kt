@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.registration.fill_profile
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.profile.models.Gender
@@ -37,8 +38,8 @@ class RegistrationFillProfileViewModel(
     val birthdayErrorObserver: LiveData<String> = birthdayErrorController
     val agentPhoneErrorObserver: LiveData<String> = agentPhoneErrorController
 
-    private var name: String = ""
-    private var surname: String = ""
+    private var name: String? = null
+    private var surname: String? = null
     private var birthday: LocalDate? = null
     private var gender: Gender? = null
     private var agentCode: String? = null
@@ -68,12 +69,20 @@ class RegistrationFillProfileViewModel(
     }
 
     fun onNameChanged(name: String){
-        this.name = name
+        if (name.isNotEmpty()){
+            this.name = name
+        } else {
+            this.name = null
+        }
         isSaveTextViewEnabledController.value = areNeededFieldsFilled()
     }
 
     fun onSurnameChanged(surname: String){
-        this.surname = surname
+        if (surname.isNotEmpty()){
+            this.surname = surname
+        } else {
+            this.surname = null
+        }
         isSaveTextViewEnabledController.value = areNeededFieldsFilled()
     }
 
@@ -111,6 +120,7 @@ class RegistrationFillProfileViewModel(
 
     fun onAgentCodeChanged(agentCode: String){
         this.agentCode = if (agentCode.length < 12) null else agentCode
+        isSaveTextViewEnabledController.value = areNeededFieldsFilled()
     }
 
     fun onAgentPhoneChanged(agentPhone: String, isMaskFilled: Boolean){
@@ -126,37 +136,31 @@ class RegistrationFillProfileViewModel(
                 agentPhoneErrorController.value = "Некорректный номер телефона"
             }
         }
+        isSaveTextViewEnabledController.value = areNeededFieldsFilled()
     }
 
     private fun areNeededFieldsFilled(): Boolean {
-        if (name.isEmpty() || surname.isEmpty() || gender == null || birthday == null){
+        if (name == null && surname == null && gender == null && birthday == null && agentCode == null && agentPhone == null){
             return false
         }
         return true
     }
 
     private fun updateProfile(){
-        if (agentCode.isNullOrEmpty() || agentPhone.isNullOrEmpty()){
-            agentCode = null
-            agentPhone = null
-        }
+        registrationInteractor.updateProfile(phone, name, surname, birthday, gender, agentCode, agentPhone)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
+            .doOnSuccess { loadingStateController.value = LoadingState.CONTENT }
+            .doOnError { loadingStateController.value = LoadingState.ERROR }
+            .subscribeBy(
+                onSuccess = {
+                    ScreenManager.closeScope(REGISTRATION)
+                },
+                onError = {
 
-        safeLet(birthday, gender){birthday, gender->
-            registrationInteractor.updateProfile(phone, name, surname, birthday, gender, agentCode, agentPhone)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
-                .doOnSuccess { loadingStateController.value = LoadingState.CONTENT }
-                .doOnError { loadingStateController.value = LoadingState.ERROR }
-                .subscribeBy(
-                    onSuccess = {
-                        ScreenManager.closeScope(REGISTRATION)
-                    },
-                    onError = {
-
-                    }
-                ).addTo(dataCompositeDisposable)
-        }
+                }
+            ).addTo(dataCompositeDisposable)
     }
 
 }

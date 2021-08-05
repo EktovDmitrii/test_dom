@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.registration.fill_profile.RegistrationFillProfileFragment
+import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.ui.splash.SplashFragment
 
 class MainActivity : AppCompatActivity() {
@@ -17,8 +18,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startSplash(){
-        //ScreenManager.showScreen(SplashFragment())
-        ScreenManager.showScreen(RegistrationFillProfileFragment.newInstance("+7 123 456-77-77"))
+        ScreenManager.showScreen(SplashFragment())
+        //ScreenManager.showScreen(RegistrationFillProfileFragment.newInstance("+7 123 456-77-77"))
+        //ScreenManager.showScreen(RegistrationPhoneFragment())
     }
 
     override fun onBackPressed() {
