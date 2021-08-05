@@ -27,12 +27,14 @@ class RegistrationCodeViewModel(
     private val showResendCodeController = MutableLiveData<Unit>()
     private val countdownTextController = MutableLiveData<String>()
     private val codeErrorController = MutableLiveData<Unit>()
+    private val otcReceivedController = MutableLiveData<String>()
 
     val phoneObserver: LiveData<String> = phoneController
     val onTimerStartObserver: LiveData<Unit> = onTimerStartController
     val showResendCodeObserver: LiveData<Unit> = showResendCodeController
     val countdownTextObserver: LiveData<String> = countdownTextController
     val codeErrorObserver: LiveData<Unit> = codeErrorController
+    val otcReceivedObserver: LiveData<String> = otcReceivedController
 
     private var timer: CountDownTimer? = null
 
@@ -80,6 +82,12 @@ class RegistrationCodeViewModel(
                     codeErrorController.value = Unit
                 }
             ).addTo(dataCompositeDisposable)
+    }
+
+    fun onOTCReceived(otc: String?){
+        otc?.let {
+            otcReceivedController.value = it
+        }
     }
 
     private fun startCountdownTimer(){
