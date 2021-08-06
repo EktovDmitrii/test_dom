@@ -13,6 +13,7 @@ import com.custom.rgs_android_dom.databinding.ViewMsdLabelEditTextBinding
 import com.custom.rgs_android_dom.utils.gone
 import com.custom.rgs_android_dom.utils.visible
 import android.text.InputFilter.LengthFilter
+import com.custom.rgs_android_dom.utils.visibleIf
 
 class MSDLabelEditText @JvmOverloads constructor(
     context: Context,
@@ -127,7 +128,7 @@ class MSDLabelEditText @JvmOverloads constructor(
                 binding.valueEditText.setTextColor(context.getColor(R.color.error500))
                 binding.secondaryTextView.text = secondaryText
                 binding.secondaryTextView.setTextColor(context.getColor(R.color.error500))
-                binding.secondaryTextView.visible()
+                binding.secondaryTextView.visibleIf(secondaryText.isNotEmpty())
                 super.setEnabled(true)
             }
             State.SUCCESS -> {
@@ -135,7 +136,7 @@ class MSDLabelEditText @JvmOverloads constructor(
                 binding.valueEditText.setTextColor(context.getColor(R.color.success500))
                 binding.secondaryTextView.text = secondaryText
                 binding.secondaryTextView.setTextColor(context.getColor(R.color.success500))
-                binding.secondaryTextView.visible()
+                binding.secondaryTextView.visibleIf(secondaryText.isNotEmpty())
                 super.setEnabled(true)
             }
         }
