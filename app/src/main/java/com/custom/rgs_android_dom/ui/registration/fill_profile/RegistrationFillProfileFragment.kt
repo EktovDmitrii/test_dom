@@ -11,6 +11,7 @@ import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.*
+import com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
 import com.custom.rgs_android_dom.views.edit_text.MSDLabelIconEditText
 import com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
 import org.joda.time.LocalDate
@@ -90,6 +91,7 @@ class RegistrationFillProfileFragment : BaseFragment<RegistrationFillProfileView
         }
 
         binding.agentCodeEditText.addTextWatcher {
+            binding.agentCodeEditText.setState(MSDLabelEditText.State.NORMAL)
             viewModel.onAgentCodeChanged(it)
         }
 
@@ -111,11 +113,15 @@ class RegistrationFillProfileFragment : BaseFragment<RegistrationFillProfileView
         }
 
         subscribe(viewModel.birthdayErrorObserver){
-            //binding.birthdayEditText.setState(MSDLabelIconEditText.State.ERROR, it)
+            binding.birthdayEditText.setState(MSDLabelIconEditText.State.ERROR)
         }
 
         subscribe(viewModel.agentPhoneErrorObserver){
-            //binding.agentPhoneEditText.setState(MSDMaskedLabelEditText.State.ERROR, it)
+            binding.agentPhoneEditText.setState(MSDMaskedLabelEditText.State.ERROR)
+        }
+
+        subscribe(viewModel.agentCodeErrorObserver){
+            binding.agentCodeEditText.setState(MSDLabelEditText.State.ERROR)
         }
     }
 

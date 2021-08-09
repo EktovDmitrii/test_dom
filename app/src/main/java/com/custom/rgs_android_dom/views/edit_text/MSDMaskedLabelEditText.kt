@@ -14,6 +14,7 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdMaskedLabelEditTextBinding
 import com.custom.rgs_android_dom.utils.gone
 import com.custom.rgs_android_dom.utils.visible
+import com.custom.rgs_android_dom.utils.visibleIf
 import com.redmadrobot.inputmask.MaskedTextChangedListener
 
 class MSDMaskedLabelEditText @JvmOverloads constructor(
@@ -148,7 +149,7 @@ class MSDMaskedLabelEditText @JvmOverloads constructor(
                 binding.valueEditText.setTextColor(context.getColor(R.color.error500))
                 binding.secondaryTextView.text = secondaryText
                 binding.secondaryTextView.setTextColor(context.getColor(R.color.error500))
-                binding.secondaryTextView.visible()
+                binding.secondaryTextView.visibleIf(secondaryText.isNotEmpty())
                 super.setEnabled(true)
             }
             State.SUCCESS -> {
@@ -156,7 +157,7 @@ class MSDMaskedLabelEditText @JvmOverloads constructor(
                 binding.valueEditText.setTextColor(context.getColor(R.color.success500))
                 binding.secondaryTextView.text = secondaryText
                 binding.secondaryTextView.setTextColor(context.getColor(R.color.success500))
-                binding.secondaryTextView.visible()
+                binding.secondaryTextView.visibleIf(secondaryText.isNotEmpty())
                 super.setEnabled(true)
             }
         }

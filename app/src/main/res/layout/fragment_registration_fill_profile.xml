@@ -78,7 +78,7 @@
                 android:layout_marginTop="16dp"
                 android:digits="@string/acceptable_name_chars"
                 android:inputType="textPersonName|textCapSentences"
-                android:maxLength="25"
+                android:maxLength="50"
                 app:translationHintKey="Иван"
                 app:translationLabelKey="Имя" />
 
