@@ -39,7 +39,7 @@ val networkModule = module {
         ApiProvider(
             interceptors = listOf(
                 get<AuthTokenInterceptor>(),
-                get<BasicAuthInterceptor>(),
+                /*get<BasicAuthInterceptor>(),*/
                 get<HttpLoggingInterceptor>()
             ),
             gson = get()

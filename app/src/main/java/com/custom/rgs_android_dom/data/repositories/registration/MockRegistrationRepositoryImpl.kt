@@ -1,45 +1,18 @@
 package com.custom.rgs_android_dom.data.repositories.registration
 
-import com.custom.rgs_android_dom.data.network.MyServiceDomApi
+import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.domain.profile.models.Gender
-import com.custom.rgs_android_dom.domain.registration.models.AccessTokenExpiresAt
-import com.custom.rgs_android_dom.domain.registration.models.AuthModel
-import com.custom.rgs_android_dom.domain.registration.models.RefreshTokenExpiresAt
+import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Completable
 import io.reactivex.Single
-import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import java.util.*
 
-class MockRegistrationRepositoryImpl(private val api: MyServiceDomApi) : RegistrationRepository {
+class MockRegistrationRepositoryImpl(private val api: MSDApi) : RegistrationRepository {
 
-    override fun sendCode(phone: String, code: String): Single<AuthModel> {
-        return Single.fromCallable {
-            Thread.sleep(2000)
-            if (phone.endsWith("9")){
-                throw InvalidPropertiesFormatException("Wrong format")
-            } else {
-                AuthModel(
-                    "",
-                    DateTime.now(),
-                    "",
-                    DateTime.now(),
-                    ""
-                )
-            }
-        }
-    }
+    private val logout = BehaviorRelay.create<Unit>()
 
-    override fun requestCode(phone: String): Completable {
-        Thread.sleep(2000)
-        return if (phone.endsWith("9")){
-            throw InvalidPropertiesFormatException("Wrong format")
-        } else {
-            Completable.complete()
-        }
-    }
-
-    override fun resendCode(phone: String): Single<Boolean> {
+    override fun login(phone: String, code: String): Single<Boolean> {
         return Single.fromCallable {
             Thread.sleep(2000)
             if (phone.endsWith("9")){
@@ -48,13 +21,26 @@ class MockRegistrationRepositoryImpl(private val api: MyServiceDomApi) : Registr
                 true
             }
         }
+     }
+
+    override fun getCode(phone: String): Completable {
+        Thread.sleep(2000)
+        return if (phone.endsWith("9")){
+            throw InvalidPropertiesFormatException("Wrong format")
+        } else {
+            Completable.complete()
+        }
     }
 
-    override fun acceptAgreement(): Single<Boolean> {
+   override fun acceptAgreement(): Single<Boolean> {
         return Single.fromCallable {
             Thread.sleep(2000)
             true
         }
+    }
+
+    override fun getAuthToken(): String? {
+        return ""
     }
 
     override fun updateProfile(
@@ -77,8 +63,14 @@ class MockRegistrationRepositoryImpl(private val api: MyServiceDomApi) : Registr
         }
     }
 
-    override fun saveAuth(auth: AuthModel) {
-
+    override fun logout(): Completable {
+        return Completable.fromCallable {
+            logout.accept(Unit)
+        }
+        //
     }
 
+    override fun getLogoutSubject(): BehaviorRelay<Unit> {
+        return logout
+    }
 }

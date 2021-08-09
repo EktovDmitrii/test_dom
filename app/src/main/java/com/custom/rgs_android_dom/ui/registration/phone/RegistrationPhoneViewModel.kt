@@ -11,6 +11,7 @@ import com.custom.rgs_android_dom.ui.countries.CountriesFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.registration.code.RegistrationCodeFragment
+import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -73,12 +74,13 @@ class RegistrationPhoneViewModel(
                 },
                 onError = {
                     //todo обработка ошибки
+                    logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
     }
 
     private fun requestCode(phone: String) {
-        registrationInteractor.requestCode(phone)
+        registrationInteractor.getCode(phone)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
@@ -93,6 +95,7 @@ class RegistrationPhoneViewModel(
                 },
                 onError = {
                     //todo обработка ошибки
+                    logException(this, it)
                     val errorMessage = it.toNetworkException()?.message ?: "Проверьте, правильно ли вы ввели номер телефона"
                     phoneErrorController.value = errorMessage
                 }

@@ -1,7 +1,7 @@
 package com.custom.rgs_android_dom.data.network.provider
 
 import com.custom.rgs_android_dom.BuildConfig
-import com.custom.rgs_android_dom.data.network.MyServiceDomApi
+import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.data_adapters.RxCallAdapterWrapperFactory
 import com.google.gson.Gson
 import okhttp3.Interceptor
@@ -15,13 +15,13 @@ class ApiProvider(
     private val gson: Gson
 ) {
 
-    private lateinit var domApi: MyServiceDomApi
+    private lateinit var domApi: MSDApi
 
     init {
         initMyServiceApi()
     }
 
-    fun getApi(): MyServiceDomApi {
+    fun getApi(): MSDApi {
         return domApi
     }
 
@@ -47,6 +47,6 @@ class ApiProvider(
                     .build()
             )
             .build()
-            .create(MyServiceDomApi::class.java)
+            .create(MSDApi::class.java)
     }
 }

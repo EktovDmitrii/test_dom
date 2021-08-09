@@ -1,8 +1,9 @@
 package com.custom.rgs_android_dom.data.preferences
 
 import android.content.Context
+import android.util.Log
 import androidx.core.content.edit
-import com.custom.rgs_android_dom.domain.registration.models.AuthModel
+import com.custom.rgs_android_dom.data.network.responses.TokenResponse
 import com.custom.rgs_android_dom.utils.getSharedPrefs
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import io.reactivex.Observable
@@ -21,10 +22,16 @@ class AuthSharedPreferences(val context: Context) {
     private val rxPreferences = RxSharedPreferences.create(preferences)
 
 
-    fun saveAuth(auth: AuthModel){
+    fun saveToken(token: TokenResponse){
         preferences.edit{
-            putString(PREF_KEY_ACCESS_TOKEN, auth.accessToken)
-            putString(PREF_KEY_REFRESH_TOKEN, auth.refreshToken)
+            putString(PREF_KEY_ACCESS_TOKEN, token.accessToken)
+            putString(PREF_KEY_REFRESH_TOKEN, token.refreshToken)
+        }
+    }
+
+    fun saveAccessToken(accessToken: String){
+        preferences.edit {
+            putString(PREF_KEY_ACCESS_TOKEN, accessToken)
         }
     }
 

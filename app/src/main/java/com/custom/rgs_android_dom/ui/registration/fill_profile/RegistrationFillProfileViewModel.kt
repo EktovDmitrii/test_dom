@@ -26,6 +26,10 @@ class RegistrationFillProfileViewModel(
         private const val MIN_AGE = 16
     }
 
+    init {
+        subscribeLogoutSUbject()
+    }
+
     private val isAgentInfoLinearLayoutVisibleControler = MutableLiveData<Boolean>()
     private val knowAgentCodeTextController = MutableLiveData<String>()
     private val isSaveTextViewEnabledController = MutableLiveData<Boolean>()
@@ -61,7 +65,11 @@ class RegistrationFillProfileViewModel(
     }
 
     fun onCloseClick(){
-        closeController.value = Unit
+        //closeController.value = Unit
+        registrationInteractor.logout().subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe {
+                Log.d("MyLog", "Logged out")
+            }
     }
 
     fun onSaveClick(){
@@ -161,6 +169,21 @@ class RegistrationFillProfileViewModel(
 
                 }
             ).addTo(dataCompositeDisposable)
+    }
+
+
+    private fun subscribeLogoutSUbject(){
+        registrationInteractor.getLogoutSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    closeController.value = Unit
+                },
+                onError = {
+
+                }
+            )
     }
 
 }

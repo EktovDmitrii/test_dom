@@ -10,6 +10,7 @@ import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.registration.agreement.RegistrationAgreementFragment
+import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -50,7 +51,7 @@ class RegistrationCodeViewModel(
     }
 
     fun onResendCodeClick(){
-        registrationInteractor.requestCode(phone)
+        registrationInteractor.getCode(phone)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
@@ -61,29 +62,26 @@ class RegistrationCodeViewModel(
                     startCountdownTimer()
                 },
                 onError = {
-
+                    logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
     }
 
     fun onCodeComplete(code: String){
-        registrationInteractor.sendCode(phone, code)
+        registrationInteractor.login(phone, code)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
             .doOnSuccess { loadingStateController.value = LoadingState.CONTENT }
             .subscribeBy(
-                onSuccess = {authModel->
-                    registrationInteractor.saveAuth(authModel)
+                onSuccess = {isNewUser->
                     closeController.value = Unit
-                    ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(phone), REGISTRATION)
-                    // If phone ends with 55 this is a mocked "registered" user
-//                    if (!phone.endsWith("55")){
-//                        ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(phone), REGISTRATION)
-//                    }
+                    if (isNewUser){
+                        ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(phone), REGISTRATION)
+                    }
                 },
                 onError = {
-                    //it.printStackTrace()
+                    logException(this, it)
                     codeErrorController.value = it.toNetworkException()?.message ?: "Неправильный код"
                 }
             ).addTo(dataCompositeDisposable)

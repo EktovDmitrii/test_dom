@@ -4,6 +4,22 @@ import com.google.gson.annotations.SerializedName
 import org.joda.time.DateTime
 
 data class AuthResponse(
+    @SerializedName("token")
+    val token: TokenResponse,
+
+    @SerializedName("clientId")
+    val clientId: String,
+
+    @SerializedName("isNewClient")
+    val isNewUser: Boolean
+
+)
+
+data class TokenResponse(
+
+    @SerializedName("sessionId")
+    val sessionId: String,
+
     @SerializedName("accessToken")
     val accessToken: String,
 
@@ -15,7 +31,4 @@ data class AuthResponse(
 
     @SerializedName("refreshTokenExpiresAt")
     val refreshTokenExpiresAt: DateTime,
-
-    @SerializedName("sessionId")
-    val sessionId: String
 )
