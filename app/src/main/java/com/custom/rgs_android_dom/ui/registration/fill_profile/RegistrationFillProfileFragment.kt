@@ -64,7 +64,7 @@ class RegistrationFillProfileFragment : BaseFragment<RegistrationFillProfileView
 
         binding.birthdayEditText.setOnIconClickListener {
             showDatePicker(
-                maxDate = LocalDate.now().minusYears(16).plusDays(1).toDate(),
+                maxDate = LocalDate.now().minusYears(16).plusDays(-1).toDate(),
                 minDate = LocalDate.parse("1900-01-01").toDate()
             ){
                 val date = it.formatTo()

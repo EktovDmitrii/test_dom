@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.demo.DemoFragment
+import com.custom.rgs_android_dom.ui.demo.DemoRegistrationFlowFragment
 
 object ScreenManager {
 
@@ -35,7 +36,7 @@ object ScreenManager {
     fun showScreen(fragment: BaseFragment<*, *>) {
         val container = containerId ?: return
         val transaction = beginTransaction() ?: return
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+        //transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         transaction.add(container, fragment, menuTag.name)
         transaction.addToBackStack(menuTag.name)
         transaction.commit()
@@ -56,7 +57,7 @@ object ScreenManager {
     fun showScreenScope(fragment: BaseFragment<*, *>, scopeId: Int) {
         val container = containerId ?: return
         val transaction = beginTransaction() ?: return
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+        //transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         transaction.add(container, fragment)
         transaction.commit()
         addFragmentInScope(fragment, scopeId)
@@ -133,7 +134,7 @@ object ScreenManager {
 
     private fun getFirstScreenForMenuItem(menu: NavigationMenu): BaseFragment<*, *> {
         return when (menu) {
-            NavigationMenu.HOME -> DemoFragment()
+            NavigationMenu.HOME -> DemoRegistrationFlowFragment()
             NavigationMenu.CATALOG -> DemoFragment()
             NavigationMenu.PROFILE -> DemoFragment()
             NavigationMenu.MENU -> DemoFragment()
