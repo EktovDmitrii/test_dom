@@ -58,7 +58,7 @@ class CountriesViewModel(
 
     fun onSearchQueryChanged(query: String){
         countriesController.value = if (query.isNotEmpty()) countries.filter {
-            it.name.toLowerCase(Locale.getDefault()).contains(query.toLowerCase(Locale.getDefault()))
+            it.name.toLowerCase(Locale.getDefault()).startsWith(query.toLowerCase(Locale.getDefault()))
         } else countries
 
         isEmptyResultsVisibleController.value = countriesController.value?.isEmpty() ?: false
