@@ -86,17 +86,23 @@ class RegistrationFillProfileFragment : BaseFragment<RegistrationFillProfileView
         }
 
         binding.birthdayEditText.addOnTextChangedListener { birthday, isMaskFilled ->
-            binding.birthdayEditText.setState(MSDLabelIconEditText.State.NORMAL)
+            if (birthday.isEmpty()){
+                binding.birthdayEditText.setState(MSDLabelIconEditText.State.NORMAL)
+            }
             viewModel.onBirthdayChanged(birthday, isMaskFilled)
         }
 
-        binding.agentCodeEditText.addTextWatcher {
-            binding.agentCodeEditText.setState(MSDLabelEditText.State.NORMAL)
-            viewModel.onAgentCodeChanged(it)
+        binding.agentCodeEditText.addTextWatcher {agentCode->
+            if (agentCode.isEmpty()){
+                binding.agentCodeEditText.setState(MSDLabelEditText.State.NORMAL)
+            }
+            viewModel.onAgentCodeChanged(agentCode)
         }
 
         binding.agentPhoneEditText.addOnTextChangedListener { agentPhone, isMaskFilled ->
-            binding.agentPhoneEditText.setState(MSDMaskedLabelEditText.State.NORMAL)
+            if (agentPhone.isEmpty()){
+                binding.agentPhoneEditText.setState(MSDMaskedLabelEditText.State.NORMAL)
+            }
             viewModel.onAgentPhoneChanged(agentPhone, isMaskFilled)
         }
 
@@ -122,6 +128,18 @@ class RegistrationFillProfileFragment : BaseFragment<RegistrationFillProfileView
 
         subscribe(viewModel.agentCodeErrorObserver){
             binding.agentCodeEditText.setState(MSDLabelEditText.State.ERROR)
+        }
+
+        subscribe(viewModel.resetBirthdayEditTextStateObserver){
+            binding.birthdayEditText.setState(MSDLabelIconEditText.State.NORMAL)
+        }
+
+        subscribe(viewModel.resetAgentCodeEditTextStateObserver){
+            binding.agentCodeEditText.setState(MSDLabelEditText.State.NORMAL)
+        }
+
+        subscribe(viewModel.resetAgentPhoneEditTextStateObserver){
+            binding.agentPhoneEditText.setState(MSDMaskedLabelEditText.State.NORMAL)
         }
     }
 
