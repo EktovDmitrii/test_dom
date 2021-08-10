@@ -50,101 +50,82 @@ class MockCountriesRepositoryImpl(private val api: MyServiceDomApi) : CountriesR
         )
 
         // TODO This is mocked data, especially last few models. I was testing how scroller is working in countries screen
-        private val mockedCountriesResponse = listOf(
+        private val mockedCountriesResponse = arrayListOf(
             CountryResponse(
                 id = 1,
                 name = "Азербайджан",
                 letterCode = "AZ",
                 numberCode = "+994",
-                mask = "+994 [000] [000]-[00]-[00]"
+                mask = "+994 [000]-[000]-[000]"
             ),
             CountryResponse(
                 id = 2,
                 name = "Беларусь",
                 letterCode = "BY",
                 numberCode = "+375",
-                mask = "+375 [000] [000]-[00]-[00]"
+                mask = "+375 [000]-[000]-[000]"
             ),
             CountryResponse(
                 id = 3,
                 name = "Армения",
                 letterCode = "AM",
                 numberCode = "+374",
-                mask = "+374 [000] [000]-[00]-[00]"
+                mask = "+374 [000]-[000]-[00]"
             ),
             CountryResponse(
                 id = 4,
                 name = "Казахстан",
                 letterCode = "KZ",
                 numberCode = "+7",
-                mask = "+7 [000] [000]-[00]-[00]"
+                mask = "+7 [000]-[000]-[00]-[00]"
             ),
             CountryResponse(
                 id = 5,
                 name = "Киргизия",
                 letterCode = "KR",
                 numberCode = "+996",
-                mask = "+996 [000] [000]-[00]-[00]"
+                mask = "+996 [000]-[000]-[000]"
             ),
             CountryResponse(
                 id = 6,
                 name = "Молдавия",
                 letterCode = "MD",
                 numberCode = "+373",
-                mask = "+373 [000] [000]-[00]-[00]"
-            ),
-            CountryResponse(
-                id = 7,
-                name = "Россия",
-                letterCode = "RU",
-                numberCode = "+7",
-                mask = "+7 [000] [000]-[00]-[00]"
+                mask = "+373 [000]-[000]-[00]"
             ),
             CountryResponse(
                 id = 7,
                 name = "Таджикистан",
                 letterCode = "TJ",
                 numberCode = "+992",
-                mask = "+992 [000] [000]-[00]-[00]"
+                mask = "+992 [000]-[000]-[000]"
             ),
             CountryResponse(
                 id = 8,
                 name = "Туркмения",
                 letterCode = "TM",
                 numberCode = "+998",
-                mask = "+998 [000] [000]-[00]-[00]"
+                mask = "+998 [000]-[000]-[00]"
             ),
             CountryResponse(
                 id = 9,
                 name = "Украина",
                 letterCode = "UA",
                 numberCode = "+380",
-                mask = "+380 [000] [000]-[00]-[00]"
-            ),
-            /*CountryResponse(
-                id = 10,
-                name = "Украина1",
-                letterCode = "UA1",
-                numberCode = "+380",
-                mask = "+380 [000] [000]-[00]-[00]"
-            ),
-            CountryResponse(
-                id = 11,
-                name = "Украина2",
-                letterCode = "UA2",
-                numberCode = "+380",
-                mask = "+380 [000] [000]-[00]-[00]"
-            ),
-            CountryResponse(
-                id = 12,
-                name = "Украина3",
-                letterCode = "UA3",
-                numberCode = "+380",
-                mask = "+380 [000] [000]-[00]-[00]"
-            )*/
-
-
-        )
+                mask = "+380 [00] [000]-[00]-[00]"
+            )
+        ).apply {
+            sortBy {
+                it.name
+            }
+            add(0, CountryResponse(
+                id = 7,
+                name = "Россия",
+                letterCode = "RU",
+                numberCode = "+7",
+                mask = "+7 [000] [000]-[00]-[00]"
+            ))
+        }
     }
 
 }
