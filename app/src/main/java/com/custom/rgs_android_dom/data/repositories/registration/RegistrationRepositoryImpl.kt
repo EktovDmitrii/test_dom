@@ -15,20 +15,23 @@ import java.util.*
 class RegistrationRepositoryImpl(private val api: MSDApi,
                                  private val authSharedPreferences: AuthSharedPreferences) : RegistrationRepository {
 
+    companion object {
+        private const val HEADER_BEARER = "Bearer "
+    }
+
     private val logout = BehaviorRelay.create<Unit>()
 
-    override fun getCode(phone: String): Completable {
+    override fun getCode(phone: String): Single<String> {
         return api.postGetCode(GetCodeRequest(phone = phone.formatPhoneForApi()))
-            .flatMapCompletable {
-                authSharedPreferences.saveAccessToken(it.token)
-                Completable.complete()
+            .map {
+                it.token
             }
     }
 
-    override fun login(phone: String, code: String): Single<Boolean> {
-        return api.postLogin(LoginRequest(phone = phone.formatPhoneForApi(), code = code))
+    override fun login(phone: String, code: String, token: String): Single<Boolean> {
+        return api.postLogin("$HEADER_BEARER $token", LoginRequest(phone = phone.formatPhoneForApi(), code = code))
             .map { authResponse->
-                authSharedPreferences.saveToken(authResponse.token)
+                authSharedPreferences.saveAuth(authResponse)
                 return@map authResponse.isNewUser
             }
     }
@@ -48,10 +51,18 @@ class RegistrationRepositoryImpl(private val api: MSDApi,
         return logout
     }
 
-    override fun acceptAgreement(): Single<Boolean> {
-        return Single.fromCallable {
-            Thread.sleep(2000)
-            true
+    override fun signOpd(clientId: String): Completable {
+        return api.postSignOpd(clientId)
+    }
+
+    override fun getClientId(): String? {
+        return authSharedPreferences.getClientId()
+    }
+
+    override fun refreshToken(refreshToken: String): Completable {
+        return api.postRefreshToken(refreshToken).flatMapCompletable { tokenResponse->
+            authSharedPreferences.saveToken(tokenResponse)
+            Completable.complete()
         }
     }
 

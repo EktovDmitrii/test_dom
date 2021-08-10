@@ -19,7 +19,9 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
     }
 
     private val noAuthorizationPaths = listOf(
-        "/api/auth/clients/code"
+        "/api/auth/clients/code",
+        "/api/auth/clients/login",
+        "/api/auth/token/refresh"
     )
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -28,10 +30,6 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
             chain.proceed(originalRequest)
         }
         else {
-            if (registrationRepository.getAuthToken() == null) {
-                refreshToken()
-            }
-
             val response = chain.proceed(
                 originalRequest.newBuilder()
                     .apply {
@@ -44,34 +42,33 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
 
             if (response.isSuccessful) {
                 return response
-
             } else {
                 // TODO FIX this after we will find out how to refresh token
                 return response
-//                response.body.use { body ->
-//                    val responseString = body?.string() ?: ""
-//                    val errorResponse = responseString.toErrorResponse()
-//
-//                    //Токен доступа просрочен
-//                    if (errorResponse.code in ERROR_CODE_TOKEN_EXPIRED) {
-//                        authorizationRepository.deleteToken()
-//                        tryRefreshTokenToken()
-//
-//                        return chain.proceed(
-//                            originalRequest.newBuilder()
-//                                .apply {
-//                                    authorizationRepository.getToken()
-//                                        ?.let { header(HEADER_TOKEN, it) }
-//                                }
-//                                .build()
-//                        )
-//
-//                    } else {
-//                        response.newBuilder()
-//                            .body(responseString.toResponseBody(body?.contentType()))
-//                            .build()
-//                    }
-//                }
+                response.body.use { body ->
+                    val responseString = body?.string() ?: ""
+                    val errorResponse = responseString.toErrorResponse()
+
+                    //Токен доступа просрочен
+                    if (errorResponse.code in ERROR_CODE_TOKEN_EXPIRED) {
+                        authorizationRepository.deleteToken()
+                        tryRefreshTokenToken()
+
+                        return chain.proceed(
+                            originalRequest.newBuilder()
+                                .apply {
+                                    authorizationRepository.getToken()
+                                        ?.let { header(HEADER_TOKEN, it) }
+                                }
+                                .build()
+                        )
+
+                    } else {
+                        response.newBuilder()
+                            .body(responseString.toResponseBody(body?.contentType()))
+                            .build()
+                    }
+                }
             }
         }
     }

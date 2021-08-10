@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.ui.registration.code
 
 import android.content.*
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentRegistrationCodeBinding
@@ -21,10 +22,13 @@ class RegistrationCodeFragment : BaseFragment<RegistrationCodeViewModel, Fragmen
 
     companion object {
         private const val ARG_PHONE = "ARG_PHONE"
+        private const val ARG_TOKEN = "ARG_TOKEN"
 
-        fun newInstance(phone: String): RegistrationCodeFragment {
+        fun newInstance(phone: String, token: String): RegistrationCodeFragment {
             return RegistrationCodeFragment().args {
                 putString(ARG_PHONE, phone)
+                putString(ARG_TOKEN, token)
+                Log.d("MyLog", "TOKEN " + token)
             }
         }
     }
@@ -56,7 +60,10 @@ class RegistrationCodeFragment : BaseFragment<RegistrationCodeViewModel, Fragmen
     }
 
     override fun getParameters(): ParametersDefinition = {
-        parametersOf(requireArguments().getString(ARG_PHONE))
+        parametersOf(
+            requireArguments().getString(ARG_PHONE),
+            requireArguments().getString(ARG_TOKEN)
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

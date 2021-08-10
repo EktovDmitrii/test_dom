@@ -18,6 +18,7 @@ import io.reactivex.schedulers.Schedulers
 
 class RegistrationCodeViewModel(
     private val phone: String,
+    private var token: String,
     private val registrationInteractor: RegistrationInteractor
 ) : BaseViewModel() {
 
@@ -55,10 +56,11 @@ class RegistrationCodeViewModel(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
-            .doOnComplete { loadingStateController.value = LoadingState.CONTENT }
+            .doOnSuccess{ loadingStateController.value = LoadingState.CONTENT }
             .doOnError { loadingStateController.value = LoadingState.ERROR }
             .subscribeBy(
-                onComplete = {
+                onSuccess = { token->
+                    this.token = token
                     startCountdownTimer()
                 },
                 onError = {
@@ -68,7 +70,7 @@ class RegistrationCodeViewModel(
     }
 
     fun onCodeComplete(code: String){
-        registrationInteractor.login(phone, code)
+        registrationInteractor.login(phone, code, token)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }

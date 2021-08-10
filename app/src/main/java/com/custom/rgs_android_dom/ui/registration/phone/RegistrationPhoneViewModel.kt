@@ -87,11 +87,11 @@ class RegistrationPhoneViewModel(
                 loadingStateController.value = LoadingState.LOADING
                 phoneErrorController.value = ""
             }
-            .doOnComplete{ loadingStateController.value = LoadingState.CONTENT }
+            .doOnSuccess{ loadingStateController.value = LoadingState.CONTENT }
             .doOnError { loadingStateController.value = LoadingState.ERROR }
             .subscribeBy(
-                onComplete = {
-                    ScreenManager.showScreenScope(RegistrationCodeFragment.newInstance(phone), REGISTRATION)
+                onSuccess = {token->
+                    ScreenManager.showScreenScope(RegistrationCodeFragment.newInstance(phone, token), REGISTRATION)
                 },
                 onError = {
                     //todo обработка ошибки

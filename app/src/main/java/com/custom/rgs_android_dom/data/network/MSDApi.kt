@@ -6,10 +6,13 @@ import com.custom.rgs_android_dom.data.network.requests.LoginRequest
 import com.custom.rgs_android_dom.data.network.requests.GetCodeRequest
 import com.custom.rgs_android_dom.data.network.responses.AuthResponse
 import com.custom.rgs_android_dom.data.network.responses.GetCodeResponse
+import com.custom.rgs_android_dom.data.network.responses.TokenResponse
 import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.http.Body
+import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 import kotlin.reflect.KClass
 
 @Retention(AnnotationRetention.RUNTIME)
@@ -27,10 +30,18 @@ interface MSDApi {
 
     @POST("auth/clients/login")
     @ErrorType(MSDNetworkError::class)
-    fun postLogin(@Body body: LoginRequest): Single<AuthResponse>
+    fun postLogin(@Header("Authorization") token: String, @Body body: LoginRequest): Single<AuthResponse>
 
-    @POST("auth/logount")
+    @POST("auth/logout")
     @ErrorType(MSDNetworkError::class)
     fun postLogout(): Completable
+
+    @POST("clients/{clientId}/opd/sign")
+    @ErrorType(MSDNetworkError::class)
+    fun postSignOpd(@Path("clientId") clientId: String): Completable
+
+    @POST("auth/token/refresh")
+    @ErrorType(MSDNetworkError::class)
+    fun postRefreshToken(@Header("Authorization") refreshToken: String): Single<TokenResponse>
 
 }

@@ -9,16 +9,20 @@ import org.joda.time.LocalDate
 
 class RegistrationInteractor(private val registrationRepository: RegistrationRepository){
 
-    fun getCode(phone: String): Completable {
+    fun getCode(phone: String): Single<String> {
         return registrationRepository.getCode(phone)
     }
 
-    fun login(phone: String, code: String): Single<Boolean> {
-        return registrationRepository.login(phone, code)
+    fun login(phone: String, code: String, token: String): Single<Boolean> {
+        return registrationRepository.login(phone, code, token)
     }
 
-    fun acceptAgreement(): Single<Boolean> {
-        return registrationRepository.acceptAgreement()
+    fun signOpd(clientId: String): Completable {
+        return registrationRepository.signOpd(clientId)
+    }
+
+    fun getClientId(): String? {
+        return registrationRepository.getClientId()
     }
 
     fun logout(): Completable {

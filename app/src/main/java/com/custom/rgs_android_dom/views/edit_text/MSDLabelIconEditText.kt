@@ -12,10 +12,7 @@ import android.widget.RelativeLayout
 import androidx.core.widget.addTextChangedListener
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdLabelIconEditTextBinding
-import com.custom.rgs_android_dom.utils.GlideApp
-import com.custom.rgs_android_dom.utils.gone
-import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
-import com.custom.rgs_android_dom.utils.visible
+import com.custom.rgs_android_dom.utils.*
 import com.redmadrobot.inputmask.MaskedTextChangedListener
 
 class MSDLabelIconEditText @JvmOverloads constructor(
@@ -187,7 +184,7 @@ class MSDLabelIconEditText @JvmOverloads constructor(
                 binding.valueEditText.setTextColor(context.getColor(R.color.error500))
                 binding.secondaryTextView.text = secondaryText
                 binding.secondaryTextView.setTextColor(context.getColor(R.color.error500))
-                binding.secondaryTextView.visible()
+                binding.secondaryTextView.visibleIf(secondaryText.isNotEmpty())
                 super.setEnabled(true)
             }
             State.SUCCESS -> {
@@ -195,7 +192,7 @@ class MSDLabelIconEditText @JvmOverloads constructor(
                 binding.valueEditText.setTextColor(context.getColor(R.color.success500))
                 binding.secondaryTextView.text = secondaryText
                 binding.secondaryTextView.setTextColor(context.getColor(R.color.success500))
-                binding.secondaryTextView.visible()
+                binding.secondaryTextView.visibleIf(secondaryText.isNotEmpty())
                 super.setEnabled(true)
             }
         }

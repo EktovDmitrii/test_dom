@@ -8,8 +8,7 @@ import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
-import com.custom.rgs_android_dom.utils.getAge
-import com.custom.rgs_android_dom.utils.safeLet
+import com.custom.rgs_android_dom.utils.logException
 import com.custom.rgs_android_dom.utils.tryParseDate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -23,7 +22,8 @@ class RegistrationFillProfileViewModel(
 ) : BaseViewModel() {
 
     companion object {
-        private const val MIN_AGE = 16
+        private val MIN_DATE = LocalDate.now().minusYears(16).plusDays(1)
+        private val MAX_DATE = LocalDate.parse("1900-01-01")
     }
 
     init {
@@ -35,12 +35,20 @@ class RegistrationFillProfileViewModel(
     private val isSaveTextViewEnabledController = MutableLiveData<Boolean>()
     private val birthdayErrorController = MutableLiveData<String>()
     private val agentPhoneErrorController = MutableLiveData<String>()
+    private val agentCodeErrorController = MutableLiveData<String>()
+    private val resetBirthdayEditTextStateController = MutableLiveData<Unit>()
+    private val resetAgentCodeEditTextStateController = MutableLiveData<Unit>()
+    private val resetAgentPhoneEditTextStateController = MutableLiveData<Unit>()
 
     val isAgentInfoLinearLayoutVisibleObserver: LiveData<Boolean> = isAgentInfoLinearLayoutVisibleControler
     val knowAgentCodeTextObserver: LiveData<String> = knowAgentCodeTextController
     val isSaveTextViewEnabledObserver: LiveData<Boolean> = isSaveTextViewEnabledController
     val birthdayErrorObserver: LiveData<String> = birthdayErrorController
     val agentPhoneErrorObserver: LiveData<String> = agentPhoneErrorController
+    val agentCodeErrorObserver: LiveData<String> = agentCodeErrorController
+    val resetBirthdayEditTextStateObserver: LiveData<Unit> = resetBirthdayEditTextStateController
+    val resetAgentCodeEditTextStateObserver: LiveData<Unit> = resetAgentCodeEditTextStateController
+    val resetAgentPhoneEditTextStateObserver: LiveData<Unit> = resetAgentPhoneEditTextStateController
 
     private var name: String? = null
     private var surname: String? = null
@@ -48,6 +56,8 @@ class RegistrationFillProfileViewModel(
     private var gender: Gender? = null
     private var agentCode: String? = null
     private var agentPhone: String? = null
+
+    private var isAgentPhoneCorrect: Boolean = false
 
     fun onKnowAgentCodeClick(){
         var isAgentInfoLinearLayoutVisible = isAgentInfoLinearLayoutVisibleControler.value ?: false
@@ -105,29 +115,33 @@ class RegistrationFillProfileViewModel(
                 birthday = null
             }
             isMaskFilled -> {
-                val date = birthdayString.tryParseDate({
-                    birthdayErrorController.value = "Некорректная дата рождения"
+                birthday = birthdayString.tryParseDate({
                     birthday = null
                 })
-                date?.let {
-                    if (getAge(it) >= MIN_AGE) {
-                        birthday = it
-                    } else {
-                        birthdayErrorController.value = "Некорректная дата рождения"
-                        birthday = null
+
+                birthday?.let {birthday->
+                    if (isBirthdayValid(birthday)){
+                        resetBirthdayEditTextStateController.value = Unit
                     }
                 }
+
             }
             else -> {
                 birthday = null
-                birthdayErrorController.value = "Некорректная дата рождения"
             }
         }
         isSaveTextViewEnabledController.value = areNeededFieldsFilled()
     }
 
     fun onAgentCodeChanged(agentCode: String){
-        this.agentCode = if (agentCode.length < 12) null else agentCode
+        if (agentCode.isEmpty()){
+            this.agentCode = null
+        } else {
+            if (this.agentCode == null){
+                resetAgentCodeEditTextStateController.value = Unit
+            }
+            this.agentCode = agentCode
+        }
         isSaveTextViewEnabledController.value = areNeededFieldsFilled()
     }
 
@@ -136,25 +150,54 @@ class RegistrationFillProfileViewModel(
             agentPhone.isEmpty() -> {
                 this.agentPhone = null
             }
-            isMaskFilled -> {
+            else -> {
+                if (this.agentPhone == null){
+                    resetAgentPhoneEditTextStateController.value = Unit
+                }
                 this.agentPhone = agentPhone
             }
-            else -> {
-                this.agentPhone = null
-                agentPhoneErrorController.value = "Некорректный номер телефона"
-            }
         }
+        isAgentPhoneCorrect = isMaskFilled
+
+        if (isAgentPhoneCorrect){
+            resetAgentPhoneEditTextStateController.value = Unit
+        }
+
         isSaveTextViewEnabledController.value = areNeededFieldsFilled()
     }
 
     private fun areNeededFieldsFilled(): Boolean {
-        if (name == null && surname == null && gender == null && birthday == null && agentCode == null && agentPhone == null){
-            return false
+        if (name != null || surname != null || gender != null || birthday != null || agentCode !=null && agentPhone != null && isAgentPhoneCorrect){
+            return true
         }
-        return true
+        return false
     }
 
     private fun updateProfile(){
+        birthday?.let {birthday->
+            if (!isBirthdayValid(birthday)){
+                birthdayErrorController.value = "Некорректная дата рождения"
+                return
+            }
+        }
+
+        agentCode?.let { agentCode->
+            if (agentCode.length < 12){
+                agentCodeErrorController.value = "Неверный код агента"
+                return
+            }
+        }
+
+        if (agentCode != null && agentPhone == null || agentCode != null && agentPhone != null && !isAgentPhoneCorrect){
+            agentPhoneErrorController.value = "Укажите телефон агента"
+            return
+        }
+
+        if (agentCode == null && agentPhone != null && !isAgentPhoneCorrect){
+            agentCodeErrorController.value = "Укажите код агента"
+            return
+        }
+
         registrationInteractor.updateProfile(phone, name, surname, birthday, gender, agentCode, agentPhone)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -171,8 +214,7 @@ class RegistrationFillProfileViewModel(
             ).addTo(dataCompositeDisposable)
     }
 
-
-    private fun subscribeLogoutSUbject(){
+    private fun subscribeLogoutSUbject() {
         registrationInteractor.getLogoutSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -181,9 +223,13 @@ class RegistrationFillProfileViewModel(
                     closeController.value = Unit
                 },
                 onError = {
-
+                    logException(this, it)
                 }
             )
+    }
+
+    private fun isBirthdayValid(birthday: LocalDate): Boolean {
+        return !(birthday.isAfter(MIN_DATE) || birthday.isBefore(MAX_DATE))
     }
 
 }
