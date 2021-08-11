@@ -2,7 +2,6 @@ package com.custom.rgs_android_dom.ui.registration.code
 
 import android.content.*
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentRegistrationCodeBinding
@@ -28,7 +27,6 @@ class RegistrationCodeFragment : BaseFragment<RegistrationCodeViewModel, Fragmen
             return RegistrationCodeFragment().args {
                 putString(ARG_PHONE, phone)
                 putString(ARG_TOKEN, token)
-                Log.d("MyLog", "TOKEN " + token)
             }
         }
     }

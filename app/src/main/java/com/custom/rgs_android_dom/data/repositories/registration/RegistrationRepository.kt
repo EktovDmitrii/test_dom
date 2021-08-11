@@ -28,6 +28,9 @@ interface RegistrationRepository {
 
     fun refreshToken(refreshToken: String): Completable
 
-    fun getRefreshTokenExpiresAt(): DateTime
+    fun getRefreshTokenExpiresAt(): DateTime?
 
+    fun deleteTokens()
+
+    fun getRefreshToken(): String?
 }

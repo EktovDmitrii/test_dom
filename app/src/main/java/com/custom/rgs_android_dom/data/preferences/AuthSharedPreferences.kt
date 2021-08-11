@@ -1,9 +1,7 @@
 package com.custom.rgs_android_dom.data.preferences
 
 import android.content.Context
-import android.util.Log
 import androidx.core.content.edit
-import com.custom.rgs_android_dom.data.network.data_adapters.JodaDateTimeGsonTypeAdapter
 import com.custom.rgs_android_dom.data.network.responses.AuthResponse
 import com.custom.rgs_android_dom.data.network.responses.TokenResponse
 import com.custom.rgs_android_dom.utils.getSharedPrefs
@@ -11,7 +9,6 @@ import com.f2prateek.rx.preferences2.RxSharedPreferences
 import io.reactivex.Observable
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
-import java.util.*
 
 class AuthSharedPreferences(val context: Context) {
 
@@ -72,6 +69,14 @@ class AuthSharedPreferences(val context: Context) {
             DateTime.parse(refreshTokenExpiresAtString, DateTimeFormat.forPattern(PATTERN_DATE_TIME_MILLIS))
         } else {
             null
+        }
+    }
+
+    fun deleteTokens(){
+        preferences.edit {
+            remove(PREF_KEY_ACCESS_TOKEN)
+            remove(PREF_KEY_REFRESH_TOKEN)
+            remove(PREF_KEY_REFRESH_TOKEN_EXPIRES_AT)
         }
     }
 

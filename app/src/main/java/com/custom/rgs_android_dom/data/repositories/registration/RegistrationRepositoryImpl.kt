@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.data.repositories.registration
 
+import android.util.Log
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.requests.GetCodeRequest
 import com.custom.rgs_android_dom.data.network.requests.LoginRequest
@@ -9,6 +10,7 @@ import com.custom.rgs_android_dom.utils.formatPhoneForApi
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Completable
 import io.reactivex.Single
+import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import java.util.*
 
@@ -16,7 +18,7 @@ class RegistrationRepositoryImpl(private val api: MSDApi,
                                  private val authSharedPreferences: AuthSharedPreferences) : RegistrationRepository {
 
     companion object {
-        private const val HEADER_BEARER = "Bearer "
+        private const val HEADER_BEARER = "Bearer"
     }
 
     private val logout = BehaviorRelay.create<Unit>()
@@ -41,9 +43,10 @@ class RegistrationRepositoryImpl(private val api: MSDApi,
     }
 
     override fun logout(): Completable {
-        return api.postLogout().andThen {
+        return api.postLogout().doFinally {
             authSharedPreferences.clear()
             logout.accept(Unit)
+            Log.d("MyLog", "Finally logout")
         }
     }
 
@@ -64,6 +67,18 @@ class RegistrationRepositoryImpl(private val api: MSDApi,
             authSharedPreferences.saveToken(tokenResponse)
             Completable.complete()
         }
+    }
+
+    override fun deleteTokens() {
+        authSharedPreferences.deleteTokens()
+    }
+
+    override fun getRefreshToken(): String? {
+        return authSharedPreferences.getRefreshToken()
+    }
+
+    override fun getRefreshTokenExpiresAt(): DateTime? {
+        return authSharedPreferences.getRefreshTokenExpiresAt()
     }
 
     override fun updateProfile(

@@ -26,10 +26,6 @@ class RegistrationFillProfileViewModel(
         private val MAX_DATE = LocalDate.parse("1900-01-01")
     }
 
-    init {
-        subscribeLogoutSUbject()
-    }
-
     private val isAgentInfoLinearLayoutVisibleControler = MutableLiveData<Boolean>()
     private val knowAgentCodeTextController = MutableLiveData<String>()
     private val isSaveTextViewEnabledController = MutableLiveData<Boolean>()
@@ -75,11 +71,7 @@ class RegistrationFillProfileViewModel(
     }
 
     fun onCloseClick(){
-        //closeController.value = Unit
-        registrationInteractor.logout().subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe {
-                Log.d("MyLog", "Logged out")
-            }
+        closeController.value = Unit
     }
 
     fun onSaveClick(){
@@ -212,20 +204,6 @@ class RegistrationFillProfileViewModel(
 
                 }
             ).addTo(dataCompositeDisposable)
-    }
-
-    private fun subscribeLogoutSUbject() {
-        registrationInteractor.getLogoutSubject()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onNext = {
-                    closeController.value = Unit
-                },
-                onError = {
-                    logException(this, it)
-                }
-            )
     }
 
     private fun isBirthdayValid(birthday: LocalDate): Boolean {
