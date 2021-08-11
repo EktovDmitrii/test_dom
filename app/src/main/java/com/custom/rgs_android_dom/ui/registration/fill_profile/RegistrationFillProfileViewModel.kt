@@ -22,7 +22,7 @@ class RegistrationFillProfileViewModel(
 ) : BaseViewModel() {
 
     companion object {
-        private val MIN_DATE = LocalDate.now().minusYears(16).plusDays(1)
+        private val MIN_DATE = LocalDate.now().minusYears(16).plusDays(-1)
         private val MAX_DATE = LocalDate.parse("1900-01-01")
     }
 
@@ -159,7 +159,7 @@ class RegistrationFillProfileViewModel(
     }
 
     private fun areNeededFieldsFilled(): Boolean {
-        if (name != null || surname != null || gender != null || birthday != null || agentCode !=null && agentPhone != null && isAgentPhoneCorrect){
+        if (name != null || surname != null || gender != null || birthday != null || agentCode?.length == 12 || isAgentPhoneCorrect){
             return true
         }
         return false
@@ -185,7 +185,7 @@ class RegistrationFillProfileViewModel(
             return
         }
 
-        if (agentCode == null && agentPhone != null && !isAgentPhoneCorrect){
+        if (agentCode == null && isAgentPhoneCorrect){
             agentCodeErrorController.value = "Укажите код агента"
             return
         }
