@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    style="@style/Button.Text.Icon.Secondary">
+
+    <com.custom.rgs_android_dom.views.MSDImageView
+        android:id="@+id/iconImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:tint="@color/button_text_icon_tint_color"
+        tools:srcCompat="@drawable/ic_add_20px"
+        android:duplicateParentState="true"/>
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/valueTextView"
+        android:layout_width="wrap_content"
+        tools:text="Добавить новый дом"
+        android:layout_marginStart="12dp"
+        style="@style/Button.WithoutBg.Primary"
+        android:clickable="false"
+        android:duplicateParentState="true"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

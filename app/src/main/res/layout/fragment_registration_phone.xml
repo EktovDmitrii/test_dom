@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:clickable="true">
 
     <FrameLayout
         android:id="@+id/toolbarFrameLayout"
@@ -34,18 +35,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/my_service_medium"
-            android:text="Вход и регистрация"
             android:textColor="@color/secondary900"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            app:translationTextKey="Вход и регистрация" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/suisse_regular"
-            android:text="Номер телефона"
             android:textColor="@color/secondary600"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:translationTextKey="Номер телефона" />
 
         <com.custom.rgs_android_dom.views.MSDPhoneInput
             android:id="@+id/phoneInput"
@@ -64,6 +65,6 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:enabled="false"
-        android:text="Далее" />
+        app:translationTextKey="Далее" />
 
 </RelativeLayout>

@@ -17,3 +17,4 @@ fun Context.vibratePhone() {
         vibrator.vibrate(200)
     }
 }
+

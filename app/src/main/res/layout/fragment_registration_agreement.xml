@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:clickable="true"
+    android:background="@color/white">
+
+    <FrameLayout
+        android:id="@+id/toolbarFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/backImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:paddingHorizontal="14dp"
+            android:tint="@color/secondary800"
+            app:srcCompat="@drawable/ic_back_24px"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/closeImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:paddingHorizontal="14dp"
+            android:tint="@color/secondary800"
+            app:srcCompat="@drawable/ic_close_24px"/>
+
+    </FrameLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbarFrameLayout"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="20dp">
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/my_service_medium"
+            android:textColor="@color/secondary900"
+            android:textSize="20sp"
+            app:translationTextKey="Обработка данных" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/acceptAgreementCheckBox"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/checkbox_background"
+                android:button="@null" />
+
+            <com.custom.rgs_android_dom.views.text.MSDLinksTextView
+                android:id="@+id/agreementTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:cursorVisible="false"
+                android:fontFamily="@font/suisse_regular"
+                android:includeFontPadding="true"
+                android:lineSpacingExtra="24dp"
+                android:lineSpacingMultiplier="0"
+                android:textColor="@color/secondary600"
+                android:textSize="14sp"
+                tools:text="Я принимаю условия пользовательского соглашения, политику обработки персональных данных и даю своё согласие на обработку персональных данных" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.custom.rgs_android_dom.views.text.MSDTextViewLoader
+        android:id="@+id/nextTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:enabled="false"
+        app:translationTextKey="Далее" />
+
+</RelativeLayout>

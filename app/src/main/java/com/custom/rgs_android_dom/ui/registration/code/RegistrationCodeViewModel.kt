@@ -5,6 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
+import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.registration.agreement.RegistrationAgreementFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -24,12 +27,14 @@ class RegistrationCodeViewModel(
     private val showResendCodeController = MutableLiveData<Unit>()
     private val countdownTextController = MutableLiveData<String>()
     private val codeErrorController = MutableLiveData<Unit>()
+    private val otcReceivedController = MutableLiveData<String>()
 
     val phoneObserver: LiveData<String> = phoneController
     val onTimerStartObserver: LiveData<Unit> = onTimerStartController
     val showResendCodeObserver: LiveData<Unit> = showResendCodeController
     val countdownTextObserver: LiveData<String> = countdownTextController
     val codeErrorObserver: LiveData<Unit> = codeErrorController
+    val otcReceivedObserver: LiveData<String> = otcReceivedController
 
     private var timer: CountDownTimer? = null
 
@@ -68,11 +73,21 @@ class RegistrationCodeViewModel(
             .subscribeBy(
                 onSuccess = {
                     closeController.value = Unit
+                    // If phone ends with 55 this is a mocked "registered" user
+                    if (!phone.endsWith("55")){
+                        ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(phone), REGISTRATION)
+                    }
                 },
                 onError = {
                     codeErrorController.value = Unit
                 }
             ).addTo(dataCompositeDisposable)
+    }
+
+    fun onOTCReceived(otc: String?){
+        otc?.let {
+            otcReceivedController.value = it
+        }
     }
 
     private fun startCountdownTimer(){

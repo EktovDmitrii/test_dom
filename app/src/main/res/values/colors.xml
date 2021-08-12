@@ -15,4 +15,11 @@
     <color name="success500">#51CD9D</color>
     <color name="error500">#FF6868</color>
     <color name="white">#FFFFFF</color>
+    <color name="secondary900_alpha20">#3220201F</color>
+    <color name="secondary900_alpha50">#1F20201F</color>
+    <color name="secondary900_alpha56">#8F20201F</color>
+    <color name="secondary_default">#7D7E7E</color>
+    <!-- TODO This is temorary name -->
+    <color name="primary_200">#33F6A636</color>
+    <color name="secondary900_alpha14">#1420201F</color>
 </resources>

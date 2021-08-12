@@ -6,6 +6,5 @@ data class CountryModel(
     val image: Int,
     val letterCode: String,
     val numberCode: String,
-    val isCurrent: Boolean,
     val mask: String
 )

@@ -9,6 +9,7 @@ import com.custom.rgs_android_dom.utils.hideSoftwareKeyboard
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
 import com.custom.rgs_android_dom.utils.toast
+import com.custom.rgs_android_dom.views.MSDPhoneInput
 
 class RegistrationPhoneFragment : BaseFragment<RegistrationPhoneViewModel, FragmentRegistrationPhoneBinding>(
     R.layout.fragment_registration_phone
@@ -28,8 +29,22 @@ class RegistrationPhoneFragment : BaseFragment<RegistrationPhoneViewModel, Fragm
                 viewModel.onPhoneChanged(phone, isMaskFilled)
             }
 
+            binding.phoneInput.setLetterCode(it.letterCode)
+
             binding.phoneInput.setOnDoneClickListener {
                 viewModel.onDoneClick()
+            }
+        }
+
+        binding.phoneInput.setOnCountryClickListener {
+            viewModel.onCountryClick(it)
+        }
+
+        subscribe(viewModel.phoneErrorObserver){error->
+            if (error.isNotEmpty()){
+                binding.phoneInput.setState(MSDPhoneInput.State.ERROR, error)
+            } else {
+                binding.phoneInput.setState(MSDPhoneInput.State.NORMAL)
             }
         }
 
@@ -60,6 +75,5 @@ class RegistrationPhoneFragment : BaseFragment<RegistrationPhoneViewModel, Fragm
     override fun onError() {
         super.onError()
         binding.nextTextView.setLoading(false)
-        toast("Произошла ошибка")
     }
 }

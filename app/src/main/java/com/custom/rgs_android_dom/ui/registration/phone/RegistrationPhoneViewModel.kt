@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.domain.countries.CountriesInteractor
 import com.custom.rgs_android_dom.domain.countries.model.CountryModel
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.countries.CountriesFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.navigation.ScreenScope
@@ -16,23 +17,28 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.component.inject
 
-class RegistrationPhoneViewModel(private val countriesInteractor: CountriesInteractor,
-                                 private val registrationInteractor: RegistrationInteractor
+class RegistrationPhoneViewModel(
+    private val countriesInteractor: CountriesInteractor,
+    private val registrationInteractor: RegistrationInteractor
 ) : BaseViewModel() {
 
     private val isNextTextViewEnabledController = MutableLiveData<Boolean>()
     private val countryController = MutableLiveData<CountryModel>()
-    private var phone: String = ""
+    private val phoneErrorController = MutableLiveData<String>()
 
     val isNextTextViewEnabledObserver: LiveData<Boolean> = isNextTextViewEnabledController
     val countryObserver: LiveData<CountryModel> = countryController
+    val phoneErrorObserver: LiveData<String> = phoneErrorController
+
+    private var phone: String = ""
 
     init {
         loadDefaultCountry()
+        subscribeSelectedCountrySubject()
     }
 
     fun onCountryClick(countryCode: String){
-
+        ScreenManager.showScreen(CountriesFragment.newInstance(countryCode))
     }
 
     fun onNextClick(){
@@ -45,6 +51,7 @@ class RegistrationPhoneViewModel(private val countriesInteractor: CountriesInter
 
     fun onPhoneChanged(phone: String, isMaskFilled: Boolean) {
         isNextTextViewEnabledController.value = isMaskFilled
+        phoneErrorController.value = ""
         this.phone = phone
     }
 
@@ -60,7 +67,6 @@ class RegistrationPhoneViewModel(private val countriesInteractor: CountriesInter
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
-            .doOnError { loadingStateController.value = LoadingState.ERROR }
             .doOnSuccess { loadingStateController.value = LoadingState.CONTENT }
             .subscribeBy(
                 onSuccess = {
@@ -76,15 +82,29 @@ class RegistrationPhoneViewModel(private val countriesInteractor: CountriesInter
         registrationInteractor.sendPhone(phone)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
-            .doOnError { loadingStateController.value = LoadingState.ERROR }
+            .doOnSubscribe {
+                loadingStateController.value = LoadingState.LOADING
+                phoneErrorController.value = ""
+            }
             .doOnSuccess { loadingStateController.value = LoadingState.CONTENT }
+            .doOnError { loadingStateController.value = LoadingState.ERROR }
             .subscribeBy(
                 onSuccess = {
                     ScreenManager.showScreenScope(RegistrationCodeFragment.newInstance(phone), REGISTRATION)
                 },
                 onError = {
                     //todo обработка ошибки
+                    phoneErrorController.value = "Проверьте, правильно ли вы ввели номер телефона"
+                }
+            ).addTo(dataCompositeDisposable)
+    }
+
+    private fun subscribeSelectedCountrySubject(){
+        countriesInteractor.getSelectedCountrySubject()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    countryController.value = it
                 }
             ).addTo(dataCompositeDisposable)
     }

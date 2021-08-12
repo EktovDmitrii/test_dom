@@ -5,6 +5,7 @@
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowSoftInputMode">adjustResize|stateVisible</item>
+        <item name="android:datePickerDialogTheme">@style/DatePickerTheme</item>
     </style>
 
     <style name="Button.Filled" parent="Widget.AppCompat.TextView">
@@ -18,11 +19,146 @@
         <item name="android:paddingTop">12dp</item>
         <item name="android:paddingBottom">12dp</item>
         <item name="android:includeFontPadding">false</item>
+        <item name="android:clickable">true</item>
     </style>
 
-    <style name="Button.Filled.Primary500" parent="Button.Filled">
-        <item name="android:background">@drawable/button_primary_500_background</item>
-        <item name="android:textColor">@color/button_primary_500_text_color</item>
+    <style name="Button.Stroke" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:fontFamily">@font/my_service_bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingStart">78dp</item>
+        <item name="android:paddingEnd">78dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="Button.WithoutBg" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="Button.Filled.Small" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:fontFamily">@font/my_service_bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingEnd">24dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="Button.Stroke.Small" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:fontFamily">@font/my_service_medium</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="Button.Chat" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:fontFamily">@font/suisse_regular</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="Icon.Filled" parent="Widget.AppCompat.ImageButton">
+        <item name="android:layout_height">36dp</item>
+        <item name="android:layout_width">36dp</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="Button.Text.Icon" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:paddingStart">69dp</item>
+        <item name="android:paddingEnd">69dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="Button.Filled.Primary" parent="Button.Filled">
+        <item name="android:background">@drawable/button_filled_primary_background</item>
+        <item name="android:textColor">@color/button_filled_primary_text_color</item>
+    </style>
+
+    <style name="Button.Filled.Small.Primary" parent="Button.Filled.Small">
+        <item name="android:background">@drawable/button_filled_small_primary_background</item>
+        <item name="android:textColor">@color/button_filled_primary_text_color</item>
+    </style>
+
+    <style name="Button.Stroke.Small.Secondary" parent="Button.Filled.Small">
+        <item name="android:background">@drawable/button_stroke_small_secondary_background</item>
+        <item name="android:textColor">@color/button_stroke_small_secondary_text_color</item>
+    </style>
+
+    <style name="Button.Stroke.Primary" parent="Button.Stroke">
+        <item name="android:background">@drawable/button_stroke_primary_background</item>
+        <item name="android:textColor">@color/button_stroke_primary_text_color</item>
+    </style>
+
+    <style name="Button.WithoutBg.Primary" parent="Button.WithoutBg">
+        <item name="android:background">@null</item>
+        <item name="android:textColor">@color/button_without_bg_primary_text_color</item>
+        <item name="android:fontFamily">@font/my_service_bold</item>
+    </style>
+
+    <style name="Button.WithoutBg.Secondary" parent="Button.WithoutBg">
+        <item name="android:layout_height">24dp</item>
+        <item name="android:background">@null</item>
+        <item name="android:textColor">@color/button_without_bg_secondary_text_color</item>
+        <item name="android:fontFamily">@font/suisse_regular</item>
+    </style>
+
+    <style name="Button.Filled.Primary.DoubleText" parent="Button.Filled">
+        <item name="android:background">@drawable/button_filled_primary_background</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingEnd">24dp</item>
+    </style>
+
+    <style name="Button.Chat.Primary.Filled" parent="Button.Chat">
+        <item name="android:background">@drawable/button_filled_chat_primary_background</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="Button.Chat.Primary.Stroke" parent="Button.Chat">
+        <item name="android:background">@drawable/button_stroke_chat_primary_background</item>
+        <item name="android:textColor">@color/button_stroke_chat_primary_text_color</item>
+    </style>
+
+    <style name="Icon.Filled.Primary" parent="Icon.Filled">
+        <item name="android:tint">@color/white</item>
+        <item name="android:background">@drawable/icon_filled_primary_background</item>
+    </style>
+
+    <style name="Button.Text.Icon.Secondary" parent="Button.Text.Icon">
+        <item name="android:background">@drawable/button_text_icon_secondary_background</item>
     </style>
 
     <style name="CodeInput">
@@ -45,4 +181,65 @@
         <item name="android:duplicateParentState">false</item>
     </style>
 
+    <style name="EditText">
+        <item name="android:textCursorDrawable">@drawable/cursor_primary_500</item>
+        <item name="android:fontFamily">@font/my_service_regular</item>
+        <item name="android:textColorHint">@color/secondary300</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:background">@null</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="SearchEditText">
+        <item name="android:textCursorDrawable">@drawable/cursor_primary_500</item>
+        <item name="android:fontFamily">@font/suisse_regular</item>
+        <item name="android:textColorHint">@color/secondary400</item>
+        <item name="android:textColor">@color/secondary900</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:background">@null</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:inputType">text</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="DatePickerTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:colorAccent">@color/primary500</item>
+        <item name="android:colorControlActivated">@color/primary500</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/AppTheme.Alert.Button.Positive</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/AppTheme.Alert.Button.Negative</item>
+        <item name="android:buttonBarNeutralButtonStyle">@style/AppTheme.Alert.Button.Neutral</item>
+        <item name="android:textColorPrimary">@color/secondary900</item>
+        <item name="android:textColorSecondary">@color/secondary800</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
+    <style name="AppTheme.Alert.Button.Positive" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/primary500</item>
+    </style>
+
+    <style name="AppTheme.Alert.Button.Negative" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/primary500</item>
+    </style>
+
+    <style name="AppTheme.Alert.Button.Neutral" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/primary500</item>
+    </style>
+
+    <style name="GenderSelector" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:fontFamily">@font/suisse_regular</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:clickable">true</item>
+        <item name="android:background">@drawable/gender_selector_background</item>
+        <item name="android:textColor">@color/gender_selector_text_color</item>
+    </style>
 </resources>
