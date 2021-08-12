@@ -63,21 +63,21 @@ android {
         production {
             applicationId 'com.custom.rgs_android_dom'
             resValue "string", "app_name", "Мой_Сервис.Дом"
-            buildConfigField "String", "BASE_URL", '"https://google.com"'
+            buildConfigField "String", "BASE_URL", '"https://ddom.moi-service.ru"'
         }
 
         stage {
             applicationId 'com.custom.rgs_android_dom.test'
             versionNameSuffix 't'
             resValue "string", "app_name", "Дом test"
-            buildConfigField "String", "BASE_URL", '"https://google.com"'
+            buildConfigField "String", "BASE_URL", '"https://ddom.moi-service.ru"'
         }
 
         dev {
             applicationId 'com.custom.rgs_android_dom.dev'
             versionNameSuffix 'd'
             resValue "string", "app_name", "Дом DEV"
-            buildConfigField "String", "BASE_URL", '"https://google.com"'
+            buildConfigField "String", "BASE_URL", '"https://ddom.moi-service.ru"'
         }
 
     }
@@ -168,5 +168,8 @@ dependencies {
     // Listen for sms codes
     implementation 'com.google.android.gms:play-services-auth:19.2.0'
     implementation 'com.google.android.gms:play-services-auth-api-phone:17.5.1'
+
+    // RxPreferences
+    implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.1'
 
 }

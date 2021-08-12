@@ -103,7 +103,10 @@ class MSDCodeInput @JvmOverloads constructor(
         this.onCodeCompleteListener = onCodeCompleteListener
     }
 
-    fun setErrorState(){
+    fun setErrorState(error: String? = null){
+        if (error != null){
+            binding.errorTextView.text = error
+        }
         binding.errorTextView.visible()
         binding.clickProxyFrameLayout.visible()
         editTextViews.forEach {

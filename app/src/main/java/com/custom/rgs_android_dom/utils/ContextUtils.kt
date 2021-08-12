@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.utils
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
@@ -17,4 +18,14 @@ fun Context.vibratePhone() {
         vibrator.vibrate(200)
     }
 }
+
+
+fun Context.editSharedPrefs(name: String, action: (SharedPreferences.Editor) -> Unit) =
+    getSharedPrefs(name)
+        .edit()
+        .apply { action(this) }
+        .apply()
+
+fun Context.getSharedPrefs(name: String) =
+    getSharedPreferences(name, Context.MODE_PRIVATE)
 

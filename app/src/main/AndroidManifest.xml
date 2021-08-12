@@ -3,6 +3,8 @@
     package="com.custom.rgs_android_dom">
 
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".ui.App"
         android:allowBackup="true"

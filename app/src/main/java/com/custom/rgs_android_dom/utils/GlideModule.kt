@@ -21,7 +21,7 @@ import java.io.InputStream
 @GlideModule
 open class GlideModule : AppGlideModule() {
 
-    private val basicAuthInterceptor: BasicAuthInterceptor = BasicAuthInterceptor()
+    //private val basicAuthInterceptor: BasicAuthInterceptor = BasicAuthInterceptor()
     private val authTokenInterceptor: AuthTokenInterceptor = AuthTokenInterceptor()
 
     override fun applyOptions(context: Context, glideBuilder: GlideBuilder) {
@@ -38,7 +38,7 @@ open class GlideModule : AppGlideModule() {
 
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
         val okHttpClientBuilder = OkHttpClient.Builder()
-            .addInterceptor(basicAuthInterceptor)
+            //.addInterceptor(basicAuthInterceptor)
             .addInterceptor(authTokenInterceptor)
 
         if (BuildConfig.DEBUG) {
