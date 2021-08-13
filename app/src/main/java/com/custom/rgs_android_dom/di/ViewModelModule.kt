@@ -2,6 +2,8 @@ package com.custom.rgs_android_dom.di
 
 import com.custom.rgs_android_dom.ui.countries.CountriesViewModel
 import com.custom.rgs_android_dom.ui.demo.DemoViewModel
+import com.custom.rgs_android_dom.ui.main.MainViewModel
+import com.custom.rgs_android_dom.ui.profile.ProfileViewModel
 import com.custom.rgs_android_dom.ui.registration.code.RegistrationCodeViewModel
 import com.custom.rgs_android_dom.ui.registration.agreement.RegistrationAgreementViewModel
 import com.custom.rgs_android_dom.ui.registration.fill_profile.RegistrationFillProfileViewModel
@@ -18,4 +20,6 @@ val viewModelModule = module {
     viewModel { parameters-> RegistrationAgreementViewModel(phone = parameters.get(), registrationInteractor = get()) }
     viewModel { parameters-> RegistrationFillProfileViewModel(phone = parameters.get(), registrationInteractor = get()) }
     viewModel { parameters-> CountriesViewModel(selectedCountryLetterCode = parameters.get(), countriesInteractor = get())}
+    viewModel { ProfileViewModel() }
+    viewModel { MainViewModel() }
 }

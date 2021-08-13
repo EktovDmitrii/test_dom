@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="primary700">#DE9B3E</color>
     <color name="primary600">#E59423</color>
     <color name="primary500">#EEA641</color>
+    <color name="primary400">#EDA641</color>
     <color name="primary100">#FDF4E8</color>
     <color name="secondary900">#20201F</color>
     <color name="secondary800">#3B3B3A</color>
@@ -14,10 +16,13 @@
     <color name="secondary100">#F3F5F7</color>
     <color name="success500">#51CD9D</color>
     <color name="error500">#FF6868</color>
+    <color name="error600">#D45054</color>
     <color name="white">#FFFFFF</color>
     <color name="secondary900_alpha20">#3220201F</color>
     <color name="secondary900_alpha50">#1F20201F</color>
     <color name="secondary900_alpha56">#8F20201F</color>
+    <color name="secondary900_alpha64">#A320201F</color>
+    <color name="error600_alpha12">#1FD45054</color>
     <color name="secondary_default">#7D7E7E</color>
     <!-- TODO This is temorary name -->
     <color name="primary_200">#33F6A636</color>
