@@ -115,7 +115,7 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB: ViewBinding>(
 
         behavior.isFitToContents = false
         behavior.expandedOffset = topMargin
-        behavior.halfExpandedRatio = 0.867f
+        behavior.halfExpandedRatio = 0.89f
 
         if (isFullScreen){
             behavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -154,8 +154,8 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB: ViewBinding>(
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 if (newState == BottomSheetBehavior.STATE_EXPANDED || newState == BottomSheetBehavior.STATE_HALF_EXPANDED){
                     //Log.d("MyLog", "Set to 0.87")
-                        Log.d("MyLog", "FROM HALF TO TOP")
-                    behavior.halfExpandedRatio = 0.87f
+                    behavior.halfExpandedRatio = 0.89f
+                    slideStateListener(SlideState.TOP)
                     //setBottomSheetTopMargin(topMargin.pxToDp(requireContext()), bottomSheet)
                     //behavior.expandedOffset = topMargin
                 } else  {
@@ -173,13 +173,9 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB: ViewBinding>(
                     behavior.halfExpandedRatio = 0.9137f
                 }
 
-                if (slideOffset == 1.0f){
-                    slideStateListener(SlideState.TOP)
-                } else if (slideOffset <=0.75f && slideOffset > 0.5f){
-                    slideStateListener(SlideState.QUARTER_HEIGHT_TOP)
-                } else if (slideOffset < 0.5f && slideOffset > 0.0f){
+                if (slideOffset < 0.3f && slideOffset > 0.0f){
                     slideStateListener(SlideState.QUARTER_HEIGHT_BOTTOM)
-                } else {
+                } else if (slideOffset == 0.0f) {
                     slideStateListener(SlideState.BOTTOM)
                 }
             }
@@ -194,5 +190,5 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB: ViewBinding>(
         bottomSheet.layoutParams = layoutParams
     }
 
-    enum class SlideState {TOP, QUARTER_HEIGHT_BOTTOM, BOTTOM, QUARTER_HEIGHT_TOP}
+    enum class SlideState {TOP, QUARTER_HEIGHT_BOTTOM, BOTTOM}
 }

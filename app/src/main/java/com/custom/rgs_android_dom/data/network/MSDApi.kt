@@ -4,15 +4,14 @@ import com.custom.rgs_android_dom.data.network.data_adapters.NetworkException
 import com.custom.rgs_android_dom.data.network.error.MSDNetworkError
 import com.custom.rgs_android_dom.data.network.requests.LoginRequest
 import com.custom.rgs_android_dom.data.network.requests.GetCodeRequest
+import com.custom.rgs_android_dom.data.network.requests.UpdateClientRequest
 import com.custom.rgs_android_dom.data.network.responses.AuthResponse
+import com.custom.rgs_android_dom.data.network.responses.ClientResponse
 import com.custom.rgs_android_dom.data.network.responses.GetCodeResponse
 import com.custom.rgs_android_dom.data.network.responses.TokenResponse
 import io.reactivex.Completable
 import io.reactivex.Single
-import retrofit2.http.Body
-import retrofit2.http.Header
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 import kotlin.reflect.KClass
 
 @Retention(AnnotationRetention.RUNTIME)
@@ -43,5 +42,13 @@ interface MSDApi {
     @POST("auth/token/refresh")
     @ErrorType(MSDNetworkError::class)
     fun postRefreshToken(@Header("Authorization") refreshToken: String): Single<TokenResponse>
+
+    @POST("clients/{clientId}")
+    @ErrorType(MSDNetworkError::class)
+    fun postGetClient(@Path("clientId") clientId: String): Single<ClientResponse>
+
+    @PUT("clients/{clientId}")
+    @ErrorType(MSDNetworkError::class)
+    fun putClient(@Path("clientId") clientId: String, @Body body: UpdateClientRequest): Single<ClientResponse>
 
 }
