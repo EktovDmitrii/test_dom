@@ -16,6 +16,6 @@ val viewModelModule = module {
     viewModel { SplashViewModel() }
     viewModel { DemoViewModel() }
     viewModel { parameters-> RegistrationAgreementViewModel(phone = parameters.get(), registrationInteractor = get()) }
-    viewModel { parameters-> RegistrationFillProfileViewModel(phone = parameters.get(), registrationInteractor = get()) }
+    viewModel { parameters-> RegistrationFillProfileViewModel(phone = parameters.get(), profileInteractor = get()) }
     viewModel { parameters-> CountriesViewModel(selectedCountryLetterCode = parameters.get(), countriesInteractor = get())}
 }

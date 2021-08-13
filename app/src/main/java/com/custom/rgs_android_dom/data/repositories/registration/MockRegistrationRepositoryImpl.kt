@@ -6,9 +6,15 @@ import io.reactivex.Single
 import org.joda.time.LocalDate
 import java.util.*
 
-class MockRegistrationRepositoryImpl(private val api: MyServiceDomApi) : RegistrationRepository {
+class MockRegistrationRepositoryImpl : RegistrationRepository {
+
+    private var phone: String = "78888888888"
+    override fun getCurrentPhone(): String {
+        return phone
+    }
 
     override fun sendPhone(phone: String): Single<Boolean> {
+        this.phone = phone
         return Single.fromCallable {
             Thread.sleep(2000)
             if (phone.endsWith("9")){
@@ -49,7 +55,6 @@ class MockRegistrationRepositoryImpl(private val api: MyServiceDomApi) : Registr
     }
 
     override fun updateProfile(
-        phone: String,
         name: String?,
         surname: String?,
         birthday: LocalDate?,

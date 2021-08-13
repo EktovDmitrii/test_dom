@@ -7,6 +7,7 @@ import android.view.ViewTreeObserver
 import androidx.core.view.isVisible
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentRegistrationFillProfileBinding
+import com.custom.rgs_android_dom.domain.registration.ProfileField
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -32,6 +33,8 @@ class RegistrationFillProfileFragment : BaseFragment<RegistrationFillProfileView
         }
     }
 
+    private var processedUpdateProfile = false
+
     private val scrollChangedListener = ViewTreeObserver.OnScrollChangedListener {
         val scrollBounds = Rect()
         binding.contentNestedScrollView.getHitRect(scrollBounds)
@@ -44,6 +47,8 @@ class RegistrationFillProfileFragment : BaseFragment<RegistrationFillProfileView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.init()
 
         binding.knowAgentCodeTextView.setOnDebouncedClickListener {
             viewModel.onKnowAgentCodeClick()
@@ -75,10 +80,12 @@ class RegistrationFillProfileFragment : BaseFragment<RegistrationFillProfileView
 
         binding.surnameEditText.addTextWatcher {
             viewModel.onSurnameChanged(it)
+            binding.surnameEditText.setState(MSDLabelEditText.State.NORMAL)
         }
 
         binding.nameEditText.addTextWatcher {
             viewModel.onNameChanged(it)
+            binding.nameEditText.setState(MSDLabelEditText.State.NORMAL)
         }
 
         binding.genderSelector.setGenderSelectedListener {
@@ -86,60 +93,60 @@ class RegistrationFillProfileFragment : BaseFragment<RegistrationFillProfileView
         }
 
         binding.birthdayEditText.addOnTextChangedListener { birthday, isMaskFilled ->
-            if (birthday.isEmpty()){
-                binding.birthdayEditText.setState(MSDLabelIconEditText.State.NORMAL)
-            }
             viewModel.onBirthdayChanged(birthday, isMaskFilled)
+            binding.birthdayEditText.setState(MSDLabelIconEditText.State.NORMAL)
         }
 
         binding.agentCodeEditText.addTextWatcher {agentCode->
-            if (agentCode.isEmpty()){
-                binding.agentCodeEditText.setState(MSDLabelEditText.State.NORMAL)
-            }
             viewModel.onAgentCodeChanged(agentCode)
+            binding.agentCodeEditText.setState(MSDLabelEditText.State.NORMAL)
         }
 
         binding.agentPhoneEditText.addOnTextChangedListener { agentPhone, isMaskFilled ->
-            if (agentPhone.isEmpty()){
-                binding.agentPhoneEditText.setState(MSDMaskedLabelEditText.State.NORMAL)
-            }
             viewModel.onAgentPhoneChanged(agentPhone, isMaskFilled)
+            binding.agentPhoneEditText.setState(MSDMaskedLabelEditText.State.NORMAL)
         }
 
-        subscribe(viewModel.isAgentInfoLinearLayoutVisibleObserver){
-            binding.agentInfoLinearLayout.isVisible = it
-        }
+        subscribe(viewModel.profileViewStateObserver){
+            binding.agentInfoLinearLayout.isVisible = it.isOpenCodeAgendFields
 
-        subscribe(viewModel.knowAgentCodeTextObserver){
-            binding.knowAgentCodeTextView.text = it
+            val knowAgentCodeText = if (it.isOpenCodeAgendFields) "Свернуть информацию об агенте"
+            else "Знаю код агента"
+            binding.knowAgentCodeTextView.text = knowAgentCodeText
+
+            binding.agentCodeEditText.setText(it.agentCode ?: "")
+            if (it.agentCode.isNullOrEmpty()){
+                binding.agentCodeEditText.setState(MSDLabelEditText.State.NORMAL)
+            }
+
+            binding.nameEditText.setText(it.name ?: "")
+            if (it.name.isNullOrEmpty()){
+                binding.nameEditText.setState(MSDLabelEditText.State.NORMAL)
+            }
+
+            binding.surnameEditText.setText(it.surname ?: "")
+            if (it.surname.isNullOrEmpty()){
+                binding.surnameEditText.setState(MSDLabelEditText.State.NORMAL)
+            }
+
+            binding.birthdayEditText.setText(it.birthday?.formatTo() ?: "")
+            if (it.birthday == null){
+                binding.birthdayEditText.setState(MSDLabelIconEditText.State.NORMAL)
+            }
         }
 
         subscribe(viewModel.isSaveTextViewEnabledObserver){
             binding.saveTextView.isEnabled = it
         }
 
-        subscribe(viewModel.birthdayErrorObserver){
-            binding.birthdayEditText.setState(MSDLabelIconEditText.State.ERROR)
-        }
-
-        subscribe(viewModel.agentPhoneErrorObserver){
-            binding.agentPhoneEditText.setState(MSDMaskedLabelEditText.State.ERROR)
-        }
-
-        subscribe(viewModel.agentCodeErrorObserver){
-            binding.agentCodeEditText.setState(MSDLabelEditText.State.ERROR)
-        }
-
-        subscribe(viewModel.resetBirthdayEditTextStateObserver){
-            binding.birthdayEditText.setState(MSDLabelIconEditText.State.NORMAL)
-        }
-
-        subscribe(viewModel.resetAgentCodeEditTextStateObserver){
-            binding.agentCodeEditText.setState(MSDLabelEditText.State.NORMAL)
-        }
-
-        subscribe(viewModel.resetAgentPhoneEditTextStateObserver){
-            binding.agentPhoneEditText.setState(MSDMaskedLabelEditText.State.NORMAL)
+        subscribe(viewModel.validateExceptionObserver){
+            when(it.field){
+                ProfileField.BIRTHDATE -> binding.birthdayEditText.setState(MSDLabelIconEditText.State.ERROR)
+                ProfileField.NAME -> binding.nameEditText.setState(MSDLabelEditText.State.ERROR)
+                ProfileField.SURNAME -> binding.surnameEditText.setState(MSDLabelEditText.State.ERROR)
+                ProfileField.AGENTCODE -> binding.agentCodeEditText.setState(MSDLabelEditText.State.ERROR)
+                ProfileField.AGENTPHONE -> binding.agentPhoneEditText.setState(MSDMaskedLabelEditText.State.ERROR)
+            }
         }
     }
 

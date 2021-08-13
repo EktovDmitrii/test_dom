@@ -11,5 +11,5 @@ val dataModule = module {
 
     single { DemoRepository() }
     single <CountriesRepository> { MockCountriesRepositoryImpl(api = get()) }
-    single <RegistrationRepository> { MockRegistrationRepositoryImpl(api = get()) }
+    single <RegistrationRepository> { MockRegistrationRepositoryImpl() }
 }
