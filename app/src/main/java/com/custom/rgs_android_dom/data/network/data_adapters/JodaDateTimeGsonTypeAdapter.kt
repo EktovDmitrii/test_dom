@@ -10,6 +10,7 @@ class JodaDateTimeGsonTypeAdapter : TypeAdapter<DateTime>() {
 
     companion object {
         private const val PATTERN_DATE_TIME = "yyyy-MM-dd'T'HH:mm:ssZZ"
+        private const val PATTERN_DATE_TIME_MILLIS = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"
     }
 
     override fun write(out: JsonWriter, value: DateTime) {
@@ -18,7 +19,11 @@ class JodaDateTimeGsonTypeAdapter : TypeAdapter<DateTime>() {
 
     override fun read(jsonReader: JsonReader): DateTime {
         val str = jsonReader.nextString()
-        return DateTime.parse(str, DateTimeFormat.forPattern(PATTERN_DATE_TIME))
+        return try{
+            DateTime.parse(str, DateTimeFormat.forPattern(PATTERN_DATE_TIME))
+        } catch (e: Exception){
+            DateTime.parse(str, DateTimeFormat.forPattern(PATTERN_DATE_TIME_MILLIS))
+        }
     }
 }
 

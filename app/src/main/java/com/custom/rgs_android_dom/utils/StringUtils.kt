@@ -18,3 +18,7 @@ fun String.tryParseDate(
         null
     }
 
+fun String.formatPhoneForApi(): String {
+    return this.replace("+", "").replace(" ", "").replace("-", "")
+}
+
