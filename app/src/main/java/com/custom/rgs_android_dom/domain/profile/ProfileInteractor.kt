@@ -30,6 +30,7 @@ class ProfileInteractor(private val registrationRepository: RegistrationReposito
         agentPhone: String?
     ): Single<Boolean> {
         return registrationRepository.updateProfile(name, surname, birthday, gender, agentCode, agentPhone)
+            .doOnSuccess { profileStateSubject.accept(profileViewState) }
     }
 
     fun onKnowAgentCodeClick(){
@@ -42,8 +43,8 @@ class ProfileInteractor(private val registrationRepository: RegistrationReposito
                 profileViewState.surname != null ||
                 profileViewState.gender != null ||
                 profileViewState.birthday != null ||
-                profileViewState.agentCode?.length == 12 ||
-                isAgentPhoneCorrect)
+                profileViewState.agentCode != null ||
+                isAgentPhoneCorrect())
     }
 
     fun updateProfile(): Single<Boolean> {
@@ -58,11 +59,11 @@ class ProfileInteractor(private val registrationRepository: RegistrationReposito
             }
         }
 
-        if (profileViewState.agentCode != null && profileViewState.agentPhone == null || profileViewState.agentCode != null && profileViewState.agentPhone != null && isAgentPhoneCorrect){
+        if (profileViewState.agentCode != null && profileViewState.agentPhone == null || profileViewState.agentCode != null && profileViewState.agentPhone != null && !isAgentPhoneCorrect()){
             return Single.error(ValidateProfileException(ProfileField.AGENTPHONE, "Укажите телефон агента"))
         }
 
-        if (profileViewState.agentCode == null && isAgentPhoneCorrect){
+        if (profileViewState.agentCode == null && isAgentPhoneCorrect()){
             return Single.error(ValidateProfileException(ProfileField.AGENTCODE, "Укажите код агента"))
         }
 
@@ -134,6 +135,8 @@ class ProfileInteractor(private val registrationRepository: RegistrationReposito
         ))
     }
 
-    val isAgentPhoneCorrect = profileViewState.agentPhoneValid && profileViewState.agentPhone != null
+    fun isAgentPhoneCorrect(): Boolean {
+        return profileViewState.agentPhoneValid && profileViewState.agentPhone != null
+    }
 
 }

@@ -3,6 +3,11 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
+
+    testOptions {
+        unitTests.includeAndroidResources true
+    }
+
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 

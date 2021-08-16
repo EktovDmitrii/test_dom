@@ -1,6 +1,8 @@
 package com.custom.rgs_android_dom.domain.registration
 
-class ValidateProfileException(val field: ProfileField, message: String): Exception(message)
+import java.lang.RuntimeException
+
+class ValidateProfileException(val field: ProfileField, message: String): RuntimeException(message)
 
 enum class ProfileField{
     NAME,

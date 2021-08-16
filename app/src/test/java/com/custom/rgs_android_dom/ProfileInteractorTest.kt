@@ -1,28 +1,29 @@
 package com.custom.rgs_android_dom
 
-import android.content.Context
+import android.os.Build
 import com.custom.rgs_android_dom.data.repositories.registration.MockRegistrationRepositoryImpl
-import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepository
 import com.custom.rgs_android_dom.domain.profile.ProfileInteractor
 import com.custom.rgs_android_dom.domain.profile.models.Gender
 import com.custom.rgs_android_dom.domain.registration.ProfileViewState
+import com.custom.rgs_android_dom.domain.registration.ValidateProfileException
 import net.danlew.android.joda.JodaTimeAndroid
-
 import org.joda.time.LocalDate
+import org.junit.After
+import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-import org.koin.core.context.startKoin
-import org.koin.dsl.module
-import org.junit.Assert.assertEquals
-import org.koin.android.ext.koin.androidContext
-import org.mockito.Mockito.mock
+import org.junit.runner.RunWith
+import org.koin.core.context.GlobalContext.stopKoin
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
+import org.robolectric.annotation.Config
 
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [Build.VERSION_CODES.O_MR1])
+class ProfileInteractorTest {
 
-class ProfileInteractorTest: KoinComponent {
-
-    companion object{
+    companion object {
         val NAME = "ИВАН"
         val SURNAME = "ИВАНОВ"
         val BIRTHDATE = LocalDate(2002, 10, 3)
@@ -32,57 +33,139 @@ class ProfileInteractorTest: KoinComponent {
         val PHONEAGENT = "79044961128"
     }
 
+    lateinit var profileInteractor: ProfileInteractor
+
     @Before
-    fun init(){
-        JodaTimeAndroid.init(mock(Context::class.java))
-        startKoin {
-            androidContext(mock(Context::class.java))
-            modules(
-                module {
-                    single<RegistrationRepository> { MockRegistrationRepositoryImpl() }
-                    factory { ProfileInteractor(registrationRepository = get()) }
-                }
-            )
-        }
+    fun init() {
+        val context = RuntimeEnvironment.systemContext
+        JodaTimeAndroid.init(context)
+
+        profileInteractor =
+            ProfileInteractor(registrationRepository = MockRegistrationRepositoryImpl())
 
         profileInteractor.profileStateSubject.hide()
-            .subscribe { profileViewState = it }
+            .subscribe {
+                profileViewState = it
+            }
 
         profileInteractor.validateSubject.hide()
-            .subscribe { isValidate = it  }
+            .subscribe { isValidate = it }
+    }
+
+    @After
+    fun tearDown() {
+        stopKoin()
     }
 
     private var profileViewState = ProfileViewState("")
     private var isValidate = false
 
-    private val profileInteractor: ProfileInteractor by inject()
-
 
     @Test
-    fun updateProfileTest(){
+    fun updateProfileTest() {
         profileInteractor.onSurnameChanged(SURNAME)
-        assertEquals(SURNAME,profileViewState.surname)
+        profileInteractor.onNameChanged(NAME)
+        profileInteractor.onBirthdayChanged(BIRTHDATESTR, true)
+        profileInteractor.onAgentCodeChanged(AGENTCODE)
+        profileInteractor.onAgentPhoneChanged(PHONEAGENT, true)
+        profileInteractor.onGenderSelected(GENDER)
+        profileInteractor.updateProfile().blockingGet()
+
+        assertEquals(GENDER, profileViewState.gender)
+
+        assertEquals(SURNAME, profileViewState.surname)
+        assertEquals(NAME, profileViewState.name)
+        assertEquals(BIRTHDATE, profileViewState.birthday)
+        assertEquals(AGENTCODE, profileViewState.agentCode)
+        assertEquals(PHONEAGENT, profileViewState.agentPhone)
+        assertEquals(GENDER, profileViewState.gender)
+    }
+
+    @Test
+    fun validateProfileSurnameTest() {
+        profileInteractor.onSurnameChanged(SURNAME)
+        assertEquals(isValidate, true)
+        profileInteractor.onSurnameChanged("")
+        assertEquals(isValidate, false)
+    }
+
+    @Test
+    fun validateProfileNameTest() {
 
         profileInteractor.onNameChanged(NAME)
-        assertEquals(NAME,profileViewState.name)
+        assertEquals(isValidate, true)
+        profileInteractor.onNameChanged("")
+        assertEquals(isValidate, false)
 
-        profileInteractor.onBirthdayChanged(BIRTHDATESTR,true)
-        assertEquals(BIRTHDATE, profileViewState.birthday)
+    }
 
+    @Test
+    fun validateProfileBirthdayTest() {
+        profileInteractor.onBirthdayChanged(BIRTHDATESTR, true)
+        assertEquals(isValidate, true)
+        profileInteractor.onBirthdayChanged(BIRTHDATESTR, false)
+        assertEquals(isValidate, false)
+        profileInteractor.onBirthdayChanged("", true)
+        assertEquals(isValidate, false)
+    }
+
+    @Test
+    fun validateProfileAgentCodeTest() {
         profileInteractor.onAgentCodeChanged(AGENTCODE)
-        assertEquals(AGENTCODE, profileViewState.agentCode)
+        assertEquals(isValidate, true)
+        profileInteractor.onAgentCodeChanged("")
+        assertEquals(isValidate, false)
+    }
 
+    @Test
+    fun validateProfileAgentPhoneTest() {
         profileInteractor.onAgentPhoneChanged(PHONEAGENT, true)
-        assertEquals(PHONEAGENT, profileViewState.phone)
+        assertEquals(isValidate, true)
+        profileInteractor.onAgentPhoneChanged(PHONEAGENT, false)
+        assertEquals(isValidate, false)
+        profileInteractor.onAgentPhoneChanged("",false)
+        assertEquals(isValidate, false)
 
         profileInteractor.onGenderSelected(GENDER)
-        assertEquals(GENDER, profileViewState.gender)
+        assertEquals(isValidate, true)
+    }
 
-        assertEquals(SURNAME,profileViewState.surname)
-        assertEquals(NAME,profileViewState.name)
-        assertEquals(BIRTHDATE, profileViewState.birthday)
-        assertEquals(AGENTCODE, profileViewState.agentCode)
-        assertEquals(PHONEAGENT, profileViewState.phone)
-        assertEquals(GENDER, profileViewState.gender)
+    @Test
+    fun validateProfileGenderTest() {
+        profileInteractor.onGenderSelected(GENDER)
+        assertEquals(isValidate, true)
+    }
+
+    @Test
+    fun saveProfileTest(){
+        profileInteractor.onAgentCodeChanged(AGENTCODE)
+        try {
+            profileInteractor.updateProfile().blockingGet()
+            Assert.fail()
+        } catch (e: ValidateProfileException){
+            Assert.assertTrue(true)
+        } catch (e: Exception){
+            Assert.assertTrue(false)
+        }
+
+        profileInteractor.onAgentCodeChanged("")
+        profileInteractor.onAgentPhoneChanged(PHONEAGENT, true)
+        try {
+            profileInteractor.updateProfile().blockingGet()
+            Assert.fail()
+        } catch (e: ValidateProfileException){
+            Assert.assertTrue(true)
+        } catch (e: Exception){
+            Assert.assertTrue(false)
+        }
+
+        profileInteractor.onAgentCodeChanged(AGENTCODE)
+        profileInteractor.onAgentPhoneChanged(PHONEAGENT, true)
+        try {
+            profileInteractor.updateProfile().blockingGet()
+            Assert.assertTrue(true)
+        } catch (e: Exception){
+            Assert.fail()
+        }
     }
 }
