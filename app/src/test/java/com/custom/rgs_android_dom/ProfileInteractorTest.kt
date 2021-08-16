@@ -4,7 +4,7 @@ import android.os.Build
 import com.custom.rgs_android_dom.data.repositories.registration.MockRegistrationRepositoryImpl
 import com.custom.rgs_android_dom.domain.profile.ProfileInteractor
 import com.custom.rgs_android_dom.domain.profile.models.Gender
-import com.custom.rgs_android_dom.domain.registration.ProfileViewState
+import com.custom.rgs_android_dom.domain.profile.ProfileViewState
 import com.custom.rgs_android_dom.domain.registration.ValidateProfileException
 import net.danlew.android.joda.JodaTimeAndroid
 import org.joda.time.LocalDate

@@ -3,11 +3,9 @@ package com.custom.rgs_android_dom.domain.profile
 import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepository
 import com.custom.rgs_android_dom.domain.profile.models.Gender
 import com.custom.rgs_android_dom.domain.registration.ProfileField
-import com.custom.rgs_android_dom.domain.registration.ProfileViewState
 import com.custom.rgs_android_dom.domain.registration.ValidateProfileException
 import com.custom.rgs_android_dom.utils.tryParseDate
 import com.jakewharton.rxrelay2.BehaviorRelay
-import io.reactivex.Completable
 import io.reactivex.Single
 import org.joda.time.LocalDate
 

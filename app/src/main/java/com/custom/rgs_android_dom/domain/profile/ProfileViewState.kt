@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.domain.registration
+package com.custom.rgs_android_dom.domain.profile
 
 import com.custom.rgs_android_dom.domain.profile.models.Gender
 import org.joda.time.LocalDate
@@ -15,7 +15,7 @@ data class ProfileViewState(
     val agentPhoneValid: Boolean = false,
     val isValidate: Boolean = false
 ){
-    fun onNameChanged(name: String): ProfileViewState{
+    fun onNameChanged(name: String): ProfileViewState {
         if (name.isNotEmpty()){
             return this.copy(name = name)
         } else {
