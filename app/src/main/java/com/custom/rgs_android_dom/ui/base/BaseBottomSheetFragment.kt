@@ -46,6 +46,11 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB: ViewBinding>(
         return R.style.BottomSheet
     }
 
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setWindowAnimations(-1)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog?.setCancelable(false)

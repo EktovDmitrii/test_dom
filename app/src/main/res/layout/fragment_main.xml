@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/primary400"
     android:orientation="vertical">
-    
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/toolbarLinearLayout"
         android:layout_width="match_parent"
