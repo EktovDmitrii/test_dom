@@ -23,11 +23,15 @@ class RegistrationRepositoryImpl(private val api: MSDApi,
 
     private val logout = BehaviorRelay.create<Unit>()
 
+    override fun getCurrentPhone(): String {
+        return authSharedPreferences.getPhone() ?: ""
+    }
+
     override fun getCode(phone: String): Single<String> {
         return api.postGetCode(GetCodeRequest(phone = phone.formatPhoneForApi()))
             .map {
                 it.token
-            }
+            }.doOnSubscribe { authSharedPreferences.savePhone(phone) }
     }
 
     override fun login(phone: String, code: String, token: String): Single<Boolean> {
@@ -82,7 +86,6 @@ class RegistrationRepositoryImpl(private val api: MSDApi,
     }
 
     override fun updateProfile(
-        phone: String,
         name: String?,
         surname: String?,
         birthday: LocalDate?,

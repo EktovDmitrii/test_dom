@@ -7,8 +7,6 @@ import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRep
 import org.koin.dsl.module
 
 val dataModule = module {
-
     single { DemoRepository() }
-    single <CountriesRepository> { MockCountriesRepositoryImpl(api = get()) }
     single <RegistrationRepository> { RegistrationRepositoryImpl(api = get(), authSharedPreferences = get()) }
 }

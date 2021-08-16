@@ -12,7 +12,6 @@ interface RegistrationRepository {
 
     fun getCurrentPhone(): String
 
-    fun sendPhone(phone: String): Single<Boolean>
     fun getCode(phone: String): Single<String>
 
     fun login(phone: String, code: String, token: String): Single<Boolean>
