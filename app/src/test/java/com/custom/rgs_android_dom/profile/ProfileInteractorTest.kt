@@ -1,7 +1,6 @@
-package com.custom.rgs_android_dom
+package com.custom.rgs_android_dom.profile
 
 import android.os.Build
-import com.custom.rgs_android_dom.data.repositories.registration.MockRegistrationRepositoryImpl
 import com.custom.rgs_android_dom.domain.profile.ProfileInteractor
 import com.custom.rgs_android_dom.domain.profile.models.Gender
 import com.custom.rgs_android_dom.domain.profile.ProfileViewState
@@ -18,6 +17,8 @@ import org.koin.core.context.GlobalContext.stopKoin
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
+
+
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [Build.VERSION_CODES.O_MR1])

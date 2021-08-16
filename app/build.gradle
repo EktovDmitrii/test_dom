@@ -130,7 +130,6 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
     implementation "io.reactivex.rxjava2:rxkotlin:2.4.0"
     implementation "com.jakewharton.rxrelay2:rxrelay:2.1.1"
-    testImplementation 'junit:junit:4.12'
 
     // Glide
     def glide_version = "4.11.0"
@@ -153,7 +152,7 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
     // Room
-    def room_version = "2.2.6"
+    def room_version = "2.3.0"
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-rxjava2:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
@@ -166,7 +165,7 @@ dependencies {
     implementation "ru.tinkoff.scrollingpagerindicator:scrollingpagerindicator:1.0.6"
 
     // data binding
-    annotationProcessor "com.android.databinding:compiler:3.1.2"
+    annotationProcessor "com.android.databinding:compiler:3.1.4"
 
     //Input mask
     implementation "com.redmadrobot:input-mask-android:6.0.0"
@@ -183,5 +182,7 @@ dependencies {
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
     testImplementation 'org.robolectric:robolectric:4.3'
     testImplementation "com.squareup.retrofit2:retrofit-mock:$retrofit_version"
+    testImplementation 'androidx.test:runner:1.4.0'
+    testImplementation 'androidx.test:rules:1.4.0'
 
 }

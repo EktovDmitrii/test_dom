@@ -1,5 +1,7 @@
-package com.custom.rgs_android_dom.data.repositories.registration
+package com.custom.rgs_android_dom.profile
 
+
+import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepository
 import com.custom.rgs_android_dom.domain.profile.models.Gender
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Completable
@@ -11,11 +13,11 @@ import java.util.*
 
 class MockRegistrationRepositoryImpl : RegistrationRepository {
 
-    companion object{
-        val MOCK_TOKEN = "MOCK_TOKEN"
-    }
-
     private var phone: String = "78888888888"
+    private var currentToken: String? = null
+    private var currentRefreshToken: String? = null
+    private var currentClientId: String? = null
+
     override fun getCurrentPhone(): String {
         return phone
     }
@@ -59,11 +61,13 @@ class MockRegistrationRepositoryImpl : RegistrationRepository {
     }
 
     override fun getAuthToken(): String? {
-        return MOCK_TOKEN
+        return currentToken
     }
 
     override fun logout(): Completable {
-        TODO("Not yet implemented")
+        currentToken = null
+        currentRefreshToken = null
+        return Completable.complete()
     }
 
     override fun getLogoutSubject(): BehaviorRelay<Unit> {
@@ -71,11 +75,12 @@ class MockRegistrationRepositoryImpl : RegistrationRepository {
     }
 
     override fun getClientId(): String? {
-        TODO("Not yet implemented")
+        return currentClientId
     }
 
     override fun refreshToken(refreshToken: String): Completable {
-        TODO("Not yet implemented")
+        currentRefreshToken = refreshToken
+        return Completable.complete()
     }
 
     override fun getRefreshTokenExpiresAt(): DateTime? {
@@ -83,11 +88,12 @@ class MockRegistrationRepositoryImpl : RegistrationRepository {
     }
 
     override fun deleteTokens() {
-        TODO("Not yet implemented")
+        currentToken = null
+        currentRefreshToken = null
     }
 
     override fun getRefreshToken(): String? {
-        TODO("Not yet implemented")
+        return currentRefreshToken
     }
 
 }
