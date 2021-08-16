@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.ui.registration.phone
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.custom.rgs_android_dom.data.network.toNetworkException
 import com.custom.rgs_android_dom.domain.countries.CountriesInteractor
 import com.custom.rgs_android_dom.domain.countries.model.CountryModel
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
@@ -9,13 +10,12 @@ import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.countries.CountriesFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
-import com.custom.rgs_android_dom.ui.navigation.ScreenScope
 import com.custom.rgs_android_dom.ui.registration.code.RegistrationCodeFragment
+import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import org.koin.core.component.inject
 
 class RegistrationPhoneViewModel(
     private val countriesInteractor: CountriesInteractor,
@@ -42,7 +42,7 @@ class RegistrationPhoneViewModel(
     }
 
     fun onNextClick(){
-        sendPhone(phone)
+        requestCode(phone)
     }
 
     fun onCloseClick(){
@@ -58,7 +58,7 @@ class RegistrationPhoneViewModel(
     fun onDoneClick(){
         val isNextTextViewEnabled = isNextTextViewEnabledObserver.value ?: false
         if (isNextTextViewEnabled){
-            sendPhone(phone)
+            requestCode(phone)
         }
     }
 
@@ -74,27 +74,30 @@ class RegistrationPhoneViewModel(
                 },
                 onError = {
                     //todo обработка ошибки
+                    logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
     }
 
-    private fun sendPhone(phone: String) {
-        registrationInteractor.sendPhone(phone)
+    private fun requestCode(phone: String) {
+        registrationInteractor.getCode(phone)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
                 loadingStateController.value = LoadingState.LOADING
                 phoneErrorController.value = ""
             }
-            .doOnSuccess { loadingStateController.value = LoadingState.CONTENT }
+            .doOnSuccess{ loadingStateController.value = LoadingState.CONTENT }
             .doOnError { loadingStateController.value = LoadingState.ERROR }
             .subscribeBy(
-                onSuccess = {
-                    ScreenManager.showScreenScope(RegistrationCodeFragment.newInstance(phone), REGISTRATION)
+                onSuccess = {token->
+                    ScreenManager.showScreenScope(RegistrationCodeFragment.newInstance(phone, token), REGISTRATION)
                 },
                 onError = {
                     //todo обработка ошибки
-                    phoneErrorController.value = "Проверьте, правильно ли вы ввели номер телефона"
+                    logException(this, it)
+                    val errorMessage = it.toNetworkException()?.message ?: "Проверьте, правильно ли вы ввели номер телефона"
+                    phoneErrorController.value = errorMessage
                 }
             ).addTo(dataCompositeDisposable)
     }
