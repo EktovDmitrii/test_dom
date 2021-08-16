@@ -21,10 +21,12 @@ class RegistrationCodeFragment : BaseFragment<RegistrationCodeViewModel, Fragmen
 
     companion object {
         private const val ARG_PHONE = "ARG_PHONE"
+        private const val ARG_TOKEN = "ARG_TOKEN"
 
-        fun newInstance(phone: String): RegistrationCodeFragment {
+        fun newInstance(phone: String, token: String): RegistrationCodeFragment {
             return RegistrationCodeFragment().args {
                 putString(ARG_PHONE, phone)
+                putString(ARG_TOKEN, token)
             }
         }
     }
@@ -56,7 +58,10 @@ class RegistrationCodeFragment : BaseFragment<RegistrationCodeViewModel, Fragmen
     }
 
     override fun getParameters(): ParametersDefinition = {
-        parametersOf(requireArguments().getString(ARG_PHONE))
+        parametersOf(
+            requireArguments().getString(ARG_PHONE),
+            requireArguments().getString(ARG_TOKEN)
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -99,7 +104,7 @@ class RegistrationCodeFragment : BaseFragment<RegistrationCodeViewModel, Fragmen
         }
 
         subscribe(viewModel.codeErrorObserver){
-            onCodeError()
+            onCodeError(it)
         }
 
         subscribe(viewModel.otcReceivedObserver){otc->
@@ -144,10 +149,10 @@ class RegistrationCodeFragment : BaseFragment<RegistrationCodeViewModel, Fragmen
         ScreenManager.closeScope(REGISTRATION)
     }
 
-    private fun onCodeError() {
+    private fun onCodeError(error: String) {
         requireContext().vibratePhone()
         binding.codeInput.isEnabled = true
-        binding.codeInput.setErrorState()
+        binding.codeInput.setErrorState(error)
         binding.countdownTextView.isEnabled = true
         binding.phoneTextView.isEnabled = true
         binding.resendCodeTextView.isEnabled = true
