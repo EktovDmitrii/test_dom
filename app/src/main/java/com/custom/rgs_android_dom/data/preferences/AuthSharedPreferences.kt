@@ -19,12 +19,22 @@ class AuthSharedPreferences(val context: Context) {
         private const val PREF_KEY_ACCESS_TOKEN = "PREF_KEY_ACCESS_TOKEN"
         private const val PREF_KEY_REFRESH_TOKEN = "PREF_KEY_REFRESH_TOKEN"
         private const val PREF_KEY_CLIENT_ID = "PREF_KEY_CLIENT_ID"
+        private const val PREF_KEY_PHONE = "PREF_KEY_PHONE"
         private const val PREF_KEY_REFRESH_TOKEN_EXPIRES_AT = "PREF_KEY_REFRESH_TOKEN_EXPIRES_AT"
     }
 
     private val preferences = context.getSharedPrefs(PREFS_NAME)
     private val rxPreferences = RxSharedPreferences.create(preferences)
 
+    fun savePhone(phone: String){
+        preferences.edit{
+            putString(PREF_KEY_PHONE, phone)
+        }
+    }
+
+    fun getPhone(): String? {
+        return preferences.getString(PREF_KEY_PHONE, null)
+    }
 
     fun saveAuth(authResponse: AuthResponse){
         preferences.edit{

@@ -10,13 +10,15 @@ import org.joda.time.LocalDate
 
 interface RegistrationRepository {
 
+    fun getCurrentPhone(): String
+
     fun getCode(phone: String): Single<String>
 
     fun login(phone: String, code: String, token: String): Single<Boolean>
 
     fun signOpd(clientId: String): Completable
 
-    fun updateProfile(phone: String, name: String?, surname: String?, birthday: LocalDate?, gender: Gender?, agentCode: String?, agentPhone: String?): Single<Boolean>
+    fun updateProfile(name: String?, surname: String?, birthday: LocalDate?, gender: Gender?, agentCode: String?, agentPhone: String?): Single<Boolean>
 
     fun getAuthToken(): String?
 
