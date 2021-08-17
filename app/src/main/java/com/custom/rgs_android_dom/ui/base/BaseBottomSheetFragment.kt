@@ -130,30 +130,29 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB: ViewBinding>(
         }
 
 
-//        getSwipeAnchor()?.let { swipeAnchor->
-//
-//            swipeAnchor.setOnTouchListener { view, motionEvent ->
-//                view.performClick()
-//
-//                when (motionEvent.action){
-//                    MotionEvent.ACTION_DOWN -> {
-//                        behavior.isDraggable = true
-//                    }
-//                    MotionEvent.ACTION_UP -> {
-//                        behavior.isDraggable = false
-//
-//                    }
-//                    MotionEvent.ACTION_CANCEL -> {
-//                        behavior.isDraggable = false
-//                    }
-//                }
-//                // We need to set at first screen coords and then pass them to our bottomsheet behavior
-//                motionEvent.setLocation(motionEvent.rawX, motionEvent.rawY)
-//                behavior.onTouchEvent(bottomSheet.parent as CoordinatorLayout, swipeAnchor, motionEvent)
-//                true
-//            }
-//        }
+        getSwipeAnchor()?.let { swipeAnchor->
 
+            swipeAnchor.setOnTouchListener { view, motionEvent ->
+                view.performClick()
+
+                when (motionEvent.action){
+                    MotionEvent.ACTION_DOWN -> {
+                        behavior.isDraggable = true
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        behavior.isDraggable = false
+
+                    }
+                    MotionEvent.ACTION_CANCEL -> {
+                        behavior.isDraggable = false
+                    }
+                }
+                // We need to set at first screen coords and then pass them to our bottomsheet behavior
+                motionEvent.setLocation(motionEvent.rawX, motionEvent.rawY)
+                behavior.onTouchEvent(bottomSheet.parent as CoordinatorLayout, swipeAnchor, motionEvent)
+                true
+            }
+        }
 
 
         behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
