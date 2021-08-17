@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.domain.client
 
 import android.util.Log
 import com.custom.rgs_android_dom.data.repositories.client.ClientRepository
+import com.custom.rgs_android_dom.data.repositories.countries.CountriesRepository
 import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepository
 import com.custom.rgs_android_dom.domain.client.models.Gender
 import com.custom.rgs_android_dom.utils.*
@@ -14,7 +15,8 @@ import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
 
 class ClientInteractor(private val clientRepository: ClientRepository,
-                       private val registrationRepository: RegistrationRepository
+                       private val registrationRepository: RegistrationRepository,
+                       private val countriesRepository: CountriesRepository
 ) {
 
     private val MIN_DATE = LocalDateTime.now().minusYears(16).plusDays(-1)
@@ -92,9 +94,6 @@ class ClientInteractor(private val clientRepository: ClientRepository,
                     logException(this, it)
                     birthday = null
                 }, format = PATTERN_DATE_TIME_MILLIS)
-
-                val stringPresentation = birthday?.formatTo(PATTERN_DATE_TIME_MILLIS)
-                Log.d("MyLog", "String presentation " + stringPresentation)
             }
             else -> {
                 birthday = null
@@ -127,7 +126,13 @@ class ClientInteractor(private val clientRepository: ClientRepository,
 
     fun getClient(): Single<ClientShortViewState>{
         return clientRepository.getClientFromCache().map {
-            clientShortViewState = clientShortViewState.copy(firstName = it.firstName, lastName = it.lastName, phone = it.phone)
+            val phoneMask = countriesRepository.getMaskForPhone(it.phone)
+
+            clientShortViewState = clientShortViewState.copy(
+                firstName = it.firstName,
+                lastName = it.lastName,
+                phone = it.phone.formatPhoneByMask(phoneMask, "#"))
+
             return@map clientShortViewState
         }.doOnSuccess {
             clientRepository.loadClient().subscribe()

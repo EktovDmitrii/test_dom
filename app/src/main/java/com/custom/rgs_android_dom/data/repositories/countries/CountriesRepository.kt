@@ -13,4 +13,6 @@ interface CountriesRepository {
     fun getSelectedCountrySubject(): BehaviorRelay<CountryModel>
 
     fun selectCountry(newCountry: CountryModel)
+
+    fun getMaskForPhone(phone: String): String
 }

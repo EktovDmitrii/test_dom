@@ -46,3 +46,10 @@ fun String.formatPhoneForApi(): String {
     return this.replace("+", "").replace(" ", "").replace("-", "")
 }
 
+fun String.formatPhoneByMask(mask: String, placeholder: String): String {
+    var formattedPhone = mask
+    this.forEach { number->
+        formattedPhone = formattedPhone.replaceFirst(placeholder, number.toString(), true)
+    }
+    return formattedPhone
+}
