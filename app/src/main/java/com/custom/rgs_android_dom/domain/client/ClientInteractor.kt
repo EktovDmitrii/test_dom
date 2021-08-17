@@ -1,22 +1,21 @@
 package com.custom.rgs_android_dom.domain.client
 
-import android.util.Log
 import com.custom.rgs_android_dom.data.repositories.client.ClientRepository
 import com.custom.rgs_android_dom.data.repositories.countries.CountriesRepository
 import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepository
 import com.custom.rgs_android_dom.domain.client.models.Gender
+import com.custom.rgs_android_dom.ui.client.ClientShortViewStateMapper
 import com.custom.rgs_android_dom.utils.*
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.rxkotlin.subscribeBy
-import org.joda.time.DateTime
-import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
 
-class ClientInteractor(private val clientRepository: ClientRepository,
-                       private val registrationRepository: RegistrationRepository,
-                       private val countriesRepository: CountriesRepository
+class ClientInteractor(
+    private val clientRepository: ClientRepository,
+    private val registrationRepository: RegistrationRepository,
+    private val countriesRepository: CountriesRepository
 ) {
 
     private val MIN_DATE = LocalDateTime.now().minusYears(16).plusDays(-1)
@@ -25,22 +24,17 @@ class ClientInteractor(private val clientRepository: ClientRepository,
     var fillClientStateSubject = BehaviorRelay.create<FillClientViewState>()
     var validateSubject = BehaviorRelay.create<Boolean>()
 
-    val clientShortStateSubject = BehaviorRelay.create<ClientShortViewState>()
+    private var fillClientViewState: FillClientViewState =
+        FillClientViewState(registrationRepository.getCurrentPhone())
 
-    private var fillClientViewState: FillClientViewState = FillClientViewState(registrationRepository.getCurrentPhone())
-    private var clientShortViewState = ClientShortViewState()
-
-    init {
-        subscribeClientUpdateSubject()
-    }
-
-    fun onKnowAgentCodeClick(){
-        fillClientViewState = fillClientViewState.copy(isOpenCodeAgendFields = !fillClientViewState.isOpenCodeAgendFields)
+    fun onKnowAgentCodeClick() {
+        fillClientViewState =
+            fillClientViewState.copy(isOpenCodeAgendFields = !fillClientViewState.isOpenCodeAgendFields)
         fillClientStateSubject.accept(fillClientViewState)
     }
 
     fun updateClient(): Completable {
-        fillClientViewState.birthday?.let { birthday->
+        fillClientViewState.birthday?.let { birthday ->
             if (!isBirthdayValid(birthday)) {
                 return Completable.error(
                     ValidateClientException(
@@ -51,16 +45,33 @@ class ClientInteractor(private val clientRepository: ClientRepository,
             }
         }
 
-        if (fillClientViewState.agentCode != null && fillClientViewState.agentPhone == null || fillClientViewState.agentCode != null && fillClientViewState.agentPhone != null && !isAgentPhoneCorrect()){
+        if (fillClientViewState.agentCode != null && fillClientViewState.agentPhone == null || fillClientViewState.agentCode != null && fillClientViewState.agentPhone != null && !isAgentPhoneCorrect()) {
 
-            return Completable.error(ValidateClientException(ProfileField.AGENTPHONE, "Укажите телефон агента"))
+            return Completable.error(
+                ValidateClientException(
+                    ProfileField.AGENTPHONE,
+                    "Укажите телефон агента"
+                )
+            )
         }
 
-        if (fillClientViewState.agentCode == null && isAgentPhoneCorrect()){
-            return Completable.error(ValidateClientException(ProfileField.AGENTCODE, "Укажите код агента"))
+        if (fillClientViewState.agentCode == null && isAgentPhoneCorrect()) {
+            return Completable.error(
+                ValidateClientException(
+                    ProfileField.AGENTCODE,
+                    "Укажите код агента"
+                )
+            )
         }
 
-        return updateClient(fillClientViewState.name, fillClientViewState.surname, fillClientViewState.birthday, fillClientViewState.gender, fillClientViewState.agentCode, fillClientViewState.agentPhone)
+        return updateClient(
+            fillClientViewState.name,
+            fillClientViewState.surname,
+            fillClientViewState.birthday,
+            fillClientViewState.gender,
+            fillClientViewState.agentCode,
+            fillClientViewState.agentPhone
+        )
     }
 
     fun onNameChanged(name: String) {
@@ -69,7 +80,7 @@ class ClientInteractor(private val clientRepository: ClientRepository,
     }
 
     fun onSurnameChanged(surname: String) {
-        if (surname.isNotEmpty()){
+        if (surname.isNotEmpty()) {
             fillClientViewState = fillClientViewState.copy(surname = surname)
         } else {
             fillClientViewState = fillClientViewState.copy(surname = null)
@@ -77,13 +88,13 @@ class ClientInteractor(private val clientRepository: ClientRepository,
         validateProfileState()
     }
 
-    fun onGenderSelected(gender: Gender){
+    fun onGenderSelected(gender: Gender) {
         fillClientViewState = fillClientViewState.copy(gender = gender)
         validateProfileState()
     }
 
-    fun onBirthdayChanged(birthdayString: String, isMaskFilled: Boolean){
-        var birthday : LocalDateTime? = null
+    fun onBirthdayChanged(birthdayString: String, isMaskFilled: Boolean) {
+        var birthday: LocalDateTime? = null
         when {
             birthdayString.isEmpty() -> {
                 birthday = null
@@ -103,8 +114,8 @@ class ClientInteractor(private val clientRepository: ClientRepository,
         validateProfileState()
     }
 
-    fun onAgentCodeChanged(agentCode: String){
-        if (agentCode.isEmpty()){
+    fun onAgentCodeChanged(agentCode: String) {
+        if (agentCode.isEmpty()) {
             fillClientViewState = fillClientViewState.copy(agentCode = null)
         } else {
             fillClientViewState = fillClientViewState.copy(agentCode = agentCode)
@@ -112,30 +123,26 @@ class ClientInteractor(private val clientRepository: ClientRepository,
         validateProfileState()
     }
 
-    fun onAgentPhoneChanged(agentPhone: String, isMaskFilled: Boolean){
+    fun onAgentPhoneChanged(agentPhone: String, isMaskFilled: Boolean) {
         when {
             agentPhone.isNullOrEmpty() -> {
                 fillClientViewState = fillClientViewState.copy(agentPhone = null)
             }
             else -> {
-                fillClientViewState = fillClientViewState.copy(agentPhone = agentPhone, agentPhoneValid = isMaskFilled)
+                fillClientViewState = fillClientViewState.copy(
+                    agentPhone = agentPhone,
+                    agentPhoneValid = isMaskFilled
+                )
             }
         }
         validateProfileState()
     }
 
-    fun getClient(): Single<ClientShortViewState>{
-        return clientRepository.getClientFromCache().map {
-            val phoneMask = countriesRepository.getMaskForPhone(it.phone)
-
-            clientShortViewState = clientShortViewState.copy(
-                firstName = it.firstName,
-                lastName = it.lastName,
-                phone = it.phone.formatPhoneByMask(phoneMask, "#"))
-
-            return@map clientShortViewState
+    fun getClient(): Single<ClientShortViewState> {
+        return clientRepository.getClient().map {
+            ClientShortViewStateMapper.from(it)
         }.doOnSuccess {
-            clientRepository.loadClient().subscribe()
+            CashHelper.loadAndSaveClient()
         }
     }
 
@@ -150,13 +157,15 @@ class ClientInteractor(private val clientRepository: ClientRepository,
         return fillClientViewState.agentPhoneValid && fillClientViewState.agentPhone != null
     }
 
-    private fun validateProfileState(){
-        validateSubject.accept(fillClientViewState.name != null ||
-                fillClientViewState.surname != null ||
-                fillClientViewState.gender != null ||
-                fillClientViewState.birthday != null ||
-                fillClientViewState.agentCode != null ||
-                isAgentPhoneCorrect())
+    private fun validateProfileState() {
+        validateSubject.accept(
+            fillClientViewState.name != null ||
+                    fillClientViewState.surname != null ||
+                    fillClientViewState.gender != null ||
+                    fillClientViewState.birthday != null ||
+                    fillClientViewState.agentCode != null ||
+                    isAgentPhoneCorrect()
+        )
     }
 
     private fun updateClient(
@@ -171,12 +180,12 @@ class ClientInteractor(private val clientRepository: ClientRepository,
             .doOnComplete { fillClientStateSubject.accept(fillClientViewState) }
     }
 
-    private fun subscribeClientUpdateSubject(){
-        clientRepository.getClientUpdatedSubject()
-            .subscribeBy {
-                clientShortViewState = clientShortViewState.copy(firstName = it.firstName, lastName = it.lastName, phone = it.phone)
-                clientShortStateSubject.accept(clientShortViewState)
+    fun subscribeClientUpdateSubject(): Observable<ClientShortViewState> {
+        return clientRepository.getClientUpdatedSubject()
+            .map {
+                ClientShortViewStateMapper.from(it)
             }
+
     }
 
 }

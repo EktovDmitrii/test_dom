@@ -34,41 +34,6 @@ class MockCountriesRepositoryImpl(private val api: MSDApi) : CountriesRepository
         selectedCountry.accept(newCountry)
     }
 
-    override fun getMaskForPhone(phone: String): String {
-        when {
-            phone.startsWith("994") -> {
-                return "+### ###-###-###"
-            }
-            phone.startsWith("375") -> {
-                return "+### ###-###-###"
-            }
-            phone.startsWith("374") -> {
-                return "+### ###-###-##"
-            }
-            phone.startsWith("7") -> {
-                return "+# ### ###-##-##"
-            }
-            phone.startsWith("996") -> {
-                return "+### ###-###-###"
-            }
-            phone.startsWith("373") -> {
-                return "+### ###-###-##"
-            }
-            phone.startsWith("992") -> {
-                return "+### ###-###-###"
-            }
-            phone.startsWith("998") -> {
-                return "+### ###-###-##"
-            }
-            phone.startsWith("380") -> {
-                return "+### ## ###-##-##"
-            }
-            else -> {
-                return "+# ### ###-##-##"
-            }
-        }
-    }
-
     companion object {
         private val flagsMap = mapOf<String, Int>(
             "AZ" to R.drawable.flag_az,
@@ -153,13 +118,15 @@ class MockCountriesRepositoryImpl(private val api: MSDApi) : CountriesRepository
             sortBy {
                 it.name
             }
-            add(0, CountryResponse(
-                id = 7,
-                name = "Россия",
-                letterCode = "RU",
-                numberCode = "+7",
-                mask = "+7 [000] [000]-[00]-[00]"
-            ))
+            add(
+                0, CountryResponse(
+                    id = 7,
+                    name = "Россия",
+                    letterCode = "RU",
+                    numberCode = "+7",
+                    mask = "+7 [000] [000]-[00]-[00]"
+                )
+            )
         }
     }
 

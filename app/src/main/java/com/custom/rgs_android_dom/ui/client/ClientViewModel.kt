@@ -12,16 +12,18 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
-class ClientViewModel(private val clientInteractor: ClientInteractor,
-                      private val registrationInteractor: RegistrationInteractor
+class ClientViewModel(
+    private val clientInteractor: ClientInteractor,
+    private val registrationInteractor: RegistrationInteractor
 ) : BaseViewModel() {
 
     private val clientShortViewStateController = MutableLiveData<ClientShortViewState>()
 
-    val clientShortViewStateObserver: LiveData<ClientShortViewState> = clientShortViewStateController
+    val clientShortViewStateObserver: LiveData<ClientShortViewState> =
+        clientShortViewStateController
 
     init {
-        clientInteractor.clientShortStateSubject.hide()
+        clientInteractor.subscribeClientUpdateSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
@@ -45,9 +47,10 @@ class ClientViewModel(private val clientInteractor: ClientInteractor,
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
+
     }
 
-    fun onLogoutClick(){
+    fun onLogoutClick() {
         registrationInteractor.logout()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
