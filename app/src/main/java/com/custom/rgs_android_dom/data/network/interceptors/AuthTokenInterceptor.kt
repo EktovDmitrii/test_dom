@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.data.network.interceptors
 
+import android.util.Log
 import com.custom.rgs_android_dom.data.network.error.MSDNetworkError
 import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepository
 import com.custom.rgs_android_dom.utils.logException
@@ -18,7 +19,7 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
     companion object {
         private const val AUTHORIZATION_HEADER = "Authorization"
         private const val AUTHORIZATION_BEARER = "Bearer"
-        private val ERROR_CODE_TOKEN_EXPIRED = arrayOf(401)
+        private val ERROR_CODE_TOKEN_EXPIRED = arrayOf("AUTH-016")
     }
 
     private val noAuthorizationPaths = listOf(
@@ -49,11 +50,10 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
                 // TODO Finally improve this after we will have all info about tokens and auth error codes
                 response.body.use { body ->
                     val responseString = body?.string() ?: ""
-                    val errorResponse = parseError(responseString)
+                    val errorResponse = parseError(responseString, response.code)
 
-                    if (errorResponse.code.toInt() in ERROR_CODE_TOKEN_EXPIRED) {
-
-                        registrationRepository.deleteTokens()
+                    if (errorResponse.code in ERROR_CODE_TOKEN_EXPIRED) {
+                        //registrationRepository.deleteTokens()
                         refreshToken()
 
                         return chain.proceed(
@@ -99,7 +99,10 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
     }
 
 
-    private fun parseError(errorResponse: String): MSDNetworkError {
+    private fun parseError(errorResponse: String, errorCode: Int): MSDNetworkError {
+        if (errorCode == 401){
+            return MSDNetworkError("AUTH-016", "token expired")
+        }
         return try {
             Gson().fromJson(errorResponse, MSDNetworkError::class.java)
         } catch (e: Exception) {

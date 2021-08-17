@@ -1,11 +1,10 @@
 package com.custom.rgs_android_dom.domain.registration
 
 import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepository
-import com.custom.rgs_android_dom.domain.profile.models.Gender
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Completable
 import io.reactivex.Single
-import org.joda.time.LocalDate
+import io.reactivex.subjects.PublishSubject
 
 class RegistrationInteractor(private val registrationRepository: RegistrationRepository){
 
@@ -29,20 +28,12 @@ class RegistrationInteractor(private val registrationRepository: RegistrationRep
         return registrationRepository.logout()
     }
 
-    fun getLogoutSubject(): BehaviorRelay<Unit>{
+    fun getLogoutSubject(): PublishSubject<Unit>{
         return registrationRepository.getLogoutSubject()
     }
 
-    fun updateProfile(
-        phone: String,
-        name: String?,
-        surname: String?,
-        birthday: LocalDate?,
-        gender: Gender?,
-        agentCode: String?,
-        agentPhone: String?
-    ): Single<Boolean> {
-        return registrationRepository.updateProfile(phone, name, surname, birthday, gender, agentCode, agentPhone)
+    fun isAuthorized(): Boolean {
+        return registrationRepository.isAuthorized()
     }
 
 }

@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.widget.RelativeLayout
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdGenderSelectorBinding
-import com.custom.rgs_android_dom.domain.profile.models.Gender
+import com.custom.rgs_android_dom.domain.client.models.Gender
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 
 class MSDGenderSelector @JvmOverloads constructor(

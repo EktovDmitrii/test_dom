@@ -4,37 +4,37 @@ import com.google.gson.annotations.SerializedName
 
 data class UpdateClientRequest(
     @SerializedName("agentCode")
-    val agentCode: String?,
+    val agentCode: String? = null,
 
     @SerializedName("agentPhone")
-    val agentPhone: String?,
+    val agentPhone: String? = null,
 
     @SerializedName("avatar")
-    val avatar: String?,
+    val avatar: String? = null,
 
     @SerializedName("birthdate")
-    val birthdate: String?,
+    val birthdate: String? = null,
 
     @SerializedName("email")
-    val email: String?,
+    val email: String? = null,
 
     @SerializedName("firstName")
-    val firstName: String?,
+    val firstName: String? = null,
 
     @SerializedName("lastName")
-    val lastName: String?,
+    val lastName: String? = null,
 
     @SerializedName("location")
-    val location: UpdateLocationRequest?,
+    val location: UpdateLocationRequest? = null,
 
     @SerializedName("middleName")
-    val middleName: String?,
+    val middleName: String? = null,
 
     @SerializedName("opdSignedAt")
-    val opdSignedAt: String?,
+    val opdSignedAt: String? = null,
 
     @SerializedName("sex")
-    val sex: String?
+    val sex: String? = null
 
 ) {
 

@@ -20,6 +20,7 @@ open class BaseViewModel : ViewModel(), KoinComponent {
         super.onCleared()
     }
 
+
     enum class LoadingState{
         LOADING,
         CONTENT,

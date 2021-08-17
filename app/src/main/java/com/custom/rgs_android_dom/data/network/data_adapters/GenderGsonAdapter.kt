@@ -1,6 +1,6 @@
 package com.custom.rgs_android_dom.data.network.data_adapters
 
-import com.custom.rgs_android_dom.domain.profile.models.Gender
+import com.custom.rgs_android_dom.domain.client.models.Gender
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter

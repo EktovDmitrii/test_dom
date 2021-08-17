@@ -97,7 +97,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/suisse_regular"
-                            android:text="Иван Иванов"
                             android:textColor="@color/secondary900"
                             android:textSize="16sp" />
 
@@ -107,7 +106,6 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/suisse_regular"
                             android:includeFontPadding="false"
-                            android:text="+7 475 918-33-29"
                             android:textColor="@color/secondary900_alpha64"
                             android:textSize="12sp" />
 
@@ -139,15 +137,15 @@
                     <com.custom.rgs_android_dom.views.text.MSDTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/suisse_regular"
-                        android:textSize="16sp"
-                        android:textColor="@color/error600"
-                        android:layout_toEndOf="@+id/logoutImageView"
-                        android:layout_marginStart="12dp"
                         android:layout_alignTop="@+id/logoutImageView"
                         android:layout_alignBottom="@+id/logoutImageView"
+                        android:layout_marginStart="12dp"
+                        android:layout_toEndOf="@+id/logoutImageView"
+                        android:fontFamily="@font/suisse_regular"
                         android:gravity="center_vertical"
-                        app:translationTextKey="Выйти"/>
+                        android:textColor="@color/error600"
+                        android:textSize="16sp"
+                        app:translationTextKey="Выйти" />
 
                 </RelativeLayout>
 

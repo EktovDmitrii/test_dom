@@ -43,9 +43,9 @@ interface MSDApi {
     @ErrorType(MSDNetworkError::class)
     fun postRefreshToken(@Header("Authorization") refreshToken: String): Single<TokenResponse>
 
-    @POST("clients/{clientId}")
+    @GET("clients/{clientId}")
     @ErrorType(MSDNetworkError::class)
-    fun postGetClient(@Path("clientId") clientId: String): Single<ClientResponse>
+    fun getClient(@Path("clientId") clientId: String): Single<ClientResponse>
 
     @PUT("clients/{clientId}")
     @ErrorType(MSDNetworkError::class)

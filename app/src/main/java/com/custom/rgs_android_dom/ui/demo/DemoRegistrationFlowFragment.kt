@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import com.custom.rgs_android_dom.R
-import com.custom.rgs_android_dom.databinding.FragmentDemoBinding
 import com.custom.rgs_android_dom.databinding.FragmentDemoRegistrationFlowBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
-import com.custom.rgs_android_dom.ui.profile.ProfileFragment
+import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.ui.registration.agreement.RegistrationAgreementFragment
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
+import com.custom.rgs_android_dom.utils.setStatusBarColor
 
 class DemoRegistrationFlowFragment: BaseFragment<DemoViewModel, FragmentDemoRegistrationFlowBinding>(R.layout.fragment_demo_registration_flow) {
 
@@ -30,11 +30,7 @@ class DemoRegistrationFlowFragment: BaseFragment<DemoViewModel, FragmentDemoRegi
             ScreenManager.showScreen(DemoButtonsFragment())
         }
 
-        val profileFragment = ProfileFragment()
-
-        Log.d("MyLog", "Profile fragment tag " + profileFragment.tag)
-
-        profileFragment.show(childFragmentManager, profileFragment.tag)
+        setStatusBarColor(R.color.white)
     }
 
 }

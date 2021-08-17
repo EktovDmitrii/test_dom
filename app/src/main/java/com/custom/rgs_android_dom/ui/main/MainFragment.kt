@@ -1,21 +1,17 @@
 package com.custom.rgs_android_dom.ui.main
 
-import android.graphics.Color
-import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.graphics.drawable.TransitionDrawable
+import android.os.Build
 import android.os.Bundle
-import android.transition.Slide
 import android.util.Log
 import android.view.View
-import android.view.ViewTreeObserver
 import android.view.animation.*
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentMainBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.profile.ProfileFragment
+import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.utils.*
 
 class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.fragment_main) {
@@ -71,14 +67,22 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
 
             })
 
-            val profileFragment = ProfileFragment(
+            val maxExpandedPercents = ((binding.toolbarLinearLayout.height.toFloat() + binding.swipeMoreTextView.height.toFloat()) * 100) / binding.root.height
+            val maxExpandedHalfRatio = 1f - (maxExpandedPercents / 100f)
+
+            val minExpandedPercents = (binding.toolbarLinearLayout.height.toFloat() * 100) / binding.root.height
+            val minExpandedHalfRatio = 1f - (minExpandedPercents / 100f)
+
+            val clientFragment = ClientFragment(
                 peekHeight = binding.root.getLocationOnScreen().y - binding.callContainerLinearLayout.getLocationOnScreen().y + 8.dp(requireContext()),
-                topMargin = binding.toolbarLinearLayout.height
+                topMargin = binding.toolbarLinearLayout.height,
+                maxExpandedHalfRatio = maxExpandedHalfRatio,
+                minExpandedHalfRatio= minExpandedHalfRatio
             )
-            profileFragment.slideStateListener = {
+            clientFragment.slideStateListener = {
                 onSlideStateChanged(it)
             }
-            profileFragment.show(childFragmentManager, profileFragment.TAG)
+            clientFragment.show(childFragmentManager, clientFragment.TAG)
         }
     }
 
@@ -92,7 +96,7 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
                 binding.swipeMoreTextView.visible()
                 canTransit = true
             }
-            BaseBottomSheetFragment.SlideState.QUARTER_HEIGHT_BOTTOM -> {
+            BaseBottomSheetFragment.SlideState.MOVING_BOTTOM -> {
                 if (canTransit){
                     binding.swipeMoreTextView.startAnimation(animationSet)
                     transitionBackground.startTransition(100)

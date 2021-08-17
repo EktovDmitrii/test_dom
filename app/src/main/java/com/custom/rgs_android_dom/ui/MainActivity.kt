@@ -4,12 +4,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.demo.DemoRegistrationFlowFragment
 import com.custom.rgs_android_dom.ui.main.MainFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
-import com.custom.rgs_android_dom.ui.registration.code.RegistrationCodeFragment
-import com.custom.rgs_android_dom.ui.registration.fill_profile.RegistrationFillProfileFragment
-import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
+import com.custom.rgs_android_dom.ui.registration.fill_client.RegistrationFillClientFragment
 import com.custom.rgs_android_dom.ui.splash.SplashFragment
 
 class MainActivity : AppCompatActivity() {
@@ -21,11 +18,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startSplash(){
-        //ScreenManager.showScreen(SplashFragment())
-        //ScreenManager.showScreen(RegistrationFillProfileFragment.newInstance("+7 123 456-77-77"))
+        ScreenManager.showScreen(SplashFragment())
+        //ScreenManager.showScreen(RegistrationFillClientFragment.newInstance("+7 123 456-77-77"))
         //ScreenManager.showScreen(RegistrationPhoneFragment())
         //ScreenManager.showScreen(DemoRegistrationFlowFragment())
-        ScreenManager.showScreen(MainFragment())
+        //ScreenManager.showScreen(MainFragment())
     }
 
     override fun onBackPressed() {

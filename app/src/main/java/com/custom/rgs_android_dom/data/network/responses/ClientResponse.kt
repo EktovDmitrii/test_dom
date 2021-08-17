@@ -1,6 +1,6 @@
 package com.custom.rgs_android_dom.data.network.responses
 
-import com.custom.rgs_android_dom.domain.profile.models.Gender
+import com.custom.rgs_android_dom.domain.client.models.Gender
 import com.google.gson.annotations.SerializedName
 import org.joda.time.DateTime
 
@@ -41,7 +41,7 @@ data class ClientResponse (
 	val opdAgreement: OpdAgreementResponse?,
 
 	@SerializedName("phone")
-	val phone: String?,
+	val phone: String,
 
 	@SerializedName("sex")
 	val gender: Gender?,

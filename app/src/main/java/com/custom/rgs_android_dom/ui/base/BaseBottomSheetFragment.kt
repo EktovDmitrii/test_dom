@@ -24,6 +24,8 @@ import kotlin.reflect.KClass
 abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB: ViewBinding>(
     private val peekHeight: Int = 0,
     private val topMargin: Int = 0,
+    private val maxExpandedHalfRatio: Float = 0f,
+    private val minExpandedHalfRatio: Float = 0f,
     private val isFullScreen: Boolean = true
 ) : BottomSheetDialogFragment() {
 
@@ -79,6 +81,7 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB: ViewBinding>(
 
     open fun onClose(){
         hideSoftwareKeyboard()
+        dismissAllowingStateLoss()
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -120,66 +123,54 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB: ViewBinding>(
 
         behavior.isFitToContents = false
         behavior.expandedOffset = topMargin
-        behavior.halfExpandedRatio = 0.89f
+        behavior.halfExpandedRatio = maxExpandedHalfRatio
 
         if (isFullScreen){
             behavior.state = BottomSheetBehavior.STATE_EXPANDED
-            //setBottomSheetTopMargin(topMargin.pxToDp(requireContext()), bottomSheet)
         }
 
-        getSwipeAnchor()?.let { swipeAnchor->
-            swipeAnchor.isClickable = false
-            swipeAnchor.isFocusable = false
 
-            swipeAnchor.setOnTouchListener { view, motionEvent ->
-                view.performClick()
-
-                when (motionEvent.action){
-                    MotionEvent.ACTION_DOWN -> {
-                        behavior.isDraggable = true
-                    }
-                    MotionEvent.ACTION_UP -> {
-                        behavior.isDraggable = false
-
-                    }
-                    MotionEvent.ACTION_CANCEL -> {
-                        behavior.isDraggable = false
-                    }
-                }
-                // We need to set at first screen coords and then pass them to our bottomsheet behavior
-                motionEvent.setLocation(motionEvent.rawX, motionEvent.rawY)
-                behavior.onTouchEvent(bottomSheet.parent as CoordinatorLayout, swipeAnchor, motionEvent)
-                true
-            }
-        }
+//        getSwipeAnchor()?.let { swipeAnchor->
+//
+//            swipeAnchor.setOnTouchListener { view, motionEvent ->
+//                view.performClick()
+//
+//                when (motionEvent.action){
+//                    MotionEvent.ACTION_DOWN -> {
+//                        behavior.isDraggable = true
+//                    }
+//                    MotionEvent.ACTION_UP -> {
+//                        behavior.isDraggable = false
+//
+//                    }
+//                    MotionEvent.ACTION_CANCEL -> {
+//                        behavior.isDraggable = false
+//                    }
+//                }
+//                // We need to set at first screen coords and then pass them to our bottomsheet behavior
+//                motionEvent.setLocation(motionEvent.rawX, motionEvent.rawY)
+//                behavior.onTouchEvent(bottomSheet.parent as CoordinatorLayout, swipeAnchor, motionEvent)
+//                true
+//            }
+//        }
 
 
 
         behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                if (newState == BottomSheetBehavior.STATE_EXPANDED || newState == BottomSheetBehavior.STATE_HALF_EXPANDED){
-                    //Log.d("MyLog", "Set to 0.87")
-                    behavior.halfExpandedRatio = 0.89f
+                if (newState == BottomSheetBehavior.STATE_EXPANDED || newState == BottomSheetBehavior.STATE_HALF_EXPANDED) {
+                    behavior.halfExpandedRatio = maxExpandedHalfRatio
                     slideStateListener(SlideState.TOP)
-                    //setBottomSheetTopMargin(topMargin.pxToDp(requireContext()), bottomSheet)
-                    //behavior.expandedOffset = topMargin
-                } else  {
-                    Log.d("MyLog", "MOVED OFF TOP")
-                   // setBottomSheetTopMargin(0, bottomSheet)
-                   // behavior.expandedOffset = 0
-                      // Log.d("MyLog", "Set to 0.92")
-                    //behavior.halfExpandedRatio = 0.92f
                 }
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                //Log.d("MyLog", "SLIDE OFFSET " + slideOffset + " " + behavior.halfExpandedRatio)
                 if (slideOffset <= 0.5f){
-                    behavior.halfExpandedRatio = 0.9137f
+                    behavior.halfExpandedRatio = minExpandedHalfRatio
                 }
 
-                if (slideOffset < 0.3f && slideOffset > 0.0f){
-                    slideStateListener(SlideState.QUARTER_HEIGHT_BOTTOM)
+                if (slideOffset < 0.49f && slideOffset > 0.0f){
+                    slideStateListener(SlideState.MOVING_BOTTOM)
                 } else if (slideOffset == 0.0f) {
                     slideStateListener(SlideState.BOTTOM)
                 }
@@ -195,5 +186,5 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB: ViewBinding>(
         bottomSheet.layoutParams = layoutParams
     }
 
-    enum class SlideState {TOP, QUARTER_HEIGHT_BOTTOM, BOTTOM}
+    enum class SlideState {TOP, MOVING_BOTTOM, BOTTOM}
 }

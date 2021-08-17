@@ -1,7 +1,7 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
 import com.custom.rgs_android_dom.data.network.responses.ClientResponse
-import com.custom.rgs_android_dom.domain.profile.models.*
+import com.custom.rgs_android_dom.domain.client.models.*
 
 object ClientMapper {
 
@@ -47,8 +47,8 @@ object ClientMapper {
                     type = it.type
                 )
             },
-            firstName = response.firstName,
-            lastName = response.lastName,
+            firstName = response.firstName ?: "",
+            lastName = response.lastName ?: "",
             location = ClientLocation(
                 code = response.location?.code,
                 name = response.location?.name
