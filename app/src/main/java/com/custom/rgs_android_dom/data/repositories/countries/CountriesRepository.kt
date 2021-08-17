@@ -14,5 +14,4 @@ interface CountriesRepository {
 
     fun selectCountry(newCountry: CountryModel)
 
-    fun getMaskForPhone(phone: String): String
 }

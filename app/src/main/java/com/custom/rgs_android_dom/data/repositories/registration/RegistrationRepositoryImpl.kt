@@ -5,15 +5,16 @@ import com.custom.rgs_android_dom.data.network.requests.GetCodeRequest
 import com.custom.rgs_android_dom.data.network.requests.LoginRequest
 import com.custom.rgs_android_dom.data.preferences.AuthSharedPreferences
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
-import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 import org.joda.time.DateTime
 import java.util.*
 
-class RegistrationRepositoryImpl(private val api: MSDApi,
-                                 private val authSharedPreferences: AuthSharedPreferences) : RegistrationRepository {
+class RegistrationRepositoryImpl(
+    private val api: MSDApi,
+    private val authSharedPreferences: AuthSharedPreferences
+) : RegistrationRepository {
 
     companion object {
         private const val HEADER_BEARER = "Bearer"
@@ -33,8 +34,11 @@ class RegistrationRepositoryImpl(private val api: MSDApi,
     }
 
     override fun login(phone: String, code: String, token: String): Single<Boolean> {
-        return api.postLogin("$HEADER_BEARER $token", LoginRequest(phone = phone.formatPhoneForApi(), code = code))
-            .map { authResponse->
+        return api.postLogin(
+            "$HEADER_BEARER $token",
+            LoginRequest(phone = phone.formatPhoneForApi(), code = code)
+        )
+            .map { authResponse ->
                 authSharedPreferences.saveAuth(authResponse)
                 return@map authResponse.isNewUser
             }
@@ -64,7 +68,7 @@ class RegistrationRepositoryImpl(private val api: MSDApi,
     }
 
     override fun refreshToken(refreshToken: String): Completable {
-        return api.postRefreshToken(refreshToken).flatMapCompletable { tokenResponse->
+        return api.postRefreshToken(refreshToken).flatMapCompletable { tokenResponse ->
             authSharedPreferences.saveToken(tokenResponse)
             Completable.complete()
         }
