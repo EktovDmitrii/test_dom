@@ -1,11 +1,9 @@
 package com.custom.rgs_android_dom.ui.base
 
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.CreateMethod
@@ -15,6 +13,7 @@ import com.custom.rgs_android_dom.utils.hideSoftwareKeyboard
 import com.custom.rgs_android_dom.utils.subscribe
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import okhttp3.internal.threadFactory
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.emptyParametersHolder
@@ -24,23 +23,30 @@ import kotlin.reflect.KClass
 abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB: ViewBinding>(
     private val peekHeight: Int = 0,
     private val topMargin: Int = 0,
-    private val maxExpandedHalfRatio: Float = 0f,
-    private val minExpandedHalfRatio: Float = 0f,
+    private val maxHalfExpandedRatio: Float = 0f,
+    private val minHalfExpandedRatio: Float = 0f,
     private val isFullScreen: Boolean = true
 ) : BottomSheetDialogFragment() {
+
+    var isLocked = false
 
     protected val viewModel: VM by viewModel(clazz = getViewModelKClass(), parameters = getParameters())
     protected val binding: VB by viewBinding(viewBindingClass = getViewBindingJavaClass(), createMethod = CreateMethod.INFLATE)
 
+    private lateinit var behavior: BottomSheetBehavior<View>
+
     abstract val TAG: String
 
-    var slideStateListener: (SlideState) -> Unit = {}
+    var slideStateChangedListener: OnSlideStateChangedListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        if (parentFragment is OnSlideStateChangedListener){
+            slideStateChangedListener = parentFragment as OnSlideStateChangedListener
+        }
         return binding.root
     }
 
@@ -51,6 +57,7 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB: ViewBinding>(
     override fun onStart() {
         super.onStart()
         dialog?.window?.setWindowAnimations(-1)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,6 +73,7 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB: ViewBinding>(
         subscribe(viewModel.closeObserver) {
             onClose()
         }
+
     }
 
     open fun getParameters(): ParametersDefinition = {
@@ -112,8 +120,9 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB: ViewBinding>(
     private fun initBottomSheet(){
 
         val bottomSheet = binding.root.parent as View
-        val behavior: BottomSheetBehavior<View> = BottomSheetBehavior.from(bottomSheet)
-        behavior.isDraggable = false
+        behavior = BottomSheetBehavior.from(bottomSheet)
+        //behavior.isDraggable = false
+        behavior.isDraggable = true
 
         behavior.peekHeight = peekHeight
 
@@ -123,60 +132,103 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB: ViewBinding>(
 
         behavior.isFitToContents = false
         behavior.expandedOffset = topMargin
-        behavior.halfExpandedRatio = maxExpandedHalfRatio
+        behavior.halfExpandedRatio = maxHalfExpandedRatio
 
         if (isFullScreen){
             behavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
 
-
-        getSwipeAnchor()?.let { swipeAnchor->
-
-            swipeAnchor.setOnTouchListener { view, motionEvent ->
-                view.performClick()
-
-                when (motionEvent.action){
-                    MotionEvent.ACTION_DOWN -> {
-                        behavior.isDraggable = true
-                    }
-                    MotionEvent.ACTION_UP -> {
-                        behavior.isDraggable = false
-
-                    }
-                    MotionEvent.ACTION_CANCEL -> {
-                        behavior.isDraggable = false
-                    }
-                }
-                // We need to set at first screen coords and then pass them to our bottomsheet behavior
-                motionEvent.setLocation(motionEvent.rawX, motionEvent.rawY)
-                behavior.onTouchEvent(bottomSheet.parent as CoordinatorLayout, swipeAnchor, motionEvent)
-                true
-            }
-        }
+//        getSwipeAnchor()?.let { swipeAnchor->
+//
+//            swipeAnchor.setOnTouchListener { view, motionEvent ->
+//                view.performClick()
+//
+//                if (!isLocked){
+//                    when (motionEvent.action){
+//                        MotionEvent.ACTION_DOWN -> {
+//                            behavior.isDraggable = true
+//                        }
+//                        MotionEvent.ACTION_UP -> {
+//                            behavior.isDraggable = false
+//
+//                        }
+//                        MotionEvent.ACTION_CANCEL -> {
+//                            behavior.isDraggable = false
+//                        }
+//                    }
+//                    // We need to set at first screen coords and then pass them to our bottomsheet behavior
+//                    motionEvent.setLocation(motionEvent.rawX, motionEvent.rawY)
+//                    behavior.onTouchEvent(bottomSheet.parent as CoordinatorLayout, swipeAnchor, motionEvent)
+//                }
+//
+//                true
+//            }
+//        }
 
 
         behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                if (newState == BottomSheetBehavior.STATE_EXPANDED || newState == BottomSheetBehavior.STATE_HALF_EXPANDED) {
-                    behavior.halfExpandedRatio = maxExpandedHalfRatio
-                    slideStateListener(SlideState.TOP)
+                if (!isLocked) {
+                    if (newState == BottomSheetBehavior.STATE_EXPANDED || newState == BottomSheetBehavior.STATE_HALF_EXPANDED) {
+                        behavior.halfExpandedRatio = maxHalfExpandedRatio
+                        slideStateChangedListener?.onSlideStateChanged(SlideState.TOP)
+                    }
                 }
+
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                if (slideOffset <= 0.5f){
-                    behavior.halfExpandedRatio = minExpandedHalfRatio
+                if (!isLocked) {
+                    if (slideOffset <= 0.5f){
+                        behavior.halfExpandedRatio = minHalfExpandedRatio
+                    }
+
+                    if (slideOffset < 0.49f && slideOffset > 0.0f){
+                        slideStateChangedListener?.onSlideStateChanged(SlideState.MOVING_BOTTOM)
+                    } else if (slideOffset == 0.0f) {
+                        slideStateChangedListener?.onSlideStateChanged(SlideState.BOTTOM)
+                    }
                 }
 
-                if (slideOffset < 0.49f && slideOffset > 0.0f){
-                    slideStateListener(SlideState.MOVING_BOTTOM)
-                } else if (slideOffset == 0.0f) {
-                    slideStateListener(SlideState.BOTTOM)
-                }
             }
 
         })
 
+        dialog?.window?.decorView?.findViewById<View>(com.google.android.material.R.id.touch_outside)?.setOnTouchListener { view, motionEvent ->
+            view.performClick()
+            parentFragment?.view?.dispatchTouchEvent(motionEvent)
+            true
+        }
+    }
+
+    fun lockToTop(){
+        behavior.expandedOffset = 0
+        behavior.halfExpandedRatio = 0.9999f
+        behavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+        behavior.state = BottomSheetBehavior.STATE_EXPANDED
+
+        behavior.isDraggable = false
+        slideStateChangedListener?.onSlideStateChanged(SlideState.TOP)
+        isLocked = true
+    }
+
+    fun unlockFromTop(){
+        behavior.expandedOffset = topMargin
+        behavior.halfExpandedRatio = maxHalfExpandedRatio
+        behavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+        behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        behavior.isDraggable = true
+        slideStateChangedListener?.onSlideStateChanged(SlideState.TOP)
+        isLocked = false
+    }
+
+    fun setHalfExpanded(){
+        if (behavior.state != BottomSheetBehavior.STATE_COLLAPSED){
+            behavior.expandedOffset = topMargin
+            behavior.halfExpandedRatio = maxHalfExpandedRatio
+            behavior.state = BottomSheetBehavior.STATE_EXPANDED
+            behavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+        }
     }
 
     private fun setBottomSheetTopMargin(topMargin: Int, bottomSheet: View){
@@ -186,4 +238,8 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB: ViewBinding>(
     }
 
     enum class SlideState {TOP, MOVING_BOTTOM, BOTTOM}
+
+    interface OnSlideStateChangedListener {
+        fun onSlideStateChanged(newState: SlideState)
+    }
 }

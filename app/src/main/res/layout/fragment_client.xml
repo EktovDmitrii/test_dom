@@ -10,14 +10,16 @@
         layout="@layout/layout_bottom_sheet_swipe_anchor"/>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/contentNestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:fillViewport="true"
+        android:overScrollMode="never"
         android:background="@drawable/rectangle_gradient_white_secondary200">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <com.custom.rgs_android_dom.views.text.MSDTextView
@@ -54,7 +56,7 @@
                     android:background="@drawable/row_filled_white_radius_10dp"
                     android:fontFamily="@font/suisse_regular"
                     android:paddingHorizontal="12dp"
-                    android:paddingVertical="7dp"
+                    android:gravity="center_vertical"
                     android:includeFontPadding="false"
                     android:textColor="@color/secondary900"
                     android:textSize="16sp"
@@ -65,7 +67,7 @@
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingHorizontal="20dp"
                 android:layout_marginTop="20dp"
@@ -123,6 +125,310 @@
 
                 </RelativeLayout>
 
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/Icon.Filled.Primary500_Alpha12"
+                            app:srcCompat="@drawable/ic_setting_20px" />
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="12dp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/secondary900"
+                            android:textSize="16sp"
+                            app:translationTextKey="История заказов" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:alpha="0.16"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginStart="48dp"
+                        android:background="@color/secondary900_alpha56"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/Icon.Filled.Primary500_Alpha12"
+                            app:srcCompat="@drawable/ic_setting_20px" />
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="12dp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/secondary900"
+                            android:textSize="16sp"
+                            app:translationTextKey="Личные данные" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:alpha="0.16"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginStart="48dp"
+                        android:background="@color/secondary900_alpha56"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/Icon.Filled.Primary500_Alpha12"
+                            app:srcCompat="@drawable/ic_card_20px" />
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="12dp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/secondary900"
+                            android:textSize="16sp"
+                            app:translationTextKey="Мои карты" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:alpha="0.16"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginStart="48dp"
+                        android:background="@color/secondary900_alpha56"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/Icon.Filled.Primary500_Alpha12"
+                            app:srcCompat="@drawable/ic_location_alt_20px" />
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="12dp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/secondary900"
+                            android:textSize="16sp"
+                            app:translationTextKey="Мои адреса" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:alpha="0.16"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginStart="48dp"
+                        android:background="@color/secondary900_alpha56"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/Icon.Filled.Primary500_Alpha12"
+                            app:srcCompat="@drawable/ic_notification_20px" />
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="12dp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/secondary900"
+                            android:textSize="16sp"
+                            app:translationTextKey="Настройки уведомлений" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:alpha="0.16"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginStart="48dp"
+                        android:background="@color/secondary900_alpha56"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/Icon.Filled.Primary500_Alpha12"
+                            app:srcCompat="@drawable/ic_notification_20px" />
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="12dp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/secondary900"
+                            android:textSize="16sp"
+                            app:translationTextKey="Способы связи" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:alpha="0.16"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginStart="48dp"
+                        android:background="@color/secondary900_alpha56"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/Icon.Filled.Primary500_Alpha12"
+                            app:srcCompat="@drawable/ic_promocode_20px" />
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="12dp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/secondary900"
+                            android:textSize="16sp"
+                            app:translationTextKey="Данные об агенте" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:alpha="0.16"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginStart="48dp"
+                        android:background="@color/secondary900_alpha56"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/Icon.Filled.Primary500_Alpha12"
+                            app:srcCompat="@drawable/ic_promocode_20px" />
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="12dp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/secondary900"
+                            android:textSize="16sp"
+                            app:translationTextKey="О приложении" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:alpha="0.16"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginStart="48dp"
+                        android:background="@color/secondary900_alpha56"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
                 <RelativeLayout
                     android:id="@+id/logoutRelativeLayout"
                     android:layout_width="match_parent"
@@ -132,7 +438,7 @@
                     <ImageView
                         android:id="@+id/logoutImageView"
                         style="@style/Icon.Filled.Error600_Alpha12"
-                        app:srcCompat="@drawable/ic_exit_20px"/>
+                        app:srcCompat="@drawable/ic_exit_20px" />
 
                     <com.custom.rgs_android_dom.views.text.MSDTextView
                         android:layout_width="match_parent"

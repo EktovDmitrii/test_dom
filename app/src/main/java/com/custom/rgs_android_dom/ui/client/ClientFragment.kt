@@ -11,9 +11,9 @@ import com.custom.rgs_android_dom.utils.subscribe
 class ClientFragment(
     peekHeight: Int,
     topMargin: Int,
-    maxExpandedHalfRatio: Float,
-    minExpandedHalfRatio: Float,
-) : BaseBottomSheetFragment<ClientViewModel, FragmentClientBinding>(peekHeight, topMargin, maxExpandedHalfRatio, minExpandedHalfRatio) {
+    maxHalfExpandedRatio: Float,
+    minHalfExpandedRatio: Float
+) : BaseBottomSheetFragment<ClientViewModel, FragmentClientBinding>(peekHeight, topMargin, maxHalfExpandedRatio, minHalfExpandedRatio) {
 
     override val TAG: String = "CLIENT_FRAGMENT"
 
@@ -23,6 +23,18 @@ class ClientFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.contentNestedScrollView.setOnScrollChangeListener { _, _, scrollY, _, _ ->
+            if (scrollY == 0){
+                if (isLocked){
+                    unlockFromTop()
+                }
+            } else {
+                if (!isLocked){
+                    lockToTop()
+                }
+            }
+        }
 
         binding.logoutRelativeLayout.setOnDebouncedClickListener {
             viewModel.onLogoutClick()
