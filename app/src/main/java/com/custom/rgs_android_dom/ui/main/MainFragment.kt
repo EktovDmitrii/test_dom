@@ -26,8 +26,6 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setStatusBarColor(R.color.primary400)
-
         transitionBackground = TransitionDrawable(arrayOf(
             ColorDrawable(requireContext().getColor(R.color.primary400)),
             ColorDrawable(requireContext().getColor(R.color.primary700))
@@ -35,13 +33,11 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
 
         binding.root.background = transitionBackground
 
-
-
         binding.root.afterMeasured {
 
             initAnimations()
 
-            val maxExpandedPercents = ((binding.toolbarLinearLayout.height.toFloat() + binding.swipeMoreTextView.height.toFloat()) * 100) / binding.root.height
+            val maxExpandedPercents = ((binding.toolbarLinearLayout.height.toFloat() + binding.swipeMoreTextView.height.toFloat() + 10.dp(requireContext())) * 100) / binding.root.height
             val maxHalfExpandedRatio = 1f - (maxExpandedPercents / 100f)
 
             val minExpandedPercents = (binding.toolbarLinearLayout.height.toFloat() * 100) / binding.root.height
@@ -117,6 +113,10 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
             }
 
         })
+    }
+
+    override fun setStatusBarColor() {
+        setStatusBarColor(R.color.primary400)
     }
 
 }

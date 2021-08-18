@@ -121,8 +121,7 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB: ViewBinding>(
 
         val bottomSheet = binding.root.parent as View
         behavior = BottomSheetBehavior.from(bottomSheet)
-        //behavior.isDraggable = false
-        behavior.isDraggable = true
+        behavior.isDraggable = false
 
         behavior.peekHeight = peekHeight
 
@@ -138,32 +137,32 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB: ViewBinding>(
             behavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
 
-//        getSwipeAnchor()?.let { swipeAnchor->
-//
-//            swipeAnchor.setOnTouchListener { view, motionEvent ->
-//                view.performClick()
-//
-//                if (!isLocked){
-//                    when (motionEvent.action){
-//                        MotionEvent.ACTION_DOWN -> {
-//                            behavior.isDraggable = true
-//                        }
-//                        MotionEvent.ACTION_UP -> {
-//                            behavior.isDraggable = false
-//
-//                        }
-//                        MotionEvent.ACTION_CANCEL -> {
-//                            behavior.isDraggable = false
-//                        }
-//                    }
-//                    // We need to set at first screen coords and then pass them to our bottomsheet behavior
-//                    motionEvent.setLocation(motionEvent.rawX, motionEvent.rawY)
-//                    behavior.onTouchEvent(bottomSheet.parent as CoordinatorLayout, swipeAnchor, motionEvent)
-//                }
-//
-//                true
-//            }
-//        }
+        getSwipeAnchor()?.let { swipeAnchor->
+
+            swipeAnchor.setOnTouchListener { view, motionEvent ->
+                view.performClick()
+
+                if (!isLocked){
+                    when (motionEvent.action){
+                        MotionEvent.ACTION_DOWN -> {
+                            behavior.isDraggable = true
+                        }
+                        MotionEvent.ACTION_UP -> {
+                            behavior.isDraggable = false
+
+                        }
+                        MotionEvent.ACTION_CANCEL -> {
+                            behavior.isDraggable = false
+                        }
+                    }
+                    // We need to set at first screen coords and then pass them to our bottomsheet behavior
+                    motionEvent.setLocation(motionEvent.rawX, motionEvent.rawY)
+                    behavior.onTouchEvent(bottomSheet.parent as CoordinatorLayout, swipeAnchor, motionEvent)
+                }
+
+                true
+            }
+        }
 
 
         behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
@@ -202,24 +201,24 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB: ViewBinding>(
     }
 
     fun lockToTop(){
-        behavior.expandedOffset = 0
+        /*behavior.expandedOffset = 0
         behavior.halfExpandedRatio = 0.9999f
         behavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
         behavior.state = BottomSheetBehavior.STATE_EXPANDED
 
         behavior.isDraggable = false
         slideStateChangedListener?.onSlideStateChanged(SlideState.TOP)
-        isLocked = true
+        isLocked = true*/
     }
 
     fun unlockFromTop(){
-        behavior.expandedOffset = topMargin
+       /* behavior.expandedOffset = topMargin
         behavior.halfExpandedRatio = maxHalfExpandedRatio
         behavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
         behavior.state = BottomSheetBehavior.STATE_EXPANDED
         behavior.isDraggable = true
         slideStateChangedListener?.onSlideStateChanged(SlideState.TOP)
-        isLocked = false
+        isLocked = false*/
     }
 
     fun setHalfExpanded(){

@@ -30,7 +30,6 @@ class DemoRegistrationFlowFragment: BaseFragment<DemoViewModel, FragmentDemoRegi
             ScreenManager.showScreen(DemoButtonsFragment())
         }
 
-        setStatusBarColor(R.color.white)
     }
 
 }
