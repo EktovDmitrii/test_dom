@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.data.repositories.registration
 
-import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
@@ -33,5 +32,7 @@ interface RegistrationRepository {
     fun getRefreshToken(): String?
 
     fun isAuthorized(): Boolean
+
+    fun clearAuth()
 
 }

@@ -5,6 +5,7 @@ import com.custom.rgs_android_dom.data.network.error.MSDNetworkError
 import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepository
 import com.custom.rgs_android_dom.utils.logException
 import com.google.gson.Gson
+import io.reactivex.rxkotlin.subscribeBy
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
@@ -30,14 +31,13 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
-        return if (isAuthorizationNotRequired(originalRequest)){
+        return if (isAuthorizationNotRequired(originalRequest)) {
             chain.proceed(originalRequest)
-        }
-        else {
+        } else {
             val response = chain.proceed(
                 originalRequest.newBuilder()
                     .apply {
-                        registrationRepository.getAuthToken()?.let {authToken->
+                        registrationRepository.getAuthToken()?.let { authToken ->
                             header(AUTHORIZATION_HEADER, "$AUTHORIZATION_BEARER $authToken")
                         }
                     }
@@ -59,8 +59,11 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
                         return chain.proceed(
                             originalRequest.newBuilder()
                                 .apply {
-                                    registrationRepository.getAuthToken()?.let {authToken->
-                                        header(AUTHORIZATION_HEADER, "$AUTHORIZATION_BEARER $authToken")
+                                    registrationRepository.getAuthToken()?.let { authToken ->
+                                        header(
+                                            AUTHORIZATION_HEADER,
+                                            "$AUTHORIZATION_BEARER $authToken"
+                                        )
                                     }
                                 }
                                 .build()
@@ -84,13 +87,16 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
     private fun refreshToken() {
         val refreshTokenExpiresAt = registrationRepository.getRefreshTokenExpiresAt()
         Log.d("MyLog", "Refresh token expires at " + refreshTokenExpiresAt.toString())
-        if (refreshTokenExpiresAt?.isBeforeNow == true){
-            registrationRepository.logout().subscribe()
+        if (refreshTokenExpiresAt?.isBeforeNow == true) {
+            registrationRepository.clearAuth()
         } else {
-            registrationRepository.getRefreshToken()?.let { refreshToken->
+            registrationRepository.getRefreshToken()?.let { refreshToken ->
                 synchronized(this) {
                     try {
-                        registrationRepository.refreshToken("$AUTHORIZATION_BEARER $refreshToken").blockingGet()
+                        registrationRepository.refreshToken("$AUTHORIZATION_BEARER $refreshToken")
+                            .subscribeBy(onError = {
+                                registrationRepository.clearAuth()
+                            })
                     } catch (e: Exception) {
                         Log.d("MyLog", "on exception")
                         logException(this, e)
@@ -102,7 +108,7 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
 
 
     private fun parseError(errorResponse: String, errorCode: Int): MSDNetworkError {
-        if (errorCode == 401){
+        if (errorCode == 401) {
             return MSDNetworkError("AUTH-016", "token expired")
         }
         return try {

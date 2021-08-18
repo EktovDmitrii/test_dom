@@ -55,6 +55,11 @@ class RegistrationRepositoryImpl(
         }
     }
 
+    override fun clearAuth() {
+        authSharedPreferences.clear()
+        logout.onNext(Unit)
+    }
+
     override fun getLogoutSubject(): PublishSubject<Unit> {
         return logout
     }
