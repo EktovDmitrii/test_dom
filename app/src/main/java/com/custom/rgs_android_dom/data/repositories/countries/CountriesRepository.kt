@@ -13,4 +13,5 @@ interface CountriesRepository {
     fun getSelectedCountrySubject(): BehaviorRelay<CountryModel>
 
     fun selectCountry(newCountry: CountryModel)
+
 }

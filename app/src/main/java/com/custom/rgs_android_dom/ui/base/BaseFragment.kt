@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.hideSoftwareKeyboard
+import com.custom.rgs_android_dom.utils.setStatusBarColor
 import com.custom.rgs_android_dom.utils.subscribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.ParametersDefinition
@@ -25,6 +27,8 @@ abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(layout: Int) : 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setStatusBarColor()
+
         subscribe(viewModel.loadingStateObserver){
             handleState(it)
         }
@@ -48,6 +52,10 @@ abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(layout: Int) : 
     open fun onClose(){
         hideSoftwareKeyboard()
         ScreenManager.back(getNavigateId())
+    }
+
+    open fun setStatusBarColor(){
+        setStatusBarColor(R.color.white)
     }
 
     @Suppress("UNCHECKED_CAST")

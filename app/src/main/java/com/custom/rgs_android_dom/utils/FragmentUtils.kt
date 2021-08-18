@@ -78,3 +78,7 @@ fun Fragment.showDatePicker(
 
     dialog.show()
 }
+
+fun Fragment.setStatusBarColor(colorRes: Int){
+    requireActivity().window.statusBarColor = resources.getColor(colorRes, requireActivity().theme)
+}

@@ -1,10 +1,10 @@
 package com.custom.rgs_android_dom.profile
 
 import android.os.Build
-import com.custom.rgs_android_dom.domain.profile.ProfileInteractor
-import com.custom.rgs_android_dom.domain.profile.models.Gender
-import com.custom.rgs_android_dom.domain.profile.ProfileViewState
-import com.custom.rgs_android_dom.domain.registration.ValidateProfileException
+import com.custom.rgs_android_dom.domain.client.ClientInteractor
+import com.custom.rgs_android_dom.domain.client.models.Gender
+import com.custom.rgs_android_dom.domain.client.view_states.FillClientViewState
+import com.custom.rgs_android_dom.domain.client.ValidateClientException
 import net.danlew.android.joda.JodaTimeAndroid
 import org.joda.time.LocalDate
 import org.junit.After
@@ -34,22 +34,22 @@ class ProfileInteractorTest {
         val PHONEAGENT = "79044961128"
     }
 
-    lateinit var profileInteractor: ProfileInteractor
+    lateinit var clientInteractor: ClientInteractor
 
     @Before
     fun init() {
         val context = RuntimeEnvironment.systemContext
         JodaTimeAndroid.init(context)
 
-        profileInteractor =
-            ProfileInteractor(registrationRepository = MockRegistrationRepositoryImpl())
+        clientInteractor =
+            ClientInteractor(registrationRepository = MockRegistrationRepositoryImpl())
 
-        profileInteractor.profileStateSubject.hide()
+        clientInteractor.profileStateSubject.hide()
             .subscribe {
                 profileViewState = it
             }
 
-        profileInteractor.validateSubject.hide()
+        clientInteractor.validateSubject.hide()
             .subscribe { isValidate = it }
     }
 
@@ -58,19 +58,19 @@ class ProfileInteractorTest {
         stopKoin()
     }
 
-    private var profileViewState = ProfileViewState("")
+    private var profileViewState = FillClientViewState("")
     private var isValidate = false
 
 
     @Test
     fun updateProfileTest() {
-        profileInteractor.onSurnameChanged(SURNAME)
-        profileInteractor.onNameChanged(NAME)
-        profileInteractor.onBirthdayChanged(BIRTHDATESTR, true)
-        profileInteractor.onAgentCodeChanged(AGENTCODE)
-        profileInteractor.onAgentPhoneChanged(PHONEAGENT, true)
-        profileInteractor.onGenderSelected(GENDER)
-        profileInteractor.updateProfile().blockingGet()
+        clientInteractor.onSurnameChanged(SURNAME)
+        clientInteractor.onNameChanged(NAME)
+        clientInteractor.onBirthdayChanged(BIRTHDATESTR, true)
+        clientInteractor.onAgentCodeChanged(AGENTCODE)
+        clientInteractor.onAgentPhoneChanged(PHONEAGENT, true)
+        clientInteractor.onGenderSelected(GENDER)
+        clientInteractor.updateProfile().blockingGet()
 
         assertEquals(GENDER, profileViewState.gender)
 
@@ -84,86 +84,86 @@ class ProfileInteractorTest {
 
     @Test
     fun validateProfileSurnameTest() {
-        profileInteractor.onSurnameChanged(SURNAME)
+        clientInteractor.onSurnameChanged(SURNAME)
         assertEquals(isValidate, true)
-        profileInteractor.onSurnameChanged("")
+        clientInteractor.onSurnameChanged("")
         assertEquals(isValidate, false)
     }
 
     @Test
     fun validateProfileNameTest() {
 
-        profileInteractor.onNameChanged(NAME)
+        clientInteractor.onNameChanged(NAME)
         assertEquals(isValidate, true)
-        profileInteractor.onNameChanged("")
+        clientInteractor.onNameChanged("")
         assertEquals(isValidate, false)
 
     }
 
     @Test
     fun validateProfileBirthdayTest() {
-        profileInteractor.onBirthdayChanged(BIRTHDATESTR, true)
+        clientInteractor.onBirthdayChanged(BIRTHDATESTR, true)
         assertEquals(isValidate, true)
-        profileInteractor.onBirthdayChanged(BIRTHDATESTR, false)
+        clientInteractor.onBirthdayChanged(BIRTHDATESTR, false)
         assertEquals(isValidate, false)
-        profileInteractor.onBirthdayChanged("", true)
+        clientInteractor.onBirthdayChanged("", true)
         assertEquals(isValidate, false)
     }
 
     @Test
     fun validateProfileAgentCodeTest() {
-        profileInteractor.onAgentCodeChanged(AGENTCODE)
+        clientInteractor.onAgentCodeChanged(AGENTCODE)
         assertEquals(isValidate, true)
-        profileInteractor.onAgentCodeChanged("")
+        clientInteractor.onAgentCodeChanged("")
         assertEquals(isValidate, false)
     }
 
     @Test
     fun validateProfileAgentPhoneTest() {
-        profileInteractor.onAgentPhoneChanged(PHONEAGENT, true)
+        clientInteractor.onAgentPhoneChanged(PHONEAGENT, true)
         assertEquals(isValidate, true)
-        profileInteractor.onAgentPhoneChanged(PHONEAGENT, false)
+        clientInteractor.onAgentPhoneChanged(PHONEAGENT, false)
         assertEquals(isValidate, false)
-        profileInteractor.onAgentPhoneChanged("",false)
+        clientInteractor.onAgentPhoneChanged("",false)
         assertEquals(isValidate, false)
 
-        profileInteractor.onGenderSelected(GENDER)
+        clientInteractor.onGenderSelected(GENDER)
         assertEquals(isValidate, true)
     }
 
     @Test
     fun validateProfileGenderTest() {
-        profileInteractor.onGenderSelected(GENDER)
+        clientInteractor.onGenderSelected(GENDER)
         assertEquals(isValidate, true)
     }
 
     @Test
     fun saveProfileTest(){
-        profileInteractor.onAgentCodeChanged(AGENTCODE)
+        clientInteractor.onAgentCodeChanged(AGENTCODE)
         try {
-            profileInteractor.updateProfile().blockingGet()
+            clientInteractor.updateProfile().blockingGet()
             Assert.fail()
-        } catch (e: ValidateProfileException){
+        } catch (e: ValidateClientException){
             Assert.assertTrue(true)
         } catch (e: Exception){
             Assert.assertTrue(false)
         }
 
-        profileInteractor.onAgentCodeChanged("")
-        profileInteractor.onAgentPhoneChanged(PHONEAGENT, true)
+        clientInteractor.onAgentCodeChanged("")
+        clientInteractor.onAgentPhoneChanged(PHONEAGENT, true)
         try {
-            profileInteractor.updateProfile().blockingGet()
+            clientInteractor.updateProfile().blockingGet()
             Assert.fail()
-        } catch (e: ValidateProfileException){
+        } catch (e: ValidateClientException){
             Assert.assertTrue(true)
         } catch (e: Exception){
             Assert.assertTrue(false)
         }
 
-        profileInteractor.onAgentCodeChanged(AGENTCODE)
-        profileInteractor.onAgentPhoneChanged(PHONEAGENT, true)
+        clientInteractor.onAgentCodeChanged(AGENTCODE)
+        clientInteractor.onAgentPhoneChanged(PHONEAGENT, true)
         try {
-            profileInteractor.updateProfile().blockingGet()
+            clientInteractor.updateProfile().blockingGet()
             Assert.assertTrue(true)
         } catch (e: Exception){
             Assert.fail()

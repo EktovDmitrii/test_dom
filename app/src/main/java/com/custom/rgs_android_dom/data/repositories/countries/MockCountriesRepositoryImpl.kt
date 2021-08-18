@@ -118,13 +118,15 @@ class MockCountriesRepositoryImpl(private val api: MSDApi) : CountriesRepository
             sortBy {
                 it.name
             }
-            add(0, CountryResponse(
-                id = 7,
-                name = "Россия",
-                letterCode = "RU",
-                numberCode = "+7",
-                mask = "+7 [000] [000]-[00]-[00]"
-            ))
+            add(
+                0, CountryResponse(
+                    id = 7,
+                    name = "Россия",
+                    letterCode = "RU",
+                    numberCode = "+7",
+                    mask = "+7 [000] [000]-[00]-[00]"
+                )
+            )
         }
     }
 

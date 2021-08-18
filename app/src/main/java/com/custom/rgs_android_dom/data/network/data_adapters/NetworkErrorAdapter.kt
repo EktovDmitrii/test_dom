@@ -1,7 +1,7 @@
 package com.custom.rgs_android_dom.data.network.data_adapters
 
-
 import com.custom.rgs_android_dom.data.network.ErrorType
+import com.custom.rgs_android_dom.data.network.error.MSDNetworkError
 import io.reactivex.*
 import io.reactivex.functions.Function
 import okhttp3.ResponseBody
@@ -39,9 +39,14 @@ internal class RxCallAdapterWrapperFactory(private val rxJava2CallAdapterFactory
         if (httpException.response()?.isSuccessful == true) {
             return null
         }
-        val errorBody = httpException.response()?.errorBody() ?: return null
-        val converter: Converter<ResponseBody, Any> = retrofit.responseBodyConverter(kClass.java, arrayOf())
-        return converter.convert(errorBody)
+        if (httpException.response()?.code() == 401){
+            return MSDNetworkError("AUTH-016", "token expired")
+        } else {
+            val errorBody = httpException.response()?.errorBody() ?: return null
+            val converter: Converter<ResponseBody, Any> = retrofit.responseBodyConverter(kClass.java, arrayOf())
+            return converter.convert(errorBody)
+        }
+
     }
 
     private inner class RxCallAdapterWrapper constructor(

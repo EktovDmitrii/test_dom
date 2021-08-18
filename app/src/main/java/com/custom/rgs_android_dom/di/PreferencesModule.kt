@@ -6,6 +6,6 @@ import org.koin.dsl.module
 
 val preferencesModule = module {
 
-    single { AuthSharedPreferences(androidContext()) }
+    single { AuthSharedPreferences(androidContext(), gson = get()) }
 
 }

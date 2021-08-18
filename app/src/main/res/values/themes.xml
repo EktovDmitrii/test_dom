@@ -157,6 +157,16 @@
         <item name="android:background">@drawable/icon_filled_primary_background</item>
     </style>
 
+    <style name="Icon.Filled.Error600_Alpha12" parent="Icon.Filled">
+        <item name="android:tint">@color/error600</item>
+        <item name="android:background">@drawable/oval_filled_error_600_alpha12</item>
+    </style>
+
+    <style name="Icon.Filled.Primary500_Alpha12" parent="Icon.Filled">
+        <item name="android:tint">@color/primary500</item>
+        <item name="android:background">@drawable/oval_filled_primary_500_alpha12</item>
+    </style>
+
     <style name="Button.Text.Icon.Secondary" parent="Button.Text.Icon">
         <item name="android:background">@drawable/button_text_icon_secondary_background</item>
     </style>
@@ -242,4 +252,16 @@
         <item name="android:background">@drawable/gender_selector_background</item>
         <item name="android:textColor">@color/gender_selector_text_color</item>
     </style>
+
+
+    <style name="BottomSheet" parent="Theme.MaterialComponents.BottomSheetDialog">
+        <item name="android:windowCloseOnTouchOutside">false</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    </style>
+
+    <style name="BottomSheetStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="backgroundTint">@android:color/transparent</item>
+    </style>
+
 </resources>

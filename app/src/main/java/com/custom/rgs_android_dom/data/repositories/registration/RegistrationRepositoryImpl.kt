@@ -1,27 +1,26 @@
 package com.custom.rgs_android_dom.data.repositories.registration
 
-import android.util.Log
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.requests.GetCodeRequest
 import com.custom.rgs_android_dom.data.network.requests.LoginRequest
 import com.custom.rgs_android_dom.data.preferences.AuthSharedPreferences
-import com.custom.rgs_android_dom.domain.profile.models.Gender
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
-import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.subjects.PublishSubject
 import org.joda.time.DateTime
-import org.joda.time.LocalDate
 import java.util.*
 
-class RegistrationRepositoryImpl(private val api: MSDApi,
-                                 private val authSharedPreferences: AuthSharedPreferences) : RegistrationRepository {
+class RegistrationRepositoryImpl(
+    private val api: MSDApi,
+    private val authSharedPreferences: AuthSharedPreferences
+) : RegistrationRepository {
 
     companion object {
         private const val HEADER_BEARER = "Bearer"
     }
 
-    private val logout = BehaviorRelay.create<Unit>()
+    private val logout = PublishSubject.create<Unit>()
 
     override fun getCurrentPhone(): String {
         return authSharedPreferences.getPhone() ?: ""
@@ -35,8 +34,11 @@ class RegistrationRepositoryImpl(private val api: MSDApi,
     }
 
     override fun login(phone: String, code: String, token: String): Single<Boolean> {
-        return api.postLogin("$HEADER_BEARER $token", LoginRequest(phone = phone.formatPhoneForApi(), code = code))
-            .map { authResponse->
+        return api.postLogin(
+            "$HEADER_BEARER $token",
+            LoginRequest(phone = phone.formatPhoneForApi(), code = code)
+        )
+            .map { authResponse ->
                 authSharedPreferences.saveAuth(authResponse)
                 return@map authResponse.isNewUser
             }
@@ -49,12 +51,16 @@ class RegistrationRepositoryImpl(private val api: MSDApi,
     override fun logout(): Completable {
         return api.postLogout().doFinally {
             authSharedPreferences.clear()
-            logout.accept(Unit)
-            Log.d("MyLog", "Finally logout")
+            logout.onNext(Unit)
         }
     }
 
-    override fun getLogoutSubject(): BehaviorRelay<Unit> {
+    override fun clearAuth() {
+        authSharedPreferences.clear()
+        logout.onNext(Unit)
+    }
+
+    override fun getLogoutSubject(): PublishSubject<Unit> {
         return logout
     }
 
@@ -67,7 +73,7 @@ class RegistrationRepositoryImpl(private val api: MSDApi,
     }
 
     override fun refreshToken(refreshToken: String): Completable {
-        return api.postRefreshToken(refreshToken).flatMapCompletable { tokenResponse->
+        return api.postRefreshToken(refreshToken).flatMapCompletable { tokenResponse ->
             authSharedPreferences.saveToken(tokenResponse)
             Completable.complete()
         }
@@ -85,23 +91,8 @@ class RegistrationRepositoryImpl(private val api: MSDApi,
         return authSharedPreferences.getRefreshTokenExpiresAt()
     }
 
-    override fun updateProfile(
-        name: String?,
-        surname: String?,
-        birthday: LocalDate?,
-        gender: Gender?,
-        agentCode: String?,
-        agentPhone: String?
-    ): Single<Boolean> {
-        return Single.fromCallable {
-            Thread.sleep(3000)
-            val agentPhone = agentPhone
-            if (agentPhone != null && agentPhone.endsWith("9")){
-                throw InvalidPropertiesFormatException("Wrong format")
-            } else {
-                true
-            }
-        }
+    override fun isAuthorized(): Boolean {
+        return authSharedPreferences.isAuthrorized()
     }
 
 }

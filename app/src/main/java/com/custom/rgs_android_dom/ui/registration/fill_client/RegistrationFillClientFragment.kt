@@ -1,14 +1,16 @@
-package com.custom.rgs_android_dom.ui.registration.fill_profile
+package com.custom.rgs_android_dom.ui.registration.fill_client
 
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.core.view.isVisible
 import com.custom.rgs_android_dom.R
-import com.custom.rgs_android_dom.databinding.FragmentRegistrationFillProfileBinding
-import com.custom.rgs_android_dom.domain.registration.ProfileField
+import com.custom.rgs_android_dom.databinding.FragmentRegistrationFillClientBinding
+import com.custom.rgs_android_dom.domain.client.ProfileField
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.main.MainFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.*
@@ -16,18 +18,19 @@ import com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
 import com.custom.rgs_android_dom.views.edit_text.MSDLabelIconEditText
 import com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
 import org.joda.time.LocalDate
+import org.joda.time.LocalDateTime
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-class RegistrationFillProfileFragment : BaseFragment<RegistrationFillProfileViewModel, FragmentRegistrationFillProfileBinding>(
-    R.layout.fragment_registration_fill_profile
+class RegistrationFillClientFragment : BaseFragment<RegistrationFillClientViewModel, FragmentRegistrationFillClientBinding>(
+    R.layout.fragment_registration_fill_client
 ) {
 
     companion object {
         private const val ARG_PHONE = "ARG_PHONE"
 
-        fun newInstance(phone: String): RegistrationFillProfileFragment {
-            return RegistrationFillProfileFragment().args {
+        fun newInstance(phone: String): RegistrationFillClientFragment {
+            return RegistrationFillClientFragment().args {
                 putString(ARG_PHONE, phone)
             }
         }
@@ -69,8 +72,8 @@ class RegistrationFillProfileFragment : BaseFragment<RegistrationFillProfileView
 
         binding.birthdayEditText.setOnIconClickListener {
             showDatePicker(
-                maxDate = LocalDate.now().minusYears(16).plusDays(-1).toDate(),
-                minDate = LocalDate.parse("1900-01-01").toDate()
+                maxDate = LocalDateTime.now().minusYears(16).plusDays(-1).toDate(),
+                minDate = LocalDateTime.parse("1900-01-01").toDate()
             ){
                 val date = it.formatTo()
                 binding.birthdayEditText.setState(MSDLabelIconEditText.State.NORMAL)
@@ -107,7 +110,7 @@ class RegistrationFillProfileFragment : BaseFragment<RegistrationFillProfileView
             binding.agentPhoneEditText.setState(MSDMaskedLabelEditText.State.NORMAL)
         }
 
-        subscribe(viewModel.profileViewStateObserver){
+        subscribe(viewModel.fillClientViewStateObserver){
             binding.agentInfoLinearLayout.isVisible = it.isOpenCodeAgendFields
 
             val knowAgentCodeText = if (it.isOpenCodeAgendFields) "Свернуть информацию об агенте"
@@ -163,6 +166,7 @@ class RegistrationFillProfileFragment : BaseFragment<RegistrationFillProfileView
     override fun onClose() {
         hideSoftwareKeyboard()
         ScreenManager.closeScope(REGISTRATION)
+        ScreenManager.showScreen(MainFragment())
     }
 
     override fun onLoading() {

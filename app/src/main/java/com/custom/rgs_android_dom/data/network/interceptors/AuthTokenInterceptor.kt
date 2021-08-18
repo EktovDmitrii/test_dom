@@ -4,6 +4,7 @@ import com.custom.rgs_android_dom.data.network.error.MSDNetworkError
 import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepository
 import com.custom.rgs_android_dom.utils.logException
 import com.google.gson.Gson
+import io.reactivex.rxkotlin.subscribeBy
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
@@ -18,7 +19,7 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
     companion object {
         private const val AUTHORIZATION_HEADER = "Authorization"
         private const val AUTHORIZATION_BEARER = "Bearer"
-        private val ERROR_CODE_TOKEN_EXPIRED = arrayOf(401)
+        private val ERROR_CODE_TOKEN_EXPIRED = arrayOf("AUTH-016")
     }
 
     private val noAuthorizationPaths = listOf(
@@ -29,14 +30,13 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
-        return if (isAuthorizationNotRequired(originalRequest)){
+        return if (isAuthorizationNotRequired(originalRequest)) {
             chain.proceed(originalRequest)
-        }
-        else {
+        } else {
             val response = chain.proceed(
                 originalRequest.newBuilder()
                     .apply {
-                        registrationRepository.getAuthToken()?.let {authToken->
+                        registrationRepository.getAuthToken()?.let { authToken ->
                             header(AUTHORIZATION_HEADER, "$AUTHORIZATION_BEARER $authToken")
                         }
                     }
@@ -49,18 +49,20 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
                 // TODO Finally improve this after we will have all info about tokens and auth error codes
                 response.body.use { body ->
                     val responseString = body?.string() ?: ""
-                    val errorResponse = parseError(responseString)
+                    val errorResponse = parseError(responseString, response.code)
 
-                    if (errorResponse.code.toInt() in ERROR_CODE_TOKEN_EXPIRED) {
-
-                        registrationRepository.deleteTokens()
+                    if (errorResponse.code in ERROR_CODE_TOKEN_EXPIRED) {
+                        //registrationRepository.deleteTokens()
                         refreshToken()
 
                         return chain.proceed(
                             originalRequest.newBuilder()
                                 .apply {
-                                    registrationRepository.getAuthToken()?.let {authToken->
-                                        header(AUTHORIZATION_HEADER, "$AUTHORIZATION_BEARER $authToken")
+                                    registrationRepository.getAuthToken()?.let { authToken ->
+                                        header(
+                                            AUTHORIZATION_HEADER,
+                                            "$AUTHORIZATION_BEARER $authToken"
+                                        )
                                     }
                                 }
                                 .build()
@@ -83,13 +85,16 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
     @Synchronized
     private fun refreshToken() {
         val refreshTokenExpiresAt = registrationRepository.getRefreshTokenExpiresAt()
-        if (refreshTokenExpiresAt?.isBeforeNow == true){
-            registrationRepository.logout().subscribe()
+        if (refreshTokenExpiresAt?.isBeforeNow == true) {
+            registrationRepository.clearAuth()
         } else {
-            registrationRepository.getRefreshToken()?.let { refreshToken->
+            registrationRepository.getRefreshToken()?.let { refreshToken ->
                 synchronized(this) {
                     try {
-                        registrationRepository.refreshToken(refreshToken).blockingGet()
+                        registrationRepository.refreshToken("$AUTHORIZATION_BEARER $refreshToken")
+                            .subscribeBy(onError = {
+                                registrationRepository.clearAuth()
+                            })
                     } catch (e: Exception) {
                         logException(this, e)
                     }
@@ -99,7 +104,10 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
     }
 
 
-    private fun parseError(errorResponse: String): MSDNetworkError {
+    private fun parseError(errorResponse: String, errorCode: Int): MSDNetworkError {
+        if (errorCode == 401) {
+            return MSDNetworkError("AUTH-016", "token expired")
+        }
         return try {
             Gson().fromJson(errorResponse, MSDNetworkError::class.java)
         } catch (e: Exception) {
