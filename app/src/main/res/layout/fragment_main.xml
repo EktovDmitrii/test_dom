@@ -4,6 +4,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/primary400"
+    android:clickable="true"
+    android:focusable="true"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -11,8 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:background="@drawable/rectangle_filled_primary_400_bottom_radius_24dp"
+        android:clickable="true"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:focusable="true">
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

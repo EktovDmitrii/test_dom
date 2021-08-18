@@ -83,14 +83,16 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
     @Synchronized
     private fun refreshToken() {
         val refreshTokenExpiresAt = registrationRepository.getRefreshTokenExpiresAt()
+        Log.d("MyLog", "Refresh token expires at " + refreshTokenExpiresAt.toString())
         if (refreshTokenExpiresAt?.isBeforeNow == true){
             registrationRepository.logout().subscribe()
         } else {
             registrationRepository.getRefreshToken()?.let { refreshToken->
                 synchronized(this) {
                     try {
-                        registrationRepository.refreshToken(refreshToken).blockingGet()
+                        registrationRepository.refreshToken("$AUTHORIZATION_BEARER $refreshToken").blockingGet()
                     } catch (e: Exception) {
+                        Log.d("MyLog", "on exception")
                         logException(this, e)
                     }
                 }
