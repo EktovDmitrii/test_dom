@@ -1,13 +1,13 @@
-package com.custom.rgs_android_dom.ui.client
+package com.custom.rgs_android_dom.domain.client.mappers
 
-import com.custom.rgs_android_dom.domain.client.ClientShortViewState
+import com.custom.rgs_android_dom.domain.client.view_states.ClientShortViewState
 import com.custom.rgs_android_dom.domain.client.models.ClientModel
 import com.custom.rgs_android_dom.utils.PhoneMaskHelper
 import com.custom.rgs_android_dom.utils.formatPhoneByMask
 
 object ClientShortViewStateMapper {
 
-    fun from(clientModel: ClientModel): ClientShortViewState{
+    fun from(clientModel: ClientModel): ClientShortViewState {
         val phoneMask = PhoneMaskHelper.getMaskForPhone(clientModel.phone)
 
         return ClientShortViewState(

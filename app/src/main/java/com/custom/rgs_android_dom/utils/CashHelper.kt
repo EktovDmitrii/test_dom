@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.utils
 
-import android.util.Log
 import com.custom.rgs_android_dom.data.repositories.client.ClientRepository
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -26,7 +25,7 @@ object CashHelper {
             .subscribeOn(Schedulers.io())
             .subscribeBy(
                 onError = {
-                    Log.d("MyLog", "error get client")
+                    logException(this, it)
                 }
             )
             .addTo(compositeDisposable)

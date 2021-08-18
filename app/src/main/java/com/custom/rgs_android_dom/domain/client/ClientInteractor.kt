@@ -4,7 +4,9 @@ import com.custom.rgs_android_dom.data.repositories.client.ClientRepository
 import com.custom.rgs_android_dom.data.repositories.countries.CountriesRepository
 import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepository
 import com.custom.rgs_android_dom.domain.client.models.Gender
-import com.custom.rgs_android_dom.ui.client.ClientShortViewStateMapper
+import com.custom.rgs_android_dom.domain.client.mappers.ClientShortViewStateMapper
+import com.custom.rgs_android_dom.domain.client.view_states.ClientShortViewState
+import com.custom.rgs_android_dom.domain.client.view_states.FillClientViewState
 import com.custom.rgs_android_dom.utils.*
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Completable

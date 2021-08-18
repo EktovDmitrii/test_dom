@@ -3,7 +3,7 @@ package com.custom.rgs_android_dom.profile
 import android.os.Build
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.client.models.Gender
-import com.custom.rgs_android_dom.domain.client.FillClientViewState
+import com.custom.rgs_android_dom.domain.client.view_states.FillClientViewState
 import com.custom.rgs_android_dom.domain.client.ValidateClientException
 import net.danlew.android.joda.JodaTimeAndroid
 import org.joda.time.LocalDate

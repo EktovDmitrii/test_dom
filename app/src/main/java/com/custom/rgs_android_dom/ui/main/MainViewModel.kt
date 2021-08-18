@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.ui.main
 
-import android.util.Log
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
@@ -20,7 +19,6 @@ class MainViewModel(private val registrationInteractor: RegistrationInteractor) 
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    Log.d("MyLog", "MAIN FRAGMENT ON CLOSER")
                     closeController.value = Unit
                     ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
                 },

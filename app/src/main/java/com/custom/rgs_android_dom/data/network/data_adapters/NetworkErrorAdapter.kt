@@ -1,7 +1,5 @@
 package com.custom.rgs_android_dom.data.network.data_adapters
 
-
-import android.util.Log
 import com.custom.rgs_android_dom.data.network.ErrorType
 import com.custom.rgs_android_dom.data.network.error.MSDNetworkError
 import io.reactivex.*
@@ -41,9 +39,7 @@ internal class RxCallAdapterWrapperFactory(private val rxJava2CallAdapterFactory
         if (httpException.response()?.isSuccessful == true) {
             return null
         }
-        Log.d("MyLog", "ERROR CODE " + httpException.response()?.code())
         if (httpException.response()?.code() == 401){
-            Log.d("MyLog", "TOKEN ERROR")
             return MSDNetworkError("AUTH-016", "token expired")
         } else {
             val errorBody = httpException.response()?.errorBody() ?: return null

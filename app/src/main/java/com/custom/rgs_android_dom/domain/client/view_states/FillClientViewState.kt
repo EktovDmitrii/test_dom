@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.domain.client
+package com.custom.rgs_android_dom.domain.client.view_states
 
 import com.custom.rgs_android_dom.domain.client.models.Gender
 import org.joda.time.LocalDateTime

@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.data.network.interceptors
 
-import android.util.Log
 import com.custom.rgs_android_dom.data.network.error.MSDNetworkError
 import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepository
 import com.custom.rgs_android_dom.utils.logException
@@ -86,7 +85,6 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
     @Synchronized
     private fun refreshToken() {
         val refreshTokenExpiresAt = registrationRepository.getRefreshTokenExpiresAt()
-        Log.d("MyLog", "Refresh token expires at " + refreshTokenExpiresAt.toString())
         if (refreshTokenExpiresAt?.isBeforeNow == true) {
             registrationRepository.clearAuth()
         } else {
@@ -98,7 +96,6 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
                                 registrationRepository.clearAuth()
                             })
                     } catch (e: Exception) {
-                        Log.d("MyLog", "on exception")
                         logException(this, e)
                     }
                 }
