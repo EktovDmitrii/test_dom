@@ -77,8 +77,7 @@ class RegistrationFillClientViewModel(
             .subscribeBy(
                 onComplete = {
                     Log.d("MyLog", "SHOW MAIN FRAGMENT")
-                    ScreenManager.closeScope(REGISTRATION)
-                    ScreenManager.showScreen(MainFragment())
+                    onCloseClick()
                 },
                 onError = {
                     when(it){

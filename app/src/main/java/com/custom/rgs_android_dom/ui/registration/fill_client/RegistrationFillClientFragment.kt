@@ -10,6 +10,7 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentRegistrationFillClientBinding
 import com.custom.rgs_android_dom.domain.client.ProfileField
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.main.MainFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.*
@@ -165,6 +166,7 @@ class RegistrationFillClientFragment : BaseFragment<RegistrationFillClientViewMo
     override fun onClose() {
         hideSoftwareKeyboard()
         ScreenManager.closeScope(REGISTRATION)
+        ScreenManager.showScreen(MainFragment())
     }
 
     override fun onLoading() {
