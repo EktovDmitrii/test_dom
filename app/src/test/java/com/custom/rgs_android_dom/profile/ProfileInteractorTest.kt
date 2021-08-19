@@ -1,15 +1,25 @@
 package com.custom.rgs_android_dom.profile
 
 import android.os.Build
+import com.custom.rgs_android_dom.data.repositories.countries.MockCountriesRepositoryImpl
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
-import com.custom.rgs_android_dom.domain.client.models.Gender
-import com.custom.rgs_android_dom.domain.client.view_states.FillClientViewState
 import com.custom.rgs_android_dom.domain.client.ValidateClientException
+import com.custom.rgs_android_dom.domain.client.view_states.ClientShortViewState
+import com.custom.rgs_android_dom.domain.client.view_states.FillClientViewState
+import com.custom.rgs_android_dom.profile.MockClientRepository.Companion.AGENTCODE
+import com.custom.rgs_android_dom.profile.MockClientRepository.Companion.BIRTHDATE
+import com.custom.rgs_android_dom.profile.MockClientRepository.Companion.BIRTHDATESTR
+import com.custom.rgs_android_dom.profile.MockClientRepository.Companion.GENDER
+import com.custom.rgs_android_dom.profile.MockClientRepository.Companion.NAME
+import com.custom.rgs_android_dom.profile.MockClientRepository.Companion.PHONE
+import com.custom.rgs_android_dom.profile.MockClientRepository.Companion.PHONEAGENT
+import com.custom.rgs_android_dom.profile.MockClientRepository.Companion.PHONEMASKED
+import com.custom.rgs_android_dom.profile.MockClientRepository.Companion.SURNAME
+import com.custom.rgs_android_dom.utils.CashHelper
 import net.danlew.android.joda.JodaTimeAndroid
-import org.joda.time.LocalDate
 import org.junit.After
-import org.junit.Assert
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -18,21 +28,9 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 
-
-
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [Build.VERSION_CODES.O_MR1])
 class ProfileInteractorTest {
-
-    companion object {
-        val NAME = "ИВАН"
-        val SURNAME = "ИВАНОВ"
-        val BIRTHDATE = LocalDate(2002, 10, 3)
-        val BIRTHDATESTR = "03.10.2002"
-        val GENDER = Gender.FEMALE
-        val AGENTCODE = "777"
-        val PHONEAGENT = "79044961128"
-    }
 
     lateinit var clientInteractor: ClientInteractor
 
@@ -40,11 +38,12 @@ class ProfileInteractorTest {
     fun init() {
         val context = RuntimeEnvironment.systemContext
         JodaTimeAndroid.init(context)
+        CashHelper.init()
 
         clientInteractor =
-            ClientInteractor(registrationRepository = MockRegistrationRepositoryImpl())
+            ClientInteractor(registrationRepository = MockRegistrationRepositoryImpl(), countriesRepository = MockCountriesRepositoryImpl(), clientRepository = MockClientRepository())
 
-        clientInteractor.profileStateSubject.hide()
+        clientInteractor.fillClientStateSubject.hide()
             .subscribe {
                 profileViewState = it
             }
@@ -70,7 +69,7 @@ class ProfileInteractorTest {
         clientInteractor.onAgentCodeChanged(AGENTCODE)
         clientInteractor.onAgentPhoneChanged(PHONEAGENT, true)
         clientInteractor.onGenderSelected(GENDER)
-        clientInteractor.updateProfile().blockingGet()
+        clientInteractor.updateClient().blockingGet()
 
         assertEquals(GENDER, profileViewState.gender)
 
@@ -140,33 +139,44 @@ class ProfileInteractorTest {
     @Test
     fun saveProfileTest(){
         clientInteractor.onAgentCodeChanged(AGENTCODE)
-        try {
-            clientInteractor.updateProfile().blockingGet()
-            Assert.fail()
-        } catch (e: ValidateClientException){
-            Assert.assertTrue(true)
-        } catch (e: Exception){
-            Assert.assertTrue(false)
+
+        var ex = clientInteractor.updateClient().blockingGet()
+        if(ex is ValidateClientException){
+            assertTrue(true)
+        }  else {
+            assertTrue(false)
         }
 
         clientInteractor.onAgentCodeChanged("")
         clientInteractor.onAgentPhoneChanged(PHONEAGENT, true)
-        try {
-            clientInteractor.updateProfile().blockingGet()
-            Assert.fail()
-        } catch (e: ValidateClientException){
-            Assert.assertTrue(true)
-        } catch (e: Exception){
-            Assert.assertTrue(false)
+
+        ex =  clientInteractor.updateClient().blockingGet()
+        if(ex is ValidateClientException){
+            assertTrue(true)
+        }  else {
+            assertTrue(false)
         }
 
         clientInteractor.onAgentCodeChanged(AGENTCODE)
         clientInteractor.onAgentPhoneChanged(PHONEAGENT, true)
-        try {
-            clientInteractor.updateProfile().blockingGet()
-            Assert.assertTrue(true)
-        } catch (e: Exception){
-            Assert.fail()
-        }
+
+        ex = clientInteractor.updateClient().blockingGet()
+        assertTrue(ex == null)
+
+    }
+
+    @Test
+    fun getShortClientTest(){
+        clientInteractor.onSurnameChanged(SURNAME)
+        clientInteractor.onNameChanged(NAME)
+        clientInteractor.onBirthdayChanged(BIRTHDATESTR, true)
+        clientInteractor.onAgentCodeChanged(AGENTCODE)
+        clientInteractor.onAgentPhoneChanged(PHONEAGENT, true)
+        clientInteractor.onGenderSelected(GENDER)
+        clientInteractor.updateClient().blockingGet()
+
+        val client = clientInteractor.getClient().blockingGet()
+
+        assertEquals(client, ClientShortViewState(NAME, SURNAME, PHONEMASKED))
     }
 }

@@ -13,5 +13,5 @@ val dataModule = module {
     single { DemoRepository() }
     single <RegistrationRepository> { RegistrationRepositoryImpl(api = get(), authSharedPreferences = get()) }
     single <ClientRepository> {ClientRepositoryImpl(api = get(), authSharedPreferences = get())}
-    single <CountriesRepository> { MockCountriesRepositoryImpl(api = get()) }
+    single <CountriesRepository> { MockCountriesRepositoryImpl() }
 }

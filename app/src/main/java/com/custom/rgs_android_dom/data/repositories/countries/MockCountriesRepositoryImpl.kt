@@ -8,7 +8,7 @@ import com.custom.rgs_android_dom.domain.countries.model.CountryModel
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Single
 
-class MockCountriesRepositoryImpl(private val api: MSDApi) : CountriesRepository {
+class MockCountriesRepositoryImpl() : CountriesRepository {
 
     private val selectedCountry = BehaviorRelay.create<CountryModel>()
 

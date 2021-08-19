@@ -7,6 +7,7 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.internal.operators.single.SingleMap
+import io.reactivex.subjects.PublishSubject
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import java.util.*
@@ -17,6 +18,7 @@ class MockRegistrationRepositoryImpl : RegistrationRepository {
     private var currentToken: String? = null
     private var currentRefreshToken: String? = null
     private var currentClientId: String? = null
+    private val logout = PublishSubject.create<Unit>()
 
     override fun getCurrentPhone(): String {
         return phone
@@ -41,25 +43,6 @@ class MockRegistrationRepositoryImpl : RegistrationRepository {
         return Completable.complete()
     }
 
-    override fun updateProfile(
-        name: String?,
-        surname: String?,
-        birthday: LocalDate?,
-        gender: Gender?,
-        agentCode: String?,
-        agentPhone: String?
-    ): Single<Boolean> {
-        return Single.fromCallable {
-            Thread.sleep(3000)
-            val agentPhone = agentPhone
-            if (agentPhone != null && agentPhone.endsWith("9")){
-                throw InvalidPropertiesFormatException("Wrong format")
-            } else {
-                true
-            }
-        }
-    }
-
     override fun getAuthToken(): String? {
         return currentToken
     }
@@ -70,8 +53,8 @@ class MockRegistrationRepositoryImpl : RegistrationRepository {
         return Completable.complete()
     }
 
-    override fun getLogoutSubject(): BehaviorRelay<Unit> {
-        TODO("Not yet implemented")
+    override fun getLogoutSubject(): PublishSubject<Unit> {
+        return logout
     }
 
     override fun getClientId(): String? {
@@ -84,7 +67,7 @@ class MockRegistrationRepositoryImpl : RegistrationRepository {
     }
 
     override fun getRefreshTokenExpiresAt(): DateTime? {
-        TODO("Not yet implemented")
+        return DateTime.now()
     }
 
     override fun deleteTokens() {
@@ -94,6 +77,17 @@ class MockRegistrationRepositoryImpl : RegistrationRepository {
 
     override fun getRefreshToken(): String? {
         return currentRefreshToken
+    }
+
+    override fun isAuthorized(): Boolean {
+        return currentClientId != null
+    }
+
+    override fun clearAuth() {
+        currentRefreshToken = null
+        currentToken = null
+        currentClientId = null
+        logout.onNext(Unit)
     }
 
 }

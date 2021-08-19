@@ -20,8 +20,8 @@ android {
         applicationId "com.custom.rgs_android_dom"
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 4
-        versionName "0.0.2.1"
+        versionCode 5
+        versionName "0.0.2.2"
     }
 
     signingConfigs {
