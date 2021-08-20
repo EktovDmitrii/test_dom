@@ -43,7 +43,7 @@ class ClientFragment(
         subscribe(viewModel.clientShortViewStateObserver){state->
             binding.phoneTextView.text = state.phone
 
-            if (state.firstName.isEmpty() || state.lastName.isEmpty()){
+            if (state.firstName.isEmpty() && state.lastName.isEmpty()){
                 binding.nameTextView.text = "Добавьте ваше имя"
                 binding.nameTextView.setTextColor(requireContext().getColor(R.color.primary500))
             } else{
