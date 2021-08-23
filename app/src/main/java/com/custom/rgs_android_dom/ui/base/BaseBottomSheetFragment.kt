@@ -34,18 +34,19 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB: ViewBinding>(
     protected val binding: VB by viewBinding(viewBindingClass = getViewBindingJavaClass(), createMethod = CreateMethod.INFLATE)
 
     private lateinit var behavior: BottomSheetBehavior<View>
+    private var hasNotifiedAboutInit = false
 
     abstract val TAG: String
 
-    var slideStateChangedListener: OnSlideStateChangedListener? = null
+    var eventsListener: BottomSheetEventsListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if (parentFragment is OnSlideStateChangedListener){
-            slideStateChangedListener = parentFragment as OnSlideStateChangedListener
+        if (parentFragment is BottomSheetEventsListener){
+            eventsListener = parentFragment as BottomSheetEventsListener
         }
         return binding.root
     }
@@ -167,25 +168,28 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB: ViewBinding>(
 
         behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                if (!isLocked) {
-                    if (newState == BottomSheetBehavior.STATE_EXPANDED || newState == BottomSheetBehavior.STATE_HALF_EXPANDED) {
+                if (newState == BottomSheetBehavior.STATE_EXPANDED || newState == BottomSheetBehavior.STATE_HALF_EXPANDED) {
+                    if (!isLocked){
                         behavior.halfExpandedRatio = maxHalfExpandedRatio
-                        slideStateChangedListener?.onSlideStateChanged(SlideState.TOP)
+                        eventsListener?.onSlideStateChanged(SlideState.TOP)
                     }
                 }
-
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                if (!hasNotifiedAboutInit){
+                    eventsListener?.onBottomSheetInit()
+                    hasNotifiedAboutInit = true
+                }
                 if (!isLocked) {
                     if (slideOffset <= 0.5f){
                         behavior.halfExpandedRatio = minHalfExpandedRatio
                     }
 
                     if (slideOffset < 0.49f && slideOffset > 0.0f){
-                        slideStateChangedListener?.onSlideStateChanged(SlideState.MOVING_BOTTOM)
+                        eventsListener?.onSlideStateChanged(SlideState.MOVING_BOTTOM)
                     } else if (slideOffset == 0.0f) {
-                        slideStateChangedListener?.onSlideStateChanged(SlideState.BOTTOM)
+                        eventsListener?.onSlideStateChanged(SlideState.BOTTOM)
                     }
                 }
 
@@ -198,6 +202,7 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB: ViewBinding>(
             parentFragment?.view?.dispatchTouchEvent(motionEvent)
             true
         }
+
     }
 
     fun lockToTop(){
@@ -238,7 +243,8 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB: ViewBinding>(
 
     enum class SlideState {TOP, MOVING_BOTTOM, BOTTOM}
 
-    interface OnSlideStateChangedListener {
+    interface BottomSheetEventsListener {
         fun onSlideStateChanged(newState: SlideState)
+        fun onBottomSheetInit()
     }
 }

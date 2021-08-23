@@ -14,7 +14,7 @@ import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.utils.*
 
-class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.fragment_main), BaseBottomSheetFragment.OnSlideStateChangedListener {
+class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.fragment_main), BaseBottomSheetFragment.BottomSheetEventsListener {
 
     private lateinit var transitionBackground: TransitionDrawable
 
@@ -81,6 +81,10 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
             }
 
         }
+    }
+
+    override fun onBottomSheetInit() {
+        binding.fakeBottomSheetView.gone()
     }
 
     private fun initAnimations(){
