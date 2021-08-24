@@ -5,8 +5,10 @@ import com.custom.rgs_android_dom.data.repositories.countries.CountriesRepositor
 import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepository
 import com.custom.rgs_android_dom.domain.client.models.Gender
 import com.custom.rgs_android_dom.domain.client.mappers.ClientShortViewStateMapper
+import com.custom.rgs_android_dom.domain.client.mappers.PersonalDataMapper
 import com.custom.rgs_android_dom.domain.client.view_states.ClientShortViewState
 import com.custom.rgs_android_dom.domain.client.view_states.FillClientViewState
+import com.custom.rgs_android_dom.domain.client.view_states.PersonalDataViewState
 import com.custom.rgs_android_dom.utils.*
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Completable
@@ -187,7 +189,19 @@ class ClientInteractor(
             .map {
                 ClientShortViewStateMapper.from(it)
             }
+    }
 
+    fun getClientUpdatedSubject(): Observable<PersonalDataViewState> {
+        return clientRepository.getClientUpdatedSubject()
+            .map {
+                PersonalDataMapper.from(it)
+            }
+    }
+
+    fun getPersonalData(): Single<PersonalDataViewState> {
+        return clientRepository.getClient().map {
+            PersonalDataMapper.from(it)
+        }
     }
 
 }

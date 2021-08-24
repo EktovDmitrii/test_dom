@@ -1,9 +1,11 @@
 package com.custom.rgs_android_dom.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.client.personal_data.PersonalDataFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.splash.SplashFragment
 import com.custom.rgs_android_dom.utils.CashHelper
@@ -29,7 +31,8 @@ class MainActivity : AppCompatActivity() {
         //ScreenManager.showScreen(RegistrationFillClientFragment.newInstance("+7 123 456-77-77"))
         //ScreenManager.showScreen(RegistrationPhoneFragment())
         //ScreenManager.showScreen(DemoRegistrationFlowFragment())
-        //ScreenManager.showScreen(MainFragment())
+        //ScreenManager.showScreen(PersonalDataFragment())
+
     }
 
     override fun onBackPressed() {
