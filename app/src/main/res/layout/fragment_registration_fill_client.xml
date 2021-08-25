@@ -90,7 +90,7 @@
                 android:imeOptions="actionDone"
                 android:inputType="date"
                 app:icon="@drawable/ic_calendar_24px"
-                app:mask="[00].[00].[0000]"
+                app:mask="[00]{.}[00]{.}[0000]"
                 app:translationHintKey="24.04.1990"
                 app:translationLabelKey="Дата рождения" />
 

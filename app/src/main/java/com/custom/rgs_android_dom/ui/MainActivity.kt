@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.registration.fill_client.RegistrationFillClientFragment
 import com.custom.rgs_android_dom.ui.splash.SplashFragment
 import com.custom.rgs_android_dom.utils.CashHelper
 
@@ -25,8 +26,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startSplash() {
-        ScreenManager.showScreen(SplashFragment())
-        //ScreenManager.showScreen(RegistrationFillClientFragment.newInstance("+7 123 456-77-77"))
+        //ScreenManager.showScreen(SplashFragment())
+        ScreenManager.showScreen(RegistrationFillClientFragment.newInstance("+7 123 456-77-77"))
         //ScreenManager.showScreen(RegistrationPhoneFragment())
         //ScreenManager.showScreen(DemoRegistrationFlowFragment())
         //ScreenManager.showScreen(MainFragment())

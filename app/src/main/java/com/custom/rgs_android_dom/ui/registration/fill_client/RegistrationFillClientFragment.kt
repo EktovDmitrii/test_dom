@@ -2,7 +2,6 @@ package com.custom.rgs_android_dom.ui.registration.fill_client
 
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.core.view.isVisible
@@ -17,7 +16,6 @@ import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
 import com.custom.rgs_android_dom.views.edit_text.MSDLabelIconEditText
 import com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
-import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf

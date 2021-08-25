@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.text.InputFilter
 import android.text.InputType
-import android.text.method.DigitsKeyListener
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
@@ -36,7 +35,7 @@ class MSDLabelIconEditText @JvmOverloads constructor(
             formattedValue: String
         ) {
             if (isFromUser){
-                onTextChangedListener(binding.valueEditText.text.toString(), maskFilled)
+                onTextChangedListener(formattedValue, maskFilled)
             }
         }
     }
