@@ -93,8 +93,8 @@ class RegistrationFillClientFragment : BaseFragment<RegistrationFillClientViewMo
             viewModel.onGenderSelected(it)
         }
 
-        binding.birthdayEditText.addOnTextChangedListener { birthday, isMaskFilled ->
-            viewModel.onBirthdayChanged(birthday, isMaskFilled)
+        binding.birthdayEditText.addOnTextChangedListener { birthday, _ ->
+            viewModel.onBirthdayChanged(birthday)
             binding.birthdayEditText.setState(MSDLabelIconEditText.State.NORMAL)
         }
 
@@ -130,7 +130,7 @@ class RegistrationFillClientFragment : BaseFragment<RegistrationFillClientViewMo
                 binding.surnameEditText.setState(MSDLabelEditText.State.NORMAL)
             }
 
-            binding.birthdayEditText.setText(it.birthday?.formatTo() ?: "")
+            binding.birthdayEditText.setText(it.birthday ?: "")
             if (it.birthday == null){
                 binding.birthdayEditText.setState(MSDLabelIconEditText.State.NORMAL)
             }

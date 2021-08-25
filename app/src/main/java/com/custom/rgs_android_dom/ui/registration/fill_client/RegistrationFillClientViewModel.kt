@@ -101,8 +101,8 @@ class RegistrationFillClientViewModel(
         clientInteractor.onGenderSelected(gender)
     }
 
-    fun onBirthdayChanged(birthdayString: String, isMaskFilled: Boolean){
-        clientInteractor.onBirthdayChanged(birthdayString, isMaskFilled)
+    fun onBirthdayChanged(birthdayString: String){
+        clientInteractor.onBirthdayChanged(birthdayString)
     }
 
     fun onAgentCodeChanged(agentCode: String){

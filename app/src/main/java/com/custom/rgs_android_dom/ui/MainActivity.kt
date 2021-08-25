@@ -26,8 +26,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startSplash() {
-        //ScreenManager.showScreen(SplashFragment())
-        ScreenManager.showScreen(RegistrationFillClientFragment.newInstance("+7 123 456-77-77"))
+        ScreenManager.showScreen(SplashFragment())
+        //ScreenManager.showScreen(RegistrationFillClientFragment.newInstance("+7 123 456-77-77"))
         //ScreenManager.showScreen(RegistrationPhoneFragment())
         //ScreenManager.showScreen(DemoRegistrationFlowFragment())
         //ScreenManager.showScreen(MainFragment())

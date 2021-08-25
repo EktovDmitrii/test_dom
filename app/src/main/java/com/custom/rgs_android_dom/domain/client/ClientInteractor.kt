@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.domain.client
 
+import android.util.Log
 import com.custom.rgs_android_dom.data.repositories.client.ClientRepository
 import com.custom.rgs_android_dom.data.repositories.countries.CountriesRepository
 import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepository
@@ -36,8 +37,17 @@ class ClientInteractor(
     }
 
     fun updateClient(): Completable {
-        fillClientViewState.birthday?.let { birthday ->
-            if (!isBirthdayValid(birthday)) {
+
+        var birthday: LocalDateTime? = null
+        fillClientViewState.birthday?.let { birthdayString ->
+
+            val birthdayWithTimezone = "${birthdayString.tryParseDate()}T00:00:00.000Z"
+            birthday = birthdayWithTimezone.tryParseLocalDateTime({
+                logException(this, it)
+                birthday = null
+            }, format = PATTERN_DATE_TIME_MILLIS)
+
+            if (birthday == null || birthday != null && !isBirthdayValid(birthday!!)) {
                 return Completable.error(
                     ValidateClientException(
                         ProfileField.BIRTHDATE,
@@ -69,7 +79,7 @@ class ClientInteractor(
         return updateClient(
             fillClientViewState.name,
             fillClientViewState.surname,
-            fillClientViewState.birthday,
+            birthday,
             fillClientViewState.gender,
             fillClientViewState.agentCode,
             fillClientViewState.agentPhone
@@ -95,24 +105,17 @@ class ClientInteractor(
         validateProfileState()
     }
 
-    fun onBirthdayChanged(birthdayString: String, isMaskFilled: Boolean) {
-        var birthday: LocalDateTime? = null
-        when {
-            birthdayString.isEmpty() -> {
-                birthday = null
-            }
-            isMaskFilled -> {
-                val birthdayWithTimezone = "${birthdayString.tryParseDate()}T00:00:00.000Z"
-                birthday = birthdayWithTimezone.tryParseLocalDateTime({
-                    logException(this, it)
-                    birthday = null
-                }, format = PATTERN_DATE_TIME_MILLIS)
+    fun onBirthdayChanged(birthdayString: String) {
+
+        fillClientViewState = when {
+            birthdayString.isNotEmpty() -> {
+                fillClientViewState.copy(birthday = birthdayString)
             }
             else -> {
-                birthday = null
+                fillClientViewState.copy(birthday = null)
             }
         }
-        fillClientViewState = fillClientViewState.copy(birthday = birthday)
+
         validateProfileState()
     }
 
