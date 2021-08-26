@@ -67,12 +67,12 @@ class ClientInteractor(
         }
 
         return updateClient(
-            fillClientViewState.name,
-            fillClientViewState.surname,
-            fillClientViewState.birthday,
-            fillClientViewState.gender,
-            fillClientViewState.agentCode,
-            fillClientViewState.agentPhone
+            firstName = fillClientViewState.name,
+            lastName = fillClientViewState.surname,
+            birthday = fillClientViewState.birthday,
+            gender = fillClientViewState.gender,
+            agentCode = fillClientViewState.agentCode,
+            agentPhone = fillClientViewState.agentPhone
         )
     }
 
@@ -171,14 +171,20 @@ class ClientInteractor(
     }
 
     private fun updateClient(
-        name: String?,
-        surname: String?,
-        birthday: LocalDateTime?,
-        gender: Gender?,
-        agentCode: String?,
-        agentPhone: String?
+        firstName: String? = null,
+        lastName: String? = null,
+        middleName: String? = null,
+        birthday: LocalDateTime? = null,
+        gender: Gender? = null,
+        agentCode: String? = null,
+        agentPhone: String? = null,
+        docNumber: String? = null,
+        docSerial: String? = null,
+        phone: String? = null,
+        secondPhone: String? = null,
+        email: String? = null,
     ): Completable {
-        return clientRepository.updateClient(name, surname, birthday, gender, agentCode, agentPhone)
+        return clientRepository.updateClient(firstName, lastName, middleName, birthday, gender, agentCode, agentPhone, docNumber, docSerial, phone, secondPhone, email)
             .doOnComplete { fillClientStateSubject.accept(fillClientViewState) }
     }
 

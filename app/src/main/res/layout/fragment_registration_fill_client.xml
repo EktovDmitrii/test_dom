@@ -17,10 +17,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:alpha="0.0"
             android:fontFamily="@font/my_service_medium"
             android:textColor="@color/secondary900"
             android:textSize="16sp"
-            android:alpha="0.0"
             app:translationTextKey="Расскажите о себе" />
 
         <androidx.appcompat.widget.AppCompatImageView

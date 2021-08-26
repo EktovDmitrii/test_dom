@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/toolbarAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@color/white">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/backImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:paddingHorizontal="14dp"
+                android:tint="@color/secondary800"
+                app:srcCompat="@drawable/ic_back_24px"/>
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/my_service_medium"
+                android:textColor="@color/secondary900"
+                android:textSize="16sp"
+                app:translationTextKey="Редактировать данные"/>
+
+        </FrameLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/actionsFrameLayout"
+        android:layout_below="@+id/toolbarAppBar"
+        android:overScrollMode="never"
+        android:clipToPadding="false"
+        android:paddingBottom="31dp">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp" >
+
+            <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
+                android:id="@+id/surnameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits="@string/acceptable_name_chars"
+                android:inputType="textPersonName|textCapSentences"
+                android:maxLength="50"
+                app:translationHintKey="Иванов"
+                app:translationLabelKey="Фамилия" />
+
+            <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
+                android:id="@+id/nameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:digits="@string/acceptable_name_chars"
+                android:inputType="textPersonName|textCapSentences"
+                android:maxLength="25"
+                app:translationHintKey="Иван"
+                app:translationLabelKey="Имя" />
+
+            <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
+                android:id="@+id/lastnameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:digits="@string/acceptable_name_chars"
+                android:inputType="textPersonName|textCapSentences"
+                android:maxLength="25"
+                app:translationHintKey="Иванович"
+                app:translationLabelKey="Отчество" />
+
+            <com.custom.rgs_android_dom.views.edit_text.MSDLabelIconEditText
+                android:id="@+id/birthdayEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:imeOptions="actionDone"
+                android:inputType="date"
+                app:icon="@drawable/ic_calendar_24px"
+                app:mask="[00]{.}[00]{.}[0000]"
+                app:translationHintKey="24.04.1990"
+                app:translationLabelKey="Дата рождения" />
+
+            <com.custom.rgs_android_dom.views.MSDGenderSelector
+                android:id="@+id/genderSelector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:translationLabelKey="Пол" />
+
+            <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
+                android:id="@+id/passportSeriesEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:inputType="number"
+                android:maxLength="4"
+                app:translationLabelKey="Серия паспорта"
+                app:translationHintKey="9999"/>
+
+            <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
+                android:id="@+id/passportNumberEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:inputType="number"
+                android:maxLength="6"
+                app:translationLabelKey="Номер паспорта"
+                app:translationHintKey="999999"/>
+
+            <com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
+                android:id="@+id/phoneEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:inputType="phone"
+                app:mask="+7 [000] [000]-[00]-[00]"
+                app:translationHintKey="+7 999 999-99-99"
+                app:translationLabelKey="Номер телефона" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/rectangle_filled_secondary_900_alpha4_radius_8dp"
+                android:layout_marginTop="12dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="8dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="64dp">
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/suisse_regular"
+                    android:textSize="14sp"
+                    android:textColor="@color/secondary500"
+                    app:translationTextKey="Чтобы редактировать личные данные,"/>
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/editRequestTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/suisse_regular"
+                    android:textSize="14sp"
+                    android:textColor="@color/primary500"
+                    app:isUnderlined="true"
+                    app:translationTextKey="оставьте заявку"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
+                android:id="@+id/additionalPhoneEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:inputType="phone"
+                app:mask="+7 [000] [000]-[00]-[00]"
+                app:translationHintKey="+7 999 999-99-99"
+                app:translationLabelKey="Дополнительный телефон" />
+
+            <com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
+                android:id="@+id/emailEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:inputType="textWebEmailAddress"
+                android:imeOptions="actionDone"
+                app:translationHintKey="prezident.sveta@mail.ru"
+                app:translationLabelKey="Электронная почта" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/actionsFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="82dp"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="22dp"
+        android:paddingTop="12dp"
+        tools:ignore="BottomAppBar">
+
+        <com.custom.rgs_android_dom.views.text.MSDTextViewLoader
+            android:id="@+id/saveTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="20dp"
+            android:enabled="false"
+            app:translationTextKey="Сохранить" />
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
+</RelativeLayout>
