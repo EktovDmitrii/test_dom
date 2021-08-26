@@ -54,7 +54,6 @@ class RegistrationFillClientViewModel(
 
     fun onKnowAgentCodeClick(){
         clientInteractor.onKnowAgentCodeClick()
-
     }
 
     fun onSkipClick(){

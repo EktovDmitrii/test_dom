@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.navigation
 
+import android.util.Log
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
@@ -117,9 +118,10 @@ object ScreenManager {
             it.getNavigateId() == idFragment
         }
 
-        transaction.commit()
+        transaction.commitNow()
 
         reInit()
+        notifyCurrentVisibleFragment()
     }
 
     private fun reInit() {
@@ -165,6 +167,14 @@ object ScreenManager {
             }
         }
         transaction.commit()
+    }
+
+    private fun notifyCurrentVisibleFragment(){
+        if (activity?.supportFragmentManager?.fragments?.isNotEmpty() == true){
+            activity?.supportFragmentManager?.fragments?.last()?.let {
+                (it as BaseFragment<*,*>).onVisibleToUser()
+            }
+        }
     }
 
 }
