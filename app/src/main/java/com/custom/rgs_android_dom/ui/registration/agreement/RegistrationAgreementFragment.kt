@@ -56,6 +56,10 @@ class RegistrationAgreementFragment : BaseFragment<RegistrationAgreementViewMode
             binding.agreementTextView.text = it
             binding.agreementTextView.stripUnderlines()
         }
+
+        subscribe(viewModel.signOpdErrorObserver){
+            toast(it)
+        }
     }
 
     override fun onClose() {

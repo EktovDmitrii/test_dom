@@ -1,14 +1,14 @@
 package com.custom.rgs_android_dom.data.repositories.countries
 
 import com.custom.rgs_android_dom.R
-import com.custom.rgs_android_dom.data.network.MyServiceDomApi
+import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.CountriesMapper
 import com.custom.rgs_android_dom.data.network.responses.CountryResponse
 import com.custom.rgs_android_dom.domain.countries.model.CountryModel
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Single
 
-class MockCountriesRepositoryImpl(private val api: MyServiceDomApi) : CountriesRepository {
+class MockCountriesRepositoryImpl() : CountriesRepository {
 
     private val selectedCountry = BehaviorRelay.create<CountryModel>()
 
@@ -118,13 +118,15 @@ class MockCountriesRepositoryImpl(private val api: MyServiceDomApi) : CountriesR
             sortBy {
                 it.name
             }
-            add(0, CountryResponse(
-                id = 7,
-                name = "Россия",
-                letterCode = "RU",
-                numberCode = "+7",
-                mask = "+7 [000] [000]-[00]-[00]"
-            ))
+            add(
+                0, CountryResponse(
+                    id = 7,
+                    name = "Россия",
+                    letterCode = "RU",
+                    numberCode = "+7",
+                    mask = "+7 [000] [000]-[00]-[00]"
+                )
+            )
         }
     }
 

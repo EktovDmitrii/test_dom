@@ -1,19 +1,38 @@
 package com.custom.rgs_android_dom.data.repositories.registration
 
-import com.custom.rgs_android_dom.domain.profile.models.Gender
+import io.reactivex.Completable
 import io.reactivex.Single
-import org.joda.time.LocalDate
+import io.reactivex.subjects.PublishSubject
+import org.joda.time.DateTime
 
 interface RegistrationRepository {
 
-    fun sendPhone(phone: String): Single<Boolean>
+    fun getCurrentPhone(): String
 
-    fun sendCode(code: String): Single<Boolean>
+    fun getCode(phone: String): Single<String>
 
-    fun resendCode(phone: String): Single<Boolean>
+    fun login(phone: String, code: String, token: String): Single<Boolean>
 
-    fun acceptAgreement(): Single<Boolean>
+    fun signOpd(clientId: String): Completable
 
-    fun updateProfile(phone: String, name: String?, surname: String?, birthday: LocalDate?, gender: Gender?, agentCode: String?, agentPhone: String?): Single<Boolean>
+    fun getAuthToken(): String?
+
+    fun logout(): Completable
+
+    fun getLogoutSubject(): PublishSubject<Unit>
+
+    fun getClientId(): String?
+
+    fun refreshToken(refreshToken: String): Completable
+
+    fun getRefreshTokenExpiresAt(): DateTime?
+
+    fun deleteTokens()
+
+    fun getRefreshToken(): String?
+
+    fun isAuthorized(): Boolean
+
+    fun clearAuth()
 
 }

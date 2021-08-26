@@ -3,11 +3,14 @@ package com.custom.rgs_android_dom.ui.registration.code
 import android.os.CountDownTimer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.custom.rgs_android_dom.data.network.toNetworkException
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.main.MainFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.registration.agreement.RegistrationAgreementFragment
+import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -15,6 +18,7 @@ import io.reactivex.schedulers.Schedulers
 
 class RegistrationCodeViewModel(
     private val phone: String,
+    private var token: String,
     private val registrationInteractor: RegistrationInteractor
 ) : BaseViewModel() {
 
@@ -26,14 +30,14 @@ class RegistrationCodeViewModel(
     private val onTimerStartController = MutableLiveData<Unit>()
     private val showResendCodeController = MutableLiveData<Unit>()
     private val countdownTextController = MutableLiveData<String>()
-    private val codeErrorController = MutableLiveData<Unit>()
+    private val codeErrorController = MutableLiveData<String>()
     private val otcReceivedController = MutableLiveData<String>()
 
     val phoneObserver: LiveData<String> = phoneController
     val onTimerStartObserver: LiveData<Unit> = onTimerStartController
     val showResendCodeObserver: LiveData<Unit> = showResendCodeController
     val countdownTextObserver: LiveData<String> = countdownTextController
-    val codeErrorObserver: LiveData<Unit> = codeErrorController
+    val codeErrorObserver: LiveData<String> = codeErrorController
     val otcReceivedObserver: LiveData<String> = otcReceivedController
 
     private var timer: CountDownTimer? = null
@@ -48,38 +52,41 @@ class RegistrationCodeViewModel(
     }
 
     fun onResendCodeClick(){
-        registrationInteractor.resendCode(phone)
+        registrationInteractor.getCode(phone)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
-            .doOnSuccess { loadingStateController.value = LoadingState.CONTENT }
+            .doOnSuccess{ loadingStateController.value = LoadingState.CONTENT }
             .doOnError { loadingStateController.value = LoadingState.ERROR }
             .subscribeBy(
-                onSuccess = {
+                onSuccess = { token->
+                    this.token = token
                     startCountdownTimer()
                 },
                 onError = {
-
+                    logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
     }
 
     fun onCodeComplete(code: String){
-        registrationInteractor.sendCode(code)
+        registrationInteractor.login(phone, code, token)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
             .doOnSuccess { loadingStateController.value = LoadingState.CONTENT }
             .subscribeBy(
-                onSuccess = {
+                onSuccess = {isNewUser->
                     closeController.value = Unit
-                    // If phone ends with 55 this is a mocked "registered" user
-                    if (!phone.endsWith("55")){
+                    if (isNewUser){
                         ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(phone), REGISTRATION)
+                    } else {
+                        ScreenManager.showScreen(MainFragment())
                     }
                 },
                 onError = {
-                    codeErrorController.value = Unit
+                    logException(this, it)
+                    codeErrorController.value = it.toNetworkException()?.message ?: "Неправильный код"
                 }
             ).addTo(dataCompositeDisposable)
     }
