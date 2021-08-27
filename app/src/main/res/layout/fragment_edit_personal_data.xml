@@ -55,7 +55,7 @@
             android:paddingHorizontal="20dp" >
 
             <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
-                android:id="@+id/surnameEditText"
+                android:id="@+id/lastNameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:digits="@string/acceptable_name_chars"
@@ -65,7 +65,7 @@
                 app:translationLabelKey="Фамилия" />
 
             <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
-                android:id="@+id/nameEditText"
+                android:id="@+id/firstNameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -76,7 +76,7 @@
                 app:translationLabelKey="Имя" />
 
             <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
-                android:id="@+id/lastnameEditText"
+                android:id="@+id/middleNameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -131,8 +131,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:inputType="phone"
-                app:mask="+7 [000] [000]-[00]-[00]"
-                app:translationHintKey="+7 999 999-99-99"
                 app:translationLabelKey="Номер телефона" />
 
             <androidx.appcompat.widget.LinearLayoutCompat

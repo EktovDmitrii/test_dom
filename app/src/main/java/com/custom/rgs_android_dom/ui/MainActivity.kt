@@ -7,7 +7,7 @@ import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.client.personal_data.edit.EditPersonalDataFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.splash.SplashFragment
-import com.custom.rgs_android_dom.utils.CashHelper
+import com.custom.rgs_android_dom.utils.CacheHelper
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,21 +17,23 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         ScreenManager.init(this, R.id.vgScreensContainer)
         startSplash()
-        CashHelper.init()
+        CacheHelper.init()
     }
 
     override fun onDestroy() {
-        CashHelper.destroy()
+        CacheHelper.destroy()
         super.onDestroy()
     }
 
     private fun startSplash() {
-        //ScreenManager.showScreen(SplashFragment())
+        ScreenManager.showScreen(SplashFragment())
         //ScreenManager.showScreen(RegistrationFillClientFragment.newInstance("+7 123 456-77-77"))
         //ScreenManager.showScreen(RegistrationPhoneFragment())
         //ScreenManager.showScreen(DemoRegistrationFlowFragment())
         //ScreenManager.showScreen(MainFragment())
-        ScreenManager.showScreen(EditPersonalDataFragment())
+        //ScreenManager.showScreen(EditPersonalDataFragment())
+        //ScreenManager.showScreen(PersonalDataFragment())
+
     }
 
     override fun onBackPressed() {

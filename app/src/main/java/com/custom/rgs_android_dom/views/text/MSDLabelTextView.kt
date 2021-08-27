@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdLabelTextViewBinding
+import com.custom.rgs_android_dom.utils.gone
+import com.custom.rgs_android_dom.utils.visible
 
 class MSDLabelTextView @JvmOverloads constructor(
     context: Context,
@@ -30,6 +32,13 @@ class MSDLabelTextView @JvmOverloads constructor(
 
     fun setValue(value: String){
         binding.valueTextView.text = value
+        binding.valueTextView.visible()
+        binding.noValueTextView.gone()
+    }
+
+    fun setNoValue(){
+        binding.valueTextView.gone()
+        binding.noValueTextView.visible()
     }
 
 

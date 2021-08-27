@@ -47,7 +47,7 @@ class ClientRepositoryImpl(
             docNumber = docNumber,
             docSerial = docSerial,
             phone = phone,
-            secondPhone = secondPhone,
+            secondPhone = secondPhone?.formatPhoneForApi(),
             email = email
         )
         return api.putClient(authSharedPreferences.getClientId(), request)

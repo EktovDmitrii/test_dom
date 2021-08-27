@@ -1,16 +1,169 @@
 package com.custom.rgs_android_dom.ui.client.personal_data.edit
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentEditPersonalDataBinding
+import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.utils.*
+import com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
+import com.custom.rgs_android_dom.views.edit_text.MSDLabelIconEditText
+import com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
+import org.joda.time.LocalDateTime
 
 class EditPersonalDataFragment : BaseFragment<EditPersonalDataViewModel, FragmentEditPersonalDataBinding>(R.layout.fragment_edit_personal_data){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.lastNameEditText.addTextWatcher {
+            viewModel.onLastNameChanged(it)
+            binding.lastNameEditText.setState(MSDLabelEditText.State.NORMAL)
+        }
+
+        binding.firstNameEditText.addTextWatcher {
+            viewModel.onFirstNameChanged(it)
+            binding.firstNameEditText.setState(MSDLabelEditText.State.NORMAL)
+        }
+
+        binding.middleNameEditText.addTextWatcher {
+            viewModel.onMiddleNameChanged(it)
+            binding.middleNameEditText.setState(MSDLabelEditText.State.NORMAL)
+        }
+
+        binding.birthdayEditText.addOnTextChangedListener{birthday, _->
+            viewModel.onBirthdayChanged(birthday)
+            binding.birthdayEditText.setState(MSDLabelIconEditText.State.NORMAL)
+        }
+
+        binding.birthdayEditText.setOnIconClickListener {
+            showDatePicker(
+                maxDate = LocalDateTime.now().minusYears(16).plusDays(-1).toDate(),
+                minDate = LocalDateTime.parse("1900-01-01").toDate()
+            ){
+                val date = it.formatTo()
+                binding.birthdayEditText.setState(MSDLabelIconEditText.State.NORMAL)
+                binding.birthdayEditText.setTextFromUser(date)
+            }
+        }
+
+        binding.genderSelector.setGenderSelectedListener {
+            viewModel.onGenderChanged(it)
+        }
+
+        binding.passportSeriesEditText.addTextWatcher {
+            viewModel.onDocSerialChanged(it)
+            binding.passportSeriesEditText.setState(MSDLabelEditText.State.NORMAL)
+        }
+
+        binding.passportNumberEditText.addTextWatcher {
+            viewModel.onDocNumberChanged(it)
+            binding.passportNumberEditText.setState(MSDLabelEditText.State.NORMAL)
+        }
+
+        binding.phoneEditText.addTextWatcher {
+            viewModel.onPhoneChanged(it)
+        }
+
+        binding.additionalPhoneEditText.addOnTextChangedListener { phone, isMaskFilled ->
+            viewModel.onSecondPhoneChanged(phone, isMaskFilled)
+            binding.additionalPhoneEditText.setState(MSDMaskedLabelEditText.State.NORMAL)
+        }
+
+        binding.emailEditText.addTextWatcher {
+            viewModel.onEmailChanged(it)
+            binding.emailEditText.setState(MSDMaskedLabelEditText.State.NORMAL)
+        }
+
+        binding.saveTextView.setOnDebouncedClickListener {
+            hideSoftwareKeyboard()
+            viewModel.onSaveClick()
+        }
+
+        binding.backImageView.setOnDebouncedClickListener {
+            viewModel.onBackClick()
+        }
+
+        subscribe(viewModel.editPersonalDataObserver){state->
+            binding.lastNameEditText.isEnabled = !state.isLastNameSaved
+            binding.lastNameEditText.setText(state.lastName)
+
+            binding.firstNameEditText.isEnabled = !state.isFirstNameSaved
+            binding.firstNameEditText.setText(state.firstName)
+
+            binding.middleNameEditText.isEnabled = !state.isMiddleNameSaved
+            binding.middleNameEditText.setText(state.middleName)
+
+            binding.birthdayEditText.isEnabled = !state.isBirthdaySaved
+            binding.birthdayEditText.setText(state.birthday)
+
+            binding.genderSelector.isEnabled = !state.isGenderSaved
+            state.gender?.let {gender->
+                binding.genderSelector.setSelectedGender(gender)
+            }
+
+            binding.passportSeriesEditText.isEnabled = !state.isDocSerialSaved
+            binding.passportSeriesEditText.setText(state.docSerial)
+
+            binding.passportNumberEditText.isEnabled = !state.isDocNumberSaved
+            binding.passportNumberEditText.setText(state.docNumber)
+
+            binding.phoneEditText.isEnabled = !state.isPhoneSaved
+            binding.phoneEditText.setText(state.phone)
+
+            binding.additionalPhoneEditText.isEnabled = !state.isSecondPhoneSaved
+            if (state.secondPhone.isNotEmpty()){
+                binding.additionalPhoneEditText.setText(state.secondPhone)
+            }
+
+            binding.emailEditText.isEnabled = !state.isEmailSaved
+            binding.emailEditText.setText(state.email)
+
+        }
+
+        subscribe(viewModel.isSaveTextViewEnabledObserver){
+            binding.saveTextView.isEnabled = it
+        }
+
+        subscribe(viewModel.validateExceptionObserver){
+            when (it.field){
+                ClientField.LASTNAME -> {
+                    binding.lastNameEditText.setState(MSDLabelEditText.State.ERROR, it.errorMessage)
+                }
+                ClientField.FIRSTNAME -> {
+                    binding.firstNameEditText.setState(MSDLabelEditText.State.ERROR, it.errorMessage)
+                }
+                ClientField.MIDDLENAME -> {
+                    binding.middleNameEditText.setState(MSDLabelEditText.State.ERROR, it.errorMessage)
+                }
+                ClientField.BIRTHDATE -> {
+                    binding.birthdayEditText.setState(MSDLabelIconEditText.State.ERROR, it.errorMessage)
+                }
+                ClientField.DOC_SERIAL -> {
+                    binding.passportSeriesEditText.setState(MSDLabelEditText.State.ERROR, it.errorMessage)
+                }
+                ClientField.DOC_NUMBER -> {
+                    binding.passportNumberEditText.setState(MSDLabelEditText.State.ERROR, it.errorMessage)
+                }
+                ClientField.SECOND_PHONE -> {
+                    binding.additionalPhoneEditText.setState(MSDMaskedLabelEditText.State.ERROR, it.errorMessage)
+                }
+                ClientField.EMAIL -> {
+                    binding.emailEditText.setState(MSDMaskedLabelEditText.State.ERROR, it.errorMessage)
+                }
+            }
+        }
     }
 
+    override fun onLoading() {
+        super.onLoading()
+        binding.saveTextView.setLoading(true)
+    }
+
+    override fun onContent() {
+        super.onContent()
+        binding.saveTextView.setLoading(false)
+    }
 }

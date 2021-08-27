@@ -21,6 +21,8 @@ class MSDEditText @JvmOverloads constructor(
     private val binding: ViewMsdEditTextBinding = ViewMsdEditTextBinding.inflate(LayoutInflater.from(context), this, true)
     private var textWatcher: (String) -> Unit = {}
 
+    private var isFromUser = true
+
     init {
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDEditText, 0, 0)
         attrs.getString(R.styleable.MSDEditText_translationHintKey)?.let { translationHintKey ->
@@ -71,7 +73,10 @@ class MSDEditText @JvmOverloads constructor(
         }
 
         binding.valueEditText.addTextChangedListener {
-            textWatcher(it.toString())
+            if (isFromUser){
+                textWatcher(it.toString())
+            }
+
         }
     }
 
@@ -84,7 +89,9 @@ class MSDEditText @JvmOverloads constructor(
     }
 
     fun setText(text: String){
+        isFromUser = false
         binding.valueEditText.setText(text)
+        isFromUser = true
     }
 
     fun setHint(hint: String){

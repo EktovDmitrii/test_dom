@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.text.InputFilter
 import android.text.InputType
-import android.text.method.DigitsKeyListener
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
@@ -36,7 +35,7 @@ class MSDLabelIconEditText @JvmOverloads constructor(
             formattedValue: String
         ) {
             if (isFromUser){
-                onTextChangedListener(binding.valueEditText.text.toString(), maskFilled)
+                onTextChangedListener(formattedValue, maskFilled)
             }
         }
     }
@@ -98,7 +97,10 @@ class MSDLabelIconEditText @JvmOverloads constructor(
         }
 
         binding.valueEditText.addTextChangedListener {
-            textWatcher(it.toString())
+            if (isFromUser){
+                textWatcher(it.toString())
+            }
+
         }
 
         binding.iconImageView.setOnDebouncedClickListener {
@@ -108,7 +110,7 @@ class MSDLabelIconEditText @JvmOverloads constructor(
 
     fun setText(text: String){
         isFromUser = false
-        binding.valueEditText.setText(text)
+        binding.valueEditText.text = text.toEditable()
         isFromUser = true
     }
 
@@ -171,12 +173,14 @@ class MSDLabelIconEditText @JvmOverloads constructor(
                 binding.containerRelativeLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_secondary_250_radius_8dp)
                 binding.valueEditText.setTextColor(context.getColor(R.color.secondary900))
                 binding.secondaryTextView.gone()
+                binding.valueEditText.isEnabled = true
                 super.setEnabled(true)
             }
             State.DISABLED -> {
                 binding.containerRelativeLayout.setBackgroundResource(R.drawable.rectangle_filled_secondary_900_alpha14_stroke_seconday_250_1dp_radius_8dp)
                 binding.valueEditText.setTextColor(context.getColor(R.color.secondary400))
                 binding.secondaryTextView.gone()
+                binding.valueEditText.isEnabled = false
                 super.setEnabled(false)
             }
             State.ERROR -> {
@@ -185,6 +189,7 @@ class MSDLabelIconEditText @JvmOverloads constructor(
                 binding.secondaryTextView.text = secondaryText
                 binding.secondaryTextView.setTextColor(context.getColor(R.color.error500))
                 binding.secondaryTextView.visibleIf(secondaryText.isNotEmpty())
+                binding.valueEditText.isEnabled = true
                 super.setEnabled(true)
             }
             State.SUCCESS -> {
@@ -193,6 +198,7 @@ class MSDLabelIconEditText @JvmOverloads constructor(
                 binding.secondaryTextView.text = secondaryText
                 binding.secondaryTextView.setTextColor(context.getColor(R.color.success500))
                 binding.secondaryTextView.visibleIf(secondaryText.isNotEmpty())
+                binding.valueEditText.isEnabled = true
                 super.setEnabled(true)
             }
         }

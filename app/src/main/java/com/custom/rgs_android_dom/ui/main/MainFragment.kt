@@ -2,9 +2,7 @@ package com.custom.rgs_android_dom.ui.main
 
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.TransitionDrawable
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.*
 import com.custom.rgs_android_dom.R
@@ -33,31 +31,8 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
 
         binding.root.background = transitionBackground
 
-        binding.root.afterMeasured {
-
-            initAnimations()
-
-            val maxExpandedPercents = ((binding.toolbarLinearLayout.height.toFloat() + binding.swipeMoreTextView.height.toFloat() + 10.dp(requireContext())) * 100) / binding.root.height
-            val maxHalfExpandedRatio = 1f - (maxExpandedPercents / 100f)
-
-            val minExpandedPercents = (binding.toolbarLinearLayout.height.toFloat() * 100) / binding.root.height
-            val minHalfExpandedRatio = 1f - (minExpandedPercents / 100f)
-
-            val clientFragment = ClientFragment(
-                peekHeight = binding.root.getLocationOnScreen().y - binding.callContainerLinearLayout.getLocationOnScreen().y + 8.dp(requireContext()),
-                topMargin = binding.toolbarLinearLayout.height,
-                maxHalfExpandedRatio = maxHalfExpandedRatio,
-                minHalfExpandedRatio = minHalfExpandedRatio
-            )
-            clientFragment.show(childFragmentManager, clientFragment.TAG)
-
-            binding.toolbarLinearLayout.setOnDebouncedClickListener {
-                clientFragment.setHalfExpanded()
-            }
-        }
-
+        measureAndShowFragment()
     }
-
 
     override fun onSlideStateChanged(newState: BaseBottomSheetFragment.SlideState){
         when (newState){
@@ -85,6 +60,31 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
 
     override fun onBottomSheetInit() {
         binding.fakeBottomSheetView.gone()
+    }
+
+    private fun measureAndShowFragment(){
+        binding.root.afterMeasured {
+
+            initAnimations()
+
+            val maxExpandedPercents = ((binding.toolbarLinearLayout.height.toFloat() + binding.swipeMoreTextView.height.toFloat() + 10.dp(requireContext())) * 100) / binding.root.height
+            val maxHalfExpandedRatio = 1f - (maxExpandedPercents / 100f)
+
+            val minExpandedPercents = (binding.toolbarLinearLayout.height.toFloat() * 100) / binding.root.height
+            val minHalfExpandedRatio = 1f - (minExpandedPercents / 100f)
+
+            val clientFragment = ClientFragment(
+                peekHeight = binding.root.getLocationOnScreen().y - binding.callContainerLinearLayout.getLocationOnScreen().y + 8.dp(requireContext()),
+                topMargin = binding.toolbarLinearLayout.height,
+                maxHalfExpandedRatio = maxHalfExpandedRatio,
+                minHalfExpandedRatio = minHalfExpandedRatio
+            )
+            clientFragment.show(childFragmentManager, clientFragment.TAG)
+
+            binding.toolbarLinearLayout.setOnDebouncedClickListener {
+                clientFragment.setHalfExpanded()
+            }
+        }
     }
 
     private fun initAnimations(){
@@ -121,6 +121,12 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
 
     override fun setStatusBarColor() {
         setStatusBarColor(R.color.primary400)
+    }
+
+    override fun onVisibleToUser() {
+        super.onVisibleToUser()
+        binding.fakeBottomSheetView.visible()
+        measureAndShowFragment()
     }
 
 }

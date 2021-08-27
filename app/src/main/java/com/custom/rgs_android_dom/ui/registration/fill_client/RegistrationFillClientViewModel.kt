@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.client.models.Gender
 import com.custom.rgs_android_dom.domain.client.view_states.FillClientViewState
-import com.custom.rgs_android_dom.domain.client.ValidateClientException
+import com.custom.rgs_android_dom.domain.client.exceptions.ValidateClientException
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -54,7 +54,6 @@ class RegistrationFillClientViewModel(
 
     fun onKnowAgentCodeClick(){
         clientInteractor.onKnowAgentCodeClick()
-
     }
 
     fun onSkipClick(){
@@ -101,8 +100,8 @@ class RegistrationFillClientViewModel(
         clientInteractor.onGenderSelected(gender)
     }
 
-    fun onBirthdayChanged(birthdayString: String, isMaskFilled: Boolean){
-        clientInteractor.onBirthdayChanged(birthdayString, isMaskFilled)
+    fun onBirthdayChanged(birthdayString: String){
+        clientInteractor.onBirthdayChanged(birthdayString)
     }
 
     fun onAgentCodeChanged(agentCode: String){

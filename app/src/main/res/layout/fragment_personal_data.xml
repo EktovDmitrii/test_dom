@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+   <com.google.android.material.appbar.AppBarLayout
+       android:layout_width="match_parent"
+       android:layout_height="@dimen/toolbar_height"
+       android:background="@color/white">
+
+      <FrameLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+         <androidx.appcompat.widget.AppCompatImageView
+             android:id="@+id/backImageView"
+             android:layout_width="wrap_content"
+             android:layout_height="match_parent"
+             android:layout_gravity="start"
+             android:paddingHorizontal="14dp"
+             android:tint="@color/secondary800"
+             app:srcCompat="@drawable/ic_back_24px"/>
+
+         <com.custom.rgs_android_dom.views.text.MSDTextView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center"
+             android:fontFamily="@font/my_service_medium"
+             android:textColor="@color/secondary900"
+             android:textSize="16sp"
+             app:translationTextKey="Личные данные"/>
+
+         <androidx.appcompat.widget.AppCompatImageView
+             android:id="@+id/editImageView"
+             android:layout_width="wrap_content"
+             android:layout_height="match_parent"
+             android:layout_gravity="end"
+             android:paddingHorizontal="14dp"
+             android:tint="@color/secondary800"
+             app:srcCompat="@drawable/ic_edit_24px"/>
+
+      </FrameLayout>
+
+   </com.google.android.material.appbar.AppBarLayout>
+
+   <androidx.core.widget.NestedScrollView
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:overScrollMode="never">
+
+      <androidx.appcompat.widget.LinearLayoutCompat
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="vertical"
+          android:layout_marginTop="28dp"
+          android:paddingHorizontal="20dp"
+          android:paddingBottom="42dp">
+
+         <com.custom.rgs_android_dom.views.text.MSDTextView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:fontFamily="@font/suisse_regular"
+             android:textColor="@color/secondary500"
+             android:textSize="16sp"
+             app:translationTextKey="Фотография"/>
+
+         <androidx.appcompat.widget.AppCompatImageView
+             android:id="@+id/avatarStubImageView"
+             android:layout_width="64dp"
+             android:layout_height="64dp"
+             android:layout_marginTop="8dp"
+             android:background="@drawable/oval_filled_secondary_100"
+             android:padding="22dp"
+             android:tint="@color/secondary500"
+             app:srcCompat="@drawable/ic_photo_24px"/>
+
+         <androidx.appcompat.widget.AppCompatImageView
+             android:id="@+id/avatarImageView"
+             android:layout_width="64dp"
+             android:layout_height="64dp"
+             android:layout_marginTop="8dp"
+             android:visibility="gone"/>
+
+         <com.custom.rgs_android_dom.views.text.MSDTextView
+             android:id="@+id/editPhotoTextView"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:fontFamily="@font/suisse_regular"
+             android:textColor="@color/primary500"
+             android:textSize="16sp"
+             android:layout_marginTop="8dp"
+             app:translationTextKey="Редактировать фотографию"/>
+
+         <com.custom.rgs_android_dom.views.text.MSDTextView
+             android:id="@+id/noAvatarTextView"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:fontFamily="@font/suisse_regular"
+             android:textColor="@color/secondary500"
+             android:textSize="16sp"
+             android:layout_marginTop="4dp"
+             app:translationTextKey="Консультантам и специалистам будет приятно видеть, с кем они ведут диалог в чате"/>
+
+         <com.custom.rgs_android_dom.views.text.MSDLabelTextView
+             android:id="@+id/nameTextView"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="16dp"
+             app:translationLabelKey="ФИО"/>
+
+         <com.custom.rgs_android_dom.views.text.MSDLabelTextView
+             android:id="@+id/birthdayTextView"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="20dp"
+             app:translationLabelKey="Дата рождения"/>
+
+         <com.custom.rgs_android_dom.views.text.MSDLabelTextView
+             android:id="@+id/genderTextView"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="20dp"
+             app:translationLabelKey="Пол"/>
+
+         <com.custom.rgs_android_dom.views.text.MSDLabelTextView
+             android:id="@+id/passportTextView"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="20dp"
+             app:translationLabelKey="Серия и номер паспорта"/>
+
+         <com.custom.rgs_android_dom.views.text.MSDLabelTextView
+             android:id="@+id/phoneTextView"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="20dp"
+             app:translationLabelKey="Номер телефона"/>
+
+         <com.custom.rgs_android_dom.views.text.MSDLabelTextView
+             android:id="@+id/additionalPhoneTextView"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="20dp"
+             app:translationLabelKey="Дополнительный телефон"/>
+
+         <com.custom.rgs_android_dom.views.text.MSDLabelTextView
+             android:id="@+id/emailTextView"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="20dp"
+             app:translationLabelKey="Электронная почта"/>
+
+      </androidx.appcompat.widget.LinearLayoutCompat>
+
+   </androidx.core.widget.NestedScrollView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

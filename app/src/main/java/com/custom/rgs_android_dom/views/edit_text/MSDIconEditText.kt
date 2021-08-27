@@ -13,6 +13,7 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdIconEditTextBinding
 import com.custom.rgs_android_dom.utils.GlideApp
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
+import com.custom.rgs_android_dom.utils.toEditable
 import com.redmadrobot.inputmask.MaskedTextChangedListener
 
 class MSDIconEditText @JvmOverloads constructor(
@@ -75,7 +76,9 @@ class MSDIconEditText @JvmOverloads constructor(
         }
 
         binding.valueEditText.addTextChangedListener {
-            textWatcher(it.toString())
+            if (isFromUser){
+                textWatcher(it.toString())
+            }
         }
 
         binding.iconImageView.setOnDebouncedClickListener {
@@ -103,7 +106,7 @@ class MSDIconEditText @JvmOverloads constructor(
 
     fun setText(text: String){
         isFromUser = false
-        binding.valueEditText.setText(text)
+        binding.valueEditText.text = text.toEditable()
         isFromUser = true
     }
 

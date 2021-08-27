@@ -74,6 +74,7 @@
                 android:background="@drawable/rectangle_filled_white_top_radius_24dp">
 
                 <RelativeLayout
+                    android:id="@+id/personalDataRelativeLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp">
@@ -82,9 +83,9 @@
                         android:id="@+id/avatarImageView"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        app:srcCompat="@drawable/ic_avatar"
                         android:layout_alignTop="@+id/infoLinearLayout"
-                        android:layout_alignBottom="@+id/infoLinearLayout"/>
+                        android:layout_alignBottom="@+id/infoLinearLayout"
+                        app:srcCompat="@drawable/ic_avatar" />
 
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:id="@+id/infoLinearLayout"
