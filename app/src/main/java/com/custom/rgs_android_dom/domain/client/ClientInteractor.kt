@@ -4,9 +4,11 @@ import android.util.Log
 import com.custom.rgs_android_dom.data.repositories.client.ClientRepository
 import com.custom.rgs_android_dom.data.repositories.countries.CountriesRepository
 import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepository
+import com.custom.rgs_android_dom.domain.client.mappers.AgentMapper
 import com.custom.rgs_android_dom.domain.client.models.Gender
 import com.custom.rgs_android_dom.domain.client.mappers.ClientShortViewStateMapper
 import com.custom.rgs_android_dom.domain.client.mappers.PersonalDataMapper
+import com.custom.rgs_android_dom.domain.client.view_states.AgentViewState
 import com.custom.rgs_android_dom.domain.client.view_states.ClientShortViewState
 import com.custom.rgs_android_dom.domain.client.view_states.FillClientViewState
 import com.custom.rgs_android_dom.domain.client.view_states.PersonalDataViewState
@@ -204,6 +206,12 @@ class ClientInteractor(
     fun getPersonalData(): Single<PersonalDataViewState> {
         return clientRepository.getClient().map {
             PersonalDataMapper.from(it)
+        }
+    }
+
+    fun getAgent(): Single<AgentViewState>{
+        return clientRepository.getClient().map {
+            AgentMapper.from(it)
         }
     }
 
