@@ -1,6 +1,6 @@
 package com.custom.rgs_android_dom.utils
 
-import com.custom.rgs_android_dom.data.repositories.client.ClientRepository
+import com.custom.rgs_android_dom.domain.repositories.ClientRepository
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy

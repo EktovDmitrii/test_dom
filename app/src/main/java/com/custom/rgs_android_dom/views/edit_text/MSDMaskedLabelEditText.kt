@@ -12,6 +12,7 @@ import android.widget.RelativeLayout
 import androidx.core.widget.addTextChangedListener
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdMaskedLabelEditTextBinding
+import com.custom.rgs_android_dom.utils.TranslationHelper
 import com.custom.rgs_android_dom.utils.gone
 import com.custom.rgs_android_dom.utils.visible
 import com.custom.rgs_android_dom.utils.visibleIf
@@ -47,12 +48,12 @@ class MSDMaskedLabelEditText @JvmOverloads constructor(
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDMaskedLabelEditText, 0, 0)
         attrs.getString(R.styleable.MSDMaskedLabelEditText_translationHintKey)?.let { translationHintKey ->
             //TODO Add handling translation logic here
-            binding.valueEditText.hint = translationHintKey
+            binding.valueEditText.hint = TranslationHelper.getTranslation(translationHintKey)
         }
 
         attrs.getString(R.styleable.MSDMaskedLabelEditText_translationLabelKey)?.let { translationLabelKey ->
             //TODO Add handling translation logic here
-            binding.labelTextView.text = translationLabelKey
+            binding.labelTextView.text = TranslationHelper.getTranslation(translationLabelKey)
         }
 
         attrs.getString(R.styleable.MSDMaskedLabelEditText_mask)?.let {mask->

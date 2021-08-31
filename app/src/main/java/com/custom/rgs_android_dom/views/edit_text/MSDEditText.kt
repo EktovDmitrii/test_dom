@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdEditTextBinding
+import com.custom.rgs_android_dom.utils.TranslationHelper
 
 class MSDEditText @JvmOverloads constructor(
     context: Context,
@@ -25,7 +26,7 @@ class MSDEditText @JvmOverloads constructor(
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDEditText, 0, 0)
         attrs.getString(R.styleable.MSDEditText_translationHintKey)?.let { translationHintKey ->
             //TODO Add handling translation logic here
-            binding.valueEditText.hint = translationHintKey
+            binding.valueEditText.hint = TranslationHelper.getTranslation(translationHintKey)
         }
 
         attrs.getString(R.styleable.MSDEditText_prefix)?.let { prefix->

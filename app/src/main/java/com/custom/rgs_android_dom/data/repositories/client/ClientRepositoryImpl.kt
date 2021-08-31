@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.data.network.requests.UpdateClientRequest
 import com.custom.rgs_android_dom.data.preferences.AuthSharedPreferences
 import com.custom.rgs_android_dom.domain.client.models.ClientModel
 import com.custom.rgs_android_dom.domain.client.models.Gender
+import com.custom.rgs_android_dom.domain.repositories.ClientRepository
 import com.custom.rgs_android_dom.utils.PATTERN_DATE_TIME_MILLIS
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
 import com.custom.rgs_android_dom.utils.formatTo

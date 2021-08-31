@@ -1,6 +1,6 @@
 package com.custom.rgs_android_dom.domain.countries
 
-import com.custom.rgs_android_dom.data.repositories.countries.CountriesRepository
+import com.custom.rgs_android_dom.domain.repositories.CountriesRepository
 import com.custom.rgs_android_dom.domain.countries.model.CountryModel
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Single

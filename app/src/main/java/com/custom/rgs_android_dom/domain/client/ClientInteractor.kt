@@ -1,9 +1,8 @@
 package com.custom.rgs_android_dom.domain.client
 
-import android.util.Log
-import com.custom.rgs_android_dom.data.repositories.client.ClientRepository
-import com.custom.rgs_android_dom.data.repositories.countries.CountriesRepository
-import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepository
+import com.custom.rgs_android_dom.domain.repositories.ClientRepository
+import com.custom.rgs_android_dom.domain.repositories.CountriesRepository
+import com.custom.rgs_android_dom.domain.repositories.RegistrationRepository
 import com.custom.rgs_android_dom.domain.client.models.Gender
 import com.custom.rgs_android_dom.domain.client.mappers.ClientShortViewStateMapper
 import com.custom.rgs_android_dom.domain.client.mappers.PersonalDataMapper

@@ -8,6 +8,7 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdLabelIconTextViewBinding
 import com.custom.rgs_android_dom.utils.GlideApp
+import com.custom.rgs_android_dom.utils.TranslationHelper
 
 class MSDLabelIconTextView @JvmOverloads constructor(
     context: Context,
@@ -22,7 +23,7 @@ class MSDLabelIconTextView @JvmOverloads constructor(
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDLabelIconTextView, 0, 0)
         attrs.getString(R.styleable.MSDLabelIconTextView_translationLabelKey)?.let { translationLabelKey->
             //TODO Add handling translation logic here
-            binding.labelTextView.text = translationLabelKey
+            binding.labelTextView.text = TranslationHelper.getTranslation(translationLabelKey)
         }
 
         attrs.getDrawable(R.styleable.MSDLabelIconTextView_icon)?.let {

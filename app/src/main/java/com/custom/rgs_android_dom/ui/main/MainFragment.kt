@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.ui.main
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.*
 import com.custom.rgs_android_dom.R
@@ -10,6 +11,7 @@ import com.custom.rgs_android_dom.databinding.FragmentMainBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
+import com.custom.rgs_android_dom.ui.splash.SplashViewModel
 import com.custom.rgs_android_dom.utils.*
 
 class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.fragment_main), BaseBottomSheetFragment.BottomSheetEventsListener {
@@ -32,6 +34,7 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
         binding.root.background = transitionBackground
 
         measureAndShowFragment()
+        Log.d("MAIN", "TRANSLATION TEST ${TranslationHelper.getTranslation("test.9pqfp11z4ibbubacxb7s61eiqo")}")
     }
 
     override fun onSlideStateChanged(newState: BaseBottomSheetFragment.SlideState){

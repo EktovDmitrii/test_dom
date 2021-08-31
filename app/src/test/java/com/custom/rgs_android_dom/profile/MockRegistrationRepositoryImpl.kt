@@ -1,15 +1,12 @@
 package com.custom.rgs_android_dom.profile
 
 
-import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepository
-import com.custom.rgs_android_dom.domain.client.models.Gender
-import com.jakewharton.rxrelay2.BehaviorRelay
+import com.custom.rgs_android_dom.domain.repositories.RegistrationRepository
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.internal.operators.single.SingleMap
 import io.reactivex.subjects.PublishSubject
 import org.joda.time.DateTime
-import org.joda.time.LocalDate
 import java.util.*
 
 class MockRegistrationRepositoryImpl : RegistrationRepository {

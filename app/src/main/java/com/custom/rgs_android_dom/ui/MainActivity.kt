@@ -4,15 +4,32 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.custom.rgs_android_dom.R
+import com.custom.rgs_android_dom.domain.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.client.personal_data.PersonalDataFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.registration.fill_client.RegistrationFillClientFragment
 import com.custom.rgs_android_dom.ui.splash.SplashFragment
+import com.custom.rgs_android_dom.ui.splash.SplashViewModel
 import com.custom.rgs_android_dom.utils.CashHelper
+import com.custom.rgs_android_dom.utils.TranslationHelper
+import io.reactivex.Completable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
+import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
 
+    private val translationInteractor: TranslationInteractor by inject()
+
+    companion object{
+        private const val LOG = "MAIN"
+    }
+
+    private val disposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,10 +37,32 @@ class MainActivity : AppCompatActivity() {
         ScreenManager.init(this, R.id.vgScreensContainer)
         startSplash()
         CashHelper.init()
+        loadTranslation()
+    }
+
+    private fun loadTranslation(){
+        translationInteractor.loadTranslation()
+            .retry(1000)
+            .andThen(translationInteractor.getTranslation())
+            .flatMapCompletable {
+                TranslationHelper.setTranslations(it)
+                Completable.complete()
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onComplete = {
+                    Log.d(LOG, "TRANSLATION LOAD COMPLITE")
+                },
+                onError = {
+                    Log.d(LOG, "ERROR LOAD TRANSLATION")
+                }
+            ).addTo(disposable)
     }
 
     override fun onDestroy() {
         CashHelper.destroy()
+        disposable.dispose()
         super.onDestroy()
     }
 

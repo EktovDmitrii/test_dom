@@ -1,7 +1,7 @@
 package com.custom.rgs_android_dom.profile
 
 import android.os.Build
-import com.custom.rgs_android_dom.data.repositories.countries.MockCountriesRepositoryImpl
+import com.custom.rgs_android_dom.data.repositories.countries.CountriesRepositoryMock
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.client.ValidateClientException
 import com.custom.rgs_android_dom.domain.client.view_states.ClientShortViewState
@@ -11,7 +11,6 @@ import com.custom.rgs_android_dom.profile.MockClientRepository.Companion.BIRTHDA
 import com.custom.rgs_android_dom.profile.MockClientRepository.Companion.BIRTHDATESTR
 import com.custom.rgs_android_dom.profile.MockClientRepository.Companion.GENDER
 import com.custom.rgs_android_dom.profile.MockClientRepository.Companion.NAME
-import com.custom.rgs_android_dom.profile.MockClientRepository.Companion.PHONE
 import com.custom.rgs_android_dom.profile.MockClientRepository.Companion.PHONEAGENT
 import com.custom.rgs_android_dom.profile.MockClientRepository.Companion.PHONEMASKED
 import com.custom.rgs_android_dom.profile.MockClientRepository.Companion.SURNAME
@@ -41,7 +40,7 @@ class ProfileInteractorTest {
         CashHelper.init()
 
         clientInteractor =
-            ClientInteractor(registrationRepository = MockRegistrationRepositoryImpl(), countriesRepository = MockCountriesRepositoryImpl(), clientRepository = MockClientRepository())
+            ClientInteractor(registrationRepository = MockRegistrationRepositoryImpl(), countriesRepository = CountriesRepositoryMock(), clientRepository = MockClientRepository())
 
         clientInteractor.fillClientStateSubject.hide()
             .subscribe {

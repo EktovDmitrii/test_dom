@@ -56,7 +56,7 @@ class MSDPhoneInput @JvmOverloads constructor(
             setCountryImage(countryImage)
         }
         attrs.getString(R.styleable.MSDPhoneInput_errorTranslationTextKey)?.let { translationErrorKey->
-            binding.errorTextView.text = translationErrorKey
+            binding.errorTextView.text = TranslationHelper.getTranslation(translationErrorKey)
         }
 
         binding.phoneEditText.setOnEditorActionListener { _, actionId, _ ->
