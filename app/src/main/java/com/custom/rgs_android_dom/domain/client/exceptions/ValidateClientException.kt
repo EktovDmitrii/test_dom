@@ -1,13 +1,19 @@
-package com.custom.rgs_android_dom.domain.client
+package com.custom.rgs_android_dom.domain.client.exceptions
 
 import java.lang.RuntimeException
 
-class ValidateClientException(val field: ProfileField, message: String): RuntimeException(message)
+class ValidateClientException(val field: ClientField, val errorMessage: String): RuntimeException(errorMessage)
 
-enum class ProfileField{
-    NAME,
-    SURNAME,
+enum class ClientField{
+    FIRSTNAME,
+    LASTNAME,
+    MIDDLENAME,
     BIRTHDATE,
     AGENTCODE,
-    AGENTPHONE
+    AGENTPHONE,
+    DOC_SERIAL,
+    DOC_NUMBER,
+    PHONE,
+    SECOND_PHONE,
+    EMAIL
 }

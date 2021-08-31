@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.client.view_states.PersonalDataViewState
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.client.personal_data.edit.EditPersonalDataFragment
+import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -48,7 +50,7 @@ class PersonalDataViewModel(private val clientInteractor: ClientInteractor) : Ba
     }
 
     fun onEditClick(){
-
+        ScreenManager.showScreen(EditPersonalDataFragment())
     }
 
 

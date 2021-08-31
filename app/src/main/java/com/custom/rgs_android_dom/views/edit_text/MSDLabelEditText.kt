@@ -13,6 +13,8 @@ import com.custom.rgs_android_dom.databinding.ViewMsdLabelEditTextBinding
 import com.custom.rgs_android_dom.utils.gone
 import com.custom.rgs_android_dom.utils.visible
 import android.text.InputFilter.LengthFilter
+import android.util.Log
+import com.custom.rgs_android_dom.utils.toEditable
 import com.custom.rgs_android_dom.utils.visibleIf
 
 class MSDLabelEditText @JvmOverloads constructor(
@@ -23,6 +25,8 @@ class MSDLabelEditText @JvmOverloads constructor(
 
     private val binding: ViewMsdLabelEditTextBinding = ViewMsdLabelEditTextBinding.inflate(LayoutInflater.from(context), this, true)
     private var textWatcher: (String) -> Unit = {}
+
+    private var isFromUser = true
 
     init {
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDLabelEditText, 0, 0)
@@ -77,12 +81,18 @@ class MSDLabelEditText @JvmOverloads constructor(
         }
 
         binding.valueEditText.addTextChangedListener {
-            textWatcher(it.toString())
+            Log.d("MyLog", "On text changed " + it.toString())
+            if (isFromUser){
+                textWatcher(it.toString())
+            }
+
         }
     }
 
     fun setText(text: String){
-        binding.valueEditText.setText(text)
+        isFromUser = false
+        binding.valueEditText.text = text.toEditable()
+        isFromUser = true
     }
 
     fun setHint(hint: String){
@@ -115,12 +125,14 @@ class MSDLabelEditText @JvmOverloads constructor(
                 binding.containerRelativeLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_secondary_250_radius_8dp)
                 binding.valueEditText.setTextColor(context.getColor(R.color.secondary900))
                 binding.secondaryTextView.gone()
+                binding.valueEditText.isEnabled = true
                 super.setEnabled(true)
             }
             State.DISABLED -> {
                 binding.containerRelativeLayout.setBackgroundResource(R.drawable.rectangle_filled_secondary_900_alpha14_stroke_seconday_250_1dp_radius_8dp)
                 binding.valueEditText.setTextColor(context.getColor(R.color.secondary400))
                 binding.secondaryTextView.gone()
+                binding.valueEditText.isEnabled = false
                 super.setEnabled(false)
             }
             State.ERROR -> {
@@ -129,6 +141,7 @@ class MSDLabelEditText @JvmOverloads constructor(
                 binding.secondaryTextView.text = secondaryText
                 binding.secondaryTextView.setTextColor(context.getColor(R.color.error500))
                 binding.secondaryTextView.visibleIf(secondaryText.isNotEmpty())
+                binding.valueEditText.isEnabled = true
                 super.setEnabled(true)
             }
             State.SUCCESS -> {
@@ -137,6 +150,7 @@ class MSDLabelEditText @JvmOverloads constructor(
                 binding.secondaryTextView.text = secondaryText
                 binding.secondaryTextView.setTextColor(context.getColor(R.color.success500))
                 binding.secondaryTextView.visibleIf(secondaryText.isNotEmpty())
+                binding.valueEditText.isEnabled = true
                 super.setEnabled(true)
             }
         }
