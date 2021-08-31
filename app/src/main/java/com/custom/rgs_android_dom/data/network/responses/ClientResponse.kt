@@ -49,6 +49,18 @@ data class ClientResponse (
 	@SerializedName("status")
 	val status: String?,
 
+	@SerializedName("email")
+	val email: String,
+
+	@SerializedName("secondPhone")
+	val secondPhone: String,
+
+	@SerializedName("docSerial")
+	val  docSerial: String,
+
+	@SerializedName("docNumber")
+	val docNumber: String
+
 	)
 
 data class AddressResponse (

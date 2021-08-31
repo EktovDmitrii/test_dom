@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.utils
 
+import android.text.Editable
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
@@ -52,4 +53,10 @@ fun String.formatPhoneByMask(mask: String, placeholder: String): String {
         formattedPhone = formattedPhone.replaceFirst(placeholder, number.toString(), true)
     }
     return formattedPhone
+}
+
+fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
+
+fun String.isValidEmail(): Boolean {
+    return android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
 }

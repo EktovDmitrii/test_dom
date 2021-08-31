@@ -8,13 +8,31 @@ import java.util.*
 
 class GenderGsonAdapter : TypeAdapter<Gender>() {
 
-    override fun write(out: JsonWriter, value: Gender) {
-        val genderString = if (value == Gender.MALE) "M" else "F"
+    override fun write(out: JsonWriter, value: Gender?) {
+        val genderString = when (value){
+            null -> {
+                ""
+            }
+            Gender.MALE -> {
+                "M"
+            }
+            Gender.FEMALE -> {
+                "F"
+            }
+        }
         out.value(genderString)
     }
 
-    override fun read(jsonReader: JsonReader): Gender {
+    override fun read(jsonReader: JsonReader): Gender? {
         val str = jsonReader.nextString()
-        return if (str.toUpperCase(Locale.getDefault()) == "M") Gender.MALE else Gender.FEMALE
+        return when {
+            str.toUpperCase(Locale.getDefault()) == "M" -> {
+                Gender.MALE
+            }
+            str.toUpperCase(Locale.getDefault()) == "F" -> {
+                Gender.FEMALE
+            }
+            else -> null
+        }
     }
 }
