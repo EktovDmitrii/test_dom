@@ -339,21 +339,17 @@ class ClientInteractor(
                 )
             )
         }
-        return clientRepository.getClient().flatMapCompletable { clientModel ->
-            updateClient(
-                lastName = if (editPersonalDataViewState.lastName.isNotEmpty()) editPersonalDataViewState.lastName else null,
-                firstName = if (editPersonalDataViewState.firstName.isNotEmpty()) editPersonalDataViewState.firstName else null,
-                middleName = if (editPersonalDataViewState.middleName.isNotEmpty()) editPersonalDataViewState.middleName else null,
-                birthday = birthday,
-                agentCode = clientModel.agent?.code,
-                agentPhone = clientModel.agent?.phone,
-                gender = editPersonalDataViewState.gender,
-                docSerial = if (editPersonalDataViewState.docSerial.isNotEmpty()) editPersonalDataViewState.docSerial else null,
-                docNumber = if (editPersonalDataViewState.docNumber.isNotEmpty()) editPersonalDataViewState.docNumber else null,
-                secondPhone = if (editPersonalDataViewState.secondPhone.isNotEmpty()) editPersonalDataViewState.secondPhone else null,
-                email = if (editPersonalDataViewState.email.isNotEmpty()) editPersonalDataViewState.email else null
-            )
-        }
+        return updateClient(
+            lastName = if (editPersonalDataViewState.lastName.isNotEmpty()) editPersonalDataViewState.lastName else null,
+            firstName = if (editPersonalDataViewState.firstName.isNotEmpty()) editPersonalDataViewState.firstName else null,
+            middleName = if (editPersonalDataViewState.middleName.isNotEmpty()) editPersonalDataViewState.middleName else null,
+            birthday = birthday,
+            gender = editPersonalDataViewState.gender,
+            docSerial = if (editPersonalDataViewState.docSerial.isNotEmpty()) editPersonalDataViewState.docSerial else null,
+            docNumber = if (editPersonalDataViewState.docNumber.isNotEmpty()) editPersonalDataViewState.docNumber else null,
+            secondPhone = if (editPersonalDataViewState.secondPhone.isNotEmpty()) editPersonalDataViewState.secondPhone else null,
+            email = if (editPersonalDataViewState.email.isNotEmpty()) editPersonalDataViewState.email else null
+        )
     }
 
     fun onEditAgentCodeChanged(agentCode: String){
@@ -399,21 +395,7 @@ class ClientInteractor(
                 )
             )
         }
-        return clientRepository.getClient().flatMapCompletable {clientModel->
-            updateClient(
-                lastName = clientModel.lastName,
-                firstName = clientModel.firstName,
-                middleName = clientModel.middleName,
-                birthday = clientModel.birthDate?.toLocalDateTime(),
-                gender = clientModel.gender,
-                agentCode = editAgentViewState.agentCode,
-                agentPhone = editAgentViewState.agentPhone,
-                docSerial = clientModel.docSerial,
-                docNumber = if (editPersonalDataViewState.docNumber.isNotEmpty()) editPersonalDataViewState.docNumber else null,
-                secondPhone = if (editPersonalDataViewState.secondPhone.isNotEmpty()) editPersonalDataViewState.secondPhone else null,
-                email = if (editPersonalDataViewState.email.isNotEmpty()) editPersonalDataViewState.email else null
-            )
-        }
+        return clientRepository.updateAgent(editAgentViewState.agentCode, editAgentViewState.agentPhone)
     }
 
     private fun isBirthdayValid(birthday: LocalDateTime): Boolean {

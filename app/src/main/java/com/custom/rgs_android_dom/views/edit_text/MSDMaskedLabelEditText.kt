@@ -38,7 +38,8 @@ class MSDMaskedLabelEditText @JvmOverloads constructor(
             formattedValue: String
         ) {
             if (isFromUser){
-                onTextChangedListener(binding.valueEditText.text.toString(), maskFilled)
+                Log.d("MyLog", "Formatted value " + formattedValue)
+                onTextChangedListener(formattedValue, maskFilled)
             }
         }
     }
@@ -92,8 +93,6 @@ class MSDMaskedLabelEditText @JvmOverloads constructor(
             }
 
         }
-
-
 
     }
 

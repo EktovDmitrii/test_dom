@@ -29,4 +29,6 @@ interface ClientRepository {
 
     fun getClientUpdatedSubject(): Observable<ClientModel>
 
+    fun updateAgent(code: String, phone: String): Completable
+
 }

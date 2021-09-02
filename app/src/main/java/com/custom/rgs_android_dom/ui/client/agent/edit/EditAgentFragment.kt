@@ -61,4 +61,9 @@ class EditAgentFragment : BaseFragment<EditAgentViewModel, FragmentEditAgentBind
         binding.saveTextView.setLoading(false)
     }
 
+    override fun onError() {
+        super.onError()
+        binding.saveTextView.setLoading(false)
+    }
+
 }
