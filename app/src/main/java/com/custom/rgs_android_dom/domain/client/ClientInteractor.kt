@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.domain.client
 
-import android.util.Log
 import com.custom.rgs_android_dom.data.repositories.client.ClientRepository
 import com.custom.rgs_android_dom.data.repositories.countries.CountriesRepository
 import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepository
@@ -186,6 +185,13 @@ class ClientInteractor(
             }
     }
 
+    fun agentUpdatedSubject(): Observable<AgentViewState> {
+        return clientRepository.getClientUpdatedSubject()
+            .map {
+                AgentMapper.from(it)
+            }
+    }
+
     fun getPersonalData(): Single<PersonalDataViewState> {
         return clientRepository.getClient().map {
             PersonalDataMapper.from(it)
@@ -277,21 +283,22 @@ class ClientInteractor(
         }
 
         var birthday: LocalDateTime? = null
-        val birthdayWithTimezone = "${editPersonalDataViewState.birthday.tryParseDate()}T00:00:00.000Z"
-        birthday = birthdayWithTimezone.tryParseLocalDateTime({
-            logException(this, it)
-            birthday = null
-        }, format = PATTERN_DATE_TIME_MILLIS)
+        if (editPersonalDataViewState.birthday.isNotEmpty()){
+            val birthdayWithTimezone = "${editPersonalDataViewState.birthday.tryParseDate()}T00:00:00.000Z"
+            birthday = birthdayWithTimezone.tryParseLocalDateTime({
+                logException(this, it)
+                birthday = null
+            }, format = PATTERN_DATE_TIME_MILLIS)
 
-        if (birthday == null || birthday != null && !isBirthdayValid(birthday!!)) {
-            return Completable.error(
-                ValidateClientException(
-                    ClientField.BIRTHDATE,
-                    "Проверьте, правильно ли введена дата рождения"
+            if (birthday == null || birthday != null && !isBirthdayValid(birthday!!)) {
+                return Completable.error(
+                    ValidateClientException(
+                        ClientField.BIRTHDATE,
+                        "Проверьте, правильно ли введена дата рождения"
+                    )
                 )
-            )
+            }
         }
-
 
         if (!editPersonalDataViewState.isDocSerialSaved && editPersonalDataViewState.docSerial.isNotEmpty()){
             if (editPersonalDataViewState.docSerial.trim().length != DOC_SERIAL_LENGTH){
@@ -332,18 +339,21 @@ class ClientInteractor(
                 )
             )
         }
-
-        return updateClient(
-            lastName = if (editPersonalDataViewState.lastName.isNotEmpty()) editPersonalDataViewState.lastName else null,
-            firstName = if (editPersonalDataViewState.firstName.isNotEmpty()) editPersonalDataViewState.firstName else null,
-            middleName = if (editPersonalDataViewState.middleName.isNotEmpty()) editPersonalDataViewState.middleName else null,
-            birthday = birthday,
-            gender = editPersonalDataViewState.gender,
-            docSerial = if (editPersonalDataViewState.docSerial.isNotEmpty()) editPersonalDataViewState.docSerial else null,
-            docNumber = if (editPersonalDataViewState.docNumber.isNotEmpty()) editPersonalDataViewState.docNumber else null,
-            secondPhone = if (editPersonalDataViewState.secondPhone.isNotEmpty()) editPersonalDataViewState.secondPhone else null,
-            email = if (editPersonalDataViewState.email.isNotEmpty()) editPersonalDataViewState.email else null
-        )
+        return clientRepository.getClient().flatMapCompletable { clientModel ->
+            updateClient(
+                lastName = if (editPersonalDataViewState.lastName.isNotEmpty()) editPersonalDataViewState.lastName else null,
+                firstName = if (editPersonalDataViewState.firstName.isNotEmpty()) editPersonalDataViewState.firstName else null,
+                middleName = if (editPersonalDataViewState.middleName.isNotEmpty()) editPersonalDataViewState.middleName else null,
+                birthday = birthday,
+                agentCode = clientModel.agent?.code,
+                agentPhone = clientModel.agent?.phone,
+                gender = editPersonalDataViewState.gender,
+                docSerial = if (editPersonalDataViewState.docSerial.isNotEmpty()) editPersonalDataViewState.docSerial else null,
+                docNumber = if (editPersonalDataViewState.docNumber.isNotEmpty()) editPersonalDataViewState.docNumber else null,
+                secondPhone = if (editPersonalDataViewState.secondPhone.isNotEmpty()) editPersonalDataViewState.secondPhone else null,
+                email = if (editPersonalDataViewState.email.isNotEmpty()) editPersonalDataViewState.email else null
+            )
+        }
     }
 
     fun onEditAgentCodeChanged(agentCode: String){
@@ -389,7 +399,21 @@ class ClientInteractor(
                 )
             )
         }
-        return Completable.complete()
+        return clientRepository.getClient().flatMapCompletable {clientModel->
+            updateClient(
+                lastName = clientModel.lastName,
+                firstName = clientModel.firstName,
+                middleName = clientModel.middleName,
+                birthday = clientModel.birthDate?.toLocalDateTime(),
+                gender = clientModel.gender,
+                agentCode = editAgentViewState.agentCode,
+                agentPhone = editAgentViewState.agentPhone,
+                docSerial = clientModel.docSerial,
+                docNumber = if (editPersonalDataViewState.docNumber.isNotEmpty()) editPersonalDataViewState.docNumber else null,
+                secondPhone = if (editPersonalDataViewState.secondPhone.isNotEmpty()) editPersonalDataViewState.secondPhone else null,
+                email = if (editPersonalDataViewState.email.isNotEmpty()) editPersonalDataViewState.email else null
+            )
+        }
     }
 
     private fun isBirthdayValid(birthday: LocalDateTime): Boolean {

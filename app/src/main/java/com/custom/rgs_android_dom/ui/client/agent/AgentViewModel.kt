@@ -29,6 +29,18 @@ class AgentViewModel(private val clientInteractor: ClientInteractor) : BaseViewM
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
+
+        clientInteractor.agentUpdatedSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    agentController.value = it
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
     }
 
     fun onBackClick(){
