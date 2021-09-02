@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/toolbarAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@color/white">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/backImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:paddingHorizontal="14dp"
+                android:tint="@color/secondary800"
+                app:srcCompat="@drawable/ic_back_24px"/>
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/my_service_medium"
+                android:textColor="@color/secondary900"
+                android:textSize="16sp"
+                app:translationTextKey="Редактировать данные"/>
+
+        </FrameLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:layout_above="@+id/actionsFrameLayout"
+        android:layout_below="@+id/toolbarAppBar">
+
+        <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
+            android:id="@+id/agentCodeEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:translationHintKey="999999"
+            android:digits="@string/acceptable_agent_code_chars"
+            app:translationLabelKey="Код ЛНР" />
+
+        <com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
+            android:id="@+id/agentPhoneEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:imeOptions="actionDone"
+            android:inputType="phone"
+            app:mask="+7 [000] [000]-[00]-[00]"
+            app:translationHintKey="+7 999 999-99-99"
+            app:translationLabelKey="Номер телефона" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/actionsFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="82dp"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="22dp"
+        android:paddingTop="12dp"
+        tools:ignore="BottomAppBar">
+
+        <com.custom.rgs_android_dom.views.text.MSDTextViewLoader
+            android:id="@+id/saveTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="20dp"
+            android:enabled="false"
+            app:translationTextKey="Сохранить" />
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
+</RelativeLayout>

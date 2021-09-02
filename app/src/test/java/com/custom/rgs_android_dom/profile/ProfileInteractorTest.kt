@@ -14,7 +14,7 @@ import com.custom.rgs_android_dom.profile.MockClientRepository.Companion.NAME
 import com.custom.rgs_android_dom.profile.MockClientRepository.Companion.PHONEAGENT
 import com.custom.rgs_android_dom.profile.MockClientRepository.Companion.PHONEMASKED
 import com.custom.rgs_android_dom.profile.MockClientRepository.Companion.SURNAME
-import com.custom.rgs_android_dom.utils.CashHelper
+import com.custom.rgs_android_dom.utils.CacheHelper
 import net.danlew.android.joda.JodaTimeAndroid
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -37,7 +37,7 @@ class ProfileInteractorTest {
     fun init() {
         val context = RuntimeEnvironment.systemContext
         JodaTimeAndroid.init(context)
-        CashHelper.init()
+        CacheHelper.init()
 
         clientInteractor =
             ClientInteractor(registrationRepository = MockRegistrationRepositoryImpl(), countriesRepository = CountriesRepositoryMock(), clientRepository = MockClientRepository())

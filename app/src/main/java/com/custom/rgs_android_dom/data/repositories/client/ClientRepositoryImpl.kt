@@ -26,10 +26,16 @@ class ClientRepositoryImpl(
     override fun updateClient(
         firstName: String?,
         lastName: String?,
+        middleName: String?,
         birthday: LocalDateTime?,
         gender: Gender?,
         agentCode: String?,
-        agentPhone: String?
+        agentPhone: String?,
+        docNumber: String?,
+        docSerial: String?,
+        phone: String?,
+        secondPhone: String?,
+        email: String?
     ): Completable {
         val request = UpdateClientRequest(
             agentCode = agentCode,
@@ -37,7 +43,13 @@ class ClientRepositoryImpl(
             birthdate = birthday?.formatTo(PATTERN_DATE_TIME_MILLIS),
             firstName = firstName,
             lastName = lastName,
-            sex = gender?.shortcode
+            middleName = middleName,
+            sex = gender?.shortcode,
+            docNumber = docNumber,
+            docSerial = docSerial,
+            phone = phone,
+            secondPhone = secondPhone?.formatPhoneForApi(),
+            email = email
         )
         return api.putClient(authSharedPreferences.getClientId(), request)
             .flatMapCompletable { response ->

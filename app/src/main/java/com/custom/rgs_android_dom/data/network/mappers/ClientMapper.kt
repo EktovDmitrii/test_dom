@@ -60,7 +60,11 @@ object ClientMapper {
             ),
             phone = response.phone,
             gender = response.gender,
-            status = response.status
+            status = response.status,
+            email = response.email,
+            secondPhone = response.secondPhone,
+            docSerial = response.docSerial,
+            docNumber = response.docNumber
         )
 
     }

@@ -7,7 +7,7 @@ import android.view.ViewTreeObserver
 import androidx.core.view.isVisible
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentRegistrationFillClientBinding
-import com.custom.rgs_android_dom.domain.client.ProfileField
+import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.main.MainFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
@@ -142,11 +142,11 @@ class RegistrationFillClientFragment : BaseFragment<RegistrationFillClientViewMo
 
         subscribe(viewModel.validateExceptionObserver){
             when(it.field){
-                ProfileField.BIRTHDATE -> binding.birthdayEditText.setState(MSDLabelIconEditText.State.ERROR)
-                ProfileField.NAME -> binding.nameEditText.setState(MSDLabelEditText.State.ERROR)
-                ProfileField.SURNAME -> binding.surnameEditText.setState(MSDLabelEditText.State.ERROR)
-                ProfileField.AGENTCODE -> binding.agentCodeEditText.setState(MSDLabelEditText.State.ERROR)
-                ProfileField.AGENTPHONE -> binding.agentPhoneEditText.setState(MSDMaskedLabelEditText.State.ERROR)
+                ClientField.BIRTHDATE -> binding.birthdayEditText.setState(MSDLabelIconEditText.State.ERROR)
+                ClientField.FIRSTNAME -> binding.nameEditText.setState(MSDLabelEditText.State.ERROR)
+                ClientField.LASTNAME -> binding.surnameEditText.setState(MSDLabelEditText.State.ERROR)
+                ClientField.AGENTCODE -> binding.agentCodeEditText.setState(MSDLabelEditText.State.ERROR)
+                ClientField.AGENTPHONE -> binding.agentPhoneEditText.setState(MSDMaskedLabelEditText.State.ERROR)
             }
         }
     }

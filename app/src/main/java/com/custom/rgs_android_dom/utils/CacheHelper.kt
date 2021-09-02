@@ -7,7 +7,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import org.koin.java.KoinJavaComponent.inject
 
-object CashHelper {
+object CacheHelper {
 
     lateinit var compositeDisposable: CompositeDisposable
     val clientRepository: ClientRepository by inject(ClientRepository::class.java)

@@ -10,7 +10,18 @@ import org.joda.time.LocalDateTime
 
 interface ClientRepository {
 
-    fun updateClient(firstName: String?, lastName: String?, birthday: LocalDateTime?, gender: Gender?, agentCode: String?, agentPhone: String?): Completable
+    fun updateClient(firstName: String?,
+                     lastName: String?,
+                     middleName: String?,
+                     birthday: LocalDateTime?,
+                     gender: Gender?,
+                     agentCode: String?,
+                     agentPhone: String?,
+                     docNumber: String?,
+                     docSerial: String?,
+                     phone: String?,
+                     secondPhone: String?,
+                     email: String?): Completable
 
     fun getClient(): Single<ClientModel>
 

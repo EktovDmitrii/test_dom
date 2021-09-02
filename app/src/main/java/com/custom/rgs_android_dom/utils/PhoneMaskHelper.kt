@@ -4,6 +4,9 @@ object PhoneMaskHelper {
 
     fun getMaskForPhone(phone: String): String {
         when {
+            phone.isEmpty() -> {
+                return ""
+            }
             phone.startsWith("994") -> {
                 return "+### ###-###-###"
             }
