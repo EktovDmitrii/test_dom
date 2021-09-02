@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.domain.client.view_states.ClientShortViewState
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.about_app.AboutAppFragment
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.client.agent.AgentFragment
 import com.custom.rgs_android_dom.ui.client.personal_data.PersonalDataFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.logException
@@ -72,9 +73,15 @@ class ClientViewModel(
         ScreenManager.showScreen(PersonalDataFragment())
     }
 
-    fun onAboutAppClick(){
+    fun onAgentInfoClick(){
+        closeController.value = Unit
+        ScreenManager.showScreen(AgentFragment())
+    }
+
+    fun onAboutAppClick() {
         closeController.value = Unit
         ScreenManager.showScreen(AboutAppFragment())
+
     }
 
 }

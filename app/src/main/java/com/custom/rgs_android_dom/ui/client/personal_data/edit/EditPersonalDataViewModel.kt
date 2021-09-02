@@ -29,24 +29,11 @@ class EditPersonalDataViewModel(private val clientInteractor: ClientInteractor) 
     val validateExceptionObserver: LiveData<ValidateClientException> = validateExceptionController
 
     init {
-
         clientInteractor.getEditPersonalDataViewState()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    editPersonalDataController.value = it
-                },
-                onError = {
-                    logException(this, it)
-                }
-            ).addTo(dataCompositeDisposable)
-
-        clientInteractor.editPersonalDataStateSubject.hide()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onNext = {
                     editPersonalDataController.value = it
                 },
                 onError = {

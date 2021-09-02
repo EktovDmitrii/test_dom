@@ -44,6 +44,11 @@ class ClientFragment(
             viewModel.onPersonalDataClick()
         }
 
+
+        binding.agentInfoLinearLayout.setOnDebouncedClickListener {
+            viewModel.onAgentInfoClick()
+        }
+
         binding.aboutAppLinearLayout.setOnDebouncedClickListener {
             viewModel.onAboutAppClick()
         }

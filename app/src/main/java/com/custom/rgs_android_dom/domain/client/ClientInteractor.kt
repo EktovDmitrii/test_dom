@@ -4,16 +4,14 @@ import android.util.Log
 import com.custom.rgs_android_dom.data.repositories.client.ClientRepository
 import com.custom.rgs_android_dom.data.repositories.countries.CountriesRepository
 import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepository
+import com.custom.rgs_android_dom.domain.client.mappers.AgentMapper
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.domain.client.exceptions.ValidateClientException
 import com.custom.rgs_android_dom.domain.client.models.Gender
 import com.custom.rgs_android_dom.domain.client.mappers.ClientShortViewStateMapper
 import com.custom.rgs_android_dom.domain.client.mappers.EditPersonalDataViewStateMapper
 import com.custom.rgs_android_dom.domain.client.mappers.PersonalDataMapper
-import com.custom.rgs_android_dom.domain.client.view_states.ClientShortViewState
-import com.custom.rgs_android_dom.domain.client.view_states.EditPersonalDataViewState
-import com.custom.rgs_android_dom.domain.client.view_states.FillClientViewState
-import com.custom.rgs_android_dom.domain.client.view_states.PersonalDataViewState
+import com.custom.rgs_android_dom.domain.client.view_states.*
 import com.custom.rgs_android_dom.utils.*
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Completable
@@ -37,11 +35,11 @@ class ClientInteractor(
 
     var fillClientStateSubject = BehaviorRelay.create<FillClientViewState>()
     var validateSubject = BehaviorRelay.create<Boolean>()
-    var editPersonalDataStateSubject = BehaviorRelay.create<EditPersonalDataViewState>()
+    var editAgentStateSubject = BehaviorRelay.create<EditAgentViewState>()
 
     private var fillClientViewState: FillClientViewState = FillClientViewState(registrationRepository.getCurrentPhone())
     private var editPersonalDataViewState = EditPersonalDataViewState()
-
+    private var editAgentViewState = EditAgentViewState()
 
 
     fun onKnowAgentCodeClick() {
@@ -210,7 +208,6 @@ class ClientInteractor(
     }
 
     fun onEditPersonalDataBirthdayChanged(birthday: String){
-        Log.d("MyLog", "Birthday " + birthday)
         editPersonalDataViewState = editPersonalDataViewState.copy(birthday = birthday)
         validateEditPersonalDataState()
     }
@@ -349,6 +346,52 @@ class ClientInteractor(
         )
     }
 
+    fun onEditAgentCodeChanged(agentCode: String){
+        editAgentViewState = editAgentViewState.copy(agentCode = agentCode)
+        validateAgentState()
+    }
+
+    fun onEditAgentPhoneChanged(agentPhone: String, isMaskFilled: Boolean){
+        editAgentViewState = editAgentViewState.copy(agentPhone = agentPhone, isAgentPhoneValid = isMaskFilled)
+        validateAgentState()
+    }
+
+    fun getAgent(): Single<AgentViewState>{
+        return clientRepository.getClient().map {
+            AgentMapper.from(it)
+        }
+    }
+
+    fun updateAgent(): Completable {
+        if (editAgentViewState.agentCode.trim().isEmpty()){
+            return Completable.error(
+                ValidateClientException(
+                    ClientField.AGENTCODE,
+                    "ЛНР и телефон агента работают в связке, заполните оба поля"
+                )
+            )
+        }
+
+        if (editAgentViewState.agentPhone.trim().isEmpty()){
+            return Completable.error(
+                ValidateClientException(
+                    ClientField.AGENTPHONE,
+                    "ЛНР и телефон агента работают в связке, заполните оба поля"
+                )
+            )
+        }
+
+        if (editAgentViewState.agentPhone.isNotEmpty() && !editAgentViewState.isAgentPhoneValid){
+            return Completable.error(
+                ValidateClientException(
+                    ClientField.AGENTPHONE,
+                    "Проверьте, правильно ли введён номер телефона"
+                )
+            )
+        }
+        return Completable.complete()
+    }
+
     private fun isBirthdayValid(birthday: LocalDateTime): Boolean {
         return !(birthday.isAfter(MIN_DATE) || birthday.isBefore(
             MAX_DATE
@@ -407,5 +450,8 @@ class ClientInteractor(
     }
 
 
-
+    private fun validateAgentState(){
+        var isSaveTextViewEnabled = editAgentViewState.agentCode.isNotEmpty() || editAgentViewState.agentPhone.isNotEmpty()
+        validateSubject.accept(isSaveTextViewEnabled)
+    }
 }

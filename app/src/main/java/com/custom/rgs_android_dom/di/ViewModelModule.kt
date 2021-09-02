@@ -5,6 +5,9 @@ import com.custom.rgs_android_dom.ui.countries.CountriesViewModel
 import com.custom.rgs_android_dom.ui.demo.DemoViewModel
 import com.custom.rgs_android_dom.ui.main.MainViewModel
 import com.custom.rgs_android_dom.ui.client.ClientViewModel
+
+import com.custom.rgs_android_dom.ui.client.agent.AgentViewModel
+import com.custom.rgs_android_dom.ui.client.agent.edit.EditAgentViewModel
 import com.custom.rgs_android_dom.ui.client.personal_data.edit.EditPersonalDataViewModel
 import com.custom.rgs_android_dom.ui.client.personal_data.PersonalDataViewModel
 import com.custom.rgs_android_dom.ui.registration.code.RegistrationCodeViewModel
@@ -27,5 +30,7 @@ val viewModelModule = module {
     viewModel { MainViewModel(registrationInteractor = get()) }
     viewModel { PersonalDataViewModel(clientInteractor = get()) }
     viewModel { EditPersonalDataViewModel(clientInteractor = get()) }
+    viewModel { AgentViewModel(clientInteractor = get()) }
+    viewModel { EditAgentViewModel(clientInteractor = get()) }
     viewModel { AboutAppViewModel() }
 }

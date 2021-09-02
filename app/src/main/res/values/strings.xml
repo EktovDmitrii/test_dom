@@ -1,3 +1,4 @@
 <resources>
     <string name="acceptable_name_chars">абвгдеёжзийклмнопрстуфхцчшщъыьэюя \'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ-</string>
+    <string name="acceptable_agent_code_chars">абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz</string>
 </resources>
