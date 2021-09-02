@@ -5,13 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.domain.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.client.personal_data.edit.EditPersonalDataFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.splash.SplashFragment
 import com.custom.rgs_android_dom.utils.CacheHelper
-import com.custom.rgs_android_dom.ui.splash.SplashViewModel
-import com.custom.rgs_android_dom.utils.CashHelper
 import com.custom.rgs_android_dom.utils.TranslationHelper
+import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -51,10 +49,10 @@ class MainActivity : AppCompatActivity() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onComplete = {
-                    Log.d(LOG, "TRANSLATION LOAD COMPLITE")
+
                 },
                 onError = {
-                    Log.d(LOG, "ERROR LOAD TRANSLATION")
+                    logException(this, it)
                 }
             ).addTo(disposable)
     }
