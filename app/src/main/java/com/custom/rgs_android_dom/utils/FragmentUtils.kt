@@ -7,6 +7,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import org.joda.time.LocalDate
 import java.util.*
+import androidx.core.content.ContextCompat.startActivity
+
+import android.content.Intent
+import android.net.Uri
+import androidx.core.content.ContextCompat
+
 
 fun Fragment.showSoftwareKeyboard(view: View) {
     activity?.showKeyboard(view)
@@ -81,4 +87,15 @@ fun Fragment.showDatePicker(
 
 fun Fragment.setStatusBarColor(colorRes: Int){
     requireActivity().window.statusBarColor = resources.getColor(colorRes, requireActivity().theme)
+}
+
+fun Fragment.openUrl(url: String){
+    try{
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(url)
+        startActivity(requireActivity(), intent, null)
+    } catch (e: Exception){
+        logException(this, e)
+    }
+
 }
