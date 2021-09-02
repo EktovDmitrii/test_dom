@@ -44,6 +44,10 @@ class ClientFragment(
             viewModel.onPersonalDataClick()
         }
 
+        binding.aboutAppLinearLayout.setOnDebouncedClickListener {
+            viewModel.onAboutAppClick()
+        }
+
         subscribe(viewModel.clientShortViewStateObserver){state->
             binding.phoneTextView.text = state.phone
 
