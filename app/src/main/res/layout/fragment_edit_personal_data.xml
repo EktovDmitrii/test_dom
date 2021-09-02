@@ -142,7 +142,8 @@
                 android:paddingTop="10dp"
                 android:paddingBottom="8dp"
                 android:paddingStart="16dp"
-                android:paddingEnd="64dp">
+                android:paddingEnd="64dp"
+                android:visibility="gone">
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:layout_width="match_parent"
@@ -195,6 +196,7 @@
         android:layout_alignParentBottom="true"
         android:paddingBottom="22dp"
         android:paddingTop="12dp"
+        android:theme="@style/Theme.Rgsandroiddom"
         tools:ignore="BottomAppBar">
 
         <com.custom.rgs_android_dom.views.text.MSDTextViewLoader
