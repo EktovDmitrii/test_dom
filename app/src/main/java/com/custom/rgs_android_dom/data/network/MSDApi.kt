@@ -4,6 +4,7 @@ import com.custom.rgs_android_dom.data.network.data_adapters.NetworkException
 import com.custom.rgs_android_dom.data.network.error.MSDNetworkError
 import com.custom.rgs_android_dom.data.network.requests.LoginRequest
 import com.custom.rgs_android_dom.data.network.requests.GetCodeRequest
+import com.custom.rgs_android_dom.data.network.requests.UpdateAgentRequest
 import com.custom.rgs_android_dom.data.network.requests.UpdateClientRequest
 import com.custom.rgs_android_dom.data.network.responses.AuthResponse
 import com.custom.rgs_android_dom.data.network.responses.ClientResponse
@@ -50,5 +51,9 @@ interface MSDApi {
     @PUT("clients/{clientId}")
     @ErrorType(MSDNetworkError::class)
     fun putClient(@Path("clientId") clientId: String, @Body body: UpdateClientRequest): Single<ClientResponse>
+
+    @POST("clients/{clientId}/agents")
+    @ErrorType(MSDNetworkError::class)
+    fun updateAgent(@Path("clientId") clientId: String, @Body body: UpdateAgentRequest): Single<ClientResponse>
 
 }

@@ -1,7 +1,9 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
+import com.custom.rgs_android_dom.data.network.requests.UpdateAgentRequest
 import com.custom.rgs_android_dom.data.network.responses.ClientResponse
 import com.custom.rgs_android_dom.domain.client.models.*
+import com.custom.rgs_android_dom.utils.formatPhoneForApi
 
 object ClientMapper {
 
@@ -67,6 +69,13 @@ object ClientMapper {
             docNumber = response.docNumber
         )
 
+    }
+
+    fun agentToRequest(code: String, phone: String): UpdateAgentRequest {
+        return UpdateAgentRequest(
+            code = code,
+            phone = phone.formatPhoneForApi()
+        )
     }
 
 }
