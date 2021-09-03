@@ -84,10 +84,10 @@ data class AddressResponse (
 )
 
 data class AgentResponse (
-	@SerializedName("Code")
+	@SerializedName("code")
 	val code: String?,
 	
-	@SerializedName("Phone")
+	@SerializedName("phone")
 	val phone: String?
 )
 

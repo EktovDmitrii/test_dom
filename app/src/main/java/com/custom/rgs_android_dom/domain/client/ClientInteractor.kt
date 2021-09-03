@@ -1,5 +1,8 @@
 package com.custom.rgs_android_dom.domain.client
 
+import com.custom.rgs_android_dom.data.repositories.client.ClientRepository
+import com.custom.rgs_android_dom.data.repositories.countries.CountriesRepository
+import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepository
 import com.custom.rgs_android_dom.domain.client.mappers.AgentMapper
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.domain.client.exceptions.ValidateClientException
@@ -8,9 +11,6 @@ import com.custom.rgs_android_dom.domain.client.mappers.ClientShortViewStateMapp
 import com.custom.rgs_android_dom.domain.client.mappers.EditPersonalDataViewStateMapper
 import com.custom.rgs_android_dom.domain.client.mappers.PersonalDataMapper
 import com.custom.rgs_android_dom.domain.client.view_states.*
-import com.custom.rgs_android_dom.domain.repositories.ClientRepository
-import com.custom.rgs_android_dom.domain.repositories.CountriesRepository
-import com.custom.rgs_android_dom.domain.repositories.RegistrationRepository
 import com.custom.rgs_android_dom.utils.*
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Completable
@@ -68,7 +68,8 @@ class ClientInteractor(
             }
         }
 
-        if (fillClientViewState.agentCode != null && fillClientViewState.agentPhone == null || fillClientViewState.agentCode != null && fillClientViewState.agentPhone != null && !isAgentPhoneCorrect()) {
+        if (fillClientViewState.agentCode != null && fillClientViewState.agentPhone == null
+            || fillClientViewState.agentCode != null && fillClientViewState.agentPhone != null && !isAgentPhoneCorrect()) {
 
             return Completable.error(
                 ValidateClientException(
@@ -78,7 +79,8 @@ class ClientInteractor(
             )
         }
 
-        if (fillClientViewState.agentCode == null && isAgentPhoneCorrect()) {
+        if (fillClientViewState.agentCode == null && isAgentPhoneCorrect()
+            || fillClientViewState.agentCode == null && fillClientViewState.agentPhone != null && !isAgentPhoneCorrect()) {
             return Completable.error(
                 ValidateClientException(
                     ClientField.AGENTCODE,
@@ -185,6 +187,13 @@ class ClientInteractor(
             }
     }
 
+    fun agentUpdatedSubject(): Observable<AgentViewState> {
+        return clientRepository.getClientUpdatedSubject()
+            .map {
+                AgentMapper.from(it)
+            }
+    }
+
     fun getPersonalData(): Single<PersonalDataViewState> {
         return clientRepository.getClient().map {
             PersonalDataMapper.from(it)
@@ -276,21 +285,22 @@ class ClientInteractor(
         }
 
         var birthday: LocalDateTime? = null
-        val birthdayWithTimezone = "${editPersonalDataViewState.birthday.tryParseDate()}T00:00:00.000Z"
-        birthday = birthdayWithTimezone.tryParseLocalDateTime({
-            logException(this, it)
-            birthday = null
-        }, format = PATTERN_DATE_TIME_MILLIS)
+        if (editPersonalDataViewState.birthday.isNotEmpty()){
+            val birthdayWithTimezone = "${editPersonalDataViewState.birthday.tryParseDate()}T00:00:00.000Z"
+            birthday = birthdayWithTimezone.tryParseLocalDateTime({
+                logException(this, it)
+                birthday = null
+            }, format = PATTERN_DATE_TIME_MILLIS)
 
-        if (birthday == null || birthday != null && !isBirthdayValid(birthday!!)) {
-            return Completable.error(
-                ValidateClientException(
-                    ClientField.BIRTHDATE,
-                    "Проверьте, правильно ли введена дата рождения"
+            if (birthday == null || birthday != null && !isBirthdayValid(birthday!!)) {
+                return Completable.error(
+                    ValidateClientException(
+                        ClientField.BIRTHDATE,
+                        "Проверьте, правильно ли введена дата рождения"
+                    )
                 )
-            )
+            }
         }
-
 
         if (!editPersonalDataViewState.isDocSerialSaved && editPersonalDataViewState.docSerial.isNotEmpty()){
             if (editPersonalDataViewState.docSerial.trim().length != DOC_SERIAL_LENGTH){
@@ -323,7 +333,7 @@ class ClientInteractor(
             )
         }
 
-        if (!editPersonalDataViewState.isEmailSaved && editPersonalDataViewState.email.isNotEmpty() && !editPersonalDataViewState.email.isValidEmail()){
+        if (editPersonalDataViewState.email.isNotEmpty() && !editPersonalDataViewState.email.isValidEmail()){
             return Completable.error(
                 ValidateClientException(
                     ClientField.EMAIL,
@@ -331,7 +341,6 @@ class ClientInteractor(
                 )
             )
         }
-
         return updateClient(
             lastName = if (editPersonalDataViewState.lastName.isNotEmpty()) editPersonalDataViewState.lastName else null,
             firstName = if (editPersonalDataViewState.firstName.isNotEmpty()) editPersonalDataViewState.firstName else null,
@@ -388,7 +397,7 @@ class ClientInteractor(
                 )
             )
         }
-        return Completable.complete()
+        return clientRepository.updateAgent(editAgentViewState.agentCode, editAgentViewState.agentPhone)
     }
 
     private fun isBirthdayValid(birthday: LocalDateTime): Boolean {
@@ -423,7 +432,7 @@ class ClientInteractor(
             || !editPersonalDataViewState.isDocSerialSaved && editPersonalDataViewState.docSerial.isNotEmpty()
             || !editPersonalDataViewState.isDocNumberSaved && editPersonalDataViewState.docNumber.isNotEmpty()
             || !editPersonalDataViewState.isSecondPhoneSaved && editPersonalDataViewState.secondPhone.isNotEmpty()
-            || !editPersonalDataViewState.isEmailSaved && editPersonalDataViewState.email.isNotEmpty()){
+            || editPersonalDataViewState.email.isNotEmpty()){
             isSaveTextViewEnabled = true
         }
 

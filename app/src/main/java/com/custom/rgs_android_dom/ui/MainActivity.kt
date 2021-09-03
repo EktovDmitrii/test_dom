@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.domain.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseFragment
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private val disposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         ScreenManager.init(this, R.id.vgScreensContainer)

@@ -73,8 +73,8 @@
         android:layout_width="match_parent"
         android:layout_height="82dp"
         android:layout_alignParentBottom="true"
-        android:paddingBottom="22dp"
         android:paddingTop="12dp"
+        android:paddingBottom="22dp"
         tools:ignore="BottomAppBar">
 
         <com.custom.rgs_android_dom.views.text.MSDTextViewLoader

@@ -4,6 +4,7 @@ import com.custom.rgs_android_dom.data.network.data_adapters.NetworkException
 import com.custom.rgs_android_dom.data.network.error.MSDNetworkError
 import com.custom.rgs_android_dom.data.network.requests.LoginRequest
 import com.custom.rgs_android_dom.data.network.requests.GetCodeRequest
+import com.custom.rgs_android_dom.data.network.requests.UpdateAgentRequest
 import com.custom.rgs_android_dom.data.network.requests.UpdateClientRequest
 import com.custom.rgs_android_dom.data.network.responses.*
 import io.reactivex.Completable
@@ -50,5 +51,9 @@ interface MSDApi {
 
     @GET("catalog/translations")
     fun getTranslations(@Query("platform") platform: String,@Query("lang") lang: String, @Query("project") project: String): Single<TranslationListResponse>
+
+    @POST("clients/{clientId}/agents")
+    @ErrorType(MSDNetworkError::class)
+    fun updateAgent(@Path("clientId") clientId: String, @Body body: UpdateAgentRequest): Single<ClientResponse>
 
 }

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <FrameLayout
+        android:id="@+id/toolbarFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/backImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:paddingHorizontal="14dp"
+            android:tint="@color/secondary800"
+            app:srcCompat="@drawable/ic_back_24px"/>
+    </FrameLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignBottom="@+id/versionTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/versionTextView">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:paddingHorizontal="20dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="128dp"
+                    android:layout_height="128dp"
+                    app:srcCompat="@drawable/ic_logo_rounded"
+                    android:layout_marginTop="12dp"/>
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/my_service_bold"
+                    android:textSize="20sp"
+                    android:textColor="@color/secondary900"
+                    android:layout_marginTop="28dp"
+                    app:translationTextKey="О приложении"/>
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/suisse_regular"
+                    android:textSize="14sp"
+                    android:textColor="@color/secondary900"
+                    android:layout_marginTop="28dp"
+                    android:gravity="center_horizontal"
+                    app:translationTextKey="Удобный сервис для домашних дел от флагмана отечественного рынка страхования"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="52dp"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/Icon.Filled.Primary500_Alpha12"
+                            app:srcCompat="@drawable/ic_rating_20px" />
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="12dp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/secondary900"
+                            android:textSize="16sp"
+                            app:translationTextKey="Оценить приложение" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:alpha="0.16"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginStart="48dp"
+                        android:background="@color/secondary900_alpha56"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/Icon.Filled.Primary500_Alpha12"
+                            app:srcCompat="@drawable/ic_rating_20px" />
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="12dp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/secondary900"
+                            android:textSize="16sp"
+                            app:translationTextKey="Отправить отзыв" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:alpha="0.16"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginStart="48dp"
+                        android:background="@color/secondary900_alpha56"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/licenseAgreementsLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/Icon.Filled.Primary500_Alpha12"
+                            app:srcCompat="@drawable/ic_rating_20px" />
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="12dp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/secondary900"
+                            android:textSize="16sp"
+                            app:translationTextKey="Лицензионные соглашения" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:alpha="0.16"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginStart="48dp"
+                        android:background="@color/secondary900_alpha56"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/privacyPolicyLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/Icon.Filled.Primary500_Alpha12"
+                            app:srcCompat="@drawable/ic_rating_20px" />
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="12dp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/secondary900"
+                            android:textSize="16sp"
+                            app:translationTextKey="Политика конфиденциальности" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <TextView
+            android:id="@+id/versionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="22dp"
+            android:fontFamily="@font/suisse_regular"
+            android:textSize="13sp"
+            android:textColor="@color/secondary900_alpha48"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="Версия 600.36.0, сборка 1373365"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
