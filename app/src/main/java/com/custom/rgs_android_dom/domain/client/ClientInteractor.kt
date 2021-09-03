@@ -68,7 +68,8 @@ class ClientInteractor(
             }
         }
 
-        if (fillClientViewState.agentCode != null && fillClientViewState.agentPhone == null || fillClientViewState.agentCode != null && fillClientViewState.agentPhone != null && !isAgentPhoneCorrect()) {
+        if (fillClientViewState.agentCode != null && fillClientViewState.agentPhone == null
+            || fillClientViewState.agentCode != null && fillClientViewState.agentPhone != null && !isAgentPhoneCorrect()) {
 
             return Completable.error(
                 ValidateClientException(
@@ -78,7 +79,8 @@ class ClientInteractor(
             )
         }
 
-        if (fillClientViewState.agentCode == null && isAgentPhoneCorrect()) {
+        if (fillClientViewState.agentCode == null && isAgentPhoneCorrect()
+            || fillClientViewState.agentCode == null && fillClientViewState.agentPhone != null && !isAgentPhoneCorrect()) {
             return Completable.error(
                 ValidateClientException(
                     ClientField.AGENTCODE,
@@ -331,7 +333,7 @@ class ClientInteractor(
             )
         }
 
-        if (!editPersonalDataViewState.isEmailSaved && editPersonalDataViewState.email.isNotEmpty() && !editPersonalDataViewState.email.isValidEmail()){
+        if (editPersonalDataViewState.email.isNotEmpty() && !editPersonalDataViewState.email.isValidEmail()){
             return Completable.error(
                 ValidateClientException(
                     ClientField.EMAIL,
@@ -430,7 +432,7 @@ class ClientInteractor(
             || !editPersonalDataViewState.isDocSerialSaved && editPersonalDataViewState.docSerial.isNotEmpty()
             || !editPersonalDataViewState.isDocNumberSaved && editPersonalDataViewState.docNumber.isNotEmpty()
             || !editPersonalDataViewState.isSecondPhoneSaved && editPersonalDataViewState.secondPhone.isNotEmpty()
-            || !editPersonalDataViewState.isEmailSaved && editPersonalDataViewState.email.isNotEmpty()){
+            || editPersonalDataViewState.email.isNotEmpty()){
             isSaveTextViewEnabled = true
         }
 

@@ -27,6 +27,7 @@ class EditAgentFragment : BaseFragment<EditAgentViewModel, FragmentEditAgentBind
 
         binding.agentCodeEditText.addTextWatcher {
             viewModel.onAgentCodeChanged(it)
+            binding.agentCodeEditText.setState(MSDLabelEditText.State.NORMAL)
         }
 
         binding.agentPhoneEditText.addOnTextChangedListener { phone, isMaskFilled ->
