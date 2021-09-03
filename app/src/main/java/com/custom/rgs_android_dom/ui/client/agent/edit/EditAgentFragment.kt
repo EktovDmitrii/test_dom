@@ -27,6 +27,7 @@ class EditAgentFragment : BaseFragment<EditAgentViewModel, FragmentEditAgentBind
 
         binding.agentCodeEditText.addTextWatcher {
             viewModel.onAgentCodeChanged(it)
+            binding.agentCodeEditText.setState(MSDLabelEditText.State.NORMAL)
         }
 
         binding.agentPhoneEditText.addOnTextChangedListener { phone, isMaskFilled ->
@@ -58,6 +59,11 @@ class EditAgentFragment : BaseFragment<EditAgentViewModel, FragmentEditAgentBind
 
     override fun onContent() {
         super.onContent()
+        binding.saveTextView.setLoading(false)
+    }
+
+    override fun onError() {
+        super.onError()
         binding.saveTextView.setLoading(false)
     }
 

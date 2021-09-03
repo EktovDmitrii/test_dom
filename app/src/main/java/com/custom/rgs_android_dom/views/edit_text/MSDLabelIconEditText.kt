@@ -174,6 +174,7 @@ class MSDLabelIconEditText @JvmOverloads constructor(
                 binding.valueEditText.setTextColor(context.getColor(R.color.secondary900))
                 binding.secondaryTextView.gone()
                 binding.valueEditText.isEnabled = true
+                binding.iconImageView.isEnabled = true
                 super.setEnabled(true)
             }
             State.DISABLED -> {
@@ -181,6 +182,7 @@ class MSDLabelIconEditText @JvmOverloads constructor(
                 binding.valueEditText.setTextColor(context.getColor(R.color.secondary400))
                 binding.secondaryTextView.gone()
                 binding.valueEditText.isEnabled = false
+                binding.iconImageView.isEnabled = false
                 super.setEnabled(false)
             }
             State.ERROR -> {
@@ -190,6 +192,7 @@ class MSDLabelIconEditText @JvmOverloads constructor(
                 binding.secondaryTextView.setTextColor(context.getColor(R.color.error500))
                 binding.secondaryTextView.visibleIf(secondaryText.isNotEmpty())
                 binding.valueEditText.isEnabled = true
+                binding.iconImageView.isEnabled = true
                 super.setEnabled(true)
             }
             State.SUCCESS -> {
@@ -199,6 +202,7 @@ class MSDLabelIconEditText @JvmOverloads constructor(
                 binding.secondaryTextView.setTextColor(context.getColor(R.color.success500))
                 binding.secondaryTextView.visibleIf(secondaryText.isNotEmpty())
                 binding.valueEditText.isEnabled = true
+                binding.iconImageView.isEnabled = true
                 super.setEnabled(true)
             }
         }

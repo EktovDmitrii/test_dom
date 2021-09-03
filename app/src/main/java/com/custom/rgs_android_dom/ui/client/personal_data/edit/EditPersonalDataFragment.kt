@@ -118,7 +118,6 @@ class EditPersonalDataFragment : BaseFragment<EditPersonalDataViewModel, Fragmen
                 binding.additionalPhoneEditText.setText(state.secondPhone)
             }
 
-            binding.emailEditText.isEnabled = !state.isEmailSaved
             binding.emailEditText.setText(state.email)
 
         }

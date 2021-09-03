@@ -32,7 +32,6 @@ object EditPersonalDataViewStateMapper {
             secondPhone = client.secondPhone ?: "",
             isSecondPhoneSaved = client.secondPhone?.isNotEmpty() == true,
             email = client.contacts?.find { it.type == "email" }?.contact ?: "",
-            isEmailSaved = client.contacts?.find { it.type == "email" }?.contact != null
         )
     }
 

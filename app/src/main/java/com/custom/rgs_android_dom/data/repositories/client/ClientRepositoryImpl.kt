@@ -92,4 +92,15 @@ class ClientRepositoryImpl(
     override fun getClientUpdatedSubject(): Observable<ClientModel> {
         return clientUpdatedSubject.hide()
     }
+
+    override fun updateAgent(code: String, phone: String): Completable {
+        val agentRequest = ClientMapper.agentToRequest(code, phone)
+        return api.updateAgent(authSharedPreferences.getClientId(), agentRequest)
+            .flatMapCompletable {response->
+                val client = ClientMapper.responseToClient(response)
+                authSharedPreferences.saveClient(client)
+                clientUpdatedSubject.accept(client)
+                Completable.complete()
+            }
+    }
 }

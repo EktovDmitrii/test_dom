@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.domain.client.models.Gender
 import com.custom.rgs_android_dom.domain.client.view_states.FillClientViewState
 import com.custom.rgs_android_dom.domain.client.exceptions.ValidateClientException
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -74,6 +75,7 @@ class RegistrationFillClientViewModel(
                     onCloseClick()
                 },
                 onError = {
+                    logException(this, it)
                     when(it){
                         is ValidateClientException -> {
                             validateExceptionController.value = it
