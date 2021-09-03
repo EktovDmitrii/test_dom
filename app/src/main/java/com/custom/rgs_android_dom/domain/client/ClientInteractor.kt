@@ -50,6 +50,24 @@ class ClientInteractor(
 
     fun updateClient(): Completable {
 
+        if (fillClientViewState.surname?.trim()?.isEmpty() == true){
+            return Completable.error(
+                ValidateClientException(
+                    ClientField.LASTNAME,
+                    ""
+                )
+            )
+        }
+
+        if (fillClientViewState.name?.trim()?.isEmpty() == true){
+            return Completable.error(
+                ValidateClientException(
+                    ClientField.FIRSTNAME,
+                    ""
+                )
+            )
+        }
+
         var birthday: LocalDateTime? = null
         fillClientViewState.birthday?.let { birthdayString ->
 
@@ -70,7 +88,6 @@ class ClientInteractor(
         }
 
         if (fillClientViewState.agentCode != null && fillClientViewState.agentPhone == null || fillClientViewState.agentCode != null && fillClientViewState.agentPhone != null && !isAgentPhoneCorrect()) {
-
             return Completable.error(
                 ValidateClientException(
                     ClientField.AGENTPHONE,
@@ -89,11 +106,11 @@ class ClientInteractor(
         }
 
         return updateClient(
-            firstName = fillClientViewState.name,
-            lastName = fillClientViewState.surname,
+            firstName = fillClientViewState.name?.trim(),
+            lastName = fillClientViewState.surname?.trim(),
             birthday = birthday,
             gender = fillClientViewState.gender,
-            agentCode = fillClientViewState.agentCode,
+            agentCode = fillClientViewState.agentCode?.trim(),
             agentPhone = fillClientViewState.agentPhone
         )
     }
