@@ -20,7 +20,10 @@ data class EditPersonalDataViewState(
     val phone: String = "",
     val isPhoneSaved: Boolean = false,
     val secondPhone: String = "",
+    val secondPhoneId: String = "",
     val isSecondPhoneSaved: Boolean = false,
     val isSecondPhoneValid: Boolean = false,
-    val email: String = ""
+    val email: String = "",
+    val wasSecondPhoneEdited: Boolean = false,
+    val wasEmailEdited: Boolean = false
 )

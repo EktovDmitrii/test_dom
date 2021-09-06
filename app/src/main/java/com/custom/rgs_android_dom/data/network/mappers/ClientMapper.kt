@@ -1,11 +1,14 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
-import com.custom.rgs_android_dom.data.network.requests.UpdateAgentRequest
+import com.custom.rgs_android_dom.data.network.requests.*
 import com.custom.rgs_android_dom.data.network.responses.ClientResponse
 import com.custom.rgs_android_dom.domain.client.models.*
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
 
 object ClientMapper {
+
+    const val DOCTYPE_NATIONAL_PASSPORT = "npp"
+    const val CONTACT_TYPE_PHONE = "phone"
 
     fun responseToClient(response: ClientResponse): ClientModel {
 
@@ -63,10 +66,7 @@ object ClientMapper {
             phone = response.phone,
             gender = response.gender,
             status = response.status,
-            email = response.email,
-            secondPhone = response.secondPhone,
-            docSerial = response.docSerial,
-            docNumber = response.docNumber
+            email = response.email
         )
 
     }
@@ -76,6 +76,34 @@ object ClientMapper {
             code = code,
             phone = phone.formatPhoneForApi()
         )
+    }
+
+    fun passportToRequest(serial: String, number: String): UpdateDocumentsRequest {
+        val documents = arrayListOf(
+            DocumentRequest(serial = serial, number = number, type = DOCTYPE_NATIONAL_PASSPORT)
+        )
+        return UpdateDocumentsRequest(documents = documents)
+    }
+
+    fun phoneToRequest(phone: String): UpdateContactsRequest {
+        val contacts = arrayListOf(
+            ContactRequest(
+                contact = phone,
+                type = CONTACT_TYPE_PHONE
+            )
+        )
+        return UpdateContactsRequest(contacts = contacts)
+    }
+
+    fun phoneToRequest(phone: String, id: String): UpdateContactsRequest {
+        val contacts = arrayListOf(
+            ContactRequest(
+                id = id,
+                contact = phone,
+                type = CONTACT_TYPE_PHONE
+            )
+        )
+        return UpdateContactsRequest(contacts = contacts)
     }
 
 }

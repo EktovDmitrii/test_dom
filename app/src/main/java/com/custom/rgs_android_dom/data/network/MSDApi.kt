@@ -2,10 +2,7 @@ package com.custom.rgs_android_dom.data.network
 
 import com.custom.rgs_android_dom.data.network.data_adapters.NetworkException
 import com.custom.rgs_android_dom.data.network.error.MSDNetworkError
-import com.custom.rgs_android_dom.data.network.requests.LoginRequest
-import com.custom.rgs_android_dom.data.network.requests.GetCodeRequest
-import com.custom.rgs_android_dom.data.network.requests.UpdateAgentRequest
-import com.custom.rgs_android_dom.data.network.requests.UpdateClientRequest
+import com.custom.rgs_android_dom.data.network.requests.*
 import com.custom.rgs_android_dom.data.network.responses.AuthResponse
 import com.custom.rgs_android_dom.data.network.responses.ClientResponse
 import com.custom.rgs_android_dom.data.network.responses.GetCodeResponse
@@ -56,4 +53,15 @@ interface MSDApi {
     @ErrorType(MSDNetworkError::class)
     fun updateAgent(@Path("clientId") clientId: String, @Body body: UpdateAgentRequest): Single<ClientResponse>
 
+    @POST("clients/{clientId}/documents")
+    @ErrorType(MSDNetworkError::class)
+    fun postDocuments(@Path("clientId") clientId: String, @Body body: UpdateDocumentsRequest): Single<ClientResponse>
+
+    @POST("clients/{clientId}/contacts")
+    @ErrorType(MSDNetworkError::class)
+    fun postContacts(@Path("clientId") clientId: String, @Body body: UpdateContactsRequest): Single<ClientResponse>
+
+    @PUT("clients/{clientId}/contacts")
+    @ErrorType(MSDNetworkError::class)
+    fun putContacts(@Path("clientId") clientId: String, @Body body: UpdateContactsRequest): Single<ClientResponse>
 }
