@@ -5,6 +5,12 @@ import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
 import org.joda.time.format.DateTimeFormat
+import java.util.regex.Pattern
+
+private  val EMAIL_ADDRESS_PATTERN: Pattern = Pattern
+    .compile("[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{0,49}" + "\\@"
+            + "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,29}" + "(" + "\\."
+            + "[a-zA-Z0-9][a-zA-Z0-9\\-]{1,6}" + ")+")
 
 fun String.toTimeZone(format: String = DATE_PATTERN_DATE_AND_TIME_AND_TIME_ZONE): String {
     return convertToLocalTimeZone(this, format)
@@ -58,5 +64,6 @@ fun String.formatPhoneByMask(mask: String, placeholder: String): String {
 fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
 
 fun String.isValidEmail(): Boolean {
-    return android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
+    return EMAIL_ADDRESS_PATTERN.matcher(this).matches()
 }
+
