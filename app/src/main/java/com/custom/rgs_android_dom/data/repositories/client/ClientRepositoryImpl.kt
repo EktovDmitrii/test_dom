@@ -14,6 +14,7 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.subjects.PublishSubject
 import org.joda.time.LocalDateTime
 
 class ClientRepositoryImpl(
@@ -21,7 +22,7 @@ class ClientRepositoryImpl(
     private val authSharedPreferences: AuthSharedPreferences
 ) : ClientRepository {
 
-    private val clientUpdatedSubject: BehaviorRelay<ClientModel> = BehaviorRelay.create()
+    private val clientUpdatedSubject: PublishSubject<ClientModel> = PublishSubject.create()
 
     override fun updateClient(
         firstName: String?,
@@ -49,7 +50,7 @@ class ClientRepositoryImpl(
             .flatMapCompletable { response ->
                 val client = ClientMapper.responseToClient(response)
                 authSharedPreferences.saveClient(client)
-                clientUpdatedSubject.accept(client)
+                clientUpdatedSubject.onNext(client)
                 Completable.complete()
             }
     }
@@ -76,7 +77,7 @@ class ClientRepositoryImpl(
             authSharedPreferences.getClient()?.let { clientCached ->
                 if (clientCached != client) {
                     authSharedPreferences.saveClient(client)
-                    clientUpdatedSubject.accept(client)
+                    clientUpdatedSubject.onNext(client)
                 }
             }
 
@@ -94,7 +95,7 @@ class ClientRepositoryImpl(
             .flatMapCompletable {response->
                 val client = ClientMapper.responseToClient(response)
                 authSharedPreferences.saveClient(client)
-                clientUpdatedSubject.accept(client)
+                clientUpdatedSubject.onNext(client)
                 Completable.complete()
             }
     }
@@ -105,7 +106,7 @@ class ClientRepositoryImpl(
         return api.postDocuments(clientId, updateDocumentsRequest).flatMapCompletable {response->
             val client = ClientMapper.responseToClient(response)
             authSharedPreferences.saveClient(client)
-            clientUpdatedSubject.accept(client)
+            clientUpdatedSubject.onNext(client)
             Completable.complete()
         }
     }
@@ -116,7 +117,7 @@ class ClientRepositoryImpl(
         return api.postContacts(clientId, updateContactsRequest).flatMapCompletable { response->
             val client = ClientMapper.responseToClient(response)
             authSharedPreferences.saveClient(client)
-            clientUpdatedSubject.accept(client)
+            clientUpdatedSubject.onNext(client)
             Completable.complete()
         }
     }
@@ -127,7 +128,7 @@ class ClientRepositoryImpl(
         return api.putContacts(clientId, updateContactsRequest).flatMapCompletable { response->
             val client = ClientMapper.responseToClient(response)
             authSharedPreferences.saveClient(client)
-            clientUpdatedSubject.accept(client)
+            clientUpdatedSubject.onNext(client)
             Completable.complete()
         }
     }
