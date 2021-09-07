@@ -113,7 +113,6 @@ class EditPersonalDataFragment : BaseFragment<EditPersonalDataViewModel, Fragmen
             binding.phoneEditText.isEnabled = !state.isPhoneSaved
             binding.phoneEditText.setText(state.phone)
 
-            binding.additionalPhoneEditText.isEnabled = !state.isSecondPhoneSaved
             if (state.secondPhone.isNotEmpty()){
                 binding.additionalPhoneEditText.setText(state.secondPhone)
             }
@@ -163,6 +162,11 @@ class EditPersonalDataFragment : BaseFragment<EditPersonalDataViewModel, Fragmen
 
     override fun onContent() {
         super.onContent()
+        binding.saveTextView.setLoading(false)
+    }
+
+    override fun onError() {
+        super.onError()
         binding.saveTextView.setLoading(false)
     }
 }

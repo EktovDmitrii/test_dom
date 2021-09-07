@@ -8,7 +8,7 @@ import org.joda.time.format.DateTimeFormat
 import java.util.regex.Pattern
 
 private  val EMAIL_ADDRESS_PATTERN: Pattern = Pattern
-    .compile("[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{0,49}" + "\\@"
+    .compile("[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{0,50}" + "\\@"
             + "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,29}" + "(" + "\\."
             + "[a-zA-Z0-9][a-zA-Z0-9\\-]{1,6}" + ")+")
 

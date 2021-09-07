@@ -18,10 +18,7 @@ data class ClientModel (
 	val phone: String,
 	val gender: Gender?,
 	val status: String?,
-	val email: String?,
-	val secondPhone: String?,
-	val docSerial: String?,
-	val docNumber: String?
+	val email: String?
 )
 
 

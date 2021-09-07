@@ -56,28 +56,28 @@ class MockCountriesRepositoryImpl() : CountriesRepository {
                 name = "Азербайджан",
                 letterCode = "AZ",
                 numberCode = "+994",
-                mask = "+994 [000]-[000]-[000]"
+                mask = "+994 [00] [000]-[00]-[00]"
             ),
             CountryResponse(
                 id = 2,
-                name = "Беларусь",
-                letterCode = "BY",
-                numberCode = "+375",
-                mask = "+375 [000]-[000]-[000]"
-            ),
-            CountryResponse(
-                id = 3,
                 name = "Армения",
                 letterCode = "AM",
                 numberCode = "+374",
-                mask = "+374 [000]-[000]-[00]"
+                mask = "+374 [0000]-[0000]"
+            ),
+            CountryResponse(
+                id = 3,
+                name = "Беларусь",
+                letterCode = "BY",
+                numberCode = "+375",
+                mask = "+375 [00] [000]-[00]-[00]"
             ),
             CountryResponse(
                 id = 4,
                 name = "Казахстан",
                 letterCode = "KZ",
                 numberCode = "+7",
-                mask = "+7 [000]-[000]-[00]-[00]"
+                mask = "+7 [000] [000]-[00]-[00]"
             ),
             CountryResponse(
                 id = 5,
@@ -88,31 +88,38 @@ class MockCountriesRepositoryImpl() : CountriesRepository {
             ),
             CountryResponse(
                 id = 6,
-                name = "Молдавия",
+                name = "Молдова",
                 letterCode = "MD",
                 numberCode = "+373",
-                mask = "+373 [000]-[000]-[00]"
+                mask = "+373 [0000]-[0000]"
             ),
             CountryResponse(
                 id = 7,
                 name = "Таджикистан",
                 letterCode = "TJ",
                 numberCode = "+992",
-                mask = "+992 [000]-[000]-[000]"
+                mask = "+992 [000]-[00]-[00]-[00]"
             ),
             CountryResponse(
                 id = 8,
-                name = "Туркмения",
+                name = "Туркменистан",
                 letterCode = "TM",
-                numberCode = "+998",
-                mask = "+998 [000]-[000]-[00]"
+                numberCode = "+993",
+                mask = "+993 [0000]-[00]-[00]"
             ),
             CountryResponse(
                 id = 9,
+                name = "Узбекистан ",
+                letterCode = "UZ",
+                numberCode = "+998",
+                mask = "+993 [00] [000]-[00]-[00]"
+            ),
+            CountryResponse(
+                id = 10,
                 name = "Украина",
                 letterCode = "UA",
                 numberCode = "+380",
-                mask = "+380 [00] [000]-[00]-[00]"
+                mask = "+380 [000] [000]-[000]"
             )
         ).apply {
             sortBy {
@@ -120,7 +127,7 @@ class MockCountriesRepositoryImpl() : CountriesRepository {
             }
             add(
                 0, CountryResponse(
-                    id = 7,
+                    id = 11,
                     name = "Россия",
                     letterCode = "RU",
                     numberCode = "+7",

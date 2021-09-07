@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.domain.client.mappers
 
 import android.util.Log
+import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
 import com.custom.rgs_android_dom.domain.client.models.ClientModel
 import com.custom.rgs_android_dom.domain.client.view_states.EditPersonalDataViewState
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_ONLY
@@ -12,6 +13,22 @@ object EditPersonalDataViewStateMapper {
 
     fun from(client: ClientModel): EditPersonalDataViewState {
         val phoneMask = PhoneMaskHelper.getMaskForPhone(client.phone)
+
+        val passport = client.documents?.find { it.type == ClientMapper.DOCTYPE_NATIONAL_PASSPORT }
+
+        var secondPhone = client.contacts?.find {
+            it.type == ClientMapper.CONTACT_TYPE_PHONE && it.contact != client.phone
+        }?.contact ?: ""
+
+        val secondPhoneId = client.contacts?.find {
+            it.type == ClientMapper.CONTACT_TYPE_PHONE && it.contact != client.phone
+        }?.id ?: ""
+
+        if (secondPhone.isNotEmpty()){
+            val secondPhoneMask = PhoneMaskHelper.getMaskForPhone(secondPhone)
+            secondPhone = secondPhone.formatPhoneByMask(secondPhoneMask, "#")
+        }
+
         return EditPersonalDataViewState(
             lastName = client.lastName,
             isLastNameSaved = client.lastName.isNotEmpty(),
@@ -25,12 +42,13 @@ object EditPersonalDataViewStateMapper {
             isGenderSaved = client.gender != null,
             phone = client.phone.formatPhoneByMask(phoneMask, "#"),
             isPhoneSaved = client.phone.isNotEmpty(),
-            docNumber = client.docNumber ?: "",
-            isDocNumberSaved = client.docNumber?.isNotEmpty() == true,
-            docSerial = client.docSerial ?: "",
-            isDocSerialSaved = client.docSerial?.isNotEmpty() == true,
-            secondPhone = client.secondPhone ?: "",
-            isSecondPhoneSaved = client.secondPhone?.isNotEmpty() == true,
+            docNumber = passport?.number ?: "",
+            isDocNumberSaved = passport?.number?.isNotEmpty() == true,
+            docSerial = passport?.serial ?: "",
+            isDocSerialSaved = passport?.serial?.isNotEmpty() == true,
+            secondPhone = secondPhone,
+            secondPhoneId = secondPhoneId,
+            isSecondPhoneSaved = secondPhone.isNotEmpty(),
             email = client.contacts?.find { it.type == "email" }?.contact ?: "",
         )
     }
