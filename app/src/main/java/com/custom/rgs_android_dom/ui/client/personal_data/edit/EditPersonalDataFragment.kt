@@ -153,6 +153,10 @@ class EditPersonalDataFragment : BaseFragment<EditPersonalDataViewModel, Fragmen
                 }
             }
         }
+
+        subscribe(viewModel.networkErrorObserver){
+            toast(it)
+        }
     }
 
     override fun onLoading() {

@@ -34,4 +34,6 @@ interface ClientRepository {
 
     fun updateSecondPhone(phone: String, id: String): Completable
 
+    fun deleteContacts(ids: ArrayList<String>): Completable
+
 }

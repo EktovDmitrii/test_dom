@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.data.repositories.client
 import android.util.Log
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
+import com.custom.rgs_android_dom.data.network.requests.DeleteContactsRequest
 import com.custom.rgs_android_dom.data.network.requests.UpdateClientRequest
 import com.custom.rgs_android_dom.data.preferences.AuthSharedPreferences
 import com.custom.rgs_android_dom.domain.client.models.ClientModel
@@ -73,7 +74,6 @@ class ClientRepositoryImpl(
     override fun loadAndSaveClient(): Completable {
         return api.getClient(authSharedPreferences.getClientId()).flatMapCompletable { response ->
             val client = ClientMapper.responseToClient(response)
-            Log.d("MyLog", "LOAD AND SAVE CLIENT " + client.phone + " " + client.agent?.code + " " + client.agent?.phone)
             authSharedPreferences.getClient()?.let { clientCached ->
                 if (clientCached != client) {
                     authSharedPreferences.saveClient(client)
@@ -126,6 +126,17 @@ class ClientRepositoryImpl(
         val updateContactsRequest = ClientMapper.phoneToRequest(phone.formatPhoneForApi(), id)
         val clientId = authSharedPreferences.getClientId()
         return api.putContacts(clientId, updateContactsRequest).flatMapCompletable { response->
+            val client = ClientMapper.responseToClient(response)
+            authSharedPreferences.saveClient(client)
+            clientUpdatedSubject.onNext(client)
+            Completable.complete()
+        }
+    }
+
+    override fun deleteContacts(ids: ArrayList<String>): Completable {
+        val deleteContactsRequest = DeleteContactsRequest(ids = ids)
+        val clientId = authSharedPreferences.getClientId()
+        return api.deleteContacts(clientId, deleteContactsRequest).flatMapCompletable { response->
             val client = ClientMapper.responseToClient(response)
             authSharedPreferences.saveClient(client)
             clientUpdatedSubject.onNext(client)

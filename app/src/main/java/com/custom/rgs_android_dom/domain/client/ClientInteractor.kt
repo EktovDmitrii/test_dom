@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.domain.client
 
+import android.util.Log
 import com.custom.rgs_android_dom.data.repositories.client.ClientRepository
 import com.custom.rgs_android_dom.data.repositories.countries.CountriesRepository
 import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepository
@@ -327,6 +328,13 @@ class ClientInteractor(
                         "Проверьте, правильно ли введена серия паспорта"
                     )
                 )
+            } else if (editPersonalDataViewState.docSerial.trim().length == DOC_SERIAL_LENGTH && editPersonalDataViewState.docNumber.trim().length != DOC_NUMBER_LENGTH){
+                return Completable.error(
+                    ValidateClientException(
+                        ClientField.DOC_NUMBER,
+                        "Проверьте, правильно ли введён номер паспорта"
+                    )
+                )
             }
         }
 
@@ -338,8 +346,16 @@ class ClientInteractor(
                         "Проверьте, правильно ли введён номер паспорта"
                     )
                 )
+            } else if (editPersonalDataViewState.docNumber.trim().length == DOC_NUMBER_LENGTH && editPersonalDataViewState.docSerial.trim().length != DOC_SERIAL_LENGTH){
+                return Completable.error(
+                    ValidateClientException(
+                        ClientField.DOC_SERIAL,
+                        "Проверьте, правильно ли введена серия паспорта"
+                    )
+                )
             }
         }
+
 
 
         if (editPersonalDataViewState.wasSecondPhoneEdited && editPersonalDataViewState.secondPhone.isNotEmpty() && !editPersonalDataViewState.isSecondPhoneValid){
@@ -366,12 +382,30 @@ class ClientInteractor(
             Completable.complete()
         }
 
-        var updatePhoneCompletable = if (editPersonalDataViewState.secondPhone.isNotEmpty()){
+        var updatePhoneCompletable = if (editPersonalDataViewState.wasSecondPhoneEdited && editPersonalDataViewState.secondPhone.isNotEmpty()){
             if (editPersonalDataViewState.isSecondPhoneSaved){
                 clientRepository.updateSecondPhone(editPersonalDataViewState.secondPhone, editPersonalDataViewState.secondPhoneId)
             } else {
                 clientRepository.saveSecondPhone(editPersonalDataViewState.secondPhone)
             }
+        } else {
+            Completable.complete()
+        }
+
+        val deleteIds = arrayListOf<String>()
+        if (editPersonalDataViewState.wasEmailEdited
+                && editPersonalDataViewState.email.isEmpty()
+                && editPersonalDataViewState.emailId.isNotEmpty()){
+            deleteIds.add(editPersonalDataViewState.emailId)
+        }
+        if (editPersonalDataViewState.wasSecondPhoneEdited
+            && editPersonalDataViewState.secondPhone.isEmpty()
+            && editPersonalDataViewState.secondPhoneId.isNotEmpty()){
+            deleteIds.add(editPersonalDataViewState.secondPhoneId)
+        }
+
+        val deleteCompletable = if (deleteIds.isNotEmpty()) {
+            clientRepository.deleteContacts(deleteIds)
         } else {
             Completable.complete()
         }
@@ -384,7 +418,7 @@ class ClientInteractor(
             gender = editPersonalDataViewState.gender,
             email = if (editPersonalDataViewState.email.isNotEmpty()) editPersonalDataViewState.email else null
         )
-        return Completable.concatArray(updatePassportCompletable, updatePhoneCompletable, updateClientCompletable)
+        return Completable.concatArray(updatePassportCompletable, updatePhoneCompletable, updateClientCompletable, deleteCompletable)
     }
 
     fun onEditAgentCodeChanged(agentCode: String){
@@ -464,8 +498,8 @@ class ClientInteractor(
             || !editPersonalDataViewState.isPhoneSaved && editPersonalDataViewState.phone.isNotEmpty()
             || !editPersonalDataViewState.isDocSerialSaved && editPersonalDataViewState.docSerial.isNotEmpty()
             || !editPersonalDataViewState.isDocNumberSaved && editPersonalDataViewState.docNumber.isNotEmpty()
-            || editPersonalDataViewState.secondPhone.isNotEmpty() && editPersonalDataViewState.wasSecondPhoneEdited
-            || editPersonalDataViewState.email.isNotEmpty() && editPersonalDataViewState.wasEmailEdited){
+            || editPersonalDataViewState.wasSecondPhoneEdited
+            || editPersonalDataViewState.wasEmailEdited){
             isSaveTextViewEnabled = true
         }
         validateSubject.accept(isSaveTextViewEnabled)
