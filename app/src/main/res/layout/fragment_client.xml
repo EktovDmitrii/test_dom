@@ -190,7 +190,7 @@
                             android:includeFontPadding="false"
                             android:textColor="@color/secondary900"
                             android:textSize="16sp"
-                            app:translationTextKey="О приложении" />
+                            app:translationTextKey="app.profile.about_app" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 

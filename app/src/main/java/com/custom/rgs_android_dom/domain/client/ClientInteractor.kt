@@ -1,8 +1,5 @@
 package com.custom.rgs_android_dom.domain.client
 
-import com.custom.rgs_android_dom.data.repositories.client.ClientRepository
-import com.custom.rgs_android_dom.data.repositories.countries.CountriesRepository
-import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepository
 import com.custom.rgs_android_dom.domain.client.mappers.AgentMapper
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.domain.client.exceptions.ValidateClientException
@@ -11,6 +8,9 @@ import com.custom.rgs_android_dom.domain.client.mappers.ClientShortViewStateMapp
 import com.custom.rgs_android_dom.domain.client.mappers.EditPersonalDataViewStateMapper
 import com.custom.rgs_android_dom.domain.client.mappers.PersonalDataMapper
 import com.custom.rgs_android_dom.domain.client.view_states.*
+import com.custom.rgs_android_dom.domain.repositories.ClientRepository
+import com.custom.rgs_android_dom.domain.repositories.CountriesRepository
+import com.custom.rgs_android_dom.domain.repositories.RegistrationRepository
 import com.custom.rgs_android_dom.utils.*
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Completable

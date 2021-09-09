@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.data.repositories.countries
+package com.custom.rgs_android_dom.domain.repositories
 
 import com.custom.rgs_android_dom.domain.countries.model.CountryModel
 import com.jakewharton.rxrelay2.BehaviorRelay
