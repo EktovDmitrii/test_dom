@@ -32,6 +32,17 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
         binding.root.background = transitionBackground
 
         measureAndShowFragment()
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.subscribeLogout()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.unsubscribeLogout()
     }
 
     override fun onSlideStateChanged(newState: BaseBottomSheetFragment.SlideState){

@@ -7,13 +7,16 @@ import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
 class MainViewModel(private val registrationInteractor: RegistrationInteractor) : BaseViewModel() {
 
-    init {
+    private val logoutCompositeDisposable = CompositeDisposable()
+
+    fun subscribeLogout(){
         registrationInteractor.getLogoutSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -25,9 +28,11 @@ class MainViewModel(private val registrationInteractor: RegistrationInteractor) 
                 onError = {
                     logException(this, it)
                 }
-            ).addTo(dataCompositeDisposable)
-
+            ).addTo(logoutCompositeDisposable)
     }
 
 
+    fun unsubscribeLogout(){
+        logoutCompositeDisposable.clear()
+    }
 }

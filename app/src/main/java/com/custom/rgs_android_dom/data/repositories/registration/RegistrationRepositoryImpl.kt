@@ -50,14 +50,18 @@ class RegistrationRepositoryImpl(
 
     override fun logout(): Completable {
         return api.postLogout().doFinally {
-            authSharedPreferences.clear()
-            logout.onNext(Unit)
+            if (isAuthorized()){
+                authSharedPreferences.clear()
+                logout.onNext(Unit)
+            }
         }
     }
 
     override fun clearAuth() {
-        authSharedPreferences.clear()
-        logout.onNext(Unit)
+        if (isAuthorized()){
+            authSharedPreferences.clear()
+            logout.onNext(Unit)
+        }
     }
 
     override fun getLogoutSubject(): PublishSubject<Unit> {
