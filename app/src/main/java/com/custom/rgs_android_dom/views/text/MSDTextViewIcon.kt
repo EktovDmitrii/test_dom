@@ -8,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdTextViewIconBinding
 import com.custom.rgs_android_dom.utils.GlideApp
+import com.custom.rgs_android_dom.utils.TranslationHelper
 
 class MSDTextViewIcon @JvmOverloads constructor(
     context: Context,
@@ -22,7 +23,7 @@ class MSDTextViewIcon @JvmOverloads constructor(
 
         attrs.getString(R.styleable.MSDTextViewIcon_translationTextKey)?.let { translationTextKey ->
             //TODO Add handling translation logic here
-            binding.valueTextView.text = translationTextKey
+            binding.valueTextView.text = TranslationHelper.getTranslation(translationTextKey)
         }
 
         attrs.getDrawable(R.styleable.MSDTextViewIcon_icon)?.let { icon->

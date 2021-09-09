@@ -10,6 +10,7 @@ import com.custom.rgs_android_dom.databinding.FragmentMainBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
+import com.custom.rgs_android_dom.ui.splash.SplashViewModel
 import com.custom.rgs_android_dom.utils.*
 
 class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.fragment_main), BaseBottomSheetFragment.BottomSheetEventsListener {

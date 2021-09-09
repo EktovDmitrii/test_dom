@@ -1,7 +1,7 @@
 package com.custom.rgs_android_dom.data.network.interceptors
 
 import com.custom.rgs_android_dom.data.network.error.MSDNetworkError
-import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepository
+import com.custom.rgs_android_dom.domain.repositories.RegistrationRepository
 import com.custom.rgs_android_dom.utils.logException
 import com.google.gson.Gson
 import io.reactivex.rxkotlin.subscribeBy

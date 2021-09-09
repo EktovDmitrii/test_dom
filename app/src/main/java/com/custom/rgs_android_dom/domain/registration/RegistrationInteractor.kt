@@ -1,7 +1,6 @@
 package com.custom.rgs_android_dom.domain.registration
 
-import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepository
-import com.jakewharton.rxrelay2.BehaviorRelay
+import com.custom.rgs_android_dom.domain.repositories.RegistrationRepository
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject

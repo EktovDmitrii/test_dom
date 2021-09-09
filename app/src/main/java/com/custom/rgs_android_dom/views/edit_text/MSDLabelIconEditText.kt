@@ -45,12 +45,12 @@ class MSDLabelIconEditText @JvmOverloads constructor(
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDLabelIconEditText, 0, 0)
         attrs.getString(R.styleable.MSDLabelIconEditText_translationHintKey)?.let { translationHintKey ->
             //TODO Add handling translation logic here
-            binding.valueEditText.hint = translationHintKey
+            binding.valueEditText.hint = TranslationHelper.getTranslation(translationHintKey)
         }
 
         attrs.getString(R.styleable.MSDLabelIconEditText_translationLabelKey)?.let { translationLabelKey ->
             //TODO Add handling translation logic here
-            binding.labelTextView.text = translationLabelKey
+            binding.labelTextView.text = TranslationHelper.getTranslation(translationLabelKey)
         }
 
         attrs.getString(R.styleable.MSDLabelIconEditText_mask)?.let {mask->

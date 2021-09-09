@@ -15,6 +15,7 @@ import com.custom.rgs_android_dom.utils.visible
 import android.text.InputFilter.LengthFilter
 import android.util.Log
 import com.custom.rgs_android_dom.utils.toEditable
+import com.custom.rgs_android_dom.utils.TranslationHelper
 import com.custom.rgs_android_dom.utils.visibleIf
 
 class MSDLabelEditText @JvmOverloads constructor(
@@ -32,12 +33,12 @@ class MSDLabelEditText @JvmOverloads constructor(
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDLabelEditText, 0, 0)
         attrs.getString(R.styleable.MSDLabelEditText_translationHintKey)?.let { translationHintKey ->
             //TODO Add handling translation logic here
-            binding.valueEditText.hint = translationHintKey
+            binding.valueEditText.hint = TranslationHelper.getTranslation(translationHintKey)
         }
 
         attrs.getString(R.styleable.MSDLabelEditText_translationLabelKey)?.let { translationLabelKey ->
             //TODO Add handling translation logic here
-            binding.labelTextView.text = translationLabelKey
+            binding.labelTextView.text = TranslationHelper.getTranslation(translationLabelKey)
         }
 
         attrs.getString(R.styleable.MSDLabelEditText_translationSecondaryTextKey)?.let { translationSecondaryTextKey ->

@@ -5,6 +5,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import com.custom.rgs_android_dom.R
+import com.custom.rgs_android_dom.utils.TranslationHelper
 
 class MSDTextView(context: Context, attributeSet: AttributeSet) : AppCompatTextView(context, attributeSet) {
 
@@ -12,7 +13,7 @@ class MSDTextView(context: Context, attributeSet: AttributeSet) : AppCompatTextV
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDTextView, 0, 0)
         attrs.getString(R.styleable.MSDTextView_translationTextKey)?.let { translationTextKey ->
             //TODO Add handling translation logic here
-            text = translationTextKey
+            text = TranslationHelper.getTranslation(translationTextKey)
         }
 
         val isUnderlined = attrs.getBoolean(R.styleable.MSDTextView_isUnderlined, false)

@@ -1,6 +1,6 @@
 package com.custom.rgs_android_dom.profile
 
-import com.custom.rgs_android_dom.data.repositories.client.ClientRepository
+import com.custom.rgs_android_dom.domain.repositories.ClientRepository
 import com.custom.rgs_android_dom.domain.client.models.ClientAgent
 import com.custom.rgs_android_dom.domain.client.models.ClientModel
 import com.custom.rgs_android_dom.domain.client.models.ClientOpdAgreement
@@ -9,9 +9,7 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
-import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
-import java.util.*
 
 class MockClientRepository: ClientRepository {
 

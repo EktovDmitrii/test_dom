@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.data.repositories.registration
+package com.custom.rgs_android_dom.domain.repositories
 
 import io.reactivex.Completable
 import io.reactivex.Single

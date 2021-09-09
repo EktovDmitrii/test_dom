@@ -4,6 +4,7 @@ import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.requests.GetCodeRequest
 import com.custom.rgs_android_dom.data.network.requests.LoginRequest
 import com.custom.rgs_android_dom.data.preferences.AuthSharedPreferences
+import com.custom.rgs_android_dom.domain.repositories.RegistrationRepository
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
 import io.reactivex.Completable
 import io.reactivex.Single
