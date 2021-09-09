@@ -49,6 +49,24 @@ class ClientInteractor(
 
     fun updateClient(): Completable {
 
+        if (fillClientViewState.surname?.trim()?.isEmpty() == true){
+            return Completable.error(
+                ValidateClientException(
+                    ClientField.LASTNAME,
+                    ""
+                )
+            )
+        }
+
+        if (fillClientViewState.name?.trim()?.isEmpty() == true){
+            return Completable.error(
+                ValidateClientException(
+                    ClientField.FIRSTNAME,
+                    ""
+                )
+            )
+        }
+
         var birthday: LocalDateTime? = null
         fillClientViewState.birthday?.let { birthdayString ->
 
@@ -70,7 +88,6 @@ class ClientInteractor(
 
         if (fillClientViewState.agentCode != null && fillClientViewState.agentPhone == null
             || fillClientViewState.agentCode != null && fillClientViewState.agentPhone != null && !isAgentPhoneCorrect()) {
-
             return Completable.error(
                 ValidateClientException(
                     ClientField.AGENTPHONE,
@@ -90,11 +107,11 @@ class ClientInteractor(
         }
 
         return updateClient(
-            firstName = fillClientViewState.name,
-            lastName = fillClientViewState.surname,
+            firstName = fillClientViewState.name?.trim(),
+            lastName = fillClientViewState.surname?.trim(),
             birthday = birthday,
             gender = fillClientViewState.gender,
-            agentCode = fillClientViewState.agentCode,
+            agentCode = fillClientViewState.agentCode?.trim(),
             agentPhone = fillClientViewState.agentPhone
         )
     }
@@ -241,12 +258,12 @@ class ClientInteractor(
     }
 
     fun onEditPersonalDataSecondPhoneChanged(secondPhone: String, isMaskFilled: Boolean){
-        editPersonalDataViewState = editPersonalDataViewState.copy(secondPhone = secondPhone, isSecondPhoneValid = isMaskFilled)
+        editPersonalDataViewState = editPersonalDataViewState.copy(secondPhone = secondPhone, isSecondPhoneValid = isMaskFilled, wasSecondPhoneEdited = true)
         validateEditPersonalDataState()
     }
 
     fun onEditPersonalDataEmailChanged(email: String){
-        editPersonalDataViewState = editPersonalDataViewState.copy(email = email)
+        editPersonalDataViewState = editPersonalDataViewState.copy(email = email, wasEmailEdited = true)
         validateEditPersonalDataState()
     }
 
@@ -324,7 +341,8 @@ class ClientInteractor(
             }
         }
 
-        if (!editPersonalDataViewState.isSecondPhoneSaved && editPersonalDataViewState.secondPhone.isNotEmpty() && !editPersonalDataViewState.isSecondPhoneValid){
+
+        if (editPersonalDataViewState.wasSecondPhoneEdited && editPersonalDataViewState.secondPhone.isNotEmpty() && !editPersonalDataViewState.isSecondPhoneValid){
             return Completable.error(
                 ValidateClientException(
                     ClientField.SECOND_PHONE,
@@ -333,7 +351,7 @@ class ClientInteractor(
             )
         }
 
-        if (editPersonalDataViewState.email.isNotEmpty() && !editPersonalDataViewState.email.isValidEmail()){
+        if (editPersonalDataViewState.wasEmailEdited && editPersonalDataViewState.email.isNotEmpty() && !editPersonalDataViewState.email.isValidEmail()){
             return Completable.error(
                 ValidateClientException(
                     ClientField.EMAIL,
@@ -341,17 +359,32 @@ class ClientInteractor(
                 )
             )
         }
-        return updateClient(
+
+        val updatePassportCompletable = if (!editPersonalDataViewState.isDocNumberSaved && editPersonalDataViewState.docNumber.isNotEmpty()){
+            updatePassport(editPersonalDataViewState.docSerial, editPersonalDataViewState.docNumber)
+        } else {
+            Completable.complete()
+        }
+
+        var updatePhoneCompletable = if (editPersonalDataViewState.secondPhone.isNotEmpty()){
+            if (editPersonalDataViewState.isSecondPhoneSaved){
+                clientRepository.updateSecondPhone(editPersonalDataViewState.secondPhone, editPersonalDataViewState.secondPhoneId)
+            } else {
+                clientRepository.saveSecondPhone(editPersonalDataViewState.secondPhone)
+            }
+        } else {
+            Completable.complete()
+        }
+
+        val updateClientCompletable =  updateClient(
             lastName = if (editPersonalDataViewState.lastName.isNotEmpty()) editPersonalDataViewState.lastName else null,
             firstName = if (editPersonalDataViewState.firstName.isNotEmpty()) editPersonalDataViewState.firstName else null,
             middleName = if (editPersonalDataViewState.middleName.isNotEmpty()) editPersonalDataViewState.middleName else null,
             birthday = birthday,
             gender = editPersonalDataViewState.gender,
-            docSerial = if (editPersonalDataViewState.docSerial.isNotEmpty()) editPersonalDataViewState.docSerial else null,
-            docNumber = if (editPersonalDataViewState.docNumber.isNotEmpty()) editPersonalDataViewState.docNumber else null,
-            secondPhone = if (editPersonalDataViewState.secondPhone.isNotEmpty()) editPersonalDataViewState.secondPhone else null,
             email = if (editPersonalDataViewState.email.isNotEmpty()) editPersonalDataViewState.email else null
         )
+        return Completable.concatArray(updatePassportCompletable, updatePhoneCompletable, updateClientCompletable)
     }
 
     fun onEditAgentCodeChanged(agentCode: String){
@@ -431,11 +464,10 @@ class ClientInteractor(
             || !editPersonalDataViewState.isPhoneSaved && editPersonalDataViewState.phone.isNotEmpty()
             || !editPersonalDataViewState.isDocSerialSaved && editPersonalDataViewState.docSerial.isNotEmpty()
             || !editPersonalDataViewState.isDocNumberSaved && editPersonalDataViewState.docNumber.isNotEmpty()
-            || !editPersonalDataViewState.isSecondPhoneSaved && editPersonalDataViewState.secondPhone.isNotEmpty()
-            || editPersonalDataViewState.email.isNotEmpty()){
+            || editPersonalDataViewState.secondPhone.isNotEmpty() && editPersonalDataViewState.wasSecondPhoneEdited
+            || editPersonalDataViewState.email.isNotEmpty() && editPersonalDataViewState.wasEmailEdited){
             isSaveTextViewEnabled = true
         }
-
         validateSubject.accept(isSaveTextViewEnabled)
     }
 
@@ -447,13 +479,10 @@ class ClientInteractor(
         gender: Gender? = null,
         agentCode: String? = null,
         agentPhone: String? = null,
-        docNumber: String? = null,
-        docSerial: String? = null,
         phone: String? = null,
-        secondPhone: String? = null,
         email: String? = null,
     ): Completable {
-        return clientRepository.updateClient(firstName, lastName, middleName, birthday, gender, agentCode, agentPhone, docNumber, docSerial, phone, secondPhone, email)
+        return clientRepository.updateClient(firstName, lastName, middleName, birthday, gender, agentCode, agentPhone, phone, email)
             .doOnComplete { fillClientStateSubject.accept(fillClientViewState) }
     }
 
@@ -462,4 +491,9 @@ class ClientInteractor(
         var isSaveTextViewEnabled = editAgentViewState.agentCode.isNotEmpty() || editAgentViewState.agentPhone.isNotEmpty()
         validateSubject.accept(isSaveTextViewEnabled)
     }
+
+    private fun updatePassport(serial: String, number: String): Completable {
+        return clientRepository.updatePassport(serial, number)
+    }
+
 }

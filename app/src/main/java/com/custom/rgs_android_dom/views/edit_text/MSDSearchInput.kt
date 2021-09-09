@@ -31,6 +31,7 @@ class MSDSearchInput @JvmOverloads constructor(
         setEnabled(isEnabled)
 
         binding.searchEditText.addTextChangedListener {
+            binding.clearImageView.visibleIf(it.toString().isNotEmpty())
             textWatcher(it.toString())
         }
 

@@ -57,6 +57,14 @@ class MSDGenderSelector @JvmOverloads constructor(
     override fun setEnabled(enabled: Boolean) {
         binding.maleTextView.isEnabled = enabled
         binding.femaleTextView.isEnabled = enabled
+
+        if (enabled){
+            binding.maleTextView.alpha = 1.0f
+            binding.femaleTextView.alpha = 1.0f
+        } else {
+            binding.maleTextView.alpha = 0.5f
+            binding.femaleTextView.alpha = 0.5f
+        }
     }
 
     private fun onMaleSelected(){

@@ -15,12 +15,6 @@ data class UpdateClientRequest(
     @SerializedName("birthdate")
     val birthdate: String? = null,
 
-    @SerializedName("docNumber")
-    val docNumber: String? = null,
-
-    @SerializedName("docSerial")
-    val docSerial: String? = null,
-
     @SerializedName("email")
     val email: String? = null,
 
@@ -41,9 +35,6 @@ data class UpdateClientRequest(
 
     @SerializedName("phone")
     val phone: String? = null,
-
-    @SerializedName("secondPhone")
-    val secondPhone: String? = null,
 
     @SerializedName("sex")
     val sex: String? = null
