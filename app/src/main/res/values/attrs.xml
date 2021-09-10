@@ -60,6 +60,10 @@
         <attr name="translationLabelKey"/>
     </declare-styleable>
 
+    <declare-styleable name="MSDBaseEditText">
+        <attr name="translationHintKey"/>
+    </declare-styleable>
+
     <declare-styleable name="MSDEditText">
         <attr name="translationHintKey"/>
         <attr name="android:imeOptions"/>

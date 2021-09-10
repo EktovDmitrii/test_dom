@@ -166,6 +166,45 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/chatLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/Icon.Filled.Primary500_Alpha12"
+                            app:srcCompat="@drawable/ic_promocode_20px" />
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="12dp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/secondary900"
+                            android:textSize="16sp"
+                            app:translationTextKey="Чат" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:alpha="0.16"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginStart="48dp"
+                        android:background="@color/secondary900_alpha56"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/aboutAppLinearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -203,6 +242,7 @@
                         android:background="@color/secondary900_alpha56"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
+
 
                 <!--<androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
