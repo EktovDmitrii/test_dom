@@ -8,13 +8,13 @@ object PhoneMaskHelper {
                 return ""
             }
             phone.startsWith("994") -> {
-                return "+### ###-###-###"
-            }
-            phone.startsWith("375") -> {
-                return "+### ###-###-###"
+                return "+### ## ###-##-##"
             }
             phone.startsWith("374") -> {
-                return "+### ###-###-##"
+                return "+### ####-####"
+            }
+            phone.startsWith("375") -> {
+                return "+### ## ###-##-##"
             }
             phone.startsWith("7") -> {
                 return "+# ### ###-##-##"
@@ -23,16 +23,19 @@ object PhoneMaskHelper {
                 return "+### ###-###-###"
             }
             phone.startsWith("373") -> {
-                return "+### ###-###-##"
+                return "+### ####-####"
             }
             phone.startsWith("992") -> {
-                return "+### ###-###-###"
+                return "+### ###-##-##-##"
+            }
+            phone.startsWith("993") -> {
+                return "+### ####-##-##"
             }
             phone.startsWith("998") -> {
-                return "+### ###-###-##"
+                return "+### ## ###-##-##"
             }
             phone.startsWith("380") -> {
-                return "+### ## ###-##-##"
+                return "+### ### ###-###"
             }
             else -> {
                 return "+# ### ###-##-##"
