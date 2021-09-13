@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.di
 
 import com.custom.rgs_android_dom.domain.DemoInteractor
 import com.custom.rgs_android_dom.domain.TranslationInteractor
+import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.countries.CountriesInteractor
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
@@ -18,4 +19,6 @@ val domainModule = module {
     factory { ClientInteractor(clientRepository = get(), registrationRepository = get(), countriesRepository = get()) }
 
     factory { TranslationInteractor(translationRepository = get()) }
+
+    factory { ChatInteractor(chatRepository = get()) }
 }

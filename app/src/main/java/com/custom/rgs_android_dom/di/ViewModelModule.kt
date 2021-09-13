@@ -34,5 +34,5 @@ val viewModelModule = module {
     viewModel { AgentViewModel(clientInteractor = get()) }
     viewModel { EditAgentViewModel(clientInteractor = get()) }
     viewModel { AboutAppViewModel() }
-    viewModel { ChatViewModel() }
+    viewModel { ChatViewModel(chatInteractor = get()) }
 }

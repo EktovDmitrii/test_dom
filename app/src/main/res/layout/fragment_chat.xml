@@ -31,18 +31,26 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        app:srcCompat="@drawable/chat_fade_background"
-        android:layout_marginTop="@dimen/toolbar_height"/>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/toolbar_height">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/messagesRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:paddingHorizontal="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/sendMessageBottomAppBar"
+            tools:listitem="@layout/item_chat_message_opponent"/>
+
         <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/sendMessageBottomAppBar"
             android:layout_width="match_parent"
             android:layout_height="78dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -99,5 +107,11 @@
         </com.google.android.material.bottomappbar.BottomAppBar>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        app:srcCompat="@drawable/chat_fade_background"
+        android:layout_marginTop="@dimen/toolbar_height"/>
 
 </FrameLayout>
