@@ -82,11 +82,9 @@ class MSDLabelEditText @JvmOverloads constructor(
         }
 
         binding.valueEditText.addTextChangedListener {
-            Log.d("MyLog", "On text changed " + it.toString())
             if (isFromUser){
                 textWatcher(it.toString())
             }
-
         }
     }
 

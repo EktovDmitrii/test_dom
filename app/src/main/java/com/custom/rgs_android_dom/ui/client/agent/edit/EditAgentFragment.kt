@@ -22,6 +22,7 @@ class EditAgentFragment : BaseFragment<EditAgentViewModel, FragmentEditAgentBind
         }
 
         binding.saveTextView.setOnDebouncedClickListener {
+            hideSoftwareKeyboard()
             viewModel.onSaveClick()
         }
 
@@ -48,6 +49,10 @@ class EditAgentFragment : BaseFragment<EditAgentViewModel, FragmentEditAgentBind
                     binding.agentPhoneEditText.setState(MSDMaskedLabelEditText.State.ERROR, it.errorMessage)
                 }
             }
+        }
+
+        subscribe(viewModel.networkErrorObserver){
+            toast(it)
         }
 
     }

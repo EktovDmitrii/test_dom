@@ -17,8 +17,7 @@ data class ClientModel (
 	val opdAgreement: ClientOpdAgreement?,
 	val phone: String,
 	val gender: Gender?,
-	val status: String?,
-	val email: String?
+	val status: String?
 )
 
 

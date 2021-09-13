@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.di
 
 import com.custom.rgs_android_dom.ui.about_app.AboutAppViewModel
+import com.custom.rgs_android_dom.ui.chat.ChatViewModel
 import com.custom.rgs_android_dom.ui.countries.CountriesViewModel
 import com.custom.rgs_android_dom.ui.demo.DemoViewModel
 import com.custom.rgs_android_dom.ui.main.MainViewModel
@@ -33,4 +34,5 @@ val viewModelModule = module {
     viewModel { AgentViewModel(clientInteractor = get()) }
     viewModel { EditAgentViewModel(clientInteractor = get()) }
     viewModel { AboutAppViewModel() }
+    viewModel { ChatViewModel() }
 }
