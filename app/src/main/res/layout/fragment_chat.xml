@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/secondary100">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/backImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:paddingHorizontal="20dp"
+            android:tint="@color/secondary800"
+            app:srcCompat="@drawable/ic_back_24px"/>
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/my_service_medium"
+            android:textColor="@color/secondary900"
+            android:textSize="18sp"
+            app:translationTextKey="Чат"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        app:srcCompat="@drawable/chat_fade_background"
+        android:layout_marginTop="@dimen/toolbar_height"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/toolbar_height">
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:layout_width="match_parent"
+            android:layout_height="78dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:gravity="top"
+            android:paddingTop="10dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            app:contentInsetStart="0dp"
+            android:clickable="false"
+            android:focusable="false"
+            tools:ignore="BottomAppBar" >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="6dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:background="@drawable/rectangle_filled_secondary_100_stroke_seconday_900_alpha14_1dp_radius_40dp">
+
+                <com.custom.rgs_android_dom.views.MSDImageView
+                    android:id="@+id/attachImageView"
+                    style="@style/Icon.Filled.White"
+                    app:srcCompat="@drawable/ic_attach_20px"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <com.custom.rgs_android_dom.views.edit_text.MSDBaseEditText
+                    android:id="@+id/messageEditText"
+                    style="@style/ChatEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toEndOf="@+id/attachImageView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/sendMessageImageView"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="46dp"
+                    app:translationHintKey="Введите сообщение"/>
+
+                <com.custom.rgs_android_dom.views.MSDImageView
+                    android:id="@+id/sendMessageImageView"
+                    style="@style/Icon.Filled.Primary"
+                    app:srcCompat="@drawable/ic_send_20px"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.bottomappbar.BottomAppBar>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

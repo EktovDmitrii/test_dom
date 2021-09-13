@@ -29,6 +29,10 @@ object EditPersonalDataViewStateMapper {
             secondPhone = secondPhone.formatPhoneByMask(secondPhoneMask, "#")
         }
 
+        val emailId = client.contacts?.find {
+            it.type == ClientMapper.CONTACT_TYPE_EMAIL
+        }?.id ?: ""
+
         return EditPersonalDataViewState(
             lastName = client.lastName,
             isLastNameSaved = client.lastName.isNotEmpty(),
@@ -50,6 +54,7 @@ object EditPersonalDataViewStateMapper {
             secondPhoneId = secondPhoneId,
             isSecondPhoneSaved = secondPhone.isNotEmpty(),
             email = client.contacts?.find { it.type == "email" }?.contact ?: "",
+            emailId = emailId
         )
     }
 

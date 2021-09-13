@@ -15,6 +15,9 @@ open class BaseViewModel : ViewModel(), KoinComponent {
     protected val closeController = MutableLiveData<Unit>()
     val closeObserver: LiveData<Unit> = closeController
 
+    protected val networkErrorController = MutableLiveData<String>()
+    val networkErrorObserver: LiveData<String> = networkErrorController
+
     override fun onCleared() {
         dataCompositeDisposable.clear()
         super.onCleared()

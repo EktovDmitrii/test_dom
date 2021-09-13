@@ -64,4 +64,8 @@ interface MSDApi {
     @PUT("clients/{clientId}/contacts")
     @ErrorType(MSDNetworkError::class)
     fun putContacts(@Path("clientId") clientId: String, @Body body: UpdateContactsRequest): Single<ClientResponse>
+
+    @HTTP(method = "DELETE", path = "clients/{clientId}/contacts", hasBody = true)
+    @ErrorType(MSDNetworkError::class)
+    fun deleteContacts(@Path("clientId") clientId: String, @Body body: DeleteContactsRequest): Single<ClientResponse>
 }

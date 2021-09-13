@@ -11,7 +11,6 @@ object AgentMapper {
     fun from(client: ClientModel): AgentViewState {
         val phoneMask = PhoneMaskHelper.getMaskForPhone(client.agent?.phone ?: "")
         val phone = client.agent?.phone?.formatPhoneByMask(phoneMask, "#") ?: ""
-        Log.d("MyLog", "FROM CLIENT " + client.agent?.phone + " CODE " + client.agent?.code)
         return AgentViewState(
             isEditAgentButtonVisible = phone.isEmpty(),
             agentPhone = phone,

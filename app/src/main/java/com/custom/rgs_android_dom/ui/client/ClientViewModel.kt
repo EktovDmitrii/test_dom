@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.domain.client.view_states.ClientShortViewState
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.about_app.AboutAppFragment
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.client.agent.AgentFragment
 import com.custom.rgs_android_dom.ui.client.personal_data.PersonalDataFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -81,7 +82,11 @@ class ClientViewModel(
     fun onAboutAppClick() {
         closeController.value = Unit
         ScreenManager.showScreen(AboutAppFragment())
+    }
 
+    fun onChatClick(){
+        closeController.value = Unit
+        ScreenManager.showScreen(ChatFragment())
     }
 
 }

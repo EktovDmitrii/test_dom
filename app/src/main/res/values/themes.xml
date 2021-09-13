@@ -167,6 +167,11 @@
         <item name="android:background">@drawable/oval_filled_primary_500_alpha12</item>
     </style>
 
+    <style name="Icon.Filled.White" parent="Icon.Filled">
+        <item name="android:tint">@color/secondary500</item>
+        <item name="android:background">@drawable/oval_filled_white</item>
+    </style>
+
     <style name="Button.Text.Icon.Secondary" parent="Button.Text.Icon">
         <item name="android:background">@drawable/button_text_icon_secondary_background</item>
     </style>
@@ -180,8 +185,6 @@
         <item name="android:textSize">36sp</item>
         <item name="android:textColor">@color/secondary900</item>
         <item name="android:imeOptions">actionDone</item>
-        <item name="android:paddingStart">25dp</item>
-        <item name="android:paddingEnd">25dp</item>
         <item name="android:paddingTop">12dp</item>
         <item name="android:paddingBottom">12dp</item>
         <item name="android:background">@drawable/code_input_selector</item>
@@ -211,6 +214,16 @@
         <item name="android:inputType">text</item>
         <item name="android:imeOptions">actionDone</item>
         <item name="android:includeFontPadding">false</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="ChatEditText">
+        <item name="android:textCursorDrawable">@drawable/cursor_primary_500</item>
+        <item name="android:fontFamily">@font/suisse_regular</item>
+        <item name="android:textColorHint">@color/secondary450</item>
+        <item name="android:textColor">@color/secondary900</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:background">@null</item>
         <item name="android:gravity">center_vertical</item>
     </style>
 

@@ -122,6 +122,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:digits="@string/acceptable_agent_code_chars"
+                    app:translationHintKey="999999"
                     app:translationLabelKey="Введите код агента" />
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
