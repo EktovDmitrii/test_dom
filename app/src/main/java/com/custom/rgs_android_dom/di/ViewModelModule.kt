@@ -22,7 +22,7 @@ import org.koin.dsl.module
 val viewModelModule = module {
     viewModel { parameters -> RegistrationCodeViewModel(phone = parameters[0], token = parameters[1], registrationInteractor = get()) }
     viewModel { RegistrationPhoneViewModel(countriesInteractor = get(), registrationInteractor = get()) }
-    viewModel { SplashViewModel(registrationInteractor = get()) }
+    viewModel { SplashViewModel(registrationInteractor = get(), translationInteractor = get()) }
     viewModel { DemoViewModel() }
     viewModel { parameters-> RegistrationAgreementViewModel(phone = parameters.get(), registrationInteractor = get()) }
     viewModel { parameters-> RegistrationFillClientViewModel(phone = parameters.get(), clientInteractor= get()) }

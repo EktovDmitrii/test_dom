@@ -1,14 +1,14 @@
 package com.custom.rgs_android_dom.data.repositories.countries
 
 import com.custom.rgs_android_dom.R
-import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.CountriesMapper
 import com.custom.rgs_android_dom.data.network.responses.CountryResponse
 import com.custom.rgs_android_dom.domain.countries.model.CountryModel
+import com.custom.rgs_android_dom.domain.repositories.CountriesRepository
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Single
 
-class MockCountriesRepositoryImpl() : CountriesRepository {
+class CountriesRepositoryMock() : CountriesRepository {
 
     private val selectedCountry = BehaviorRelay.create<CountryModel>()
 

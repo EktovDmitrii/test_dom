@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.data.repositories.client
+package com.custom.rgs_android_dom.domain.repositories
 
 import com.custom.rgs_android_dom.domain.client.models.ClientModel
 import com.custom.rgs_android_dom.domain.client.models.Gender

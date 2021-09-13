@@ -2,11 +2,8 @@ package com.custom.rgs_android_dom.data.network
 
 import com.custom.rgs_android_dom.data.network.data_adapters.NetworkException
 import com.custom.rgs_android_dom.data.network.error.MSDNetworkError
+import com.custom.rgs_android_dom.data.network.responses.*
 import com.custom.rgs_android_dom.data.network.requests.*
-import com.custom.rgs_android_dom.data.network.responses.AuthResponse
-import com.custom.rgs_android_dom.data.network.responses.ClientResponse
-import com.custom.rgs_android_dom.data.network.responses.GetCodeResponse
-import com.custom.rgs_android_dom.data.network.responses.TokenResponse
 import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.http.*
@@ -48,6 +45,9 @@ interface MSDApi {
     @PUT("clients/{clientId}")
     @ErrorType(MSDNetworkError::class)
     fun putClient(@Path("clientId") clientId: String, @Body body: UpdateClientRequest): Single<ClientResponse>
+
+    @GET("catalog/translations")
+    fun getTranslations(@Query("platform") platform: String,@Query("lang") lang: String, @Query("project") project: String): Single<TranslationListResponse>
 
     @POST("clients/{clientId}/agents")
     @ErrorType(MSDNetworkError::class)
