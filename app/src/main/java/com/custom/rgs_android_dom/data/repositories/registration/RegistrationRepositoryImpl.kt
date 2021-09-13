@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.data.repositories.registration
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.requests.GetCodeRequest
 import com.custom.rgs_android_dom.data.network.requests.LoginRequest
+import com.custom.rgs_android_dom.data.network.responses.TokenResponse
 import com.custom.rgs_android_dom.data.preferences.AuthSharedPreferences
 import com.custom.rgs_android_dom.domain.repositories.RegistrationRepository
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
@@ -98,6 +99,10 @@ class RegistrationRepositoryImpl(
 
     override fun isAuthorized(): Boolean {
         return authSharedPreferences.isAuthrorized()
+    }
+
+    override fun setMockToken() {
+        authSharedPreferences.saveToken(TokenResponse("0", "jaskdjkasjdklajkdlj", DateTime.now().plusDays(2), "jaskldjalkdla",DateTime.now().plusDays(2)))
     }
 
 }

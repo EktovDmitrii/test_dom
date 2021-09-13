@@ -16,6 +16,10 @@ class MainViewModel(private val registrationInteractor: RegistrationInteractor) 
 
     private val logoutCompositeDisposable = CompositeDisposable()
 
+    init {
+        //registrationInteractor.saveMockToken()
+    }
+
     fun subscribeLogout(){
         registrationInteractor.getLogoutSubject()
             .subscribeOn(Schedulers.io())

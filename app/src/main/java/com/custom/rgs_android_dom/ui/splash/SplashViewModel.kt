@@ -45,7 +45,7 @@ class SplashViewModel(private val registrationInteractor: RegistrationInteractor
     }
 
     private fun startNextCreen(){
-        loadingStateController.value = LoadingState.CONTENT
+        closeController.value = Unit
         if (registrationInteractor.isAuthorized()){
             ScreenManager.showScreen(MainFragment())
         } else {
