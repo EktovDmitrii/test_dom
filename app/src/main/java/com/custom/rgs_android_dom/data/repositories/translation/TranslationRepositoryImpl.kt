@@ -32,7 +32,14 @@ class TranslationRepositoryImpl(database: AppDatabase, private val api: MSDApi) 
 
     override fun getTranslations(): Single<HashMap<String, String>> {
         return translationDao.getTranslationsMaybe()
-            .switchIfEmpty (getTranslationsFromNetwork().map { it.map { TranslationDBModel.fromResponse(it) }})
+            .flatMap {
+                if(it.isEmpty()){
+                    getTranslationsFromNetwork()
+                        .map { it.map { TranslationDBModel.fromResponse(it) }}
+                } else {
+                    Single.just(it)
+                }
+            }
             .map {
                 val hashMap = HashMap<String, String>()
                 it.forEach { hashMap[it.key] = it.value }

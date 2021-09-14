@@ -12,7 +12,7 @@ import io.reactivex.Single
 @Dao
 interface TranslationDao {
     @Query("SELECT * FROM ${TranslationDBModel.TABLE_NAME}")
-    fun getTranslationsMaybe(): Maybe<List<TranslationDBModel>>
+    fun getTranslationsMaybe(): Single<List<TranslationDBModel>>
 
     @Query("SELECT * FROM ${TranslationDBModel.TABLE_NAME} WHERE `key` = :key")
     fun getTranslationByKey(key: String): Single<TranslationDBModel>
