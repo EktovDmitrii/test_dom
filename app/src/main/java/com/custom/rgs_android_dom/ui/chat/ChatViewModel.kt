@@ -25,10 +25,11 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
             .subscribeBy(
                 onSuccess = {
+                    loadingStateController.value = LoadingState.CONTENT
                     chatMessagesController.value = it
                 },
                 onError = {
-
+                    loadingStateController.value = LoadingState.ERROR
                 }
             ).addTo(dataCompositeDisposable)
 

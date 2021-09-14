@@ -42,4 +42,22 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
         setStatusBarColor(R.color.secondary100)
     }
 
+    override fun onLoading() {
+        super.onLoading()
+        binding.loadingProgressBar.visible()
+        binding.sendMessageBottomAppBar.gone()
+    }
+
+    override fun onContent() {
+        super.onContent()
+        binding.loadingProgressBar.gone()
+        binding.sendMessageBottomAppBar.visible()
+    }
+
+    override fun onError() {
+        super.onError()
+        binding.loadingProgressBar.gone()
+        binding.sendMessageBottomAppBar.visible()
+    }
+
 }
