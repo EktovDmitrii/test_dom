@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.domain.client.mappers
 
-import android.util.Log
 import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
 import com.custom.rgs_android_dom.domain.client.models.ClientModel
 import com.custom.rgs_android_dom.domain.client.view_states.EditPersonalDataViewState
@@ -54,7 +53,9 @@ object EditPersonalDataViewStateMapper {
             secondPhoneId = secondPhoneId,
             isSecondPhoneSaved = secondPhone.isNotEmpty(),
             email = client.contacts?.find { it.type == "email" }?.contact ?: "",
-            emailId = emailId
+            emailId = emailId,
+            agentCode = client.agent?.code,
+            agentPhone = client.agent?.phone
         )
     }
 
