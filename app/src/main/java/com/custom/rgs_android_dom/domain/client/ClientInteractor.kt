@@ -415,7 +415,9 @@ class ClientInteractor(
             middleName = if (editPersonalDataViewState.middleName.isNotEmpty()) editPersonalDataViewState.middleName else null,
             birthday = birthday,
             gender = editPersonalDataViewState.gender,
-            email = if (editPersonalDataViewState.email.isNotEmpty()) editPersonalDataViewState.email else null
+            email = if (editPersonalDataViewState.email.isNotEmpty()) editPersonalDataViewState.email else null,
+            agentCode = editPersonalDataViewState.agentCode,
+            agentPhone = editPersonalDataViewState.agentPhone
         )
         return Completable.concatArray(updatePassportCompletable, updatePhoneCompletable, updateClientCompletable, deleteCompletable)
     }
