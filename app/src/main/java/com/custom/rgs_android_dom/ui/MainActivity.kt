@@ -18,6 +18,7 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import org.koin.android.ext.android.inject
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadTranslation(){
         translationInteractor.loadTranslation()
-            .retry(1000)
+            .retryWhen{throwables -> throwables.delay(5, TimeUnit.SECONDS)}
             .andThen(translationInteractor.getTranslation())
             .flatMapCompletable {
                 TranslationHelper.setTranslations(it)
