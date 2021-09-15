@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.domain.client.models
 
+import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
 import org.joda.time.DateTime
 
 data class ClientModel (
@@ -18,7 +19,13 @@ data class ClientModel (
 	val phone: String,
 	val gender: Gender?,
 	val status: String?
-)
+) {
+
+	fun getChatChannelId(): String {
+		return contacts?.find { it.type == ClientMapper.CONTACT_TYPE_CHAT}?.contact ?: ""
+	}
+
+}
 
 
 
