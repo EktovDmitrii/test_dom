@@ -30,11 +30,16 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
 
         subscribe(viewModel.chatMessageObserver){
             chatAdapter.setItems(it)
+            binding.messagesRecyclerView.scrollToPosition(chatAdapter.itemCount-1)
         }
 
         subscribe(viewModel.newMessageObserver){
             chatAdapter.addMessage(it)
             binding.messagesRecyclerView.scrollToPosition(chatAdapter.itemCount-1)
+        }
+
+        subscribe(viewModel.networkErrorObserver){
+            toast(it)
         }
     }
 

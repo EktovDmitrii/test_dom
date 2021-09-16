@@ -10,6 +10,7 @@ object ClientMapper {
     const val DOCTYPE_NATIONAL_PASSPORT = "npp"
     const val CONTACT_TYPE_PHONE = "phone"
     const val CONTACT_TYPE_EMAIL = "email"
+    const val CONTACT_TYPE_CHAT = "chat"
 
     fun responseToClient(response: ClientResponse): ClientModel {
 

@@ -15,5 +15,5 @@ val dataModule = module {
     single <ClientRepository> {ClientRepositoryImpl(api = get(), authSharedPreferences = get())}
     single <CountriesRepository> { CountriesRepositoryMock() }
     single <TranslationRepository> { TranslationRepositoryImpl(database = get(), api = get()) }
-    single <ChatRepository> { ChatRepositoryImpl() }
+    single <ChatRepository> { ChatRepositoryImpl(api = get(), authSharedPreferences = get()) }
 }

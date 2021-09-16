@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.ui.chat
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.custom.rgs_android_dom.data.network.toNetworkException
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.chat.models.ChatMessageModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
@@ -12,8 +13,8 @@ import io.reactivex.schedulers.Schedulers
 
 class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel() {
 
-    private val chatMessagesController = MutableLiveData<ArrayList<ChatMessageModel>>()
-    val chatMessageObserver: LiveData<ArrayList<ChatMessageModel>> = chatMessagesController
+    private val chatMessagesController = MutableLiveData<List<ChatMessageModel>>()
+    val chatMessageObserver: LiveData<List<ChatMessageModel>> = chatMessagesController
 
     private val newMessageController = MutableLiveData<ChatMessageModel>()
     val newMessageObserver: LiveData<ChatMessageModel> = newMessageController
@@ -29,6 +30,7 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
                     chatMessagesController.value = it
                 },
                 onError = {
+                    networkErrorController.value = it.toNetworkException()?.message ?: "Ошибка получения истории чата"
                     loadingStateController.value = LoadingState.ERROR
                 }
             ).addTo(dataCompositeDisposable)
@@ -42,7 +44,7 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
                     newMessageController.value = it
                 },
                 onError = {
-
+                    networkErrorController.value = it.toNetworkException()?.message ?: "Ошибка отправки сообщения"
                 }
             ).addTo(dataCompositeDisposable)
     }
@@ -53,6 +55,16 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
 
     fun onSendMessageClick(newMessage: String){
         chatInteractor.sendMessage(newMessage)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onComplete = {
+
+                },
+                onError = {
+
+                }
+            ).addTo(dataCompositeDisposable)
     }
 
 }
