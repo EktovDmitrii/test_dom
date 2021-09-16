@@ -114,7 +114,7 @@ class AuthSharedPreferences(val context: Context, val gson: Gson) {
         }
     }
 
-    fun isAuthrorized(): Boolean {
+    fun isAuthorized(): Boolean {
         return preferences.contains(PREF_KEY_CLIENT_ID)
     }
 

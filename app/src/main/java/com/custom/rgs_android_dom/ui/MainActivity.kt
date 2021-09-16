@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.domain.TranslationInteractor
+import com.custom.rgs_android_dom.domain.web_socket.WebSocketInteractor
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.splash.SplashFragment
@@ -23,6 +24,7 @@ import java.util.concurrent.TimeUnit
 class MainActivity : AppCompatActivity() {
 
     private val translationInteractor: TranslationInteractor by inject()
+    private val webSocketInteractor: WebSocketInteractor by inject()
 
     companion object{
         private const val LOG = "MAIN"
@@ -38,6 +40,8 @@ class MainActivity : AppCompatActivity() {
         startSplash()
         CacheHelper.init()
         loadTranslation()
+
+        webSocketInteractor.connect()
     }
 
     private fun loadTranslation(){

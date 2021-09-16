@@ -11,7 +11,6 @@ import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 import org.joda.time.DateTime
-import java.util.*
 
 class RegistrationRepositoryImpl(
     private val api: MSDApi,
@@ -98,7 +97,7 @@ class RegistrationRepositoryImpl(
     }
 
     override fun isAuthorized(): Boolean {
-        return authSharedPreferences.isAuthrorized()
+        return authSharedPreferences.isAuthorized()
     }
 
     override fun setMockToken() {
