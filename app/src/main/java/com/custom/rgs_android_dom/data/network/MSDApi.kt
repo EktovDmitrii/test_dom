@@ -68,4 +68,10 @@ interface MSDApi {
     @HTTP(method = "DELETE", path = "clients/{clientId}/contacts", hasBody = true)
     @ErrorType(MSDNetworkError::class)
     fun deleteContacts(@Path("clientId") clientId: String, @Body body: DeleteContactsRequest): Single<ClientResponse>
+
+    @POST("chat/users/{userId}/channels/{channelId}/posts")
+    fun postMessage(@Path("userId") userId: String, @Path("channelId") channelId: String, @Body message: SendMessageRequest): Completable
+
+    @GET("chat/channels/{channelId}/posts")
+    fun getChatMessages(@Path("channelId") channelId: String, @Query("limit") limit: Long, @Query("offset") offset: Long): Single<List<ChatMessageResponse>>
 }

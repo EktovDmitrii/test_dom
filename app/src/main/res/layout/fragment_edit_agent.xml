@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             app:translationHintKey="999999"
             android:digits="@string/acceptable_agent_code_chars"
-            app:translationLabelKey="Код ЛНР" />
+            app:translationLabelKey="Код агента" />
 
         <com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
             android:id="@+id/agentPhoneEditText"

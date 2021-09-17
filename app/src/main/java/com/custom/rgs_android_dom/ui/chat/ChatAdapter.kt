@@ -53,8 +53,9 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return chatMessages.size
     }
 
-    fun setItems(messages: ArrayList<ChatMessageModel>){
-        this.chatMessages = messages
+    fun setItems(messages: List<ChatMessageModel>){
+        this.chatMessages.clear()
+        this.chatMessages.addAll(messages)
         notifyDataSetChanged()
     }
 

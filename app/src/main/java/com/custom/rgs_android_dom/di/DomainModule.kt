@@ -21,7 +21,7 @@ val domainModule = module {
 
     factory { TranslationInteractor(translationRepository = get()) }
 
-    factory { ChatInteractor(chatRepository = get()) }
+    factory { ChatInteractor(chatRepository = get(), webSocketRepository = get()) }
 
     factory { WebSocketInteractor(webSocketRepository = get(), authSharedPreferences = get()) }
 }

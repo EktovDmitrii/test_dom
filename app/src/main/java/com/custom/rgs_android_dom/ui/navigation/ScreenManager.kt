@@ -40,7 +40,7 @@ object ScreenManager {
         //transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         transaction.add(container, fragment, menuTag.name)
         transaction.addToBackStack(menuTag.name)
-        transaction.commit()
+        transaction.commitAllowingStateLoss()
         addFragmentInMap(fragment)
     }
 

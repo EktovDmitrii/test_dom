@@ -65,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                app:translationLabelKey="Код ЛНР" />
+                app:translationLabelKey="Код агента" />
 
             <com.custom.rgs_android_dom.views.text.MSDLabelTextView
                 android:id="@+id/agentPhoneTextView"
@@ -104,7 +104,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:fontFamily="@font/suisse_regular"
-                    android:includeFontPadding="false"
                     android:lineSpacingExtra="24dp"
                     android:lineSpacingMultiplier="0"
                     android:textColor="@color/secondary500"

@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.data.network.requests.LoginRequest
 import com.custom.rgs_android_dom.data.network.responses.TokenResponse
 import com.custom.rgs_android_dom.data.preferences.AuthSharedPreferences
 import com.custom.rgs_android_dom.domain.repositories.RegistrationRepository
+import com.custom.rgs_android_dom.domain.repositories.WebSocketRepository
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -14,7 +15,8 @@ import org.joda.time.DateTime
 
 class RegistrationRepositoryImpl(
     private val api: MSDApi,
-    private val authSharedPreferences: AuthSharedPreferences
+    private val authSharedPreferences: AuthSharedPreferences,
+    private val webSocketRepository: WebSocketRepository
 ) : RegistrationRepository {
 
     companion object {
@@ -41,6 +43,7 @@ class RegistrationRepositoryImpl(
         )
             .map { authResponse ->
                 authSharedPreferences.saveAuth(authResponse)
+                webSocketRepository.connect()
                 return@map authResponse.isNewUser
             }
     }
@@ -52,6 +55,7 @@ class RegistrationRepositoryImpl(
     override fun logout(): Completable {
         return api.postLogout().doFinally {
             if (isAuthorized()){
+                webSocketRepository.disconnect()
                 authSharedPreferences.clear()
                 logout.onNext(Unit)
             }
