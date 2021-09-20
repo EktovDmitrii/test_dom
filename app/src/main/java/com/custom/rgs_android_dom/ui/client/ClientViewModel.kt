@@ -11,6 +11,7 @@ import com.custom.rgs_android_dom.ui.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.client.agent.AgentFragment
 import com.custom.rgs_android_dom.ui.client.personal_data.PersonalDataFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.property.add.select_type.SelectPropertyTypeFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -87,6 +88,11 @@ class ClientViewModel(
     fun onChatClick(){
         closeController.value = Unit
         ScreenManager.showScreen(ChatFragment())
+    }
+
+    fun onAddPropertyClick(){
+        closeController.value = Unit
+        ScreenManager.showScreen(SelectPropertyTypeFragment())
     }
 
 }

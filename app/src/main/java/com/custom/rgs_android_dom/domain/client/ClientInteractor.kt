@@ -443,7 +443,7 @@ class ClientInteractor(
             return Completable.error(
                 ValidateClientException(
                     ClientField.AGENTCODE,
-                    "ЛНР и телефон агента работают в связке, заполните оба поля"
+                    "Код агента и телефон агента работают в связке, заполните оба поля"
                 )
             )
         }
@@ -452,7 +452,7 @@ class ClientInteractor(
             return Completable.error(
                 ValidateClientException(
                     ClientField.AGENTPHONE,
-                    "ЛНР и телефон агента работают в связке, заполните оба поля"
+                    "Код агента и телефон агента работают в связке, заполните оба поля"
                 )
             )
         }
