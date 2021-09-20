@@ -22,7 +22,7 @@ object ChatMapper{
                         size = fileResponse.size,
                         width = fileResponse.width
                     )
-                } ?: listOf(),
+                },
                 id = messageResponse.id,
                 message = messageResponse.message,
                 userId = messageResponse.userId,

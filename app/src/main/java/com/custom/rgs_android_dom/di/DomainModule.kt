@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.countries.CountriesInteractor
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
+import com.custom.rgs_android_dom.domain.web_socket.WebSocketInteractor
 import org.koin.dsl.module
 
 val domainModule = module {
@@ -20,5 +21,7 @@ val domainModule = module {
 
     factory { TranslationInteractor(translationRepository = get()) }
 
-    factory { ChatInteractor(chatRepository = get()) }
+    factory { ChatInteractor(chatRepository = get(), webSocketRepository = get()) }
+
+    factory { WebSocketInteractor(webSocketRepository = get(), authSharedPreferences = get()) }
 }

@@ -28,8 +28,8 @@
         android:background="@drawable/home_background"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        app:translationTextKey="ДОМ"
-        android:textColor="@color/secondary100" />
+        android:textColor="@color/secondary100"
+        app:translationTextKey="ДОМ" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/rgs_splash_label"

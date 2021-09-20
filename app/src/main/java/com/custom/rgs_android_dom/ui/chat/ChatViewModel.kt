@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.data.network.toNetworkException
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.chat.models.ChatMessageModel
+import com.custom.rgs_android_dom.domain.web_socket.models.WsMessageModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -35,16 +37,20 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
                 }
             ).addTo(dataCompositeDisposable)
 
-        chatInteractor.newMessageSubject
+        chatInteractor.getWsNewMessageSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
             .subscribeBy(
                 onNext = {
-                    newMessageController.value = it
+                    if (it is WsMessageModel){
+                        it.data?.let { newMessage->
+                            newMessageController.value = newMessage
+                        }
+                    }
                 },
                 onError = {
-                    networkErrorController.value = it.toNetworkException()?.message ?: "Ошибка отправки сообщения"
+                    logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
     }
@@ -58,11 +64,8 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
-                onComplete = {
-
-                },
                 onError = {
-
+                    networkErrorController.value = it.toNetworkException()?.message ?: "Ошибка отправки сообщения"
                 }
             ).addTo(dataCompositeDisposable)
     }
