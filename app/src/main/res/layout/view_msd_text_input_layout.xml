@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/containerTextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        app:hintTextColor="@color/secondary500"
+        android:textColorHint="@color/secondary500"
+        app:boxStrokeColor="@color/primary500"
+        app:boxStrokeErrorColor="@color/error500"
+        app:boxStrokeWidth="1dp"
+        app:boxStrokeWidthFocused="1dp"
+        tools:hint="Адрес">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/valueEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:includeFontPadding="false"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:fontFamily="@font/suisse_regular"
+            android:textColor="@color/secondary900"
+            android:textCursorDrawable="@drawable/cursor_primary_500"
+            android:textSize="16sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</FrameLayout>

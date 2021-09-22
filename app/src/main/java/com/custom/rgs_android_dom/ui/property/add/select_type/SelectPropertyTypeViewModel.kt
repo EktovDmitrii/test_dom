@@ -2,21 +2,31 @@ package com.custom.rgs_android_dom.ui.property.add.select_type
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.domain.property.select_type.SelectPropertyTypeInteractor
 import com.custom.rgs_android_dom.domain.property.select_type.view_states.SelectPropertyTypeViewState
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
+import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.property.add.details.PropertyDetailsFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
-class SelectPropertyTypeViewModel(
-    private val selectPropertyTypeInteractor: SelectPropertyTypeInteractor
-) : BaseViewModel() {
+class SelectPropertyTypeViewModel(private val propertyCount: Int,
+                                  private val selectPropertyTypeInteractor: SelectPropertyTypeInteractor) : BaseViewModel() {
+
+    companion object {
+        private const val PROPERTY_HOME = "Дом"
+        private const val PROPERTY_APPARTMENT = "Квартира"
+    }
 
     private val selectPropertyTypeViewStateController = MutableLiveData<SelectPropertyTypeViewState>()
     val selectPropertyTypeViewStateObserver: LiveData<SelectPropertyTypeViewState> = selectPropertyTypeViewStateController
+
+    private var propertyType = PropertyType.UNDEFINED
 
     init {
         selectPropertyTypeInteractor.selectPropertyTypeViewStateSubject
@@ -34,17 +44,20 @@ class SelectPropertyTypeViewModel(
 
     fun onBackClick() {
         closeController.value = Unit
+        ScreenManager.closeScope(ADD_PROPERTY)
     }
 
     fun onNextClick() {
-
+        ScreenManager.showScreenScope(PropertyDetailsFragment.newInstance(propertyCount, propertyType), ADD_PROPERTY)
     }
 
     fun onSelectHomeClick(){
+        propertyType = PropertyType.HOUSE
         selectPropertyTypeInteractor.onSelectHomeClick()
     }
 
     fun onSelectAppartmentClick(){
+        propertyType = PropertyType.APARTMENT
         selectPropertyTypeInteractor.onSelectAppartmentClick()
     }
 

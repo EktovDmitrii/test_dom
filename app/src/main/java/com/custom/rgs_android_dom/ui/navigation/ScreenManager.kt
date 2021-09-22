@@ -73,9 +73,10 @@ object ScreenManager {
             scope.reversed().forEach {
                 transaction.remove(it.fragment)
             }
-            transaction.commit()
+            transaction.commitNow()
             scopes.removeIf { it.id == scopeId }
         }
+        notifyCurrentVisibleFragment()
     }
 
     //todo не проверен
@@ -170,8 +171,11 @@ object ScreenManager {
     }
 
     private fun notifyCurrentVisibleFragment(){
+        Log.d("MyLog", "Notify current visible fragment")
         if (activity?.supportFragmentManager?.fragments?.isNotEmpty() == true){
+            Log.d("MyLog", "IS NOT EMPTY")
             activity?.supportFragmentManager?.fragments?.last()?.let {
+                Log.d("MyLog", "Class name " + it::class.java.canonicalName)
                 (it as BaseFragment<*,*>).onVisibleToUser()
             }
         }
