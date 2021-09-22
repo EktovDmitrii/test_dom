@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+
+    <RelativeLayout
+        android:id="@+id/toolbarRelativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@color/white">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/backImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:paddingHorizontal="14dp"
+            android:tint="@color/secondary800"
+            app:srcCompat="@drawable/ic_back_24px"/>
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/subtitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/titleTextView"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/suisse_regular"
+            android:gravity="center"
+            android:textColor="@color/secondary900_alpha64"
+            android:textSize="12sp"
+            app:translationTextKey="Шаг 1 из 2" />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:fontFamily="@font/my_service_bold"
+            android:textColor="@color/secondary900"
+            android:textSize="16sp"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            app:translationTextKey="Выберите тип объекта"/>
+
+    </RelativeLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/actionsBottomAppBar"
+        android:layout_below="@+id/toolbarRelativeLayout"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/selectHomeLinearLayout"
+            android:layout_width="161dp"
+            android:layout_height="204dp"
+            android:background="@drawable/select_property_card_background"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="153dp"
+                android:layout_height="153dp"
+                app:srcCompat="@drawable/ic_select_home" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/titleTextView"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/suisse_book"
+                android:textColor="@color/secondary900"
+                android:textSize="16sp"
+                app:translationTextKey="Частный дом" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/selectAppartmentLinearLayout"
+            android:layout_width="161dp"
+            android:layout_height="204dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/select_property_card_background"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="153dp"
+                android:layout_height="153dp"
+                app:srcCompat="@drawable/ic_select_appartment" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/titleTextView"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/suisse_book"
+                android:textColor="@color/secondary900"
+                android:textSize="16sp"
+                app:translationTextKey="Квартира" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/actionsBottomAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="82dp"
+        android:layout_alignParentBottom="true"
+        android:paddingTop="12dp"
+        android:paddingBottom="22dp"
+        app:contentInsetStart="0dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingHorizontal="20dp"
+        tools:ignore="BottomAppBar">
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/nextTextView"
+            android:layout_width="match_parent"
+            app:translationTextKey="Далее"
+            style="@style/Button.Filled.Primary"
+            android:enabled="false"/>
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
+</RelativeLayout>

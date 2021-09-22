@@ -57,6 +57,10 @@ class ClientFragment(
             viewModel.onChatClick()
         }
 
+        binding.addPropertyFrameLayout.setOnDebouncedClickListener {
+            viewModel.onAddPropertyClick()
+        }
+
         subscribe(viewModel.clientShortViewStateObserver){state->
             binding.phoneTextView.text = state.phone
 
