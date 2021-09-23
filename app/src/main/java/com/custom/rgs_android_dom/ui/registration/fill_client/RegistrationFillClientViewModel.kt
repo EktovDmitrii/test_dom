@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.ui.registration.fill_client
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
+import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
 import com.custom.rgs_android_dom.domain.client.models.Gender
 import com.custom.rgs_android_dom.domain.client.view_states.FillClientViewState
 import com.custom.rgs_android_dom.domain.client.exceptions.ValidateClientException
@@ -24,8 +25,8 @@ class RegistrationFillClientViewModel(
     private val isSaveTextViewEnabledController = MutableLiveData<Boolean>()
     val isSaveTextViewEnabledObserver: LiveData<Boolean> = isSaveTextViewEnabledController
 
-    private val validateExceptionController = MutableLiveData<ValidateClientException>()
-    val validateExceptionObserver: LiveData<ValidateClientException> = validateExceptionController
+    private val validateExceptionController = MutableLiveData<SpecificValidateClientExceptions>()
+    val validateExceptionObserver: LiveData<SpecificValidateClientExceptions> = validateExceptionController
 
     fun init(){
         clientInteractor.fillClientStateSubject.hide()
@@ -77,7 +78,7 @@ class RegistrationFillClientViewModel(
                 onError = {
                     logException(this, it)
                     when(it){
-                        is ValidateClientException -> {
+                        is SpecificValidateClientExceptions -> {
                             validateExceptionController.value = it
                             loadingStateController.value = LoadingState.CONTENT
                         }

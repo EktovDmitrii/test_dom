@@ -3,13 +3,11 @@ package com.custom.rgs_android_dom.views.text
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.custom.rgs_android_dom.R
-import com.custom.rgs_android_dom.databinding.ViewMsdTextViewLoaderBinding
 import com.custom.rgs_android_dom.databinding.ViewMsdTextViewLoaderDoubleTextBinding
-import com.custom.rgs_android_dom.utils.TranslationHelper
+import com.custom.rgs_android_dom.domain.TranslationInteractor
 import com.custom.rgs_android_dom.utils.gone
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.visible
@@ -28,12 +26,12 @@ class MSDTextViewLoaderDoubleText @JvmOverloads constructor(
 
         attrs.getString(R.styleable.MSDTextViewLoaderDoubleText_translationPrimaryTextKey)?.let { primaryTextKey ->
             //TODO Add handling translation logic here
-            binding.primaryTextView.text = TranslationHelper.getTranslation(primaryTextKey)
+            binding.primaryTextView.text = TranslationInteractor.getTranslation(primaryTextKey)
         }
 
         attrs.getString(R.styleable.MSDTextViewLoaderDoubleText_translationSecondaryTextKey)?.let { secondaryTextKey ->
             //TODO Add handling translation logic here
-            binding.secondaryTextView.text = TranslationHelper.getTranslation(secondaryTextKey)
+            binding.secondaryTextView.text = TranslationInteractor.getTranslation(secondaryTextKey)
         }
         val enabled = attrs.getBoolean(R.styleable.MSDTextViewLoaderDoubleText_android_enabled, true)
         isEnabled = enabled

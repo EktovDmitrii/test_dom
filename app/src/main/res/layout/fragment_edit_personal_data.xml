@@ -96,14 +96,14 @@
                 app:icon="@drawable/ic_calendar_24px"
                 app:mask="[00]{.}[00]{.}[0000]"
                 app:translationHintKey="24.04.1990"
-                app:translationLabelKey="Дата рождения" />
+                app:translationLabelKey="app.personal_info.birthday.title" />
 
             <com.custom.rgs_android_dom.views.MSDGenderSelector
                 android:id="@+id/genderSelector"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:translationLabelKey="Пол" />
+                app:translationLabelKey="app.personal_info.sex.title" />
 
             <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
                 android:id="@+id/passportSeriesEditText"
@@ -112,7 +112,7 @@
                 android:layout_marginTop="16dp"
                 android:inputType="number"
                 android:maxLength="4"
-                app:translationLabelKey="Серия паспорта"
+                app:translationLabelKey="app.personal_info.passport_series.title"
                 app:translationHintKey="9999"/>
 
             <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
@@ -122,7 +122,7 @@
                 android:layout_marginTop="16dp"
                 android:inputType="number"
                 android:maxLength="6"
-                app:translationLabelKey="Номер паспорта"
+                app:translationLabelKey="app.personal_info.passport_number.title"
                 app:translationHintKey="999999"/>
 
             <com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
@@ -131,7 +131,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:inputType="phone"
-                app:translationLabelKey="Номер телефона" />
+                app:translationLabelKey="app.personal_info.phone.title" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -172,8 +172,8 @@
                 android:layout_marginTop="16dp"
                 android:inputType="phone"
                 app:mask="+7 [000] [000]-[00]-[00]"
-                app:translationHintKey="+7 999 999-99-99"
-                app:translationLabelKey="Дополнительный телефон" />
+                app:translationHintKey="app.personal_info.second_phone.placeholder"
+                app:translationLabelKey="app.personal_info.second_phone.title" />
 
             <com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
                 android:id="@+id/emailEditText"
@@ -182,8 +182,8 @@
                 android:layout_marginTop="16dp"
                 android:inputType="textWebEmailAddress"
                 android:imeOptions="actionDone"
-                app:translationHintKey="prezident.sveta@mail.ru"
-                app:translationLabelKey="Электронная почта" />
+                app:translationHintKey="app.personal_info.email.placeholder"
+                app:translationLabelKey="app.personal_info.email.title" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

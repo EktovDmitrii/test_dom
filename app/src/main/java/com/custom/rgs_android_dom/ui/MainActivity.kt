@@ -10,7 +10,6 @@ import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.splash.SplashFragment
 import com.custom.rgs_android_dom.utils.CacheHelper
-import com.custom.rgs_android_dom.utils.TranslationHelper
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -47,11 +46,6 @@ class MainActivity : AppCompatActivity() {
     private fun loadTranslation(){
         translationInteractor.loadTranslation()
             .retryWhen{throwables -> throwables.delay(5, TimeUnit.SECONDS)}
-            .andThen(translationInteractor.getTranslation())
-            .flatMapCompletable {
-                TranslationHelper.setTranslations(it)
-                Completable.complete()
-            }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(

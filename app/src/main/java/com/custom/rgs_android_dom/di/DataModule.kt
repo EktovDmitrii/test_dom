@@ -16,7 +16,7 @@ val dataModule = module {
     single <RegistrationRepository> { RegistrationRepositoryImpl(api = get(), authSharedPreferences = get(), webSocketRepository = get()) }
     single <ClientRepository> {ClientRepositoryImpl(api = get(), authSharedPreferences = get())}
     single <CountriesRepository> { CountriesRepositoryMock() }
-    single <TranslationRepository> { TranslationRepositoryImpl(database = get(), api = get()) }
+    single <TranslationRepository> { TranslationRepositoryImpl(api = get()) }
     single <ChatRepository> { ChatRepositoryImpl(api = get(), authSharedPreferences = get()) }
     single <WebSocketRepository> {WebSocketRepositoryImpl(authSharedPreferences = get(), gson = get())}
     single <PropertyRepository> { PropertyRepositoryImpl(api = get(), authSharedPreferences = get()) }

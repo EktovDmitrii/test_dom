@@ -7,6 +7,7 @@ import android.widget.RelativeLayout
 import androidx.core.widget.addTextChangedListener
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdSearchInputBinding
+import com.custom.rgs_android_dom.domain.TranslationInteractor
 import com.custom.rgs_android_dom.utils.*
 
 class MSDSearchInput @JvmOverloads constructor(
@@ -24,7 +25,7 @@ class MSDSearchInput @JvmOverloads constructor(
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDSearchInput, 0, 0)
         attrs.getString(R.styleable.MSDSearchInput_translationHintKey)?.let { translationHintKey ->
             //TODO Add handling translation logic here
-            binding.searchEditText.hint = TranslationHelper.getTranslation(translationHintKey)
+            binding.searchEditText.hint = TranslationInteractor.getTranslation(translationHintKey)
         }
 
         val isEnabled = attrs.getBoolean(R.styleable.MSDSearchInput_android_enabled, true)
