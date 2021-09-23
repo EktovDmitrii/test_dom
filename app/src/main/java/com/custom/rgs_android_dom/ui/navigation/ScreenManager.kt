@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.ui.navigation
 
-import android.util.Log
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
@@ -171,11 +170,8 @@ object ScreenManager {
     }
 
     private fun notifyCurrentVisibleFragment(){
-        Log.d("MyLog", "Notify current visible fragment")
         if (activity?.supportFragmentManager?.fragments?.isNotEmpty() == true){
-            Log.d("MyLog", "IS NOT EMPTY")
             activity?.supportFragmentManager?.fragments?.last()?.let {
-                Log.d("MyLog", "Class name " + it::class.java.canonicalName)
                 (it as BaseFragment<*,*>).onVisibleToUser()
             }
         }

@@ -1,18 +1,17 @@
 package com.custom.rgs_android_dom.utils
 
 import android.app.DatePickerDialog
-import android.os.Bundle
-import android.view.View
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import org.joda.time.LocalDate
-import java.util.*
-import androidx.core.content.ContextCompat.startActivity
-
 import android.content.Intent
 import android.net.Uri
-import androidx.core.content.ContextCompat
-
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
+import androidx.fragment.app.Fragment
+import com.custom.rgs_android_dom.databinding.ItemPopupBinding
+import org.joda.time.LocalDate
+import java.util.*
 
 fun Fragment.showSoftwareKeyboard(view: View) {
     activity?.showKeyboard(view)
@@ -97,5 +96,26 @@ fun Fragment.openUrl(url: String){
     } catch (e: Exception){
         logException(this, e)
     }
+}
 
+fun Fragment.notification(message: String, duration: Long = 2000){
+    val popupBinding = ItemPopupBinding.inflate(LayoutInflater.from(requireContext()), null, false)
+    popupBinding.messageTextView.text = message
+
+    val myToast = Toast(requireContext())
+    myToast.duration = Toast.LENGTH_LONG
+    myToast.view = popupBinding.root
+
+    myToast.show()
+
+//    val popupWindow = PopupWindow(popupBinding.root, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true)
+//    popupWindow.animationStyle = R.style.PopupWindowAnimation
+//
+//    popupWindow.showAtLocation(window.decorView.rootView, Gravity.CENTER_VERTICAL or Gravity.BOTTOM, 0, 400)
+//
+//    popupWindow.contentView.bringToFront()
+//
+//    Handler(Looper.getMainLooper()).postDelayed({
+//        popupWindow.dismiss()
+//    }, duration)
 }

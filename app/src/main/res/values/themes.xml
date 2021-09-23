@@ -282,14 +282,29 @@
         <item name="android:textColor">@color/gender_selector_text_color</item>
     </style>
 
-    <style name="BottomSheet" parent="Theme.MaterialComponents.BottomSheetDialog">
+    <style name="BottomSheetNoDim" parent="Theme.MaterialComponents.BottomSheetDialog">
         <item name="android:windowCloseOnTouchOutside">false</item>
         <item name="android:backgroundDimEnabled">false</item>
-        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+        <item name="bottomSheetStyle">@style/BottomSheetNoDimStyle</item>
     </style>
 
-    <style name="BottomSheetStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
+    <style name="BottomSheetNoDimStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="backgroundTint">@android:color/transparent</item>
+    </style>
+
+    <style name="BottomSheet" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:navigationBarColor">@color/white</item>
+    </style>
+
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/rectangle_filled_white_top_radius_20dp</item>
+    </style>
+
+    <style name="PopupWindowAnimation">
+        <item name="android:windowEnterAnimation">@anim/popup_show_animation</item>
+        <item name="android:windowExitAnimation">@anim/popup_hide_animation</item>
     </style>
 
 </resources>

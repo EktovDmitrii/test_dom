@@ -1,20 +1,22 @@
 package com.custom.rgs_android_dom.ui.property.add.details
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPropertyDetailsBinding
 import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyField
-import com.custom.rgs_android_dom.domain.property.details.exceptions.ValidatePropertyException
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
+import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
+import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentPropertyDetailsBinding>(R.layout.fragment_property_details) {
+class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentPropertyDetailsBinding>(R.layout.fragment_property_details),
+    ConfirmBottomSheetFragment.ConfirmListener {
 
     companion object {
         private const val ARG_PROPERTY_COUNT = "ARG_PROPERTY_COUNT"
@@ -95,7 +97,6 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
         }
 
         subscribe(viewModel.validateExceptionObserver){
-            Log.d("MyLog", "GOT EXCEPTIONS")
             when(it.field){
                 PropertyField.ADDRESS -> {
                     binding.addressTextInputLayout.setState(MSDTextInputLayout.State.ERROR)
@@ -105,6 +106,21 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
 
         subscribe(viewModel.networkErrorObserver){
             toast(it)
+        }
+
+        subscribe(viewModel.showConfirmCloseObserver){
+            val confirmDialog = ConfirmBottomSheetFragment.newInstance(
+                icon = R.drawable.ic_confirm_cancel,
+                title = "Хотите выйти?",
+                description = "Если вы покинете страницу сейчас, данные об объекте недвижимости не сохранятся",
+                confirmText = "Да, выйти",
+                cancelText = "Нет, остаться"
+            )
+            confirmDialog.show(childFragmentManager, ConfirmBottomSheetFragment.TAG)
+        }
+
+        subscribe(viewModel.notificationObserver){
+            notification(it)
         }
     }
 
@@ -121,5 +137,10 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
     override fun onContent() {
         super.onContent()
         binding.addTextView.setLoading(false)
+    }
+
+    override fun onConfirmClick() {
+        super.onConfirmClick()
+        ScreenManager.closeScope(ADD_PROPERTY)
     }
 }

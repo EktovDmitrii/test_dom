@@ -13,6 +13,7 @@ import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.logException
 import com.custom.rgs_android_dom.views.MSDYesNoSelector
+import com.google.gson.annotations.Until
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -27,6 +28,9 @@ class PropertyDetailsViewModel(propertyCount: Int,
 
     private val validateExceptionController = MutableLiveData<ValidatePropertyException>()
     val validateExceptionObserver: LiveData<ValidatePropertyException> = validateExceptionController
+
+    private val showConfirmCloseController = MutableLiveData<Unit>()
+    val showConfirmCloseObserver: LiveData<Unit> = showConfirmCloseController
 
     init {
         propertyDetailsInteractor.propertyDetailsViewStateSubject
@@ -46,8 +50,7 @@ class PropertyDetailsViewModel(propertyCount: Int,
     }
 
     fun onBackClick() {
-        //closeController.value = Unit
-        ScreenManager.closeScope(ADD_PROPERTY)
+        showConfirmCloseController.value = Unit
     }
 
     fun onAddClick(){
@@ -58,7 +61,7 @@ class PropertyDetailsViewModel(propertyCount: Int,
             .subscribeBy(
                 onComplete = {
                     loadingStateController.value = LoadingState.CONTENT
-                    //closeController.value = Unit
+                    notificationController.value = "Объект добавлен"
                     ScreenManager.closeScope(ADD_PROPERTY)
                 },
                 onError = {

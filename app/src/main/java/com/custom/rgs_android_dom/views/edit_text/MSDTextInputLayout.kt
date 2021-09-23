@@ -8,6 +8,7 @@ import android.text.InputType
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.inputmethod.EditorInfo
 import android.widget.FrameLayout
 import androidx.core.widget.addTextChangedListener
@@ -27,6 +28,7 @@ class MSDTextInputLayout @JvmOverloads constructor(
     private var textWatcher: (String) -> Unit = {}
 
     private var isFromUser = true
+    private var hasDecimalFilter = false
 
     init {
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDTextInputLayout, 0, 0)
@@ -44,6 +46,15 @@ class MSDTextInputLayout @JvmOverloads constructor(
         val lines = attrs.getInt(R.styleable.MSDTextInputLayout_android_lines, -1)
         if (lines != -1){
             binding.valueEditText.maxLines = lines
+            if (lines > 1){
+                binding.valueEditText.setOnTouchListener { view, event ->
+                    view.parent.requestDisallowInterceptTouchEvent(true)
+                    if ((event.action and MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP) {
+                        view.parent.requestDisallowInterceptTouchEvent(false)
+                    }
+                    return@setOnTouchListener false
+                }
+            }
         }
 
 
@@ -76,11 +87,16 @@ class MSDTextInputLayout @JvmOverloads constructor(
         attrs.getString(R.styleable.MSDTextInputLayout_decimalLimit)?.let {
             val digitsArr = it.split(".")
             setDigitsLimit(digitsArr[0].toInt(), digitsArr[1].toInt())
+            hasDecimalFilter = true
         }
 
         binding.valueEditText.addTextChangedListener {
             if (isFromUser){
-                textWatcher(it.toString())
+                if (hasDecimalFilter && it.toString() == "."){
+                    binding.valueEditText.setText("")
+                } else {
+                    textWatcher(it.toString())
+                }
             }
 
         }

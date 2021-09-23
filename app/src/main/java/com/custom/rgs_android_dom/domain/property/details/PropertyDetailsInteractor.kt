@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.domain.property.details
 
-import android.util.Log
 import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyField
 import com.custom.rgs_android_dom.domain.property.details.exceptions.ValidatePropertyException
 import com.custom.rgs_android_dom.domain.property.details.view_states.PropertyDetailsViewState
@@ -43,7 +42,6 @@ class PropertyDetailsInteractor(private val propertyRepository: PropertyReposito
         else if (propertyCount == 1){
             name = "$name ${(propertyCount)}"
         }
-        Log.d("MyLog", "Setting property name " + name)
         propertyDetailsViewState = propertyDetailsViewState.copy(name = name)
         checkIfPropertyDetailsFieldsFilled()
     }
@@ -63,9 +61,7 @@ class PropertyDetailsInteractor(private val propertyRepository: PropertyReposito
     }
 
     fun updatePropertyCorpus(corpus: String){
-        Log.d("MyLog", "Updating coprus " + corpus)
         propertyDetailsViewState = propertyDetailsViewState.copy(corpus = corpus.trim())
-        Log.d("MyLog", "Corpus update " + propertyDetailsViewState.corpus)
     }
 
     fun updatePropertyFloor(floor: String) {
@@ -122,8 +118,6 @@ class PropertyDetailsInteractor(private val propertyRepository: PropertyReposito
 
         val totalArea = if (propertyDetailsViewState.totalArea.isNotEmpty()) propertyDetailsViewState.totalArea.toFloat() else null
         val comment = propertyDetailsViewState.comment.ifEmpty { null }
-
-        Log.d("MyLog", "ADDRESS " + address + " TOTAL AREA " + totalArea)
 
         return propertyRepository.addProperty(
             name = propertyDetailsViewState.name,

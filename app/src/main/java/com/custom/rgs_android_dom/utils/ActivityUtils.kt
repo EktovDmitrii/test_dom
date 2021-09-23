@@ -1,12 +1,9 @@
 package com.custom.rgs_android_dom.utils
 
 import android.app.Activity
-import android.app.Activity.INPUT_METHOD_SERVICE
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.core.content.ContextCompat
-
 
 fun Activity.hideSoftwareKeyboard(delay: Long = 300L, action: (() -> Unit)? = null) {
     val view = findViewById<View>(android.R.id.content)

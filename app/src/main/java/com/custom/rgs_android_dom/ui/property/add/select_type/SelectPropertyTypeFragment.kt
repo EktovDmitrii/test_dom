@@ -1,7 +1,9 @@
 package com.custom.rgs_android_dom.ui.property.add.select_type
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentSelectPropertyTypeBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
@@ -52,8 +54,5 @@ class SelectPropertyTypeFragment : BaseFragment<SelectPropertyTypeViewModel, Fra
             binding.selectHomeLinearLayout.isSelected = it.isSelectHomeLinearLayoutSelected
             binding.nextTextView.isEnabled = it.isNextTextViewEnabled
         }
-
     }
-
-
 }

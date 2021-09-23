@@ -43,7 +43,6 @@ class SelectPropertyTypeViewModel(private val propertyCount: Int,
     }
 
     fun onBackClick() {
-        closeController.value = Unit
         ScreenManager.closeScope(ADD_PROPERTY)
     }
 

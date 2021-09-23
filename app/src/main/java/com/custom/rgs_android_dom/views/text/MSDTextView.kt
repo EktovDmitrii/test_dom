@@ -21,4 +21,5 @@ class MSDTextView(context: Context, attributeSet: AttributeSet) : AppCompatTextV
             paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
         }
     }
+
 }

@@ -329,7 +329,7 @@
                 android:layout_marginTop="10dp"
                 android:maxLength="500"
                 android:lines="5"
-                android:inputType="textPersonName|textMultiLine"
+                android:inputType="textMultiLine"
                 app:translationHintKey="Добавить комментарий" />
 
             <View
