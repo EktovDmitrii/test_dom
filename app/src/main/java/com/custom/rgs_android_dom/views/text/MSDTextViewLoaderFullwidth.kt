@@ -4,11 +4,10 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdTextViewLoaderFullwidthBinding
-import com.custom.rgs_android_dom.utils.TranslationHelper
+import com.custom.rgs_android_dom.domain.TranslationInteractor
 import com.custom.rgs_android_dom.utils.gone
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.visible
@@ -30,7 +29,7 @@ class MSDTextViewLoaderFullwidth @JvmOverloads constructor(
 
         attrs.getString(R.styleable.MSDTextViewLoaderFullwidth_translationTextKey)?.let { translationTextKey ->
             //TODO Add handling translation logic here
-            setText(TranslationHelper.getTranslation(translationTextKey))
+            setText(TranslationInteractor.getTranslation(translationTextKey))
         }
         val enabled = attrs.getBoolean(R.styleable.MSDTextViewLoaderFullwidth_android_enabled, true)
         isEnabled = enabled

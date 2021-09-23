@@ -14,8 +14,8 @@ import android.widget.FrameLayout
 import androidx.core.widget.addTextChangedListener
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdTextInputLayoutBinding
+import com.custom.rgs_android_dom.domain.TranslationInteractor
 import com.custom.rgs_android_dom.utils.DecimalDigitsInputFilter
-import com.custom.rgs_android_dom.utils.TranslationHelper
 import com.custom.rgs_android_dom.utils.toEditable
 
 class MSDTextInputLayout @JvmOverloads constructor(
@@ -34,7 +34,7 @@ class MSDTextInputLayout @JvmOverloads constructor(
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDTextInputLayout, 0, 0)
         attrs.getString(R.styleable.MSDTextInputLayout_translationHintKey)?.let { translationHintKey ->
             //TODO Add handling translation logic here
-            binding.containerTextInputLayout.hint = TranslationHelper.getTranslation(translationHintKey)
+            binding.containerTextInputLayout.hint = TranslationInteractor.getTranslation(translationHintKey)
         }
 
         val imeOptions = attrs.getInt(R.styleable.MSDTextInputLayout_android_imeOptions, EditorInfo.IME_ACTION_NEXT)
