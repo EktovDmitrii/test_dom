@@ -125,33 +125,36 @@ class EditPersonalDataFragment : BaseFragment<EditPersonalDataViewModel, Fragmen
             binding.saveTextView.isEnabled = it
         }
 
-        subscribe(viewModel.validateExceptionObserver){
-            when (it.field){
-                ClientField.LASTNAME -> {
-                    binding.lastNameEditText.setState(MSDLabelEditText.State.ERROR, it.errorMessage)
-                }
-                ClientField.FIRSTNAME -> {
-                    binding.firstNameEditText.setState(MSDLabelEditText.State.ERROR, it.errorMessage)
-                }
-                ClientField.MIDDLENAME -> {
-                    binding.middleNameEditText.setState(MSDLabelEditText.State.ERROR, it.errorMessage)
-                }
-                ClientField.BIRTHDATE -> {
-                    binding.birthdayEditText.setState(MSDLabelIconEditText.State.ERROR, it.errorMessage)
-                }
-                ClientField.DOC_SERIAL -> {
-                    binding.passportSeriesEditText.setState(MSDLabelEditText.State.ERROR, it.errorMessage)
-                }
-                ClientField.DOC_NUMBER -> {
-                    binding.passportNumberEditText.setState(MSDLabelEditText.State.ERROR, it.errorMessage)
-                }
-                ClientField.SECOND_PHONE -> {
-                    binding.additionalPhoneEditText.setState(MSDMaskedLabelEditText.State.ERROR, it.errorMessage)
-                }
-                ClientField.EMAIL -> {
-                    binding.emailEditText.setState(MSDMaskedLabelEditText.State.ERROR, it.errorMessage)
+        subscribe(viewModel.validateExceptionObserver){ specError ->
+            specError.fields.forEach {
+                when (it.fieldName){
+                    ClientField.LASTNAME -> {
+                        binding.lastNameEditText.setState(MSDLabelEditText.State.ERROR, it.errorMessage)
+                    }
+                    ClientField.FIRSTNAME -> {
+                        binding.firstNameEditText.setState(MSDLabelEditText.State.ERROR, it.errorMessage)
+                    }
+                    ClientField.MIDDLENAME -> {
+                        binding.middleNameEditText.setState(MSDLabelEditText.State.ERROR, it.errorMessage)
+                    }
+                    ClientField.BIRTHDATE -> {
+                        binding.birthdayEditText.setState(MSDLabelIconEditText.State.ERROR, it.errorMessage)
+                    }
+                    ClientField.DOC_SERIAL -> {
+                        binding.passportSeriesEditText.setState(MSDLabelEditText.State.ERROR, it.errorMessage)
+                    }
+                    ClientField.DOC_NUMBER -> {
+                        binding.passportNumberEditText.setState(MSDLabelEditText.State.ERROR, it.errorMessage)
+                    }
+                    ClientField.SECOND_PHONE -> {
+                        binding.additionalPhoneEditText.setState(MSDMaskedLabelEditText.State.ERROR, it.errorMessage)
+                    }
+                    ClientField.EMAIL -> {
+                        binding.emailEditText.setState(MSDMaskedLabelEditText.State.ERROR, it.errorMessage)
+                    }
                 }
             }
+
         }
 
         subscribe(viewModel.networkErrorObserver){

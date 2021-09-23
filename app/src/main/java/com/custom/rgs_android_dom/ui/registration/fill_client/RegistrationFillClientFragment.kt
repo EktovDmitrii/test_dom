@@ -140,13 +140,15 @@ class RegistrationFillClientFragment : BaseFragment<RegistrationFillClientViewMo
             binding.saveTextView.isEnabled = it
         }
 
-        subscribe(viewModel.validateExceptionObserver){
-            when(it.field){
-                ClientField.BIRTHDATE -> binding.birthdayEditText.setState(MSDLabelIconEditText.State.ERROR)
-                ClientField.FIRSTNAME -> binding.nameEditText.setState(MSDLabelEditText.State.ERROR)
-                ClientField.LASTNAME -> binding.surnameEditText.setState(MSDLabelEditText.State.ERROR)
-                ClientField.AGENTCODE -> binding.agentCodeEditText.setState(MSDLabelEditText.State.ERROR)
-                ClientField.AGENTPHONE -> binding.agentPhoneEditText.setState(MSDMaskedLabelEditText.State.ERROR)
+        subscribe(viewModel.validateExceptionObserver){ specError ->
+            specError.fields.forEach {
+                when(it.fieldName){
+                    ClientField.BIRTHDATE -> binding.birthdayEditText.setState(MSDLabelIconEditText.State.ERROR)
+                    ClientField.FIRSTNAME -> binding.nameEditText.setState(MSDLabelEditText.State.ERROR)
+                    ClientField.LASTNAME -> binding.surnameEditText.setState(MSDLabelEditText.State.ERROR)
+                    ClientField.AGENTCODE -> binding.agentCodeEditText.setState(MSDLabelEditText.State.ERROR)
+                    ClientField.AGENTPHONE -> binding.agentPhoneEditText.setState(MSDMaskedLabelEditText.State.ERROR)
+                }
             }
         }
     }

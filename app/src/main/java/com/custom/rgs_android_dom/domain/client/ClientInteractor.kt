@@ -2,7 +2,9 @@ package com.custom.rgs_android_dom.domain.client
 
 import com.custom.rgs_android_dom.domain.client.mappers.AgentMapper
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
+import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
 import com.custom.rgs_android_dom.domain.client.exceptions.ValidateClientException
+import com.custom.rgs_android_dom.domain.client.exceptions.ValidateFieldModel
 import com.custom.rgs_android_dom.domain.client.models.Gender
 import com.custom.rgs_android_dom.domain.client.mappers.ClientShortViewStateMapper
 import com.custom.rgs_android_dom.domain.client.mappers.EditPersonalDataViewStateMapper
@@ -49,22 +51,14 @@ class ClientInteractor(
 
     fun updateClient(): Completable {
 
+        val errorsValidate = ArrayList<ValidateFieldModel>()
+
         if (fillClientViewState.surname?.trim()?.isEmpty() == true){
-            return Completable.error(
-                ValidateClientException(
-                    ClientField.LASTNAME,
-                    ""
-                )
-            )
+            errorsValidate.add(ValidateFieldModel(ClientField.LASTNAME, ""))
         }
 
         if (fillClientViewState.name?.trim()?.isEmpty() == true){
-            return Completable.error(
-                ValidateClientException(
-                    ClientField.FIRSTNAME,
-                    ""
-                )
-            )
+            errorsValidate.add(ValidateFieldModel(ClientField.FIRSTNAME, ""))
         }
 
         var birthday: LocalDateTime? = null
@@ -77,33 +71,22 @@ class ClientInteractor(
             }, format = PATTERN_DATE_TIME_MILLIS)
 
             if (birthday == null || birthday != null && !isBirthdayValid(birthday!!)) {
-                return Completable.error(
-                    ValidateClientException(
-                        ClientField.BIRTHDATE,
-                        "Некорректная дата рождения"
-                    )
-                )
+                errorsValidate.add(ValidateFieldModel(ClientField.BIRTHDATE, "Некорректная дата рождения"))
             }
         }
 
         if (fillClientViewState.agentCode != null && fillClientViewState.agentPhone == null
             || fillClientViewState.agentCode != null && fillClientViewState.agentPhone != null && !isAgentPhoneCorrect()) {
-            return Completable.error(
-                ValidateClientException(
-                    ClientField.AGENTPHONE,
-                    "Укажите телефон агента"
-                )
-            )
+            errorsValidate.add(ValidateFieldModel(ClientField.AGENTPHONE, "Укажите телефон агента"))
         }
 
         if (fillClientViewState.agentCode == null && isAgentPhoneCorrect()
             || fillClientViewState.agentCode == null && fillClientViewState.agentPhone != null && !isAgentPhoneCorrect()) {
-            return Completable.error(
-                ValidateClientException(
-                    ClientField.AGENTCODE,
-                    "Укажите код агента"
-                )
-            )
+            errorsValidate.add(ValidateFieldModel(ClientField.AGENTCODE, "Укажите код агента"))
+        }
+
+        if (errorsValidate.isNotEmpty()){
+            return Completable.error(SpecificValidateClientExceptions(errorsValidate))
         }
 
         return updateClient(
@@ -268,36 +251,23 @@ class ClientInteractor(
     }
 
     fun savePersonalData(): Completable {
+
+        val errorsValidate = ArrayList<ValidateFieldModel>()
         if (!editPersonalDataViewState.isLastNameSaved && editPersonalDataViewState.lastName.isNotEmpty()){
             if (editPersonalDataViewState.lastName.trim().isEmpty()){
-                return Completable.error(
-                    ValidateClientException(
-                        ClientField.LASTNAME,
-                        "Проверьте, правильно ли введена фамилия"
-                    )
-                )
+                errorsValidate.add(ValidateFieldModel(ClientField.LASTNAME, "Проверьте, правильно ли введена фамилия"))
             }
         }
 
         if (!editPersonalDataViewState.isFirstNameSaved && editPersonalDataViewState.firstName.isNotEmpty()){
             if (editPersonalDataViewState.firstName.trim().isEmpty()){
-                return Completable.error(
-                    ValidateClientException(
-                        ClientField.FIRSTNAME,
-                        "Проверьте, правильно ли введено имя"
-                    )
-                )
+                errorsValidate.add(ValidateFieldModel(ClientField.FIRSTNAME, "Проверьте, правильно ли введено имя"))
             }
         }
 
         if (!editPersonalDataViewState.isMiddleNameSaved && editPersonalDataViewState.middleName.isNotEmpty()){
             if (editPersonalDataViewState.middleName.trim().isEmpty()){
-                return Completable.error(
-                    ValidateClientException(
-                        ClientField.FIRSTNAME,
-                        "Проверьте, правильно ли введено отчество"
-                    )
-                )
+                errorsValidate.add(ValidateFieldModel(ClientField.MIDDLENAME, "Проверьте, правильно ли введено отчество"))
             }
         }
 
@@ -310,69 +280,38 @@ class ClientInteractor(
             }, format = PATTERN_DATE_TIME_MILLIS)
 
             if (birthday == null || birthday != null && !isBirthdayValid(birthday!!)) {
-                return Completable.error(
-                    ValidateClientException(
-                        ClientField.BIRTHDATE,
-                        "Проверьте, правильно ли введена дата рождения"
-                    )
-                )
+                errorsValidate.add(ValidateFieldModel(ClientField.BIRTHDATE, "Проверьте, правильно ли введена дата рождения"))
             }
         }
 
         if (!editPersonalDataViewState.isDocSerialSaved && editPersonalDataViewState.docSerial.isNotEmpty()){
             if (editPersonalDataViewState.docSerial.trim().length != DOC_SERIAL_LENGTH){
-                return Completable.error(
-                    ValidateClientException(
-                        ClientField.DOC_SERIAL,
-                        "Проверьте, правильно ли введена серия паспорта"
-                    )
-                )
+                errorsValidate.add(ValidateFieldModel(ClientField.DOC_SERIAL, "Проверьте, правильно ли введена серия паспорта"))
             } else if (editPersonalDataViewState.docSerial.trim().length == DOC_SERIAL_LENGTH && editPersonalDataViewState.docNumber.trim().length != DOC_NUMBER_LENGTH){
-                return Completable.error(
-                    ValidateClientException(
-                        ClientField.DOC_NUMBER,
-                        "Проверьте, правильно ли введён номер паспорта"
-                    )
-                )
+                errorsValidate.add(ValidateFieldModel(ClientField.DOC_NUMBER, "Проверьте, правильно ли введён номер паспорта"))
             }
         }
 
         if (!editPersonalDataViewState.isDocNumberSaved && editPersonalDataViewState.docNumber.isNotEmpty()){
             if (editPersonalDataViewState.docNumber.trim().length != DOC_NUMBER_LENGTH){
-                return Completable.error(
-                    ValidateClientException(
-                        ClientField.DOC_NUMBER,
-                        "Проверьте, правильно ли введён номер паспорта"
-                    )
-                )
+                errorsValidate.add(ValidateFieldModel(ClientField.DOC_NUMBER, "Проверьте, правильно ли введён номер паспорта"))
             } else if (editPersonalDataViewState.docNumber.trim().length == DOC_NUMBER_LENGTH && editPersonalDataViewState.docSerial.trim().length != DOC_SERIAL_LENGTH){
-                return Completable.error(
-                    ValidateClientException(
-                        ClientField.DOC_SERIAL,
-                        "Проверьте, правильно ли введена серия паспорта"
-                    )
-                )
+                errorsValidate.add(ValidateFieldModel(ClientField.DOC_SERIAL, "Проверьте, правильно ли введена серия паспорта"))
             }
         }
 
 
 
         if (editPersonalDataViewState.wasSecondPhoneEdited && editPersonalDataViewState.secondPhone.isNotEmpty() && !editPersonalDataViewState.isSecondPhoneValid){
-            return Completable.error(
-                ValidateClientException(
-                    ClientField.SECOND_PHONE,
-                    "Проверьте, правильно ли введён номер телефона"
-                )
-            )
+            errorsValidate.add(ValidateFieldModel(ClientField.SECOND_PHONE, "Проверьте, правильно ли введён номер телефона"))
         }
 
         if (editPersonalDataViewState.wasEmailEdited && editPersonalDataViewState.email.isNotEmpty() && !editPersonalDataViewState.email.isValidEmail()){
-            return Completable.error(
-                ValidateClientException(
-                    ClientField.EMAIL,
-                    "Проверьте, правильно ли введён email"
-                )
-            )
+            errorsValidate.add(ValidateFieldModel(ClientField.EMAIL, "Проверьте, правильно ли введён email"))
+        }
+
+        if (errorsValidate.isNotEmpty()){
+            return Completable.error(SpecificValidateClientExceptions(errorsValidate))
         }
 
         val updatePassportCompletable = if (!editPersonalDataViewState.isDocNumberSaved && editPersonalDataViewState.docNumber.isNotEmpty()){
