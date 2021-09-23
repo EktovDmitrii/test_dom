@@ -11,8 +11,8 @@ import android.widget.RelativeLayout
 import androidx.core.widget.addTextChangedListener
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdIconEditTextBinding
+import com.custom.rgs_android_dom.domain.TranslationInteractor
 import com.custom.rgs_android_dom.utils.GlideApp
-import com.custom.rgs_android_dom.utils.TranslationHelper
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.toEditable
 import com.redmadrobot.inputmask.MaskedTextChangedListener
@@ -48,7 +48,7 @@ class MSDIconEditText @JvmOverloads constructor(
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDIconEditText, 0, 0)
         attrs.getString(R.styleable.MSDIconEditText_translationHintKey)?.let { translationHintKey ->
             //TODO Add handling translation logic here
-            binding.valueEditText.hint = TranslationHelper.getTranslation(translationHintKey)
+            binding.valueEditText.hint = TranslationInteractor.getTranslation(translationHintKey)
         }
 
         attrs.getString(R.styleable.MSDIconEditText_mask)?.let {mask->

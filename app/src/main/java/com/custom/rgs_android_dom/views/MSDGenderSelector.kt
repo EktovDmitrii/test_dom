@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.widget.RelativeLayout
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdGenderSelectorBinding
+import com.custom.rgs_android_dom.domain.TranslationInteractor
 import com.custom.rgs_android_dom.domain.client.models.Gender
-import com.custom.rgs_android_dom.utils.TranslationHelper
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 
 class MSDGenderSelector @JvmOverloads constructor(
@@ -23,7 +23,7 @@ class MSDGenderSelector @JvmOverloads constructor(
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDGenderSelector, 0, 0)
         attrs.getString(R.styleable.MSDGenderSelector_translationLabelKey)?.let { translationLabelKey ->
             //TODO Add handling translation logic here
-            binding.labelTextView.text = TranslationHelper.getTranslation(translationLabelKey)
+            binding.labelTextView.text = TranslationInteractor.getTranslation(translationLabelKey)
         }
 
         binding.maleTextView.setOnDebouncedClickListener {
