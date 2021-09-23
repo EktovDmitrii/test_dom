@@ -1,21 +1,18 @@
 package com.custom.rgs_android_dom.views.edit_text
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.text.InputFilter
 import android.text.InputType
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
 import android.widget.RelativeLayout
 import androidx.core.widget.addTextChangedListener
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdMaskedLabelEditTextBinding
-import com.custom.rgs_android_dom.utils.TranslationHelper
+import com.custom.rgs_android_dom.domain.TranslationInteractor
 import com.custom.rgs_android_dom.utils.gone
 import com.custom.rgs_android_dom.utils.toEditable
-import com.custom.rgs_android_dom.utils.visible
 import com.custom.rgs_android_dom.utils.visibleIf
 import com.redmadrobot.inputmask.MaskedTextChangedListener
 
@@ -49,12 +46,12 @@ class MSDMaskedLabelEditText @JvmOverloads constructor(
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDMaskedLabelEditText, 0, 0)
         attrs.getString(R.styleable.MSDMaskedLabelEditText_translationHintKey)?.let { translationHintKey ->
             //TODO Add handling translation logic here
-            binding.valueEditText.hint = TranslationHelper.getTranslation(translationHintKey)
+            binding.valueEditText.hint = TranslationInteractor.getTranslation(translationHintKey)
         }
 
         attrs.getString(R.styleable.MSDMaskedLabelEditText_translationLabelKey)?.let { translationLabelKey ->
             //TODO Add handling translation logic here
-            binding.labelTextView.text = TranslationHelper.getTranslation(translationLabelKey)
+            binding.labelTextView.text = TranslationInteractor.getTranslation(translationLabelKey)
         }
 
         attrs.getString(R.styleable.MSDMaskedLabelEditText_mask)?.let {mask->

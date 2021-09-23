@@ -11,6 +11,7 @@ import android.widget.RelativeLayout
 import androidx.core.widget.addTextChangedListener
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdLabelIconEditTextBinding
+import com.custom.rgs_android_dom.domain.TranslationInteractor
 import com.custom.rgs_android_dom.utils.*
 import com.redmadrobot.inputmask.MaskedTextChangedListener
 
@@ -45,12 +46,12 @@ class MSDLabelIconEditText @JvmOverloads constructor(
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDLabelIconEditText, 0, 0)
         attrs.getString(R.styleable.MSDLabelIconEditText_translationHintKey)?.let { translationHintKey ->
             //TODO Add handling translation logic here
-            binding.valueEditText.hint = TranslationHelper.getTranslation(translationHintKey)
+            binding.valueEditText.hint = TranslationInteractor.getTranslation(translationHintKey)
         }
 
         attrs.getString(R.styleable.MSDLabelIconEditText_translationLabelKey)?.let { translationLabelKey ->
             //TODO Add handling translation logic here
-            binding.labelTextView.text = TranslationHelper.getTranslation(translationLabelKey)
+            binding.labelTextView.text = TranslationInteractor.getTranslation(translationLabelKey)
         }
 
         attrs.getString(R.styleable.MSDLabelIconEditText_mask)?.let {mask->

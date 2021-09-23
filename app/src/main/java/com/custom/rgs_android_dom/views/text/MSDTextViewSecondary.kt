@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import com.custom.rgs_android_dom.R
-import com.custom.rgs_android_dom.utils.TranslationHelper
+import com.custom.rgs_android_dom.domain.TranslationInteractor
 
 class MSDTextViewSecondary(context: Context, attributeSet: AttributeSet) : AppCompatTextView(context, attributeSet) {
 
@@ -12,7 +12,7 @@ class MSDTextViewSecondary(context: Context, attributeSet: AttributeSet) : AppCo
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDTextViewSecondary, 0, 0)
         attrs.getString(R.styleable.MSDTextViewSecondary_translationTextKey)?.let { translationTextKey ->
             //TODO Add handling translation logic here
-            text = TranslationHelper.getTranslation(translationTextKey)
+            text = TranslationInteractor.getTranslation(translationTextKey)
         }
         if (!isEnabled){
             alpha = 0.5f

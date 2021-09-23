@@ -9,6 +9,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdPhoneInputBinding
+import com.custom.rgs_android_dom.domain.TranslationInteractor
 import com.custom.rgs_android_dom.utils.*
 import com.redmadrobot.inputmask.MaskedTextChangedListener
 
@@ -56,7 +57,7 @@ class MSDPhoneInput @JvmOverloads constructor(
             setCountryImage(countryImage)
         }
         attrs.getString(R.styleable.MSDPhoneInput_errorTranslationTextKey)?.let { translationErrorKey->
-            binding.errorTextView.text = TranslationHelper.getTranslation(translationErrorKey)
+            binding.errorTextView.text = TranslationInteractor.getTranslation(translationErrorKey)
         }
 
         binding.phoneEditText.setOnEditorActionListener { _, actionId, _ ->

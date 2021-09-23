@@ -7,6 +7,6 @@ interface TranslationRepository {
 
     fun loadAndSaveTranslations(): Completable
 
-    fun getTranslations(): Single<HashMap<String, String>>
+    fun getTranslate(key: String): String
 
 }
