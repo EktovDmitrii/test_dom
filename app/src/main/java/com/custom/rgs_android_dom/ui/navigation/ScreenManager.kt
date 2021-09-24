@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.ui.navigation
 
-import android.util.Log
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
@@ -73,9 +72,10 @@ object ScreenManager {
             scope.reversed().forEach {
                 transaction.remove(it.fragment)
             }
-            transaction.commit()
+            transaction.commitNow()
             scopes.removeIf { it.id == scopeId }
         }
+        notifyCurrentVisibleFragment()
     }
 
     //todo не проверен

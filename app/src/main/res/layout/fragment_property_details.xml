@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/toolbarRelativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/white">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/backImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:paddingHorizontal="14dp"
+            android:tint="@color/secondary800"
+            app:srcCompat="@drawable/ic_back_24px"/>
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/subtitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/titleTextView"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/suisse_regular"
+            android:gravity="center"
+            android:textColor="@color/secondary900_alpha64"
+            android:textSize="12sp"
+            app:translationTextKey="Шаг 2 из 2" />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/my_service_bold"
+            android:gravity="center"
+            android:textColor="@color/secondary900"
+            android:textSize="16sp"
+            app:translationTextKey="Информация об объекте" />
+
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarRelativeLayout"
+        app:layout_constraintBottom_toTopOf="@+id/actionsBottomAppBar"
+        android:orientation="horizontal"
+        android:overScrollMode="never"
+        android:paddingTop="16dp">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/secondary100"
+                android:fontFamily="@font/suisse_regular"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:paddingHorizontal="20dp"
+                android:textColor="@color/secondary900_alpha64"
+                android:textSize="14sp"
+                app:translationTextKey="Адрес" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="71dp"
+                    android:layout_weight="0.67">
+
+                    <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
+                        android:id="@+id/addressTextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:imeOptions="actionNext"
+                        android:paddingHorizontal="20dp"
+                        android:maxLength="250"
+                        app:translationHintKey="Адрес" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_gravity="bottom"
+                        android:background="@color/secondary100" />
+
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:background="@color/secondary100" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="71dp"
+                    android:layout_weight="0.335">
+
+                    <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
+                        android:id="@+id/entranceTextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:paddingHorizontal="20dp"
+                        app:translationHintKey="Подъезд" />
+
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start"
+                        android:background="@color/secondary100" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_gravity="bottom"
+                        android:background="@color/secondary100" />
+
+                </FrameLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="71dp"
+                    android:layout_weight="0.33">
+
+                    <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
+                        android:id="@+id/corpusTextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:imeOptions="actionNext"
+                        android:paddingHorizontal="20dp"
+                        app:translationHintKey="Корпус" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_gravity="top"
+                        android:background="@color/secondary100" />
+
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:background="@color/secondary100" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="71dp"
+                    android:layout_weight="0.33">
+
+                    <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
+                        android:id="@+id/floorTextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:paddingHorizontal="20dp"
+                        app:translationHintKey="Этаж" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_gravity="top"
+                        android:background="@color/secondary100" />
+
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:background="@color/secondary100" />
+
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start"
+                        android:background="@color/secondary100" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="71dp"
+                    android:layout_weight="0.33">
+
+                    <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
+                        android:id="@+id/flatTextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:paddingHorizontal="20dp"
+                        app:translationHintKey="Квартира" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_gravity="top"
+                        android:background="@color/secondary100" />
+
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start"
+                        android:background="@color/secondary100" />
+
+                </FrameLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/secondary100"
+                android:fontFamily="@font/suisse_regular"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:paddingHorizontal="20dp"
+                android:textColor="@color/secondary900_alpha64"
+                android:textSize="14sp"
+                app:translationTextKey="Информация об объекте" />
+
+            <com.custom.rgs_android_dom.views.MSDYesNoSelector
+                android:id="@+id/isOwnSelector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:paddingHorizontal="20dp"
+                app:translationLabelKey="Объект в собственности?" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="19dp"
+                android:background="@color/secondary100" />
+
+            <com.custom.rgs_android_dom.views.MSDYesNoSelector
+                android:id="@+id/isInRentSelector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:paddingHorizontal="20dp"
+                app:translationLabelKey="Сдаётся в аренду?" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="19dp"
+                android:background="@color/secondary100" />
+
+            <com.custom.rgs_android_dom.views.MSDYesNoSelector
+                android:id="@+id/isTemporarySelector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:paddingHorizontal="20dp"
+                app:translationLabelKey="Временное проживание?" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="19dp"
+                android:background="@color/secondary100" />
+
+            <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
+                android:id="@+id/totalAreaInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:imeOptions="actionNext"
+                android:paddingHorizontal="20dp"
+                android:layout_marginTop="10dp"
+                android:inputType="numberDecimal"
+                app:decimalLimit="6.2"
+                app:translationHintKey="Площадь (м²)" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/secondary100"
+                android:fontFamily="@font/suisse_regular"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:paddingHorizontal="20dp"
+                android:textColor="@color/secondary900_alpha64"
+                android:textSize="14sp"
+                app:translationTextKey="Дополнительно" />
+
+            <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
+                android:id="@+id/commentInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingHorizontal="20dp"
+                android:layout_marginTop="10dp"
+                android:maxLength="500"
+                android:lines="5"
+                android:inputType="textMultiLine"
+                app:translationHintKey="Добавить комментарий" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="19dp"
+                android:background="@color/secondary100" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/actionsBottomAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="82dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:paddingHorizontal="20dp"
+        android:paddingStart="20dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="22dp"
+        app:contentInsetStart="0dp"
+        tools:ignore="BottomAppBar">
+
+        <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullwidth
+            android:id="@+id/addTextView"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:enabled="false"
+            app:translationTextKey="Добавить объект" />
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
+</androidx.constraintlayout.widget.ConstraintLayout>

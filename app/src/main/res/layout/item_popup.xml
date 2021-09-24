@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="4dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/rectangle_filled_secondary_900_alpha92_radius_32dp">
+
+    <TextView
+        android:id="@+id/messageTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/my_service_bold"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:minHeight="32dp"
+        android:includeFontPadding="false"
+        android:gravity="center_vertical"
+        tools:text="Объект добавлен"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

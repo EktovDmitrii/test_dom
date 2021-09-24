@@ -1,8 +1,6 @@
 package com.custom.rgs_android_dom.ui.base
 
-import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.viewbinding.ViewBinding
@@ -13,7 +11,6 @@ import com.custom.rgs_android_dom.utils.hideSoftwareKeyboard
 import com.custom.rgs_android_dom.utils.subscribe
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import okhttp3.internal.threadFactory
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.emptyParametersHolder
@@ -52,7 +49,7 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB: ViewBinding>(
     }
 
     override fun getTheme(): Int {
-        return R.style.BottomSheet
+        return R.style.BottomSheetNoDim
     }
 
     override fun onStart() {

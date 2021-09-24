@@ -18,6 +18,7 @@
     <color name="error500">#FF6868</color>
     <color name="error600">#D45054</color>
     <color name="white">#FFFFFF</color>
+    <color name="secondary900_alpha92">#EB20201F</color>
     <color name="secondary900_alpha20">#3220201F</color>
     <color name="secondary900_alpha50">#1F20201F</color>
     <color name="secondary900_alpha56">#8F20201F</color>
@@ -31,4 +32,7 @@
     <color name="primary_200">#33F6A636</color>
     <color name="secondary900_alpha14">#1420201F</color>
     <color name="secondary450">#B7B9BB</color>
+
+    <!-- Text color for text input layout bottom line (overriden from default resources) -->
+    <color name="mtrl_textinput_default_box_stroke_color">@color/white</color>
 </resources>
