@@ -9,19 +9,22 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:background="@drawable/rectangle_filled_primary_500_radius_16dp"
-        android:paddingVertical="6dp"
         android:paddingHorizontal="16dp"
-        android:layout_alignParentEnd="true">
+        android:paddingVertical="6dp">
 
         <TextView
             android:id="@+id/messageTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/suisse_regular"
-            android:textSize="16sp"
             android:textColor="@color/white"
-            tools:text="Он вышел не на свою полосу, когда я перестраивался. Сейчас расскажу звонком"/>
+            android:textSize="16sp"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="24dp"
+            android:lineSpacingMultiplier="0"
+            tools:text="Он вышел не на свою полосу, когда я перестраивался. Сейчас расскажу звонком" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

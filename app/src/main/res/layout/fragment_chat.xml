@@ -68,7 +68,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
+                android:layout_height="48dp"
                 android:paddingStart="4dp"
                 android:paddingEnd="6dp"
                 android:clickable="false"
@@ -87,13 +87,14 @@
                     android:id="@+id/messageEditText"
                     style="@style/ChatEditText"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="24dp"
                     app:layout_constraintStart_toEndOf="@+id/attachImageView"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/sendMessageImageView"
                     android:layout_marginStart="12dp"
                     android:layout_marginEnd="46dp"
+                    android:includeFontPadding="false"
                     app:translationHintKey="Введите сообщение"/>
 
                 <com.custom.rgs_android_dom.views.MSDImageView

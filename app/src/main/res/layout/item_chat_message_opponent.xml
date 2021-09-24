@@ -46,6 +46,9 @@
                 android:fontFamily="@font/suisse_regular"
                 android:textSize="16sp"
                 android:textColor="@color/secondary900"
+                android:includeFontPadding="false"
+                android:lineSpacingExtra="24dp"
+                android:lineSpacingMultiplier="0"
                 tools:text="Он вышел не на свою полосу, когда я перестраивался. Сейчас расскажу звонком"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
