@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.client.view_states.ClientShortViewState
+import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.about_app.AboutAppFragment
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
@@ -23,7 +24,8 @@ import io.reactivex.schedulers.Schedulers
 
 class ClientViewModel(
     private val clientInteractor: ClientInteractor,
-    private val registrationInteractor: RegistrationInteractor
+    private val registrationInteractor: RegistrationInteractor,
+    private val propertyInteractor: PropertyInteractor
 ) : BaseViewModel() {
 
     private val clientShortViewStateController = MutableLiveData<ClientShortViewState>()
@@ -89,7 +91,7 @@ class ClientViewModel(
     }
 
     fun onAddPropertyClick(){
-        clientInteractor.getAllProperty()
+        propertyInteractor.getAllProperty()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(

@@ -25,8 +25,7 @@ import org.joda.time.LocalDateTime
 class ClientInteractor(
     private val clientRepository: ClientRepository,
     private val registrationRepository: RegistrationRepository,
-    private val countriesRepository: CountriesRepository,
-    private val propertyRepository: PropertyRepository
+    private val countriesRepository: CountriesRepository
 ) {
 
     companion object {
@@ -408,10 +407,6 @@ class ClientInteractor(
             )
         }
         return clientRepository.updateAgent(editAgentViewState.agentCode, editAgentViewState.agentPhone)
-    }
-
-    fun getAllProperty(): Single<List<PropertyItemModel>>{
-        return propertyRepository.getAllProperty()
     }
 
     private fun isBirthdayValid(birthday: LocalDateTime): Boolean {

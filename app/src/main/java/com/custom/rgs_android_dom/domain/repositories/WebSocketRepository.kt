@@ -1,6 +1,6 @@
 package com.custom.rgs_android_dom.domain.repositories
 
-import com.custom.rgs_android_dom.domain.web_socket.models.WsResponseModel
+import com.custom.rgs_android_dom.domain.web_socket.models.WsEventModel
 import io.reactivex.subjects.PublishSubject
 
 interface WebSocketRepository {
@@ -9,6 +9,6 @@ interface WebSocketRepository {
 
     fun disconnect()
 
-    fun getWsNewMessageSubject(): PublishSubject<WsResponseModel<*>>
+    fun getWsNewMessageSubject(): PublishSubject<WsEventModel<*>>
 
 }

@@ -5,7 +5,7 @@ import com.custom.rgs_android_dom.data.network.interceptors.AuthTokenInterceptor
 import com.custom.rgs_android_dom.data.network.interceptors.BasicAuthInterceptor
 import com.custom.rgs_android_dom.data.network.provider.ApiProvider
 import com.custom.rgs_android_dom.domain.client.models.Gender
-import com.custom.rgs_android_dom.domain.web_socket.models.WsResponseModel
+import com.custom.rgs_android_dom.domain.web_socket.models.WsEventModel
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.logging.HttpLoggingInterceptor
@@ -23,7 +23,7 @@ val networkModule = module {
             .registerTypeAdapter(LocalDate::class.java, JodaLocalDateGsonTypeAdapter())
             .registerTypeAdapter(DateTime::class.java, JodaDateTimeGsonTypeAdapter())
             .registerTypeAdapter(Gender::class.java, GenderGsonAdapter())
-            .registerTypeAdapter(WsResponseModel.Event::class.java, EventGsonAdapter())
+            .registerTypeAdapter(WsEventModel.Event::class.java, EventGsonAdapter())
             .create()
     }
 
