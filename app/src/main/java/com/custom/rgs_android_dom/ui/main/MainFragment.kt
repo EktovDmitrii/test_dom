@@ -9,6 +9,7 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentMainBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.ui.splash.SplashViewModel
 import com.custom.rgs_android_dom.utils.*
@@ -22,6 +23,8 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
 
     private val animationSet = AnimationSet(true)
 
+    private var bottomSheetMainFragment: BaseBottomSheetFragment<*,*>? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -31,6 +34,11 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
         ))
 
         binding.root.background = transitionBackground
+
+        binding.toolbarChatIcon.setOnDebouncedClickListener {
+            bottomSheetMainFragment?.close()
+            bottomSheetMainFragment?.openSubScreen(ChatFragment())
+        }
 
         measureAndShowFragment()
 
@@ -85,16 +93,16 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
             val minExpandedPercents = (binding.toolbarLinearLayout.height.toFloat() * 100) / binding.root.height
             val minHalfExpandedRatio = 1f - (minExpandedPercents / 100f)
 
-            val clientFragment = ClientFragment(
+            bottomSheetMainFragment = ClientFragment(
                 peekHeight = binding.root.getLocationOnScreen().y - binding.callContainerLinearLayout.getLocationOnScreen().y + 8.dp(requireContext()),
                 topMargin = binding.toolbarLinearLayout.height,
                 maxHalfExpandedRatio = maxHalfExpandedRatio,
                 minHalfExpandedRatio = minHalfExpandedRatio
             )
-            clientFragment.show(childFragmentManager, clientFragment.TAG)
+            bottomSheetMainFragment?.show(childFragmentManager, bottomSheetMainFragment?.TAG)
 
             binding.toolbarLinearLayout.setOnDebouncedClickListener {
-                clientFragment.setHalfExpanded()
+                bottomSheetMainFragment?.setHalfExpanded()
             }
         }
     }

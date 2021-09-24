@@ -53,10 +53,6 @@ class ClientFragment(
             viewModel.onAboutAppClick()
         }
 
-        binding.chatLinearLayout.setOnDebouncedClickListener {
-            viewModel.onChatClick()
-        }
-
         binding.addPropertyFrameLayout.setOnDebouncedClickListener {
             viewModel.onAddPropertyClick()
         }

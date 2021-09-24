@@ -13,13 +13,18 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/toolbarLinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="80dp"
         android:background="@drawable/rectangle_filled_primary_400_bottom_radius_24dp"
         android:clickable="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:focusable="true">
-
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="16dp"
+            android:id="@+id/toolbarChatIcon"
+            android:src="@drawable/ic_main_chat_tmp"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -58,7 +63,7 @@
         android:id="@+id/fakeBottomSheetView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="80dp"
         tools:visibility="gone"
         android:background="@drawable/rectangle_filled_white_top_radius_24dp"/>
 

@@ -18,11 +18,14 @@ open class BaseViewModel : ViewModel(), KoinComponent {
     protected val networkErrorController = MutableLiveData<String>()
     val networkErrorObserver: LiveData<String> = networkErrorController
 
+    fun close(){
+        closeController.value = Unit
+    }
+
     override fun onCleared() {
         dataCompositeDisposable.clear()
         super.onCleared()
     }
-
 
     enum class LoadingState{
         LOADING,

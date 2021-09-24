@@ -85,11 +85,6 @@ class ClientViewModel(
         ScreenManager.showScreen(AboutAppFragment())
     }
 
-    fun onChatClick(){
-        closeController.value = Unit
-        ScreenManager.showScreen(ChatFragment())
-    }
-
     fun onAddPropertyClick(){
         closeController.value = Unit
         ScreenManager.showScreen(SelectPropertyTypeFragment())
