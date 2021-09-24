@@ -21,11 +21,14 @@ open class BaseViewModel : ViewModel(), KoinComponent {
     protected val notificationController = MutableLiveData<String>()
     val notificationObserver: LiveData<String> = notificationController
 
+    fun close(){
+        closeController.value = Unit
+    }
+
     override fun onCleared() {
         dataCompositeDisposable.clear()
         super.onCleared()
     }
-
 
     enum class LoadingState{
         LOADING,

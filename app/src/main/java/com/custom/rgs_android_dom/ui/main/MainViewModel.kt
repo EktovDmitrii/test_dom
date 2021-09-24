@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.ui.main
 
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
@@ -38,5 +39,10 @@ class MainViewModel(private val registrationInteractor: RegistrationInteractor) 
 
     fun unsubscribeLogout(){
         logoutCompositeDisposable.clear()
+    }
+
+    fun onChatClick(){
+        closeController.value = Unit
+        ScreenManager.showScreen(ChatFragment())
     }
 }
