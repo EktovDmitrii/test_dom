@@ -18,6 +18,9 @@ open class BaseViewModel : ViewModel(), KoinComponent {
     protected val networkErrorController = MutableLiveData<String>()
     val networkErrorObserver: LiveData<String> = networkErrorController
 
+    protected val notificationController = MutableLiveData<String>()
+    val notificationObserver: LiveData<String> = notificationController
+
     fun close(){
         closeController.value = Unit
     }

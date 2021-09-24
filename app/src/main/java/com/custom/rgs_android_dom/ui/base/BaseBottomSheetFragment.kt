@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.*
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.CreateMethod
@@ -59,7 +60,7 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB : ViewBinding>(
     }
 
     override fun getTheme(): Int {
-        return R.style.BottomSheet
+        return R.style.BottomSheetNoDim
     }
 
     override fun onStart() {
@@ -265,7 +266,6 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB : ViewBinding>(
     }
 
     enum class SlideState { TOP, MOVING_BOTTOM, BOTTOM }
-
 
     interface BottomSheetEventsListener {
         fun onSlideStateChanged(newState: SlideState)

@@ -74,4 +74,10 @@ interface MSDApi {
 
     @GET("chat/channels/{channelId}/posts")
     fun getChatMessages(@Path("channelId") channelId: String, @Query("limit") limit: Long, @Query("offset") offset: Long): Single<List<ChatMessageResponse>>
+
+    @POST("property/clients/{clientId}/objects")
+    fun addProperty(@Path("clientId") clientId: String, @Body body: AddPropertyRequest): Completable
+
+    @GET("property/clients/{clientId}/objects")
+    fun getAllProperty(@Path("clientId") clientId: String): Single<AllPropertyResponse>
 }

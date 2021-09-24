@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.databinding.FragmentClientBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
+import com.custom.rgs_android_dom.utils.toast
 
 class ClientFragment(
     peekHeight: Int,
@@ -67,6 +68,10 @@ class ClientFragment(
                 binding.nameTextView.text = "${state.lastName} ${state.firstName}"
                 binding.nameTextView.setTextColor(requireContext().getColor(R.color.secondary900))
             }
+        }
+
+        subscribe(viewModel.networkErrorObserver){
+            toast(it)
         }
     }
 }

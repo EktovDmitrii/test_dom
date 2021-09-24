@@ -10,8 +10,10 @@ import com.custom.rgs_android_dom.domain.client.mappers.ClientShortViewStateMapp
 import com.custom.rgs_android_dom.domain.client.mappers.EditPersonalDataViewStateMapper
 import com.custom.rgs_android_dom.domain.client.mappers.PersonalDataMapper
 import com.custom.rgs_android_dom.domain.client.view_states.*
+import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.repositories.ClientRepository
 import com.custom.rgs_android_dom.domain.repositories.CountriesRepository
+import com.custom.rgs_android_dom.domain.repositories.PropertyRepository
 import com.custom.rgs_android_dom.domain.repositories.RegistrationRepository
 import com.custom.rgs_android_dom.utils.*
 import com.jakewharton.rxrelay2.BehaviorRelay
@@ -23,7 +25,8 @@ import org.joda.time.LocalDateTime
 class ClientInteractor(
     private val clientRepository: ClientRepository,
     private val registrationRepository: RegistrationRepository,
-    private val countriesRepository: CountriesRepository
+    private val countriesRepository: CountriesRepository,
+    private val propertyRepository: PropertyRepository
 ) {
 
     companion object {
@@ -405,6 +408,10 @@ class ClientInteractor(
             )
         }
         return clientRepository.updateAgent(editAgentViewState.agentCode, editAgentViewState.agentPhone)
+    }
+
+    fun getAllProperty(): Single<List<PropertyItemModel>>{
+        return propertyRepository.getAllProperty()
     }
 
     private fun isBirthdayValid(birthday: LocalDateTime): Boolean {

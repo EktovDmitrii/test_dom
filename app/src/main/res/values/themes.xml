@@ -266,15 +266,45 @@
         <item name="android:textColor">@color/gender_selector_text_color</item>
     </style>
 
-
-    <style name="BottomSheet" parent="Theme.MaterialComponents.BottomSheetDialog">
-        <item name="android:windowCloseOnTouchOutside">false</item>
-        <item name="android:backgroundDimEnabled">false</item>
-        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    <style name="YesNoSelector" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:fontFamily">@font/suisse_regular</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:clickable">true</item>
+        <item name="android:background">@drawable/gender_selector_background</item>
+        <item name="android:textColor">@color/gender_selector_text_color</item>
     </style>
 
-    <style name="BottomSheetStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
+    <style name="BottomSheetNoDim" parent="Theme.MaterialComponents.BottomSheetDialog">
+        <item name="android:windowCloseOnTouchOutside">false</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheetNoDimStyle</item>
+    </style>
+
+    <style name="BottomSheetNoDimStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="backgroundTint">@android:color/transparent</item>
+    </style>
+
+    <style name="BottomSheet" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:navigationBarColor">@color/white</item>
+    </style>
+
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/rectangle_filled_white_top_radius_20dp</item>
+    </style>
+
+    <style name="PopupWindowAnimation">
+        <item name="android:windowEnterAnimation">@anim/popup_show_animation</item>
+        <item name="android:windowExitAnimation">@anim/popup_hide_animation</item>
     </style>
 
 </resources>

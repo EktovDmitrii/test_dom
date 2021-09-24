@@ -10,8 +10,11 @@ import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.client.agent.AgentFragment
 import com.custom.rgs_android_dom.ui.client.personal_data.PersonalDataFragment
+import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
+import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.property.add.select_type.SelectPropertyTypeFragment
+import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -86,8 +89,19 @@ class ClientViewModel(
     }
 
     fun onAddPropertyClick(){
-        closeController.value = Unit
-        ScreenManager.showScreen(SelectPropertyTypeFragment())
+        clientInteractor.getAllProperty()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    closeController.value = Unit
+                    ScreenManager.showScreenScope(SelectPropertyTypeFragment.newInstance(it.size), ADD_PROPERTY)
+                },
+                onError = {
+                    logException(this, it)
+                    networkErrorController.value = "Не удалось загрузить список собственности"
+                }
+            ).addTo(dataCompositeDisposable)
     }
 
 }

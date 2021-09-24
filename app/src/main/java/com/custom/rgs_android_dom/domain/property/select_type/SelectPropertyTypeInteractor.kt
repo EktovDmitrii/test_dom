@@ -1,9 +1,12 @@
 package com.custom.rgs_android_dom.domain.property.select_type
 
+import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.select_type.view_states.SelectPropertyTypeViewState
+import com.custom.rgs_android_dom.domain.repositories.PropertyRepository
+import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 
-class SelectPropertyTypeInteractor {
+class SelectPropertyTypeInteractor() {
 
     val selectPropertyTypeViewStateSubject = PublishSubject.create<SelectPropertyTypeViewState>()
 

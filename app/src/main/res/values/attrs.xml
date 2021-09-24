@@ -31,6 +31,12 @@
         <attr name="android:enabled"/>
     </declare-styleable>
 
+    <declare-styleable name="MSDTextViewLoaderFullwidth">
+        <attr name="translationTextKey"/>
+        <attr name="android:text"/>
+        <attr name="android:enabled"/>
+    </declare-styleable>
+
     <declare-styleable name="MSDTextViewLoaderDoubleText">
         <attr name="translationPrimaryTextKey" format="string" />
         <attr name="translationSecondaryTextKey"/>
@@ -129,7 +135,23 @@
         <attr name="android:maxLength"/>
     </declare-styleable>
 
+    <declare-styleable name="MSDTextInputLayout">
+        <attr name="translationHintKey"/>
+        <attr name="android:imeOptions"/>
+        <attr name="android:inputType" />
+        <attr name="android:textAllCaps" />
+        <attr name="android:lines"/>
+        <attr name="isFocused"/>
+        <attr name="android:maxLength"/>
+        <attr name="android:digits"/>
+        <attr name="decimalLimit" format="string"/>
+    </declare-styleable>
+
     <declare-styleable name="MSDGenderSelector">
+        <attr name="translationLabelKey"/>
+    </declare-styleable>
+
+    <declare-styleable name="MSDYesNoSelector">
         <attr name="translationLabelKey"/>
     </declare-styleable>
 
