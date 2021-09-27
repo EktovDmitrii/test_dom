@@ -1,13 +1,11 @@
 package com.custom.rgs_android_dom.ui.chat
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentChatBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.countries.CountriesAdapter
 import com.custom.rgs_android_dom.utils.*
 
 class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.fragment_chat) {
@@ -33,23 +31,19 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
             binding.messageEditText.text?.clear()
         }
 
-        subscribe(viewModel.chatMessageObserver){
+        subscribe(viewModel.chatItemsObserver){
             chatAdapter.setItems(it)
             binding.messagesRecyclerView.scrollToPosition(chatAdapter.itemCount-1)
         }
 
-        subscribe(viewModel.newMessageObserver){
-            chatAdapter.addMessage(it)
+        subscribe(viewModel.newItemsObserver){
+            chatAdapter.addNewItems(it)
             binding.messagesRecyclerView.scrollToPosition(chatAdapter.itemCount-1)
         }
 
         subscribe(viewModel.networkErrorObserver){
             toast(it)
         }
-    }
-
-    override fun setStatusBarColor() {
-        setStatusBarColor(R.color.secondary100)
     }
 
     override fun onLoading() {

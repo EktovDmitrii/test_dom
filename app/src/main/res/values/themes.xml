@@ -307,4 +307,11 @@
         <item name="android:windowExitAnimation">@anim/popup_hide_animation</item>
     </style>
 
+    <style name="ProgressBarStyle" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:indeterminate">true</item>
+        <item name="alpha">0.9</item>
+        <item name="android:indeterminateTint">@color/secondary900_alpha56</item>
+        <item name="android:indeterminateTintMode">multiply</item>
+    </style>
+
 </resources>

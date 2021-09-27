@@ -61,10 +61,6 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
             viewModel.onAboutAppClick()
         }
 
-        binding.objectInfoLinearLayout.setOnDebouncedClickListener {
-            //viewModel.onObjectClick()
-        }
-
         subscribe(viewModel.propertyItemsObserver){ propertyItems ->
             propertyItemsAdapter.setItems(propertyItems)
         }

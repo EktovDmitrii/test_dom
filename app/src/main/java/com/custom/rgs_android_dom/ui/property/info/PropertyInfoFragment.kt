@@ -58,8 +58,12 @@ class PropertyInfoFragment: BaseBottomSheetFragment<PropertyInfoViewModel, Fragm
             binding.isOwnTextView.setValue(if (propertyItem.isOwn) "Да" else "Нет")
             binding.isRentTextView.setValue(if (propertyItem.isRent) "Да" else "Нет")
             binding.isTemporaryTextView.setValue(if (propertyItem.isTemporary) "Да" else "Нет")
-            binding.totalAreaTextView.setValue("${propertyItem.totalArea} м²")
-            binding.commentTextView.setValue(propertyItem.comment)
+            propertyItem.totalArea?.let { totalArea->
+                binding.totalAreaTextView.setValue("$totalArea м²")
+            }
+            if (propertyItem.comment.isNotEmpty()){
+                binding.commentTextView.setValue(propertyItem.comment)
+            }
         }
     }
 }

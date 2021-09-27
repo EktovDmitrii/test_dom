@@ -1,6 +1,8 @@
 package com.custom.rgs_android_dom.data.network.responses
 
 import com.google.gson.annotations.SerializedName
+import org.joda.time.DateTime
+import org.joda.time.LocalDateTime
 
 data class ChatMessageResponse(
     @SerializedName("channelId")
@@ -10,13 +12,19 @@ data class ChatMessageResponse(
     val files: List<ChatFileResponse>?,
 
     @SerializedName("id")
-    val id: String,
+    val id: String?,
 
     @SerializedName("message")
     val message: String,
 
     @SerializedName("userId")
-    val userId: String
+    val userId: String,
+
+    @SerializedName("createdAt")
+    val createdAt: DateTime,
+
+    @SerializedName("type")
+    val type: String
 )
 
 data class ChatFileResponse(

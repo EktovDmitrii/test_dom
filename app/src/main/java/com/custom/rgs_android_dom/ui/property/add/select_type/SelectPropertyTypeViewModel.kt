@@ -28,6 +28,9 @@ class SelectPropertyTypeViewModel(private val propertyCount: Int,
 
     private var propertyType = PropertyType.UNDEFINED
 
+    private val showConfirmCloseController = MutableLiveData<Unit>()
+    val showConfirmCloseObserver: LiveData<Unit> = showConfirmCloseController
+
     init {
         selectPropertyTypeInteractor.selectPropertyTypeViewStateSubject
             .subscribeOn(Schedulers.io())
@@ -43,7 +46,7 @@ class SelectPropertyTypeViewModel(private val propertyCount: Int,
     }
 
     fun onBackClick() {
-        ScreenManager.closeScope(ADD_PROPERTY)
+        showConfirmCloseController.value = Unit
     }
 
     fun onNextClick() {

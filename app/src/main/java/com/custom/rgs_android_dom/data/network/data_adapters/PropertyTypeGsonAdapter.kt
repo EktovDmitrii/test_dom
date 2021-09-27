@@ -19,7 +19,7 @@ class PropertyTypeGsonAdapter : TypeAdapter<PropertyType>() {
             str.toLowerCase(Locale.getDefault()) == "house" -> {
                 PropertyType.HOUSE
             }
-            str.toUpperCase(Locale.getDefault()) == "apartment" -> {
+            str.toLowerCase(Locale.getDefault()) == "apartment" -> {
                 PropertyType.APARTMENT
             }
             else -> PropertyType.UNDEFINED

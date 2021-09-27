@@ -49,6 +49,7 @@
             android:textSize="14sp"
             android:lines="1"
             android:ellipsize="end"
+            android:gravity="center_horizontal"
             app:translationTextKey="Редактировать данные"/>
 
         <androidx.appcompat.widget.AppCompatImageView

@@ -3,8 +3,7 @@ package com.custom.rgs_android_dom.ui.property.add.details
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.data.network.toNetworkException
-import com.custom.rgs_android_dom.domain.client.exceptions.ValidateClientException
-import com.custom.rgs_android_dom.domain.property.details.PropertyDetailsInteractor
+import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.details.exceptions.ValidatePropertyException
 import com.custom.rgs_android_dom.domain.property.details.view_states.PropertyDetailsViewState
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
@@ -13,7 +12,6 @@ import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.logException
 import com.custom.rgs_android_dom.views.MSDYesNoSelector
-import com.google.gson.annotations.Until
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -21,7 +19,7 @@ import io.reactivex.schedulers.Schedulers
 
 class PropertyDetailsViewModel(propertyCount: Int,
                                propertyType: PropertyType,
-                               private val propertyDetailsInteractor: PropertyDetailsInteractor) : BaseViewModel() {
+                               private val propertyInteractor: PropertyInteractor) : BaseViewModel() {
 
     private val propertyDetailsViewStateController = MutableLiveData<PropertyDetailsViewState>()
     val propertyDetailsObserver: LiveData<PropertyDetailsViewState> = propertyDetailsViewStateController
@@ -29,11 +27,8 @@ class PropertyDetailsViewModel(propertyCount: Int,
     private val validateExceptionController = MutableLiveData<ValidatePropertyException>()
     val validateExceptionObserver: LiveData<ValidatePropertyException> = validateExceptionController
 
-    private val showConfirmCloseController = MutableLiveData<Unit>()
-    val showConfirmCloseObserver: LiveData<Unit> = showConfirmCloseController
-
     init {
-        propertyDetailsInteractor.propertyDetailsViewStateSubject
+        propertyInteractor.propertyDetailsViewStateSubject
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
@@ -45,16 +40,16 @@ class PropertyDetailsViewModel(propertyCount: Int,
                 }
             ).addTo(dataCompositeDisposable)
 
-        propertyDetailsInteractor.updatePropertyName(propertyCount, propertyType)
-        propertyDetailsInteractor.updatePropertyType(propertyType)
+        propertyInteractor.updatePropertyName(propertyCount, propertyType)
+        propertyInteractor.updatePropertyType(propertyType)
     }
 
     fun onBackClick() {
-        showConfirmCloseController.value = Unit
+        closeController.value = Unit
     }
 
     fun onAddClick(){
-        propertyDetailsInteractor.addProperty()
+        propertyInteractor.addProperty()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
@@ -82,43 +77,43 @@ class PropertyDetailsViewModel(propertyCount: Int,
     }
 
     fun onAddressChanged(address: String){
-        propertyDetailsInteractor.updatePropertyAddress(address)
+        propertyInteractor.updatePropertyAddress(address)
     }
 
     fun onEntranceChanged(entrance: String){
-        propertyDetailsInteractor.updatePropertyEntrance(entrance)
+        propertyInteractor.updatePropertyEntrance(entrance)
     }
 
     fun onCorpusChanged(corpus: String){
-        propertyDetailsInteractor.updatePropertyCorpus(corpus)
+        propertyInteractor.updatePropertyCorpus(corpus)
     }
 
     fun onFloorChanged(floor: String){
-        propertyDetailsInteractor.updatePropertyFloor(floor)
+        propertyInteractor.updatePropertyFloor(floor)
     }
 
     fun onFlatChanged(flat: String){
-        propertyDetailsInteractor.updatePropertyFlat(flat)
+        propertyInteractor.updatePropertyFlat(flat)
     }
 
     fun onIsOwnSelected(selection: MSDYesNoSelector.Selection){
-        propertyDetailsInteractor.updatePropertyIsOwn(selection.selectionString)
+        propertyInteractor.updatePropertyIsOwn(selection.selectionString)
     }
 
     fun onIsInRentSelected(selection: MSDYesNoSelector.Selection){
-        propertyDetailsInteractor.updatePropertyIsRent(selection.selectionString)
+        propertyInteractor.updatePropertyIsRent(selection.selectionString)
     }
 
     fun onIsTemporarySelected(selection: MSDYesNoSelector.Selection){
-        propertyDetailsInteractor.updatePropertyIsTemporary(selection.selectionString)
+        propertyInteractor.updatePropertyIsTemporary(selection.selectionString)
     }
 
     fun onTotalAreaChanged(totalArea: String){
-        propertyDetailsInteractor.updatePropertyTotalArea(totalArea)
+        propertyInteractor.updatePropertyTotalArea(totalArea)
     }
 
     fun onCommentChanged(comment: String){
-        propertyDetailsInteractor.updatePropertyComment(comment)
+        propertyInteractor.updatePropertyComment(comment)
     }
 
 }

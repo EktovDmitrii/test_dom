@@ -4,7 +4,7 @@ import android.util.Log
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.preferences.AuthSharedPreferences
 import com.custom.rgs_android_dom.domain.repositories.WebSocketRepository
-import com.custom.rgs_android_dom.domain.web_socket.models.WsResponseModel
+import com.custom.rgs_android_dom.domain.web_socket.models.WsEventModel
 import com.custom.rgs_android_dom.utils.WsResponseParser
 import com.google.gson.Gson
 import io.reactivex.subjects.PublishSubject
@@ -25,7 +25,7 @@ class WebSocketRepositoryImpl(
 
     var isConnected = false
 
-    val newMessageSubject: PublishSubject<WsResponseModel<*>> = PublishSubject.create()
+    val newMessageSubject: PublishSubject<WsEventModel<*>> = PublishSubject.create()
 
     private var webSocket: WebSocket? = null
     private val webSocketListener = object : WebSocketListener() {
@@ -86,7 +86,7 @@ class WebSocketRepositoryImpl(
         webSocket?.close(CLOSE_REASON_NORMAL, null)
     }
 
-    override fun getWsNewMessageSubject(): PublishSubject<WsResponseModel<*>> {
+    override fun getWsNewMessageSubject(): PublishSubject<WsEventModel<*>> {
         return newMessageSubject
     }
 
