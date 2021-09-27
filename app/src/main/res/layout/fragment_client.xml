@@ -44,6 +44,8 @@
                     tools:listitem="@layout/item_property_item"
                     android:orientation="horizontal"
                     android:overScrollMode="never"
+                    android:paddingHorizontal="20dp"
+                    android:clipToPadding="false"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="1"/>
 

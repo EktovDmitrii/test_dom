@@ -5,6 +5,8 @@ import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentClientBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
+import com.custom.rgs_android_dom.utils.dp
+import com.custom.rgs_android_dom.utils.recycler_view.HorizontalItemDecoration
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
 import com.custom.rgs_android_dom.utils.toast
@@ -42,6 +44,12 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
             onPropertyItemClick = {
                 viewModel.onPropertyItemClick(it)
             }
+        )
+
+        binding.propertyItemsRecycler.addItemDecoration(
+            HorizontalItemDecoration(
+                gap = 16.dp(requireContext())
+            )
         )
 
         binding.logoutRelativeLayout.setOnDebouncedClickListener {
