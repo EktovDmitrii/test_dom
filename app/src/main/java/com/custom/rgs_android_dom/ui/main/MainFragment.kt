@@ -4,17 +4,24 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.*
+import androidx.core.view.marginTop
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentMainBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
+import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.property.info.PropertyInfoFragment
 import com.custom.rgs_android_dom.ui.splash.SplashViewModel
 import com.custom.rgs_android_dom.utils.*
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetBehavior.*
 
-class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.fragment_main), BaseBottomSheetFragment.BottomSheetEventsListener {
+
+class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.fragment_main) {
 
     private lateinit var transitionBackground: TransitionDrawable
 
@@ -36,11 +43,18 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
         binding.root.background = transitionBackground
 
         binding.toolbarChatIcon.setOnDebouncedClickListener {
-            bottomSheetMainFragment?.close()
-            bottomSheetMainFragment?.openSubScreen(ChatFragment())
+            ScreenManager.showScreen(ChatFragment())
         }
 
-        measureAndShowFragment()
+        ScreenManager.bottomFragmentsUpdate = {
+            bottomSheetMainFragment = it
+            measureAndShowFragment()
+        }
+
+        ScreenManager.initBottomSheet(R.id.bottomContainer)
+
+        ScreenManager.showBottomScreen(ClientFragment())
+
 
     }
 
@@ -54,56 +68,41 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
         viewModel.unsubscribeLogout()
     }
 
-    override fun onSlideStateChanged(newState: BaseBottomSheetFragment.SlideState){
-        when (newState){
-            BaseBottomSheetFragment.SlideState.TOP-> {
-                if (canTransitReverse){
-                    transitionBackground.reverseTransition(100)
-                    canTransitReverse = false
-                }
-                binding.swipeMoreTextView.visible()
-                canTransit = true
-            }
-            BaseBottomSheetFragment.SlideState.MOVING_BOTTOM -> {
-                if (canTransit){
-                    binding.swipeMoreTextView.startAnimation(animationSet)
-                    transitionBackground.startTransition(100)
-                    canTransit = false
-                }
-            }
-            BaseBottomSheetFragment.SlideState.BOTTOM -> {
-                canTransitReverse = true
-            }
-
-        }
-    }
-
-    override fun onBottomSheetInit() {
-        binding.fakeBottomSheetView.gone()
-    }
-
     private fun measureAndShowFragment(){
         binding.root.afterMeasured {
 
-            initAnimations()
+            val bottomSheetBehavior: BottomSheetBehavior<*> =
+                BottomSheetBehavior.from<View>(binding.bottomContainer)
+            bottomSheetBehavior.state = STATE_COLLAPSED
+            bottomSheetBehavior.peekHeight = binding.root.getLocationOnScreen().y - binding.callContainerLinearLayout.getLocationOnScreen().y + 8.dp(requireContext())
+            val layoutParams = binding.bottomContainer.layoutParams as ViewGroup.MarginLayoutParams
+            when(bottomSheetMainFragment){
+                is ClientFragment -> {
+                    layoutParams.topMargin = 80.dp(requireContext())
+                }
+                is PropertyInfoFragment -> {
+                    layoutParams.topMargin = 0.dp(requireContext())
+                }
+            }
+            binding.bottomContainer.layoutParams = layoutParams
+            bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetCallback(){
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
 
-            val maxExpandedPercents = ((binding.toolbarLinearLayout.height.toFloat() + binding.swipeMoreTextView.height.toFloat() + 10.dp(requireContext())) * 100) / binding.root.height
-            val maxHalfExpandedRatio = 1f - (maxExpandedPercents / 100f)
+                }
 
-            val minExpandedPercents = (binding.toolbarLinearLayout.height.toFloat() * 100) / binding.root.height
-            val minHalfExpandedRatio = 1f - (minExpandedPercents / 100f)
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {
 
-            bottomSheetMainFragment = ClientFragment(
-                peekHeight = binding.root.getLocationOnScreen().y - binding.callContainerLinearLayout.getLocationOnScreen().y + 8.dp(requireContext()),
-                topMargin = binding.toolbarLinearLayout.height,
-                maxHalfExpandedRatio = maxHalfExpandedRatio,
-                minHalfExpandedRatio = minHalfExpandedRatio
-            )
-            bottomSheetMainFragment?.show(childFragmentManager, bottomSheetMainFragment?.TAG)
+                }
+
+            })
 
             binding.toolbarLinearLayout.setOnDebouncedClickListener {
-                bottomSheetMainFragment?.setHalfExpanded()
+                bottomSheetBehavior.state = STATE_COLLAPSED
             }
+
+
+            bottomSheetBehavior.state = STATE_EXPANDED
+
         }
     }
 
@@ -145,8 +144,8 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
 
     override fun onVisibleToUser() {
         super.onVisibleToUser()
-        binding.fakeBottomSheetView.visible()
-        measureAndShowFragment()
+//        binding.fakeBottomSheetView.visible()
+        //measureAndShowFragment()
     }
 
 }

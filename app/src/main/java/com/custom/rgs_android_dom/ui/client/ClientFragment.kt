@@ -9,12 +9,7 @@ import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
 import com.custom.rgs_android_dom.utils.toast
 
-class ClientFragment(
-    peekHeight: Int,
-    topMargin: Int,
-    maxHalfExpandedRatio: Float,
-    minHalfExpandedRatio: Float
-) : BaseBottomSheetFragment<ClientViewModel, FragmentClientBinding>(peekHeight, topMargin, maxHalfExpandedRatio, minHalfExpandedRatio) {
+class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClientBinding>() {
 
     override val TAG: String = "CLIENT_FRAGMENT"
 
@@ -56,6 +51,14 @@ class ClientFragment(
 
         binding.addPropertyFrameLayout.setOnDebouncedClickListener {
             viewModel.onAddPropertyClick()
+        }
+
+        binding.objectInfoLinearLayout.setOnDebouncedClickListener {
+            viewModel.onObjectClick()
+        }
+
+        subscribe(viewModel.propertyesObserver){ propertyes ->
+
         }
 
         subscribe(viewModel.clientShortViewStateObserver){state->
