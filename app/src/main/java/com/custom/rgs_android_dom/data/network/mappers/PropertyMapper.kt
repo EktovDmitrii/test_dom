@@ -21,7 +21,7 @@ object PropertyMapper {
             name = response.name,
             status = response.status ?: "",
             totalArea = response.totalArea,
-            type = response.type ?: ""
+            type = response.type
         )
     }
 }

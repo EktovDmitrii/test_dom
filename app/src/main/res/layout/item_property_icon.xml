@@ -5,4 +5,4 @@
     android:id="@+id/propertyImageView"
     android:layout_width="335dp"
     android:layout_height="335dp"
-    app:srcCompat="@drawable/ic_select_home"/>
+    app:srcCompat="@drawable/ic_type_home"/>

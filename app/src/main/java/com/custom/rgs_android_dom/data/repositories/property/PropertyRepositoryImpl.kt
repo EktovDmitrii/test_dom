@@ -44,4 +44,10 @@ class PropertyRepositoryImpl(private val api: MSDApi,
         }
     }
 
+    override fun getPropertyItem(objectId: String): Single<PropertyItemModel> {
+        return api.getPropertyItem(objectId).map { response->
+            PropertyMapper.responseToProperty(response)
+        }
+    }
+
 }

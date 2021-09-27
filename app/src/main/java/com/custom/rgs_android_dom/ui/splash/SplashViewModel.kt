@@ -32,13 +32,13 @@ class SplashViewModel(private val registrationInteractor: RegistrationInteractor
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
             .subscribe({
-                startNextCreen()
+                startNextScreen()
             }, {
-                startNextCreen()
+                startNextScreen()
             }).addTo(dataCompositeDisposable)
     }
 
-    private fun startNextCreen(){
+    private fun startNextScreen(){
         closeController.value = Unit
         if (registrationInteractor.isAuthorized()){
             ScreenManager.showScreen(MainFragment())

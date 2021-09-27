@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/addPropertyFrameLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="20dp"
+    android:layout_marginTop="12dp">
+
+    <FrameLayout
+        android:layout_width="124dp"
+        android:layout_height="144dp"
+        android:background="@drawable/card_filled_secondary_100_radius_24dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/ic_products" />
+    </FrameLayout>
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="126dp"
+        android:background="@drawable/row_filled_white_radius_10dp"
+        android:fontFamily="@font/suisse_regular"
+        android:paddingHorizontal="12dp"
+        android:gravity="center_vertical"
+        android:includeFontPadding="false"
+        android:textColor="@color/secondary900"
+        android:textSize="16sp"
+        android:layout_gravity="center_horizontal"
+        app:translationTextKey="Добавить" />
+
+</FrameLayout>

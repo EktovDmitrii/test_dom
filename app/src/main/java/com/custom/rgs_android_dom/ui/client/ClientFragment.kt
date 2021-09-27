@@ -13,6 +13,9 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
 
     override val TAG: String = "CLIENT_FRAGMENT"
 
+    private val propertyItemsAdapter: PropertyItemsAdapter
+        get() = binding.propertyItemsRecycler.adapter as PropertyItemsAdapter
+
     override fun getSwipeAnchor(): View? {
         return binding.swipeAnchorLayout.root
     }
@@ -32,6 +35,15 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
             }
         }
 
+        binding.propertyItemsRecycler.adapter = PropertyItemsAdapter(
+            onAddPropertyClick = {
+                viewModel.onAddPropertyClick()
+            },
+            onPropertyItemClick = {
+                viewModel.onPropertyItemClick(it)
+            }
+        )
+
         binding.logoutRelativeLayout.setOnDebouncedClickListener {
             viewModel.onLogoutClick()
         }
@@ -49,16 +61,12 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
             viewModel.onAboutAppClick()
         }
 
-        binding.addPropertyFrameLayout.setOnDebouncedClickListener {
-            viewModel.onAddPropertyClick()
-        }
-
         binding.objectInfoLinearLayout.setOnDebouncedClickListener {
-            viewModel.onObjectClick()
+            //viewModel.onObjectClick()
         }
 
-        subscribe(viewModel.propertyesObserver){ propertyes ->
-
+        subscribe(viewModel.propertyItemsObserver){ propertyItems ->
+            propertyItemsAdapter.setItems(propertyItems)
         }
 
         subscribe(viewModel.clientShortViewStateObserver){state->

@@ -40,5 +40,5 @@ val viewModelModule = module {
     viewModel { ChatViewModel(chatInteractor = get()) }
     viewModel { parameters-> SelectPropertyTypeViewModel(propertyCount = parameters.get(), selectPropertyTypeInteractor = get()) }
     viewModel { parameters-> PropertyDetailsViewModel(propertyCount = parameters.get(), propertyType = parameters.get(), propertyDetailsInteractor = get()) }
-    viewModel { PropertyInfoViewModel() }
+    viewModel { parameters-> PropertyInfoViewModel(objectId = parameters.get(), propertyInteractor = get()) }
 }

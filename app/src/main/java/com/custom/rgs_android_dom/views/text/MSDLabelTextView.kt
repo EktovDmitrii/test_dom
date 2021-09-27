@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.views.text
 
 import android.content.Context
+import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.appcompat.widget.LinearLayoutCompat
@@ -24,6 +25,12 @@ class MSDLabelTextView @JvmOverloads constructor(
         attrs.getString(R.styleable.MSDLabelTextView_translationLabelKey)?.let { translationTextKey ->
             //TODO Add handling translation logic here
             binding.labelTextView.text = TranslationInteractor.getTranslation(translationTextKey)
+        }
+
+        attrs.getBoolean(R.styleable.MSDLabelTextView_isItalic, false).let {
+            if (it){
+                binding.valueTextView.setTypeface(binding.valueTextView.typeface, Typeface.ITALIC)
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.data.network.responses
 
 import com.custom.rgs_android_dom.data.network.requests.PropertyDocumentRequest
+import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.google.gson.annotations.SerializedName
 
 data class PropertyItemResponse(
@@ -38,7 +39,7 @@ data class PropertyItemResponse(
     val totalArea: Float?,
 
     @SerializedName("type")
-    val type: String?
+    val type: PropertyType
 )
 
 data class PropertyDocumentResponse(

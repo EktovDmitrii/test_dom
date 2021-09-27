@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.client.view_states.ClientShortViewState
+import com.custom.rgs_android_dom.domain.property.models.AddPropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.about_app.AboutAppFragment
@@ -29,12 +30,12 @@ class ClientViewModel(
 ) : BaseViewModel() {
 
     private val clientShortViewStateController = MutableLiveData<ClientShortViewState>()
-    private val propertyesController = MutableLiveData<List<PropertyItemModel>>()
+
+    private val propertyItemsController = MutableLiveData<List<Any>>()
+    val propertyItemsObserver: LiveData<List<Any>> = propertyItemsController
 
     val clientShortViewStateObserver: LiveData<ClientShortViewState> =
         clientShortViewStateController
-    val propertyesObserver : LiveData<List<PropertyItemModel>> =
-        propertyesController
 
     init {
         clientInteractor.subscribeClientUpdateSubject()
@@ -67,9 +68,17 @@ class ClientViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    propertyesController.value = it
+                    // TODO Maybe we need to re-factor this stuff
+                    val propertyItems = arrayListOf<Any>()
+                    propertyItems.addAll(it)
+                    propertyItems.add(AddPropertyItemModel())
+                    propertyItemsController.value = propertyItems
                 },
                 onError = {
+                    val propertyItems = arrayListOf<Any>()
+                    propertyItems.add(AddPropertyItemModel())
+                    propertyItemsController.value = propertyItems
+
                     logException(this, it)
                     networkErrorController.value = "Не удалось загрузить список собственности"
                 }
@@ -103,8 +112,8 @@ class ClientViewModel(
         ScreenManager.showScreen(AboutAppFragment())
     }
 
-    fun onObjectClick() {
-        ScreenManager.showBottomScreen(PropertyInfoFragment())
+    fun onPropertyItemClick(model: PropertyItemModel) {
+        ScreenManager.showBottomScreen(PropertyInfoFragment.newInstance(model.id))
     }
 
     fun onAddPropertyClick(){

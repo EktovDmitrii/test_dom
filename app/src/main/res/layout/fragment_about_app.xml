@@ -79,12 +79,12 @@
 
                         <ImageView
                             style="@style/Icon.Filled.Primary500_Alpha12"
-                            app:srcCompat="@drawable/ic_rating_20px" />
+                            app:srcCompat="@drawable/ic_rating_20px"
+                            android:visibility="gone"/>
 
                         <com.custom.rgs_android_dom.views.text.MSDTextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_marginStart="12dp"
                             android:fontFamily="@font/suisse_regular"
                             android:gravity="center_vertical"
                             android:includeFontPadding="false"
@@ -99,7 +99,6 @@
                         android:layout_height="1dp"
                         android:alpha="0.16"
                         android:layout_marginTop="15dp"
-                        android:layout_marginStart="48dp"
                         android:background="@color/secondary900_alpha56"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -117,12 +116,12 @@
 
                         <ImageView
                             style="@style/Icon.Filled.Primary500_Alpha12"
-                            app:srcCompat="@drawable/ic_rating_20px" />
+                            app:srcCompat="@drawable/ic_rating_20px"
+                            android:visibility="gone"/>
 
                         <com.custom.rgs_android_dom.views.text.MSDTextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_marginStart="12dp"
                             android:fontFamily="@font/suisse_regular"
                             android:gravity="center_vertical"
                             android:includeFontPadding="false"
@@ -137,7 +136,6 @@
                         android:layout_height="1dp"
                         android:alpha="0.16"
                         android:layout_marginTop="15dp"
-                        android:layout_marginStart="48dp"
                         android:background="@color/secondary900_alpha56"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -156,12 +154,12 @@
 
                         <ImageView
                             style="@style/Icon.Filled.Primary500_Alpha12"
-                            app:srcCompat="@drawable/ic_rating_20px" />
+                            app:srcCompat="@drawable/ic_rating_20px"
+                            android:visibility="gone"/>
 
                         <com.custom.rgs_android_dom.views.text.MSDTextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_marginStart="12dp"
                             android:fontFamily="@font/suisse_regular"
                             android:gravity="center_vertical"
                             android:includeFontPadding="false"
@@ -176,7 +174,6 @@
                         android:layout_height="1dp"
                         android:alpha="0.16"
                         android:layout_marginTop="15dp"
-                        android:layout_marginStart="48dp"
                         android:background="@color/secondary900_alpha56"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -195,12 +192,12 @@
 
                         <ImageView
                             style="@style/Icon.Filled.Primary500_Alpha12"
-                            app:srcCompat="@drawable/ic_rating_20px" />
+                            app:srcCompat="@drawable/ic_rating_20px"
+                            android:visibility="gone"/>
 
                         <com.custom.rgs_android_dom.views.text.MSDTextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_marginStart="12dp"
                             android:fontFamily="@font/suisse_regular"
                             android:gravity="center_vertical"
                             android:includeFontPadding="false"
