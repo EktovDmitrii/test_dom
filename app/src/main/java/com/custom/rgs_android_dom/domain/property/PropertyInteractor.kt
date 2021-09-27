@@ -1,14 +1,16 @@
-package com.custom.rgs_android_dom.domain.property.details
+package com.custom.rgs_android_dom.domain.property
 
 import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyField
 import com.custom.rgs_android_dom.domain.property.details.exceptions.ValidatePropertyException
 import com.custom.rgs_android_dom.domain.property.details.view_states.PropertyDetailsViewState
+import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.domain.repositories.PropertyRepository
 import io.reactivex.Completable
+import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 
-class PropertyDetailsInteractor(private val propertyRepository: PropertyRepository) {
+class PropertyInteractor(private val propertyRepository: PropertyRepository){
 
     val propertyDetailsViewStateSubject = PublishSubject.create<PropertyDetailsViewState>()
 
@@ -129,6 +131,10 @@ class PropertyDetailsInteractor(private val propertyRepository: PropertyReposito
             totalArea = totalArea,
             comment = comment
         )
+    }
+
+    fun getAllProperty(): Single<List<PropertyItemModel>> {
+        return propertyRepository.getAllProperty()
     }
 
     private fun checkIfPropertyDetailsFieldsFilled() {

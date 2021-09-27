@@ -29,7 +29,7 @@ val viewModelModule = module {
     viewModel { parameters-> RegistrationAgreementViewModel(phone = parameters.get(), registrationInteractor = get()) }
     viewModel { parameters-> RegistrationFillClientViewModel(phone = parameters.get(), clientInteractor= get()) }
     viewModel { parameters-> CountriesViewModel(selectedCountryLetterCode = parameters.get(), countriesInteractor = get())}
-    viewModel { ClientViewModel(clientInteractor = get(), registrationInteractor = get()) }
+    viewModel { ClientViewModel(clientInteractor = get(), registrationInteractor = get(), propertyInteractor = get()) }
     viewModel { MainViewModel(registrationInteractor = get()) }
     viewModel { PersonalDataViewModel(clientInteractor = get()) }
     viewModel { EditPersonalDataViewModel(clientInteractor = get()) }
@@ -38,5 +38,5 @@ val viewModelModule = module {
     viewModel { AboutAppViewModel() }
     viewModel { ChatViewModel(chatInteractor = get()) }
     viewModel { parameters-> SelectPropertyTypeViewModel(propertyCount = parameters.get(), selectPropertyTypeInteractor = get()) }
-    viewModel { parameters-> PropertyDetailsViewModel(propertyCount = parameters.get(), propertyType = parameters.get(), propertyDetailsInteractor = get()) }
+    viewModel { parameters-> PropertyDetailsViewModel(propertyCount = parameters.get(), propertyType = parameters.get(), propertyInteractor = get()) }
 }
