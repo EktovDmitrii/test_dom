@@ -37,11 +37,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         ScreenManager.init(this, R.id.vgScreensContainer)
-        startSplash()
-        CacheHelper.init()
-        loadTranslation()
+        if (savedInstanceState == null){
+            startSplash()
+            CacheHelper.init()
+            loadTranslation()
+            webSocketInteractor.connect()
+        }
 
-        webSocketInteractor.connect()
     }
 
     private fun loadTranslation(){

@@ -47,12 +47,12 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
             ScreenManager.showScreen(ChatFragment())
         }
 
+
+        ScreenManager.initBottomSheet(R.id.bottomContainer)
         ScreenManager.bottomFragmentsUpdate = {
             bottomSheetMainFragment = it
             measureAndShowFragment()
         }
-
-        ScreenManager.initBottomSheet(R.id.bottomContainer)
         ScreenManager.showBottomScreen(ClientFragment())
 
     }
