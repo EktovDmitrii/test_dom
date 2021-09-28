@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.demo.DemoFragment
 import com.custom.rgs_android_dom.ui.demo.DemoRegistrationFlowFragment
+import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 
 object ScreenManager {
 
@@ -166,7 +167,7 @@ object ScreenManager {
 
     private fun getFirstScreenForMenuItem(menu: NavigationMenu): BaseFragment<*, *> {
         return when (menu) {
-            NavigationMenu.HOME -> DemoRegistrationFlowFragment()
+            NavigationMenu.HOME -> RegistrationPhoneFragment()
             NavigationMenu.CATALOG -> DemoFragment()
             NavigationMenu.PROFILE -> DemoFragment()
             NavigationMenu.MENU -> DemoFragment()
