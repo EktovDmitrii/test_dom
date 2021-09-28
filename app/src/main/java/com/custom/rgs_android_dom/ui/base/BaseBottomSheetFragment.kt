@@ -43,6 +43,14 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB : ViewBinding>: Bo
     override fun getTheme(): Int {
         return R.style.BottomSheetNoDim
     }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return binding.root
+    }
+
 
     override fun onStart() {
         super.onStart()
