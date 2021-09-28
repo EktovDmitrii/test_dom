@@ -21,14 +21,14 @@ class MainViewModel(private val registrationInteractor: RegistrationInteractor) 
         //registrationInteractor.saveMockToken()
     }
 
-    fun subscribeLogout(){
+    fun subscribeLogout() {
         registrationInteractor.getLogoutSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    closeController.value = Unit
                     ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+                    closeController.value = Unit
                 },
                 onError = {
                     logException(this, it)
@@ -37,11 +37,11 @@ class MainViewModel(private val registrationInteractor: RegistrationInteractor) 
     }
 
 
-    fun unsubscribeLogout(){
+    fun unsubscribeLogout() {
         logoutCompositeDisposable.clear()
     }
 
-    fun onChatClick(){
+    fun onChatClick() {
         closeController.value = Unit
         ScreenManager.showScreen(ChatFragment())
     }

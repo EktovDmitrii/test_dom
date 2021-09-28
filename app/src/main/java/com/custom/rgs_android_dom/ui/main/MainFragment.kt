@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.*
-import androidx.core.view.marginTop
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentMainBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
@@ -16,7 +15,6 @@ import com.custom.rgs_android_dom.ui.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.property.info.PropertyInfoFragment
-import com.custom.rgs_android_dom.ui.splash.SplashViewModel
 import com.custom.rgs_android_dom.utils.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.*
@@ -31,15 +29,17 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
 
     private val animationSet = AnimationSet(true)
 
-    private var bottomSheetMainFragment: BaseBottomSheetFragment<*,*>? = null
+    private var bottomSheetMainFragment: BaseBottomSheetFragment<*, *>? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        transitionBackground = TransitionDrawable(arrayOf(
-            ColorDrawable(requireContext().getColor(R.color.primary400)),
-            ColorDrawable(requireContext().getColor(R.color.primary700))
-        ))
+        transitionBackground = TransitionDrawable(
+            arrayOf(
+                ColorDrawable(requireContext().getColor(R.color.primary400)),
+                ColorDrawable(requireContext().getColor(R.color.primary700))
+            )
+        )
 
         binding.root.background = transitionBackground
 
@@ -47,14 +47,12 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
             ScreenManager.showScreen(ChatFragment())
         }
 
-
         ScreenManager.initBottomSheet(R.id.bottomContainer)
         ScreenManager.bottomFragmentsUpdate = {
             bottomSheetMainFragment = it
             measureAndShowFragment()
         }
         ScreenManager.showBottomScreen(ClientFragment())
-
     }
 
     override fun onStart() {
@@ -67,16 +65,19 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
         viewModel.unsubscribeLogout()
     }
 
-    private fun measureAndShowFragment(){
+    private fun measureAndShowFragment() {
         binding.root.afterMeasured {
 
             val bottomSheetBehavior: BottomSheetBehavior<*> =
                 BottomSheetBehavior.from<View>(binding.bottomContainer)
             bottomSheetBehavior.saveFlags = SAVE_ALL
             bottomSheetBehavior.state = STATE_COLLAPSED
-            bottomSheetBehavior.peekHeight = binding.root.getLocationOnScreen().y - binding.callContainerLinearLayout.getLocationOnScreen().y + 8.dp(requireContext())
+            bottomSheetBehavior.peekHeight =
+                binding.root.getLocationOnScreen().y - binding.callContainerLinearLayout.getLocationOnScreen().y + 8.dp(
+                    requireContext()
+                )
             val layoutParams = binding.bottomContainer.layoutParams as ViewGroup.MarginLayoutParams
-            when(bottomSheetMainFragment){
+            when (bottomSheetMainFragment) {
                 is ClientFragment -> {
                     layoutParams.topMargin = 92.dp(requireContext())
                 }
@@ -85,7 +86,7 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
                 }
             }
             binding.bottomContainer.layoutParams = layoutParams
-            bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetCallback(){
+            bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetCallback() {
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
                     Log.d("BOOTOM", "onStateChanged")
                 }
@@ -108,15 +109,17 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
         }
     }
 
-    private fun initAnimations(){
+    private fun initAnimations() {
         var fadeOut = AlphaAnimation(1f, 0f).apply {
             duration = 300
             interpolator = LinearInterpolator()
             fillAfter = true
         }
 
-        val slideUp = TranslateAnimation(0f, 0f,
-            0f, -binding.swipeMoreTextView.height.toFloat()).apply {
+        val slideUp = TranslateAnimation(
+            0f, 0f,
+            0f, -binding.swipeMoreTextView.height.toFloat()
+        ).apply {
             duration = 300
             interpolator = LinearInterpolator()
             fillAfter = true
