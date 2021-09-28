@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui.property.info
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPropertyInfoBinding
@@ -36,6 +37,10 @@ class PropertyInfoFragment: BaseBottomSheetFragment<PropertyInfoViewModel, Fragm
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.scroller.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            Log.d("SCROLL", "SCROLLED")
+        }
 
         binding.backImageView.setOnDebouncedClickListener {
             ScreenManager.closeCurrentBottomFragment()

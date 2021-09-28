@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.ui.main
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.*
@@ -52,9 +53,7 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
         }
 
         ScreenManager.initBottomSheet(R.id.bottomContainer)
-
         ScreenManager.showBottomScreen(ClientFragment())
-
 
     }
 
@@ -73,28 +72,31 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
 
             val bottomSheetBehavior: BottomSheetBehavior<*> =
                 BottomSheetBehavior.from<View>(binding.bottomContainer)
+            bottomSheetBehavior.saveFlags = SAVE_ALL
             bottomSheetBehavior.state = STATE_COLLAPSED
             bottomSheetBehavior.peekHeight = binding.root.getLocationOnScreen().y - binding.callContainerLinearLayout.getLocationOnScreen().y + 8.dp(requireContext())
             val layoutParams = binding.bottomContainer.layoutParams as ViewGroup.MarginLayoutParams
             when(bottomSheetMainFragment){
                 is ClientFragment -> {
-                    layoutParams.topMargin = 80.dp(requireContext())
+                    layoutParams.topMargin = 92.dp(requireContext())
                 }
                 is PropertyInfoFragment -> {
-                    layoutParams.topMargin = 0.dp(requireContext())
+                    layoutParams.topMargin = 12.dp(requireContext())
                 }
             }
             binding.bottomContainer.layoutParams = layoutParams
             bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetCallback(){
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
-
+                    Log.d("BOOTOM", "onStateChanged")
                 }
 
                 override fun onSlide(bottomSheet: View, slideOffset: Float) {
-
+                    Log.d("BOOTOM", "onSlide")
                 }
 
             })
+
+
 
             binding.toolbarLinearLayout.setOnDebouncedClickListener {
                 bottomSheetBehavior.state = STATE_COLLAPSED
@@ -145,7 +147,7 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
     override fun onVisibleToUser() {
         super.onVisibleToUser()
 //        binding.fakeBottomSheetView.visible()
-        //measureAndShowFragment()
+        measureAndShowFragment()
     }
 
 }

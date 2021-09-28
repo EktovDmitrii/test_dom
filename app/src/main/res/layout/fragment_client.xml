@@ -13,14 +13,14 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/contentNestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:fillViewport="true"
         android:overScrollMode="never"
         android:background="@drawable/rectangle_gradient_white_secondary200">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <com.custom.rgs_android_dom.views.text.MSDTextView
@@ -53,7 +53,7 @@
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:paddingHorizontal="20dp"
                 android:layout_marginTop="20dp"
@@ -176,7 +176,7 @@
                             android:includeFontPadding="false"
                             android:textColor="@color/secondary900"
                             android:textSize="16sp"
-                            app:translationTextKey="app.profile.about_app" />
+                            app:translationTextKey="app.profile.menu.about_app" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
