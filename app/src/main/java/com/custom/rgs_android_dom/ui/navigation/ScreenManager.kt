@@ -104,6 +104,7 @@ object ScreenManager {
             transaction.commitNow()
             scopes.removeIf { it.id == scopeId }
         }
+        reInit()
         notifyCurrentVisibleFragment()
     }
 

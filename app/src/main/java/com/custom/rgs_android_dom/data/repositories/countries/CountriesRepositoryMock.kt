@@ -7,10 +7,11 @@ import com.custom.rgs_android_dom.domain.countries.model.CountryModel
 import com.custom.rgs_android_dom.domain.repositories.CountriesRepository
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Single
+import io.reactivex.subjects.PublishSubject
 
 class CountriesRepositoryMock() : CountriesRepository {
 
-    private val selectedCountry = BehaviorRelay.create<CountryModel>()
+    private val selectedCountry = PublishSubject.create<CountryModel>()
 
     override fun getDefaultCountry(): Single<CountryModel> {
         return getCountries().map {
@@ -26,12 +27,12 @@ class CountriesRepositoryMock() : CountriesRepository {
         }
     }
 
-    override fun getSelectedCountrySubject(): BehaviorRelay<CountryModel> {
+    override fun getSelectedCountrySubject(): PublishSubject<CountryModel> {
         return selectedCountry
     }
 
     override fun selectCountry(newCountry: CountryModel) {
-        selectedCountry.accept(newCountry)
+        selectedCountry.onNext(newCountry)
     }
 
     companion object {

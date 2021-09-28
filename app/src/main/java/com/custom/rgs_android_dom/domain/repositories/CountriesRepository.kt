@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.domain.repositories
 import com.custom.rgs_android_dom.domain.countries.model.CountryModel
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Single
+import io.reactivex.subjects.PublishSubject
 
 interface CountriesRepository {
 
@@ -10,7 +11,7 @@ interface CountriesRepository {
 
     fun getCountries(): Single<List<CountryModel>>
 
-    fun getSelectedCountrySubject(): BehaviorRelay<CountryModel>
+    fun getSelectedCountrySubject(): PublishSubject<CountryModel>
 
     fun selectCountry(newCountry: CountryModel)
 

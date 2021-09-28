@@ -43,6 +43,10 @@ class PropertyInfoFragment: BaseBottomSheetFragment<PropertyInfoViewModel, Fragm
             ScreenManager.closeCurrentBottomFragment()
         }
 
+        binding.moreImageView.setOnDebouncedClickListener {
+
+        }
+
         subscribe(viewModel.propertyItemObserver) {propertyItem->
             when (propertyItem.type){
                 PropertyType.HOUSE -> {
