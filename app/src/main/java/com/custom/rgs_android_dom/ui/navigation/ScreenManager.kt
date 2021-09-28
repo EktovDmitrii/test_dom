@@ -6,19 +6,19 @@ import androidx.fragment.app.FragmentTransaction
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.demo.DemoFragment
-import com.custom.rgs_android_dom.ui.demo.DemoRegistrationFlowFragment
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 
 object ScreenManager {
 
     private val scopes: MutableList<ScreenScope> = ArrayList()
     private val fragments: HashMap<NavigationMenu, MutableList<BaseFragment<*, *>>> = HashMap()
-    private val bottomFragments = ArrayList<BaseBottomSheetFragment<*,*>>()
+    private val bottomFragments = ArrayList<BaseBottomSheetFragment<*, *>>()
     private var menuTag: NavigationMenu = NavigationMenu.HOME
     private var activity: AppCompatActivity? = null
 
     @IdRes
     private var containerId: Int? = null
+
     @IdRes
     private var bottomContainerId: Int? = null
 
@@ -27,7 +27,7 @@ object ScreenManager {
         this.containerId = containerId
     }
 
-    fun initBottomSheet(@IdRes bottomContainerId: Int){
+    fun initBottomSheet(@IdRes bottomContainerId: Int) {
         this.bottomContainerId = bottomContainerId
     }
 
@@ -52,7 +52,7 @@ object ScreenManager {
         addFragmentInMap(fragment)
     }
 
-    fun showBottomScreen(fragment: BaseBottomSheetFragment<*,*>){
+    fun showBottomScreen(fragment: BaseBottomSheetFragment<*, *>) {
         val container = bottomContainerId ?: return
         val transaction = beginTransaction() ?: return
         transaction.add(container, fragment, menuTag.name)
@@ -62,17 +62,15 @@ object ScreenManager {
         bottomFragmentsUpdate(fragment)
     }
 
-    fun closeCurrentBottomFragment(){
-        if (bottomFragments.size > 1){
-            val transaction = beginTransaction() ?: return
-            transaction.remove(bottomFragments.last())
-            transaction.commitAllowingStateLoss()
-            bottomFragments.removeLast()
-        }
+    fun closeCurrentBottomFragment() {
+        val transaction = beginTransaction() ?: return
+        transaction.remove(bottomFragments.last())
+        transaction.commitAllowingStateLoss()
+        bottomFragments.removeLast()
         bottomFragmentsUpdate(bottomFragments.last())
     }
 
-    var bottomFragmentsUpdate: (BaseBottomSheetFragment<*,*>) -> Unit = {}
+    var bottomFragmentsUpdate: (BaseBottomSheetFragment<*, *>) -> Unit = {}
 
     private fun addFragmentInMap(fragment: BaseFragment<*, *>) {
         if (fragments[menuTag] == null) {
@@ -156,8 +154,10 @@ object ScreenManager {
     }
 
     private fun reInit() {
-        if (fragments[menuTag].isNullOrEmpty()) {
-            showScreen(getFirstScreenForMenuItem(menuTag))
+        if (fragments[menuTag].isNullOrEmpty() && scopes.isEmpty()) {
+            showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+            //todo на время дэмо
+            //showScreen(getFirstScreenForMenuItem(menuTag))
         }
     }
 
@@ -200,11 +200,12 @@ object ScreenManager {
         transaction.commit()
     }
 
-    private fun notifyCurrentVisibleFragment(){
-        if (activity?.supportFragmentManager?.fragments?.isNotEmpty() == true){
-            activity?.supportFragmentManager?.fragments?.last { it is BaseFragment<*,*> }?.let {
-                (it as BaseFragment<*,*>).onVisibleToUser()
-            }
+    private fun notifyCurrentVisibleFragment() {
+        if (activity?.supportFragmentManager?.fragments?.isNotEmpty() == true) {
+            activity?.supportFragmentManager?.fragments?.lastOrNull { it is BaseFragment<*, *> }
+                ?.let {
+                    (it as BaseFragment<*, *>).onVisibleToUser()
+                }
         }
     }
 

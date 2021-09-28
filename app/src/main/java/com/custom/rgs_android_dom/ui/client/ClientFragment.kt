@@ -5,11 +5,8 @@ import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentClientBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
-import com.custom.rgs_android_dom.utils.dp
+import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.utils.recycler_view.HorizontalItemDecoration
-import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
-import com.custom.rgs_android_dom.utils.subscribe
-import com.custom.rgs_android_dom.utils.toast
 
 class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClientBinding>() {
 
@@ -26,12 +23,12 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
         super.onViewCreated(view, savedInstanceState)
 
         binding.contentNestedScrollView.setOnScrollChangeListener { _, _, scrollY, _, _ ->
-            if (scrollY == 0){
-                if (isLocked){
+            if (scrollY == 0) {
+                if (isLocked) {
                     unlockFromTop()
                 }
             } else {
-                if (!isLocked){
+                if (!isLocked) {
                     lockToTop()
                 }
             }
@@ -85,24 +82,28 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
             viewModel.onNotCreatedScreenClick()
         }
 
-        subscribe(viewModel.propertyItemsObserver){ propertyItems ->
+        subscribe(viewModel.propertyItemsObserver) { propertyItems ->
             propertyItemsAdapter.setItems(propertyItems)
         }
 
-        subscribe(viewModel.clientShortViewStateObserver){state->
+        subscribe(viewModel.clientShortViewStateObserver) { state ->
             binding.phoneTextView.text = state.phone
 
-            if (state.firstName.isEmpty() && state.lastName.isEmpty()){
+            if (state.firstName.isEmpty() && state.lastName.isEmpty()) {
                 binding.nameTextView.text = "Добавьте ваше имя"
                 binding.nameTextView.setTextColor(requireContext().getColor(R.color.primary500))
-            } else{
+            } else {
                 binding.nameTextView.text = "${state.lastName} ${state.firstName}"
                 binding.nameTextView.setTextColor(requireContext().getColor(R.color.secondary900))
             }
         }
 
-        subscribe(viewModel.networkErrorObserver){
+        subscribe(viewModel.networkErrorObserver) {
             toast(it)
         }
+    }
+
+    override fun onClose() {
+        hideSoftwareKeyboard()
     }
 }
