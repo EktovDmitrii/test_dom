@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.domain.TranslationInteractor
 import com.custom.rgs_android_dom.domain.web_socket.WebSocketInteractor
+import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.splash.SplashFragment
@@ -70,9 +71,17 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         val fragmentList = supportFragmentManager.fragments
-        val topFragment = fragmentList.last { it is BaseFragment<*, *> } as? BaseFragment<*, *>
+        val topFragment = fragmentList.last()
         if (topFragment != null) {
-            topFragment.onClose()
+            when(topFragment){
+                is BaseFragment<*,*> -> {
+                    topFragment.onClose()
+                }
+                is BaseBottomSheetFragment<*, *> -> {
+                    topFragment.onClose()
+                }
+            }
+
         } else {
             super.onBackPressed()
         }

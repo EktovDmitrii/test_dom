@@ -109,7 +109,8 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB : ViewBinding>: Bo
 
     open fun onClose() {
         hideSoftwareKeyboard()
-        dismissAllowingStateLoss()
+        ScreenManager.closeCurrentBottomFragment()
+        //dismissAllowingStateLoss()
     }
 
     @Suppress("UNCHECKED_CAST")
