@@ -6,6 +6,7 @@ import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPropertyInfoBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
+import com.custom.rgs_android_dom.ui.about_app.AboutAppFragment
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.args
@@ -31,10 +32,6 @@ class PropertyInfoFragment: BaseBottomSheetFragment<PropertyInfoViewModel, Fragm
         parametersOf(requireArguments().getString(ARG_OBJECT_ID))
     }
 
-    override fun getSwipeAnchor(): View? {
-        return binding.swipeAnchorLayout.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -44,6 +41,10 @@ class PropertyInfoFragment: BaseBottomSheetFragment<PropertyInfoViewModel, Fragm
 
         binding.backImageView.setOnDebouncedClickListener {
             ScreenManager.closeCurrentBottomFragment()
+        }
+
+        binding.moreImageView.setOnDebouncedClickListener {
+            ScreenManager.showScreen(AboutAppFragment())
         }
 
         subscribe(viewModel.propertyItemObserver) {propertyItem->

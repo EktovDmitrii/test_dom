@@ -24,9 +24,6 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
 
     private lateinit var transitionBackground: TransitionDrawable
 
-    private var canTransit = true
-    private var canTransitReverse = false
-
     private val animationSet = AnimationSet(true)
 
     private var bottomSheetMainFragment: BaseBottomSheetFragment<*, *>? = null
@@ -70,22 +67,24 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
 
             val bottomSheetBehavior: BottomSheetBehavior<*> =
                 BottomSheetBehavior.from<View>(binding.bottomContainer)
-            bottomSheetBehavior.saveFlags = SAVE_ALL
-            bottomSheetBehavior.state = STATE_COLLAPSED
+            Log.d("PEEK", bottomSheetBehavior.peekHeight.toString())
+
+            val paddingValue =
+            when (bottomSheetMainFragment) {
+                is ClientFragment -> {
+                    92.dp(requireContext())
+                }
+                is PropertyInfoFragment -> {
+                    12.dp(requireContext())
+                }
+                else -> 0.dp(requireContext())
+            }
             bottomSheetBehavior.peekHeight =
                 binding.root.getLocationOnScreen().y - binding.callContainerLinearLayout.getLocationOnScreen().y + 8.dp(
                     requireContext()
-                )
-            val layoutParams = binding.bottomContainer.layoutParams as ViewGroup.MarginLayoutParams
-            when (bottomSheetMainFragment) {
-                is ClientFragment -> {
-                    layoutParams.topMargin = 92.dp(requireContext())
-                }
-                is PropertyInfoFragment -> {
-                    layoutParams.topMargin = 12.dp(requireContext())
-                }
-            }
-            binding.bottomContainer.layoutParams = layoutParams
+                ) + paddingValue
+            binding.bottomContainer.setPadding(0,paddingValue,0,0)
+
             bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetCallback() {
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
                     Log.d("BOOTOM", "onStateChanged")
@@ -97,16 +96,13 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
 
             })
 
-
-
             binding.toolbarLinearLayout.setOnDebouncedClickListener {
                 bottomSheetBehavior.state = STATE_COLLAPSED
             }
 
-
             bottomSheetBehavior.state = STATE_EXPANDED
-
         }
+
     }
 
     private fun initAnimations() {
@@ -149,7 +145,6 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
 
     override fun onVisibleToUser() {
         super.onVisibleToUser()
-//        binding.fakeBottomSheetView.visible()
         measureAndShowFragment()
     }
 

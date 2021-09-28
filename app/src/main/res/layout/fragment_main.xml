@@ -61,13 +61,11 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <FrameLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/bottomContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:behavior_peekHeight="0dp"
         app:behavior_hideable="false"
-        android:layout_marginTop="80dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

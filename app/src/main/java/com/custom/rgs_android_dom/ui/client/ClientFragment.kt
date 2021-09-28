@@ -15,24 +15,8 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
     private val propertyItemsAdapter: PropertyItemsAdapter
         get() = binding.propertyItemsRecycler.adapter as PropertyItemsAdapter
 
-    override fun getSwipeAnchor(): View? {
-        return binding.swipeAnchorLayout.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.contentNestedScrollView.setOnScrollChangeListener { _, _, scrollY, _, _ ->
-            if (scrollY == 0) {
-                if (isLocked) {
-                    unlockFromTop()
-                }
-            } else {
-                if (!isLocked) {
-                    lockToTop()
-                }
-            }
-        }
 
         binding.propertyItemsRecycler.adapter = PropertyItemsAdapter(
             onAddPropertyClick = {
