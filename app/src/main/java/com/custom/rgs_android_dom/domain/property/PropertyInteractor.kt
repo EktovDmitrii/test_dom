@@ -137,8 +137,21 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
         return propertyRepository.getAllProperty()
     }
 
+    fun getPropertyItem(objectId: String): Single<PropertyItemModel>{
+        return propertyRepository.getAllProperty().map {allProperty->
+            allProperty.find { it.id == objectId }
+        }
+    }
+
+    fun getPropertyAddedSubject(): PublishSubject<Unit> {
+        return propertyRepository.getPropertyAddedSubject()
+    }
+
     private fun checkIfPropertyDetailsFieldsFilled() {
         propertyDetailsViewState = propertyDetailsViewState.copy(isAddTextViewEnabled = propertyDetailsViewState.address.isNotEmpty())
         propertyDetailsViewStateSubject.onNext(propertyDetailsViewState)
     }
 }
+
+
+

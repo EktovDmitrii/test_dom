@@ -7,11 +7,15 @@ import androidx.appcompat.app.AppCompatActivity
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentSelectPropertyTypeBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
+import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
+import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-class SelectPropertyTypeFragment : BaseFragment<SelectPropertyTypeViewModel, FragmentSelectPropertyTypeBinding>(R.layout.fragment_select_property_type) {
+class SelectPropertyTypeFragment : BaseFragment<SelectPropertyTypeViewModel, FragmentSelectPropertyTypeBinding>(R.layout.fragment_select_property_type),
+    ConfirmBottomSheetFragment.ConfirmListener{
 
     companion object {
         private const val ARG_PROPERTY_COUNT = "ARG_PROPERTY_COUNT"
@@ -28,7 +32,6 @@ class SelectPropertyTypeFragment : BaseFragment<SelectPropertyTypeViewModel, Fra
             requireArguments().getInt(ARG_PROPERTY_COUNT)
         )
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -54,5 +57,21 @@ class SelectPropertyTypeFragment : BaseFragment<SelectPropertyTypeViewModel, Fra
             binding.selectHomeLinearLayout.isSelected = it.isSelectHomeLinearLayoutSelected
             binding.nextTextView.isEnabled = it.isNextTextViewEnabled
         }
+
+        subscribe(viewModel.showConfirmCloseObserver){
+            val confirmDialog = ConfirmBottomSheetFragment.newInstance(
+                icon = R.drawable.ic_confirm_cancel,
+                title = "Хотите выйти?",
+                description = "Если вы покинете страницу сейчас, данные об объекте недвижимости не сохранятся",
+                confirmText = "Да, выйти",
+                cancelText = "Нет, остаться"
+            )
+            confirmDialog.show(childFragmentManager, ConfirmBottomSheetFragment.TAG)
+        }
+    }
+
+    override fun onConfirmClick() {
+        super.onConfirmClick()
+        ScreenManager.closeScope(ADD_PROPERTY)
     }
 }

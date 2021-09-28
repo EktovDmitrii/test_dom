@@ -25,10 +25,11 @@ object ChatMapper{
                     )
                 },
                 id = messageResponse.id ?: "",
-                message = messageResponse.message,
+                message = messageResponse.message.replace("\\n", "\n"),
                 userId = messageResponse.userId,
                 sender = if (messageResponse.userId == userId) Sender.ME else Sender.OPPONENT,
-                createdAt = messageResponse.createdAt.toLocalDateTime()
+                createdAt = messageResponse.createdAt.toLocalDateTime(),
+                type = messageResponse.type
             )
         }
     }
@@ -50,10 +51,11 @@ object ChatMapper{
                 )
             },
             id = messageResponse.id ?: "",
-            message = messageResponse.message,
+            message = messageResponse.message.replace("\\n", "\n"),
             userId = messageResponse.userId,
             sender = if (messageResponse.userId == userId) Sender.ME else Sender.OPPONENT,
-            createdAt = messageResponse.createdAt.toLocalDateTime()
+            createdAt = messageResponse.createdAt.toLocalDateTime(),
+            type = messageResponse.type
         )
     }
 }

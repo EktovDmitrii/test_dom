@@ -15,8 +15,7 @@ import com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentPropertyDetailsBinding>(R.layout.fragment_property_details),
-    ConfirmBottomSheetFragment.ConfirmListener {
+class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentPropertyDetailsBinding>(R.layout.fragment_property_details) {
 
     companion object {
         private const val ARG_PROPERTY_COUNT = "ARG_PROPERTY_COUNT"
@@ -108,17 +107,6 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
             toast(it)
         }
 
-        subscribe(viewModel.showConfirmCloseObserver){
-            val confirmDialog = ConfirmBottomSheetFragment.newInstance(
-                icon = R.drawable.ic_confirm_cancel,
-                title = "Хотите выйти?",
-                description = "Если вы покинете страницу сейчас, данные об объекте недвижимости не сохранятся",
-                confirmText = "Да, выйти",
-                cancelText = "Нет, остаться"
-            )
-            confirmDialog.show(childFragmentManager, ConfirmBottomSheetFragment.TAG)
-        }
-
         subscribe(viewModel.notificationObserver){
             notification(it)
         }
@@ -137,10 +125,5 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
     override fun onContent() {
         super.onContent()
         binding.addTextView.setLoading(false)
-    }
-
-    override fun onConfirmClick() {
-        super.onConfirmClick()
-        ScreenManager.closeScope(ADD_PROPERTY)
     }
 }

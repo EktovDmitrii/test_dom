@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/containerFrameLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/propertyImageView"
+        android:layout_width="124dp"
+        android:layout_height="144dp"
+        android:scaleType="fitXY"
+        tools:src="@drawable/ic_type_home"/>
+
+    <TextView
+        android:id="@+id/nameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="126dp"
+        android:background="@drawable/row_filled_white_radius_10dp"
+        android:fontFamily="@font/suisse_regular"
+        android:paddingHorizontal="12dp"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:textColor="@color/secondary900"
+        android:textSize="16sp"
+        android:layout_gravity="center_horizontal"
+        android:lines="1"
+        android:ellipsize="end"
+        tools:text="Дом" />
+
+</FrameLayout>

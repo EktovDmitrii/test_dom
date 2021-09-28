@@ -59,17 +59,19 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/selectHomeLinearLayout"
-            android:layout_width="161dp"
+            android:layout_width="0dp"
             android:layout_height="204dp"
+            android:layout_weight="1"
             android:background="@drawable/select_property_card_background"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:padding="5dp">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="153dp"
+                android:layout_width="match_parent"
                 android:layout_height="153dp"
-                app:srcCompat="@drawable/ic_select_home" />
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_type_home" />
 
             <com.custom.rgs_android_dom.views.text.MSDTextView
                 android:layout_width="wrap_content"
@@ -85,18 +87,20 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/selectAppartmentLinearLayout"
-            android:layout_width="161dp"
+            android:layout_width="0dp"
             android:layout_height="204dp"
             android:layout_marginStart="12dp"
+            android:layout_weight="1"
             android:background="@drawable/select_property_card_background"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:padding="5dp">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="153dp"
+                android:layout_width="match_parent"
                 android:layout_height="153dp"
-                app:srcCompat="@drawable/ic_select_appartment" />
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_type_apartment" />
 
             <com.custom.rgs_android_dom.views.text.MSDTextView
                 android:layout_width="wrap_content"

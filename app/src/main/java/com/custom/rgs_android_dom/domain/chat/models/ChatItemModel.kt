@@ -15,7 +15,8 @@ data class ChatMessageModel(
     val message: String,
     val userId: String,
     var sender: Sender,
-    val createdAt: LocalDateTime
+    val createdAt: LocalDateTime,
+    val type: String,
 ) : ChatItemModel()
 
 data class ChatDateDividerModel(

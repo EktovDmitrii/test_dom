@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <include
@@ -12,14 +13,14 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/contentNestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:fillViewport="true"
         android:overScrollMode="never"
         android:background="@drawable/rectangle_gradient_white_secondary200">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <com.custom.rgs_android_dom.views.text.MSDTextView
@@ -31,44 +32,28 @@
                 app:translationTextKey="Мои объекты"
                 android:paddingHorizontal="20dp"/>
 
-            <FrameLayout
-                android:id="@+id/addPropertyFrameLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="12dp">
-
-                <FrameLayout
-                    android:layout_width="124dp"
-                    android:layout_height="144dp"
-                    android:background="@drawable/card_filled_secondary_100_radius_24dp">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_gravity="center"
-                        app:srcCompat="@drawable/ic_products" />
-                </FrameLayout>
-
-                <com.custom.rgs_android_dom.views.text.MSDTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="126dp"
-                    android:background="@drawable/row_filled_white_radius_10dp"
-                    android:fontFamily="@font/suisse_regular"
-                    android:paddingHorizontal="12dp"
-                    android:gravity="center_vertical"
-                    android:includeFontPadding="false"
-                    android:textColor="@color/secondary900"
-                    android:textSize="16sp"
-                    android:layout_gravity="center_horizontal"
-                    app:translationTextKey="Добавить" />
-
-            </FrameLayout>
-
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/propertyItemsRecycler"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/item_property_item"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    android:paddingHorizontal="20dp"
+                    android:clipToPadding="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="1"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:paddingHorizontal="20dp"
                 android:layout_marginTop="20dp"
@@ -191,7 +176,7 @@
                             android:includeFontPadding="false"
                             android:textColor="@color/secondary900"
                             android:textSize="16sp"
-                            app:translationTextKey="app.profile.about_app" />
+                            app:translationTextKey="app.profile.menu.about_app" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 

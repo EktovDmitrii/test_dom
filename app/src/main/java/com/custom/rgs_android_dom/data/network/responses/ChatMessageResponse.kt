@@ -21,7 +21,10 @@ data class ChatMessageResponse(
     val userId: String,
 
     @SerializedName("createdAt")
-    val createdAt: DateTime
+    val createdAt: DateTime,
+
+    @SerializedName("type")
+    val type: String
 )
 
 data class ChatFileResponse(

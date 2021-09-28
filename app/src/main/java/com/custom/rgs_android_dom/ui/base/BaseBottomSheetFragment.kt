@@ -22,13 +22,7 @@ import org.koin.core.parameter.emptyParametersHolder
 import java.lang.reflect.ParameterizedType
 import kotlin.reflect.KClass
 
-abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB : ViewBinding>(
-    private val peekHeight: Int = 0,
-    private val topMargin: Int = 0,
-    private val maxHalfExpandedRatio: Float = 0f,
-    private val minHalfExpandedRatio: Float = 0f,
-    private val isFullScreen: Boolean = true
-) : BottomSheetDialogFragment() {
+abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB : ViewBinding>: BottomSheetDialogFragment() {
 
     var isLocked = false
 
@@ -45,6 +39,20 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB : ViewBinding>(
     private var hasNotifiedAboutInit = false
 
     abstract val TAG: String
+
+    private var peekHeight: Int = 0
+    private var topMargin: Int = 0
+    private var maxHalfExpandedRatio: Float = 0f
+    private var minHalfExpandedRatio: Float = 0f
+    private var isFullScreen: Boolean = true
+
+    fun setFlags(peekHeight: Int = 0, topMargin: Int = 0, maxHalfExpandedRatio: Float = 0f, minHalfExpandedRatio: Float = 0f, isFullScreen: Boolean = true){
+        this.peekHeight = peekHeight
+        this.topMargin = topMargin
+        this.maxHalfExpandedRatio = maxHalfExpandedRatio
+        this.minHalfExpandedRatio = minHalfExpandedRatio
+        this.isFullScreen = isFullScreen
+    }
 
     var eventsListener: BottomSheetEventsListener? = null
 
@@ -71,9 +79,9 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB : ViewBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog?.setCancelable(false)
-        binding.root.setBackgroundResource(R.drawable.card_filled_white_radius_24dp)
+        binding.root.setBackgroundResource(R.drawable.rectangle_filled_white_top_radius_24dp)
 
-        initBottomSheet()
+        //initBottomSheet()
 
         subscribe(viewModel.loadingStateObserver) {
             handleState(it)
@@ -101,7 +109,8 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB : ViewBinding>(
 
     open fun onClose() {
         hideSoftwareKeyboard()
-        dismissAllowingStateLoss()
+        ScreenManager.closeCurrentBottomFragment()
+        //dismissAllowingStateLoss()
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -130,98 +139,98 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB : ViewBinding>(
         }
     }
 
-    private fun initBottomSheet() {
-
-        val bottomSheet = binding.root.parent as View
-        behavior = BottomSheetBehavior.from(bottomSheet)
-        behavior.isDraggable = false
-
-        behavior.peekHeight = peekHeight
-
-        val layoutParams: CoordinatorLayout.LayoutParams =
-            bottomSheet.layoutParams as CoordinatorLayout.LayoutParams
-        layoutParams.height = CoordinatorLayout.LayoutParams.MATCH_PARENT
-        bottomSheet.layoutParams = layoutParams
-
-        behavior.isFitToContents = false
-        behavior.expandedOffset = topMargin
-        behavior.halfExpandedRatio = maxHalfExpandedRatio
-
-        if (isFullScreen) {
-            behavior.state = BottomSheetBehavior.STATE_EXPANDED
-        }
-
-        getSwipeAnchor()?.let { swipeAnchor ->
-
-            swipeAnchor.setOnTouchListener { view, motionEvent ->
-                view.performClick()
-
-                if (!isLocked) {
-                    when (motionEvent.action) {
-                        MotionEvent.ACTION_DOWN -> {
-                            behavior.isDraggable = true
-                        }
-                        MotionEvent.ACTION_UP -> {
-                            behavior.isDraggable = false
-
-                        }
-                        MotionEvent.ACTION_CANCEL -> {
-                            behavior.isDraggable = false
-                        }
-                    }
-                    // We need to set at first screen coords and then pass them to our bottomsheet behavior
-                    motionEvent.setLocation(motionEvent.rawX, motionEvent.rawY)
-                    behavior.onTouchEvent(
-                        bottomSheet.parent as CoordinatorLayout,
-                        swipeAnchor,
-                        motionEvent
-                    )
-                }
-
-                true
-            }
-        }
-
-
-        behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                if (newState == BottomSheetBehavior.STATE_EXPANDED || newState == BottomSheetBehavior.STATE_HALF_EXPANDED) {
-                    if (!isLocked) {
-                        behavior.halfExpandedRatio = maxHalfExpandedRatio
-                        eventsListener?.onSlideStateChanged(SlideState.TOP)
-                    }
-                }
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                if (!hasNotifiedAboutInit) {
-                    eventsListener?.onBottomSheetInit()
-                    hasNotifiedAboutInit = true
-                }
-                if (!isLocked) {
-                    if (slideOffset <= 0.5f) {
-                        behavior.halfExpandedRatio = minHalfExpandedRatio
-                    }
-
-                    if (slideOffset < 0.49f && slideOffset > 0.0f) {
-                        eventsListener?.onSlideStateChanged(SlideState.MOVING_BOTTOM)
-                    } else if (slideOffset == 0.0f) {
-                        eventsListener?.onSlideStateChanged(SlideState.BOTTOM)
-                    }
-                }
-
-            }
-
-        })
-
-        dialog?.window?.decorView?.findViewById<View>(com.google.android.material.R.id.touch_outside)
-            ?.setOnTouchListener { view, motionEvent ->
-                view.performClick()
-                parentFragment?.view?.dispatchTouchEvent(motionEvent)
-                true
-            }
-
-    }
+//    private fun initBottomSheet() {
+//
+//        val bottomSheet = binding.root.parent as View
+//        behavior = BottomSheetBehavior.from(bottomSheet)
+//        behavior.isDraggable = false
+//
+//        behavior.peekHeight = peekHeight
+//
+//        val layoutParams: CoordinatorLayout.LayoutParams =
+//            bottomSheet.layoutParams as CoordinatorLayout.LayoutParams
+//        layoutParams.height = CoordinatorLayout.LayoutParams.MATCH_PARENT
+//        bottomSheet.layoutParams = layoutParams
+//
+//        behavior.isFitToContents = false
+//        behavior.expandedOffset = topMargin
+//        behavior.halfExpandedRatio = maxHalfExpandedRatio
+//
+//        if (isFullScreen) {
+//            behavior.state = BottomSheetBehavior.STATE_EXPANDED
+//        }
+//
+//        getSwipeAnchor()?.let { swipeAnchor ->
+//
+//            swipeAnchor.setOnTouchListener { view, motionEvent ->
+//                view.performClick()
+//
+//                if (!isLocked) {
+//                    when (motionEvent.action) {
+//                        MotionEvent.ACTION_DOWN -> {
+//                            behavior.isDraggable = true
+//                        }
+//                        MotionEvent.ACTION_UP -> {
+//                            behavior.isDraggable = false
+//
+//                        }
+//                        MotionEvent.ACTION_CANCEL -> {
+//                            behavior.isDraggable = false
+//                        }
+//                    }
+//                    // We need to set at first screen coords and then pass them to our bottomsheet behavior
+//                    motionEvent.setLocation(motionEvent.rawX, motionEvent.rawY)
+//                    behavior.onTouchEvent(
+//                        bottomSheet.parent as CoordinatorLayout,
+//                        swipeAnchor,
+//                        motionEvent
+//                    )
+//                }
+//
+//                true
+//            }
+//        }
+//
+//
+//        behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+//            override fun onStateChanged(bottomSheet: View, newState: Int) {
+//                if (newState == BottomSheetBehavior.STATE_EXPANDED || newState == BottomSheetBehavior.STATE_HALF_EXPANDED) {
+//                    if (!isLocked) {
+//                        behavior.halfExpandedRatio = maxHalfExpandedRatio
+//                        eventsListener?.onSlideStateChanged(SlideState.TOP)
+//                    }
+//                }
+//            }
+//
+//            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+//                if (!hasNotifiedAboutInit) {
+//                    eventsListener?.onBottomSheetInit()
+//                    hasNotifiedAboutInit = true
+//                }
+//                if (!isLocked) {
+//                    if (slideOffset <= 0.5f) {
+//                        behavior.halfExpandedRatio = minHalfExpandedRatio
+//                    }
+//
+//                    if (slideOffset < 0.49f && slideOffset > 0.0f) {
+//                        eventsListener?.onSlideStateChanged(SlideState.MOVING_BOTTOM)
+//                    } else if (slideOffset == 0.0f) {
+//                        eventsListener?.onSlideStateChanged(SlideState.BOTTOM)
+//                    }
+//                }
+//
+//            }
+//
+//        })
+//
+//        dialog?.window?.decorView?.findViewById<View>(com.google.android.material.R.id.touch_outside)
+//            ?.setOnTouchListener { view, motionEvent ->
+//                view.performClick()
+//                parentFragment?.view?.dispatchTouchEvent(motionEvent)
+//                true
+//            }
+//
+//    }
 
     fun lockToTop() {
         /*behavior.expandedOffset = 0

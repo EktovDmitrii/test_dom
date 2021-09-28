@@ -8,9 +8,12 @@ import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.repositories.PropertyRepository
 import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.subjects.PublishSubject
 
 class PropertyRepositoryImpl(private val api: MSDApi,
                              private val authSharedPreferences: AuthSharedPreferences) : PropertyRepository {
+
+    private val propertyAddedSubject = PublishSubject.create<Unit>()
 
     override fun addProperty(
         name: String,
@@ -34,7 +37,9 @@ class PropertyRepositoryImpl(private val api: MSDApi,
             documents = null
         )
         val clientId = authSharedPreferences.getClientId()
-        return api.addProperty(clientId, addPropertyRequest)
+        return api.addProperty(clientId, addPropertyRequest).doOnComplete {
+            propertyAddedSubject.onNext(Unit)
+        }
     }
 
     override fun getAllProperty(): Single<List<PropertyItemModel>> {
@@ -42,6 +47,16 @@ class PropertyRepositoryImpl(private val api: MSDApi,
         return api.getAllProperty(clientId).map { response->
             response.objects?.map { PropertyMapper.responseToProperty(it) } ?: listOf()
         }
+    }
+
+    override fun getPropertyItem(objectId: String): Single<PropertyItemModel> {
+        return api.getPropertyItem(objectId).map { response->
+            PropertyMapper.responseToProperty(response)
+        }
+    }
+
+    override fun getPropertyAddedSubject(): PublishSubject<Unit> {
+        return propertyAddedSubject
     }
 
 }

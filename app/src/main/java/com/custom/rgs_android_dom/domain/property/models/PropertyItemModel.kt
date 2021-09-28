@@ -12,5 +12,5 @@ data class PropertyItemModel(
     val name: String,
     val status: String,
     val totalArea: Float?,
-    val type: String
+    val type: PropertyType
 )

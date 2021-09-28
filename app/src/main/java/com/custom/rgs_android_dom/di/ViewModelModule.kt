@@ -13,6 +13,7 @@ import com.custom.rgs_android_dom.ui.client.personal_data.edit.EditPersonalDataV
 import com.custom.rgs_android_dom.ui.client.personal_data.PersonalDataViewModel
 import com.custom.rgs_android_dom.ui.property.add.details.PropertyDetailsViewModel
 import com.custom.rgs_android_dom.ui.property.add.select_type.SelectPropertyTypeViewModel
+import com.custom.rgs_android_dom.ui.property.info.PropertyInfoViewModel
 import com.custom.rgs_android_dom.ui.registration.code.RegistrationCodeViewModel
 import com.custom.rgs_android_dom.ui.registration.agreement.RegistrationAgreementViewModel
 import com.custom.rgs_android_dom.ui.registration.fill_client.RegistrationFillClientViewModel
@@ -39,4 +40,6 @@ val viewModelModule = module {
     viewModel { ChatViewModel(chatInteractor = get()) }
     viewModel { parameters-> SelectPropertyTypeViewModel(propertyCount = parameters.get(), selectPropertyTypeInteractor = get()) }
     viewModel { parameters-> PropertyDetailsViewModel(propertyCount = parameters.get(), propertyType = parameters.get(), propertyInteractor = get()) }
+    viewModel { parameters-> PropertyInfoViewModel(objectId = parameters.get(), propertyInteractor = get()) }
+
 }

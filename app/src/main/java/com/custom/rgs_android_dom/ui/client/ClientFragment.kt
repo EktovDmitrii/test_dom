@@ -5,18 +5,18 @@ import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentClientBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
+import com.custom.rgs_android_dom.utils.dp
+import com.custom.rgs_android_dom.utils.recycler_view.HorizontalItemDecoration
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
 import com.custom.rgs_android_dom.utils.toast
 
-class ClientFragment(
-    peekHeight: Int,
-    topMargin: Int,
-    maxHalfExpandedRatio: Float,
-    minHalfExpandedRatio: Float
-) : BaseBottomSheetFragment<ClientViewModel, FragmentClientBinding>(peekHeight, topMargin, maxHalfExpandedRatio, minHalfExpandedRatio) {
+class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClientBinding>() {
 
     override val TAG: String = "CLIENT_FRAGMENT"
+
+    private val propertyItemsAdapter: PropertyItemsAdapter
+        get() = binding.propertyItemsRecycler.adapter as PropertyItemsAdapter
 
     override fun getSwipeAnchor(): View? {
         return binding.swipeAnchorLayout.root
@@ -37,6 +37,21 @@ class ClientFragment(
             }
         }
 
+        binding.propertyItemsRecycler.adapter = PropertyItemsAdapter(
+            onAddPropertyClick = {
+                viewModel.onAddPropertyClick()
+            },
+            onPropertyItemClick = {
+                viewModel.onPropertyItemClick(it)
+            }
+        )
+
+        binding.propertyItemsRecycler.addItemDecoration(
+            HorizontalItemDecoration(
+                gap = 16.dp(requireContext())
+            )
+        )
+
         binding.logoutRelativeLayout.setOnDebouncedClickListener {
             viewModel.onLogoutClick()
         }
@@ -54,8 +69,8 @@ class ClientFragment(
             viewModel.onAboutAppClick()
         }
 
-        binding.addPropertyFrameLayout.setOnDebouncedClickListener {
-            viewModel.onAddPropertyClick()
+        subscribe(viewModel.propertyItemsObserver){ propertyItems ->
+            propertyItemsAdapter.setItems(propertyItems)
         }
 
         subscribe(viewModel.clientShortViewStateObserver){state->

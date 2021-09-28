@@ -18,19 +18,24 @@ class ChatInteractor(
     private val chatRepository: ChatRepository,
     private val webSocketRepository: WebSocketRepository
 ){
+    companion object {
+        private const val TYPE_SYSTEM_MESSAGE = "system_"
+    }
 
     private var cachedChatItems = arrayListOf<ChatItemModel>()
 
     fun getChatItems(): Single<List<ChatItemModel>> {
-        return chatRepository.getChatMessages().map { chatMessages->
+        return chatRepository.getChatMessages().map { allMessages->
             val chatItems = arrayListOf<ChatItemModel>()
-            if (chatMessages.isNotEmpty()){
-                chatMessages.forEachIndexed { index, currentMessage ->
+
+            val filteredMessages = allMessages.filter { !it.type.startsWith(TYPE_SYSTEM_MESSAGE) }
+            if (filteredMessages.isNotEmpty()){
+                filteredMessages.forEachIndexed { index, currentMessage ->
                     if (index == 0){
                         val dateDivider = ChatDateDividerModel(currentMessage.createdAt.formatTo(DATE_PATTERN_DAY_FULL_ONLY))
                         chatItems.add(dateDivider)
                     } else {
-                        val prevMessage = if (index -1 >=0) chatMessages[index-1] else null
+                        val prevMessage = if (index -1 >=0) filteredMessages[index-1] else null
                         val dateDivider = getDateDivider(currentMessage.createdAt, prevMessage?.createdAt)
                         if (dateDivider != null){
                             chatItems.add(dateDivider)
@@ -50,10 +55,10 @@ class ChatInteractor(
 
     // TODO Improve this later, when we will have one interactor for chat
     fun getNewItemsSubject(): Observable<List<ChatItemModel>>{
-        return webSocketRepository.getWsNewMessageSubject().map {
+        return webSocketRepository.getWsNewMessageSubject().map {eventModel->
             val chatItems = arrayListOf<ChatItemModel>()
-            if (it is WsChatMessageModel){
-                it.data?.let { currentMessage->
+            if (eventModel is WsChatMessageModel){
+                eventModel.data?.takeIf {!it.type.startsWith(TYPE_SYSTEM_MESSAGE)}?.let{ currentMessage->
                     if (cachedChatItems.isNotEmpty()){
                         val prevMessage = cachedChatItems[cachedChatItems.size-1] as ChatMessageModel
                         getDateDivider(currentMessage.createdAt, prevMessage.createdAt)?.let { dateDivider->

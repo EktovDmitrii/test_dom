@@ -27,9 +27,6 @@ class PropertyDetailsViewModel(propertyCount: Int,
     private val validateExceptionController = MutableLiveData<ValidatePropertyException>()
     val validateExceptionObserver: LiveData<ValidatePropertyException> = validateExceptionController
 
-    private val showConfirmCloseController = MutableLiveData<Unit>()
-    val showConfirmCloseObserver: LiveData<Unit> = showConfirmCloseController
-
     init {
         propertyInteractor.propertyDetailsViewStateSubject
             .subscribeOn(Schedulers.io())
@@ -48,7 +45,7 @@ class PropertyDetailsViewModel(propertyCount: Int,
     }
 
     fun onBackClick() {
-        showConfirmCloseController.value = Unit
+        closeController.value = Unit
     }
 
     fun onAddClick(){

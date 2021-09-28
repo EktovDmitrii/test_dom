@@ -80,4 +80,7 @@ interface MSDApi {
 
     @GET("property/clients/{clientId}/objects")
     fun getAllProperty(@Path("clientId") clientId: String): Single<AllPropertyResponse>
+
+    @GET("property/objects/{objectId}")
+    fun getPropertyItem(@Path("objectId") objectId: String): Single<PropertyItemResponse>
 }
