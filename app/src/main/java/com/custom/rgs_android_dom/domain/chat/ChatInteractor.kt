@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.domain.repositories.ChatRepository
 import com.custom.rgs_android_dom.domain.repositories.WebSocketRepository
 import com.custom.rgs_android_dom.domain.web_socket.models.WsChatMessageModel
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DAY_FULL_ONLY
+import com.custom.rgs_android_dom.utils.DATE_PATTERN_DAY_MONTH_FULL_ONLY
 import com.custom.rgs_android_dom.utils.formatTo
 import com.custom.rgs_android_dom.utils.getPeriod
 import io.reactivex.Completable
@@ -32,7 +33,7 @@ class ChatInteractor(
             if (filteredMessages.isNotEmpty()){
                 filteredMessages.forEachIndexed { index, currentMessage ->
                     if (index == 0){
-                        val dateDivider = ChatDateDividerModel(currentMessage.createdAt.formatTo(DATE_PATTERN_DAY_FULL_ONLY))
+                        val dateDivider = ChatDateDividerModel(currentMessage.createdAt.formatTo(DATE_PATTERN_DAY_MONTH_FULL_ONLY))
                         chatItems.add(dateDivider)
                     } else {
                         val prevMessage = if (index -1 >=0) filteredMessages[index-1] else null
@@ -66,7 +67,7 @@ class ChatInteractor(
                         }
                         chatItems.add(currentMessage)
                     } else {
-                        val dateDivider = ChatDateDividerModel(currentMessage.createdAt.formatTo(DATE_PATTERN_DAY_FULL_ONLY))
+                        val dateDivider = ChatDateDividerModel(currentMessage.createdAt.formatTo(DATE_PATTERN_DAY_MONTH_FULL_ONLY))
                         chatItems.add(dateDivider)
                         chatItems.add(currentMessage)
                     }

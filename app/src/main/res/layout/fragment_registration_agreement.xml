@@ -28,6 +28,7 @@
             android:layout_gravity="end"
             android:paddingHorizontal="14dp"
             android:tint="@color/secondary800"
+            android:visibility="gone"
             app:srcCompat="@drawable/ic_close_24px"/>
 
     </FrameLayout>

@@ -5,6 +5,7 @@ import org.joda.time.format.DateTimeFormat
 
 const val DATE_PATTERN_DATE_ONLY = "dd.MM.yyyy"
 const val DATE_PATTERN_DAY_FULL_ONLY = "dd.MMM"
+const val DATE_PATTERN_DAY_MONTH_FULL_ONLY = "dd MMMM"
 const val DATE_PATTERN_DATE_AND_TIME = "dd.MM.yyyy HH:mm:ss"
 const val DATE_PATTERN_TIME_ONLY_WITHOUT_SEC = "HH:mm"
 const val DATE_PATTERN_DATE_AND_TIME_AND_TIME_ZONE = "yyyy-MM-dd'T'HH:mm:ssZZ"
