@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,39 +7,12 @@
     android:background="@color/white"
     android:clickable="true">
 
-    <FrameLayout
-        android:id="@+id/toolbarFrameLayout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height">
-
-        <com.custom.rgs_android_dom.views.text.MSDTextView
-            android:id="@+id/titleSecondaryTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:alpha="0.0"
-            android:fontFamily="@font/my_service_medium"
-            android:textColor="@color/secondary900"
-            android:textSize="16sp"
-            app:translationTextKey="Расскажите о себе" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/closeImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:paddingHorizontal="14dp"
-            android:tint="@color/secondary800"
-            app:srcCompat="@drawable/ic_close_24px" />
-
-    </FrameLayout>
-
     <androidx.core.widget.NestedScrollView
         android:id="@+id/contentNestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/actionsFrameLayout"
-        android:layout_below="@+id/toolbarFrameLayout"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarFrameLayout"
+        app:layout_constraintBottom_toTopOf="@+id/actionsBottomAppBar"
         android:clipToPadding="false"
         android:overScrollMode="never"
         android:paddingBottom="24dp">
@@ -158,31 +131,77 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <FrameLayout
-        android:id="@+id/actionsFrameLayout"
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/actionsBottomAppBar"
         android:layout_width="match_parent"
-        android:layout_height="82dp"
-        android:layout_alignParentBottom="true"
-        android:paddingHorizontal="20dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="22dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="0dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="0dp"
+        app:contentInsetStart="0dp"
+        android:clickable="false"
+        android:focusable="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="BottomAppBar" >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="82dp"
+            android:layout_alignParentBottom="true"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="22dp"
+            android:background="@color/white">
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/skipTextView"
+                style="@style/Button.WithoutBg.Primary"
+                android:layout_width="wrap_content"
+                android:layout_gravity="start"
+                app:translationTextKey="Пропустить"/>
+
+            <com.custom.rgs_android_dom.views.text.MSDTextViewLoader
+                android:id="@+id/saveTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:enabled="false"
+                app:translationTextKey="Сохранить" />
+
+        </FrameLayout>
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+    <FrameLayout
+        android:id="@+id/toolbarFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:background="@color/white">
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
-            android:id="@+id/skipTextView"
-            style="@style/Button.WithoutBg.Primary"
-            android:layout_width="wrap_content"
-            android:layout_gravity="start"
-            app:translationTextKey="Пропустить"/>
-
-        <com.custom.rgs_android_dom.views.text.MSDTextViewLoader
-            android:id="@+id/saveTextView"
+            android:id="@+id/titleSecondaryTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:alpha="0.0"
+            android:fontFamily="@font/my_service_medium"
+            android:textColor="@color/secondary900"
+            android:textSize="16sp"
+            app:translationTextKey="Расскажите о себе" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/closeImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:enabled="false"
-            app:translationTextKey="Сохранить" />
+            android:paddingHorizontal="14dp"
+            android:tint="@color/secondary800"
+            app:srcCompat="@drawable/ic_close_24px" />
 
     </FrameLayout>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
