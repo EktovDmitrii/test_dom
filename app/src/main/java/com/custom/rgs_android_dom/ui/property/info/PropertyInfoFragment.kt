@@ -44,7 +44,6 @@ class PropertyInfoFragment: BaseBottomSheetFragment<PropertyInfoViewModel, Fragm
         }
 
         binding.moreImageView.setOnDebouncedClickListener {
-            ScreenManager.showScreen(AboutAppFragment())
         }
 
         subscribe(viewModel.propertyItemObserver) {propertyItem->
