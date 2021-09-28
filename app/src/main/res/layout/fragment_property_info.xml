@@ -112,6 +112,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
+                            app:isItalic="true"
                             app:translationLabelKey="Адрес" />
 
                         <com.custom.rgs_android_dom.views.text.MSDLabelTextView
@@ -119,6 +120,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
+                            app:isItalic="true"
                             app:translationLabelKey="Тип объекта" />
 
                         <com.custom.rgs_android_dom.views.text.MSDLabelTextView
@@ -126,6 +128,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
+                            app:isItalic="true"
                             app:translationLabelKey="В собственности" />
 
                         <com.custom.rgs_android_dom.views.text.MSDLabelTextView
@@ -133,6 +136,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
+                            app:isItalic="true"
                             app:translationLabelKey="Сдается в аренду" />
 
                         <com.custom.rgs_android_dom.views.text.MSDLabelTextView
@@ -140,6 +144,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
+                            app:isItalic="true"
                             app:translationLabelKey="Временное проживание" />
 
                         <com.custom.rgs_android_dom.views.text.MSDLabelTextView
@@ -147,6 +152,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
+                            app:isItalic="true"
                             app:translationLabelKey="Общая площадь" />
 
                         <com.custom.rgs_android_dom.views.text.MSDLabelTextView
