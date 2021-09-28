@@ -69,6 +69,22 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
             viewModel.onAboutAppClick()
         }
 
+        binding.ordersHistoryLinearLayout.setOnDebouncedClickListener {
+            viewModel.onNotCreatedScreenClick()
+        }
+
+        binding.myCardsLinearLayout.setOnDebouncedClickListener {
+            viewModel.onNotCreatedScreenClick()
+        }
+
+        binding.notificationSettingsLinearLayout.setOnDebouncedClickListener {
+            viewModel.onNotCreatedScreenClick()
+        }
+
+        binding.feedbackLinearLayout.setOnDebouncedClickListener {
+            viewModel.onNotCreatedScreenClick()
+        }
+
         subscribe(viewModel.propertyItemsObserver){ propertyItems ->
             propertyItemsAdapter.setItems(propertyItems)
         }

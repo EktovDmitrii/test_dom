@@ -72,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                app:translationLabelKey="Номер телефона" />
+                app:translationLabelKey="Номер телефона агента" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/requestEditLinearLayout"

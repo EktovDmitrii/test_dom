@@ -16,6 +16,7 @@ import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.property.add.select_type.SelectPropertyTypeFragment
 import com.custom.rgs_android_dom.ui.property.info.PropertyInfoFragment
+import com.custom.rgs_android_dom.ui.screen_stub.ScreenStubFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -104,6 +105,10 @@ class ClientViewModel(
 
     fun onPropertyItemClick(model: PropertyItemModel) {
         ScreenManager.showBottomScreen(PropertyInfoFragment.newInstance(model.id))
+    }
+
+    fun onNotCreatedScreenClick(){
+        ScreenManager.showScreen(ScreenStubFragment())
     }
 
     fun onAddPropertyClick(){

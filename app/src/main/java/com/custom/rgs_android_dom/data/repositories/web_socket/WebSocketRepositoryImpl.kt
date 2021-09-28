@@ -67,7 +67,7 @@ class WebSocketRepositoryImpl(
             }
 
             webSocket = clientBuilder
-                .pingInterval(10, TimeUnit.SECONDS)
+                //.pingInterval(10, TimeUnit.SECONDS)
                 .build()
                 .newWebSocket(
                     Request.Builder().url(wsUrl).build(),
