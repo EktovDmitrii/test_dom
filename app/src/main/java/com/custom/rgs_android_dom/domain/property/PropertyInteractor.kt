@@ -32,10 +32,10 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
 
     // TODO Will be changed later
     fun updatePropertyName(propertyCount: Int, propertyType: PropertyType){
-
+        // TODO Now for all property we are using one name. Later we will change this
         var name = when (propertyType){
             PropertyType.HOUSE -> "Дом"
-            PropertyType.APARTMENT -> "Квартира"
+            PropertyType.APARTMENT -> "Дом"
             else -> "Объект"
         }
         if (propertyCount >0){

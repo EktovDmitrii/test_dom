@@ -147,7 +147,7 @@ class RegistrationFillClientFragment : BaseFragment<RegistrationFillClientViewMo
                     ClientField.FIRSTNAME -> binding.nameEditText.setState(MSDLabelEditText.State.ERROR)
                     ClientField.LASTNAME -> binding.surnameEditText.setState(MSDLabelEditText.State.ERROR)
                     ClientField.AGENTCODE -> binding.agentCodeEditText.setState(MSDLabelEditText.State.ERROR)
-                    ClientField.AGENTPHONE -> binding.agentPhoneEditText.setState(MSDMaskedLabelEditText.State.ERROR)
+                    ClientField.AGENTPHONE -> binding.agentPhoneEditText.setState(MSDMaskedLabelEditText.State.ERROR, "Проверьте, правильно ли введён номер телефона")
                 }
             }
         }

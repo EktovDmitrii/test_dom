@@ -29,7 +29,6 @@ class MSDLabelTextView @JvmOverloads constructor(
 
         attrs.getBoolean(R.styleable.MSDLabelTextView_isItalic, false).let {
             if (it){
-                binding.valueTextView.setTypeface(binding.valueTextView.typeface, Typeface.ITALIC)
                 binding.noValueTextView.setTypeface(binding.noValueTextView.typeface, Typeface.ITALIC)
             }
         }
