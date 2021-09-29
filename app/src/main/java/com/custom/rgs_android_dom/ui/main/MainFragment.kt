@@ -5,7 +5,6 @@ import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.*
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentMainBinding
@@ -25,6 +24,8 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
     private lateinit var transitionBackground: TransitionDrawable
 
     private val animationSet = AnimationSet(true)
+    private var canTransit = true
+    private var canTransitReverse = true
 
     private var bottomSheetMainFragment: BaseBottomSheetFragment<*, *>? = null
 
@@ -38,7 +39,7 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
             )
         )
 
-        binding.root.background = transitionBackground
+        binding.contentConstraintLayout.background = transitionBackground
 
         binding.toolbarChatIcon.setOnDebouncedClickListener {
             ScreenManager.showScreen(ChatFragment())
@@ -62,23 +63,34 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
         viewModel.unsubscribeLogout()
     }
 
+    override fun setStatusBarColor() {
+        setStatusBarColor(R.color.primary400)
+    }
+
+    override fun onVisibleToUser() {
+        super.onVisibleToUser()
+        measureAndShowFragment()
+    }
+
     private fun measureAndShowFragment() {
         binding.root.afterMeasured {
+
+            initAnimations()
 
             val bottomSheetBehavior: BottomSheetBehavior<*> =
                 BottomSheetBehavior.from<View>(binding.bottomContainer)
             Log.d("PEEK", bottomSheetBehavior.peekHeight.toString())
 
             val paddingValue =
-            when (bottomSheetMainFragment) {
-                is ClientFragment -> {
-                    92.dp(requireContext())
+                when (bottomSheetMainFragment) {
+                    is ClientFragment -> {
+                        92.dp(requireContext())
+                    }
+                    is PropertyInfoFragment -> {
+                        12.dp(requireContext())
+                    }
+                    else -> 0.dp(requireContext())
                 }
-                is PropertyInfoFragment -> {
-                    12.dp(requireContext())
-                }
-                else -> 0.dp(requireContext())
-            }
             bottomSheetBehavior.peekHeight =
                 binding.root.getLocationOnScreen().y - binding.callContainerLinearLayout.getLocationOnScreen().y + 8.dp(
                     requireContext()
@@ -88,12 +100,20 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
             bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetCallback() {
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
                     Log.d("BOOTOM", "onStateChanged")
+                    if (newState == STATE_EXPANDED || newState == STATE_HALF_EXPANDED) {
+                        onSlideStateChanged(SlideState.TOP)
+                    }
+
                 }
 
                 override fun onSlide(bottomSheet: View, slideOffset: Float) {
                     Log.d("BOOTOM", "onSlide")
+                    if (slideOffset < 0.49f && slideOffset > 0.0f){
+                        onSlideStateChanged(SlideState.MOVING_BOTTOM)
+                    } else if (slideOffset == 0.0f) {
+                        onSlideStateChanged(SlideState.BOTTOM)
+                    }
                 }
-
             })
 
             binding.toolbarLinearLayout.setOnDebouncedClickListener {
@@ -102,7 +122,6 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
 
             bottomSheetBehavior.state = STATE_EXPANDED
         }
-
     }
 
     private fun initAnimations() {
@@ -124,7 +143,6 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
         animationSet.addAnimation(fadeOut)
         animationSet.addAnimation(slideUp)
 
-
         animationSet.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(p0: Animation?) {
             }
@@ -139,13 +157,30 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
         })
     }
 
-    override fun setStatusBarColor() {
-        setStatusBarColor(R.color.primary400)
+    private fun onSlideStateChanged(newState: SlideState){
+        when (newState){
+            SlideState.TOP-> {
+                if (canTransitReverse){
+                    transitionBackground.reverseTransition(100)
+                    canTransitReverse = false
+                }
+                binding.swipeMoreTextView.visible()
+                canTransit = true
+            }
+            SlideState.MOVING_BOTTOM -> {
+                if (canTransit){
+                    binding.swipeMoreTextView.startAnimation(animationSet)
+                    transitionBackground.startTransition(100)
+                    canTransit = false
+                    canTransitReverse = true
+                }
+            }
+            SlideState.BOTTOM -> {
+                canTransitReverse = true
+            }
+        }
     }
 
-    override fun onVisibleToUser() {
-        super.onVisibleToUser()
-        measureAndShowFragment()
-    }
+    enum class SlideState {TOP, MOVING_BOTTOM, BOTTOM}
 
 }
