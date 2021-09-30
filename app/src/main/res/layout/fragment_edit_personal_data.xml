@@ -172,6 +172,7 @@
                 android:layout_marginTop="16dp"
                 android:inputType="phone"
                 app:mask="+7 [000] [000]-[00]-[00]"
+                app:hintAlwaysVisible="true"
                 app:translationHintKey="app.personal_info.second_phone.placeholder"
                 app:translationLabelKey="app.personal_info.second_phone.title" />
 
