@@ -6,6 +6,7 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.subjects.PublishSubject
 import org.joda.time.LocalDateTime
 
 interface ClientRepository {
@@ -35,5 +36,9 @@ interface ClientRepository {
     fun updateSecondPhone(phone: String, id: String): Completable
 
     fun deleteContacts(ids: ArrayList<String>): Completable
+
+    fun requestEditAgent(): Completable
+
+    fun getEditAgentRequestedSubject(): PublishSubject<Boolean>
 
 }

@@ -80,4 +80,8 @@ class PropertyInfoFragment: BaseBottomSheetFragment<PropertyInfoViewModel, Fragm
             }
         }
     }
+
+    override fun getThemeResource(): Int {
+        return R.style.BottomSheetNoDim
+    }
 }

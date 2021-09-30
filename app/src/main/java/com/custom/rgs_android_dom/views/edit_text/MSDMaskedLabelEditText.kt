@@ -13,6 +13,7 @@ import com.custom.rgs_android_dom.databinding.ViewMsdMaskedLabelEditTextBinding
 import com.custom.rgs_android_dom.domain.TranslationInteractor
 import com.custom.rgs_android_dom.utils.gone
 import com.custom.rgs_android_dom.utils.toEditable
+import com.custom.rgs_android_dom.utils.visible
 import com.custom.rgs_android_dom.utils.visibleIf
 import com.redmadrobot.inputmask.MaskedTextChangedListener
 
@@ -29,12 +30,29 @@ class MSDMaskedLabelEditText @JvmOverloads constructor(
 
     private var isFromUser = true
 
+    private var hint = ""
+    private var newHintBuilder = StringBuilder()
+    private var hintAlwaysVisible = false
+
     private val maskedValueChangedListener = object : MaskedTextChangedListener.ValueListener {
         override fun onTextChanged(
             maskFilled: Boolean,
             extractedValue: String,
             formattedValue: String
         ) {
+            if (hintAlwaysVisible){
+                newHintBuilder.clear()
+                for (i in hint.indices){
+                    var newChar = if (formattedValue.isNotEmpty() && i < formattedValue.length) {
+                        formattedValue[i]
+                    } else {
+                        hint[i]
+                    }
+                    newHintBuilder.append(newChar)
+                }
+                binding.hintEditText.hint = newHintBuilder.toString()
+            }
+
             if (isFromUser){
                 onTextChangedListener(formattedValue, maskFilled)
             }
@@ -44,9 +62,13 @@ class MSDMaskedLabelEditText @JvmOverloads constructor(
 
     init {
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDMaskedLabelEditText, 0, 0)
+
+        hintAlwaysVisible = attrs.getBoolean(R.styleable.MSDMaskedLabelEditText_hintAlwaysVisible, false)
+        binding.hintRelativelayout.visibleIf(hintAlwaysVisible)
+
         attrs.getString(R.styleable.MSDMaskedLabelEditText_translationHintKey)?.let { translationHintKey ->
             //TODO Add handling translation logic here
-            binding.valueEditText.hint = TranslationInteractor.getTranslation(translationHintKey)
+            setHint(TranslationInteractor.getTranslation(translationHintKey))
         }
 
         attrs.getString(R.styleable.MSDMaskedLabelEditText_translationLabelKey)?.let { translationLabelKey ->
@@ -90,7 +112,6 @@ class MSDMaskedLabelEditText @JvmOverloads constructor(
             }
 
         }
-
     }
 
     fun setText(text: String){
@@ -100,7 +121,13 @@ class MSDMaskedLabelEditText @JvmOverloads constructor(
     }
 
     fun setHint(hint: String){
-        binding.valueEditText.hint = hint
+        if (hintAlwaysVisible){
+            binding.hintEditText.hint = hint
+        } else {
+            binding.valueEditText.hint = hint
+        }
+        this.hint = hint
+
     }
 
     fun getText(): String {
