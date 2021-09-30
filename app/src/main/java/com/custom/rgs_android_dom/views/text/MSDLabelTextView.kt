@@ -27,11 +27,8 @@ class MSDLabelTextView @JvmOverloads constructor(
             binding.labelTextView.text = TranslationInteractor.getTranslation(translationTextKey)
         }
 
-        attrs.getBoolean(R.styleable.MSDLabelTextView_isItalic, false).let {
-            if (it){
-                binding.noValueTextView.setTypeface(binding.noValueTextView.typeface, Typeface.ITALIC)
-            }
-        }
+        binding.noValueTextView.setTypeface(binding.noValueTextView.typeface, Typeface.ITALIC)
+
     }
 
     fun setLabel(label: String){

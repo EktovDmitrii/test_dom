@@ -119,11 +119,4 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB : ViewBinding>: Bo
         viewModel.close()
         ScreenManager.showScreen(fragment)
     }
-
-    private fun setBottomSheetTopMargin(topMargin: Int, bottomSheet: View) {
-        val layoutParams: CoordinatorLayout.LayoutParams =
-            bottomSheet.layoutParams as CoordinatorLayout.LayoutParams
-        layoutParams.topMargin = topMargin
-        bottomSheet.layoutParams = layoutParams
-    }
 }

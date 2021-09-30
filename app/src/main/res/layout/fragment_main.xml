@@ -70,6 +70,7 @@
         android:layout_height="match_parent"
         app:behavior_hideable="false"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
