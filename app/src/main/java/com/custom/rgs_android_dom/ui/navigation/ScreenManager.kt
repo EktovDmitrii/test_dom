@@ -56,11 +56,14 @@ object ScreenManager {
     fun showBottomScreen(fragment: BaseBottomSheetFragment<*, *>) {
         val container = bottomContainerId ?: return
         val transaction = beginTransaction() ?: return
+
+        onBottomSheetChanged(fragment)
+
         transaction.add(container, fragment, menuTag.name)
         transaction.addToBackStack(menuTag.name)
         transaction.commitAllowingStateLoss()
         bottomFragments.add(fragment)
-        onBottomSheetChanged(fragment)
+
     }
 
     fun closeCurrentBottomFragment() {

@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.ui.main
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.*
 import android.widget.OverScroller
@@ -36,20 +37,19 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
 
     private val bottomSheetCallback = object : BottomSheetCallback(){
         override fun onStateChanged(bottomSheet: View, newState: Int) {
+            try {
+                if (!bottomSheetInited){
+                    scroller?.abortAnimation()
+                }
+            } catch(e: Throwable) {
+                logException(this, e)
+            }
+
             if (newState == STATE_EXPANDED || newState == STATE_HALF_EXPANDED){
                 if (!bottomSheetInited && newState == STATE_EXPANDED){
                     afterBottomSheetInit()
                 }
                 onSlideStateChanged(SlideState.TOP)
-            }
-            if (newState == STATE_SETTLING) {
-                /*try {
-                    if (!bottomSheetInited){
-                        scroller?.abortAnimation()
-                    }
-                } catch(e: Throwable) {
-                    logException(this, e)
-                }*/
             }
         }
 
@@ -111,6 +111,9 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
             initAnimations()
             bottomSheetBehavior = from<View>(binding.bottomContainer)
             scroller = bottomSheetBehavior?.getViewDragHelper()?.getScroller()
+
+            bottomSheetBehavior?.addBottomSheetCallback(bottomSheetCallback)
+
             val bottomSheetTopPadding =
                 when (bottomSheetMainFragment) {
                     is ClientFragment -> {
@@ -128,8 +131,6 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
             binding.bottomContainer.setPadding(0, bottomSheetTopPadding,0,0)
 
             beforeBottomSheetInit()
-
-            bottomSheetBehavior?.addBottomSheetCallback(bottomSheetCallback)
 
             binding.toolbarLinearLayout.setOnDebouncedClickListener {
                 bottomSheetBehavior?.state = STATE_COLLAPSED
@@ -202,7 +203,8 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
     }
 
     private fun beforeBottomSheetInit(){
-        //disableLayoutBehaviour()
+        binding.bottomContainer.invisible()
+        binding.fakeBottomContainer.visible()
         bottomSheetInited = false
         binding.callContainerLinearLayout.gone()
         binding.swipeMoreTextView.gone()
@@ -210,7 +212,8 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
     }
 
     private fun afterBottomSheetInit(){
-        //enableLayoutBehaviour()
+        binding.bottomContainer.visible()
+        binding.fakeBottomContainer.gone()
         bottomSheetInited = true
         binding.callContainerLinearLayout.visible()
         binding.swipeMoreTextView.visible()
@@ -219,16 +222,6 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
             bottomSheetBehavior?.peekHeight = it
         }
 
-    }
-
-    fun enableLayoutBehaviour() {
-        val param: CoordinatorLayout.LayoutParams = binding.bottomContainer.layoutParams as CoordinatorLayout.LayoutParams
-        param.behavior = AppBarLayout.ScrollingViewBehavior()
-    }
-
-    fun disableLayoutBehaviour() {
-        val param: CoordinatorLayout.LayoutParams = binding.bottomContainer.layoutParams as CoordinatorLayout.LayoutParams
-        param.behavior = null
     }
 
     enum class SlideState {TOP, MOVING_BOTTOM, BOTTOM}

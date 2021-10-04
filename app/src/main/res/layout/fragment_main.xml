@@ -37,8 +37,10 @@
             android:layout_height="272dp"
             android:background="@drawable/rectangle_filled_primary_500_top_radius_24dp"
             android:layout_marginTop="8dp"
+            android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbarLinearLayout">
+            app:layout_constraintTop_toBottomOf="@+id/toolbarLinearLayout"
+            tools:visibility="visible">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="170dp"
@@ -58,9 +60,11 @@
             android:includeFontPadding="false"
             android:fontFamily="@font/suisse_regular"
             android:textSize="12sp"
+            android:visibility="invisible"
             app:translationTextKey="Потяните, чтобы связаться с мастером"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbarLinearLayout"/>
+            app:layout_constraintTop_toBottomOf="@+id/toolbarLinearLayout"
+            tools:visibility="visible"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -69,7 +73,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:behavior_hideable="false"
+        android:paddingTop="92dp"
+        android:visibility="invisible"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"/>
+
+    <FrameLayout
+        android:id="@+id/fakeBottomContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="62dp"
+        android:background="@drawable/rectangle_filled_white_top_radius_24dp"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
