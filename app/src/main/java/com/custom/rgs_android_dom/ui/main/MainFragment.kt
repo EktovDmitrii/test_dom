@@ -3,11 +3,9 @@ package com.custom.rgs_android_dom.ui.main
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.*
 import android.widget.OverScroller
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentMainBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
@@ -17,7 +15,6 @@ import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.property.info.PropertyInfoFragment
 import com.custom.rgs_android_dom.utils.*
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.*
 
