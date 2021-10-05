@@ -35,10 +35,6 @@ class PropertyInfoFragment: BaseBottomSheetFragment<PropertyInfoViewModel, Fragm
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.scroller.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            Log.d("SCROLL", "SCROLLED")
-        }
-
         binding.backImageView.setOnDebouncedClickListener {
             ScreenManager.closeCurrentBottomFragment()
         }

@@ -90,4 +90,5 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
     override fun onClose() {
         hideSoftwareKeyboard()
     }
+    
 }
