@@ -80,8 +80,10 @@ class ClientInteractor(
             errorsValidate.add(ValidateFieldModel(ClientField.AGENTCODE, "Укажите код агента"))
         }
 
-        if (!isAgentPhoneCorrect()) {
-            errorsValidate.add(ValidateFieldModel(ClientField.AGENTPHONE, "Укажите телефон агента"))
+        if (fillClientViewState.agentPhone != null){
+            if (!fillClientViewState.agentPhoneValid){
+                errorsValidate.add(ValidateFieldModel(ClientField.AGENTPHONE, "Укажите телефон агента"))
+            }
         }
 
         if (errorsValidate.isNotEmpty()){
@@ -399,7 +401,7 @@ class ClientInteractor(
             return Completable.error(
                 ValidateClientException(
                     ClientField.AGENTPHONE,
-                    "Проверьте, правильно ли введён номер телефона"
+                    ""
                 )
             )
         }
@@ -420,10 +422,6 @@ class ClientInteractor(
         ))
     }
 
-    private fun isAgentPhoneCorrect(): Boolean {
-        return fillClientViewState.agentPhoneValid && fillClientViewState.agentPhone != null
-    }
-
     private fun validateProfileState() {
         validateSubject.accept(
             fillClientViewState.name != null ||
@@ -431,7 +429,7 @@ class ClientInteractor(
                     fillClientViewState.gender != null ||
                     fillClientViewState.birthday != null ||
                     fillClientViewState.agentCode != null ||
-                    isAgentPhoneCorrect()
+                    fillClientViewState.agentPhoneValid && fillClientViewState.agentPhone != null
         )
     }
 
