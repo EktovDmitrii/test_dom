@@ -18,6 +18,10 @@ class AgentViewModel(private val clientInteractor: ClientInteractor) : BaseViewM
     private val agentController = MutableLiveData<AgentViewState>()
     val agentObserver: LiveData<AgentViewState> = agentController
 
+    private val editAgentRequestedController = MutableLiveData<Boolean>()
+    val editAgentRequestedObserver: LiveData<Boolean> = editAgentRequestedController
+
+
     init {
         clientInteractor.getAgent().subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -41,6 +45,18 @@ class AgentViewModel(private val clientInteractor: ClientInteractor) : BaseViewM
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
+
+        clientInteractor.getEditAgentRequestedSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    editAgentRequestedController.value = it
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
     }
 
     fun onBackClick(){
@@ -50,6 +66,5 @@ class AgentViewModel(private val clientInteractor: ClientInteractor) : BaseViewM
     fun onEditClick(){
         ScreenManager.showScreen(EditAgentFragment())
     }
-
 
 }

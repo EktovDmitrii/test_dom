@@ -33,6 +33,9 @@ class MSDPhoneInput @JvmOverloads constructor(
     private var countryCode = ""
     private var letterCode = ""
 
+    private var hint = ""
+    private var newHintBuilder = StringBuilder()
+
     private var maskedTextChangedListener: MaskedTextChangedListener? = null
 
     private val maskedValueChangedListener = object : MaskedTextChangedListener.ValueListener {
@@ -41,6 +44,16 @@ class MSDPhoneInput @JvmOverloads constructor(
             extractedValue: String,
             formattedValue: String
         ) {
+            newHintBuilder.clear()
+            for (i in hint.indices){
+                var newChar = if (formattedValue.isNotEmpty() && i < formattedValue.length) {
+                    formattedValue[i]
+                } else {
+                    hint[i]
+                }
+                newHintBuilder.append(newChar)
+            }
+            binding.hintEditText.hint = newHintBuilder.toString()
             if (isFromUser){
                 onPhoneChangedListener("$countryCode$formattedValue", maskFilled)
             }
@@ -110,7 +123,8 @@ class MSDPhoneInput @JvmOverloads constructor(
         binding.phoneEditText.addTextChangedListener(maskedTextChangedListener)
 
         val hint = makeHint(mask)
-        binding.phoneEditText.hint = hint
+        binding.hintEditText.hint = hint
+        this.hint = hint
 
         binding.countryCodeTextView.text = countryCode
         binding.countryCodeTextView.requestLayout()
@@ -132,7 +146,8 @@ class MSDPhoneInput @JvmOverloads constructor(
         binding.phoneEditText.addTextChangedListener(maskedTextChangedListener)
 
         val hint = makeHint(mask)
-        binding.phoneEditText.hint = hint
+        binding.hintEditText.hint = hint
+        this.hint = hint
 
         binding.countryCodeTextView.requestLayout()
         binding.countryCodeTextView.invalidate()

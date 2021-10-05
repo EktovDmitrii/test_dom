@@ -54,26 +54,48 @@
             app:layout_constraintStart_toEndOf="@+id/countryLinearLayout"
             tools:text="+7"/>
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/phoneEditText"
+        <FrameLayout
             android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="2dp"
-            android:textSize="16sp"
-            android:textColor="@color/secondary900"
-            android:background="@null"
-            android:fontFamily="@font/suisse_regular"
-            android:gravity="center_vertical"
-            android:inputType="phone"
-            android:paddingTop="2dp"
-            android:includeFontPadding="false"
-            android:maxLines="1"
-            android:textCursorDrawable="@drawable/cursor_primary_500"
-            android:textColorHint="@color/secondary300"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@+id/countryCodeTextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:hint="999 999-99-99"/>
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/hintEditText"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:layout_marginStart="2dp"
+                android:textSize="16sp"
+                android:background="@null"
+                android:fontFamily="@font/suisse_regular"
+                android:gravity="center_vertical"
+                android:inputType="phone"
+                android:paddingTop="2dp"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:textColorHint="@color/secondary300"
+                android:enabled="false"
+                tools:hint="999 999-99-99"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/phoneEditText"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:layout_marginStart="2dp"
+                android:textSize="16sp"
+                android:textColor="@color/secondary900"
+                android:background="@null"
+                android:fontFamily="@font/suisse_regular"
+                android:gravity="center_vertical"
+                android:inputType="phone"
+                android:paddingTop="2dp"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:textCursorDrawable="@drawable/cursor_primary_500"
+                android:textColorHint="@color/secondary300"/>
+
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
