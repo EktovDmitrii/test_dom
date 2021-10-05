@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/containerFrameLayout"
-    android:layout_width="wrap_content"
+    android:layout_width="124dp"
     android:layout_height="wrap_content"
     android:layout_marginTop="12dp">
 
@@ -17,9 +17,9 @@
     <TextView
         android:id="@+id/nameTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="38dp"
         android:layout_marginTop="126dp"
-        android:background="@drawable/row_filled_white_radius_10dp"
+        android:background="@drawable/rectangle_filled_white_radius_10dp"
         android:fontFamily="@font/suisse_regular"
         android:paddingHorizontal="12dp"
         android:gravity="center"
@@ -29,6 +29,7 @@
         android:layout_gravity="center_horizontal"
         android:lines="1"
         android:ellipsize="end"
+        android:layout_marginHorizontal="12dp"
         tools:text="Дом" />
 
 </FrameLayout>

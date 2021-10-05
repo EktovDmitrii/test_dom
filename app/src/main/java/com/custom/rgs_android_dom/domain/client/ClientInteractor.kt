@@ -18,6 +18,7 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.subjects.PublishSubject
 import org.joda.time.LocalDateTime
 
 class ClientInteractor(
@@ -407,6 +408,14 @@ class ClientInteractor(
         return clientRepository.updateAgent(editAgentViewState.agentCode, editAgentViewState.agentPhone)
     }
 
+    fun requestEditAgent(): Completable {
+        return clientRepository.requestEditAgent()
+    }
+
+    fun getEditAgentRequestedSubject(): PublishSubject<Boolean> {
+        return clientRepository.getEditAgentRequestedSubject()
+    }
+
     private fun isBirthdayValid(birthday: LocalDateTime): Boolean {
         return !(birthday.isAfter(MIN_DATE) || birthday.isBefore(
             MAX_DATE
@@ -455,7 +464,6 @@ class ClientInteractor(
         return clientRepository.updateClient(firstName, lastName, middleName, birthday, gender, agentCode, agentPhone, phone, email)
             .doOnComplete { fillClientStateSubject.accept(fillClientViewState) }
     }
-
 
     private fun validateAgentState(){
         var isSaveTextViewEnabled = editAgentViewState.agentCode.isNotEmpty() || editAgentViewState.agentPhone.isNotEmpty()

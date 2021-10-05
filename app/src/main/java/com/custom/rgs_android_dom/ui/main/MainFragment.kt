@@ -3,9 +3,9 @@ package com.custom.rgs_android_dom.ui.main
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.*
+import android.widget.OverScroller
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentMainBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
@@ -18,16 +18,46 @@ import com.custom.rgs_android_dom.utils.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.*
 
-
 class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.fragment_main) {
 
     private lateinit var transitionBackground: TransitionDrawable
 
     private val animationSet = AnimationSet(true)
     private var canTransit = true
-    private var canTransitReverse = true
+    private var canTransitReverse = false
+    private var bottomSheetInited = false
 
     private var bottomSheetMainFragment: BaseBottomSheetFragment<*, *>? = null
+    private var bottomSheetBehavior: BottomSheetBehavior<*>? = null
+    private var scroller: OverScroller? = null
+    private var peekHeight: Int? = null
+
+    private val bottomSheetCallback = object : BottomSheetCallback(){
+        override fun onStateChanged(bottomSheet: View, newState: Int) {
+            try {
+                if (!bottomSheetInited){
+                    scroller?.abortAnimation()
+                }
+            } catch(e: Throwable) {
+                logException(this, e)
+            }
+
+            if (newState == STATE_EXPANDED || newState == STATE_HALF_EXPANDED){
+                if (!bottomSheetInited && newState == STATE_EXPANDED){
+                    afterBottomSheetInit()
+                }
+                onSlideStateChanged(SlideState.TOP)
+            }
+        }
+
+        override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            if (slideOffset < 0.49f && slideOffset > 0.0f){
+                onSlideStateChanged(SlideState.MOVING_BOTTOM)
+            } else if (slideOffset == 0.0f) {
+                onSlideStateChanged(SlideState.BOTTOM)
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,7 +76,7 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
         }
 
         ScreenManager.initBottomSheet(R.id.bottomContainer)
-        ScreenManager.bottomFragmentsUpdate = {
+        ScreenManager.onBottomSheetChanged = {
             bottomSheetMainFragment = it
             measureAndShowFragment()
         }
@@ -73,15 +103,15 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
     }
 
     private fun measureAndShowFragment() {
+
         binding.root.afterMeasured {
-
             initAnimations()
+            bottomSheetBehavior = from<View>(binding.bottomContainer)
+            scroller = bottomSheetBehavior?.getViewDragHelper()?.getScroller()
 
-            val bottomSheetBehavior: BottomSheetBehavior<*> =
-                BottomSheetBehavior.from<View>(binding.bottomContainer)
-            Log.d("PEEK", bottomSheetBehavior.peekHeight.toString())
+            bottomSheetBehavior?.addBottomSheetCallback(bottomSheetCallback)
 
-            val paddingValue =
+            val bottomSheetTopPadding =
                 when (bottomSheetMainFragment) {
                     is ClientFragment -> {
                         92.dp(requireContext())
@@ -91,36 +121,24 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
                     }
                     else -> 0.dp(requireContext())
                 }
-            bottomSheetBehavior.peekHeight =
-                binding.root.getLocationOnScreen().y - binding.callContainerLinearLayout.getLocationOnScreen().y + 8.dp(
-                    requireContext()
-                ) + paddingValue
-            binding.bottomContainer.setPadding(0,paddingValue,0,0)
 
-            bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetCallback() {
-                override fun onStateChanged(bottomSheet: View, newState: Int) {
-                    Log.d("BOOTOM", "onStateChanged")
-                    if (newState == STATE_EXPANDED || newState == STATE_HALF_EXPANDED) {
-                        onSlideStateChanged(SlideState.TOP)
-                    }
+            peekHeight =  binding.root.getLocationOnScreen().y - binding.callContainerLinearLayout.getLocationOnScreen().y +
+                    8.dp(requireContext()) + bottomSheetTopPadding
 
-                }
+            binding.bottomContainer.setPadding(0, bottomSheetTopPadding,0,0)
 
-                override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                    Log.d("BOOTOM", "onSlide")
-                    if (slideOffset < 0.49f && slideOffset > 0.0f){
-                        onSlideStateChanged(SlideState.MOVING_BOTTOM)
-                    } else if (slideOffset == 0.0f) {
-                        onSlideStateChanged(SlideState.BOTTOM)
-                    }
-                }
-            })
+            beforeBottomSheetInit()
 
             binding.toolbarLinearLayout.setOnDebouncedClickListener {
-                bottomSheetBehavior.state = STATE_COLLAPSED
+                bottomSheetBehavior?.state = STATE_COLLAPSED
             }
 
-            bottomSheetBehavior.state = STATE_EXPANDED
+            if (bottomSheetBehavior?.state == STATE_EXPANDED){
+                afterBottomSheetInit()
+            } else {
+                bottomSheetBehavior?.state = STATE_EXPANDED
+            }
+
         }
     }
 
@@ -179,6 +197,28 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
                 canTransitReverse = true
             }
         }
+    }
+
+    private fun beforeBottomSheetInit(){
+        binding.bottomContainer.invisible()
+        binding.fakeBottomContainer.visible()
+        bottomSheetInited = false
+        binding.callContainerLinearLayout.gone()
+        binding.swipeMoreTextView.gone()
+        bottomSheetBehavior?.peekHeight = binding.root.getLocationOnScreen().y
+    }
+
+    private fun afterBottomSheetInit(){
+        binding.bottomContainer.visible()
+        binding.fakeBottomContainer.gone()
+        bottomSheetInited = true
+        binding.callContainerLinearLayout.visible()
+        binding.swipeMoreTextView.visible()
+
+        peekHeight?.let {
+            bottomSheetBehavior?.peekHeight = it
+        }
+
     }
 
     enum class SlideState {TOP, MOVING_BOTTOM, BOTTOM}

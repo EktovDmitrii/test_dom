@@ -6,7 +6,6 @@ import com.custom.rgs_android_dom.domain.chat.models.ChatMessageModel
 import com.custom.rgs_android_dom.domain.repositories.ChatRepository
 import com.custom.rgs_android_dom.domain.repositories.WebSocketRepository
 import com.custom.rgs_android_dom.domain.web_socket.models.WsChatMessageModel
-import com.custom.rgs_android_dom.utils.DATE_PATTERN_DAY_FULL_ONLY
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DAY_MONTH_FULL_ONLY
 import com.custom.rgs_android_dom.utils.formatTo
 import com.custom.rgs_android_dom.utils.getPeriod
@@ -80,7 +79,7 @@ class ChatInteractor(
     private fun getDateDivider(currentMessageDate: LocalDateTime, previousMessageDate: LocalDateTime?): ChatDateDividerModel? {
         previousMessageDate?.let { previousMessageDate->
             if (previousMessageDate.getPeriod(currentMessageDate).days >0 ) {
-                return ChatDateDividerModel(currentMessageDate.formatTo(DATE_PATTERN_DAY_FULL_ONLY))
+                return ChatDateDividerModel(currentMessageDate.formatTo((DATE_PATTERN_DAY_MONTH_FULL_ONLY)))
             }
         }
         return null

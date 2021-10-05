@@ -59,7 +59,6 @@
 
     <declare-styleable name="MSDLabelTextView">
         <attr name="translationLabelKey"/>
-        <attr name="isItalic" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="MSDLabelIconTextView">
@@ -134,6 +133,7 @@
         <attr name="android:lines"/>
         <attr name="isFocused"/>
         <attr name="android:maxLength"/>
+        <attr name="hintAlwaysVisible" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="MSDTextInputLayout">

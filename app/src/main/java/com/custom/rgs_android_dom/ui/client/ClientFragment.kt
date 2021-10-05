@@ -90,4 +90,8 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
     override fun onClose() {
         hideSoftwareKeyboard()
     }
+
+    override fun getThemeResource(): Int {
+        return R.style.BottomSheetNoDim
+    }
 }

@@ -41,7 +41,7 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB : ViewBinding>: Bo
     abstract val TAG: String
 
     override fun getTheme(): Int {
-        return R.style.BottomSheetNoDim
+        return getThemeResource()
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,12 +49,6 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB : ViewBinding>: Bo
         savedInstanceState: Bundle?
     ): View? {
         return binding.root
-    }
-
-
-    override fun onStart() {
-        super.onStart()
-        dialog?.window?.setWindowAnimations(-1)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -78,7 +72,6 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB : ViewBinding>: Bo
     open fun getParameters(): ParametersDefinition = {
         emptyParametersHolder()
     }
-
 
     open fun onLoading() {}
     open fun onContent() {}
@@ -120,10 +113,6 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB : ViewBinding>: Bo
         ScreenManager.showScreen(fragment)
     }
 
-    private fun setBottomSheetTopMargin(topMargin: Int, bottomSheet: View) {
-        val layoutParams: CoordinatorLayout.LayoutParams =
-            bottomSheet.layoutParams as CoordinatorLayout.LayoutParams
-        layoutParams.topMargin = topMargin
-        bottomSheet.layoutParams = layoutParams
-    }
+    abstract fun getThemeResource(): Int
+
 }

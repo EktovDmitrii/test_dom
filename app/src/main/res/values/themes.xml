@@ -126,14 +126,13 @@
     <style name="Button.WithoutBg.Primary" parent="Button.WithoutBg">
         <item name="android:background">@null</item>
         <item name="android:textColor">@color/button_without_bg_primary_text_color</item>
-        <item name="android:fontFamily">@font/my_service_bold</item>
+        <item name="android:fontFamily">@font/my_service_medium</item>
     </style>
 
     <style name="Button.WithoutBg.Secondary" parent="Button.WithoutBg">
-        <item name="android:layout_height">24dp</item>
         <item name="android:background">@null</item>
         <item name="android:textColor">@color/button_without_bg_secondary_text_color</item>
-        <item name="android:fontFamily">@font/suisse_regular</item>
+        <item name="android:fontFamily">@font/my_service_medium</item>
     </style>
 
     <style name="Button.Filled.Primary.DoubleText" parent="Button.Filled">

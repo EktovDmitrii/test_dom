@@ -9,6 +9,7 @@ import com.custom.rgs_android_dom.ui.client.ClientViewModel
 
 import com.custom.rgs_android_dom.ui.client.agent.AgentViewModel
 import com.custom.rgs_android_dom.ui.client.agent.edit.EditAgentViewModel
+import com.custom.rgs_android_dom.ui.client.agent.request_edit.RequestEditAgentViewModel
 import com.custom.rgs_android_dom.ui.client.personal_data.edit.EditPersonalDataViewModel
 import com.custom.rgs_android_dom.ui.client.personal_data.PersonalDataViewModel
 import com.custom.rgs_android_dom.ui.property.add.details.PropertyDetailsViewModel
@@ -43,4 +44,5 @@ val viewModelModule = module {
     viewModel { parameters-> PropertyDetailsViewModel(propertyCount = parameters.get(), propertyType = parameters.get(), propertyInteractor = get()) }
     viewModel { parameters-> PropertyInfoViewModel(objectId = parameters.get(), propertyInteractor = get()) }
     viewModel { ScreenStubViewModel() }
+    viewModel { RequestEditAgentViewModel(clientInteractor = get()) }
 }
