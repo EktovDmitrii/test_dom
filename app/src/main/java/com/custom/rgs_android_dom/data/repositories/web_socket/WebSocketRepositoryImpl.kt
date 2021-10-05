@@ -55,7 +55,9 @@ class WebSocketRepositoryImpl(
     private val wsResponseParser = WsResponseParser(gson)
 
     override fun connect(){
+
         val token = authSharedPreferences.getAccessToken()
+        Log.d(TAG, "CONNECTING TO SOCKET " + token)
         if (token != null){
             val wsUrl = BuildConfig.WS_URL.replace("%s", token)
             val clientBuilder = OkHttpClient.Builder()

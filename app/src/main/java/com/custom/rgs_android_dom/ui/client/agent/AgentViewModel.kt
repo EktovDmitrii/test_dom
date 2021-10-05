@@ -18,8 +18,8 @@ class AgentViewModel(private val clientInteractor: ClientInteractor) : BaseViewM
     private val agentController = MutableLiveData<AgentViewState>()
     val agentObserver: LiveData<AgentViewState> = agentController
 
-    private val ediAgentRequestedController = MutableLiveData<Boolean>()
-    val editAgentRequestedObserver: LiveData<Boolean> = ediAgentRequestedController
+    private val editAgentRequestedController = MutableLiveData<Boolean>()
+    val editAgentRequestedObserver: LiveData<Boolean> = editAgentRequestedController
 
 
     init {
@@ -51,7 +51,7 @@ class AgentViewModel(private val clientInteractor: ClientInteractor) : BaseViewM
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    ediAgentRequestedController.value = it
+                    editAgentRequestedController.value = it
                 },
                 onError = {
                     logException(this, it)

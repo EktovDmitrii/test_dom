@@ -10,6 +10,8 @@ import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragmen
 
 object ScreenManager {
 
+    var onBottomSheetChanged: (BaseBottomSheetFragment<*, *>) -> Unit = {}
+
     private val scopes: MutableList<ScreenScope> = ArrayList()
     private val fragments: HashMap<NavigationMenu, MutableList<BaseFragment<*, *>>> = HashMap()
     private val bottomFragments = ArrayList<BaseBottomSheetFragment<*, *>>()
@@ -39,7 +41,6 @@ object ScreenManager {
             menuTag = menu
             restoreFragmentsForTag(menu)
         }
-
     }
 
     fun showScreen(fragment: BaseFragment<*, *>) {
@@ -55,11 +56,14 @@ object ScreenManager {
     fun showBottomScreen(fragment: BaseBottomSheetFragment<*, *>) {
         val container = bottomContainerId ?: return
         val transaction = beginTransaction() ?: return
+
+        onBottomSheetChanged(fragment)
+
         transaction.add(container, fragment, menuTag.name)
         transaction.addToBackStack(menuTag.name)
         transaction.commitAllowingStateLoss()
         bottomFragments.add(fragment)
-        bottomFragmentsUpdate(fragment)
+
     }
 
     fun closeCurrentBottomFragment() {
@@ -67,20 +71,7 @@ object ScreenManager {
         transaction.remove(bottomFragments.last())
         transaction.commitAllowingStateLoss()
         bottomFragments.removeLast()
-        bottomFragmentsUpdate(bottomFragments.last())
-    }
-
-    var bottomFragmentsUpdate: (BaseBottomSheetFragment<*, *>) -> Unit = {}
-
-    private fun addFragmentInMap(fragment: BaseFragment<*, *>) {
-        if (fragments[menuTag] == null) {
-            fragments[menuTag] = ArrayList()
-        }
-        fragments[menuTag]?.add(fragment)
-    }
-
-    private fun addFragmentInScope(fragment: BaseFragment<*, *>, scopeId: Int) {
-        scopes.add(ScreenScope(scopeId, fragment))
+        onBottomSheetChanged(bottomFragments.last())
     }
 
     fun showScreenScope(fragment: BaseFragment<*, *>, scopeId: Int) {
@@ -152,6 +143,17 @@ object ScreenManager {
 
         reInit()
         notifyCurrentVisibleFragment()
+    }
+
+    private fun addFragmentInMap(fragment: BaseFragment<*, *>) {
+        if (fragments[menuTag] == null) {
+            fragments[menuTag] = ArrayList()
+        }
+        fragments[menuTag]?.add(fragment)
+    }
+
+    private fun addFragmentInScope(fragment: BaseFragment<*, *>, scopeId: Int) {
+        scopes.add(ScreenScope(scopeId, fragment))
     }
 
     private fun reInit() {

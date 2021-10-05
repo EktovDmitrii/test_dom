@@ -17,10 +17,6 @@ class RequestEditAgentViewModel(
     private val isSuccessTextViewVisibleController = MutableLiveData<Boolean>()
     val isSuccessTextViewVisibleObserver: LiveData<Boolean> = isSuccessTextViewVisibleController
 
-    init {
-
-    }
-
     fun onConfirmClick(){
         clientInteractor.requestEditAgent()
             .subscribeOn(Schedulers.io())
