@@ -7,6 +7,8 @@ import android.text.InputFilter.LengthFilter
 import android.text.InputType
 import android.text.TextWatcher
 import android.util.AttributeSet
+import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.inputmethod.EditorInfo
@@ -16,6 +18,7 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdTextInputLayoutBinding
 import com.custom.rgs_android_dom.domain.TranslationInteractor
 import com.custom.rgs_android_dom.utils.DecimalDigitsInputFilter
+import com.custom.rgs_android_dom.utils.hideKeyboard
 import com.custom.rgs_android_dom.utils.toEditable
 
 class MSDTextInputLayout @JvmOverloads constructor(
@@ -29,13 +32,28 @@ class MSDTextInputLayout @JvmOverloads constructor(
 
     private var isFromUser = true
     private var hasDecimalFilter = false
+    private var unfocusOnDone = false
+
+    private var hint: String = ""
+    private var focusedHint: String = ""
 
     init {
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDTextInputLayout, 0, 0)
         attrs.getString(R.styleable.MSDTextInputLayout_translationHintKey)?.let { translationHintKey ->
             //TODO Add handling translation logic here
             binding.containerTextInputLayout.hint = TranslationInteractor.getTranslation(translationHintKey)
+            hint = TranslationInteractor.getTranslation(translationHintKey)
         }
+
+        attrs.getString(R.styleable.MSDTextInputLayout_focusedTranslationHintKey)?.let { focusedTranslationHintKey->
+            focusedHint =  TranslationInteractor.getTranslation(focusedTranslationHintKey)
+        }
+
+        attrs.getString(R.styleable.MSDTextInputLayout_android_text)?.let{
+            setText(it)
+        }
+
+        unfocusOnDone = attrs.getBoolean(R.styleable.MSDTextInputLayout_unfocusOnDone, false)
 
         val imeOptions = attrs.getInt(R.styleable.MSDTextInputLayout_android_imeOptions, EditorInfo.IME_ACTION_NEXT)
         binding.valueEditText.imeOptions = imeOptions
@@ -100,6 +118,28 @@ class MSDTextInputLayout @JvmOverloads constructor(
             }
 
         }
+
+        if (focusedHint.isNotEmpty()){
+            Log.d("MyLog", "FOCUSED HINT IS NOT EMPTY")
+            binding.valueEditText.setOnFocusChangeListener { _, hasFocus ->
+                Log.d("MyLog", "HAS FOCUS " + hasFocus)
+                if (hasFocus){
+                    setHint(focusedHint)
+                } else {
+                    setHint(hint)
+                }
+            }
+        }
+
+        if (unfocusOnDone){
+            binding.valueEditText.setOnEditorActionListener { _, keyCode, _ ->
+                if (keyCode == EditorInfo.IME_ACTION_DONE){
+                    binding.valueEditText.clearFocus()
+                }
+                binding.valueEditText.hideKeyboard()
+                true
+            }
+        }
     }
 
     fun setText(text: String){
@@ -109,7 +149,7 @@ class MSDTextInputLayout @JvmOverloads constructor(
     }
 
     fun setHint(hint: String){
-        binding.valueEditText.hint = hint
+        binding.containerTextInputLayout.hint = hint
     }
 
     fun getText(): String {

@@ -1,10 +1,12 @@
 package com.custom.rgs_android_dom.domain.property
 
+import android.util.Log
 import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyField
 import com.custom.rgs_android_dom.domain.property.details.exceptions.ValidatePropertyException
 import com.custom.rgs_android_dom.domain.property.details.view_states.PropertyDetailsViewState
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
+import com.custom.rgs_android_dom.domain.property.view_states.SelectAddressViewState
 import com.custom.rgs_android_dom.domain.repositories.PropertyRepository
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -13,6 +15,7 @@ import io.reactivex.subjects.PublishSubject
 class PropertyInteractor(private val propertyRepository: PropertyRepository){
 
     val propertyDetailsViewStateSubject = PublishSubject.create<PropertyDetailsViewState>()
+    val selectAddressViewStateSubject = PublishSubject.create<SelectAddressViewState>()
 
     private var propertyDetailsViewState = PropertyDetailsViewState(
         name = "",
@@ -29,6 +32,35 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
         comment = "",
         isAddTextViewEnabled = false
     )
+
+    private var selectAddressViewState = SelectAddressViewState(
+        isNextTextViewEnabled = false,
+        propertyName = "",
+        locationPoint = null,
+        isMyLocationImageViewVisible = false
+    )
+
+    fun initPropertyName(propertyCount: Int){
+        selectAddressViewState = selectAddressViewState.copy(
+            propertyName = "Мой Дом ${(propertyCount+1)}"
+        )
+        Log.d("MyLog", "UPDATING PTOP NAME " + selectAddressViewState.propertyName)
+        selectAddressViewStateSubject.onNext(selectAddressViewState)
+    }
+
+    fun onFailedToGetLocation(){
+        selectAddressViewState = selectAddressViewState.copy(
+            isMyLocationImageViewVisible = false
+        )
+        selectAddressViewStateSubject.onNext(selectAddressViewState)
+    }
+
+    fun onLocationLoaded(){
+        selectAddressViewState = selectAddressViewState.copy(
+            isMyLocationImageViewVisible = true
+        )
+        selectAddressViewStateSubject.onNext(selectAddressViewState)
+    }
 
     // TODO Will be changed later
     fun updatePropertyName(propertyCount: Int, propertyType: PropertyType){

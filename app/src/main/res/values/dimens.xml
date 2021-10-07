@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="toolbar_height">56dp</dimen>
-    <dimen name="toolbar_large_height">72dp</dimen>
+    <dimen name="toolbar_large_height">64dp</dimen>
     <dimen name="material_margin_large">32dp</dimen>
     <dimen name="material_margin_normal">16dp</dimen>
     <dimen name="material_margin_small">8dp</dimen>

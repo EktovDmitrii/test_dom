@@ -146,6 +146,9 @@
         <attr name="android:maxLength"/>
         <attr name="android:digits"/>
         <attr name="decimalLimit" format="string"/>
+        <attr name="focusedTranslationHintKey" format="string"/>
+        <attr name="android:text"/>
+        <attr name="unfocusOnDone" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="MSDGenderSelector">

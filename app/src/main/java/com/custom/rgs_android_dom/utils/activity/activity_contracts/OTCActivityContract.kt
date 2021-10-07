@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.utils.activity_contracts
+package com.custom.rgs_android_dom.utils.activity.activity_contracts
 
 import android.content.Context
 import android.content.Intent

@@ -7,6 +7,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import com.custom.rgs_android_dom.databinding.ItemPopupBinding
@@ -118,4 +121,10 @@ fun Fragment.notification(message: String, duration: Long = 2000){
 //    Handler(Looper.getMainLooper()).postDelayed({
 //        popupWindow.dismiss()
 //    }, duration)
+}
+
+fun Fragment.buildActivityResultRequest(function: (ActivityResult) -> Unit): ActivityResultLauncher<Intent> {
+    return this.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        function(it)
+    }
 }

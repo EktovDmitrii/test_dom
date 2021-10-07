@@ -1,69 +1,80 @@
 package com.custom.rgs_android_dom.ui.base
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.fragment.app.Fragment
+import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
+import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.custom.rgs_android_dom.R
-import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.hideSoftwareKeyboard
-import com.custom.rgs_android_dom.utils.setStatusBarColor
 import com.custom.rgs_android_dom.utils.subscribe
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.emptyParametersHolder
 import java.lang.reflect.ParameterizedType
-import kotlin.random.Random
 import kotlin.reflect.KClass
 
+abstract class BaseBottomSheetModalFragment<VM : BaseViewModel, VB : ViewBinding>: BottomSheetDialogFragment() {
 
-abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(layout: Int) : Fragment(layout) {
+    protected val viewModel: VM by viewModel(
+        clazz = getViewModelKClass(),
+        parameters = getParameters()
+    )
+    protected val binding: VB by viewBinding(
+        viewBindingClass = getViewBindingJavaClass(),
+        createMethod = CreateMethod.INFLATE
+    )
 
-    private val navigateId: Int = Random.nextInt()
-    protected val viewModel: VM by viewModel(clazz = getViewModelKClass(), parameters = getParameters())
-    protected val binding: VB by viewBinding(viewBindingClass = getViewBindingJavaClass())
+    private lateinit var behavior: BottomSheetBehavior<View>
+    private var hasNotifiedAboutInit = false
+
+    abstract val TAG: String
+
+    override fun getTheme(): Int {
+        return R.style.BottomSheet
+    }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setStatusBarColor()
+        binding.root.setBackgroundResource(R.drawable.rectangle_filled_white_top_radius_24dp)
 
-        subscribe(viewModel.loadingStateObserver){
+        subscribe(viewModel.loadingStateObserver) {
             handleState(it)
         }
         subscribe(viewModel.closeObserver) {
             onClose()
         }
-    }
 
-    fun getNavigateId(): Int{
-        return navigateId
     }
 
     open fun getParameters(): ParametersDefinition = {
         emptyParametersHolder()
     }
 
-    open fun onLoading(){}
-    open fun onContent(){}
-    open fun onError(){}
+    open fun onLoading() {}
+    open fun onContent() {}
+    open fun onError() {}
 
-    open fun onClose(){
+    open fun onClose() {
         hideSoftwareKeyboard()
-        ScreenManager.back(getNavigateId())
-    }
-
-    open fun onVisibleToUser(){
-        setStatusBarColor()
-    }
-
-    open fun setStatusBarColor(){
-        setStatusBarColor(R.color.white)
+        dismissAllowingStateLoss()
     }
 
     @Suppress("UNCHECKED_CAST")
     protected fun getViewModelKClass(): KClass<VM> {
-        val actualClass = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0] as Class<VM>
+        val actualClass =
+            (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0] as Class<VM>
         return actualClass.kotlin
     }
 
@@ -72,8 +83,8 @@ abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(layout: Int) : 
         return (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VB>
     }
 
-    private fun handleState(state: BaseViewModel.LoadingState){
-        when(state){
+    private fun handleState(state: BaseViewModel.LoadingState) {
+        when (state) {
             BaseViewModel.LoadingState.LOADING -> {
                 onLoading()
             }
@@ -85,4 +96,5 @@ abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(layout: Int) : 
             }
         }
     }
+
 }

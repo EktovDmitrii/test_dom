@@ -9,7 +9,7 @@ import org.koin.java.KoinJavaComponent.inject
 
 object CacheHelper {
 
-    lateinit var compositeDisposable: CompositeDisposable
+    var compositeDisposable = CompositeDisposable()
     val clientRepository: ClientRepository by inject(ClientRepository::class.java)
 
     fun init() {
