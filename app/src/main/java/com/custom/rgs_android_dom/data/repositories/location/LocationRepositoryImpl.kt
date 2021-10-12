@@ -4,36 +4,48 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Looper
 import android.util.Log
+import com.custom.rgs_android_dom.data.network.MSDApi
+import com.custom.rgs_android_dom.data.network.mappers.LocationMapper
+import com.custom.rgs_android_dom.domain.location.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.repositories.LocationRepository
 import com.google.android.gms.location.*
 import com.yandex.mapkit.geometry.Point
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
+import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
-class LocationRepositoryImpl(private val context: Context): LocationRepository {
+class LocationRepositoryImpl(private val context: Context,
+                             private val api: MSDApi
+): LocationRepository {
+
+    companion object {
+        private const val COUNTRY = "Россия"
+    }
 
     private val defaultLocation = Point(55.713136, 37.647504)
+    private val selectedAddressSubject = PublishSubject.create<AddressItemModel>()
 
     @SuppressLint("MissingPermission")
-    override fun getLocation(): Single<Point> =
+    override fun getCurrentLocation(): Single<Point> =
         Single.create { emitter ->
             Log.d("MyLog", "SINGLE CREATE")
             val locationClient = LocationServices.getFusedLocationProviderClient(context)
             locationClient.lastLocation
                 .addOnSuccessListener { location ->
                     Log.d("MyLog", "ON SUCCESSS")
-                    if (!emitter.isDisposed) {
-                        if (location != null) {
-                            val locationPoint = Point(location.latitude, location.longitude)
-                            emitter.onSuccess(locationPoint)
-                        } else {
-                            onLastKnownLocationError(locationClient, emitter)
-                        }
+                    if (location != null) {
+                        Log.d("MyLog", "Location not null")
+                        val locationPoint = Point(location.latitude, location.longitude)
+                        emitter.onSuccess(locationPoint)
+                    } else {
+                        Log.d("MyLog", "ON LAST KNW LOC ERROR")
+                        onLastKnownLocationError(locationClient, emitter)
                     }
                 }
                 .addOnFailureListener {
-                    emitter.onError(Throwable("On failure"))
+                    Log.d("MyLog", "On failure")
+                    emitter.onError(it)
                 }
         }
 
@@ -66,6 +78,32 @@ class LocationRepositoryImpl(private val context: Context): LocationRepository {
             }
         }
         locationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
+    }
+
+    override fun decodeLocation(newLocation: Point): Single<AddressItemModel> {
+        return Single.fromCallable {
+            AddressItemModel(
+                address = "Павелецкая наб. 34\\Марьина Роща район, Москва\\n127055",
+                fiasId = "",
+                geocodeId = ""
+            )
+        }
+    }
+
+    override fun selectAddress(addressModel: AddressItemModel) {
+        selectedAddressSubject.onNext(addressModel)
+    }
+
+    override fun geSelectedAddressSubject(): PublishSubject<AddressItemModel> {
+        return selectedAddressSubject
+    }
+
+    override fun getAddressSuggestions(query: String): Single<List<AddressItemModel>> {
+        return api.getAddressSuggestions(query, COUNTRY).map {response->
+            response.results.map {
+                LocationMapper.responseToAddress(it)
+            }
+        }
     }
 
 }

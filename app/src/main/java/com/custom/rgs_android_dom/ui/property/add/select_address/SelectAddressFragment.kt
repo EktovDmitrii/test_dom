@@ -1,20 +1,17 @@
 package com.custom.rgs_android_dom.ui.property.add.select_address
 
 import android.Manifest
-import android.content.Intent
 import android.graphics.Rect
-import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.provider.Settings
-import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentSelectAddressBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.location.RequestLocationRationaleFragment
+import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
+import com.custom.rgs_android_dom.ui.location.rationale.RequestLocationRationaleFragment
+import com.custom.rgs_android_dom.ui.location.suggestions.AddressSuggestionsFragment
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.*
@@ -23,14 +20,12 @@ import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.ScreenPoint
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.*
-import com.yandex.runtime.ui_view.ViewProvider
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-
 class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelectAddressBinding>(
     R.layout.fragment_select_address
-), RequestLocationRationaleFragment.OnDismissListener{
+), RequestLocationRationaleFragment.OnDismissListener, ConfirmBottomSheetFragment.ConfirmListener{
 
     companion object {
         private const val ARG_PROPERTY_COUNT = "ARG_PROPERTY_COUNT"
@@ -67,7 +62,6 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("MyLog", "On create")
         MapKitFactory.initialize(requireContext())
     }
 
@@ -93,8 +87,7 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
                    val screenPoint = ScreenPoint(pinRect.exactCenterX(), pinRect.exactCenterY() - 44.dp(requireContext()))
                    val worldPoint = binding.mapView.screenToWorld(screenPoint)
 
-                   Log.d("MyLog", "WORLD POINT " + worldPoint.latitude + " " + worldPoint.longitude)
-
+                   viewModel.onLocationChanged(worldPoint)
                    /*if (locationPin == null){
                        val pinLayout = layoutInflater.inflate(R.layout.location_pin, null)
                        val viewProvide = ViewProvider(pinLayout)
@@ -107,11 +100,26 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
         }
        binding.mapView.map.isRotateGesturesEnabled = false
 
+       binding.editAddressTextView.setOnDebouncedClickListener {
+           val addressSuggestionsFragment = AddressSuggestionsFragment()
+           addressSuggestionsFragment.show(childFragmentManager, addressSuggestionsFragment.TAG)
+       }
+
+       binding.propertyNameTextInputLayout.addTextWatcher {
+           viewModel.onPropertyNameChanged(it)
+       }
+
+       binding.nextTextView.setOnDebouncedClickListener {
+            viewModel.onNextClick()
+       }
+
         subscribe(viewModel.selectAddressViewStateObserver){selectAddressViewState->
-            binding.nameTextInputLayout.setText(selectAddressViewState.propertyName)
+            if (selectAddressViewState.updatePropertyNameEditText){
+                binding.propertyNameTextInputLayout.setText(selectAddressViewState.propertyName)
+            }
             binding.nextTextView.isEnabled = selectAddressViewState.isNextTextViewEnabled
             binding.myLocationImageView.visibleIf(selectAddressViewState.isMyLocationImageViewVisible)
-
+            binding.addressPrimaryTextView.text = selectAddressViewState.propertyAddress
         }
 
         subscribe(viewModel.locationObserver){
@@ -121,26 +129,33 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
         subscribe(viewModel.showLocationPermissionsRationaleObserver){
             showRequestLocationRationaleDialog()
         }
+
+       subscribe(viewModel.showConfirmCloseObserver){
+           val confirmDialog = ConfirmBottomSheetFragment.newInstance(
+               icon = R.drawable.ic_confirm_cancel,
+               title = "Хотите выйти?",
+               description = "Если вы покинете страницу сейчас, данные об объекте недвижимости не сохранятся",
+               confirmText = "Да, выйти",
+               cancelText = "Нет, остаться"
+           )
+           confirmDialog.show(childFragmentManager, ConfirmBottomSheetFragment.TAG)
+       }
     }
 
     override fun onStart() {
         super.onStart()
-        Log.d("MyLog", "On start")
-
         binding.mapView.onStart();
         MapKitFactory.getInstance().onStart();
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d("MyLog", "On stop")
         binding.mapView.onStop();
         MapKitFactory.getInstance().onStop();
     }
 
     override fun onClose() {
-        hideSoftwareKeyboard()
-        ScreenManager.closeScope(ADD_PROPERTY)
+       viewModel.onBackClick()
     }
 
     override fun onLoading() {
@@ -150,6 +165,7 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
         binding.addressDataConstraintLayout.gone()
         binding.loadingPinFrameLayout.visible()
         binding.locationPinImageView.invisible()
+        binding.nextTextView.isEnabled = false
     }
 
     override fun onContent() {
@@ -159,10 +175,9 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
         binding.addressDataConstraintLayout.visible()
         binding.loadingPinFrameLayout.gone()
         binding.locationPinImageView.visible()
-    }
 
-    override fun onError() {
-        super.onError()
+        // TODO Find out how we can improve this stuff???
+        binding.nextTextView.isEnabled = binding.propertyNameTextInputLayout.getText().isNotEmpty()
     }
 
     override fun onDismiss() {
@@ -180,6 +195,12 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
     private fun showRequestLocationRationaleDialog(){
         val requestLocationRationaleDialog = RequestLocationRationaleFragment()
         requestLocationRationaleDialog.show(childFragmentManager, requestLocationRationaleDialog.TAG)
+    }
+
+    override fun onConfirmClick() {
+        super.onConfirmClick()
+        hideSoftwareKeyboard()
+        ScreenManager.closeScope(ADD_PROPERTY)
     }
 
 }

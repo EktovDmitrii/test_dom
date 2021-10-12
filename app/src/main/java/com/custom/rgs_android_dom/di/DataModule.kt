@@ -21,5 +21,5 @@ val dataModule = module {
     single <ChatRepository> { ChatRepositoryImpl(api = get(), authSharedPreferences = get()) }
     single <WebSocketRepository> {WebSocketRepositoryImpl(authSharedPreferences = get(), gson = get())}
     single <PropertyRepository> { PropertyRepositoryImpl(api = get(), authSharedPreferences = get()) }
-    single <LocationRepository> { LocationRepositoryImpl(context = get()) }
+    single <LocationRepository> { LocationRepositoryImpl(context = get(), api = get()) }
 }

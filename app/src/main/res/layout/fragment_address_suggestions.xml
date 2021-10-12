@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/swipeAnchorLayout"
+        layout="@layout/layout_bottom_sheet_swipe_anchor"/>
+
+    <com.custom.rgs_android_dom.views.edit_text.MSDSearchAddressInput
+        android:id="@+id/searchInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="12dp"
+        app:translationHintKey="Адрес дома"
+        app:inputHeight="48dp"
+        app:icon="@drawable/ic_destination_stroke_8px"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/addressItemsRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/item_address_item"
+        android:overScrollMode="never"
+        android:paddingHorizontal="14dp"
+        android:clipToPadding="false"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="1"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <com.yandex.mapkit.mapview.MapView
         android:id="@+id/mapView"
@@ -106,8 +107,10 @@
         android:id="@+id/bottomContainerLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -117,32 +120,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/select_address_bottom_fade_background"/>
+                app:srcCompat="@drawable/select_address_bottom_fade_background" />
 
             <com.custom.rgs_android_dom.views.MSDImageView
                 android:id="@+id/myLocationImageView"
                 style="@style/Icon.Filled.White"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                app:srcCompat="@drawable/ic_send_20px"
                 android:layout_gravity="top|end"
+                android:layout_marginTop="4dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginTop="4dp"/>
+                app:srcCompat="@drawable/ic_send_20px" />
 
         </FrameLayout>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:background="@color/white"
+            android:orientation="vertical"
             android:paddingHorizontal="20dp"
             android:paddingTop="24dp"
             android:paddingBottom="18dp">
 
-            <include android:id="@+id/veilContainer"
+            <include
+                android:id="@+id/veilContainer"
                 layout="@layout/layout_select_address_veil"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/addressDataConstraintLayout"
@@ -153,71 +157,71 @@
                     android:id="@+id/destinationImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_destination_stroke_8px"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_destination_stroke_8px" />
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:id="@+id/addressPrimaryTextView"
-                    android:layout_height="wrap_content"
                     android:layout_width="0dp"
-                    android:textColor="@color/secondary900"
-                    android:fontFamily="@font/suisse_book"
-                    android:textSize="16sp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginEnd="16dp"
-                    android:lines="1"
                     android:ellipsize="end"
-                    app:translationTextKey="Павелецкая наб. 34"
+                    android:fontFamily="@font/suisse_book"
+                    android:lines="1"
+                    android:textColor="@color/secondary900"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toStartOf="@+id/editAddressTextView"
                     app:layout_constraintStart_toEndOf="@+id/destinationImageView"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/editTextView"/>
+                    tools:text="Павелецкая наб. 34" />
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:id="@+id/addressSecondaryTextView"
-                    android:layout_height="wrap_content"
                     android:layout_width="0dp"
-                    android:textColor="@color/secondary500"
-                    android:fontFamily="@font/suisse_regular"
-                    android:textSize="12sp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginEnd="16dp"
-                    app:translationTextKey="Марьина Роща район, Москва\n127055"
+                    android:fontFamily="@font/suisse_regular"
+                    android:textColor="@color/secondary500"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toStartOf="@+id/editAddressTextView"
                     app:layout_constraintStart_toEndOf="@+id/destinationImageView"
                     app:layout_constraintTop_toBottomOf="@+id/addressPrimaryTextView"
-                    app:layout_constraintEnd_toStartOf="@+id/editTextView"/>
+                    tools:text="Марьина Роща район, Москва\n127055" />
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
-                    android:id="@+id/editTextView"
-                    app:translationTextKey="Ред."
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:id="@+id/editAddressTextView"
+                    style="@style/Button.Small.Primary.Stroke"
                     app:layout_constraintEnd_toEndOf="parent"
-                    style="@style/Button.Small.Primary.Stroke"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:translationTextKey="Ред." />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    app:srcCompat="@drawable/ic_pen_24px"
                     android:tint="@color/secondary400"
+                    app:layout_constraintBottom_toBottomOf="@+id/propertyNameTextInputLayout"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/nameTextInputLayout"
-                    app:layout_constraintBottom_toBottomOf="@+id/nameTextInputLayout"/>
+                    app:layout_constraintTop_toTopOf="@+id/propertyNameTextInputLayout"
+                    app:srcCompat="@drawable/ic_pen_24px" />
 
                 <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
-                    android:id="@+id/nameTextInputLayout"
+                    android:id="@+id/propertyNameTextInputLayout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:imeOptions="actionDone"
                     android:layout_marginTop="24dp"
+                    android:imeOptions="actionDone"
                     android:text="Мой Дом 2"
-                    app:translationHintKey="Нажмите, чтобы редактировать название"
                     app:focusedTranslationHintKey="Название объекта"
-                    app:unfocusOnDone="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/addressSecondaryTextView"
-                    app:layout_constraintTop_toBottomOf="@+id/addressSecondaryTextView"/>
+                    app:layout_constraintTop_toBottomOf="@+id/addressSecondaryTextView"
+                    app:translationHintKey="Нажмите, чтобы редактировать название"
+                    app:unfocusOnDone="true" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -225,8 +229,8 @@
                 android:id="@+id/nextTextView"
                 style="@style/Button.Filled.Primary"
                 android:layout_width="match_parent"
-                android:enabled="false"
                 android:layout_marginTop="24dp"
+                android:enabled="false"
                 app:translationTextKey="Далее" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>

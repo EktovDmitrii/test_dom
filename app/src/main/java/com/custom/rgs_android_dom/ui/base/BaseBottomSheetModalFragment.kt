@@ -1,9 +1,11 @@
 package com.custom.rgs_android_dom.ui.base
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -11,6 +13,7 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.utils.hideSoftwareKeyboard
 import com.custom.rgs_android_dom.utils.subscribe
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.ParametersDefinition
@@ -37,6 +40,7 @@ abstract class BaseBottomSheetModalFragment<VM : BaseViewModel, VB : ViewBinding
     override fun getTheme(): Int {
         return R.style.BottomSheet
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,6 +52,10 @@ abstract class BaseBottomSheetModalFragment<VM : BaseViewModel, VB : ViewBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.root.setBackgroundResource(R.drawable.rectangle_filled_white_top_radius_24dp)
+
+        if (isFullScreen()){
+            expandViewFullScreen()
+        }
 
         subscribe(viewModel.loadingStateObserver) {
             handleState(it)
@@ -65,6 +73,10 @@ abstract class BaseBottomSheetModalFragment<VM : BaseViewModel, VB : ViewBinding
     open fun onLoading() {}
     open fun onContent() {}
     open fun onError() {}
+
+    open fun isFullScreen(): Boolean {
+        return false
+    }
 
     open fun onClose() {
         hideSoftwareKeyboard()
@@ -96,5 +108,13 @@ abstract class BaseBottomSheetModalFragment<VM : BaseViewModel, VB : ViewBinding
             }
         }
     }
+
+    private fun expandViewFullScreen() {
+        val sheetContainer = requireView().parent as? ViewGroup ?: return
+        sheetContainer.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+        val dialog = dialog as BottomSheetDialog
+        dialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+    }
+
 
 }

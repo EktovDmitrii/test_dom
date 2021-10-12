@@ -13,5 +13,6 @@ data class PropertyDetailsViewState(
     val isTemporary: String?,
     val totalArea: String,
     val comment: String,
-    val isAddTextViewEnabled: Boolean
+    val isAddTextViewEnabled: Boolean,
+    val updatePropertyAddressEditText: Boolean
 )

@@ -7,9 +7,6 @@ import com.custom.rgs_android_dom.databinding.FragmentPropertyDetailsBinding
 import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyField
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
-import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
-import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
 import org.koin.core.parameter.ParametersDefinition
@@ -18,12 +15,14 @@ import org.koin.core.parameter.parametersOf
 class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentPropertyDetailsBinding>(R.layout.fragment_property_details) {
 
     companion object {
-        private const val ARG_PROPERTY_COUNT = "ARG_PROPERTY_COUNT"
+        private const val ARG_PROPERTY_NAME = "ARG_PROPERTY_NAME"
+        private const val ARG_PROPERTY_ADDRESS = "ARG_PROPERTY_ADDRESS"
         private const val ARG_PROPERTY_TYPE = "ARG_PROPERTY_TYPE"
 
-        fun newInstance(propertyCount: Int, propertyType: PropertyType): PropertyDetailsFragment {
+        fun newInstance(propertyName: String, propertyAddress: String, propertyType: PropertyType): PropertyDetailsFragment {
             return PropertyDetailsFragment().args {
-                putInt(ARG_PROPERTY_COUNT, propertyCount)
+                putString(ARG_PROPERTY_NAME, propertyName)
+                putString(ARG_PROPERTY_ADDRESS, propertyAddress)
                 putSerializable(ARG_PROPERTY_TYPE, propertyType)
             }
         }
@@ -31,7 +30,8 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
-            requireArguments().getInt(ARG_PROPERTY_COUNT),
+            requireArguments().getString(ARG_PROPERTY_NAME),
+            requireArguments().getString(ARG_PROPERTY_ADDRESS),
             requireArguments().getSerializable(ARG_PROPERTY_TYPE)
         )
     }
@@ -93,6 +93,10 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
 
         subscribe(viewModel.propertyDetailsObserver){
             binding.addTextView.isEnabled = it.isAddTextViewEnabled
+            if (it.updatePropertyAddressEditText){
+                binding.addressTextInputLayout.setText(it.address)
+            }
+
         }
 
         subscribe(viewModel.validateExceptionObserver){

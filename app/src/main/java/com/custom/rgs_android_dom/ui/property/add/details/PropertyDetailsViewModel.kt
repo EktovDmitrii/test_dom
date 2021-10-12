@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.property.add.details
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.data.network.toNetworkException
@@ -17,7 +18,8 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
-class PropertyDetailsViewModel(propertyCount: Int,
+class PropertyDetailsViewModel(propertyName: String,
+                               propertyAddress: String,
                                propertyType: PropertyType,
                                private val propertyInteractor: PropertyInteractor) : BaseViewModel() {
 
@@ -33,15 +35,16 @@ class PropertyDetailsViewModel(propertyCount: Int,
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
+                    Log.d("MyLog", "On next")
                     propertyDetailsViewStateController.value = it
                 },
                 onError = {
                     logException(this, it)
                 }
-            ).addTo(dataCompositeDisposable)
+            )
+            .addTo(dataCompositeDisposable)
 
-        propertyInteractor.updatePropertyName(propertyCount, propertyType)
-        propertyInteractor.updatePropertyType(propertyType)
+        propertyInteractor.initPropertyDetails(propertyName, propertyType, propertyAddress)
     }
 
     fun onBackClick() {

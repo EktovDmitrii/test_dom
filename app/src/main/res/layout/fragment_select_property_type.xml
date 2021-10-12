@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-
     <RelativeLayout
         android:id="@+id/toolbarRelativeLayout"
         android:layout_width="match_parent"
@@ -32,7 +31,7 @@
             android:gravity="center"
             android:textColor="@color/secondary900_alpha64"
             android:textSize="12sp"
-            app:translationTextKey="Шаг 1 из 2" />
+            app:translationTextKey="Шаг 2 из 3" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/titleTextView"

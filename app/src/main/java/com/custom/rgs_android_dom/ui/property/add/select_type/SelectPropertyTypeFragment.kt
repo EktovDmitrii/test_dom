@@ -1,15 +1,11 @@
 package com.custom.rgs_android_dom.ui.property.add.select_type
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentSelectPropertyTypeBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
-import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
-import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
@@ -18,18 +14,21 @@ class SelectPropertyTypeFragment : BaseFragment<SelectPropertyTypeViewModel, Fra
     ConfirmBottomSheetFragment.ConfirmListener{
 
     companion object {
-        private const val ARG_PROPERTY_COUNT = "ARG_PROPERTY_COUNT"
+        private const val ARG_PROPERTY_NAME = "ARG_PROPERTY_NAME"
+        private const val ARG_PROPERTY_ADDRESS = "ARG_PROPERTY_ADDRESS"
 
-        fun newInstance(propertyCount: Int): SelectPropertyTypeFragment {
+        fun newInstance(propertyName: String, propertyAddress: String): SelectPropertyTypeFragment {
             return SelectPropertyTypeFragment().args {
-                putInt(ARG_PROPERTY_COUNT, propertyCount)
+                putString(ARG_PROPERTY_NAME, propertyName)
+                putString(ARG_PROPERTY_ADDRESS, propertyAddress)
             }
         }
     }
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
-            requireArguments().getInt(ARG_PROPERTY_COUNT)
+            requireArguments().getString(ARG_PROPERTY_NAME),
+            requireArguments().getString(ARG_PROPERTY_ADDRESS)
         )
     }
 
@@ -58,20 +57,8 @@ class SelectPropertyTypeFragment : BaseFragment<SelectPropertyTypeViewModel, Fra
             binding.nextTextView.isEnabled = it.isNextTextViewEnabled
         }
 
-        subscribe(viewModel.showConfirmCloseObserver){
-            val confirmDialog = ConfirmBottomSheetFragment.newInstance(
-                icon = R.drawable.ic_confirm_cancel,
-                title = "Хотите выйти?",
-                description = "Если вы покинете страницу сейчас, данные об объекте недвижимости не сохранятся",
-                confirmText = "Да, выйти",
-                cancelText = "Нет, остаться"
-            )
-            confirmDialog.show(childFragmentManager, ConfirmBottomSheetFragment.TAG)
-        }
+
     }
 
-    override fun onConfirmClick() {
-        super.onConfirmClick()
-        ScreenManager.closeScope(ADD_PROPERTY)
-    }
+
 }

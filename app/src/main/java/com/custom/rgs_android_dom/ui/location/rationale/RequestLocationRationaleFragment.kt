@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.ui.location
+package com.custom.rgs_android_dom.ui.location.rationale
 
 import android.content.Context
 import android.content.DialogInterface
@@ -6,7 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.View
 import com.custom.rgs_android_dom.databinding.FragmentRequestLocationRationaleBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
@@ -45,7 +44,6 @@ class RequestLocationRationaleFragment : BaseBottomSheetModalFragment<RequestLoc
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        Log.d("MyLog", "On dismiss dialog")
         onDismissListener?.onDismiss()
     }
 

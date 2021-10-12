@@ -83,4 +83,7 @@ interface MSDApi {
 
     @GET("property/objects/{objectId}")
     fun getPropertyItem(@Path("objectId") objectId: String): Single<PropertyItemResponse>
+
+    @GET("location/address/{query}")
+    fun getAddressSuggestions(@Path("query") query: String, @Query("country") country: String): Single<AddressSuggestionsResponse>
 }

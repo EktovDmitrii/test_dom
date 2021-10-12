@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.domain.property.details.exceptions.ValidatePro
 import com.custom.rgs_android_dom.domain.property.details.view_states.PropertyDetailsViewState
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
+import com.custom.rgs_android_dom.domain.property.view_states.SelectPropertyTypeViewState
 import com.custom.rgs_android_dom.domain.property.view_states.SelectAddressViewState
 import com.custom.rgs_android_dom.domain.repositories.PropertyRepository
 import io.reactivex.Completable
@@ -14,8 +15,23 @@ import io.reactivex.subjects.PublishSubject
 
 class PropertyInteractor(private val propertyRepository: PropertyRepository){
 
-    val propertyDetailsViewStateSubject = PublishSubject.create<PropertyDetailsViewState>()
     val selectAddressViewStateSubject = PublishSubject.create<SelectAddressViewState>()
+    val selectPropertyTypeViewStateSubject = PublishSubject.create<SelectPropertyTypeViewState>()
+    val propertyDetailsViewStateSubject = PublishSubject.create<PropertyDetailsViewState>()
+
+    private var selectAddressViewState = SelectAddressViewState(
+        isNextTextViewEnabled = false,
+        propertyName = "",
+        isMyLocationImageViewVisible = false,
+        updatePropertyNameEditText = false,
+        propertyAddress = ""
+    )
+
+    private var selectPropertyTypeViewState = SelectPropertyTypeViewState(
+        isSelectHomeLinearLayoutSelected = false,
+        isSelectAppartmentLinearLayoutSelected = false,
+        isNextTextViewEnabled = false
+    )
 
     private var propertyDetailsViewState = PropertyDetailsViewState(
         name = "",
@@ -30,63 +46,106 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
         isTemporary = null,
         totalArea = "",
         comment = "",
-        isAddTextViewEnabled = false
+        isAddTextViewEnabled = false,
+        updatePropertyAddressEditText = false
     )
 
-    private var selectAddressViewState = SelectAddressViewState(
-        isNextTextViewEnabled = false,
-        propertyName = "",
-        locationPoint = null,
-        isMyLocationImageViewVisible = false
-    )
+    /**
+     *
+     * Code for SelectAddress screen
+     *
+     */
 
     fun initPropertyName(propertyCount: Int){
+        Log.d("MyLog", "Property count " + propertyCount)
         selectAddressViewState = selectAddressViewState.copy(
-            propertyName = "Мой Дом ${(propertyCount+1)}"
+            propertyName = "Мой Дом ${(propertyCount+1)}",
+            isNextTextViewEnabled = true,
+            updatePropertyNameEditText = true
         )
-        Log.d("MyLog", "UPDATING PTOP NAME " + selectAddressViewState.propertyName)
+        selectAddressViewStateSubject.onNext(selectAddressViewState)
+    }
+
+    fun onPropertyNameChanged(name: String){
+        selectAddressViewState = selectAddressViewState.copy(
+            propertyName = name,
+            isNextTextViewEnabled = name.isNotEmpty(),
+            updatePropertyNameEditText = false
+        )
+        selectAddressViewStateSubject.onNext(selectAddressViewState)
+    }
+
+    fun onPropertyAddressChanged(address: String){
+        selectAddressViewState = selectAddressViewState.copy(
+            propertyAddress = address,
+            updatePropertyNameEditText = false
+        )
         selectAddressViewStateSubject.onNext(selectAddressViewState)
     }
 
     fun onFailedToGetLocation(){
         selectAddressViewState = selectAddressViewState.copy(
-            isMyLocationImageViewVisible = false
+            isMyLocationImageViewVisible = false,
+            updatePropertyNameEditText = false
         )
         selectAddressViewStateSubject.onNext(selectAddressViewState)
     }
 
     fun onLocationLoaded(){
         selectAddressViewState = selectAddressViewState.copy(
-            isMyLocationImageViewVisible = true
+            isMyLocationImageViewVisible = true,
+            updatePropertyNameEditText = false
         )
         selectAddressViewStateSubject.onNext(selectAddressViewState)
     }
 
-    // TODO Will be changed later
-    fun updatePropertyName(propertyCount: Int, propertyType: PropertyType){
-        // TODO Now for all property we are using one name. Later we will change this
-        var name = when (propertyType){
-            PropertyType.HOUSE -> "Дом"
-            PropertyType.APARTMENT -> "Дом"
-            else -> "Объект"
-        }
-        if (propertyCount >0){
-            name = "$name ${(propertyCount+1)}"
-        }
-        else if (propertyCount == 1){
-            name = "$name ${(propertyCount)}"
-        }
-        propertyDetailsViewState = propertyDetailsViewState.copy(name = name)
-        checkIfPropertyDetailsFieldsFilled()
+
+    /**
+     *
+     * Code for SelectPropertyType screen
+     *
+     */
+
+    fun selectHome(){
+        selectPropertyTypeViewState = selectPropertyTypeViewState.copy(
+            isSelectHomeLinearLayoutSelected = true,
+            isSelectAppartmentLinearLayoutSelected = false,
+            isNextTextViewEnabled = true
+        )
+        selectPropertyTypeViewStateSubject.onNext(selectPropertyTypeViewState)
     }
 
-    fun updatePropertyType(type: PropertyType) {
-        propertyDetailsViewState = propertyDetailsViewState.copy(type = type.type)
-        checkIfPropertyDetailsFieldsFilled()
+    fun selectAppartment(){
+        selectPropertyTypeViewState = selectPropertyTypeViewState.copy(
+            isSelectHomeLinearLayoutSelected = false,
+            isSelectAppartmentLinearLayoutSelected = true,
+            isNextTextViewEnabled = true
+        )
+        selectPropertyTypeViewStateSubject.onNext(selectPropertyTypeViewState)
+    }
+
+    /**
+     *
+     * Code for PropertyDetails Screen
+     *
+     */
+
+    // TODO Will be changed later
+
+    fun initPropertyDetails(propertyName: String, type: PropertyType, address: String){
+        propertyDetailsViewState = propertyDetailsViewState.copy(
+            name = propertyName,
+            type = type.type,
+            address = address,
+            updatePropertyAddressEditText = true,
+            isAddTextViewEnabled = address.isNotEmpty()
+        )
+        Log.d("MyLog", "Init address " + address + " PROPERTY " + propertyName)
+        propertyDetailsViewStateSubject.onNext(propertyDetailsViewState)
     }
 
     fun updatePropertyAddress(address: String){
-        propertyDetailsViewState = propertyDetailsViewState.copy(address = address)
+        propertyDetailsViewState = propertyDetailsViewState.copy(address = address, updatePropertyAddressEditText = false)
         checkIfPropertyDetailsFieldsFilled()
     }
 
