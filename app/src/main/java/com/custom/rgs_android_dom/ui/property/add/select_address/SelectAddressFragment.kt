@@ -3,11 +3,15 @@ package com.custom.rgs_android_dom.ui.property.add.select_address
 import android.Manifest
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
+import android.view.MotionEvent
 import android.view.View
+import android.widget.EditText
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentSelectAddressBinding
+import com.custom.rgs_android_dom.ui.MainActivity
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
 import com.custom.rgs_android_dom.ui.location.rationale.RequestLocationRationaleFragment
@@ -25,7 +29,7 @@ import org.koin.core.parameter.parametersOf
 
 class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelectAddressBinding>(
     R.layout.fragment_select_address
-), RequestLocationRationaleFragment.OnDismissListener, ConfirmBottomSheetFragment.ConfirmListener{
+), RequestLocationRationaleFragment.OnDismissListener, ConfirmBottomSheetFragment.ConfirmListener, MainActivity.DispatchTouchEventListener {
 
     companion object {
         private const val ARG_PROPERTY_COUNT = "ARG_PROPERTY_COUNT"
@@ -184,6 +188,26 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
         viewModel.onRequestLocationRationaleDialogClosed()
     }
 
+    override fun onConfirmClick() {
+        super.onConfirmClick()
+        hideSoftwareKeyboard()
+        ScreenManager.closeScope(ADD_PROPERTY)
+    }
+
+    override fun dispatchTouchEvent(event: MotionEvent) {
+        if (event.action == MotionEvent.ACTION_DOWN) {
+            val v: View? = requireActivity().currentFocus
+            if (v is EditText) {
+                val outRect = Rect()
+                v.getGlobalVisibleRect(outRect)
+                if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
+                    v.clearFocus()
+                    requireActivity().hideKeyboardForced()
+                }
+            }
+        }
+    }
+
     private fun moveToLocation(location: Point){
         binding.mapView.map.move(
             CameraPosition(location, 14.0f, 0.0f, 0.0f),
@@ -195,12 +219,6 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
     private fun showRequestLocationRationaleDialog(){
         val requestLocationRationaleDialog = RequestLocationRationaleFragment()
         requestLocationRationaleDialog.show(childFragmentManager, requestLocationRationaleDialog.TAG)
-    }
-
-    override fun onConfirmClick() {
-        super.onConfirmClick()
-        hideSoftwareKeyboard()
-        ScreenManager.closeScope(ADD_PROPERTY)
     }
 
 }

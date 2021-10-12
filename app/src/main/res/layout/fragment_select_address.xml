@@ -31,7 +31,7 @@
                 android:layout_gravity="start"
                 android:paddingHorizontal="14dp"
                 android:tint="@color/secondary800"
-                app:srcCompat="@drawable/ic_back_24px"/>
+                app:srcCompat="@drawable/ic_back_24px" />
 
             <com.custom.rgs_android_dom.views.text.MSDTextView
                 android:id="@+id/subtitleTextView"
@@ -108,8 +108,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:clickable="true"
-        android:focusable="true"
         android:orientation="vertical">
 
         <FrameLayout
@@ -141,7 +139,9 @@
             android:orientation="vertical"
             android:paddingHorizontal="20dp"
             android:paddingTop="24dp"
-            android:paddingBottom="18dp">
+            android:paddingBottom="18dp"
+            android:clickable="true"
+            android:focusable="true">
 
             <include
                 android:id="@+id/veilContainer"
