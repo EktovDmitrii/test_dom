@@ -8,7 +8,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdSearchAddressInputBinding
-import com.custom.rgs_android_dom.domain.TranslationInteractor
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.utils.*
 
 class MSDSearchAddressInput @JvmOverloads constructor(

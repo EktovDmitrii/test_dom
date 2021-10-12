@@ -5,7 +5,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import com.custom.rgs_android_dom.R
-import com.custom.rgs_android_dom.domain.TranslationInteractor
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 
 class MSDTextView(context: Context, attributeSet: AttributeSet) : AppCompatTextView(context, attributeSet) {
 

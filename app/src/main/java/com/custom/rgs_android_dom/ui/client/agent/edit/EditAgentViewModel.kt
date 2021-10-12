@@ -62,7 +62,7 @@ class EditAgentViewModel(private val clientInteractor: ClientInteractor) : BaseV
                             loadingStateController.value = LoadingState.CONTENT
                         }
                         else -> {
-                            networkErrorController.value = it.toNetworkException()?.message ?: "Ошибка сохранения данных"
+                            networkErrorController.value = it.toNetworkException()?.message
                             loadingStateController.value = LoadingState.ERROR
                         }
                     }

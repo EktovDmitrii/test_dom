@@ -1,14 +1,11 @@
 package com.custom.rgs_android_dom.views.edit_text
 
 import android.content.Context
-import android.text.Editable
 import android.text.InputFilter
 import android.text.InputFilter.LengthFilter
 import android.text.InputType
-import android.text.TextWatcher
 import android.util.AttributeSet
 import android.util.Log
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.inputmethod.EditorInfo
@@ -16,7 +13,7 @@ import android.widget.FrameLayout
 import androidx.core.widget.addTextChangedListener
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdTextInputLayoutBinding
-import com.custom.rgs_android_dom.domain.TranslationInteractor
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.utils.DecimalDigitsInputFilter
 import com.custom.rgs_android_dom.utils.hideKeyboard
 import com.custom.rgs_android_dom.utils.toEditable

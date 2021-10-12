@@ -1,6 +1,6 @@
 package com.custom.rgs_android_dom.data.network.interceptors
 
-import com.custom.rgs_android_dom.data.network.error.MSDNetworkError
+import com.custom.rgs_android_dom.data.network.error.MSDNetworkErrorResponse
 import com.custom.rgs_android_dom.domain.repositories.RegistrationRepository
 import com.custom.rgs_android_dom.utils.logException
 import com.google.gson.Gson
@@ -104,14 +104,14 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
     }
 
 
-    private fun parseError(errorResponse: String, errorCode: Int): MSDNetworkError {
+    private fun parseError(errorResponse: String, errorCode: Int): MSDNetworkErrorResponse {
         if (errorCode == 401) {
-            return MSDNetworkError("AUTH-016", "token expired")
+            return MSDNetworkErrorResponse("AUTH-016", "token expired", "")
         }
         return try {
-            Gson().fromJson(errorResponse, MSDNetworkError::class.java)
+            Gson().fromJson(errorResponse, MSDNetworkErrorResponse::class.java)
         } catch (e: Exception) {
-            MSDNetworkError("", "")
+            MSDNetworkErrorResponse("", e.message ?: "", "")
         }
     }
 

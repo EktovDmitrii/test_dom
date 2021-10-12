@@ -113,7 +113,7 @@ class EditPersonalDataViewModel(private val clientInteractor: ClientInteractor) 
                             loadingStateController.value = LoadingState.CONTENT
                         }
                         else -> {
-                            networkErrorController.value = it.toNetworkException()?.message ?: "Ошибка сохранения данных"
+                            networkErrorController.value = it.toNetworkException()?.message
                             loadingStateController.value = LoadingState.ERROR
                         }
                     }

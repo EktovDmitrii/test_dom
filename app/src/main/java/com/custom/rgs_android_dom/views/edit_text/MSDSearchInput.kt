@@ -1,8 +1,6 @@
 package com.custom.rgs_android_dom.views.edit_text
 
 import android.content.Context
-import android.content.res.TypedArray
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.RelativeLayout
@@ -10,7 +8,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdSearchInputBinding
-import com.custom.rgs_android_dom.domain.TranslationInteractor
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.utils.*
 
 

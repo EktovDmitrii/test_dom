@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 
 data class PropertyItemResponse(
     @SerializedName("address")
-    val address: String,
+    val address: PropertyAddressResponse?,
 
     @SerializedName("clientId")
     val clientId: String,
@@ -50,4 +50,24 @@ data class PropertyDocumentResponse(
     @SerializedName("name")
     val name: String?
 
+)
+
+data class PropertyAddressResponse(
+    @SerializedName("address")
+    val address: String?,
+
+    @SerializedName("cityFiasId")
+    val cityFiasId: String?,
+
+    @SerializedName("cityName")
+    val cityName: String?,
+
+    @SerializedName("fiasId")
+    val fiasId: String?,
+
+    @SerializedName("regionFiasId")
+    val regionFiasId: String?,
+
+    @SerializedName("regionName")
+    val regionName: String?
 )

@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.domain.location
 
+import com.custom.rgs_android_dom.data.network.mappers.LocationMapper
 import com.custom.rgs_android_dom.domain.location.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.repositories.LocationRepository
 import com.yandex.mapkit.geometry.Point

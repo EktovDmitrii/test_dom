@@ -67,7 +67,7 @@ class RegistrationAgreementViewModel(private val phone: String,
                     },
                     onError = {
                         logException(this, it)
-                        signOpdErrorController.value = it.toNetworkException()?.message ?: "Ошибка при запросе"
+                        signOpdErrorController.value = it.toNetworkException()?.message
                     }
                 ).addTo(dataCompositeDisposable)
         }

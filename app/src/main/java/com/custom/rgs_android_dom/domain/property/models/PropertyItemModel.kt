@@ -1,7 +1,7 @@
 package com.custom.rgs_android_dom.domain.property.models
 
 data class PropertyItemModel(
-    val address: String,
+    val address: PropertyAddressModel?,
     val clientId: String,
     val comment: String,
     val documents: List<PropertyDocument>,

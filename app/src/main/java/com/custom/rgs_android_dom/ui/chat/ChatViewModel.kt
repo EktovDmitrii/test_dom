@@ -32,7 +32,7 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
                 },
                 onError = {
                     logException(this, it)
-                    networkErrorController.value = it.toNetworkException()?.message ?: "Ошибка получения истории чата"
+                    networkErrorController.value = it.toNetworkException()?.message
                     loadingStateController.value = LoadingState.ERROR
                 }
             ).addTo(dataCompositeDisposable)
@@ -63,7 +63,7 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onError = {
-                    networkErrorController.value = it.toNetworkException()?.message ?: "Ошибка отправки сообщения"
+                    networkErrorController.value = it.toNetworkException()?.message
                 }
             ).addTo(dataCompositeDisposable)
     }

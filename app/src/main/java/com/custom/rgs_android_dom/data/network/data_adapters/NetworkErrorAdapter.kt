@@ -1,7 +1,9 @@
 package com.custom.rgs_android_dom.data.network.data_adapters
 
 import com.custom.rgs_android_dom.data.network.ErrorType
-import com.custom.rgs_android_dom.data.network.error.MSDNetworkError
+import com.custom.rgs_android_dom.data.network.error.MSDNetworkErrorResponse
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
+import com.custom.rgs_android_dom.domain.error.model.MSDErrorModel
 import io.reactivex.*
 import io.reactivex.functions.Function
 import okhttp3.ResponseBody
@@ -12,7 +14,6 @@ import kotlin.reflect.KClass
 
 class NetworkException(
     val error: Any?,
-    override val message: String = "",
     val throwable: Throwable
 ) : RuntimeException()
 
@@ -31,7 +32,15 @@ internal class RxCallAdapterWrapperFactory(private val rxJava2CallAdapterFactory
 
         return if (errorType != null && throwable is HttpException) {
             val error = parseError(retrofit, throwable, errorType.type)
-            NetworkException(error, throwable.message(), throwable)
+            if (error is MSDNetworkErrorResponse){
+                var message = TranslationInteractor.getTranslation(error.translationKey)
+                if (message == error.translationKey){
+                    message = error.message
+                }
+                NetworkException(MSDErrorModel(code = error.code, message = message), throwable)
+            } else {
+                NetworkException(error, throwable)
+            }
         } else throwable
     }
 
@@ -40,7 +49,7 @@ internal class RxCallAdapterWrapperFactory(private val rxJava2CallAdapterFactory
             return null
         }
         if (httpException.response()?.code() == 401){
-            return MSDNetworkError("AUTH-016", "token expired")
+            return MSDNetworkErrorResponse("AUTH-016", "token expired", "")
         } else {
             val errorBody = httpException.response()?.errorBody() ?: return null
             val converter: Converter<ResponseBody, Any> = retrofit.responseBodyConverter(kClass.java, arrayOf())

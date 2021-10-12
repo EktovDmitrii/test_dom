@@ -1,8 +1,11 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
 import com.custom.rgs_android_dom.data.network.responses.PropertyItemResponse
+import com.custom.rgs_android_dom.domain.location.models.AddressItemModel
+import com.custom.rgs_android_dom.domain.property.models.PropertyAddressModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
+import com.yandex.mapkit.geometry.Point
 
 object PropertyMapper {
 
@@ -12,7 +15,16 @@ object PropertyMapper {
         val isTemporary = if (response.isTemporary == "yes") true else if (response.isTemporary == "no") false else null
 
         return PropertyItemModel(
-            address = response.address,
+            address = response.address?.let { address->
+                PropertyAddressModel(
+                    address = address.address ?: "",
+                    cityFiasId = address.cityFiasId ?: "",
+                    cityName = address.cityName ?: "",
+                    fiasId = address.fiasId ?: "",
+                    regionFiasId = address.regionFiasId ?: "",
+                    regionName = address.regionName ?: ""
+                )
+            },
             clientId = response.clientId,
             comment = response.comment ?: "",
             documents = response.documents?.map {

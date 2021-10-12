@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.domain
+package com.custom.rgs_android_dom.domain.translations
 
 import com.custom.rgs_android_dom.data.repositories.translation.TranslationRepositoryImpl
 import com.custom.rgs_android_dom.domain.repositories.TranslationRepository

@@ -70,7 +70,7 @@ class PropertyDetailsViewModel(propertyName: String,
                         }
                         else -> {
                             loadingStateController.value = LoadingState.ERROR
-                            networkErrorController.value = it.toNetworkException()?.message ?: "Ошибка добавления объекта"
+                            networkErrorController.value = it.toNetworkException()?.message
                         }
                     }
 

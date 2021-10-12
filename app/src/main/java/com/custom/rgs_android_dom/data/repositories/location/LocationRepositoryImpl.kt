@@ -81,12 +81,8 @@ class LocationRepositoryImpl(private val context: Context,
     }
 
     override fun decodeLocation(newLocation: Point): Single<AddressItemModel> {
-        return Single.fromCallable {
-            AddressItemModel(
-                address = "Павелецкая наб. 34\\Марьина Роща район, Москва\\n127055",
-                fiasId = "",
-                geocodeId = ""
-            )
+        return api.getAddressByCoordinates(newLocation.latitude, newLocation.longitude).map {
+            LocationMapper.responseToAddress(it)
         }
     }
 
