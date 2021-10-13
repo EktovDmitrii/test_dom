@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPropertyDetailsBinding
+import com.custom.rgs_android_dom.domain.location.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyField
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.ui.base.BaseFragment
@@ -19,10 +20,10 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
         private const val ARG_PROPERTY_ADDRESS = "ARG_PROPERTY_ADDRESS"
         private const val ARG_PROPERTY_TYPE = "ARG_PROPERTY_TYPE"
 
-        fun newInstance(propertyName: String, propertyAddress: String, propertyType: PropertyType): PropertyDetailsFragment {
+        fun newInstance(propertyName: String, propertyAddress: AddressItemModel, propertyType: PropertyType): PropertyDetailsFragment {
             return PropertyDetailsFragment().args {
                 putString(ARG_PROPERTY_NAME, propertyName)
-                putString(ARG_PROPERTY_ADDRESS, propertyAddress)
+                putSerializable(ARG_PROPERTY_ADDRESS, propertyAddress)
                 putSerializable(ARG_PROPERTY_TYPE, propertyType)
             }
         }
@@ -31,7 +32,7 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
             requireArguments().getString(ARG_PROPERTY_NAME),
-            requireArguments().getString(ARG_PROPERTY_ADDRESS),
+            requireArguments().getSerializable(ARG_PROPERTY_ADDRESS),
             requireArguments().getSerializable(ARG_PROPERTY_TYPE)
         )
     }
@@ -94,7 +95,7 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
         subscribe(viewModel.propertyDetailsObserver){
             binding.addTextView.isEnabled = it.isAddTextViewEnabled
             if (it.updatePropertyAddressEditText){
-                binding.addressTextInputLayout.setText(it.address)
+                binding.addressTextInputLayout.setText(it.address.addressString)
             }
 
         }

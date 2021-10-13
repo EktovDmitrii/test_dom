@@ -24,6 +24,7 @@ import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.ScreenPoint
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.*
+import com.yandex.mapkit.map.Map
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -43,6 +44,35 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
 
     private var locationPin: PlacemarkMapObject? = null
     private var pinRect: Rect? = null
+
+    private var mapIsMoving = true
+
+    private val cameraListener =
+        CameraListener { _, _, _, hasCompleted ->
+            if (pinRect == null){
+                pinRect = Rect()
+                binding.locationPinImageView.getGlobalVisibleRect(pinRect)
+            }
+            if (hasCompleted){
+                mapIsMoving = false
+                pinRect?.let { pinRect->
+                    val screenPoint = ScreenPoint(pinRect.exactCenterX(), pinRect.exactCenterY() - 44.dp(requireContext()))
+                    val worldPoint = binding.mapView.screenToWorld(screenPoint)
+
+                    viewModel.onLocationChanged(worldPoint)
+                    /*if (locationPin == null){
+                            val pinLayout = layoutInflater.inflate(R.layout.location_pin, null)
+                            val viewProvide = ViewProvider(pinLayout)
+                            locationPin = binding.mapView.map.mapObjects.addPlacemark(worldPoint, viewProvide)
+                        } else {
+                            locationPin?.geometry = worldPoint
+                        }*/
+                }
+            } else{
+                mapIsMoving = true
+                viewModel.onMapMoving()
+            }
+        }
 
     private val requestLocationPermissionAction =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionsResult ->
@@ -81,27 +111,7 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
             viewModel.onMyLocationClick()
         }
 
-        binding.mapView.map.addCameraListener { map, cameraPosition, cameraUpdateReason, hasCompleted ->
-            if (pinRect == null){
-                pinRect = Rect()
-                binding.locationPinImageView.getGlobalVisibleRect(pinRect)
-            }
-           if (hasCompleted){
-               pinRect?.let { pinRect->
-                   val screenPoint = ScreenPoint(pinRect.exactCenterX(), pinRect.exactCenterY() - 44.dp(requireContext()))
-                   val worldPoint = binding.mapView.screenToWorld(screenPoint)
-
-                   viewModel.onLocationChanged(worldPoint)
-                   /*if (locationPin == null){
-                       val pinLayout = layoutInflater.inflate(R.layout.location_pin, null)
-                       val viewProvide = ViewProvider(pinLayout)
-                       locationPin = binding.mapView.map.mapObjects.addPlacemark(worldPoint, viewProvide)
-                   } else {
-                       locationPin?.geometry = worldPoint
-                   }*/
-               }
-           }
-        }
+       binding.mapView.map.addCameraListener(cameraListener)
        binding.mapView.map.isRotateGesturesEnabled = false
 
        binding.editAddressTextView.setOnDebouncedClickListener {
@@ -123,7 +133,8 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
             }
             binding.nextTextView.isEnabled = selectAddressViewState.isNextTextViewEnabled
             binding.myLocationImageView.visibleIf(selectAddressViewState.isMyLocationImageViewVisible)
-            binding.addressPrimaryTextView.text = selectAddressViewState.propertyAddress
+            binding.addressPrimaryTextView.text = selectAddressViewState.propertyAddress.addressString
+            binding.addressSecondaryTextView.text = "${selectAddressViewState.propertyAddress.cityName} ${selectAddressViewState.propertyAddress.regionName}"
         }
 
         subscribe(viewModel.locationObserver){
@@ -143,6 +154,11 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
                cancelText = "Нет, остаться"
            )
            confirmDialog.show(childFragmentManager, ConfirmBottomSheetFragment.TAG)
+       }
+
+       subscribe(viewModel.showPinLoaderObserver){
+           binding.loadingPinFrameLayout.visibleIf(it)
+           binding.locationPinImageView.visibleIf(!it)
        }
     }
 
@@ -178,8 +194,9 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
         binding.veilContainer.root.gone()
         binding.addressDataConstraintLayout.visible()
         binding.loadingPinFrameLayout.gone()
-        binding.locationPinImageView.visible()
-
+        if (!mapIsMoving){
+            binding.locationPinImageView.visible()
+        }
         // TODO Find out how we can improve this stuff???
         binding.nextTextView.isEnabled = binding.propertyNameTextInputLayout.getText().isNotEmpty()
     }

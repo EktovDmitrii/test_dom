@@ -4,13 +4,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.location.LocationInteractor
-import com.custom.rgs_android_dom.domain.location.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.view_states.SelectAddressViewState
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
-import com.custom.rgs_android_dom.ui.property.add.details.PropertyDetailsFragment
 import com.custom.rgs_android_dom.ui.property.add.select_type.SelectPropertyTypeFragment
 import com.custom.rgs_android_dom.utils.logException
 import com.yandex.mapkit.geometry.Point
@@ -36,6 +34,9 @@ class SelectAddressViewModel(private val propertyCount: Int,
     private val showConfirmCloseController = MutableLiveData<Unit>()
     val showConfirmCloseObserver: LiveData<Unit> = showConfirmCloseController
 
+    private val showPinLoaderController = MutableLiveData<Boolean>()
+    val showPinLoaderObserver: LiveData<Boolean> = showPinLoaderController
+
     init {
         propertyInteractor.selectAddressViewStateSubject
             .subscribeOn(Schedulers.io())
@@ -57,7 +58,7 @@ class SelectAddressViewModel(private val propertyCount: Int,
             .subscribeBy(
                 onNext = {
                     //addressController.value = it
-                    propertyInteractor.onPropertyAddressChanged(it.address)
+                    propertyInteractor.onPropertyAddressChanged(it)
                     // TODO pass this value to the api to decode name -> location
                 },
                 onError = {
@@ -101,9 +102,11 @@ class SelectAddressViewModel(private val propertyCount: Int,
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    propertyInteractor.onPropertyAddressChanged(it.address)
+                    showPinLoaderController.value = false
+                    propertyInteractor.onPropertyAddressChanged(it)
                 },
                 onError = {
+                    showPinLoaderController.value = false
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
@@ -114,12 +117,17 @@ class SelectAddressViewModel(private val propertyCount: Int,
     }
 
     fun onNextClick(){
-        Log.d("MyLog", "PROP MNAME "  + selectAddressViewStateController.value?.propertyName  + " ADDRESS " + selectAddressViewStateController.value?.propertyAddress )
-        ScreenManager.showScreenScope(SelectPropertyTypeFragment.newInstance(
-            propertyName =  selectAddressViewStateController.value?.propertyName ?: "",
-            propertyAddress = selectAddressViewStateController.value?.propertyAddress ?: ""
-        ),
-        ADD_PROPERTY)
+        selectAddressViewStateController.value?.let {
+            ScreenManager.showScreenScope(SelectPropertyTypeFragment.newInstance(
+                propertyName =  it.propertyName ,
+                propertyAddress = it.propertyAddress
+            ),
+                ADD_PROPERTY)
+        }
+    }
+
+    fun onMapMoving(){
+        showPinLoaderController.value = true
     }
 
     private fun getUserLocation(){
@@ -128,12 +136,11 @@ class SelectAddressViewModel(private val propertyCount: Int,
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    Log.d("MyLog", "GOT LOCATION")
                     locationController.value = it
                     propertyInteractor.onLocationLoaded()
                     loadingStateController.value = LoadingState.CONTENT
 
-                    onLocationChanged(it)
+                    //onLocationChanged(it)
                 },
                 onError = {
                     logException(this, it)
@@ -141,7 +148,7 @@ class SelectAddressViewModel(private val propertyCount: Int,
                     locationController.value = locationInteractor.getDefaultLocation()
                     loadingStateController.value = LoadingState.CONTENT
 
-                    onLocationChanged(locationInteractor.getDefaultLocation())
+                    //onLocationChanged(locationInteractor.getDefaultLocation())
                 }
             ).addTo(dataCompositeDisposable)
     }

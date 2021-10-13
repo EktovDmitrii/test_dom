@@ -82,7 +82,7 @@ class LocationRepositoryImpl(private val context: Context,
 
     override fun decodeLocation(newLocation: Point): Single<AddressItemModel> {
         return api.getAddressByCoordinates(newLocation.latitude, newLocation.longitude).map {
-            LocationMapper.responseToAddress(it)
+            LocationMapper.responseToAddress(it.results[0])
         }
     }
 

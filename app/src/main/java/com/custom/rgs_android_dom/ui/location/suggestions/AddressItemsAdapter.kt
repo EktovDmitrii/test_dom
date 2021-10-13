@@ -36,8 +36,8 @@ class AddressItemsAdapter(
         private val onAddressClick: (AddressItemModel) -> Unit = {}) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: AddressItemModel) {
-            binding.addressPrimaryTextView.text = model.address
-
+            binding.addressPrimaryTextView.text = model.addressString
+            binding.addressSecondaryTextView.text = "${model.cityName} ${model.regionName}"
             binding.root.setOnDebouncedClickListener {
                 onAddressClick(model)
             }

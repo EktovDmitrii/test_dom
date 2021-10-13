@@ -8,7 +8,7 @@ object LocationMapper {
 
     fun responseToAddress(response: AddressItemResponse): AddressItemModel {
         return AddressItemModel(
-            address = response.address,
+            addressString = response.address,
             cityFiasId = response.cityFiasId,
             cityName = response.cityName,
             coordinates = Point(response.coordinates.lat, response.coordinates.long),

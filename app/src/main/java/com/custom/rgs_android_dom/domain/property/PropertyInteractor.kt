@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.domain.property
 
 import android.util.Log
+import com.custom.rgs_android_dom.domain.location.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyField
 import com.custom.rgs_android_dom.domain.property.details.exceptions.ValidatePropertyException
 import com.custom.rgs_android_dom.domain.property.details.view_states.PropertyDetailsViewState
@@ -9,6 +10,7 @@ import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.domain.property.view_states.SelectPropertyTypeViewState
 import com.custom.rgs_android_dom.domain.property.view_states.SelectAddressViewState
 import com.custom.rgs_android_dom.domain.repositories.PropertyRepository
+import com.yandex.mapkit.geometry.Point
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
@@ -24,7 +26,7 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
         propertyName = "",
         isMyLocationImageViewVisible = false,
         updatePropertyNameEditText = false,
-        propertyAddress = ""
+        propertyAddress = AddressItemModel("", "", "", Point(0.0, 0.0), "", "", "", ""),
     )
 
     private var selectPropertyTypeViewState = SelectPropertyTypeViewState(
@@ -36,7 +38,7 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
     private var propertyDetailsViewState = PropertyDetailsViewState(
         name = "",
         type = "",
-        address = "",
+        address = AddressItemModel("", "", "", Point(0.0, 0.0), "", "", "", ""),
         entrance = "",
         corpus = "",
         floor = "",
@@ -75,7 +77,7 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
         selectAddressViewStateSubject.onNext(selectAddressViewState)
     }
 
-    fun onPropertyAddressChanged(address: String){
+    fun onPropertyAddressChanged(address: AddressItemModel){
         selectAddressViewState = selectAddressViewState.copy(
             propertyAddress = address,
             updatePropertyNameEditText = false
@@ -132,19 +134,21 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
 
     // TODO Will be changed later
 
-    fun initPropertyDetails(propertyName: String, type: PropertyType, address: String){
+    fun initPropertyDetails(propertyName: String, type: PropertyType, address: AddressItemModel){
         propertyDetailsViewState = propertyDetailsViewState.copy(
             name = propertyName,
             type = type.type,
             address = address,
             updatePropertyAddressEditText = true,
-            isAddTextViewEnabled = address.isNotEmpty()
+            isAddTextViewEnabled = address.addressString.isNotEmpty()
         )
         Log.d("MyLog", "Init address " + address + " PROPERTY " + propertyName)
         propertyDetailsViewStateSubject.onNext(propertyDetailsViewState)
     }
 
-    fun updatePropertyAddress(address: String){
+    fun updatePropertyAddress(newAddress: String){
+        val address = propertyDetailsViewState.address
+        address.addressString = newAddress
         propertyDetailsViewState = propertyDetailsViewState.copy(address = address, updatePropertyAddressEditText = false)
         checkIfPropertyDetailsFieldsFilled()
     }
@@ -186,9 +190,9 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
     }
 
     fun addProperty(): Completable {
-        var address = propertyDetailsViewState.address.trim()
+        var addressString = propertyDetailsViewState.address.addressString.trim()
 
-        if (address.isEmpty()){
+        if (addressString.isEmpty()){
             return Completable.error(
                 ValidatePropertyException(
                     field = PropertyField.ADDRESS,
@@ -197,17 +201,19 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
             )
         }
         propertyDetailsViewState.corpus.takeIf { it.isNotEmpty() }?.let {
-            address = "$address, корпус $it"
+            addressString = "$addressString, корпус $it"
         }
         propertyDetailsViewState.entrance.takeIf { it.isNotEmpty() }?.let {
-            address = "$address, подъезд $it"
+            addressString = "$addressString, подъезд $it"
         }
         propertyDetailsViewState.floor.takeIf { it.isNotEmpty() }?.let {
-            address = "$address, этаж $it"
+            addressString = "$addressString, этаж $it"
         }
         propertyDetailsViewState.flat.takeIf { it.isNotEmpty() }?.let {
-            address = "$address, квартира $it"
+            addressString = "$addressString, квартира $it"
         }
+
+        propertyDetailsViewState.address.addressString = addressString
 
         val totalArea = if (propertyDetailsViewState.totalArea.isNotEmpty()) propertyDetailsViewState.totalArea.toFloat() else null
         val comment = propertyDetailsViewState.comment.ifEmpty { null }
@@ -215,7 +221,7 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
         return propertyRepository.addProperty(
             name = propertyDetailsViewState.name,
             type = propertyDetailsViewState.type,
-            address = address,
+            address = propertyDetailsViewState.address,
             isOwn = propertyDetailsViewState.isOwn,
             isRent = propertyDetailsViewState.isRent,
             isTemporary = propertyDetailsViewState.isTemporary,
@@ -239,7 +245,7 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
     }
 
     private fun checkIfPropertyDetailsFieldsFilled() {
-        propertyDetailsViewState = propertyDetailsViewState.copy(isAddTextViewEnabled = propertyDetailsViewState.address.isNotEmpty())
+        propertyDetailsViewState = propertyDetailsViewState.copy(isAddTextViewEnabled = propertyDetailsViewState.address.addressString.isNotEmpty())
         propertyDetailsViewStateSubject.onNext(propertyDetailsViewState)
     }
 }

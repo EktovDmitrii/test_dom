@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class AddPropertyRequest(
 
     @SerializedName("address")
-    val address: String,
+    val address: PropertyAddressRequest,
 
     @SerializedName("comment")
     val comment: String?,

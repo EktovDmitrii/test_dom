@@ -1,9 +1,10 @@
 package com.custom.rgs_android_dom.domain.location.models
 
 import com.yandex.mapkit.geometry.Point
+import java.io.Serializable
 
 data class AddressItemModel(
-    val address: String,
+    var addressString: String,
     val cityFiasId: String,
     val cityName: String,
     val coordinates: Point,
@@ -11,4 +12,4 @@ data class AddressItemModel(
     val geocodeId: String,
     val regionFiasId: String,
     val regionName: String
-)
+): Serializable

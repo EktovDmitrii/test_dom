@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.data.network.toNetworkException
+import com.custom.rgs_android_dom.domain.location.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.details.exceptions.ValidatePropertyException
 import com.custom.rgs_android_dom.domain.property.details.view_states.PropertyDetailsViewState
@@ -19,7 +20,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
 class PropertyDetailsViewModel(propertyName: String,
-                               propertyAddress: String,
+                               propertyAddress: AddressItemModel,
                                propertyType: PropertyType,
                                private val propertyInteractor: PropertyInteractor) : BaseViewModel() {
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentSelectPropertyTypeBinding
+import com.custom.rgs_android_dom.domain.location.models.AddressItemModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
 import com.custom.rgs_android_dom.utils.*
@@ -17,10 +18,10 @@ class SelectPropertyTypeFragment : BaseFragment<SelectPropertyTypeViewModel, Fra
         private const val ARG_PROPERTY_NAME = "ARG_PROPERTY_NAME"
         private const val ARG_PROPERTY_ADDRESS = "ARG_PROPERTY_ADDRESS"
 
-        fun newInstance(propertyName: String, propertyAddress: String): SelectPropertyTypeFragment {
+        fun newInstance(propertyName: String, propertyAddress: AddressItemModel): SelectPropertyTypeFragment {
             return SelectPropertyTypeFragment().args {
                 putString(ARG_PROPERTY_NAME, propertyName)
-                putString(ARG_PROPERTY_ADDRESS, propertyAddress)
+                putSerializable(ARG_PROPERTY_ADDRESS, propertyAddress)
             }
         }
     }
@@ -28,7 +29,7 @@ class SelectPropertyTypeFragment : BaseFragment<SelectPropertyTypeViewModel, Fra
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
             requireArguments().getString(ARG_PROPERTY_NAME),
-            requireArguments().getString(ARG_PROPERTY_ADDRESS)
+            requireArguments().getSerializable(ARG_PROPERTY_ADDRESS)
         )
     }
 
