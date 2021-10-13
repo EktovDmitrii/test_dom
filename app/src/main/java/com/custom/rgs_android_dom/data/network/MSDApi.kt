@@ -95,7 +95,7 @@ interface MSDApi {
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getAddressSuggestions(@Path("address") address: String, @Query("country") country: String): Single<AddressSuggestionsResponse>
 
-    @GET("location/address/suggests")
+    @GET("location/address")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getAddressByCoordinates(@Query("lat") lat: Double, @Query("long") long: Double): Single<AddressSuggestionsResponse>
 }

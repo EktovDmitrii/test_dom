@@ -58,7 +58,7 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
                 pinRect?.let { pinRect->
                     val screenPoint = ScreenPoint(pinRect.exactCenterX(), pinRect.exactCenterY() - 44.dp(requireContext()))
                     val worldPoint = binding.mapView.screenToWorld(screenPoint)
-
+                    Log.d("MyLog", "WORLD POINT " + worldPoint.latitude + " " + worldPoint.longitude)
                     viewModel.onLocationChanged(worldPoint)
                     /*if (locationPin == null){
                             val pinLayout = layoutInflater.inflate(R.layout.location_pin, null)
@@ -226,6 +226,7 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
     }
 
     private fun moveToLocation(location: Point){
+        Log.d("MyLog", "Move to location " + location.latitude + " " + location.longitude)
         binding.mapView.map.move(
             CameraPosition(location, 14.0f, 0.0f, 0.0f),
             Animation(Animation.Type.SMOOTH, 1f),

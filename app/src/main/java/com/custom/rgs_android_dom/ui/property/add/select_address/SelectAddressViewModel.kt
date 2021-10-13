@@ -57,9 +57,8 @@ class SelectAddressViewModel(private val propertyCount: Int,
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    //addressController.value = it
                     propertyInteractor.onPropertyAddressChanged(it)
-                    // TODO pass this value to the api to decode name -> location
+                    locationController.value = it.coordinates
                 },
                 onError = {
                     logException(this, it)
