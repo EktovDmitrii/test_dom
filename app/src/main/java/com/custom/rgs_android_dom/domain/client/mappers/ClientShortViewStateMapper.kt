@@ -9,10 +9,13 @@ object ClientShortViewStateMapper {
 
     fun from(clientModel: ClientModel): ClientShortViewState {
         val phoneMask = PhoneMaskHelper.getMaskForPhone(clientModel.phone)
+        val hasAgentInfo = clientModel.agent?.phone?.isNotEmpty() == true
 
         return ClientShortViewState(
             firstName = clientModel.firstName,
             lastName = clientModel.lastName,
-            phone = clientModel.phone.formatPhoneByMask(phoneMask, "#"))
+            phone = clientModel.phone.formatPhoneByMask(phoneMask, "#"),
+            hasAgentInfo = hasAgentInfo
+        )
     }
 }

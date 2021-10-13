@@ -80,7 +80,7 @@ class RegistrationAgreementViewModel(private val phone: String,
             append("\n<a href=\"https://moi-service.ru/legal/moi-servis-med/polzovatelskoe-soglashenie\">")
             append("пользовательского соглашения,</a>")
             append("\n<a href=\"https://moi-service.ru/legal/policy\">")
-            append("политику обработки персональных данных,</a> и даю своё")
+            append("политику обработки персональных данных</a> и даю своё")
             append("\n<a href=\"https://moi-service.ru/legal/soglasie-polzovatelya-na-obrabotku-personalnyh-dannyh\">")
             append("согласие на обработку персональных данных")
         }
