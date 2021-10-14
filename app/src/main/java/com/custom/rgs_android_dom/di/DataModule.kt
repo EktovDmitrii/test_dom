@@ -3,7 +3,7 @@ package com.custom.rgs_android_dom.di
 import com.custom.rgs_android_dom.data.repositories.chat.ChatRepositoryImpl
 import com.custom.rgs_android_dom.data.repositories.client.ClientRepositoryImpl
 import com.custom.rgs_android_dom.data.repositories.countries.CountriesRepositoryMock
-import com.custom.rgs_android_dom.data.repositories.location.LocationRepositoryImpl
+import com.custom.rgs_android_dom.data.repositories.address.AddressRepositoryImpl
 import com.custom.rgs_android_dom.data.repositories.property.PropertyRepositoryImpl
 import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepositoryImpl
 import com.custom.rgs_android_dom.data.repositories.translation.TranslationRepositoryImpl
@@ -19,5 +19,5 @@ val dataModule = module {
     single <ChatRepository> { ChatRepositoryImpl(api = get(), authSharedPreferences = get()) }
     single <WebSocketRepository> {WebSocketRepositoryImpl(authSharedPreferences = get(), gson = get())}
     single <PropertyRepository> { PropertyRepositoryImpl(api = get(), authSharedPreferences = get()) }
-    single <LocationRepository> { LocationRepositoryImpl(context = get(), api = get()) }
+    single <AddressRepository> { AddressRepositoryImpl(api = get()) }
 }

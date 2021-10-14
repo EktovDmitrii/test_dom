@@ -4,7 +4,7 @@ import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.countries.CountriesInteractor
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
-import com.custom.rgs_android_dom.domain.location.LocationInteractor
+import com.custom.rgs_android_dom.domain.address.AddressInteractor
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.domain.web_socket.WebSocketInteractor
@@ -26,5 +26,5 @@ val domainModule = module {
 
     factory { PropertyInteractor(propertyRepository = get()) }
 
-    factory { LocationInteractor(locationRepository = get()) }
+    factory { AddressInteractor(addressRepository = get()) }
 }

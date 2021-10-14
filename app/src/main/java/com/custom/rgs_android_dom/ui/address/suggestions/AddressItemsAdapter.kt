@@ -1,10 +1,10 @@
-package com.custom.rgs_android_dom.ui.location.suggestions
+package com.custom.rgs_android_dom.ui.address.suggestions
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.custom.rgs_android_dom.databinding.ItemAddressItemBinding
-import com.custom.rgs_android_dom.domain.location.models.AddressItemModel
+import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 
 class AddressItemsAdapter(

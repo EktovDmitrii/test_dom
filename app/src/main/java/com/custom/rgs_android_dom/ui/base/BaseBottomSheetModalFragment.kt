@@ -1,11 +1,10 @@
 package com.custom.rgs_android_dom.ui.base
 
 import android.os.Bundle
-import android.util.Log
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -114,6 +113,22 @@ abstract class BaseBottomSheetModalFragment<VM : BaseViewModel, VB : ViewBinding
         sheetContainer.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
         val dialog = dialog as BottomSheetDialog
         dialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+
+        val outMetrics = DisplayMetrics()
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            val display = requireActivity().display
+            display?.getRealMetrics(outMetrics)
+        } else {
+            @Suppress("DEPRECATION")
+            val display = requireActivity().windowManager.defaultDisplay
+            @Suppress("DEPRECATION")
+            display.getMetrics(outMetrics)
+        }
+
+        dialog.behavior.peekHeight = outMetrics.heightPixels
+
+        sheetContainer.requestLayout()
     }
 
 

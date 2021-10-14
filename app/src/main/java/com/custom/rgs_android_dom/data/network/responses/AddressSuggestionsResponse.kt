@@ -5,6 +5,6 @@ import com.google.gson.annotations.SerializedName
 data class AddressSuggestionsResponse(
 
     @SerializedName("results")
-    val results: List<AddressItemResponse>
+    val results: List<AddressItemResponse>?
 
 )

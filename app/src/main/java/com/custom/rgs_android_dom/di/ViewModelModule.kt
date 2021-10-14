@@ -12,7 +12,7 @@ import com.custom.rgs_android_dom.ui.client.agent.request_edit.RequestEditAgentV
 import com.custom.rgs_android_dom.ui.client.personal_data.edit.EditPersonalDataViewModel
 import com.custom.rgs_android_dom.ui.client.personal_data.PersonalDataViewModel
 import com.custom.rgs_android_dom.ui.location.rationale.RequestLocationRationaleViewModel
-import com.custom.rgs_android_dom.ui.location.suggestions.AddressSuggestionsViewModel
+import com.custom.rgs_android_dom.ui.address.suggestions.AddressSuggestionsViewModel
 import com.custom.rgs_android_dom.ui.property.add.details.PropertyDetailsViewModel
 import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressViewModel
 import com.custom.rgs_android_dom.ui.property.add.select_type.SelectPropertyTypeViewModel
@@ -47,7 +47,7 @@ val viewModelModule = module {
     viewModel { parameters-> PropertyInfoViewModel(objectId = parameters.get(), propertyInteractor = get()) }
     viewModel { ScreenStubViewModel() }
     viewModel { RequestEditAgentViewModel(clientInteractor = get()) }
-    viewModel { parameters -> SelectAddressViewModel(propertyCount = parameters.get(), propertyInteractor = get(), locationInteractor = get()) }
+    viewModel { parameters -> SelectAddressViewModel(propertyCount = parameters.get(), propertyInteractor = get(), addressInteractor = get(), context = get()) }
     viewModel { RequestLocationRationaleViewModel() }
-    viewModel { AddressSuggestionsViewModel(locationInteractor = get()) }
+    viewModel { AddressSuggestionsViewModel(addressInteractor = get()) }
 }

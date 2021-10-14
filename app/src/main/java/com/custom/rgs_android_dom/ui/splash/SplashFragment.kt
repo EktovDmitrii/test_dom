@@ -5,11 +5,8 @@ import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentSplashBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.navigation.ScreenManager
-import com.custom.rgs_android_dom.utils.hideKeyboardForced
-import com.custom.rgs_android_dom.utils.hideSoftwareKeyboard
+import com.custom.rgs_android_dom.utils.activity.hideKeyboardForced
 import com.custom.rgs_android_dom.utils.setStatusBarColor
-import com.custom.rgs_android_dom.utils.subscribe
 
 //ToDo: запретить закрытие
 class SplashFragment() : BaseFragment<SplashViewModel, FragmentSplashBinding>(R.layout.fragment_splash) {

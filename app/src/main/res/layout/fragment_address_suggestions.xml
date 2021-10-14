@@ -4,7 +4,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:clickable="true"
+    android:focusable="true">
 
     <include
         android:id="@+id/swipeAnchorLayout"
@@ -27,7 +29,34 @@
         android:overScrollMode="never"
         android:paddingHorizontal="14dp"
         android:clipToPadding="false"
+        android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="1"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/emptyResultsLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="72dp"
+        android:paddingHorizontal="20dp"
+        android:visibility="gone">
+        
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            app:srcCompat="@drawable/empty_addrresses_background"/>
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/suisse_regular"
+            android:textColor="@color/secondary400"
+            android:textSize="16sp"
+            android:layout_marginTop="28dp"
+            app:translationTextKey="Ничего не найдено"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

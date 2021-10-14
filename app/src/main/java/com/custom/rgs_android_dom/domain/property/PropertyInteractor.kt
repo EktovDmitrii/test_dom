@@ -1,6 +1,6 @@
 package com.custom.rgs_android_dom.domain.property
 
-import com.custom.rgs_android_dom.domain.location.models.AddressItemModel
+import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyField
 import com.custom.rgs_android_dom.domain.property.details.exceptions.ValidatePropertyException
 import com.custom.rgs_android_dom.domain.property.details.view_states.PropertyDetailsViewState
@@ -9,7 +9,6 @@ import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.domain.property.view_states.SelectPropertyTypeViewState
 import com.custom.rgs_android_dom.domain.property.view_states.SelectAddressViewState
 import com.custom.rgs_android_dom.domain.repositories.PropertyRepository
-import com.yandex.mapkit.geometry.Point
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
@@ -25,7 +24,7 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
         propertyName = "",
         isMyLocationImageViewVisible = false,
         updatePropertyNameEditText = false,
-        propertyAddress = AddressItemModel("", "", "", Point(0.0, 0.0), "", "", "", ""),
+        propertyAddress = AddressItemModel.createEmpty()
     )
 
     private var selectPropertyTypeViewState = SelectPropertyTypeViewState(
@@ -37,7 +36,7 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
     private var propertyDetailsViewState = PropertyDetailsViewState(
         name = "",
         type = "",
-        address = AddressItemModel("", "", "", Point(0.0, 0.0), "", "", "", ""),
+        address = AddressItemModel.createEmpty(),
         entrance = "",
         corpus = "",
         floor = "",
@@ -58,8 +57,13 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
      */
 
     fun initPropertyName(propertyCount: Int){
+        val propertyName = if (propertyCount > 0){
+            "Мой Дом ${(propertyCount)}"
+        } else {
+            "Мой Дом"
+        }
         selectAddressViewState = selectAddressViewState.copy(
-            propertyName = "Мой Дом ${(propertyCount+1)}",
+            propertyName = propertyName,
             isNextTextViewEnabled = true,
             updatePropertyNameEditText = true
         )
@@ -77,7 +81,7 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
 
     fun onPropertyAddressChanged(address: AddressItemModel){
         selectAddressViewState = selectAddressViewState.copy(
-            propertyAddress = address,
+            propertyAddress = address.copy(),
             updatePropertyNameEditText = false
         )
         selectAddressViewStateSubject.onNext(selectAddressViewState)
@@ -130,23 +134,22 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
      *
      */
 
-    // TODO Will be changed later
-
-    fun initPropertyDetails(propertyName: String, type: PropertyType, address: AddressItemModel){
+    fun initPropertyDetails(propertyName: String, type: PropertyType, address: AddressItemModel): PropertyDetailsViewState {
         propertyDetailsViewState = propertyDetailsViewState.copy(
             name = propertyName,
             type = type.type,
-            address = address,
+            address = address.copy(),
             updatePropertyAddressEditText = true,
             isAddTextViewEnabled = address.addressString.isNotEmpty()
         )
-        propertyDetailsViewStateSubject.onNext(propertyDetailsViewState)
+        return propertyDetailsViewState
     }
 
     fun updatePropertyAddress(newAddress: String){
-        val address = propertyDetailsViewState.address
-        address.addressString = newAddress
-        propertyDetailsViewState = propertyDetailsViewState.copy(address = address, updatePropertyAddressEditText = false)
+        // TODO Do not forget to make a copy of such data, to avoid data loss while navigation between fragments
+        val addressCopy = propertyDetailsViewState.address.copy()
+        addressCopy.addressString = newAddress
+        propertyDetailsViewState = propertyDetailsViewState.copy(address = addressCopy, updatePropertyAddressEditText = false)
         checkIfPropertyDetailsFieldsFilled()
     }
 
@@ -218,7 +221,7 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
         return propertyRepository.addProperty(
             name = propertyDetailsViewState.name,
             type = propertyDetailsViewState.type,
-            address = propertyDetailsViewState.address,
+            address = propertyDetailsViewState.address.copy(),
             isOwn = propertyDetailsViewState.isOwn,
             isRent = propertyDetailsViewState.isRent,
             isTemporary = propertyDetailsViewState.isTemporary,

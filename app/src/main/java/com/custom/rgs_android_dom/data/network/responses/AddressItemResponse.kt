@@ -27,13 +27,3 @@ data class AddressItemResponse(
     @SerializedName("regionName")
     val regionName: String
 )
-
-class CoordinatesResponse(
-
-    @SerializedName("lat")
-    val lat: Double,
-
-    @SerializedName("long")
-    val long: Double
-
-)

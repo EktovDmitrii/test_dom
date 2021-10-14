@@ -5,7 +5,7 @@ import com.custom.rgs_android_dom.data.network.mappers.PropertyMapper
 import com.custom.rgs_android_dom.data.network.requests.AddPropertyRequest
 import com.custom.rgs_android_dom.data.network.requests.PropertyAddressRequest
 import com.custom.rgs_android_dom.data.preferences.AuthSharedPreferences
-import com.custom.rgs_android_dom.domain.location.models.AddressItemModel
+import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.repositories.PropertyRepository
 import io.reactivex.Completable

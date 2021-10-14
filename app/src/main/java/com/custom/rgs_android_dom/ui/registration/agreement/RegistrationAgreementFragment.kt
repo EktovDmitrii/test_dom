@@ -57,7 +57,7 @@ class RegistrationAgreementFragment : BaseFragment<RegistrationAgreementViewMode
             binding.agreementTextView.stripUnderlines()
         }
 
-        subscribe(viewModel.signOpdErrorObserver){
+        subscribe(viewModel.networkErrorObserver){
             toast(it)
         }
     }

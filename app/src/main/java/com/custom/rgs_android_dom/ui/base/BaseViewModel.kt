@@ -3,6 +3,8 @@ package com.custom.rgs_android_dom.ui.base
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.custom.rgs_android_dom.data.network.toMSDErrorModel
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import io.reactivex.disposables.CompositeDisposable
 import org.koin.core.component.KoinComponent
 
@@ -23,6 +25,19 @@ open class BaseViewModel : ViewModel(), KoinComponent {
 
     fun close(){
         closeController.value = Unit
+    }
+
+    protected fun handleNetworkException(throwable: Throwable){
+        throwable.toMSDErrorModel()?.let {
+            networkErrorController.value = TranslationInteractor.getErrorTranslation(it)
+        }
+    }
+
+    protected fun getNetworkExceptionMessage(throwable: Throwable): String? {
+        throwable.toMSDErrorModel()?.let {
+            return TranslationInteractor.getErrorTranslation(it)
+        }
+        return null
     }
 
     override fun onCleared() {

@@ -33,11 +33,7 @@ internal class RxCallAdapterWrapperFactory(private val rxJava2CallAdapterFactory
         return if (errorType != null && throwable is HttpException) {
             val error = parseError(retrofit, throwable, errorType.type)
             if (error is MSDNetworkErrorResponse){
-                var message = TranslationInteractor.getTranslation(error.translationKey)
-                if (message == error.translationKey){
-                    message = error.message
-                }
-                NetworkException(MSDErrorModel(code = error.code, message = message), throwable)
+                NetworkException(MSDErrorModel(code = error.code, messageKey = error.translationKey, defaultMessage = error.message), throwable)
             } else {
                 NetworkException(error, throwable)
             }

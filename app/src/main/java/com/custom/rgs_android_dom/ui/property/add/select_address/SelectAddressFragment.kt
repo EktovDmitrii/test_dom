@@ -14,10 +14,11 @@ import com.custom.rgs_android_dom.ui.MainActivity
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
 import com.custom.rgs_android_dom.ui.location.rationale.RequestLocationRationaleFragment
-import com.custom.rgs_android_dom.ui.location.suggestions.AddressSuggestionsFragment
+import com.custom.rgs_android_dom.ui.address.suggestions.AddressSuggestionsFragment
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.*
+import com.custom.rgs_android_dom.utils.activity.hideKeyboardForced
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.ScreenPoint
@@ -32,6 +33,11 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
 
     companion object {
         private const val ARG_PROPERTY_COUNT = "ARG_PROPERTY_COUNT"
+
+        private const val ZOOM_LEVEL = 14.0f
+        private const val AZIMUTH = 0.0f
+        private const val TILT = 0.0f
+        private const val ANIMATION_DURATION = 1f
 
         fun newInstance(propertyCount: Int): SelectAddressFragment {
             return SelectAddressFragment().args {
@@ -116,6 +122,7 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
        }
 
        binding.nextTextView.setOnDebouncedClickListener {
+            hideSoftwareKeyboard(true)
             viewModel.onNextClick()
        }
 
@@ -219,8 +226,8 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
 
     private fun moveToLocation(location: Point){
         binding.mapView.map.move(
-            CameraPosition(location, 14.0f, 0.0f, 0.0f),
-            Animation(Animation.Type.SMOOTH, 1f),
+            CameraPosition(location, ZOOM_LEVEL, AZIMUTH, TILT),
+            Animation(Animation.Type.SMOOTH, ANIMATION_DURATION),
             null
         )
     }

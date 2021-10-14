@@ -13,7 +13,7 @@ import kotlin.reflect.KClass
 @Retention(AnnotationRetention.RUNTIME)
 annotation class ErrorType(val type: KClass<*>)
 
-fun Throwable.toNetworkException(): MSDErrorModel?{
+fun Throwable.toMSDErrorModel(): MSDErrorModel?{
     return (this as? NetworkException)?.error as? MSDErrorModel
 }
 

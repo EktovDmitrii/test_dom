@@ -1,11 +1,9 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
 import com.custom.rgs_android_dom.data.network.responses.PropertyItemResponse
-import com.custom.rgs_android_dom.domain.location.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyAddressModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
-import com.yandex.mapkit.geometry.Point
 
 object PropertyMapper {
 

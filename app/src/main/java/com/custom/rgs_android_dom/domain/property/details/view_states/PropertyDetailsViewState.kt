@@ -1,6 +1,6 @@
 package com.custom.rgs_android_dom.domain.property.details.view_states
 
-import com.custom.rgs_android_dom.domain.location.models.AddressItemModel
+import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 
 data class PropertyDetailsViewState(
     val name: String,

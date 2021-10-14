@@ -1,20 +1,14 @@
-package com.custom.rgs_android_dom.utils
+package com.custom.rgs_android_dom.utils.activity
 
 import android.app.Activity
-import android.content.Intent
-import android.net.Uri
-import android.provider.Settings
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import com.custom.rgs_android_dom.utils.getInputMethodManager
 
-fun Activity.hideSoftwareKeyboard(delay: Long = 300L, action: (() -> Unit)? = null) {
+fun Activity.hideSoftwareKeyboard() {
     val view = findViewById<View>(android.R.id.content)
-
-    getInputMethodManager()
-        .hideSoftInputFromWindow(view.windowToken, 0)
-
-    action?.let { view?.postDelayed(it, delay) }
+    getInputMethodManager().hideSoftInputFromWindow(view.windowToken, 0)
 }
 
 fun Activity.hideSoftwareKeyboard(view: View) {

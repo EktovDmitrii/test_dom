@@ -46,14 +46,14 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+   /* override fun dispatchTouchEvent(event: MotionEvent): Boolean {
         if (supportFragmentManager.fragments.isNotEmpty()) {
             supportFragmentManager.fragments.lastOrNull { it is DispatchTouchEventListener }?.let {
                 (it as DispatchTouchEventListener).dispatchTouchEvent(event)
             }
         }
         return super.dispatchTouchEvent(event)
-    }
+    }*/
 
     private fun loadTranslation(){
         translationInteractor.loadTranslation()

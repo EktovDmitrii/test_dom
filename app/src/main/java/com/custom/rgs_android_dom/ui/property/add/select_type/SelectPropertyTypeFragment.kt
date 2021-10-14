@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentSelectPropertyTypeBinding
-import com.custom.rgs_android_dom.domain.location.models.AddressItemModel
+import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
 import com.custom.rgs_android_dom.utils.*
@@ -21,7 +21,7 @@ class SelectPropertyTypeFragment : BaseFragment<SelectPropertyTypeViewModel, Fra
         fun newInstance(propertyName: String, propertyAddress: AddressItemModel): SelectPropertyTypeFragment {
             return SelectPropertyTypeFragment().args {
                 putString(ARG_PROPERTY_NAME, propertyName)
-                putSerializable(ARG_PROPERTY_ADDRESS, propertyAddress)
+                putString(ARG_PROPERTY_ADDRESS, AddressItemModel.toString(propertyAddress))
             }
         }
     }
@@ -29,12 +29,14 @@ class SelectPropertyTypeFragment : BaseFragment<SelectPropertyTypeViewModel, Fra
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
             requireArguments().getString(ARG_PROPERTY_NAME),
-            requireArguments().getSerializable(ARG_PROPERTY_ADDRESS)
+            requireArguments().getString(ARG_PROPERTY_ADDRESS)
         )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        hideSoftwareKeyboard()
 
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()

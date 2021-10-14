@@ -2,7 +2,6 @@ package com.custom.rgs_android_dom.ui.chat
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.custom.rgs_android_dom.data.network.toNetworkException
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.chat.models.ChatItemModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
@@ -32,7 +31,9 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
                 },
                 onError = {
                     logException(this, it)
-                    networkErrorController.value = it.toNetworkException()?.message
+
+                    handleNetworkException(it)
+
                     loadingStateController.value = LoadingState.ERROR
                 }
             ).addTo(dataCompositeDisposable)
@@ -63,7 +64,7 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onError = {
-                    networkErrorController.value = it.toNetworkException()?.message
+                    handleNetworkException(it)
                 }
             ).addTo(dataCompositeDisposable)
     }

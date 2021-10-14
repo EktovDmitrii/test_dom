@@ -132,6 +132,8 @@ class MSDTextInputLayout @JvmOverloads constructor(
                     binding.valueEditText.clearFocus()
                 }
                 binding.valueEditText.hideKeyboard()
+                binding.containerTextInputLayout.clearFocus()
+                binding.containerTextInputLayout.hideKeyboard()
                 true
             }
         }
