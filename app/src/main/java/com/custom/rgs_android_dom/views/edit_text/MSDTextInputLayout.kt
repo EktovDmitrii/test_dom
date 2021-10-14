@@ -117,9 +117,7 @@ class MSDTextInputLayout @JvmOverloads constructor(
         }
 
         if (focusedHint.isNotEmpty()){
-            Log.d("MyLog", "FOCUSED HINT IS NOT EMPTY")
             binding.valueEditText.setOnFocusChangeListener { _, hasFocus ->
-                Log.d("MyLog", "HAS FOCUS " + hasFocus)
                 if (hasFocus){
                     setHint(focusedHint)
                 } else {

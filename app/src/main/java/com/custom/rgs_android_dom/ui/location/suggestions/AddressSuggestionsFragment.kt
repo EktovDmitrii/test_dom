@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import com.custom.rgs_android_dom.databinding.FragmentAddressSuggestionsBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
+import com.custom.rgs_android_dom.utils.hideKeyboardForced
 import com.custom.rgs_android_dom.utils.hideSoftwareKeyboard
 import com.custom.rgs_android_dom.utils.subscribe
 
@@ -36,7 +37,7 @@ class AddressSuggestionsFragment : BaseBottomSheetModalFragment<AddressSuggestio
 
     override fun onClose() {
         super.onClose()
-        hideSoftwareKeyboard()
+        requireActivity().hideKeyboardForced()
     }
 
 }

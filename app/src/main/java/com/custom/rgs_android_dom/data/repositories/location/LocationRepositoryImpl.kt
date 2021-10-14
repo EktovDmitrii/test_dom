@@ -3,7 +3,6 @@ package com.custom.rgs_android_dom.data.repositories.location
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Looper
-import android.util.Log
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.LocationMapper
 import com.custom.rgs_android_dom.domain.location.models.AddressItemModel
@@ -29,22 +28,17 @@ class LocationRepositoryImpl(private val context: Context,
     @SuppressLint("MissingPermission")
     override fun getCurrentLocation(): Single<Point> =
         Single.create { emitter ->
-            Log.d("MyLog", "SINGLE CREATE")
             val locationClient = LocationServices.getFusedLocationProviderClient(context)
             locationClient.lastLocation
                 .addOnSuccessListener { location ->
-                    Log.d("MyLog", "ON SUCCESSS")
                     if (location != null) {
-                        Log.d("MyLog", "Location not null")
                         val locationPoint = Point(location.latitude, location.longitude)
                         emitter.onSuccess(locationPoint)
                     } else {
-                        Log.d("MyLog", "ON LAST KNW LOC ERROR")
                         onLastKnownLocationError(locationClient, emitter)
                     }
                 }
                 .addOnFailureListener {
-                    Log.d("MyLog", "On failure")
                     emitter.onError(it)
                 }
         }
@@ -66,7 +60,6 @@ class LocationRepositoryImpl(private val context: Context,
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
-                Log.d("MyLog", "ON loc result")
                 val location = locationResult.lastLocation
                 if (location != null){
                     val locationPoint = Point(location.latitude, location.longitude)

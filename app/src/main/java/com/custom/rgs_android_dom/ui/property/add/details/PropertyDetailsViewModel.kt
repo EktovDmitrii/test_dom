@@ -36,7 +36,6 @@ class PropertyDetailsViewModel(propertyName: String,
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    Log.d("MyLog", "On next")
                     propertyDetailsViewStateController.value = it
                 },
                 onError = {

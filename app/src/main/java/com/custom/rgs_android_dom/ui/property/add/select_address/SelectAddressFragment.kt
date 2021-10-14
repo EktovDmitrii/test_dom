@@ -3,7 +3,6 @@ package com.custom.rgs_android_dom.ui.property.add.select_address
 import android.Manifest
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.EditText
@@ -24,7 +23,6 @@ import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.ScreenPoint
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.*
-import com.yandex.mapkit.map.Map
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -42,7 +40,6 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
         }
     }
 
-    private var locationPin: PlacemarkMapObject? = null
     private var pinRect: Rect? = null
 
     private var mapIsMoving = true
@@ -52,21 +49,16 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
             if (pinRect == null){
                 pinRect = Rect()
                 binding.locationPinImageView.getGlobalVisibleRect(pinRect)
+                val screenPoint = ScreenPoint(pinRect!!.exactCenterX(), pinRect!!.exactCenterY() - 44.dp(requireContext()))
+                binding.mapView.focusPoint = screenPoint
+
             }
             if (hasCompleted){
                 mapIsMoving = false
                 pinRect?.let { pinRect->
                     val screenPoint = ScreenPoint(pinRect.exactCenterX(), pinRect.exactCenterY() - 44.dp(requireContext()))
                     val worldPoint = binding.mapView.screenToWorld(screenPoint)
-                    Log.d("MyLog", "WORLD POINT " + worldPoint.latitude + " " + worldPoint.longitude)
                     viewModel.onLocationChanged(worldPoint)
-                    /*if (locationPin == null){
-                            val pinLayout = layoutInflater.inflate(R.layout.location_pin, null)
-                            val viewProvide = ViewProvider(pinLayout)
-                            locationPin = binding.mapView.map.mapObjects.addPlacemark(worldPoint, viewProvide)
-                        } else {
-                            locationPin?.geometry = worldPoint
-                        }*/
                 }
             } else{
                 mapIsMoving = true
@@ -158,7 +150,7 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
 
        subscribe(viewModel.showPinLoaderObserver){
            binding.loadingPinFrameLayout.visibleIf(it)
-           binding.locationPinImageView.visibleIf(!it)
+           binding.locationPinImageView.invisibleIf(it)
        }
     }
 
@@ -226,7 +218,6 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
     }
 
     private fun moveToLocation(location: Point){
-        Log.d("MyLog", "Move to location " + location.latitude + " " + location.longitude)
         binding.mapView.map.move(
             CameraPosition(location, 14.0f, 0.0f, 0.0f),
             Animation(Animation.Type.SMOOTH, 1f),

@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.ui.property.add.select_address
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.location.LocationInteractor
@@ -78,7 +77,7 @@ class SelectAddressViewModel(private val propertyCount: Int,
 
     fun onLocationPermissionsNotGranted(){
         locationController.value = locationInteractor.getDefaultLocation()
-        onLocationChanged(locationInteractor.getDefaultLocation())
+        //onLocationChanged(locationInteractor.getDefaultLocation())
         propertyInteractor.onFailedToGetLocation()
         loadingStateController.value = LoadingState.CONTENT
     }

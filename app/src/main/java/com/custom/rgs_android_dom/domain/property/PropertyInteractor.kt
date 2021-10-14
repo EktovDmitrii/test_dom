@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.domain.property
 
-import android.util.Log
 import com.custom.rgs_android_dom.domain.location.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyField
 import com.custom.rgs_android_dom.domain.property.details.exceptions.ValidatePropertyException
@@ -59,7 +58,6 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
      */
 
     fun initPropertyName(propertyCount: Int){
-        Log.d("MyLog", "Property count " + propertyCount)
         selectAddressViewState = selectAddressViewState.copy(
             propertyName = "Мой Дом ${(propertyCount+1)}",
             isNextTextViewEnabled = true,
@@ -142,7 +140,6 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
             updatePropertyAddressEditText = true,
             isAddTextViewEnabled = address.addressString.isNotEmpty()
         )
-        Log.d("MyLog", "Init address " + address + " PROPERTY " + propertyName)
         propertyDetailsViewStateSubject.onNext(propertyDetailsViewState)
     }
 
