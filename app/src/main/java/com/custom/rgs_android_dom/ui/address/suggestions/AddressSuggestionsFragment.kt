@@ -1,10 +1,9 @@
 package com.custom.rgs_android_dom.ui.address.suggestions
 
-import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import com.custom.rgs_android_dom.databinding.FragmentAddressSuggestionsBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.utils.*
@@ -47,12 +46,12 @@ class AddressSuggestionsFragment : BaseBottomSheetModalFragment<AddressSuggestio
 
     override fun onClose() {
         super.onClose()
-        hideSoftwareKeyboard(true)
+        requireActivity().hideKeyboardForced()
     }
 
     override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
         requireActivity().hideKeyboardForced()
+        super.onDismiss(dialog)
     }
 
 }

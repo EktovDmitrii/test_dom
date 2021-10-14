@@ -11,6 +11,8 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat.startActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.custom.rgs_android_dom.databinding.ItemPopupBinding
 import com.custom.rgs_android_dom.utils.activity.hideSoftwareKeyboard
