@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingHorizontal="20dp"
-        android:paddingBottom="10dp"
         android:gravity="center_horizontal">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -74,6 +73,7 @@
             android:layout_width="wrap_content"
             style="@style/Button.WithoutBg.Secondary"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="22dp"
             app:translationTextKey="Нет, спасибо"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
