@@ -80,6 +80,12 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
                 binding.nameTextView.text = "${state.lastName} ${state.firstName}"
                 binding.nameTextView.setTextColor(requireContext().getColor(R.color.secondary900))
             }
+
+            if (state.hasAgentInfo){
+                binding.agentInfoTextView.text = "Данные агента"
+            } else {
+                binding.agentInfoTextView.text = "Я знаю данные агента"
+            }
         }
 
         subscribe(viewModel.networkErrorObserver) {

@@ -29,7 +29,7 @@
                 android:fontFamily="@font/my_service_bold"
                 android:textSize="16sp"
                 android:textColor="@color/secondary900"
-                app:translationTextKey="Мои объекты"
+                app:translationTextKey="Моя недвижимость"
                 android:paddingHorizontal="20dp"/>
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -176,7 +176,7 @@
                             android:includeFontPadding="false"
                             android:textColor="@color/secondary900"
                             android:textSize="16sp"
-                            app:translationTextKey="Мои карты" />
+                            app:translationTextKey="Способы оплаты" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -285,6 +285,7 @@
                             app:srcCompat="@drawable/ic_star_stroke_24px" />
 
                         <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:id="@+id/agentInfoTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginStart="12dp"
