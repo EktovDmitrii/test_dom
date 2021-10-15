@@ -2,7 +2,6 @@ package com.custom.rgs_android_dom.ui.client.agent.edit
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.custom.rgs_android_dom.data.network.toNetworkException
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.client.exceptions.ValidateClientException
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
@@ -62,7 +61,7 @@ class EditAgentViewModel(private val clientInteractor: ClientInteractor) : BaseV
                             loadingStateController.value = LoadingState.CONTENT
                         }
                         else -> {
-                            networkErrorController.value = it.toNetworkException()?.message ?: "Ошибка сохранения данных"
+                            handleNetworkException(it)
                             loadingStateController.value = LoadingState.ERROR
                         }
                     }

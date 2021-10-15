@@ -5,10 +5,12 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.RelativeLayout
 import androidx.core.widget.addTextChangedListener
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdSearchInputBinding
-import com.custom.rgs_android_dom.domain.TranslationInteractor
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.utils.*
+
 
 class MSDSearchInput @JvmOverloads constructor(
     context: Context,
@@ -27,6 +29,21 @@ class MSDSearchInput @JvmOverloads constructor(
             //TODO Add handling translation logic here
             binding.searchEditText.hint = TranslationInteractor.getTranslation(translationHintKey)
         }
+
+        attrs.getDimension(R.styleable.MSDSearchInput_inputHeight, -1f).let {
+            if (it != -1f){
+                val params = binding.rootConstraintLayout.layoutParams
+                params.height = it.toInt()
+                binding.rootConstraintLayout.layoutParams = params
+            }
+        }
+
+        val drawableId = attrs.getResourceId(R.styleable.MSDSearchInput_icon, -1)
+        if (drawableId != -1) {
+            val drawable = VectorDrawableCompat.create(resources, drawableId, null)
+            binding.searchIconImageView.setImageDrawable(drawable)
+        }
+
 
         val isEnabled = attrs.getBoolean(R.styleable.MSDSearchInput_android_enabled, true)
         setEnabled(isEnabled)

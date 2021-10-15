@@ -2,9 +2,9 @@ package com.custom.rgs_android_dom.ui.property.add.select_type
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
-import com.custom.rgs_android_dom.domain.property.select_type.SelectPropertyTypeInteractor
-import com.custom.rgs_android_dom.domain.property.select_type.view_states.SelectPropertyTypeViewState
+import com.custom.rgs_android_dom.domain.property.view_states.SelectPropertyTypeViewState
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -15,24 +15,18 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
-class SelectPropertyTypeViewModel(private val propertyCount: Int,
-                                  private val selectPropertyTypeInteractor: SelectPropertyTypeInteractor) : BaseViewModel() {
-
-    companion object {
-        private const val PROPERTY_HOME = "Дом"
-        private const val PROPERTY_APPARTMENT = "Квартира"
-    }
+class SelectPropertyTypeViewModel(private val propertyName: String,
+                                  private val propertyAddress: String,
+                                  private val propertyInteractor: PropertyInteractor) : BaseViewModel() {
 
     private val selectPropertyTypeViewStateController = MutableLiveData<SelectPropertyTypeViewState>()
     val selectPropertyTypeViewStateObserver: LiveData<SelectPropertyTypeViewState> = selectPropertyTypeViewStateController
 
     private var propertyType = PropertyType.UNDEFINED
 
-    private val showConfirmCloseController = MutableLiveData<Unit>()
-    val showConfirmCloseObserver: LiveData<Unit> = showConfirmCloseController
-
     init {
-        selectPropertyTypeInteractor.selectPropertyTypeViewStateSubject
+
+        propertyInteractor.selectPropertyTypeViewStateSubject
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
@@ -45,22 +39,28 @@ class SelectPropertyTypeViewModel(private val propertyCount: Int,
             ).addTo(dataCompositeDisposable)
     }
 
-    fun onBackClick() {
-        showConfirmCloseController.value = Unit
-    }
-
     fun onNextClick() {
-        ScreenManager.showScreenScope(PropertyDetailsFragment.newInstance(propertyCount, propertyType), ADD_PROPERTY)
+        ScreenManager.showScreenScope(
+            PropertyDetailsFragment.newInstance(
+                propertyName,
+                propertyAddress,
+                propertyType
+            ), ADD_PROPERTY
+        )
     }
 
     fun onSelectHomeClick(){
         propertyType = PropertyType.HOUSE
-        selectPropertyTypeInteractor.onSelectHomeClick()
+        propertyInteractor.selectHome()
     }
 
     fun onSelectAppartmentClick(){
         propertyType = PropertyType.APARTMENT
-        selectPropertyTypeInteractor.onSelectAppartmentClick()
+        propertyInteractor.selectAppartment()
+    }
+
+    fun onBackClick(){
+        closeController.value = Unit
     }
 
 }

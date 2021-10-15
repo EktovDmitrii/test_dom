@@ -55,8 +55,8 @@ class PropertyInfoFragment: BaseBottomSheetFragment<PropertyInfoViewModel, Fragm
                 }
             }
             binding.titleTextView.text = propertyItem.name
-            binding.subtitleTextView.text = propertyItem.address
-            binding.addressTextView.setValue(propertyItem.address)
+            binding.subtitleTextView.text = propertyItem.address?.address ?: ""
+            binding.addressTextView.setValue(propertyItem.address?.address ?: "")
 
             propertyItem.isOwn?.let { isOwn->
                 binding.isOwnTextView.setValue(if (isOwn) "Да" else "Нет")

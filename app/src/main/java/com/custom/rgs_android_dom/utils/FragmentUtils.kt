@@ -7,9 +7,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat.startActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.custom.rgs_android_dom.databinding.ItemPopupBinding
+import com.custom.rgs_android_dom.utils.activity.hideSoftwareKeyboard
+import com.custom.rgs_android_dom.utils.activity.showKeyboard
+import com.custom.rgs_android_dom.utils.activity.showKeyboardForced
+import com.custom.rgs_android_dom.utils.activity.toast
 import org.joda.time.LocalDate
 import java.util.*
 
@@ -29,7 +38,7 @@ fun Fragment.hideSoftwareKeyboard(removeCurrentFocus: Boolean) {
     if (removeCurrentFocus){
         requireActivity().currentFocus?.clearFocus()
     }
-    activity?.hideSoftwareKeyboard()
+    requireActivity().hideSoftwareKeyboard()
 }
 
 fun Fragment.hideSoftwareKeyboard(view: View) = activity?.hideSoftwareKeyboard(view)
@@ -118,4 +127,10 @@ fun Fragment.notification(message: String, duration: Long = 2000){
 //    Handler(Looper.getMainLooper()).postDelayed({
 //        popupWindow.dismiss()
 //    }, duration)
+}
+
+fun Fragment.buildActivityResultRequest(function: (ActivityResult) -> Unit): ActivityResultLauncher<Intent> {
+    return this.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        function(it)
+    }
 }

@@ -1,12 +1,11 @@
 package com.custom.rgs_android_dom.data.network.responses
 
-import com.custom.rgs_android_dom.data.network.requests.PropertyDocumentRequest
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.google.gson.annotations.SerializedName
 
 data class PropertyItemResponse(
     @SerializedName("address")
-    val address: String,
+    val address: PropertyAddressResponse?,
 
     @SerializedName("clientId")
     val clientId: String,
@@ -40,14 +39,4 @@ data class PropertyItemResponse(
 
     @SerializedName("type")
     val type: PropertyType
-)
-
-data class PropertyDocumentResponse(
-
-    @SerializedName("link")
-    val link: String?,
-
-    @SerializedName("name")
-    val name: String?
-
 )

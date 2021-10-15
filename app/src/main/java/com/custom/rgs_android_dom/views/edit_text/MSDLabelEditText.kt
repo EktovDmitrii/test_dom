@@ -12,7 +12,7 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdLabelEditTextBinding
 import com.custom.rgs_android_dom.utils.gone
 import android.text.InputFilter.LengthFilter
-import com.custom.rgs_android_dom.domain.TranslationInteractor
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.utils.toEditable
 import com.custom.rgs_android_dom.utils.visibleIf
 

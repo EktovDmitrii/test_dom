@@ -11,7 +11,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdEditTextBinding
-import com.custom.rgs_android_dom.domain.TranslationInteractor
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 
 class MSDEditText @JvmOverloads constructor(
     context: Context,

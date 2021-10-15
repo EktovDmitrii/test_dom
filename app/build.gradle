@@ -70,6 +70,7 @@ android {
             resValue "string", "app_name", "Мой_Сервис.Дом"
             buildConfigField "String", "BASE_URL", '"https://ddom.moi-service.ru"'
             buildConfigField "String", "WS_URL", '"wss://ddom.moi-service.ru/ws/?token=%s"'
+            buildConfigField "String", "YANDEX_MAPS_KEY", '"8472a02b-fba9-4544-9b23-3b2f8944f584"'
         }
 
         stage {
@@ -78,6 +79,7 @@ android {
             resValue "string", "app_name", "Дом test"
             buildConfigField "String", "BASE_URL", '"https://ddom.moi-service.ru"'
             buildConfigField "String", "WS_URL", '"wss://ddom.moi-service.ru/ws/?token=%s"'
+            buildConfigField "String", "YANDEX_MAPS_KEY", '"8472a02b-fba9-4544-9b23-3b2f8944f584"'
         }
 
         dev {
@@ -86,6 +88,7 @@ android {
             resValue "string", "app_name", "Дом DEV"
             buildConfigField "String", "BASE_URL", '"https://ddom.moi-service.ru"'
             buildConfigField "String", "WS_URL", '"wss://ddom.moi-service.ru/ws/?token=%s"'
+            buildConfigField "String", "YANDEX_MAPS_KEY", '"8472a02b-fba9-4544-9b23-3b2f8944f584"'
         }
 
     }
@@ -190,5 +193,11 @@ dependencies {
 
     // WebSocket
     implementation "com.github.nkzawa:socket.io-client:0.3.0"
+
+    //Yandex maps
+    implementation 'com.yandex.android:maps.mobile:4.0.0-full'
+
+    //Shimmer
+    implementation "com.github.skydoves:androidveil:1.1.1"
 
 }

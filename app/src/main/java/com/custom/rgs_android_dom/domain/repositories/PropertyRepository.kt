@@ -1,7 +1,7 @@
 package com.custom.rgs_android_dom.domain.repositories
 
+import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
-import com.custom.rgs_android_dom.ui.property.info.ProperyInfoItem
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
@@ -11,7 +11,7 @@ interface PropertyRepository {
     fun addProperty(
         name: String,
         type: String,
-        address: String,
+        address: AddressItemModel,
         isOwn: String?,
         isRent: String?,
         isTemporary: String?,

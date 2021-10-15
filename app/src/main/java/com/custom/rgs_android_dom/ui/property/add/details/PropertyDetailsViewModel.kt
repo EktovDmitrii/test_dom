@@ -1,12 +1,15 @@
 package com.custom.rgs_android_dom.ui.property.add.details
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.custom.rgs_android_dom.data.network.toNetworkException
+import com.custom.rgs_android_dom.data.network.toMSDErrorModel
+import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.details.exceptions.ValidatePropertyException
 import com.custom.rgs_android_dom.domain.property.details.view_states.PropertyDetailsViewState
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -17,7 +20,8 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
-class PropertyDetailsViewModel(propertyCount: Int,
+class PropertyDetailsViewModel(propertyName: String,
+                               propertyAddress: AddressItemModel,
                                propertyType: PropertyType,
                                private val propertyInteractor: PropertyInteractor) : BaseViewModel() {
 
@@ -38,11 +42,12 @@ class PropertyDetailsViewModel(propertyCount: Int,
                 onError = {
                     logException(this, it)
                 }
-            ).addTo(dataCompositeDisposable)
+            )
+            .addTo(dataCompositeDisposable)
 
-        propertyInteractor.updatePropertyName(propertyCount, propertyType)
-        propertyInteractor.updatePropertyType(propertyType)
+        propertyDetailsViewStateController.value = propertyInteractor.initPropertyDetails(propertyName, propertyType, propertyAddress)
     }
+
 
     fun onBackClick() {
         closeController.value = Unit
@@ -67,7 +72,8 @@ class PropertyDetailsViewModel(propertyCount: Int,
                         }
                         else -> {
                             loadingStateController.value = LoadingState.ERROR
-                            networkErrorController.value = it.toNetworkException()?.message ?: "Ошибка добавления объекта"
+
+                            handleNetworkException(it)
                         }
                     }
 

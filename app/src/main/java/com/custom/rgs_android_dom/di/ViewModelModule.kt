@@ -6,13 +6,15 @@ import com.custom.rgs_android_dom.ui.countries.CountriesViewModel
 import com.custom.rgs_android_dom.ui.demo.DemoViewModel
 import com.custom.rgs_android_dom.ui.main.MainViewModel
 import com.custom.rgs_android_dom.ui.client.ClientViewModel
-
 import com.custom.rgs_android_dom.ui.client.agent.AgentViewModel
 import com.custom.rgs_android_dom.ui.client.agent.edit.EditAgentViewModel
 import com.custom.rgs_android_dom.ui.client.agent.request_edit.RequestEditAgentViewModel
 import com.custom.rgs_android_dom.ui.client.personal_data.edit.EditPersonalDataViewModel
 import com.custom.rgs_android_dom.ui.client.personal_data.PersonalDataViewModel
+import com.custom.rgs_android_dom.ui.location.rationale.RequestLocationRationaleViewModel
+import com.custom.rgs_android_dom.ui.address.suggestions.AddressSuggestionsViewModel
 import com.custom.rgs_android_dom.ui.property.add.details.PropertyDetailsViewModel
+import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressViewModel
 import com.custom.rgs_android_dom.ui.property.add.select_type.SelectPropertyTypeViewModel
 import com.custom.rgs_android_dom.ui.property.info.PropertyInfoViewModel
 import com.custom.rgs_android_dom.ui.registration.code.RegistrationCodeViewModel
@@ -40,9 +42,12 @@ val viewModelModule = module {
     viewModel { EditAgentViewModel(clientInteractor = get()) }
     viewModel { AboutAppViewModel() }
     viewModel { ChatViewModel(chatInteractor = get()) }
-    viewModel { parameters-> SelectPropertyTypeViewModel(propertyCount = parameters.get(), selectPropertyTypeInteractor = get()) }
-    viewModel { parameters-> PropertyDetailsViewModel(propertyCount = parameters.get(), propertyType = parameters.get(), propertyInteractor = get()) }
+    viewModel { parameters-> SelectPropertyTypeViewModel(propertyName = parameters[0], propertyAddress = parameters[1], propertyInteractor = get()) }
+    viewModel { parameters-> PropertyDetailsViewModel(propertyName = parameters[0], propertyAddress = parameters[1], propertyType = parameters[2], propertyInteractor = get()) }
     viewModel { parameters-> PropertyInfoViewModel(objectId = parameters.get(), propertyInteractor = get()) }
     viewModel { ScreenStubViewModel() }
     viewModel { RequestEditAgentViewModel(clientInteractor = get()) }
+    viewModel { parameters -> SelectAddressViewModel(propertyCount = parameters.get(), propertyInteractor = get(), addressInteractor = get(), context = get()) }
+    viewModel { RequestLocationRationaleViewModel() }
+    viewModel { AddressSuggestionsViewModel(addressInteractor = get()) }
 }

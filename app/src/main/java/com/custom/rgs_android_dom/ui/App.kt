@@ -1,7 +1,9 @@
 package com.custom.rgs_android_dom.ui
 
 import android.app.Application
+import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.di.*
+import com.yandex.mapkit.MapKitFactory
 import net.danlew.android.joda.JodaTimeAndroid
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -12,6 +14,7 @@ class App: Application() {
         super.onCreate()
         initKoin()
         JodaTimeAndroid.init(this)
+        MapKitFactory.setApiKey(BuildConfig.YANDEX_MAPS_KEY)
     }
 
     private fun initKoin() {

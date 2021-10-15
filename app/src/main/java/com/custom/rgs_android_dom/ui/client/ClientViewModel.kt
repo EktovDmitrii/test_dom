@@ -14,6 +14,7 @@ import com.custom.rgs_android_dom.ui.client.agent.AgentFragment
 import com.custom.rgs_android_dom.ui.client.personal_data.PersonalDataFragment
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressFragment
 import com.custom.rgs_android_dom.ui.property.add.select_type.SelectPropertyTypeFragment
 import com.custom.rgs_android_dom.ui.property.info.PropertyInfoFragment
 import com.custom.rgs_android_dom.ui.screen_stub.ScreenStubFragment
@@ -117,8 +118,9 @@ class ClientViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
+                    ScreenManager.showScreenScope(SelectAddressFragment.newInstance(it.size), ADD_PROPERTY)
                     //closeController.value = Unit
-                    ScreenManager.showScreenScope(SelectPropertyTypeFragment.newInstance(it.size), ADD_PROPERTY)
+                    //ScreenManager.showScreenScope(SelectPropertyTypeFragment.newInstance(it.size), ADD_PROPERTY)
                 },
                 onError = {
                     logException(this, it)

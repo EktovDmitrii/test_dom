@@ -1,10 +1,7 @@
 package com.custom.rgs_android_dom.ui.base
 
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -19,6 +16,7 @@ import org.koin.core.parameter.emptyParametersHolder
 import java.lang.reflect.ParameterizedType
 import kotlin.random.Random
 import kotlin.reflect.KClass
+
 
 abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(layout: Int) : Fragment(layout) {
 

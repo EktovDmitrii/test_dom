@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-
     <RelativeLayout
         android:id="@+id/toolbarRelativeLayout"
         android:layout_width="match_parent"
@@ -32,7 +31,7 @@
             android:gravity="center"
             android:textColor="@color/secondary900_alpha64"
             android:textSize="12sp"
-            app:translationTextKey="Шаг 1 из 2" />
+            app:translationTextKey="Шаг 2 из 3" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/titleTextView"
@@ -122,20 +121,20 @@
         android:layout_width="match_parent"
         android:layout_height="82dp"
         android:layout_alignParentBottom="true"
+        android:paddingHorizontal="20dp"
+        android:paddingStart="20dp"
         android:paddingTop="12dp"
+        android:paddingEnd="20dp"
         android:paddingBottom="22dp"
         app:contentInsetStart="0dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:paddingHorizontal="20dp"
         tools:ignore="BottomAppBar">
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/nextTextView"
-            android:layout_width="match_parent"
-            app:translationTextKey="Далее"
             style="@style/Button.Filled.Primary"
-            android:enabled="false"/>
+            android:layout_width="match_parent"
+            android:enabled="false"
+            app:translationTextKey="Далее" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 </RelativeLayout>

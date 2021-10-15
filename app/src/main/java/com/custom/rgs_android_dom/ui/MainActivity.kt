@@ -1,10 +1,11 @@
 package com.custom.rgs_android_dom.ui
 
 import android.os.Bundle
+import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.custom.rgs_android_dom.R
-import com.custom.rgs_android_dom.domain.TranslationInteractor
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.domain.web_socket.WebSocketInteractor
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
@@ -12,7 +13,6 @@ import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.splash.SplashFragment
 import com.custom.rgs_android_dom.utils.CacheHelper
 import com.custom.rgs_android_dom.utils.logException
-import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -45,6 +45,15 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+   /* override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        if (supportFragmentManager.fragments.isNotEmpty()) {
+            supportFragmentManager.fragments.lastOrNull { it is DispatchTouchEventListener }?.let {
+                (it as DispatchTouchEventListener).dispatchTouchEvent(event)
+            }
+        }
+        return super.dispatchTouchEvent(event)
+    }*/
 
     private fun loadTranslation(){
         translationInteractor.loadTranslation()
@@ -87,6 +96,10 @@ class MainActivity : AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
+    }
+
+    interface DispatchTouchEventListener{
+        fun dispatchTouchEvent(event: MotionEvent)
     }
 
 

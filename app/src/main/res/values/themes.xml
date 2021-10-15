@@ -87,6 +87,20 @@
         <item name="android:clickable">true</item>
     </style>
 
+    <style name="Button.Small" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">28dp</item>
+        <item name="android:fontFamily">@font/my_service_medium</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:clickable">true</item>
+    </style>
+
     <style name="Icon.Filled" parent="Widget.AppCompat.ImageButton">
         <item name="android:layout_height">36dp</item>
         <item name="android:layout_width">36dp</item>
@@ -147,6 +161,11 @@
     </style>
 
     <style name="Button.Chat.Primary.Stroke" parent="Button.Chat">
+        <item name="android:background">@drawable/button_stroke_chat_primary_background</item>
+        <item name="android:textColor">@color/button_stroke_chat_primary_text_color</item>
+    </style>
+
+    <style name="Button.Small.Primary.Stroke" parent="Button.Small">
         <item name="android:background">@drawable/button_stroke_chat_primary_background</item>
         <item name="android:textColor">@color/button_stroke_chat_primary_text_color</item>
     </style>

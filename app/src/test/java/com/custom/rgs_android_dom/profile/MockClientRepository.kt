@@ -46,8 +46,6 @@ class MockClientRepository: ClientRepository {
         status = null
     )
 
-
-
     override fun updateClient(
         firstName: String?,
         lastName: String?,

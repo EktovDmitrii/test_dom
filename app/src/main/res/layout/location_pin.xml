@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.AppCompatImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/locationPinImageView"
+    android:layout_width="36dp"
+    android:layout_height="44dp"
+    app:srcCompat="@drawable/ic_pin_primary_500"
+    android:layout_centerHorizontal="true"
+    android:layout_below="@+id/topContainerLinearLayout"
+    android:layout_above="@+id/bottomContainerLinearLayout" />

@@ -2,7 +2,6 @@ package com.custom.rgs_android_dom.ui.registration.phone
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.custom.rgs_android_dom.data.network.toNetworkException
 import com.custom.rgs_android_dom.domain.countries.CountriesInteractor
 import com.custom.rgs_android_dom.domain.countries.model.CountryModel
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
@@ -96,7 +95,7 @@ class RegistrationPhoneViewModel(
                 onError = {
                     //todo обработка ошибки
                     logException(this, it)
-                    val errorMessage = it.toNetworkException()?.message ?: "Проверьте, правильно ли вы ввели номер телефона"
+                    val errorMessage = "Проверьте, правильно ли вы ввели номер телефона"
                     phoneErrorController.value = errorMessage
                 }
             ).addTo(dataCompositeDisposable)

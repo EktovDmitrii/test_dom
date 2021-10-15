@@ -9,7 +9,7 @@ import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.*
-import com.custom.rgs_android_dom.utils.activity_contracts.OTCActivityContract
+import com.custom.rgs_android_dom.utils.activity.activity_contracts.OTCActivityContract
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.common.api.Status

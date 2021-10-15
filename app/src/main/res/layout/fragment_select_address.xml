@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.yandex.mapkit.mapview.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/topContainerLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true">
+
+        <RelativeLayout
+            android:id="@+id/toolbarRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_large_height"
+            android:background="@color/white"
+            android:alpha="0.92">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/backImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:paddingHorizontal="14dp"
+                android:tint="@color/secondary800"
+                app:srcCompat="@drawable/ic_back_24px" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/subtitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/titleTextView"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/suisse_regular"
+                android:gravity="center"
+                android:textColor="@color/secondary900_alpha64"
+                android:textSize="12sp"
+                app:translationTextKey="Шаг 1 из 3" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/titleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:fontFamily="@font/my_service_bold"
+                android:textColor="@color/secondary900"
+                android:textSize="16sp"
+                android:layout_alignParentBottom="true"
+                android:gravity="center"
+                android:layout_centerHorizontal="true"
+                app:translationTextKey="Адрес"/>
+
+        </RelativeLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/select_address_top_fade_background"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    
+    <FrameLayout
+        android:id="@+id/loadingPinFrameLayout"
+        android:layout_width="134dp"
+        android:layout_height="44dp"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        android:layout_below="@+id/topContainerLinearLayout"
+        android:layout_above="@+id/bottomContainerLinearLayout">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/ic_pin_white"/>
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:textColor="@color/secondary500"
+            android:fontFamily="@font/suisse_book"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:paddingTop="6dp"
+            android:paddingBottom="14dp"
+            app:translationTextKey="Поиск адреса ..."/>
+
+    </FrameLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/locationPinImageView"
+        android:layout_width="36dp"
+        android:layout_height="44dp"
+        app:srcCompat="@drawable/ic_pin_primary_500"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        android:layout_below="@+id/topContainerLinearLayout"
+        android:layout_above="@+id/bottomContainerLinearLayout"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/bottomContainerLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/select_address_bottom_fade_background" />
+
+            <com.custom.rgs_android_dom.views.MSDImageView
+                android:id="@+id/myLocationImageView"
+                style="@style/Icon.Filled.White"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="top|end"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="20dp"
+                app:srcCompat="@drawable/ic_send_20px" />
+
+        </FrameLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="24dp"
+            android:paddingBottom="18dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <include
+                android:id="@+id/veilContainer"
+                layout="@layout/layout_select_address_veil"
+                android:visibility="gone" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/addressDataConstraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/destinationImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_destination_stroke_8px" />
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/addressPrimaryTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/suisse_book"
+                    android:textColor="@color/secondary900"
+                    android:textSize="16sp"
+                    android:maxLines="2"
+                    app:layout_constraintEnd_toStartOf="@+id/editAddressTextView"
+                    app:layout_constraintStart_toEndOf="@+id/destinationImageView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Павелецкая наб. 34" />
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/addressSecondaryTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/suisse_regular"
+                    android:textColor="@color/secondary500"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toStartOf="@+id/editAddressTextView"
+                    app:layout_constraintStart_toEndOf="@+id/destinationImageView"
+                    app:layout_constraintTop_toBottomOf="@+id/addressPrimaryTextView"
+                    tools:text="Марьина Роща район, Москва\n127055" />
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/editAddressTextView"
+                    style="@style/Button.Small.Primary.Stroke"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:translationTextKey="Ред." />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:tint="@color/secondary400"
+                    app:layout_constraintBottom_toBottomOf="@+id/propertyNameTextInputLayout"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/propertyNameTextInputLayout"
+                    app:srcCompat="@drawable/ic_pen_24px" />
+
+                <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
+                    android:id="@+id/propertyNameTextInputLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:imeOptions="actionDone"
+                    android:text="Мой Дом 2"
+                    app:focusedTranslationHintKey="Название объекта"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/addressSecondaryTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/addressSecondaryTextView"
+                    app:translationHintKey="Нажмите, чтобы редактировать название"
+                    app:unfocusOnDone="true" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/nextTextView"
+                style="@style/Button.Filled.Primary"
+                android:layout_width="match_parent"
+                android:layout_marginTop="24dp"
+                android:enabled="false"
+                app:translationTextKey="Далее" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</RelativeLayout>

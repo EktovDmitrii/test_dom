@@ -33,7 +33,7 @@
             android:gravity="center"
             android:textColor="@color/secondary900_alpha64"
             android:textSize="12sp"
-            app:translationTextKey="Шаг 2 из 2" />
+            app:translationTextKey="Шаг 3 из 3" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/titleTextView"

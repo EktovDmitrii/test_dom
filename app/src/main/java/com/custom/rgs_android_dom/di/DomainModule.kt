@@ -1,19 +1,16 @@
 package com.custom.rgs_android_dom.di
 
-import com.custom.rgs_android_dom.domain.DemoInteractor
-import com.custom.rgs_android_dom.domain.TranslationInteractor
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.countries.CountriesInteractor
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
+import com.custom.rgs_android_dom.domain.address.AddressInteractor
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
-import com.custom.rgs_android_dom.domain.property.select_type.SelectPropertyTypeInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.domain.web_socket.WebSocketInteractor
 import org.koin.dsl.module
 
 val domainModule = module {
-
-    factory { DemoInteractor(demoRepository = get()) }
 
     factory { CountriesInteractor(countriesRepository = get()) }
 
@@ -27,7 +24,7 @@ val domainModule = module {
 
     factory { WebSocketInteractor(webSocketRepository = get(), authSharedPreferences = get()) }
 
-    factory { SelectPropertyTypeInteractor() }
-
     factory { PropertyInteractor(propertyRepository = get()) }
+
+    factory { AddressInteractor(addressRepository = get()) }
 }
