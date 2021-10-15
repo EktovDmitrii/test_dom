@@ -58,7 +58,7 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
 
     fun initPropertyName(propertyCount: Int){
         val propertyName = if (propertyCount > 0){
-            "Мой Дом ${(propertyCount)}"
+            "Мой Дом ${(propertyCount+1)}"
         } else {
             "Мой Дом"
         }

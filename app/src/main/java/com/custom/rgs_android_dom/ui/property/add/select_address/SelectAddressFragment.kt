@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.ui.property.add.select_address
 import android.Manifest
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.EditText
@@ -133,7 +134,14 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
             binding.nextTextView.isEnabled = selectAddressViewState.isNextTextViewEnabled
             binding.myLocationImageView.visibleIf(selectAddressViewState.isMyLocationImageViewVisible)
             binding.addressPrimaryTextView.text = selectAddressViewState.propertyAddress.addressString
-            binding.addressSecondaryTextView.text = "${selectAddressViewState.propertyAddress.cityName} ${selectAddressViewState.propertyAddress.regionName}"
+
+
+            var secondaryText = selectAddressViewState.propertyAddress.cityName
+            if (secondaryText.trim().isNotEmpty()){
+                secondaryText = "$secondaryText, "
+            }
+            secondaryText = "$secondaryText${selectAddressViewState.propertyAddress.regionName}"
+            binding.addressSecondaryTextView.text = secondaryText
         }
 
         subscribe(viewModel.locationObserver){
@@ -174,7 +182,7 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
     }
 
     override fun onClose() {
-       viewModel.onBackClick()
+        viewModel.onBackClick()
     }
 
     override fun onLoading() {
@@ -196,7 +204,6 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
         if (!mapIsMoving){
             binding.locationPinImageView.visible()
         }
-        // TODO Find out how we can improve this stuff???
         binding.nextTextView.isEnabled = binding.propertyNameTextInputLayout.getText().isNotEmpty()
     }
 
@@ -205,8 +212,6 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
     }
 
     override fun onConfirmClick() {
-        super.onConfirmClick()
-        hideSoftwareKeyboard()
         ScreenManager.closeScope(ADD_PROPERTY)
     }
 

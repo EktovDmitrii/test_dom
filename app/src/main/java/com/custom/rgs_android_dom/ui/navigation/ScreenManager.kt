@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.navigation
 
+import android.util.Log
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction

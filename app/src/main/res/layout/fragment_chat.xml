@@ -77,6 +77,7 @@
                 <com.custom.rgs_android_dom.views.MSDImageView
                     android:id="@+id/attachImageView"
                     style="@style/Icon.Filled.White"
+                    android:tint="@color/secondary500"
                     app:srcCompat="@drawable/ic_attach_20px"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"

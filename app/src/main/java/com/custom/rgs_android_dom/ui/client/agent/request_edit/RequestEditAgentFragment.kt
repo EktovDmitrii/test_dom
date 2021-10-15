@@ -33,9 +33,11 @@ class RequestEditAgentFragment() : BaseBottomSheetFragment<RequestEditAgentViewM
             binding.cancelTextView.isVisible = !isVisible
 
             if (isVisible){
-                binding.titleTextView.text = "Заявка отправлена. Оператор свяжется с вами"
+                binding.titleTextView.text = "Заявка отправлена.\nОператор свяжется с вами"
+                binding.iconImageView.setImageResource(R.drawable.ic_confirm_question)
             } else {
-                binding.titleTextView.text = "Вы действительно хотите оставить заявку?"
+                binding.titleTextView.text = "Вы действительно\nхотите оставить заявку?"
+                binding.iconImageView.setImageResource(R.drawable.ic_success_question)
             }
         }
     }

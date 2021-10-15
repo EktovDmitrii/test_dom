@@ -4,6 +4,7 @@ import android.content.Context
 import android.text.InputFilter
 import android.text.InputFilter.LengthFilter
 import android.text.InputType
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
@@ -71,7 +72,6 @@ class MSDTextInputLayout @JvmOverloads constructor(
                 }
             }
         }
-
 
         val textAllCaps = attrs.getBoolean(R.styleable.MSDTextInputLayout_android_textAllCaps, false)
         binding.valueEditText.isAllCaps = textAllCaps

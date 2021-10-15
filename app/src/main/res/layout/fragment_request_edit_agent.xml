@@ -34,7 +34,7 @@
             android:textColor="@color/secondary900"
             android:includeFontPadding="false"
             android:gravity="center"
-            app:translationTextKey="Вы действительно хотите оставить заявку?"/>
+            app:translationTextKey="Вы действительно\nхотите оставить заявку?"/>
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/descriptionTextView"
