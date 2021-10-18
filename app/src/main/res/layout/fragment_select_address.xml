@@ -124,6 +124,7 @@
             <com.custom.rgs_android_dom.views.MSDImageView
                 android:id="@+id/myLocationImageView"
                 style="@style/Icon.Filled.White"
+                android:tint="@color/secondary600"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="top|end"

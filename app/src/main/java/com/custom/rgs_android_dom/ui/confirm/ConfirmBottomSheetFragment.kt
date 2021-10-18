@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.ui.confirm
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -70,7 +71,6 @@ class ConfirmBottomSheetFragment() : BottomSheetDialogFragment() {
         binding.confirmTextView.setOnDebouncedClickListener {
             dismissAllowingStateLoss()
             confirmListener?.onConfirmClick()
-
         }
 
         binding.cancelTextView.setOnDebouncedClickListener {

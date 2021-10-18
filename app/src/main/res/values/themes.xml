@@ -186,7 +186,6 @@
     </style>
 
     <style name="Icon.Filled.White" parent="Icon.Filled">
-        <item name="android:tint">@color/secondary500</item>
         <item name="android:background">@drawable/oval_filled_white</item>
     </style>
 

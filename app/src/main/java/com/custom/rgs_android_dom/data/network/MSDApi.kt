@@ -77,7 +77,7 @@ interface MSDApi {
 
     @GET("chat/channels/{channelId}/posts")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getChatMessages(@Path("channelId") channelId: String, @Query("limit") limit: Long, @Query("offset") offset: Long): Single<List<ChatMessageResponse>>
+    fun getChatMessages(@Path("channelId") channelId: String, @Query("size") size: Long, @Query("index") index: Long): Single<List<ChatMessageResponse>>
 
     @POST("property/clients/{clientId}/objects")
     @ErrorType(MSDNetworkErrorResponse::class)

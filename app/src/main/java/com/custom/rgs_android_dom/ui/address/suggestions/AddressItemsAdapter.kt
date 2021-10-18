@@ -37,7 +37,14 @@ class AddressItemsAdapter(
 
         fun bind(model: AddressItemModel) {
             binding.addressPrimaryTextView.text = model.addressString
-            binding.addressSecondaryTextView.text = "${model.cityName} ${model.regionName}"
+
+            var secondaryText = model.cityName
+            if (secondaryText.trim().isNotEmpty()){
+                secondaryText = "$secondaryText, "
+            }
+            secondaryText = "$secondaryText${model.regionName}"
+
+            binding.addressSecondaryTextView.text = secondaryText
             binding.root.setOnDebouncedClickListener {
                 onAddressClick(model)
             }

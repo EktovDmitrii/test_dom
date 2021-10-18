@@ -84,7 +84,7 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
             if (state.hasAgentInfo){
                 binding.agentInfoTextView.text = "Данные агента"
             } else {
-                binding.agentInfoTextView.text = "Я знаю данные агента"
+                binding.agentInfoTextView.text = "Я знаю код агента"
             }
         }
 
