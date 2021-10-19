@@ -38,10 +38,12 @@ class SplashViewModel(private val registrationInteractor: RegistrationInteractor
 
     private fun startNextScreen(){
         closeController.value = Unit
-        if (registrationInteractor.isAuthorized()){
+        ScreenManager.showScreen(MainFragment())
+        // TODO I am not removing this, maybe later we will change this??
+        /*if (registrationInteractor.isAuthorized()){
             ScreenManager.showScreen(MainFragment())
         } else {
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
-        }
+        }*/
     }
 }
