@@ -12,6 +12,7 @@ import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
+import com.custom.rgs_android_dom.ui.main.stub.MainStubFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.property.info.PropertyInfoFragment
 import com.custom.rgs_android_dom.utils.*
@@ -80,7 +81,8 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
             bottomSheetMainFragment = it
             measureAndShowFragment()
         }
-        ScreenManager.showBottomScreen(ClientFragment())
+        //ScreenManager.showBottomScreen(ClientFragment())
+        ScreenManager.showBottomScreen(MainStubFragment())
     }
 
     override fun onStart() {
@@ -114,6 +116,9 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
             val bottomSheetTopPadding =
                 when (bottomSheetMainFragment) {
                     is ClientFragment -> {
+                        92.dp(requireContext())
+                    }
+                    is MainStubFragment -> {
                         92.dp(requireContext())
                     }
                     is PropertyInfoFragment -> {

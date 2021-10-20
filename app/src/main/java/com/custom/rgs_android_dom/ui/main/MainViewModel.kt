@@ -22,7 +22,7 @@ class MainViewModel(private val registrationInteractor: RegistrationInteractor) 
     }
 
     fun subscribeLogout() {
-        registrationInteractor.getLogoutSubject()
+        /*registrationInteractor.getLogoutSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
@@ -33,12 +33,12 @@ class MainViewModel(private val registrationInteractor: RegistrationInteractor) 
                 onError = {
                     logException(this, it)
                 }
-            ).addTo(logoutCompositeDisposable)
+            ).addTo(logoutCompositeDisposable)*/
     }
 
 
     fun unsubscribeLogout() {
-        logoutCompositeDisposable.clear()
+        //logoutCompositeDisposable.clear()
     }
 
     fun onChatClick() {
