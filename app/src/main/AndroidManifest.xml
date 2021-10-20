@@ -24,6 +24,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:authorities="com.custom.rgs_android_dom.data.providers"
+            android:name=".data.providers.MSDAuthContentProvider"
+            android:enabled="true"
+            android:exported="true"/>
+
     </application>
 
 </manifest>

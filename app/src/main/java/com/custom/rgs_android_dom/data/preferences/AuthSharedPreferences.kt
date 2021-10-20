@@ -56,6 +56,16 @@ class AuthSharedPreferences(val context: Context, val gson: Gson) {
         }
     }
 
+    fun saveAuthCredentials(accessToken: String, refreshToken: String, refreshTokenExpiresAt: String){
+        preferences.edit{
+            putString(PREF_KEY_ACCESS_TOKEN, accessToken)
+            putString(PREF_KEY_REFRESH_TOKEN, refreshToken)
+            putString(PREF_KEY_REFRESH_TOKEN_EXPIRES_AT, refreshTokenExpiresAt)
+        }
+    }
+
+
+
     fun getAccessToken(): String? {
         return preferences.getString(PREF_KEY_ACCESS_TOKEN, null)
     }
@@ -83,6 +93,10 @@ class AuthSharedPreferences(val context: Context, val gson: Gson) {
         } else {
             null
         }
+    }
+
+    fun getRefreshTokenExpiresAtString(): String? {
+        return preferences.getString(PREF_KEY_REFRESH_TOKEN_EXPIRES_AT, null)
     }
 
     fun deleteTokens(){

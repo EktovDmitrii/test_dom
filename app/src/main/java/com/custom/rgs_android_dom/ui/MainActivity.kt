@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -9,6 +10,7 @@ import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.domain.web_socket.WebSocketInteractor
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.managers.AuthContentProviderManager
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.splash.SplashFragment
 import com.custom.rgs_android_dom.utils.CacheHelper
@@ -43,6 +45,10 @@ class MainActivity : AppCompatActivity() {
             loadTranslation()
             webSocketInteractor.connect()
         }
+
+        val isAuthorized = AuthContentProviderManager.isAuthorized(this)
+        val accessToken = AuthContentProviderManager.getAccessToken(this)
+        Log.d("MyLog", "IS AUTHORIZED " + isAuthorized + " ACCESS TOKEN " + accessToken)
 
     }
 
