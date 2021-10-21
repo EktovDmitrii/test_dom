@@ -35,8 +35,4 @@ class RegistrationInteractor(private val registrationRepository: RegistrationRep
         return registrationRepository.isAuthorized()
     }
 
-    fun saveMockToken(){
-        registrationRepository.setMockToken()
-    }
-
 }

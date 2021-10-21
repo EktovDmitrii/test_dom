@@ -36,7 +36,7 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
             val response = chain.proceed(
                 originalRequest.newBuilder()
                     .apply {
-                        registrationRepository.getAuthToken()?.let { authToken ->
+                        registrationRepository.getAccessToken()?.let { authToken ->
                             header(AUTHORIZATION_HEADER, "$AUTHORIZATION_BEARER $authToken")
                         }
                     }
@@ -58,7 +58,7 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
                         return chain.proceed(
                             originalRequest.newBuilder()
                                 .apply {
-                                    registrationRepository.getAuthToken()?.let { authToken ->
+                                    registrationRepository.getAccessToken()?.let { authToken ->
                                         header(
                                             AUTHORIZATION_HEADER,
                                             "$AUTHORIZATION_BEARER $authToken"

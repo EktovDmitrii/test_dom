@@ -111,7 +111,7 @@ class MSDAuthContentProvider : ContentProvider() {
             }
             CONTENT_CODE_REFRESH_TOKEN_EXPIRES_AT -> {
                 val cursor = MatrixCursor(arrayOf(CONTENT_KEY_REFRESH_TOKEN, CONTENT_KEY_REFRESH_TOKEN_EXPIRES_AT))
-                cursor.newRow().add(CONTENT_KEY_REFRESH_TOKEN, authSharedPreferences?.getRefreshTokenExpiresAtString())
+                cursor.newRow().add(CONTENT_KEY_REFRESH_TOKEN, authSharedPreferences?.getRefreshTokenExpiresAt())
                 cursor
             }
             else -> {

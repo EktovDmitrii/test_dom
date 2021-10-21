@@ -100,7 +100,7 @@ object AuthContentProviderManager {
         context.contentResolver.insert(MSDAuthContentProvider.URI_ACTIONS, values)
     }
 
-    fun clearAuth(context: Context){
+    fun clear(context: Context){
         context.contentResolver.delete(MSDAuthContentProvider.URI_ACTIONS, null, null)
     }
 

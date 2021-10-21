@@ -15,7 +15,7 @@ interface RegistrationRepository {
 
     fun signOpd(clientId: String): Completable
 
-    fun getAuthToken(): String?
+    fun getAccessToken(): String?
 
     fun logout(): Completable
 
@@ -34,7 +34,4 @@ interface RegistrationRepository {
     fun isAuthorized(): Boolean
 
     fun clearAuth()
-
-    fun setMockToken()
-
 }

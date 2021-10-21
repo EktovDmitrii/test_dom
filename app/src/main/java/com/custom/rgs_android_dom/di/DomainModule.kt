@@ -22,7 +22,7 @@ val domainModule = module {
 
     factory { ChatInteractor(chatRepository = get(), webSocketRepository = get()) }
 
-    factory { WebSocketInteractor(webSocketRepository = get(), authSharedPreferences = get()) }
+    factory { WebSocketInteractor(webSocketRepository = get(), context = get()) }
 
     factory { PropertyInteractor(propertyRepository = get()) }
 
