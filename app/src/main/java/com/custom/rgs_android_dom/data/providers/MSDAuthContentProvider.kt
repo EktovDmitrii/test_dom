@@ -6,7 +6,6 @@ import android.content.UriMatcher
 import android.database.Cursor
 import android.database.MatrixCursor
 import android.net.Uri
-import android.util.Log
 import com.custom.rgs_android_dom.data.preferences.AuthSharedPreferences
 import com.google.gson.Gson
 
@@ -37,11 +36,11 @@ class MSDAuthContentProvider : ContentProvider() {
 
         private const val CODE_OK = 1221
 
-        val URI_ACTIONS = Uri.parse("content://$AUTHORITY/$ENDPOINT_ACTIONS")
-        val URI_IS_AUTHORIZED = Uri.parse("content://$AUTHORITY/$ENDPOINT_IS_AUTHORIZED")
-        val URI_ACCESS_TOKEN = Uri.parse("content://$AUTHORITY/$ENDPOINT_ACCESS_TOKEN")
-        val URI_REFRESH_TOKEN = Uri.parse("content://$AUTHORITY/$ENDPOINT_REFRESH_TOKEN")
-        val URI_REFRESH_TOKEN_EXPIRES_AT = Uri.parse("content://$AUTHORITY/$ENDPOINT_REFRESH_TOKEN_EXPIRES_AT")
+        val URI_ACTIONS: Uri = Uri.parse("content://$AUTHORITY/$ENDPOINT_ACTIONS")
+        val URI_IS_AUTHORIZED: Uri  = Uri.parse("content://$AUTHORITY/$ENDPOINT_IS_AUTHORIZED")
+        val URI_ACCESS_TOKEN: Uri  = Uri.parse("content://$AUTHORITY/$ENDPOINT_ACCESS_TOKEN")
+        val URI_REFRESH_TOKEN: Uri  = Uri.parse("content://$AUTHORITY/$ENDPOINT_REFRESH_TOKEN")
+        val URI_REFRESH_TOKEN_EXPIRES_AT: Uri  = Uri.parse("content://$AUTHORITY/$ENDPOINT_REFRESH_TOKEN_EXPIRES_AT")
     }
 
     private var authSharedPreferences: AuthSharedPreferences? = null

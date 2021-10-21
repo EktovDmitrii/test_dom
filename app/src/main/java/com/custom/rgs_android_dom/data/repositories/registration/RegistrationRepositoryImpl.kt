@@ -44,6 +44,7 @@ class RegistrationRepositoryImpl(
             LoginRequest(phone = phone.formatPhoneForApi(), code = code)
         )
             .map { authResponse ->
+                clientSharedPreferences.saveClientId(authResponse.clientId)
                 AuthContentProviderManager.saveAuth(context, authResponse.token)
                 webSocketRepository.connect()
                 return@map authResponse.isNewUser
