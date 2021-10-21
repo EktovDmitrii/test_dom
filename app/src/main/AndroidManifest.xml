@@ -27,7 +27,7 @@
 
         <provider
             android:authorities="com.custom.rgs_android_dom.data.providers"
-            android:name=".data.providers.MSDAuthContentProvider"
+            android:name=".data.providers.auth.MSDAuthContentProvider"
             android:enabled="true"
             android:exported="true"/>
 

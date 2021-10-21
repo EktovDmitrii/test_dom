@@ -1,12 +1,11 @@
 package com.custom.rgs_android_dom.data.repositories.web_socket
 
-import android.content.Context
 import android.util.Log
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.domain.repositories.WebSocketRepository
 import com.custom.rgs_android_dom.domain.web_socket.models.WsEventModel
-import com.custom.rgs_android_dom.ui.managers.AuthContentProviderManager
+import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.utils.WsResponseParser
 import com.google.gson.Gson
 import io.reactivex.subjects.PublishSubject
@@ -16,7 +15,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 class WebSocketRepositoryImpl(
     private val clientSharedPreferences: ClientSharedPreferences,
     private val gson: Gson,
-    private val context: Context
+    private val authContentProviderManager: AuthContentProviderManager
 ) : WebSocketRepository {
 
     companion object {
@@ -58,7 +57,7 @@ class WebSocketRepositoryImpl(
 
     override fun connect(){
 
-        val token = AuthContentProviderManager.getAccessToken(context)
+        val token = authContentProviderManager.getAccessToken()
         Log.d(TAG, "CONNECTING TO SOCKET " + token)
         if (token != null){
             val wsUrl = BuildConfig.WS_URL.replace("%s", token)

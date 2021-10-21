@@ -1,13 +1,12 @@
 package com.custom.rgs_android_dom.data.repositories.registration
 
-import android.content.Context
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.requests.GetCodeRequest
 import com.custom.rgs_android_dom.data.network.requests.LoginRequest
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.domain.repositories.RegistrationRepository
 import com.custom.rgs_android_dom.domain.repositories.WebSocketRepository
-import com.custom.rgs_android_dom.ui.managers.AuthContentProviderManager
+import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -18,7 +17,7 @@ class RegistrationRepositoryImpl(
     private val api: MSDApi,
     private val clientSharedPreferences: ClientSharedPreferences,
     private val webSocketRepository: WebSocketRepository,
-    private val context: Context
+    private val authContentProviderManager: AuthContentProviderManager
 ) : RegistrationRepository {
 
     companion object {
@@ -45,21 +44,21 @@ class RegistrationRepositoryImpl(
         )
             .map { authResponse ->
                 clientSharedPreferences.saveClientId(authResponse.clientId)
-                AuthContentProviderManager.saveAuth(context, authResponse.token)
+                authContentProviderManager.saveAuth(authResponse.token)
                 webSocketRepository.connect()
                 return@map authResponse.isNewUser
             }
     }
 
     override fun getAccessToken(): String? {
-        return AuthContentProviderManager.getAccessToken(context)
+        return authContentProviderManager.getAccessToken()
     }
 
     override fun logout(): Completable {
         return api.postLogout().doFinally {
             if (isAuthorized()){
                 webSocketRepository.disconnect()
-                AuthContentProviderManager.clear(context)
+                authContentProviderManager.clear()
                 logout.onNext(Unit)
             }
         }
@@ -67,7 +66,7 @@ class RegistrationRepositoryImpl(
 
     override fun clearAuth() {
         if (isAuthorized()){
-            AuthContentProviderManager.clear(context)
+            authContentProviderManager.clear()
             logout.onNext(Unit)
         }
     }
@@ -86,25 +85,25 @@ class RegistrationRepositoryImpl(
 
     override fun refreshToken(refreshToken: String): Completable {
         return api.postRefreshToken(refreshToken).flatMapCompletable { tokenResponse ->
-            AuthContentProviderManager.saveAuth(context, tokenResponse)
+            authContentProviderManager.saveAuth(tokenResponse)
             Completable.complete()
         }
     }
 
     override fun deleteTokens() {
-        AuthContentProviderManager.clear(context)
+        authContentProviderManager.clear()
     }
 
     override fun getRefreshToken(): String? {
-        return AuthContentProviderManager.getRefreshToken(context)
+        return authContentProviderManager.getRefreshToken()
     }
 
     override fun getRefreshTokenExpiresAt(): DateTime? {
-        return AuthContentProviderManager.getRefreshTokenExpiresAt(context)
+        return authContentProviderManager.getRefreshTokenExpiresAt()
     }
 
     override fun isAuthorized(): Boolean {
-        return AuthContentProviderManager.isAuthorized(context)
+        return authContentProviderManager.isAuthorized()
     }
 
 }

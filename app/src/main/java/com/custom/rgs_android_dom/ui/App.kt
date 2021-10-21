@@ -28,7 +28,8 @@ class App: Application() {
                 domainModule,
                 networkModule,
                 viewModelModule,
-                preferencesModule
+                preferencesModule,
+                providersModule
             )
         }
     }

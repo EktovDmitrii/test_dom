@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.data.providers
+package com.custom.rgs_android_dom.data.providers.auth
 
 import android.content.ContentProvider
 import android.content.ContentValues
@@ -7,16 +7,17 @@ import android.database.Cursor
 import android.database.MatrixCursor
 import android.net.Uri
 import com.custom.rgs_android_dom.data.preferences.AuthSharedPreferences
+import com.custom.rgs_android_dom.data.providers.auth.constants.AuthContentProviderConstants.CONTENT_KEY_ACCESS_TOKEN
+import com.custom.rgs_android_dom.data.providers.auth.constants.AuthContentProviderConstants.CONTENT_KEY_IS_AUTHORIZED
+import com.custom.rgs_android_dom.data.providers.auth.constants.AuthContentProviderConstants.CONTENT_KEY_REFRESH_TOKEN
+import com.custom.rgs_android_dom.data.providers.auth.constants.AuthContentProviderConstants.CONTENT_KEY_REFRESH_TOKEN_EXPIRES_AT
 import com.google.gson.Gson
 
 class MSDAuthContentProvider : ContentProvider() {
 
     companion object {
 
-        const val CONTENT_KEY_ACCESS_TOKEN = "CONTENT_KEY_ACCESS_TOKEN"
-        const val CONTENT_KEY_REFRESH_TOKEN = "CONTENT_KEY_REFRESH_TOKEN"
-        const val CONTENT_KEY_REFRESH_TOKEN_EXPIRES_AT = "CONTENT_KEY_REFRESH_TOKEN_EXPIRES_AT"
-        const val CONTENT_KEY_IS_AUTHORIZED = "CONTENT_KEY_IS_AUTHORIZED"
+
 
         private const val CONTENT_CODE_ACTIONS = 0
         private const val CONTENT_CODE_IS_AUTHORIZED = 1

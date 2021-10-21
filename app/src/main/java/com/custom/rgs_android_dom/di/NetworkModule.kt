@@ -2,7 +2,6 @@ package com.custom.rgs_android_dom.di
 
 import com.custom.rgs_android_dom.data.network.data_adapters.*
 import com.custom.rgs_android_dom.data.network.interceptors.AuthTokenInterceptor
-import com.custom.rgs_android_dom.data.network.interceptors.BasicAuthInterceptor
 import com.custom.rgs_android_dom.data.network.provider.ApiProvider
 import com.custom.rgs_android_dom.domain.client.models.Gender
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
@@ -29,8 +28,6 @@ val networkModule = module {
             .create()
     }
 
-    single { BasicAuthInterceptor() }
-
     single { AuthTokenInterceptor() }
 
     single {
@@ -43,7 +40,6 @@ val networkModule = module {
         ApiProvider(
             interceptors = listOf(
                 get<AuthTokenInterceptor>(),
-                /*get<BasicAuthInterceptor>(),*/
                 get<HttpLoggingInterceptor>()
             ),
             gson = get()
