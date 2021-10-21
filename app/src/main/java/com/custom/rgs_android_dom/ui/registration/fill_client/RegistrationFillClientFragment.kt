@@ -164,9 +164,10 @@ class RegistrationFillClientFragment : BaseFragment<RegistrationFillClientViewMo
     }
 
     override fun onClose() {
-        hideSoftwareKeyboard()
+        //hideSoftwareKeyboard()
         ScreenManager.closeScope(REGISTRATION)
-        ScreenManager.showScreen(MainFragment())
+        //ScreenManager.showScreen(MainFragment())
+        super.onClose()
     }
 
     override fun onLoading() {

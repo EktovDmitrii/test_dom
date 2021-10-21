@@ -40,7 +40,7 @@ class RegistrationAgreementViewModel(private val phone: String,
 
     fun onCloseClick(){
         closeController.value = Unit
-        ScreenManager.showScreen(MainFragment())
+        //ScreenManager.showScreen(MainFragment())
     }
 
     fun onBackClick(){

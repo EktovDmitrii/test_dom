@@ -79,9 +79,10 @@ class RegistrationCodeViewModel(
                     closeController.value = Unit
                     if (isNewUser){
                         ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(phone), REGISTRATION)
-                    } else {
-                        ScreenManager.showScreen(MainFragment())
                     }
+                    /*else {
+                        ScreenManager.showScreen(MainFragment())
+                    }*/
                 },
                 onError = {
                     logException(this, it)
