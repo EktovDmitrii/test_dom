@@ -18,6 +18,7 @@ import io.reactivex.schedulers.Schedulers
 import java.lang.StringBuilder
 
 class RegistrationAgreementViewModel(private val phone: String,
+                                     private val closeAfterAccept: Boolean,
                                      private val registrationInteractor: RegistrationInteractor) : BaseViewModel() {
 
     private val agreementTextController = MutableLiveData<CharSequence>()
@@ -45,30 +46,30 @@ class RegistrationAgreementViewModel(private val phone: String,
 
     fun onBackClick(){
         closeController.value = Unit
-        ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+        /*if (!closeAfterAccept){
+            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+        }*/
     }
 
     private fun acceptAgreement(){
-        val clientId = registrationInteractor.getClientId()
-        clientId?.let { clientId->
-            registrationInteractor.signOpd(clientId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
-                .doOnComplete { loadingStateController.value = LoadingState.CONTENT }
-                .doOnError { loadingStateController.value = LoadingState.ERROR }
-                .subscribeBy(
-                    onComplete = {
-                        closeController.value = Unit
+        registrationInteractor.signOpd()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
+            .doOnComplete { loadingStateController.value = LoadingState.CONTENT }
+            .doOnError { loadingStateController.value = LoadingState.ERROR }
+            .subscribeBy(
+                onComplete = {
+                    closeController.value = Unit
+                    if (!closeAfterAccept){
                         ScreenManager.showScreenScope(RegistrationFillClientFragment.newInstance(phone),REGISTRATION)
-                    },
-                    onError = {
-                        logException(this, it)
-                        handleNetworkException(it)
                     }
-                ).addTo(dataCompositeDisposable)
-        }
-
+                },
+                onError = {
+                    logException(this, it)
+                    handleNetworkException(it)
+                }
+            ).addTo(dataCompositeDisposable)
     }
 
     private fun createAgreementText(): CharSequence {

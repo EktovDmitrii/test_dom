@@ -31,61 +31,61 @@ interface MSDApi {
     @ErrorType(MSDNetworkErrorResponse::class)
     fun postLogout(): Completable
 
-    @POST("clients/{clientId}/opd/sign")
+    @POST("clients/me/opd/sign")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun postSignOpd(@Path("clientId") clientId: String): Completable
+    fun postSignOpd(): Completable
 
     @POST("auth/token/refresh")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun postRefreshToken(@Header("Authorization") refreshToken: String): Single<TokenResponse>
 
-    @GET("clients/{clientId}")
+    @GET("clients/me")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getClient(@Path("clientId") clientId: String): Single<ClientResponse>
+    fun getMyClient(): Single<ClientResponse>
 
-    @PUT("clients/{clientId}")
+    @PUT("clients/me")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun putClient(@Path("clientId") clientId: String, @Body body: UpdateClientRequest): Single<ClientResponse>
+    fun putMyClient(@Body body: UpdateClientRequest): Single<ClientResponse>
 
     @GET("catalog/translations")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getTranslations(@Query("platform") platform: String,@Query("lang") lang: String, @Query("project") project: String): Single<TranslationListResponse>
 
-    @POST("clients/{clientId}/agents")
+    @POST("clients/me/agents")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun updateAgent(@Path("clientId") clientId: String, @Body body: UpdateAgentRequest): Single<ClientResponse>
+    fun updateAgent(@Body body: UpdateAgentRequest): Single<ClientResponse>
 
-    @POST("clients/{clientId}/documents")
+    @POST("clients/me/documents")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun postDocuments(@Path("clientId") clientId: String, @Body body: UpdateDocumentsRequest): Single<ClientResponse>
+    fun postDocuments(@Body body: UpdateDocumentsRequest): Single<ClientResponse>
 
-    @POST("clients/{clientId}/contacts")
+    @POST("clients/me/contacts")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun postContacts(@Path("clientId") clientId: String, @Body body: UpdateContactsRequest): Single<ClientResponse>
+    fun postContacts(@Body body: UpdateContactsRequest): Single<ClientResponse>
 
-    @PUT("clients/{clientId}/contacts")
+    @PUT("clients/me/contacts")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun putContacts(@Path("clientId") clientId: String, @Body body: UpdateContactsRequest): Single<ClientResponse>
+    fun putContacts(@Body body: UpdateContactsRequest): Single<ClientResponse>
 
-    @HTTP(method = "DELETE", path = "clients/{clientId}/contacts", hasBody = true)
+    @HTTP(method = "DELETE", path = "clients/me/contacts", hasBody = true)
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun deleteContacts(@Path("clientId") clientId: String, @Body body: DeleteContactsRequest): Single<ClientResponse>
+    fun deleteContacts(@Body body: DeleteContactsRequest): Single<ClientResponse>
 
-    @POST("chat/users/{userId}/channels/{channelId}/posts")
+    @POST("chat/users/me/channels/{channelId}/posts")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun postMessage(@Path("userId") userId: String, @Path("channelId") channelId: String, @Body message: SendMessageRequest): Completable
+    fun postMessage(@Path("channelId") channelId: String, @Body message: SendMessageRequest): Completable
 
     @GET("chat/channels/{channelId}/posts")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getChatMessages(@Path("channelId") channelId: String, @Query("size") size: Long, @Query("index") index: Long): Single<List<ChatMessageResponse>>
 
-    @POST("property/clients/{clientId}/objects")
+    @POST("property/clients/me/objects")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun addProperty(@Path("clientId") clientId: String, @Body body: AddPropertyRequest): Completable
+    fun addProperty(@Body body: AddPropertyRequest): Completable
 
-    @GET("property/clients/{clientId}/objects")
+    @GET("property/clients/me/objects")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getAllProperty(@Path("clientId") clientId: String): Single<AllPropertyResponse>
+    fun getAllProperty(): Single<AllPropertyResponse>
 
     @GET("property/objects/{objectId}")
     @ErrorType(MSDNetworkErrorResponse::class)

@@ -11,13 +11,17 @@ import com.custom.rgs_android_dom.data.providers.auth.constants.AuthContentProvi
 import com.custom.rgs_android_dom.data.providers.auth.constants.AuthContentProviderConstants.CONTENT_KEY_IS_AUTHORIZED
 import com.custom.rgs_android_dom.data.providers.auth.constants.AuthContentProviderConstants.CONTENT_KEY_REFRESH_TOKEN
 import com.custom.rgs_android_dom.data.providers.auth.constants.AuthContentProviderConstants.CONTENT_KEY_REFRESH_TOKEN_EXPIRES_AT
+import com.custom.rgs_android_dom.data.providers.auth.constants.AuthContentProviderConstants.ENDPOINT_ACCESS_TOKEN
+import com.custom.rgs_android_dom.data.providers.auth.constants.AuthContentProviderConstants.ENDPOINT_ACTIONS
+import com.custom.rgs_android_dom.data.providers.auth.constants.AuthContentProviderConstants.ENDPOINT_IS_AUTHORIZED
+import com.custom.rgs_android_dom.data.providers.auth.constants.AuthContentProviderConstants.ENDPOINT_REFRESH_TOKEN
+import com.custom.rgs_android_dom.data.providers.auth.constants.AuthContentProviderConstants.ENDPOINT_REFRESH_TOKEN_EXPIRES_AT
+import com.custom.rgs_android_dom.data.providers.auth.constants.AuthContentProviderConstants.MSD_AUTHORITY
 import com.google.gson.Gson
 
 class MSDAuthContentProvider : ContentProvider() {
 
     companion object {
-
-
 
         private const val CONTENT_CODE_ACTIONS = 0
         private const val CONTENT_CODE_IS_AUTHORIZED = 1
@@ -25,23 +29,16 @@ class MSDAuthContentProvider : ContentProvider() {
         private const val CONTENT_CODE_REFRESH_TOKEN = 3
         private const val CONTENT_CODE_REFRESH_TOKEN_EXPIRES_AT = 4
 
-        private const val AUTHORITY = "com.custom.rgs_android_dom.data.providers"
-        private const val ENDPOINT_ACTIONS = "/auth/actions"
-        private const val ENDPOINT_IS_AUTHORIZED = "/auth/is_authorized"
-        private const val ENDPOINT_ACCESS_TOKEN = "/auth/access_token"
-        private const val ENDPOINT_REFRESH_TOKEN = "/auth/refresh_token"
-        private const val ENDPOINT_REFRESH_TOKEN_EXPIRES_AT = "/auth/refresh_token_expires_at"
-
-        private const val TYPE_ACTIONS = "vnd.android.cursor.item/$AUTHORITY/$ENDPOINT_ACTIONS"
-        private const val TYPE_QUERY = "vnd.android.cursor.item/$AUTHORITY/query"
+        private const val TYPE_ACTIONS = "vnd.android.cursor.item/$MSD_AUTHORITY/$ENDPOINT_ACTIONS"
+        private const val TYPE_QUERY = "vnd.android.cursor.item/$MSD_AUTHORITY/query"
 
         private const val CODE_OK = 1221
 
-        val URI_ACTIONS: Uri = Uri.parse("content://$AUTHORITY/$ENDPOINT_ACTIONS")
-        val URI_IS_AUTHORIZED: Uri  = Uri.parse("content://$AUTHORITY/$ENDPOINT_IS_AUTHORIZED")
-        val URI_ACCESS_TOKEN: Uri  = Uri.parse("content://$AUTHORITY/$ENDPOINT_ACCESS_TOKEN")
-        val URI_REFRESH_TOKEN: Uri  = Uri.parse("content://$AUTHORITY/$ENDPOINT_REFRESH_TOKEN")
-        val URI_REFRESH_TOKEN_EXPIRES_AT: Uri  = Uri.parse("content://$AUTHORITY/$ENDPOINT_REFRESH_TOKEN_EXPIRES_AT")
+        val URI_ACTIONS: Uri = Uri.parse("content://$MSD_AUTHORITY/$ENDPOINT_ACTIONS")
+        val URI_IS_AUTHORIZED: Uri  = Uri.parse("content://$MSD_AUTHORITY/$ENDPOINT_IS_AUTHORIZED")
+        val URI_ACCESS_TOKEN: Uri  = Uri.parse("content://$MSD_AUTHORITY/$ENDPOINT_ACCESS_TOKEN")
+        val URI_REFRESH_TOKEN: Uri  = Uri.parse("content://$MSD_AUTHORITY/$ENDPOINT_REFRESH_TOKEN")
+        val URI_REFRESH_TOKEN_EXPIRES_AT: Uri  = Uri.parse("content://$MSD_AUTHORITY/$ENDPOINT_REFRESH_TOKEN_EXPIRES_AT")
     }
 
     private var authSharedPreferences: AuthSharedPreferences? = null
@@ -49,27 +46,27 @@ class MSDAuthContentProvider : ContentProvider() {
 
     init {
         matcher.addURI(
-            AUTHORITY,
+            MSD_AUTHORITY,
             ENDPOINT_ACTIONS,
             CONTENT_CODE_ACTIONS
         )
         matcher.addURI(
-            AUTHORITY,
+            MSD_AUTHORITY,
             ENDPOINT_IS_AUTHORIZED,
             CONTENT_CODE_IS_AUTHORIZED
         )
         matcher.addURI(
-            AUTHORITY,
+            MSD_AUTHORITY,
             ENDPOINT_ACCESS_TOKEN,
             CONTENT_CODE_ACCESS_TOKEN
         )
         matcher.addURI(
-            AUTHORITY,
+            MSD_AUTHORITY,
             ENDPOINT_REFRESH_TOKEN,
             CONTENT_CODE_REFRESH_TOKEN
         )
         matcher.addURI(
-            AUTHORITY,
+            MSD_AUTHORITY,
             ENDPOINT_REFRESH_TOKEN_EXPIRES_AT,
             CONTENT_CODE_REFRESH_TOKEN_EXPIRES_AT
         )

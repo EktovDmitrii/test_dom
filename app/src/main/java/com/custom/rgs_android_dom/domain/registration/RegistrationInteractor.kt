@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.domain.registration
 
+import com.custom.rgs_android_dom.data.providers.auth.manager.AuthState
 import com.custom.rgs_android_dom.domain.repositories.RegistrationRepository
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -15,12 +16,8 @@ class RegistrationInteractor(private val registrationRepository: RegistrationRep
         return registrationRepository.login(phone, code, token)
     }
 
-    fun signOpd(clientId: String): Completable {
-        return registrationRepository.signOpd(clientId)
-    }
-
-    fun getClientId(): String? {
-        return registrationRepository.getClientId()
+    fun signOpd(): Completable {
+        return registrationRepository.signOpd()
     }
 
     fun logout(): Completable {
@@ -33,6 +30,10 @@ class RegistrationInteractor(private val registrationRepository: RegistrationRep
 
     fun isAuthorized(): Boolean {
         return registrationRepository.isAuthorized()
+    }
+
+    fun getAuthStateSubject(): PublishSubject<AuthState> {
+        return registrationRepository.getAuthStateSubject()
     }
 
 }

@@ -45,15 +45,13 @@ class PropertyRepositoryImpl(private val api: MSDApi,
             comment = comment,
             documents = null
         )
-        val clientId = clientSharedPreferences.getClientId()
-        return api.addProperty(clientId, addPropertyRequest).doOnComplete {
+        return api.addProperty(addPropertyRequest).doOnComplete {
             propertyAddedSubject.onNext(Unit)
         }
     }
 
     override fun getAllProperty(): Single<List<PropertyItemModel>> {
-        val clientId = clientSharedPreferences.getClientId()
-        return api.getAllProperty(clientId).map { response->
+        return api.getAllProperty().map { response->
             response.objects?.map { PropertyMapper.responseToProperty(it) } ?: listOf()
         }
     }

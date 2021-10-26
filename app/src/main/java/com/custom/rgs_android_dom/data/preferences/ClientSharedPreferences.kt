@@ -2,7 +2,6 @@ package com.custom.rgs_android_dom.data.preferences
 
 import android.content.Context
 import androidx.core.content.edit
-import com.custom.rgs_android_dom.data.network.responses.AuthResponse
 import com.custom.rgs_android_dom.domain.client.models.ClientModel
 import com.custom.rgs_android_dom.utils.getSharedPrefs
 import com.f2prateek.rx.preferences2.RxSharedPreferences
@@ -28,16 +27,6 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
 
     fun getPhone(): String? {
         return preferences.getString(PREF_KEY_PHONE, null)
-    }
-
-    fun saveClientId(clientId: String){
-        preferences.edit{
-            putString(PREF_KEY_CLIENT_ID, clientId)
-        }
-    }
-
-    fun getClientId(): String {
-        return preferences.getString(PREF_KEY_CLIENT_ID, null) ?: ""
     }
 
     fun saveClient(client: ClientModel){

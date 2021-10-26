@@ -33,8 +33,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
         val client = clientSharedPreferences.getClient()
 
         val channelId = client?.getChatChannelId() ?: ""
-        val userId = client?.userId ?: ""
 
-        return api.postMessage(userId, channelId, request)
+        return api.postMessage(channelId, request)
     }
 }

@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.domain.repositories
 
+import com.custom.rgs_android_dom.data.providers.auth.manager.AuthState
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
@@ -13,15 +14,13 @@ interface RegistrationRepository {
 
     fun login(phone: String, code: String, token: String): Single<Boolean>
 
-    fun signOpd(clientId: String): Completable
+    fun signOpd(): Completable
 
     fun getAccessToken(): String?
 
     fun logout(): Completable
 
     fun getLogoutSubject(): PublishSubject<Unit>
-
-    fun getClientId(): String?
 
     fun refreshToken(refreshToken: String): Completable
 
@@ -34,4 +33,6 @@ interface RegistrationRepository {
     fun isAuthorized(): Boolean
 
     fun clearAuth()
+
+    fun getAuthStateSubject(): PublishSubject<AuthState>
 }

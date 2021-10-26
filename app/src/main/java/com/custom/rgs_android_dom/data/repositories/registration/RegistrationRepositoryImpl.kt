@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.domain.repositories.RegistrationRepository
 import com.custom.rgs_android_dom.domain.repositories.WebSocketRepository
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
+import com.custom.rgs_android_dom.data.providers.auth.manager.AuthState
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -43,7 +44,6 @@ class RegistrationRepositoryImpl(
             LoginRequest(phone = phone.formatPhoneForApi(), code = code)
         )
             .map { authResponse ->
-                clientSharedPreferences.saveClientId(authResponse.clientId)
                 authContentProviderManager.saveAuth(authResponse.token)
                 webSocketRepository.connect()
                 return@map authResponse.isNewUser
@@ -59,6 +59,7 @@ class RegistrationRepositoryImpl(
             if (isAuthorized()){
                 webSocketRepository.disconnect()
                 authContentProviderManager.clear()
+                clientSharedPreferences.clear()
                 logout.onNext(Unit)
             }
         }
@@ -66,7 +67,9 @@ class RegistrationRepositoryImpl(
 
     override fun clearAuth() {
         if (isAuthorized()){
+            webSocketRepository.disconnect()
             authContentProviderManager.clear()
+            clientSharedPreferences.clear()
             logout.onNext(Unit)
         }
     }
@@ -75,12 +78,8 @@ class RegistrationRepositoryImpl(
         return logout
     }
 
-    override fun signOpd(clientId: String): Completable {
-        return api.postSignOpd(clientId)
-    }
-
-    override fun getClientId(): String? {
-        return clientSharedPreferences.getClientId()
+    override fun signOpd(): Completable {
+        return api.postSignOpd()
     }
 
     override fun refreshToken(refreshToken: String): Completable {
@@ -106,4 +105,7 @@ class RegistrationRepositoryImpl(
         return authContentProviderManager.isAuthorized()
     }
 
+    override fun getAuthStateSubject(): PublishSubject<AuthState> {
+        return authContentProviderManager.authStateSubject
+    }
 }

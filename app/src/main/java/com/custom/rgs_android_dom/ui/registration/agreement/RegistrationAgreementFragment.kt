@@ -17,16 +17,21 @@ class RegistrationAgreementFragment : BaseFragment<RegistrationAgreementViewMode
 
     companion object {
         private const val ARG_PHONE = "ARG_PHONE"
+        private const val ARG_CLOSE_AFTER_ACCEPT = "ARG_CLOSE_AFTER_ACCEPT"
 
-        fun newInstance(phone: String): RegistrationAgreementFragment {
+        fun newInstance(phone: String, closeAfterAccept: Boolean = false): RegistrationAgreementFragment {
             return RegistrationAgreementFragment().args {
                 putString(ARG_PHONE, phone)
+                putBoolean(ARG_CLOSE_AFTER_ACCEPT, closeAfterAccept)
             }
         }
     }
 
     override fun getParameters(): ParametersDefinition  = {
-        parametersOf(requireArguments().getString(ARG_PHONE))
+        parametersOf(
+            requireArguments().getString(ARG_PHONE),
+            requireArguments().getBoolean(ARG_CLOSE_AFTER_ACCEPT)
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
