@@ -38,6 +38,9 @@ class ClientViewModel(
     val clientShortViewStateObserver: LiveData<ClientShortViewState> =
         clientShortViewStateController
 
+    private val swipeRefreshingController = MutableLiveData<Boolean>()
+    val swipeRefreshingObserver: LiveData<Boolean> = swipeRefreshingController
+
     init {
         clientInteractor.subscribeClientUpdateSubject()
             .subscribeOn(Schedulers.io())
@@ -129,6 +132,11 @@ class ClientViewModel(
             ).addTo(dataCompositeDisposable)
     }
 
+    fun onRefresh(){
+        swipeRefreshingController.value = true
+        loadProperty()
+    }
+
     private fun loadProperty(){
         propertyInteractor.getAllProperty()
             .subscribeOn(Schedulers.io())
@@ -140,6 +148,8 @@ class ClientViewModel(
                     propertyItems.addAll(it)
                     propertyItems.add(AddPropertyItemModel())
                     propertyItemsController.value = propertyItems
+
+                    swipeRefreshingController.value = false
                 },
                 onError = {
                     val propertyItems = arrayListOf<Any>()
@@ -148,6 +158,8 @@ class ClientViewModel(
 
                     logException(this, it)
                     networkErrorController.value = "Не удалось загрузить список собственности"
+
+                    swipeRefreshingController.value = false
                 }
             ).addTo(dataCompositeDisposable)
     }
