@@ -35,4 +35,6 @@ interface RegistrationRepository {
     fun clearAuth()
 
     fun getAuthStateSubject(): PublishSubject<AuthState>
+
+    fun forceSaveAuthCredentials()
 }

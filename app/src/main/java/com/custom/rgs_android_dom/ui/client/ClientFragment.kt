@@ -75,7 +75,7 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
         }
 
         binding.openMedAppLinearLayout.setOnDebouncedClickListener {
-            openMedApp()
+            viewModel.onOpenMedAppClick()
         }
 
         subscribe(viewModel.propertyItemsObserver) { propertyItems ->
@@ -102,6 +102,10 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
 
         subscribe(viewModel.networkErrorObserver) {
             toast(it)
+        }
+
+        subscribe(viewModel.navigateToMedAppObserver){
+            openMedApp()
         }
     }
 

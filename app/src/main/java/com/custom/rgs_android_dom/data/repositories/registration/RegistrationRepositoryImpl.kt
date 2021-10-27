@@ -108,4 +108,12 @@ class RegistrationRepositoryImpl(
     override fun getAuthStateSubject(): PublishSubject<AuthState> {
         return authContentProviderManager.authStateSubject
     }
+
+    override fun forceSaveAuthCredentials() {
+        authContentProviderManager.saveAuth(
+            authContentProviderManager.getAccessToken() ?: "",
+            getRefreshToken() ?: "",
+            authContentProviderManager.getRefreshTokenExpiresAt() ?: DateTime.now()
+        )
+    }
 }

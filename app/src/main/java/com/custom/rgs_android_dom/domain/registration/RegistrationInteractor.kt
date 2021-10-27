@@ -36,4 +36,8 @@ class RegistrationInteractor(private val registrationRepository: RegistrationRep
         return registrationRepository.getAuthStateSubject()
     }
 
+    fun forceSaveAuthCredentials(){
+        registrationRepository.forceSaveAuthCredentials()
+    }
+
 }

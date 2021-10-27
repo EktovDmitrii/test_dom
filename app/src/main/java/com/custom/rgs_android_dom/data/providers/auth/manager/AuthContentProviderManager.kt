@@ -148,15 +148,16 @@ class AuthContentProviderManager(private val context: Context) {
     }
 
     fun saveAuth(tokenResponse: TokenResponse){
+        saveAuth(tokenResponse.accessToken,
+            tokenResponse.refreshToken,
+            tokenResponse.refreshTokenExpiresAt)
+    }
+
+    fun saveAuth(accessToken: String, refreshToken: String, refreshTokenExpiresAt: DateTime){
         val values = ContentValues().apply {
-            put(CONTENT_KEY_ACCESS_TOKEN, tokenResponse.accessToken)
-            put(CONTENT_KEY_REFRESH_TOKEN, tokenResponse.refreshToken)
-            put(
-                CONTENT_KEY_REFRESH_TOKEN_EXPIRES_AT,
-                tokenResponse.refreshTokenExpiresAt.toString(DateTimeFormat.forPattern(
-                    PATTERN_DATE_TIME_MILLIS
-                ))
-            )
+            put(CONTENT_KEY_ACCESS_TOKEN, accessToken)
+            put(CONTENT_KEY_REFRESH_TOKEN, refreshToken)
+            put(CONTENT_KEY_REFRESH_TOKEN_EXPIRES_AT, refreshTokenExpiresAt.toString(DateTimeFormat.forPattern(PATTERN_DATE_TIME_MILLIS)))
         }
         for (uri in actionUris){
             try {
@@ -166,7 +167,6 @@ class AuthContentProviderManager(private val context: Context) {
 
             }
         }
-
     }
 
     fun clear(){
