@@ -12,12 +12,12 @@ import com.custom.rgs_android_dom.domain.repositories.*
 import org.koin.dsl.module
 
 val dataModule = module {
-    single <RegistrationRepository> { RegistrationRepositoryImpl(api = get(), authSharedPreferences = get(), webSocketRepository = get()) }
-    single <ClientRepository> {ClientRepositoryImpl(api = get(), authSharedPreferences = get())}
+    single <RegistrationRepository> { RegistrationRepositoryImpl(api = get(), clientSharedPreferences = get(), webSocketRepository = get(), authContentProviderManager = get()) }
+    single <ClientRepository> {ClientRepositoryImpl(api = get(), clientSharedPreferences = get())}
     single <CountriesRepository> { CountriesRepositoryMock() }
     single <TranslationRepository> { TranslationRepositoryImpl(api = get()) }
-    single <ChatRepository> { ChatRepositoryImpl(api = get(), authSharedPreferences = get()) }
-    single <WebSocketRepository> {WebSocketRepositoryImpl(authSharedPreferences = get(), gson = get())}
-    single <PropertyRepository> { PropertyRepositoryImpl(api = get(), authSharedPreferences = get()) }
+    single <ChatRepository> { ChatRepositoryImpl(api = get(), clientSharedPreferences = get()) }
+    single <WebSocketRepository> {WebSocketRepositoryImpl(clientSharedPreferences = get(), gson = get(), authContentProviderManager = get())}
+    single <PropertyRepository> { PropertyRepositoryImpl(api = get(), clientSharedPreferences = get()) }
     single <AddressRepository> { AddressRepositoryImpl(api = get()) }
 }

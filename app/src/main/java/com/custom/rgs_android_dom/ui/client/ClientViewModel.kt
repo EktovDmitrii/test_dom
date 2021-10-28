@@ -38,6 +38,9 @@ class ClientViewModel(
     val clientShortViewStateObserver: LiveData<ClientShortViewState> =
         clientShortViewStateController
 
+    private val navigateToMedAppController = MutableLiveData<Unit>()
+    val navigateToMedAppObserver: LiveData<Unit> = navigateToMedAppController
+
     private val swipeRefreshingController = MutableLiveData<Boolean>()
     val swipeRefreshingObserver: LiveData<Boolean> = swipeRefreshingController
 
@@ -130,6 +133,11 @@ class ClientViewModel(
                     networkErrorController.value = "Не удалось загрузить список собственности"
                 }
             ).addTo(dataCompositeDisposable)
+    }
+
+    fun onOpenMedAppClick() {
+        registrationInteractor.forceSaveAuthCredentials()
+        navigateToMedAppController.value = Unit
     }
 
     fun onRefresh(){

@@ -2,19 +2,20 @@ package com.custom.rgs_android_dom.data.repositories.web_socket
 
 import android.util.Log
 import com.custom.rgs_android_dom.BuildConfig
-import com.custom.rgs_android_dom.data.preferences.AuthSharedPreferences
+import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.domain.repositories.WebSocketRepository
 import com.custom.rgs_android_dom.domain.web_socket.models.WsEventModel
+import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.utils.WsResponseParser
 import com.google.gson.Gson
 import io.reactivex.subjects.PublishSubject
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
-import java.util.concurrent.TimeUnit
 
 class WebSocketRepositoryImpl(
-    private val authSharedPreferences: AuthSharedPreferences,
-    private val gson: Gson
+    private val clientSharedPreferences: ClientSharedPreferences,
+    private val gson: Gson,
+    private val authContentProviderManager: AuthContentProviderManager
 ) : WebSocketRepository {
 
     companion object {
@@ -36,7 +37,7 @@ class WebSocketRepositoryImpl(
 
         override fun onMessage(webSocket: WebSocket, text: String) {
             Log.d(TAG, "ON MESSAGE " + text)
-            val parsedMessage = wsResponseParser.parse(text, authSharedPreferences.getClient()?.userId ?: "")
+            val parsedMessage = wsResponseParser.parse(text, clientSharedPreferences.getClient()?.userId ?: "")
             if (parsedMessage != null){
                 newMessageSubject.onNext(parsedMessage)
             }
@@ -56,7 +57,7 @@ class WebSocketRepositoryImpl(
 
     override fun connect(){
 
-        val token = authSharedPreferences.getAccessToken()
+        val token = authContentProviderManager.getAccessToken()
         Log.d(TAG, "CONNECTING TO SOCKET " + token)
         if (token != null){
             val wsUrl = BuildConfig.WS_URL.replace("%s", token)

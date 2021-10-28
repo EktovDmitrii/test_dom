@@ -13,7 +13,6 @@ import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.interceptors.AuthTokenInterceptor
-import com.custom.rgs_android_dom.data.network.interceptors.BasicAuthInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import java.io.InputStream

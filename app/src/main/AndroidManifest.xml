@@ -18,12 +18,25 @@
         <activity android:name=".ui.MainActivity"
             android:windowSoftInputMode="stateHidden|adjustResize"
             android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="com.custom.rgs_android_dom.action.auth" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
         </activity>
+
+        <provider
+            android:authorities="${authProviderAuthority}"
+            android:name=".data.providers.auth.MSDAuthContentProvider"
+            android:enabled="true"
+            android:exported="true"/>
+
     </application>
 
 </manifest>

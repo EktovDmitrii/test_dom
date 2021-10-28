@@ -3,10 +3,11 @@ package com.custom.rgs_android_dom.data.repositories.registration
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.requests.GetCodeRequest
 import com.custom.rgs_android_dom.data.network.requests.LoginRequest
-import com.custom.rgs_android_dom.data.network.responses.TokenResponse
-import com.custom.rgs_android_dom.data.preferences.AuthSharedPreferences
+import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.domain.repositories.RegistrationRepository
 import com.custom.rgs_android_dom.domain.repositories.WebSocketRepository
+import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
+import com.custom.rgs_android_dom.data.providers.auth.manager.AuthState
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -15,8 +16,9 @@ import org.joda.time.DateTime
 
 class RegistrationRepositoryImpl(
     private val api: MSDApi,
-    private val authSharedPreferences: AuthSharedPreferences,
-    private val webSocketRepository: WebSocketRepository
+    private val clientSharedPreferences: ClientSharedPreferences,
+    private val webSocketRepository: WebSocketRepository,
+    private val authContentProviderManager: AuthContentProviderManager
 ) : RegistrationRepository {
 
     companion object {
@@ -26,14 +28,14 @@ class RegistrationRepositoryImpl(
     private val logout = PublishSubject.create<Unit>()
 
     override fun getCurrentPhone(): String {
-        return authSharedPreferences.getPhone() ?: ""
+        return clientSharedPreferences.getPhone() ?: ""
     }
 
     override fun getCode(phone: String): Single<String> {
         return api.postGetCode(GetCodeRequest(phone = phone.formatPhoneForApi()))
             .map {
                 it.token
-            }.doOnSubscribe { authSharedPreferences.savePhone(phone) }
+            }.doOnSubscribe { clientSharedPreferences.savePhone(phone) }
     }
 
     override fun login(phone: String, code: String, token: String): Single<Boolean> {
@@ -42,21 +44,22 @@ class RegistrationRepositoryImpl(
             LoginRequest(phone = phone.formatPhoneForApi(), code = code)
         )
             .map { authResponse ->
-                authSharedPreferences.saveAuth(authResponse)
+                authContentProviderManager.saveAuth(authResponse.token)
                 webSocketRepository.connect()
                 return@map authResponse.isNewUser
             }
     }
 
-    override fun getAuthToken(): String? {
-        return authSharedPreferences.getAccessToken()
+    override fun getAccessToken(): String? {
+        return authContentProviderManager.getAccessToken()
     }
 
     override fun logout(): Completable {
         return api.postLogout().doFinally {
             if (isAuthorized()){
                 webSocketRepository.disconnect()
-                authSharedPreferences.clear()
+                authContentProviderManager.clear()
+                clientSharedPreferences.clear()
                 logout.onNext(Unit)
             }
         }
@@ -64,7 +67,9 @@ class RegistrationRepositoryImpl(
 
     override fun clearAuth() {
         if (isAuthorized()){
-            authSharedPreferences.clear()
+            webSocketRepository.disconnect()
+            authContentProviderManager.clear()
+            clientSharedPreferences.clear()
             logout.onNext(Unit)
         }
     }
@@ -73,39 +78,42 @@ class RegistrationRepositoryImpl(
         return logout
     }
 
-    override fun signOpd(clientId: String): Completable {
-        return api.postSignOpd(clientId)
-    }
-
-    override fun getClientId(): String? {
-        return authSharedPreferences.getClientId()
+    override fun signOpd(): Completable {
+        return api.postSignOpd()
     }
 
     override fun refreshToken(refreshToken: String): Completable {
         return api.postRefreshToken(refreshToken).flatMapCompletable { tokenResponse ->
-            authSharedPreferences.saveToken(tokenResponse)
+            authContentProviderManager.saveAuth(tokenResponse)
             Completable.complete()
         }
     }
 
     override fun deleteTokens() {
-        authSharedPreferences.deleteTokens()
+        authContentProviderManager.clear()
     }
 
     override fun getRefreshToken(): String? {
-        return authSharedPreferences.getRefreshToken()
+        return authContentProviderManager.getRefreshToken()
     }
 
     override fun getRefreshTokenExpiresAt(): DateTime? {
-        return authSharedPreferences.getRefreshTokenExpiresAt()
+        return authContentProviderManager.getRefreshTokenExpiresAt()
     }
 
     override fun isAuthorized(): Boolean {
-        return authSharedPreferences.isAuthorized()
+        return authContentProviderManager.isAuthorized()
     }
 
-    override fun setMockToken() {
-        authSharedPreferences.saveToken(TokenResponse("0", "jaskdjkasjdklajkdlj", DateTime.now().plusDays(2), "jaskldjalkdla",DateTime.now().plusDays(2)))
+    override fun getAuthStateSubject(): PublishSubject<AuthState> {
+        return authContentProviderManager.authStateSubject
     }
 
+    override fun forceSaveAuthCredentials() {
+        authContentProviderManager.saveAuth(
+            authContentProviderManager.getAccessToken() ?: "",
+            getRefreshToken() ?: "",
+            authContentProviderManager.getRefreshTokenExpiresAt() ?: DateTime.now()
+        )
+    }
 }

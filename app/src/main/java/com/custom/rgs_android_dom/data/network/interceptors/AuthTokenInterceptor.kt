@@ -2,9 +2,7 @@ package com.custom.rgs_android_dom.data.network.interceptors
 
 import com.custom.rgs_android_dom.data.network.error.MSDNetworkErrorResponse
 import com.custom.rgs_android_dom.domain.repositories.RegistrationRepository
-import com.custom.rgs_android_dom.utils.logException
 import com.google.gson.Gson
-import io.reactivex.rxkotlin.subscribeBy
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
@@ -36,7 +34,7 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
             val response = chain.proceed(
                 originalRequest.newBuilder()
                     .apply {
-                        registrationRepository.getAuthToken()?.let { authToken ->
+                        registrationRepository.getAccessToken()?.let { authToken ->
                             header(AUTHORIZATION_HEADER, "$AUTHORIZATION_BEARER $authToken")
                         }
                     }
@@ -50,29 +48,12 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
                 response.body.use { body ->
                     val responseString = body?.string() ?: ""
                     val errorResponse = parseError(responseString, response.code)
-
                     if (errorResponse.code in ERROR_CODE_TOKEN_EXPIRED) {
-                        //registrationRepository.deleteTokens()
-                        refreshToken()
-
-                        return chain.proceed(
-                            originalRequest.newBuilder()
-                                .apply {
-                                    registrationRepository.getAuthToken()?.let { authToken ->
-                                        header(
-                                            AUTHORIZATION_HEADER,
-                                            "$AUTHORIZATION_BEARER $authToken"
-                                        )
-                                    }
-                                }
-                                .build()
-                        )
-
-                    } else {
-                        response.newBuilder()
-                            .body(responseString.toResponseBody(body?.contentType()))
-                            .build()
+                        registrationRepository.clearAuth()
                     }
+                    response.newBuilder()
+                        .body(responseString.toResponseBody(body?.contentType()))
+                        .build()
                 }
             }
         }
@@ -81,28 +62,6 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
     private fun isAuthorizationNotRequired(request: Request): Boolean {
         return request.url.encodedPath in noAuthorizationPaths
     }
-
-    @Synchronized
-    private fun refreshToken() {
-        val refreshTokenExpiresAt = registrationRepository.getRefreshTokenExpiresAt()
-        if (refreshTokenExpiresAt?.isBeforeNow == true) {
-            registrationRepository.clearAuth()
-        } else {
-            registrationRepository.getRefreshToken()?.let { refreshToken ->
-                synchronized(this) {
-                    try {
-                        registrationRepository.refreshToken("$AUTHORIZATION_BEARER $refreshToken")
-                            .subscribeBy(onError = {
-                                registrationRepository.clearAuth()
-                            })
-                    } catch (e: Exception) {
-                        logException(this, e)
-                    }
-                }
-            }
-        }
-    }
-
 
     private fun parseError(errorResponse: String, errorCode: Int): MSDNetworkErrorResponse {
         if (errorCode == 401) {
