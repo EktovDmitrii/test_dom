@@ -13,14 +13,14 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true"
             android:overScrollMode="never"
-            android:paddingTop="10dp">
+            android:paddingTop="12dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/stubImageView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="500dp"
+                android:adjustViewBounds="true"
                 app:srcCompat="@drawable/main_stub_1"/>
 
         </androidx.core.widget.NestedScrollView>
@@ -30,7 +30,6 @@
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/main_stub_2"
             android:layout_gravity="bottom|center_horizontal"/>
-
 
 
     </FrameLayout>

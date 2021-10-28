@@ -8,7 +8,6 @@ import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
-import com.custom.rgs_android_dom.views.edit_text.MSDLabelIconEditText
 import com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
 
 class EditAgentFragment : BaseFragment<EditAgentViewModel, FragmentEditAgentBinding>(R.layout.fragment_edit_agent) {
@@ -40,13 +39,15 @@ class EditAgentFragment : BaseFragment<EditAgentViewModel, FragmentEditAgentBind
             binding.saveTextView.isEnabled = it
         }
 
-        subscribe(viewModel.validateExceptionObserver){
-            when (it.field){
-                ClientField.AGENTCODE -> {
-                    binding.agentCodeEditText.setState(MSDLabelEditText.State.ERROR, it.errorMessage)
-                }
-                ClientField.AGENTPHONE -> {
-                    binding.agentPhoneEditText.setState(MSDMaskedLabelEditText.State.ERROR, it.errorMessage)
+        subscribe(viewModel.validateExceptionObserver){ specError ->
+            specError.fields.forEach {
+                when (it.fieldName){
+                    ClientField.AGENTCODE -> {
+                        binding.agentCodeEditText.setState(MSDLabelEditText.State.ERROR, it.errorMessage)
+                    }
+                    ClientField.AGENTPHONE -> {
+                        binding.agentPhoneEditText.setState(MSDMaskedLabelEditText.State.ERROR, it.errorMessage)
+                    }
                 }
             }
         }

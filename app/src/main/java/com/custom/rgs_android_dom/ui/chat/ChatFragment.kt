@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.ui.chat
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentChatBinding
@@ -24,6 +25,10 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
 
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
+        }
+
+        binding.messageEditText.addTextChangedListener {
+            binding.sendMessageImageView.isEnabled = it.toString().isNotEmpty()
         }
 
         binding.sendMessageImageView.setOnDebouncedClickListener {

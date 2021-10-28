@@ -3,7 +3,6 @@ package com.custom.rgs_android_dom.domain.client
 import com.custom.rgs_android_dom.domain.client.mappers.AgentMapper
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
-import com.custom.rgs_android_dom.domain.client.exceptions.ValidateClientException
 import com.custom.rgs_android_dom.domain.client.exceptions.ValidateFieldModel
 import com.custom.rgs_android_dom.domain.client.models.Gender
 import com.custom.rgs_android_dom.domain.client.mappers.ClientShortViewStateMapper
@@ -288,7 +287,8 @@ class ClientInteractor(
         if (!editPersonalDataViewState.isDocSerialSaved && editPersonalDataViewState.docSerial.isNotEmpty()){
             if (editPersonalDataViewState.docSerial.trim().length != DOC_SERIAL_LENGTH){
                 errorsValidate.add(ValidateFieldModel(ClientField.DOC_SERIAL, "Проверьте, правильно ли введена серия паспорта"))
-            } else if (editPersonalDataViewState.docSerial.trim().length == DOC_SERIAL_LENGTH && editPersonalDataViewState.docNumber.trim().length != DOC_NUMBER_LENGTH){
+            }
+            if (editPersonalDataViewState.docNumber.trim().length != DOC_NUMBER_LENGTH){
                 errorsValidate.add(ValidateFieldModel(ClientField.DOC_NUMBER, "Проверьте, правильно ли введён номер паспорта"))
             }
         }
@@ -296,12 +296,11 @@ class ClientInteractor(
         if (!editPersonalDataViewState.isDocNumberSaved && editPersonalDataViewState.docNumber.isNotEmpty()){
             if (editPersonalDataViewState.docNumber.trim().length != DOC_NUMBER_LENGTH){
                 errorsValidate.add(ValidateFieldModel(ClientField.DOC_NUMBER, "Проверьте, правильно ли введён номер паспорта"))
-            } else if (editPersonalDataViewState.docNumber.trim().length == DOC_NUMBER_LENGTH && editPersonalDataViewState.docSerial.trim().length != DOC_SERIAL_LENGTH){
+            }
+            if (editPersonalDataViewState.docSerial.trim().length != DOC_SERIAL_LENGTH){
                 errorsValidate.add(ValidateFieldModel(ClientField.DOC_SERIAL, "Проверьте, правильно ли введена серия паспорта"))
             }
         }
-
-
 
         if (editPersonalDataViewState.wasSecondPhoneEdited && editPersonalDataViewState.secondPhone.isNotEmpty() && !editPersonalDataViewState.isSecondPhoneValid){
             errorsValidate.add(ValidateFieldModel(ClientField.SECOND_PHONE, "Проверьте, правильно ли введён номер телефона"))
@@ -379,31 +378,21 @@ class ClientInteractor(
     }
 
     fun updateAgent(): Completable {
+        val errorsValidate = ArrayList<ValidateFieldModel>()
         if (editAgentViewState.agentCode.trim().isEmpty()){
-            return Completable.error(
-                ValidateClientException(
-                    ClientField.AGENTCODE,
-                    ""
-                )
-            )
+            errorsValidate.add(ValidateFieldModel(ClientField.AGENTCODE, ""))
         }
 
         if (editAgentViewState.agentPhone.trim().isEmpty()){
-            return Completable.error(
-                ValidateClientException(
-                    ClientField.AGENTPHONE,
-                    ""
-                )
-            )
+            errorsValidate.add(ValidateFieldModel(ClientField.AGENTPHONE, ""))
         }
 
         if (editAgentViewState.agentPhone.isNotEmpty() && !editAgentViewState.isAgentPhoneValid){
-            return Completable.error(
-                ValidateClientException(
-                    ClientField.AGENTPHONE,
-                    ""
-                )
-            )
+            errorsValidate.add(ValidateFieldModel(ClientField.AGENTPHONE, ""))
+        }
+
+        if (errorsValidate.isNotEmpty()){
+            return Completable.error(SpecificValidateClientExceptions(errorsValidate))
         }
         return clientRepository.updateAgent(editAgentViewState.agentCode, editAgentViewState.agentPhone)
     }

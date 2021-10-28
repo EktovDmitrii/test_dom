@@ -101,6 +101,7 @@
                     android:id="@+id/sendMessageImageView"
                     style="@style/Icon.Filled.Primary"
                     app:srcCompat="@drawable/ic_send_20px"
+                    android:enabled="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>
