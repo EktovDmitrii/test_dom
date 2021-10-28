@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui.client
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentClientBinding
@@ -18,6 +19,8 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.swipeRefreshLayout.setColorSchemeResources(R.color.secondary600)
+
         binding.propertyItemsRecycler.adapter = PropertyItemsAdapter(
             onAddPropertyClick = {
                 viewModel.onAddPropertyClick()
@@ -32,6 +35,10 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
                 gap = 16.dp(requireContext())
             )
         )
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.onRefresh()
+        }
 
         binding.logoutRelativeLayout.setOnDebouncedClickListener {
             viewModel.onLogoutClick()
@@ -82,7 +89,7 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
             }
 
             if (state.hasAgentInfo){
-                binding.agentInfoTextView.text = "Данные агента"
+                binding.agentInfoTextView.text = "Данные об агенте"
             } else {
                 binding.agentInfoTextView.text = "Я знаю код агента"
             }
@@ -90,6 +97,10 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
 
         subscribe(viewModel.networkErrorObserver) {
             toast(it)
+        }
+
+        subscribe(viewModel.swipeRefreshingObserver){
+            binding.swipeRefreshLayout.isRefreshing = it
         }
     }
 

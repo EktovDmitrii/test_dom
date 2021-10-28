@@ -42,7 +42,9 @@ class MainViewModel(private val registrationInteractor: RegistrationInteractor) 
     }
 
     fun onChatClick() {
-        closeController.value = Unit
-        ScreenManager.showScreen(ChatFragment())
+        if (registrationInteractor.isAuthorized()){
+            ScreenManager.showScreen(ChatFragment())
+        }
     }
+
 }
