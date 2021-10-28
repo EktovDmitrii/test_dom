@@ -104,11 +104,18 @@ class MainViewModel(private val registrationInteractor: RegistrationInteractor,
             .addTo(dataCompositeDisposable)
     }
 
-    private fun logout(){
+    private fun logout() {
         registrationInteractor.logout()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe()
             .addTo(dataCompositeDisposable)
     }
+
+    fun onChatClick() {
+        if (registrationInteractor.isAuthorized()){
+            ScreenManager.showScreen(ChatFragment())
+        }
+    }
+
 }

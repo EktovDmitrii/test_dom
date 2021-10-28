@@ -16,7 +16,7 @@ class MainStubFragment : BaseBottomSheetFragment<MainStubViewModel, FragmentMain
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.stubLinearLayout.setOnDebouncedClickListener {
+        binding.stubImageView.setOnDebouncedClickListener {
             viewModel.onStubClick()
         }
     }

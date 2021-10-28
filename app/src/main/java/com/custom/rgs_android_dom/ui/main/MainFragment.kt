@@ -73,7 +73,7 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
         binding.contentConstraintLayout.background = transitionBackground
 
         binding.toolbarChatIcon.setOnDebouncedClickListener {
-            ScreenManager.showScreen(ChatFragment())
+            viewModel.onChatClick()
         }
 
         ScreenManager.initBottomSheet(R.id.bottomContainer)

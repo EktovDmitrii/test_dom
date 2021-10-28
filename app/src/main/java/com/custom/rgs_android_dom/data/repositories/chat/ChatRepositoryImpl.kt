@@ -9,7 +9,6 @@ import com.custom.rgs_android_dom.domain.chat.models.ChatMessageModel
 import com.custom.rgs_android_dom.domain.repositories.ChatRepository
 import io.reactivex.Completable
 import io.reactivex.Single
-import java.util.concurrent.TimeUnit
 
 class ChatRepositoryImpl(private val api: MSDApi,
                          private val clientSharedPreferences: ClientSharedPreferences
@@ -18,7 +17,6 @@ class ChatRepositoryImpl(private val api: MSDApi,
     override fun getChatMessages(): Single<List<ChatMessageModel>> {
         val client = clientSharedPreferences.getClient()
         val channelId = client?.getChatChannelId() ?: ""
-
         return api.getChatMessages(channelId, 1000, 0).map {
             ChatMapper.responseToChatMessages(it, client?.userId ?: "")
         }.map {
