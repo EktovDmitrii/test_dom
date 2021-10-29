@@ -74,11 +74,11 @@ class ClientRepositoryImpl(
     override fun loadAndSaveClient(): Completable {
         return api.getMyClient().flatMapCompletable { response ->
             val client = ClientMapper.responseToClient(response)
-            clientSharedPreferences.getClient()?.let { clientCached ->
-                if (clientCached != client) {
-                    clientSharedPreferences.saveClient(client)
-                    clientUpdatedSubject.onNext(client)
-                }
+
+            val cachedClient = clientSharedPreferences.getClient()
+            if (cachedClient != null && cachedClient != client || cachedClient == null){
+                clientSharedPreferences.saveClient(client)
+                clientUpdatedSubject.onNext(client)
             }
 
             Completable.complete()

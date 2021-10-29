@@ -75,7 +75,7 @@
                 android:lineSpacingMultiplier="0"
                 android:textColor="@color/secondary600"
                 android:textSize="14sp"
-                tools:text="Я принимаю условия пользовательского соглашения, политику обработки персональных данных и даю своё согласие на обработку персональных данных" />
+                app:translationTextKey="Я принимаю условия пользовательского соглашения, политику обработки персональных данных и даю своё согласие на обработку персональных данных"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

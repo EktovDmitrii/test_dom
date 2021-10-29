@@ -24,11 +24,12 @@ import com.custom.rgs_android_dom.ui.registration.fill_client.RegistrationFillCl
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneViewModel
 import com.custom.rgs_android_dom.ui.screen_stub.ScreenStubViewModel
 import com.custom.rgs_android_dom.ui.splash.SplashViewModel
+import com.custom.rgs_android_dom.ui.web_view.WebViewViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelModule = module {
-    viewModel { parameters -> RegistrationCodeViewModel(phone = parameters[0], token = parameters[1], registrationInteractor = get()) }
+    viewModel { parameters -> RegistrationCodeViewModel(phone = parameters[0], token = parameters[1], registrationInteractor = get(), clientInteractor = get()) }
     viewModel { RegistrationPhoneViewModel(countriesInteractor = get(), registrationInteractor = get()) }
     viewModel { SplashViewModel(registrationInteractor = get(), clientInteractor = get()) }
     viewModel { DemoViewModel() }
@@ -52,4 +53,5 @@ val viewModelModule = module {
     viewModel { RequestLocationRationaleViewModel() }
     viewModel { AddressSuggestionsViewModel(addressInteractor = get()) }
     viewModel { MainStubViewModel(registrationInteractor = get()) }
+    viewModel { WebViewViewModel() }
 }
