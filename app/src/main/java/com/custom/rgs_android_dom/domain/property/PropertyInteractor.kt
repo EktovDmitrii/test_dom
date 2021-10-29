@@ -82,7 +82,7 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
     fun onPropertyAddressChanged(address: AddressItemModel){
         selectAddressViewState = selectAddressViewState.copy(
             propertyAddress = address.copy(),
-            isNextTextViewEnabled = true,
+            isNextTextViewEnabled = address.addressString.isNotEmpty(),
             updatePropertyNameEditText = false
         )
         selectAddressViewStateSubject.onNext(selectAddressViewState)

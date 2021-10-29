@@ -134,7 +134,10 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
             }
             binding.nextTextView.isEnabled = selectAddressViewState.isNextTextViewEnabled
             binding.myLocationImageView.visibleIf(selectAddressViewState.isMyLocationImageViewVisible)
-            binding.addressPrimaryTextView.text = selectAddressViewState.propertyAddress.addressString
+            binding.addressPrimaryTextView.text =
+                if (selectAddressViewState.propertyAddress.addressString.isNotEmpty())
+                    selectAddressViewState.propertyAddress.addressString
+                else "Данные не найдены"
 
 
             var secondaryText = selectAddressViewState.propertyAddress.cityName
