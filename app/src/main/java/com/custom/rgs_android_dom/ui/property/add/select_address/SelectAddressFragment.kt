@@ -70,6 +70,7 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
             } else{
                 mapIsMoving = true
                 viewModel.onMapMoving()
+                binding.nextTextView.isEnabled = false
             }
         }
 
