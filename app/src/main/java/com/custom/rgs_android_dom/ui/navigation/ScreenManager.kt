@@ -80,7 +80,7 @@ object ScreenManager {
         val transaction = beginTransaction() ?: return
         //transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         transaction.add(container, fragment)
-        transaction.commit()
+        transaction.commitNow()
         addFragmentInScope(fragment, scopeId)
     }
 
