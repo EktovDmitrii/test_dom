@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.ui.navigation
 import android.util.Log
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
@@ -48,6 +49,7 @@ object ScreenManager {
         val container = containerId ?: return
         val transaction = beginTransaction() ?: return
         //transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+        getLastFragmentWithout(emptyList())?.let { transaction.hide(it) }
         transaction.add(container, fragment, menuTag.name)
         transaction.addToBackStack(menuTag.name)
         transaction.commitAllowingStateLoss()
@@ -79,6 +81,7 @@ object ScreenManager {
         val container = containerId ?: return
         val transaction = beginTransaction() ?: return
         //transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+        getLastFragmentWithout(emptyList())?.let { transaction.hide(it) }
         transaction.add(container, fragment)
         transaction.commit()
         addFragmentInScope(fragment, scopeId)
@@ -90,9 +93,12 @@ object ScreenManager {
             return
         } else {
             val transaction = beginTransaction() ?: return
+            val removed = ArrayList<Fragment>()
             scope.reversed().forEach {
                 transaction.remove(it.fragment)
+                removed.add(it.fragment)
             }
+            getLastFragmentWithout(removed)?.let { transaction.show(it) }
             transaction.commitNow()
             scopes.removeIf { it.id == scopeId }
         }
@@ -103,29 +109,32 @@ object ScreenManager {
     //todo не проверен
     fun closeScreenToId(scopeId: Int, fragmentId: Int) {
         val scope = scopes.filter { it.id == scopeId }
-        val ids = ArrayList<Int>()
         if (scope.isEmpty()) {
             return
         } else {
             val transaction = beginTransaction() ?: return
+            val removed = ArrayList<BaseFragment<*, *>>()
             scope.reversed().forEach {
                 if (fragmentId == it.fragment.getNavigateId()) {
                     return@forEach
                 } else {
                     transaction.remove(it.fragment)
-                    ids.add(it.fragment.getNavigateId())
+                    removed.add(it.fragment)
                 }
             }
+            getLastFragmentWithout(removed)?.let { transaction.show(it) }
             transaction.commit()
-            scopes.removeIf { it.id == scopeId && it.fragment.getNavigateId() in ids }
+            scopes.removeIf { it.id == scopeId && it.fragment in removed }
         }
     }
 
     fun back(idFragment: Int) {
         val transaction = beginTransaction() ?: return
+        val removed = ArrayList<Fragment>()
         scopes.forEach {
             if (it.fragment.getNavigateId() == idFragment) {
                 transaction.remove(it.fragment)
+                removed.add(it.fragment)
             }
         }
         scopes.removeIf { it.fragment.getNavigateId() == idFragment }
@@ -133,12 +142,15 @@ object ScreenManager {
         fragments[menuTag]?.forEach {
             if (it.getNavigateId() == idFragment) {
                 transaction.remove(it)
+                removed.add(it)
             }
         }
 
         fragments[menuTag]?.removeIf {
             it.getNavigateId() == idFragment
         }
+
+        getLastFragmentWithout(removed)?.let { transaction.show(it) }
 
         transaction.commitNow()
 
@@ -202,6 +214,12 @@ object ScreenManager {
             }
         }
         transaction.commit()
+    }
+
+    private fun getLastFragmentWithout(removed: List<Fragment>): Fragment? {
+        return activity?.supportFragmentManager?.fragments?.lastOrNull {
+            it is BaseFragment<*, *> && it !in removed
+        }
     }
 
     private fun notifyCurrentVisibleFragment() {
