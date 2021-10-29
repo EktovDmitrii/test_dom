@@ -1,10 +1,12 @@
 package com.custom.rgs_android_dom.ui.base
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.IdRes
 import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -22,6 +24,10 @@ import kotlin.reflect.KClass
 
 abstract class BaseBottomSheetModalFragment<VM : BaseViewModel, VB : ViewBinding>: BottomSheetDialogFragment() {
 
+    companion object {
+        const val KEYBOARD_VISIBLE_HEIGHT_DIFF = 350
+    }
+
     protected val viewModel: VM by viewModel(
         clazz = getViewModelKClass(),
         parameters = getParameters()
@@ -31,8 +37,11 @@ abstract class BaseBottomSheetModalFragment<VM : BaseViewModel, VB : ViewBinding
         createMethod = CreateMethod.INFLATE
     )
 
+    protected var isKeyboardOpen: Boolean = false
+
     private lateinit var behavior: BottomSheetBehavior<View>
     private var hasNotifiedAboutInit = false
+    private var isKeyboardListenerAttached = false
 
     abstract val TAG: String
 
@@ -61,6 +70,9 @@ abstract class BaseBottomSheetModalFragment<VM : BaseViewModel, VB : ViewBinding
         }
         subscribe(viewModel.closeObserver) {
             onClose()
+        }
+        subscribe(viewModel.isKeyboardOpenObserver) {
+            isKeyboardOpen = it
         }
 
     }
@@ -92,6 +104,25 @@ abstract class BaseBottomSheetModalFragment<VM : BaseViewModel, VB : ViewBinding
     @Suppress("UNCHECKED_CAST")
     protected fun getViewBindingJavaClass(): Class<VB> {
         return (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VB>
+    }
+
+    fun initKeyboardListener(@IdRes id: Int = android.R.id.content) {
+        if (!isKeyboardListenerAttached) {
+            isKeyboardListenerAttached = true
+            val rootView = activity?.findViewById<View>(id)
+            rootView?.let {
+                it.viewTreeObserver.addOnGlobalLayoutListener {
+                    val r = Rect()
+                    view?.getWindowVisibleDisplayFrame(r)
+                    val heightDiff: Int = it.rootView.height - (r.bottom - r.top)
+                    if (heightDiff > KEYBOARD_VISIBLE_HEIGHT_DIFF) {
+                        viewModel.onKeyboardOpen()
+                    } else {
+                        viewModel.onKeyboardClose()
+                    }
+                }
+            }
+        }
     }
 
     private fun handleState(state: BaseViewModel.LoadingState) {
