@@ -57,7 +57,7 @@ class SplashViewModel(private val registrationInteractor: RegistrationInteractor
     }
 
     private fun showMainScreen(){
-        closeController.value = Unit
         ScreenManager.showScreen(MainFragment())
+        closeController.value = Unit
     }
 }
