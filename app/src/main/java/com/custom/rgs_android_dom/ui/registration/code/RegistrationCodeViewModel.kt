@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.ui.registration.code
 import android.os.CountDownTimer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.main.MainFragment
@@ -19,7 +20,8 @@ import io.reactivex.schedulers.Schedulers
 class RegistrationCodeViewModel(
     private val phone: String,
     private var token: String,
-    private val registrationInteractor: RegistrationInteractor
+    private val registrationInteractor: RegistrationInteractor,
+    private val clientInteractor: ClientInteractor
 ) : BaseViewModel() {
 
     companion object {
@@ -77,10 +79,7 @@ class RegistrationCodeViewModel(
             .doOnSuccess { loadingStateController.value = LoadingState.CONTENT }
             .subscribeBy(
                 onSuccess = {isNewUser->
-                    closeController.value = Unit
-                    if (isNewUser){
-                        ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(phone), REGISTRATION)
-                    }
+                    saveClientAndClose(isNewUser)
                     /*else {
                         ScreenManager.showScreen(MainFragment())
                     }*/
@@ -119,5 +118,18 @@ class RegistrationCodeViewModel(
         showResendCodeController.value = Unit
     }
 
+    private fun saveClientAndClose(isNewUser: Boolean){
+        clientInteractor.loadAndSaveClient()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doFinally {
+                closeController.value = Unit
+                if (isNewUser){
+                    ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(phone), REGISTRATION)
+                }
+            }
+            .subscribe()
+            .addTo(dataCompositeDisposable)
+    }
 
 }

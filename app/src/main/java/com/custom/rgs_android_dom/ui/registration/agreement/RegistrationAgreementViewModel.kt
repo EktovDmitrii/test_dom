@@ -21,15 +21,8 @@ class RegistrationAgreementViewModel(private val phone: String,
                                      private val closeAfterAccept: Boolean,
                                      private val registrationInteractor: RegistrationInteractor) : BaseViewModel() {
 
-    private val agreementTextController = MutableLiveData<CharSequence>()
     private val isNextTextViewEnabledController = MutableLiveData<Boolean>()
-
-    val legalTextObserver: LiveData<CharSequence> = agreementTextController
     val isNextTextViewEnabledObserver: LiveData<Boolean> = isNextTextViewEnabledController
-
-    init {
-        agreementTextController.value = createAgreementText()
-    }
 
     fun onAcceptAgreementCheckedChanged(isChecked: Boolean){
         isNextTextViewEnabledController.value = isChecked
@@ -72,17 +65,4 @@ class RegistrationAgreementViewModel(private val phone: String,
             ).addTo(dataCompositeDisposable)
     }
 
-    private fun createAgreementText(): CharSequence {
-        val agreementBuilder = StringBuilder().apply{
-            append("Я принимаю условия")
-            append("\n<a href=\"https://moi-service.ru/legal/moi-servis-med/polzovatelskoe-soglashenie\">")
-            append("пользовательского соглашения,</a>")
-            append("\n<a href=\"https://moi-service.ru/legal/policy\">")
-            append("политику обработки персональных данных</a> и даю своё")
-            append("\n<a href=\"https://moi-service.ru/legal/soglasie-polzovatelya-na-obrabotku-personalnyh-dannyh\">")
-            append("согласие на обработку персональных данных")
-        }
-        return Html.fromHtml(agreementBuilder.toString(), Html.FROM_HTML_MODE_LEGACY)
-    }
-
-}
+                                     }

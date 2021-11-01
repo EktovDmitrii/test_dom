@@ -14,6 +14,10 @@
         <attr name="isUnderlined" format="boolean"/>
     </declare-styleable>
 
+    <declare-styleable name="MSDLinksTextView">
+        <attr name="translationTextKey"/>
+    </declare-styleable>
+
     <declare-styleable name="MSDPhoneInput">
         <attr name="phoneMask" format="string"/>
         <attr name="countryImage" format="reference"/>
