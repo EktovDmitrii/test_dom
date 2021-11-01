@@ -24,19 +24,20 @@ import com.custom.rgs_android_dom.ui.registration.fill_client.RegistrationFillCl
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneViewModel
 import com.custom.rgs_android_dom.ui.screen_stub.ScreenStubViewModel
 import com.custom.rgs_android_dom.ui.splash.SplashViewModel
+import com.custom.rgs_android_dom.ui.web_view.WebViewViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelModule = module {
-    viewModel { parameters -> RegistrationCodeViewModel(phone = parameters[0], token = parameters[1], registrationInteractor = get()) }
+    viewModel { parameters -> RegistrationCodeViewModel(phone = parameters[0], token = parameters[1], registrationInteractor = get(), clientInteractor = get()) }
     viewModel { RegistrationPhoneViewModel(countriesInteractor = get(), registrationInteractor = get()) }
-    viewModel { SplashViewModel(registrationInteractor = get(), translationInteractor = get()) }
+    viewModel { SplashViewModel(registrationInteractor = get(), clientInteractor = get()) }
     viewModel { DemoViewModel() }
-    viewModel { parameters-> RegistrationAgreementViewModel(phone = parameters.get(), registrationInteractor = get()) }
+    viewModel { parameters-> RegistrationAgreementViewModel(phone = parameters[0], closeAfterAccept = parameters[1], registrationInteractor = get()) }
     viewModel { parameters-> RegistrationFillClientViewModel(phone = parameters.get(), clientInteractor= get()) }
     viewModel { parameters-> CountriesViewModel(selectedCountryLetterCode = parameters.get(), countriesInteractor = get())}
     viewModel { ClientViewModel(clientInteractor = get(), registrationInteractor = get(), propertyInteractor = get()) }
-    viewModel { MainViewModel(registrationInteractor = get()) }
+    viewModel { MainViewModel(registrationInteractor = get(), clientInteractor = get()) }
     viewModel { PersonalDataViewModel(clientInteractor = get()) }
     viewModel { EditPersonalDataViewModel(clientInteractor = get()) }
     viewModel { AgentViewModel(clientInteractor = get()) }
@@ -52,4 +53,5 @@ val viewModelModule = module {
     viewModel { RequestLocationRationaleViewModel() }
     viewModel { AddressSuggestionsViewModel(addressInteractor = get()) }
     viewModel { MainStubViewModel(registrationInteractor = get()) }
+    viewModel { WebViewViewModel() }
 }

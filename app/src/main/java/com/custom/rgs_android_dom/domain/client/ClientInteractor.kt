@@ -405,6 +405,10 @@ class ClientInteractor(
         return clientRepository.getEditAgentRequestedSubject()
     }
 
+    fun loadAndSaveClient(): Completable {
+        return clientRepository.loadAndSaveClient()
+    }
+
     private fun isBirthdayValid(birthday: LocalDateTime): Boolean {
         return !(birthday.isAfter(MIN_DATE) || birthday.isBefore(
             MAX_DATE

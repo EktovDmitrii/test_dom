@@ -7,9 +7,11 @@ import com.custom.rgs_android_dom.databinding.FragmentRegistrationAgreementBindi
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.web_view.WebViewFragment
 import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
+import java.lang.StringBuilder
 
 class RegistrationAgreementFragment : BaseFragment<RegistrationAgreementViewModel, FragmentRegistrationAgreementBinding>(
     R.layout.fragment_registration_agreement
@@ -17,20 +19,27 @@ class RegistrationAgreementFragment : BaseFragment<RegistrationAgreementViewMode
 
     companion object {
         private const val ARG_PHONE = "ARG_PHONE"
+        private const val ARG_CLOSE_AFTER_ACCEPT = "ARG_CLOSE_AFTER_ACCEPT"
 
-        fun newInstance(phone: String): RegistrationAgreementFragment {
+        fun newInstance(phone: String, closeAfterAccept: Boolean = false): RegistrationAgreementFragment {
             return RegistrationAgreementFragment().args {
                 putString(ARG_PHONE, phone)
+                putBoolean(ARG_CLOSE_AFTER_ACCEPT, closeAfterAccept)
             }
         }
     }
 
     override fun getParameters(): ParametersDefinition  = {
-        parametersOf(requireArguments().getString(ARG_PHONE))
+        parametersOf(
+            requireArguments().getString(ARG_PHONE),
+            requireArguments().getBoolean(ARG_CLOSE_AFTER_ACCEPT)
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        makeAgreementLinks()
 
         binding.acceptAgreementCheckBox.setOnCheckedChangeListener { _, isChecked ->
             viewModel.onAcceptAgreementCheckedChanged(isChecked)
@@ -50,11 +59,6 @@ class RegistrationAgreementFragment : BaseFragment<RegistrationAgreementViewMode
 
         subscribe(viewModel.isNextTextViewEnabledObserver){
             binding.nextTextView.isEnabled = it
-        }
-
-        subscribe(viewModel.legalTextObserver){
-            binding.agreementTextView.text = it
-            binding.agreementTextView.stripUnderlines()
         }
 
         subscribe(viewModel.networkErrorObserver){
@@ -80,6 +84,23 @@ class RegistrationAgreementFragment : BaseFragment<RegistrationAgreementViewMode
     override fun onContent() {
         super.onContent()
         binding.nextTextView.setLoading(false)
+    }
+
+    private fun makeAgreementLinks(){
+        binding.agreementTextView.makeLinks(
+            Pair("пользовательского соглашения,", View.OnClickListener {
+                val webViewFragment = WebViewFragment.newInstance("https://moi-service.ru/legal/moi-servis-med/polzovatelskoe-soglashenie")
+                ScreenManager.showScreen(webViewFragment)
+            }),
+            Pair("политику обработки персональных данных", View.OnClickListener {
+                val webViewFragment = WebViewFragment.newInstance("https://moi-service.ru/legal/policy")
+                ScreenManager.showScreen(webViewFragment)
+            }),
+            Pair("согласие на обработку персональных данных", View.OnClickListener {
+                val webViewFragment = WebViewFragment.newInstance("https://moi-service.ru/legal/soglasie-polzovatelya-na-obrabotku-personalnyh-dannyh")
+                ScreenManager.showScreen(webViewFragment)
+            })
+        )
     }
 
 }

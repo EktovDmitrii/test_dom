@@ -5,6 +5,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import com.google.android.material.textfield.TextInputLayout
 
+private const val SHOW_KEYBOARD_DELAY_MS = 100
+
 fun EditText.focus() {
     isFocusableInTouchMode = true
     isFocusable = true
@@ -19,6 +21,12 @@ fun EditText.unFocus() {
 fun EditText.showKeyboard() {
     val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+}
+
+fun EditText.showKeyboardWithDelay() {
+    postDelayed({
+        this.showKeyboard()
+    }, SHOW_KEYBOARD_DELAY_MS.toLong())
 }
 
 fun EditText.hideKeyboard() {

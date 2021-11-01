@@ -1,8 +1,11 @@
 package com.custom.rgs_android_dom.ui.client
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentClientBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
@@ -10,6 +13,11 @@ import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.utils.recycler_view.HorizontalItemDecoration
 
 class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClientBinding>() {
+
+    companion object {
+        private const val ACTION_OPEN_MED_APP = "com.custom.my_service_android_client.action.auth"
+        private const val MED_APP_PROD_ID = "com.custom.my_service_android_client"
+    }
 
     override val TAG: String = "CLIENT_FRAGMENT"
 
@@ -73,6 +81,10 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
             viewModel.onNotCreatedScreenClick()
         }
 
+        binding.openMedAppLinearLayout.setOnDebouncedClickListener {
+            viewModel.onOpenMedAppClick()
+        }
+
         subscribe(viewModel.propertyItemsObserver) { propertyItems ->
             propertyItemsAdapter.setItems(propertyItems)
         }
@@ -99,6 +111,10 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
             toast(it)
         }
 
+        subscribe(viewModel.navigateToMedAppObserver) {
+            openMedApp()
+        }
+
         subscribe(viewModel.swipeRefreshingObserver){
             binding.swipeRefreshLayout.isRefreshing = it
         }
@@ -106,5 +122,36 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
 
     override fun getThemeResource(): Int {
         return R.style.BottomSheetNoDim
+    }
+
+    private fun openMedApp(){
+        try {
+            val intent = Intent().apply {
+                action = ACTION_OPEN_MED_APP
+                `package` = BuildConfig.RME_APP_ID
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            startActivity(intent)
+        } catch (e: Exception){
+            navigateToGooglePlay()
+        }
+    }
+
+    private fun navigateToGooglePlay(){
+        val uri = Uri.parse("market://details?id=$MED_APP_PROD_ID")
+        var intent = Intent(Intent.ACTION_VIEW, uri)
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or
+                Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
+                Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
+
+        if (intent.resolveActivity(requireActivity().packageManager) != null) {
+            startActivity(intent)
+        } else {
+            intent = Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=$MED_APP_PROD_ID"))
+            if (intent.resolveActivity(requireActivity().packageManager) != null) {
+                startActivity(intent)
+            }
+        }
     }
 }

@@ -23,8 +23,19 @@ open class BaseViewModel : ViewModel(), KoinComponent {
     protected val notificationController = MutableLiveData<String>()
     val notificationObserver: LiveData<String> = notificationController
 
+    private val isKeyboardOpenController = MutableLiveData(false)
+    val isKeyboardOpenObserver: LiveData<Boolean> = isKeyboardOpenController
+
     fun close(){
         closeController.value = Unit
+    }
+
+    fun onKeyboardOpen() {
+        isKeyboardOpenController.value = true
+    }
+
+    fun onKeyboardClose() {
+        isKeyboardOpenController.value = false
     }
 
     protected fun handleNetworkException(throwable: Throwable){

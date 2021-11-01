@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -43,7 +44,6 @@ class MainActivity : AppCompatActivity() {
             loadTranslation()
             webSocketInteractor.connect()
         }
-
     }
 
    /* override fun dispatchTouchEvent(event: MotionEvent): Boolean {

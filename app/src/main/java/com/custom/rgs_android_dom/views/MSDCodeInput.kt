@@ -121,7 +121,7 @@ class MSDCodeInput @JvmOverloads constructor(
             it.unFocus()
         }
         editTextViews.first().focus()
-        editTextViews.first().showKeyboard()
+        editTextViews.first().showKeyboardWithDelay()
     }
 
     override fun setEnabled(isEnabled: Boolean){

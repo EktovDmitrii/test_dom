@@ -146,7 +146,7 @@ class RegistrationFillClientFragment : BaseFragment<RegistrationFillClientViewMo
                     ClientField.BIRTHDATE -> binding.birthdayEditText.setState(MSDLabelIconEditText.State.ERROR, "Проверьте, правильно ли введена дата рождения")
                     ClientField.FIRSTNAME -> binding.nameEditText.setState(MSDLabelEditText.State.ERROR, "Проверьте, правильно ли введено имя")
                     ClientField.LASTNAME -> binding.surnameEditText.setState(MSDLabelEditText.State.ERROR, "Проверьте, правильно ли введена фамилия")
-                    ClientField.AGENTCODE -> binding.agentCodeEditText.setState(MSDLabelEditText.State.ERROR, "Проверьте, правильно ли введен код агента")
+                    ClientField.AGENTCODE -> binding.agentCodeEditText.setState(MSDLabelEditText.State.ERROR, "Проверьте, правильно ли введён код агента")
                     ClientField.AGENTPHONE -> binding.agentPhoneEditText.setState(MSDMaskedLabelEditText.State.ERROR, "Проверьте, правильно ли введён номер телефона")
                 }
             }

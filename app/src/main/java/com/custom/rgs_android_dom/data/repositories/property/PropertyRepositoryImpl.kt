@@ -4,7 +4,7 @@ import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.PropertyMapper
 import com.custom.rgs_android_dom.data.network.requests.AddPropertyRequest
 import com.custom.rgs_android_dom.data.network.requests.PropertyAddressRequest
-import com.custom.rgs_android_dom.data.preferences.AuthSharedPreferences
+import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.repositories.PropertyRepository
@@ -13,7 +13,7 @@ import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 
 class PropertyRepositoryImpl(private val api: MSDApi,
-                             private val authSharedPreferences: AuthSharedPreferences) : PropertyRepository {
+                             private val clientSharedPreferences: ClientSharedPreferences) : PropertyRepository {
 
     private val propertyAddedSubject = PublishSubject.create<Unit>()
 
@@ -45,15 +45,13 @@ class PropertyRepositoryImpl(private val api: MSDApi,
             comment = comment,
             documents = null
         )
-        val clientId = authSharedPreferences.getClientId()
-        return api.addProperty(clientId, addPropertyRequest).doOnComplete {
+        return api.addProperty(addPropertyRequest).doOnComplete {
             propertyAddedSubject.onNext(Unit)
         }
     }
 
     override fun getAllProperty(): Single<List<PropertyItemModel>> {
-        val clientId = authSharedPreferences.getClientId()
-        return api.getAllProperty(clientId).map { response->
+        return api.getAllProperty().map { response->
             response.objects?.map { PropertyMapper.responseToProperty(it) } ?: listOf()
         }
     }

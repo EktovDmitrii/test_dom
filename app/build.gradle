@@ -71,6 +71,8 @@ android {
             buildConfigField "String", "BASE_URL", '"https://ddom.moi-service.ru"'
             buildConfigField "String", "WS_URL", '"wss://ddom.moi-service.ru/ws/?token=%s"'
             buildConfigField "String", "YANDEX_MAPS_KEY", '"8472a02b-fba9-4544-9b23-3b2f8944f584"'
+            buildConfigField "String", "RME_APP_ID", '"com.custom.my_service_android_client"'
+            manifestPlaceholders = [ authProviderAuthority:"com.custom.rgs_android_dom.data.providers" ]
         }
 
         stage {
@@ -80,6 +82,8 @@ android {
             buildConfigField "String", "BASE_URL", '"https://ddom.moi-service.ru"'
             buildConfigField "String", "WS_URL", '"wss://ddom.moi-service.ru/ws/?token=%s"'
             buildConfigField "String", "YANDEX_MAPS_KEY", '"8472a02b-fba9-4544-9b23-3b2f8944f584"'
+            buildConfigField "String", "RME_APP_ID", '"com.custom.my_service_android_client.beta"'
+            manifestPlaceholders = [ authProviderAuthority:"com.custom.rgs_android_dom.test.data.providers" ]
         }
 
         dev {
@@ -89,6 +93,8 @@ android {
             buildConfigField "String", "BASE_URL", '"https://ddom.moi-service.ru"'
             buildConfigField "String", "WS_URL", '"wss://ddom.moi-service.ru/ws/?token=%s"'
             buildConfigField "String", "YANDEX_MAPS_KEY", '"8472a02b-fba9-4544-9b23-3b2f8944f584"'
+            buildConfigField "String", "RME_APP_ID", '"com.custom.my_service_android_client.dev"'
+            manifestPlaceholders = [ authProviderAuthority:"com.custom.rgs_android_dom.dev.data.providers" ]
         }
 
     }

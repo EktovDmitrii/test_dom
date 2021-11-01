@@ -2,7 +2,6 @@ package com.custom.rgs_android_dom.ui.address.suggestions
 
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.custom.rgs_android_dom.databinding.FragmentAddressSuggestionsBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
@@ -38,19 +37,18 @@ class AddressSuggestionsFragment : BaseBottomSheetModalFragment<AddressSuggestio
             binding.emptyResultsLinearLayout.gone()
             binding.addressItemsRecycler.gone()
         }
+
+        initKeyboardListener()
     }
 
     override fun isFullScreen(): Boolean {
         return true
     }
 
-    override fun onClose() {
-        super.onClose()
-        requireActivity().hideKeyboardForced()
-    }
-
     override fun onDismiss(dialog: DialogInterface) {
-        requireActivity().hideKeyboardForced()
+        if (isKeyboardOpen)
+            requireActivity().hideKeyboardForced()
+
         super.onDismiss(dialog)
     }
 
