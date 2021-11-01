@@ -44,7 +44,6 @@ class SelectAddressViewModel(private val propertyCount: Int,
 
     init {
         propertyInteractor.selectAddressViewStateSubject
-            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
