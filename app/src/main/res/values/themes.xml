@@ -171,7 +171,7 @@
     </style>
 
     <style name="Icon.Filled.Primary" parent="Icon.Filled">
-        <item name="android:tint">@color/white</item>
+        <item name="android:tint">@color/icon_filled_primary_tint_color</item>
         <item name="android:background">@drawable/icon_filled_primary_background</item>
     </style>
 

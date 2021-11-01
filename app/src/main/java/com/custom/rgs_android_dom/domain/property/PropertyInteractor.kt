@@ -187,7 +187,7 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
     }
 
     fun updatePropertyComment(comment: String){
-        propertyDetailsViewState = propertyDetailsViewState.copy(comment = comment.trim())
+        propertyDetailsViewState = propertyDetailsViewState.copy(comment = comment)
     }
 
     fun addProperty(): Completable {

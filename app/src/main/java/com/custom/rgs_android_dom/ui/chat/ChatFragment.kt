@@ -27,16 +27,13 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
             viewModel.onBackClick()
         }
 
-        binding.sendMessageImageView.apply {
-            isEnabled = binding.messageEditText.text.toString().isNotEmpty()
-            setOnDebouncedClickListener {
-                viewModel.onSendMessageClick(binding.messageEditText.text.toString().trim())
-                binding.messageEditText.text?.clear()
-            }
+        binding.messageEditText.addTextChangedListener {
+            binding.sendMessageImageView.isEnabled = it.toString().isNotEmpty()
         }
 
-        binding.messageEditText.addTextChangedListener {
-            binding.sendMessageImageView.isEnabled = it.toString().trim().isNotEmpty()
+        binding.sendMessageImageView.setOnDebouncedClickListener {
+            viewModel.onSendMessageClick(binding.messageEditText.text.toString().trim())
+            binding.messageEditText.text?.clear()
         }
 
         subscribe(viewModel.chatItemsObserver){
