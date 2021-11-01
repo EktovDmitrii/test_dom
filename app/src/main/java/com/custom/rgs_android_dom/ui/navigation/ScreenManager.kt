@@ -83,7 +83,7 @@ object ScreenManager {
         //transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         getLastFragmentWithout(emptyList())?.let { transaction.hide(it) }
         transaction.add(container, fragment)
-        transaction.commit()
+        transaction.commitNow()
         addFragmentInScope(fragment, scopeId)
     }
 
