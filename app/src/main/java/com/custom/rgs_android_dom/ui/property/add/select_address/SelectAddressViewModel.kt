@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.address.AddressInteractor
+import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.view_states.SelectAddressViewState
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
@@ -63,6 +64,7 @@ class SelectAddressViewModel(private val propertyCount: Int,
                     locationController.value = it.coordinates
                 },
                 onError = {
+                    propertyInteractor.onPropertyAddressChanged(AddressItemModel.createEmpty())
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
@@ -109,6 +111,7 @@ class SelectAddressViewModel(private val propertyCount: Int,
                 },
                 onError = {
                     showPinLoaderController.value = false
+                    propertyInteractor.onPropertyAddressChanged(AddressItemModel.createEmpty())
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
