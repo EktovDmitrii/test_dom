@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.data.repositories.registration
 
+import android.util.Log
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.requests.GetCodeRequest
 import com.custom.rgs_android_dom.data.network.requests.LoginRequest
