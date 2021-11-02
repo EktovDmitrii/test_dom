@@ -128,8 +128,13 @@ class RegistrationCodeViewModel(
                     ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(phone), REGISTRATION)
                 }
             }
-            .subscribe()
+            .subscribeBy(
+                onError = {
+                    logException(this, it)
+                }
+            )
             .addTo(dataCompositeDisposable)
     }
+
 
 }

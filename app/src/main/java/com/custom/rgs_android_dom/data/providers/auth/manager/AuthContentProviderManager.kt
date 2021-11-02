@@ -32,11 +32,12 @@ class AuthContentProviderManager(private val context: Context) {
 
     private val contentObserver = object : ContentObserver(null) {
         override fun onChange(self: Boolean) {
-            if (isAuthorized()){
+            // TODO Find out how we should handle data updates in background
+            /*if (isAuthorized()){
                 authStateSubject.onNext(AuthState.AUTH_SAVED)
             } else {
                 authStateSubject.onNext(AuthState.AUTH_CLEARED)
-            }
+            }*/
         }
     }
 
@@ -184,6 +185,7 @@ class AuthContentProviderManager(private val context: Context) {
         for (uri in actionUris) {
             try {
                 if (uri != MSDAuthContentProvider.URI_ACTIONS){
+                    Log.d("MyLog", "REGISTERING OBSERVER FOR URI " + uri.toString())
                     context.contentResolver.registerContentObserver(uri, true, contentObserver)
                 }
             } catch (e: Exception){
