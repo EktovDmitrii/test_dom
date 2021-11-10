@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.domain.chat
 
+import com.custom.rgs_android_dom.domain.chat.models.ChannelMemberModel
 import com.custom.rgs_android_dom.domain.chat.models.ChatDateDividerModel
 import com.custom.rgs_android_dom.domain.chat.models.ChatItemModel
 import com.custom.rgs_android_dom.domain.chat.models.ChatMessageModel
@@ -23,6 +24,7 @@ class ChatInteractor(
     }
 
     private var cachedChatItems = arrayListOf<ChatItemModel>()
+    private var cachedChannelMembers = arrayListOf<ChannelMemberModel>()
 
     fun getChatItems(): Single<List<ChatItemModel>> {
         return chatRepository.getChatMessages().map { allMessages->
@@ -46,6 +48,19 @@ class ChatInteractor(
             }
             cachedChatItems = chatItems
             return@map chatItems
+        }.flatMap {
+            return@flatMap chatRepository.getChannelMembers()
+        }.map {
+            cachedChannelMembers.clear()
+            cachedChannelMembers.addAll(it)
+
+            cachedChatItems.forEach { chatItem->
+                if (chatItem is ChatMessageModel){
+                    chatItem.member = cachedChannelMembers.find { it.userId == chatItem.userId }
+                }
+            }
+
+            return@map cachedChatItems
         }
     }
 
@@ -59,6 +74,7 @@ class ChatInteractor(
             val chatItems = arrayListOf<ChatItemModel>()
             if (eventModel is WsChatMessageModel){
                 eventModel.data?.takeIf {!it.type.startsWith(TYPE_SYSTEM_MESSAGE)}?.let{ currentMessage->
+                    currentMessage.member = cachedChannelMembers.find { it.userId == currentMessage.userId }
                     if (cachedChatItems.isNotEmpty()){
                         val prevMessage = cachedChatItems[cachedChatItems.size-1] as ChatMessageModel
                         getDateDivider(currentMessage.createdAt, prevMessage.createdAt)?.let { dateDivider->

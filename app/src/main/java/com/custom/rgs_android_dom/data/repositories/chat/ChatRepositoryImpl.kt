@@ -5,6 +5,7 @@ import com.custom.rgs_android_dom.data.network.mappers.ChatMapper
 import com.custom.rgs_android_dom.data.network.requests.SendMessageRequest
 import com.custom.rgs_android_dom.data.preferences.AuthSharedPreferences
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
+import com.custom.rgs_android_dom.domain.chat.models.ChannelMemberModel
 import com.custom.rgs_android_dom.domain.chat.models.ChatMessageModel
 import com.custom.rgs_android_dom.domain.repositories.ChatRepository
 import io.reactivex.Completable
@@ -22,7 +23,14 @@ class ChatRepositoryImpl(private val api: MSDApi,
         }.map {
             it.reversed()
         }
+    }
 
+    override fun getChannelMembers(): Single<List<ChannelMemberModel>> {
+        val client = clientSharedPreferences.getClient()
+        val channelId = client?.getChatChannelId() ?: ""
+        return api.getChannelMembers(channelId).map {
+            ChatMapper.responseToChannelMembers(it)
+        }
     }
 
     override fun sendMessage(message: String): Completable {

@@ -1,6 +1,8 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
+import com.custom.rgs_android_dom.data.network.responses.ChannelMemberResponse
 import com.custom.rgs_android_dom.data.network.responses.ChatMessageResponse
+import com.custom.rgs_android_dom.domain.chat.models.ChannelMemberModel
 import com.custom.rgs_android_dom.domain.chat.models.ChatFileModel
 import com.custom.rgs_android_dom.domain.chat.models.ChatMessageModel
 import com.custom.rgs_android_dom.domain.chat.models.Sender
@@ -29,7 +31,8 @@ object ChatMapper{
                 userId = messageResponse.userId,
                 sender = if (messageResponse.userId == userId) Sender.ME else Sender.OPPONENT,
                 createdAt = messageResponse.createdAt.toLocalDateTime(),
-                type = messageResponse.type
+                type = messageResponse.type,
+                member = null
             )
         }
     }
@@ -55,7 +58,21 @@ object ChatMapper{
             userId = messageResponse.userId,
             sender = if (messageResponse.userId == userId) Sender.ME else Sender.OPPONENT,
             createdAt = messageResponse.createdAt.toLocalDateTime(),
-            type = messageResponse.type
+            type = messageResponse.type,
+            member = null
         )
+    }
+
+    fun responseToChannelMembers(response: List<ChannelMemberResponse>): List<ChannelMemberModel> {
+        return response.map {
+            ChannelMemberModel(
+                avatar = it.avatar,
+                firstName = it.firstName ?: "",
+                lastName = it.lastName ?: "",
+                middleName = it.middleName ?: "",
+                type = it.type ?: "",
+                userId = it.userId ?: ""
+            )
+        }
     }
 }
