@@ -7,6 +7,8 @@ import com.custom.rgs_android_dom.data.network.requests.*
 import com.custom.rgs_android_dom.domain.error.model.MSDErrorModel
 import io.reactivex.Completable
 import io.reactivex.Single
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.*
 import kotlin.reflect.KClass
 
@@ -98,4 +100,14 @@ interface MSDApi {
     @GET("location/address")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getAddressByCoordinates(@Query("lat") lat: Double, @Query("long") long: Double): Single<AddressSuggestionsResponse>
+
+    @Multipart
+    @POST("store")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun putFileToTheStore(@Part file: MultipartBody.Part, @Query("bucketName") bucketName: String): Single<PutFileResponse>
+
+    @DELETE("store/{fileID}")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun deleteFileFromStore(@Path("fileID") fileId: String): Completable
+
 }

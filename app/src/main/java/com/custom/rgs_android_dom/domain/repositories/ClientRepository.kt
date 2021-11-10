@@ -19,7 +19,8 @@ interface ClientRepository {
                      agentCode: String?,
                      agentPhone: String?,
                      phone: String?,
-                     email: String?): Completable
+                     email: String?,
+                    avatar: String?): Completable
 
     fun getClient(): Single<ClientModel>
 

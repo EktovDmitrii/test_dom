@@ -34,11 +34,13 @@ class ClientRepositoryImpl(
         agentCode: String?,
         agentPhone: String?,
         phone: String?,
-        email: String?
+        email: String?,
+        avatar: String?
     ): Completable {
         val request = UpdateClientRequest(
             agentCode = agentCode,
             agentPhone = agentPhone?.formatPhoneForApi(),
+            avatar = avatar,
             birthdate = birthday?.formatTo(PATTERN_DATE_TIME_MILLIS),
             firstName = firstName,
             lastName = lastName,

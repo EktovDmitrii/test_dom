@@ -17,7 +17,8 @@ object ClientShortViewStateMapper {
             lastName = clientModel.lastName,
             phone = clientModel.phone.formatPhoneByMask(phoneMask, "#"),
             hasAgentInfo = hasAgentInfo,
-            isOpdSigned = isOpdSigned
+            isOpdSigned = isOpdSigned,
+            avatar = null
         )
     }
 }

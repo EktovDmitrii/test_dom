@@ -6,6 +6,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPersonalDataBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.photo.add.AddPhotoFragment
 import com.custom.rgs_android_dom.utils.*
 
 class PersonalDataFragment : BaseFragment<PersonalDataViewModel, FragmentPersonalDataBinding>(R.layout.fragment_personal_data) {
@@ -20,6 +21,11 @@ class PersonalDataFragment : BaseFragment<PersonalDataViewModel, FragmentPersona
 
         binding.editImageView.setOnDebouncedClickListener {
             viewModel.onEditClick()
+        }
+
+        binding.editPhotoTextView.setOnDebouncedClickListener {
+            val addPhotoFragment = AddPhotoFragment()
+            addPhotoFragment.show(childFragmentManager, addPhotoFragment.TAG)
         }
 
         subscribe(viewModel.personalDataObserver){personalData->
