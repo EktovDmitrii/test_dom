@@ -48,9 +48,9 @@
     </RelativeLayout>
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/typesLinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/actionsBottomAppBar"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/toolbarRelativeLayout"
         android:layout_marginTop="24dp"
         android:orientation="horizontal"
@@ -114,6 +114,29 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_filled_secondary_900_alpha4_radius_8dp"
+        android:layout_below="@+id/typesLinearLayout"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="20dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="36dp"
+        android:paddingVertical="8dp">
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/suisse_regular"
+            android:textColor="@color/secondary500"
+            android:textSize="14sp"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="24dp"
+            android:lineSpacingMultiplier="0"
+            app:translationTextKey="Если хотите добавить квартиру, часть квартиры или этаж во владении в частной доме, выберите Квартиру." />
+    </FrameLayout>
 
 
     <com.google.android.material.bottomappbar.BottomAppBar
