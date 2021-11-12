@@ -110,4 +110,7 @@ interface MSDApi {
     @ErrorType(MSDNetworkErrorResponse::class)
     fun deleteFileFromStore(@Path("fileID") fileId: String): Completable
 
+    @GET("auth/users/me")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getUser(): Single<UserResponse>
 }

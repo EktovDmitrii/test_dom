@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.domain.repositories
 
 import com.custom.rgs_android_dom.domain.client.models.ClientModel
 import com.custom.rgs_android_dom.domain.client.models.Gender
+import com.custom.rgs_android_dom.domain.client.models.UserDetailsModel
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -41,5 +42,7 @@ interface ClientRepository {
     fun requestEditAgent(): Completable
 
     fun getEditAgentRequestedSubject(): PublishSubject<Boolean>
+
+    fun getUserDetails(): Single<UserDetailsModel>
 
 }

@@ -36,12 +36,27 @@ class AddPhotoViewModel(private val clientInteractor: ClientInteractor) : BaseVi
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onComplete = {
-
+                    closeController.value = Unit
                 },
                 onError = {
-
+                    logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
     }
+
+    fun onDeleteAvatarClick(){
+        clientInteractor.deleteAvatar()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onComplete = {
+                    closeController.value = Unit
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+    }
+
 
 }

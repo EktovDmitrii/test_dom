@@ -6,5 +6,5 @@ data class ClientShortViewState(
     val phone: String = "",
     val hasAgentInfo: Boolean,
     val isOpdSigned: Boolean,
-    val avatar: String?
+    val avatar: String
 )

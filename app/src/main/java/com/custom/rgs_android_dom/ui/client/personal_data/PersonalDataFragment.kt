@@ -3,7 +3,9 @@ package com.custom.rgs_android_dom.ui.client.personal_data
 import android.os.Bundle
 import android.view.View
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestListener
 import com.custom.rgs_android_dom.R
+import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentPersonalDataBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.photo.add.AddPhotoFragment
@@ -81,7 +83,7 @@ class PersonalDataFragment : BaseFragment<PersonalDataViewModel, FragmentPersona
                 binding.noAvatarTextView.gone()
 
                 GlideApp.with(requireContext())
-                    .load(personalData.avatar)
+                    .load(GlideUrlProvider.makeAvatarGlideUrl(personalData.avatar))
                     .circleCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(binding.avatarImageView)
