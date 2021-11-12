@@ -113,4 +113,9 @@ interface MSDApi {
     @GET("auth/users/me")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getUser(): Single<UserResponse>
+
+    @GET("chat/channels/{channelId}/members")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getChannelMembers(@Path("channelId") channelId: String): Single<List<ChannelMemberResponse>>
+
 }

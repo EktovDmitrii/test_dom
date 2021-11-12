@@ -3,7 +3,6 @@ package com.custom.rgs_android_dom.data.providers.auth.manager
 import android.content.ContentValues
 import android.content.Context
 import android.database.ContentObserver
-import android.util.Log
 import com.custom.rgs_android_dom.data.network.responses.TokenResponse
 import com.custom.rgs_android_dom.data.providers.auth.constants.AuthContentProviderConstants.CONTENT_KEY_ACCESS_TOKEN
 import com.custom.rgs_android_dom.data.providers.auth.constants.AuthContentProviderConstants.CONTENT_KEY_IS_AUTHORIZED
@@ -185,7 +184,6 @@ class AuthContentProviderManager(private val context: Context) {
         for (uri in actionUris) {
             try {
                 if (uri != MSDAuthContentProvider.URI_ACTIONS){
-                    Log.d("MyLog", "REGISTERING OBSERVER FOR URI " + uri.toString())
                     context.contentResolver.registerContentObserver(uri, true, contentObserver)
                 }
             } catch (e: Exception){
