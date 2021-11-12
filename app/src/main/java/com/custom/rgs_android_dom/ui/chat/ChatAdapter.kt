@@ -3,6 +3,9 @@ package com.custom.rgs_android_dom.ui.chat
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.custom.rgs_android_dom.R
+import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.ItemChatDateDividerBinding
 import com.custom.rgs_android_dom.databinding.ItemChatMessageMyBinding
 import com.custom.rgs_android_dom.databinding.ItemChatMessageOpponentBinding
@@ -11,6 +14,7 @@ import com.custom.rgs_android_dom.domain.chat.models.ChatItemModel
 import com.custom.rgs_android_dom.domain.chat.models.ChatMessageModel
 import com.custom.rgs_android_dom.domain.chat.models.Sender
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_TIME_ONLY_WITHOUT_SEC
+import com.custom.rgs_android_dom.utils.GlideApp
 import com.custom.rgs_android_dom.utils.formatTo
 import java.sql.Date
 
@@ -108,6 +112,18 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun bind(model: ChatMessageModel) {
             model.member?.let { member->
                 binding.nameTextView.text = "${member.firstName} ${member.lastName}, ${member.type}"
+
+                if (member.avatar.isNotEmpty()){
+                    GlideApp.with(binding.avatarImageView)
+                        .load(GlideUrlProvider.makeAvatarGlideUrl(member.avatar))
+                        .circleCrop()
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .error(R.drawable.chat_avatar_stub)
+                        .into(binding.avatarImageView)
+                } else {
+                    binding.avatarImageView.setImageResource(R.drawable.chat_avatar_stub)
+                }
+
             }
 
             binding.messageTextView.text = model.message

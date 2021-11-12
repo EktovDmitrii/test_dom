@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
+import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.responses.ChannelMemberResponse
 import com.custom.rgs_android_dom.data.network.responses.ChatMessageResponse
 import com.custom.rgs_android_dom.domain.chat.models.ChannelMemberModel
@@ -8,6 +9,8 @@ import com.custom.rgs_android_dom.domain.chat.models.ChatMessageModel
 import com.custom.rgs_android_dom.domain.chat.models.Sender
 
 object ChatMapper{
+
+    private const val AVATAR_ENDPOINT = "${BuildConfig.BASE_URL}/api/store"
 
     fun responseToChatMessages(response: List<ChatMessageResponse>, userId: String): List<ChatMessageModel> {
         return response.map { messageResponse->
@@ -65,8 +68,13 @@ object ChatMapper{
 
     fun responseToChannelMembers(response: List<ChannelMemberResponse>): List<ChannelMemberModel> {
         return response.map {
+            val avatar = if (it.avatar?.isNotEmpty() == true) {
+                "${AVATAR_ENDPOINT}/${it.avatar}"
+            } else {
+                ""
+            }
             ChannelMemberModel(
-                avatar = it.avatar,
+                avatar = avatar,
                 firstName = it.firstName ?: "",
                 lastName = it.lastName ?: "",
                 middleName = it.middleName ?: "",

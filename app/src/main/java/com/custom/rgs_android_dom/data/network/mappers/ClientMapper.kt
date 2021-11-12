@@ -1,7 +1,9 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
+import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.requests.*
 import com.custom.rgs_android_dom.data.network.responses.ClientResponse
+import com.custom.rgs_android_dom.data.network.responses.UserResponse
 import com.custom.rgs_android_dom.domain.client.models.*
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
 
@@ -11,6 +13,8 @@ object ClientMapper {
     const val CONTACT_TYPE_PHONE = "phone"
     const val CONTACT_TYPE_EMAIL = "email"
     const val CONTACT_TYPE_CHAT = "chat"
+
+    private const val AVATAR_ENDPOINT = "${BuildConfig.BASE_URL}/api/store"
 
     fun responseToClient(response: ClientResponse): ClientModel {
 
@@ -105,6 +109,14 @@ object ClientMapper {
             )
         )
         return UpdateContactsRequest(contacts = contacts)
+    }
+
+    fun responseToUserDetails(response: UserResponse): UserDetailsModel{
+        val avatarFileId = response.details.avatar ?: ""
+        if (avatarFileId.isNotEmpty()){
+            return UserDetailsModel(avatarUrl = "${AVATAR_ENDPOINT}/${avatarFileId}", avatarFileId = avatarFileId)
+        }
+        return UserDetailsModel(avatarUrl = "", avatarFileId = "")
     }
 
 }

@@ -5,8 +5,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.R
+import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentClientBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.utils.*
@@ -104,6 +106,18 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
                 binding.agentInfoTextView.text = "Данные об агенте"
             } else {
                 binding.agentInfoTextView.text = "Я знаю код агента"
+            }
+
+            Log.d("MyLog", "AVATAR IS EMPTY " + state.avatar.isEmpty())
+            if (state.avatar.isEmpty()){
+                binding.avatarImageView.setImageResource(R.drawable.ic_avatar)
+            } else {
+                GlideApp.with(requireContext())
+                    .load(GlideUrlProvider.makeAvatarGlideUrl(state.avatar))
+                    .circleCrop()
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .error(R.drawable.ic_avatar)
+                    .into(binding.avatarImageView)
             }
         }
 

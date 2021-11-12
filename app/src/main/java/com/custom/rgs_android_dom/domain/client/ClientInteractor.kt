@@ -1,16 +1,17 @@
 package com.custom.rgs_android_dom.domain.client
 
-import com.custom.rgs_android_dom.domain.client.mappers.AgentMapper
+import com.custom.rgs_android_dom.data.repositories.files.FilesRepositoryImpl.Companion.STORE_AVATARS
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
 import com.custom.rgs_android_dom.domain.client.exceptions.ValidateFieldModel
+import com.custom.rgs_android_dom.domain.client.mappers.AgentMapper
 import com.custom.rgs_android_dom.domain.client.models.Gender
 import com.custom.rgs_android_dom.domain.client.mappers.ClientShortViewStateMapper
 import com.custom.rgs_android_dom.domain.client.mappers.EditPersonalDataViewStateMapper
 import com.custom.rgs_android_dom.domain.client.mappers.PersonalDataMapper
 import com.custom.rgs_android_dom.domain.client.view_states.*
 import com.custom.rgs_android_dom.domain.repositories.ClientRepository
-import com.custom.rgs_android_dom.domain.repositories.CountriesRepository
+import com.custom.rgs_android_dom.domain.repositories.FilesRepository
 import com.custom.rgs_android_dom.domain.repositories.RegistrationRepository
 import com.custom.rgs_android_dom.utils.*
 import com.jakewharton.rxrelay2.BehaviorRelay
@@ -19,11 +20,12 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 import org.joda.time.LocalDateTime
+import java.io.File
 
 class ClientInteractor(
     private val clientRepository: ClientRepository,
     private val registrationRepository: RegistrationRepository,
-    private val countriesRepository: CountriesRepository
+    private val filesRepository: FilesRepository
 ) {
 
     companion object {
@@ -142,12 +144,12 @@ class ClientInteractor(
     }
 
     fun onAgentPhoneChanged(agentPhone: String, isMaskFilled: Boolean) {
-        when {
+        fillClientViewState = when {
             agentPhone.isNullOrEmpty() -> {
-                fillClientViewState = fillClientViewState.copy(agentPhone = null)
+                fillClientViewState.copy(agentPhone = null)
             }
             else -> {
-                fillClientViewState = fillClientViewState.copy(
+                fillClientViewState.copy(
                     agentPhone = agentPhone,
                     agentPhoneValid = isMaskFilled
                 )
@@ -157,8 +159,8 @@ class ClientInteractor(
     }
 
     fun getClient(): Single<ClientShortViewState> {
-        return clientRepository.getClient().map {
-            ClientShortViewStateMapper.from(it)
+        return Single.zip(clientRepository.getClient(), clientRepository.getUserDetails()){clientModel, userDetailsModel ->
+            ClientShortViewStateMapper.from(clientModel, userDetailsModel)
         }.doOnSuccess {
             CacheHelper.loadAndSaveClient()
         }
@@ -174,17 +176,23 @@ class ClientInteractor(
     }
 
     fun subscribeClientUpdateSubject(): Observable<ClientShortViewState> {
-        return clientRepository.getClientUpdatedSubject()
-            .map {
-                ClientShortViewStateMapper.from(it)
+        return clientRepository.getClientUpdatedSubject().flatMap { clientModel->
+            clientRepository.getUserDetails().flatMapObservable {  userDetailsModel->
+                Observable.fromCallable {
+                    ClientShortViewStateMapper.from(clientModel, userDetailsModel)
+                }
             }
+        }
     }
 
     fun getClientUpdatedSubject(): Observable<PersonalDataViewState> {
-        return clientRepository.getClientUpdatedSubject()
-            .map {
-                PersonalDataMapper.from(it)
+        return clientRepository.getClientUpdatedSubject().flatMap { clientModel->
+            clientRepository.getUserDetails().flatMapObservable {  userDetailsModel->
+                Observable.fromCallable {
+                    PersonalDataMapper.from(clientModel, userDetailsModel)
+                }
             }
+        }
     }
 
     fun agentUpdatedSubject(): Observable<AgentViewState> {
@@ -195,8 +203,8 @@ class ClientInteractor(
     }
 
     fun getPersonalData(): Single<PersonalDataViewState> {
-        return clientRepository.getClient().map {
-            PersonalDataMapper.from(it)
+        return Single.zip(clientRepository.getClient(), clientRepository.getUserDetails()){clientModel, userDetailsModel ->
+            PersonalDataMapper.from(clientModel, userDetailsModel)
         }
     }
 
@@ -348,16 +356,19 @@ class ClientInteractor(
             Completable.complete()
         }
 
-        val updateClientCompletable =  updateClient(
-            lastName = if (editPersonalDataViewState.lastName.isNotEmpty()) editPersonalDataViewState.lastName else null,
-            firstName = if (editPersonalDataViewState.firstName.isNotEmpty()) editPersonalDataViewState.firstName else null,
-            middleName = if (editPersonalDataViewState.middleName.isNotEmpty()) editPersonalDataViewState.middleName else null,
-            birthday = birthday,
-            gender = editPersonalDataViewState.gender,
-            email = if (editPersonalDataViewState.email.isNotEmpty()) editPersonalDataViewState.email else null,
-            agentCode = editPersonalDataViewState.agentCode,
-            agentPhone = editPersonalDataViewState.agentPhone
-        )
+        val updateClientCompletable = clientRepository.getUserDetails().flatMapCompletable {
+            updateClient(
+                lastName = if (editPersonalDataViewState.lastName.isNotEmpty()) editPersonalDataViewState.lastName else null,
+                firstName = if (editPersonalDataViewState.firstName.isNotEmpty()) editPersonalDataViewState.firstName else null,
+                middleName = if (editPersonalDataViewState.middleName.isNotEmpty()) editPersonalDataViewState.middleName else null,
+                birthday = birthday,
+                gender = editPersonalDataViewState.gender,
+                email = if (editPersonalDataViewState.email.isNotEmpty()) editPersonalDataViewState.email else null,
+                agentCode = editPersonalDataViewState.agentCode,
+                agentPhone = editPersonalDataViewState.agentPhone,
+                avatar = it.avatarFileId
+            )
+        }
         return Completable.concatArray(updatePassportCompletable, updatePhoneCompletable, updateClientCompletable, deleteCompletable)
     }
 
@@ -409,6 +420,53 @@ class ClientInteractor(
         return clientRepository.loadAndSaveClient()
     }
 
+    fun updateAvatar(avatar: File): Completable {
+        var fileId: String? = null
+        return filesRepository.putFileToTheStore(avatar, STORE_AVATARS)
+            .flatMap {
+                fileId = it
+                clientRepository.getClient()
+            }.flatMapCompletable{ clientModel->
+                return@flatMapCompletable updateClient(
+                    firstName = clientModel.firstName,
+                    lastName = clientModel.lastName,
+                    middleName = clientModel.middleName,
+                    birthday = clientModel.birthDate?.toLocalDateTime(),
+                    gender = clientModel.gender,
+                    agentCode = clientModel.agent?.code,
+                    agentPhone = clientModel.agent?.phone,
+                    phone = clientModel.phone,
+                    email = clientModel.contacts?.find { it.type == "email" }?.contact,
+                    avatar = fileId
+                )
+            }.doFinally {
+                avatar.delete()
+            }
+    }
+
+    fun deleteAvatar(): Completable {
+        return clientRepository.getUserDetails().flatMap {
+            filesRepository.deleteFileFromStore(it.avatarFileId ?: "").toSingle {
+                true
+            }
+        }.flatMap {
+            clientRepository.getClient()
+        }.flatMapCompletable{ clientModel->
+            return@flatMapCompletable updateClient(
+                firstName = clientModel.firstName,
+                lastName = clientModel.lastName,
+                middleName = clientModel.middleName,
+                birthday = clientModel.birthDate?.toLocalDateTime(),
+                gender = clientModel.gender,
+                agentCode = clientModel.agent?.code,
+                agentPhone = clientModel.agent?.phone,
+                phone = clientModel.phone,
+                email = clientModel.contacts?.find { it.type == "email" }?.contact,
+                avatar = null
+            )
+        }
+    }
+
     private fun isBirthdayValid(birthday: LocalDateTime): Boolean {
         return !(birthday.isAfter(MIN_DATE) || birthday.isBefore(
             MAX_DATE
@@ -453,8 +511,9 @@ class ClientInteractor(
         agentPhone: String? = null,
         phone: String? = null,
         email: String? = null,
+        avatar: String? = null
     ): Completable {
-        return clientRepository.updateClient(firstName, lastName, middleName, birthday, gender, agentCode, agentPhone, phone, email)
+        return clientRepository.updateClient(firstName, lastName, middleName, birthday, gender, agentCode, agentPhone, phone, email, avatar)
             .doOnComplete { fillClientStateSubject.accept(fillClientViewState) }
     }
 

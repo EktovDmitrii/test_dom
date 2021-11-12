@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.data.network.requests.UpdateClientRequest
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.domain.client.models.ClientModel
 import com.custom.rgs_android_dom.domain.client.models.Gender
+import com.custom.rgs_android_dom.domain.client.models.UserDetailsModel
 import com.custom.rgs_android_dom.domain.repositories.ClientRepository
 import com.custom.rgs_android_dom.utils.PATTERN_DATE_TIME_MILLIS
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
@@ -34,11 +35,13 @@ class ClientRepositoryImpl(
         agentCode: String?,
         agentPhone: String?,
         phone: String?,
-        email: String?
+        email: String?,
+        avatar: String?
     ): Completable {
         val request = UpdateClientRequest(
             agentCode = agentCode,
             agentPhone = agentPhone?.formatPhoneForApi(),
+            avatar = avatar,
             birthdate = birthday?.formatTo(PATTERN_DATE_TIME_MILLIS),
             firstName = firstName,
             lastName = lastName,
@@ -150,5 +153,11 @@ class ClientRepositoryImpl(
 
     override fun getEditAgentRequestedSubject(): PublishSubject<Boolean> {
         return editAgentRequestedSubject
+    }
+
+    override fun getUserDetails(): Single<UserDetailsModel> {
+        return api.getUser().map {
+            ClientMapper.responseToUserDetails(it)
+        }
     }
 }

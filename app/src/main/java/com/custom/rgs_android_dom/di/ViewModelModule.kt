@@ -14,6 +14,7 @@ import com.custom.rgs_android_dom.ui.client.personal_data.PersonalDataViewModel
 import com.custom.rgs_android_dom.ui.location.rationale.RequestLocationRationaleViewModel
 import com.custom.rgs_android_dom.ui.address.suggestions.AddressSuggestionsViewModel
 import com.custom.rgs_android_dom.ui.main.stub.MainStubViewModel
+import com.custom.rgs_android_dom.ui.photo.add.AddPhotoViewModel
 import com.custom.rgs_android_dom.ui.property.add.details.PropertyDetailsViewModel
 import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressViewModel
 import com.custom.rgs_android_dom.ui.property.add.select_type.SelectPropertyTypeViewModel
@@ -54,4 +55,5 @@ val viewModelModule = module {
     viewModel { AddressSuggestionsViewModel(addressInteractor = get()) }
     viewModel { MainStubViewModel(registrationInteractor = get()) }
     viewModel { WebViewViewModel() }
+    viewModel { AddPhotoViewModel(clientInteractor = get()) }
 }

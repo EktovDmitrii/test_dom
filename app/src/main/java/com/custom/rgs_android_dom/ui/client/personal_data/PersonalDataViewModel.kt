@@ -16,7 +16,6 @@ import io.reactivex.schedulers.Schedulers
 class PersonalDataViewModel(private val clientInteractor: ClientInteractor) : BaseViewModel() {
 
     private val personalDataController = MutableLiveData<PersonalDataViewState>()
-
     val personalDataObserver: LiveData<PersonalDataViewState> = personalDataController
 
     init {
@@ -52,6 +51,5 @@ class PersonalDataViewModel(private val clientInteractor: ClientInteractor) : Ba
     fun onEditClick(){
         ScreenManager.showScreen(EditPersonalDataFragment())
     }
-
 
 }
