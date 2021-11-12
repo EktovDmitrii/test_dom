@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.ui.chat
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -107,6 +106,10 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class OpponentMessageViewHolder(private val binding: ItemChatMessageOpponentBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: ChatMessageModel) {
+            model.member?.let { member->
+                binding.nameTextView.text = "${member.firstName} ${member.lastName}, ${member.type}"
+            }
+
             binding.messageTextView.text = model.message
             binding.timeTextView.text = model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
         }

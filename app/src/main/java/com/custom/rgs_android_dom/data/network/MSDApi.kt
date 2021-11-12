@@ -98,4 +98,9 @@ interface MSDApi {
     @GET("location/address")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getAddressByCoordinates(@Query("lat") lat: Double, @Query("long") long: Double): Single<AddressSuggestionsResponse>
+
+    @GET("chat/channels/{channelId}/members")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getChannelMembers(@Path("channelId") channelId: String): Single<List<ChannelMemberResponse>>
+
 }
