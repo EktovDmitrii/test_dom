@@ -5,7 +5,7 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import com.custom.rgs_android_dom.databinding.FragmentAddPhotoBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
-import com.custom.rgs_android_dom.utils.convertToPhotoFile
+import com.custom.rgs_android_dom.utils.convertToFile
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
 import com.custom.rgs_android_dom.utils.visibleIf
@@ -16,8 +16,7 @@ class AddPhotoFragment() : BaseBottomSheetModalFragment<AddPhotoViewModel, Fragm
 
     private val getPhotoFromGalleryAction =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            uri?.convertToPhotoFile(requireActivity())?.let {
-                //presenter.onPhotoSelected(it)
+            uri?.convertToFile(requireActivity())?.let {
                 viewModel.onAvatarSelected(it)
             }
         }

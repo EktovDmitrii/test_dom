@@ -18,7 +18,7 @@ fun Uri.getFileName(context: Context): String? =
         it.takeIf { it.moveToFirst() }?.getString(it.getColumnIndex(OpenableColumns.DISPLAY_NAME))
     }
 
-fun Uri.convertToPhotoFile(activity: Activity): File? {
+fun Uri.convertToFile(activity: Activity): File? {
     val name = getFileName(activity) ?: ""
     val parcelFileDescriptor = activity.contentResolver.openFileDescriptor(this, "r", null)
     parcelFileDescriptor?.let {

@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/rectangle_filled_white_radius_20dp"
+    android:background="@drawable/rectangle_filled_white_radius_16dp"
     android:minWidth="320dp"
     android:paddingBottom="16dp">
-
 
     <TextView
         android:id="@+id/messageTextView"
@@ -17,7 +16,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:fontFamily="@font/suisse_regular"
-        android:textColor="@color/black"
+        android:textColor="@color/secondary900"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +32,7 @@
         android:fontFamily="@font/suisse_semi_bold"
         android:padding="5dp"
         android:textAllCaps="true"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/primary500"
         app:layout_constraintEnd_toStartOf="@+id/positiveTextView"
         app:layout_constraintTop_toBottomOf="@+id/messageTextView"
         tools:text="Отмена" />
@@ -47,7 +46,7 @@
         android:padding="5dp"
         android:textAllCaps="true"
         android:fontFamily="@font/suisse_semi_bold"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/primary500"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/messageTextView"
         tools:text="завершить" />
