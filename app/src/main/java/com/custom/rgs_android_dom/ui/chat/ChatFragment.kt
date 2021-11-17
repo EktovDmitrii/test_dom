@@ -6,7 +6,9 @@ import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentChatBinding
+import com.custom.rgs_android_dom.ui.alert.AlertDialogFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.chat.files.upload.UploadFilesFragment
 import com.custom.rgs_android_dom.utils.*
 
 class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.fragment_chat) {
@@ -36,6 +38,11 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
             binding.messageEditText.text?.clear()
         }
 
+        binding.attachImageView.setOnDebouncedClickListener {
+            val uploadFilesFragment = UploadFilesFragment()
+            uploadFilesFragment.show(childFragmentManager, uploadFilesFragment.TAG)
+        }
+
         subscribe(viewModel.chatItemsObserver){
             chatAdapter.setItems(it)
             binding.messagesRecyclerView.scrollToPosition(chatAdapter.itemCount-1)
@@ -49,6 +56,7 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
         subscribe(viewModel.networkErrorObserver){
             toast(it)
         }
+
     }
 
     override fun onLoading() {

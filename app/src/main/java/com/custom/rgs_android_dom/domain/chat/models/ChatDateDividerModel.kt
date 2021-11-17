@@ -1,4 +1,5 @@
 package com.custom.rgs_android_dom.domain.chat.models
 
-class ChatDateDividerModel {
-}
+data class ChatDateDividerModel(
+    val date: String
+) : ChatItemModel()

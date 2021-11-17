@@ -7,18 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import com.custom.my_service_android_client.R
-import com.custom.my_service_android_client.utils.setOnDebouncedClickListener
-import kotlinx.android.synthetic.main.fragment_alert_dialog.*
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
+import com.custom.rgs_android_dom.databinding.FragmentAlertDialogBinding
+import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
+import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
+import com.custom.rgs_android_dom.utils.visibleIf
 
 class AlertDialogFragment : DialogFragment() {
 
     companion object {
-        const val TAG = "ConfirmationDialog"
+        const val TAG = "AlertDialogFragment"
 
         const val DEFAULT_REQUEST_CODE = -1
-        const val REQUEST_CODE_SHOW_APP_SETTINGS = 990765
-        const val REQUEST_CODE_SHOW_LOCATION_SETTINGS = 99076599
 
         private const val ARGUMENT_MESSAGE = "ARGUMENT_MESSAGE"
         private const val ARGUMENT_POSITIVE_TEXT = "ARGUMENT_POSITIVE_TEXT"
@@ -42,6 +43,20 @@ class AlertDialogFragment : DialogFragment() {
         }
     }
 
+    private val binding: FragmentAlertDialogBinding by viewBinding(createMethod = CreateMethod.INFLATE)
+    private var confirmListener: ConfirmBottomSheetFragment.ConfirmListener? = null
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        if (parentFragment is ConfirmBottomSheetFragment.ConfirmListener){
+            confirmListener = parentFragment as ConfirmBottomSheetFragment.ConfirmListener
+        }
+        return binding.root
+    }
+
     private var onAlertClickListener: OnAlertClickListener? = null
 
     override fun onAttach(context: Context) {
@@ -58,27 +73,24 @@ class AlertDialogFragment : DialogFragment() {
         onAlertClickListener = null
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.fragment_alert_dialog, container, false)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        messageTextView.text = arguments?.getString(ARGUMENT_MESSAGE)
-        positiveTextView.text = arguments?.getString(ARGUMENT_POSITIVE_TEXT)
-        negativeTextView.text = arguments?.getString(ARGUMENT_NEGATIVE_TEXT)
+        binding.messageTextView.text = arguments?.getString(ARGUMENT_MESSAGE)
+
+        binding.positiveTextView.text = arguments?.getString(ARGUMENT_POSITIVE_TEXT)
+        binding.positiveTextView.visibleIf(binding.positiveTextView.text.isNotEmpty())
+
+        binding.negativeTextView.text = arguments?.getString(ARGUMENT_NEGATIVE_TEXT)
+        binding.negativeTextView.visibleIf(binding.negativeTextView.text.isNotEmpty())
+
         val requestCode = arguments?.getInt(ARGUMENT_REQUEST_CODE) ?: DEFAULT_REQUEST_CODE
 
-        positiveTextView.setOnDebouncedClickListener {
+        binding.positiveTextView.setOnDebouncedClickListener {
             onAlertClickListener?.onPositiveButtonClick(requestCode)
             dismissAllowingStateLoss()
         }
 
-        negativeTextView.setOnDebouncedClickListener {
+        binding.negativeTextView.setOnDebouncedClickListener {
             onAlertClickListener?.onNegativeButtonClick(requestCode)
             dismissAllowingStateLoss()
         }

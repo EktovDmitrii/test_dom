@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class SendMessageRequest(
 
     @SerializedName("fileIds")
-    val fileIds: ArrayList<String>? = null,
+    val fileIds: List<String>? = null,
 
     @SerializedName("message")
     val message: String? = null

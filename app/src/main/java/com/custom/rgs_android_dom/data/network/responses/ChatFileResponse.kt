@@ -19,7 +19,7 @@ data class ChatFileResponse(
     val mimeType: String,
 
     @SerializedName("miniPreview")
-    val miniPreview: List<Int>,
+    val miniPreview: String?,
 
     @SerializedName("name")
     val name: String,
