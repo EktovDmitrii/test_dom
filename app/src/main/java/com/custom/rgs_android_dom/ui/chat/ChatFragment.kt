@@ -9,6 +9,7 @@ import com.custom.rgs_android_dom.databinding.FragmentChatBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.utils.*
 
+
 class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.fragment_chat) {
 
     private val chatAdapter: ChatAdapter
@@ -36,19 +37,31 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
             binding.messageEditText.text?.clear()
         }
 
-        subscribe(viewModel.chatItemsObserver){
+        subscribe(viewModel.chatItemsObserver) {
             chatAdapter.setItems(it)
-            binding.messagesRecyclerView.scrollToPosition(chatAdapter.itemCount-1)
+            binding.messagesRecyclerView.scrollToPosition(chatAdapter.itemCount - 1)
         }
 
-        subscribe(viewModel.newItemsObserver){
+        subscribe(viewModel.newItemsObserver) {
             chatAdapter.addNewItems(it)
-            binding.messagesRecyclerView.scrollToPosition(chatAdapter.itemCount-1)
+            binding.messagesRecyclerView.scrollToPosition(chatAdapter.itemCount - 1)
         }
 
-        subscribe(viewModel.networkErrorObserver){
+        subscribe(viewModel.networkErrorObserver) {
             toast(it)
         }
+
+        binding.messagesRecyclerView.addOnScrollListener(
+            ChatAnimationManager(
+                context,
+                binding.downImageView
+            )
+        )
+
+        binding.downImageView.setOnDebouncedClickListener {
+            binding.messagesRecyclerView.smoothScrollToPosition(chatAdapter.itemCount - 1)
+        }
+
     }
 
     override fun onLoading() {

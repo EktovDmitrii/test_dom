@@ -4,8 +4,14 @@
     android:interpolator="@android:anim/linear_interpolator"
     android:fillAfter="true">
 
+   <!-- <translate
+        android:fromYDelta="75%p"
+        android:toYDelta="100%p"
+        android:duration="1000" />-->
+
     <translate
+        android:duration="1000"
         android:fromYDelta="100%p"
-        android:toYDelta="75%p"
-        android:duration="1000" />
+        android:toYDelta="75%p" />
+
 </set>

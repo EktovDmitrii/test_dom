@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -18,7 +18,7 @@
             android:layout_gravity="start"
             android:paddingHorizontal="20dp"
             android:tint="@color/secondary800"
-            app:srcCompat="@drawable/ic_back_24px"/>
+            app:srcCompat="@drawable/ic_back_24px" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:layout_width="wrap_content"
@@ -27,7 +27,7 @@
             android:fontFamily="@font/my_service_medium"
             android:textColor="@color/secondary900"
             android:textSize="18sp"
-            app:translationTextKey="Чат"/>
+            app:translationTextKey="Мастер онлайн" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -40,92 +40,137 @@
             android:id="@+id/messagesRecyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:paddingBottom="10dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:overScrollMode="never"
             android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:paddingBottom="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@+id/sendMessageBottomAppBar"
-            tools:listitem="@layout/item_chat_message_opponent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/item_chat_message_opponent" />
+
+        <!--<androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/downImageView"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="120dp"
+            android:padding="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_arrow_down_24px" />-->
+
+        <com.custom.rgs_android_dom.views.MSDImageView
+            android:id="@+id/downImageView"
+            style="@style/Icon.Filled.White"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="12dp"
+            android:padding="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_arrow_down_10px" />
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/sendMessageBottomAppBar"
             android:layout_width="match_parent"
-            android:layout_height="78dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:gravity="top"
-            android:paddingTop="10dp"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            app:contentInsetStart="0dp"
+            android:layout_height="96dp"
             android:clickable="false"
             android:focusable="false"
-            tools:ignore="BottomAppBar" >
+            android:orientation="vertical"
+            app:contentInsetStart="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="BottomAppBar">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:paddingStart="4dp"
-                android:paddingEnd="6dp"
+                android:layout_height="match_parent"
                 android:clickable="false"
                 android:focusable="false"
-                android:background="@drawable/rectangle_filled_secondary_100_stroke_seconday_900_alpha14_1dp_radius_40dp">
+                android:orientation="vertical">
 
-                <com.custom.rgs_android_dom.views.MSDImageView
-                    android:id="@+id/attachImageView"
-                    style="@style/Icon.Filled.White"
-                    android:tint="@color/secondary500"
-                    app:srcCompat="@drawable/ic_attach_20px"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
-
-                <com.custom.rgs_android_dom.views.edit_text.MSDBaseEditText
-                    android:id="@+id/messageEditText"
-                    style="@style/ChatEditText"
-                    android:layout_width="0dp"
-                    android:layout_height="24dp"
-                    app:layout_constraintStart_toEndOf="@+id/attachImageView"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/sendMessageImageView"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
                     android:layout_marginStart="12dp"
-                    android:layout_marginEnd="46dp"
-                    android:includeFontPadding="false"
-                    app:translationHintKey="Введите сообщение"/>
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:background="@color/secondary100"
+                    android:clickable="false"
+                    android:focusable="false">
 
-                <com.custom.rgs_android_dom.views.MSDImageView
-                    android:id="@+id/sendMessageImageView"
-                    style="@style/Icon.Filled.Primary"
-                    app:srcCompat="@drawable/ic_send_20px"
-                    android:enabled="false"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    <com.custom.rgs_android_dom.views.MSDImageView
+                        android:id="@+id/attachImageView"
+                        style="@style/Icon.Filled.White"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:enabled="true"
+                        android:tint="@color/secondary500"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_add_16px" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <com.custom.rgs_android_dom.views.edit_text.MSDBaseEditText
+                        android:id="@+id/messageEditText"
+                        style="@style/ChatEditText"
+                        android:layout_width="0dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="36dp"
+                        android:includeFontPadding="false"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/sendMessageImageView"
+                        app:layout_constraintStart_toEndOf="@+id/attachImageView"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:translationHintKey="Введите сообщение" />
 
+                    <com.custom.rgs_android_dom.views.MSDImageView
+                        android:id="@+id/sendMessageImageView"
+                        style="@style/Icon.Filled.Primary"
+                        android:layout_marginStart="36dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:background="@color/secondary900_alpha4"
+                        android:enabled="false"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_arrow_up_16px" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:layout_marginBottom="9dp"
+                    app:srcCompat="@drawable/ic_home_indicator" />
+
+            </FrameLayout>
         </com.google.android.material.bottomappbar.BottomAppBar>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        app:srcCompat="@drawable/chat_fade_background"
+        android:layout_marginTop="@dimen/toolbar_height"
         android:scaleType="fitXY"
         android:visibility="gone"
-        android:layout_marginTop="@dimen/toolbar_height"/>
+        app:srcCompat="@drawable/chat_fade_background" />
 
     <ProgressBar
         android:id="@+id/loadingProgressBar"
+        style="@style/ProgressBarStyle"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        style="@style/ProgressBarStyle"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </FrameLayout>
