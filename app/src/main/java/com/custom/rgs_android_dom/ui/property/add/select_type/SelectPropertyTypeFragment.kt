@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.ui.property.add.select_type
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentSelectPropertyTypeBinding
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
@@ -57,6 +58,7 @@ class SelectPropertyTypeFragment : BaseFragment<SelectPropertyTypeViewModel, Fra
         subscribe(viewModel.selectPropertyTypeViewStateObserver){
             binding.selectAppartmentLinearLayout.isSelected = it.isSelectAppartmentLinearLayoutSelected
             binding.selectHomeLinearLayout.isSelected = it.isSelectHomeLinearLayoutSelected
+            binding.infoboxFrameLayout.isVisible = it.isInfoboxFrameLayoutVisible
             binding.nextTextView.isEnabled = it.isNextTextViewEnabled
         }
 
