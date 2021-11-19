@@ -1,86 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     android:layout_marginTop="12dp"
-    android:orientation="vertical"
-    android:paddingStart="8dp">
+    android:paddingStart="8dp"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/nameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
         android:fontFamily="@font/suisse_regular"
-        android:includeFontPadding="false"
-        android:text="Мой_Сервис Дом"
+        android:textSize="12sp"
         android:textColor="@color/secondary900_alpha56"
-        android:textSize="12sp" />
+        android:includeFontPadding="false"
+        android:layout_marginStart="52dp"
+        android:text="Мой_Сервис Дом"/>
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
         android:orientation="horizontal"
-        android:paddingEnd="90dp">
+        android:layout_marginTop="6dp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/avatarImageView"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            app:srcCompat="@drawable/ic_chat_avatar_stub" />
+            app:srcCompat="@drawable/ic_chat_avatar_stub"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/messageContainerConstraintLayout"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="4dp"
-            android:background="@drawable/rectangle_filled_primary_500_radius_16dp"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="6dp">
+            android:orientation="vertical"
+            android:layout_marginStart="4dp">
 
             <TextView
                 android:id="@+id/messageTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/suisse_regular"
+                android:textSize="16sp"
+                android:paddingVertical="6dp"
+                android:paddingHorizontal="16dp"
+                android:background="@drawable/rectangle_filled_secondary_100_radius_16dp"
+                android:textColor="@color/secondary900"
                 android:includeFontPadding="false"
                 android:lineSpacingExtra="24dp"
                 android:lineSpacingMultiplier="0"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@id/timeTextView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Он вышел не на свою полосу, когда я перестраивался. Сейчас расскажу звонком" />
+                android:layout_marginEnd="57dp"
+                tools:text="Он вышел не на свою полосу, когда я перестраивался. Сейчас расскажу звонком"/>
 
             <TextView
                 android:id="@+id/timeTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
                 android:fontFamily="@font/suisse_regular"
-                android:gravity="center"
-                android:includeFontPadding="false"
-                android:textColor="@color/white_alpha64"
                 android:textSize="10sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:text="20:34" />
+                android:textColor="@color/secondary400"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/messageContainerLinearLayout"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:includeFontPadding="false"
+                tools:text="20:34"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/attachedFilesRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="vertical"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/attachedFilesRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
