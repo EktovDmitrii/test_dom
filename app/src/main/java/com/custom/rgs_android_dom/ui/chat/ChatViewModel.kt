@@ -10,6 +10,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import java.io.File
 
 class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel() {
 
@@ -52,6 +53,18 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
+
+        chatInteractor.getFilesToUploadSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    postFilesInChat(it)
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
     }
 
     fun onBackClick(){
@@ -59,12 +72,27 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
     }
 
     fun onSendMessageClick(newMessage: String){
-        chatInteractor.sendMessage(newMessage)
+        chatInteractor.sendMessage(message = newMessage)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onError = {
                     handleNetworkException(it)
+                }
+            ).addTo(dataCompositeDisposable)
+    }
+
+
+    private fun postFilesInChat(files: List<File>){
+        chatInteractor.postFilesToChat(files)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onComplete = {
+
+                },
+                onError = {
+                    logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
     }

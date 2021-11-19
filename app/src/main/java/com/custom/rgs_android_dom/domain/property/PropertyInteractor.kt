@@ -30,6 +30,7 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
     private var selectPropertyTypeViewState = SelectPropertyTypeViewState(
         isSelectHomeLinearLayoutSelected = false,
         isSelectAppartmentLinearLayoutSelected = false,
+        isInfoboxFrameLayoutVisible = false,
         isNextTextViewEnabled = false
     )
 
@@ -115,6 +116,7 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
         selectPropertyTypeViewState = selectPropertyTypeViewState.copy(
             isSelectHomeLinearLayoutSelected = true,
             isSelectAppartmentLinearLayoutSelected = false,
+            isInfoboxFrameLayoutVisible = true,
             isNextTextViewEnabled = true
         )
         selectPropertyTypeViewStateSubject.onNext(selectPropertyTypeViewState)
@@ -124,6 +126,7 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
         selectPropertyTypeViewState = selectPropertyTypeViewState.copy(
             isSelectHomeLinearLayoutSelected = false,
             isSelectAppartmentLinearLayoutSelected = true,
+            isInfoboxFrameLayoutVisible = true,
             isNextTextViewEnabled = true
         )
         selectPropertyTypeViewStateSubject.onNext(selectPropertyTypeViewState)

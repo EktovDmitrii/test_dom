@@ -1,24 +1,19 @@
 package com.custom.rgs_android_dom.ui.chat
 
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.doOnLayout
-import androidx.core.view.doOnNextLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
-import com.custom.rgs_android_dom.databinding.ItemChatDateDividerBinding
-import com.custom.rgs_android_dom.databinding.ItemChatMessageMyBinding
-import com.custom.rgs_android_dom.databinding.ItemChatMessageOpponentBinding
+import com.custom.rgs_android_dom.databinding.*
 import com.custom.rgs_android_dom.domain.chat.models.ChatDateDividerModel
 import com.custom.rgs_android_dom.domain.chat.models.ChatItemModel
 import com.custom.rgs_android_dom.domain.chat.models.ChatMessageModel
 import com.custom.rgs_android_dom.domain.chat.models.Sender
 import com.custom.rgs_android_dom.utils.*
+import com.custom.rgs_android_dom.utils.recycler_view.VerticalItemDecoration
 
 
 class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -46,7 +41,6 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-
     override fun getItemViewType(position: Int): Int {
         return when (chatItems[position]) {
             is ChatMessageModel -> {
@@ -58,6 +52,9 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             is ChatDateDividerModel -> {
                 ITEM_TYPE_DATE_DIVIDER
+            }
+            else -> {
+                ITEM_TYPE_MY_MESSAGE
             }
         }
     }
@@ -120,11 +117,41 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: ChatMessageModel) {
+
             binding.messageTextView.text = model.message
             binding.timeTextView.text = model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
 
             binding.messageTextView.post {
                 prepareText(binding, model.message)
+            }
+
+            val files = model.files
+            if (files != null && files.isNotEmpty()) {
+                binding.attachedFilesRecyclerView.visible()
+
+                binding.messageContainerConstraintLayout.gone()
+                binding.timeTextView.gone()
+
+                val adapter = ChatMyFilesAdapter(model.createdAt)
+                binding.attachedFilesRecyclerView.adapter = adapter
+                binding.attachedFilesRecyclerView.addItemDecoration(
+                    VerticalItemDecoration(
+                        gap = 12.dp(binding.attachedFilesRecyclerView.context)
+                    )
+                )
+
+                adapter.setItems(files)
+
+            } else {
+
+                binding.attachedFilesRecyclerView.gone()
+
+                binding.messageContainerConstraintLayout.visible()
+                binding.timeTextView.visible()
+
+                binding.messageTextView.text = model.message
+                binding.timeTextView.text =
+                    model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
             }
         }
 
@@ -172,28 +199,64 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: ChatMessageModel) {
-            model.member?.let { member ->
-                binding.nameTextView.text = "${member.firstName} ${member.lastName}, ${member.type}"
 
-                if (member.avatar.isNotEmpty()) {
-                    GlideApp.with(binding.avatarImageView)
-                        .load(GlideUrlProvider.makeAvatarGlideUrl(member.avatar))
-                        .circleCrop()
-                        .transition(DrawableTransitionOptions.withCrossFade())
-                        .error(R.drawable.chat_avatar_stub)
-                        .into(binding.avatarImageView)
+            model.member?.let { member ->
+
+                binding.nameTextView.text = "Мой_Сервис Дом"
+                model.member?.let { member ->
+
+                    binding.nameTextView.text =
+                        "${member.firstName} ${member.lastName}, ${member.type}"
+
+                    if (member.avatar.isNotEmpty()) {
+                        GlideApp.with(binding.avatarImageView)
+                            .load(GlideUrlProvider.makeAvatarGlideUrl(member.avatar))
+                            .circleCrop()
+                            .transition(DrawableTransitionOptions.withCrossFade())
+                            .error(R.drawable.ic_chat_avatar_stub)
+                            .into(binding.avatarImageView)
+                    } else {
+                        binding.avatarImageView.setImageResource(R.drawable.ic_chat_avatar_stub)
+                    }
+
+                }
+                val files = model.files
+                if (files != null && files.isNotEmpty()) {
+                    binding.attachedFilesRecyclerView.visible()
+
+                    binding.messageTextView.gone()
+                    binding.timeTextView.gone()
+
+                    val adapter = ChatOpponentFilesAdapter(model.createdAt)
+                    binding.attachedFilesRecyclerView.adapter = adapter
+                    binding.attachedFilesRecyclerView.addItemDecoration(
+                        VerticalItemDecoration(
+                            gap = 12.dp(binding.attachedFilesRecyclerView.context)
+                        )
+                    )
+
+                    adapter.setItems(files)
+
                 } else {
-                    binding.avatarImageView.setImageResource(R.drawable.chat_avatar_stub)
+                    binding.attachedFilesRecyclerView.gone()
+
+                    binding.messageTextView.visible()
+                    binding.timeTextView.visible()
+
+                    binding.messageTextView.text = model.message
+                    binding.timeTextView.text =
+                        model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
                 }
 
+                binding.messageTextView.text = model.message
+                binding.timeTextView.text =
+                    model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
             }
-
-            binding.messageTextView.text = model.message
-            binding.timeTextView.text = model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
 
             binding.messageTextView.post {
-                prepareText(binding,model.message)
+                prepareText(binding, model.message)
             }
+
         }
 
         private fun prepareText(binding: ItemChatMessageOpponentBinding, message: String) {
@@ -207,7 +270,7 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
 
             val availableSpace =
-                displayWidth(binding.messageTextView.context) - 2F * (8 + 131 + 8 + 16 + 16 * 2).dpToPx(
+                displayWidth(binding.messageTextView.context) - 2F * (8 + 90 + 8 + 16 + 16 * 2).dpToPx(
                     binding.messageTextView.context
                 )
 
@@ -233,6 +296,7 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }
                 binding.messageTextView.text = message
             }
+
         }
     }
 
@@ -243,6 +307,5 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             binding.dateTextView.text = model.date
         }
     }
-
 
 }

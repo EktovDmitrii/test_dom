@@ -7,13 +7,13 @@ import com.custom.rgs_android_dom.domain.chat.models.ChatMessageModel
 import com.custom.rgs_android_dom.domain.repositories.ChatRepository
 import com.custom.rgs_android_dom.domain.repositories.WebSocketRepository
 import com.custom.rgs_android_dom.domain.web_socket.models.WsChatMessageModel
-import com.custom.rgs_android_dom.utils.DATE_PATTERN_DAY_MONTH_FULL_ONLY
-import com.custom.rgs_android_dom.utils.formatTo
-import com.custom.rgs_android_dom.utils.getPeriod
+import com.custom.rgs_android_dom.utils.*
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.subjects.PublishSubject
 import org.joda.time.LocalDateTime
+import java.io.File
 
 class ChatInteractor(
     private val chatRepository: ChatRepository,
@@ -21,7 +21,10 @@ class ChatInteractor(
 ){
     companion object {
         private const val TYPE_SYSTEM_MESSAGE = "system_"
+        private const val MAX_UPLOAD_IMAGE_SIZE = 10
     }
+
+    var invalidUploadFileSubject = PublishSubject.create<File>()
 
     private var cachedChatItems = arrayListOf<ChatItemModel>()
     private var cachedChannelMembers = arrayListOf<ChannelMemberModel>()
@@ -64,8 +67,8 @@ class ChatInteractor(
         }
     }
 
-    fun sendMessage(message: String): Completable {
-        return chatRepository.sendMessage(message)
+    fun sendMessage(message: String? = null, fileIds: List<String>? = null): Completable {
+        return chatRepository.sendMessage(message, fileIds)
     }
 
     // TODO Improve this later, when we will have one interactor for chat
@@ -74,6 +77,10 @@ class ChatInteractor(
             val chatItems = arrayListOf<ChatItemModel>()
             if (eventModel is WsChatMessageModel){
                 eventModel.data?.takeIf {!it.type.startsWith(TYPE_SYSTEM_MESSAGE)}?.let{ currentMessage->
+                    if (cachedChannelMembers.find { it.userId == currentMessage.userId } == null){
+                        cachedChannelMembers.clear()
+                        cachedChannelMembers.addAll(chatRepository.getChannelMembers().blockingGet())
+                    }
                     currentMessage.member = cachedChannelMembers.find { it.userId == currentMessage.userId }
                     if (cachedChatItems.isNotEmpty()){
                         val prevMessage = cachedChatItems[cachedChatItems.size-1] as ChatMessageModel
@@ -90,6 +97,34 @@ class ChatInteractor(
             }
             return@map chatItems
         }
+    }
+
+    fun onFilesToUploadSelected(files: List<File>){
+        val bigSizeImageFile = files.find { it.isImage() && it.sizeInMb > MAX_UPLOAD_IMAGE_SIZE}
+        if (bigSizeImageFile != null){
+            files.forEach {
+                it.delete()
+            }
+            invalidUploadFileSubject.onNext(bigSizeImageFile)
+        } else {
+            chatRepository.setFilesToUpload(files)
+        }
+    }
+
+    fun getFilesToUploadSubject(): PublishSubject<List<File>> {
+        return chatRepository.getFilesToUploadSubject()
+    }
+
+    fun postFilesToChat(files: List<File>): Completable {
+        return Observable.fromArray(files)
+            .flatMapIterable {
+                it
+            }.flatMapSingle {
+                chatRepository.postFileInChat(it)
+            }.toList()
+            .flatMapCompletable { chatFiles ->
+                sendMessage(message = " ", fileIds = chatFiles.map { it.id })
+            }
     }
 
     private fun getDateDivider(currentMessageDate: LocalDateTime, previousMessageDate: LocalDateTime?): ChatDateDividerModel? {

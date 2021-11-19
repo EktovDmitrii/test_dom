@@ -116,6 +116,7 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <FrameLayout
+        android:id="@+id/infoboxFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/rectangle_filled_secondary_900_alpha4_radius_8dp"
@@ -124,7 +125,8 @@
         android:layout_marginHorizontal="20dp"
         android:paddingStart="16dp"
         android:paddingEnd="36dp"
-        android:paddingVertical="8dp">
+        android:paddingVertical="8dp"
+        android:visibility="gone">
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:layout_width="wrap_content"
@@ -135,7 +137,7 @@
             android:includeFontPadding="false"
             android:lineSpacingExtra="24dp"
             android:lineSpacingMultiplier="0"
-            app:translationTextKey="Если хотите добавить квартиру, часть квартиры или этаж во владении в частной доме, выберите Квартиру." />
+            app:translationTextKey="Если хотите добавить квартиру, часть квартиры или этаж во владении в частном доме, выберите Квартиру." />
     </FrameLayout>
 
 

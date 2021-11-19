@@ -22,12 +22,15 @@
     <color name="secondary900_alpha20">#3220201F</color>
     <color name="secondary900_alpha50">#1F20201F</color>
     <color name="secondary900_alpha56">#8F20201F</color>
+    <color name="secondary900_alpha80">#8F20201F</color>
     <color name="secondary900_alpha64">#A320201F</color>
     <color name="secondary900_alpha4">#0A20201F</color>
     <color name="secondary900_alpha48">#7A20201F</color>
     <color name="error600_alpha12">#1FD45054</color>
     <color name="secondary_default">#7D7E7E</color>
     <color name="primary500_alpha12">#1FEEA641</color>
+    <color name="white_alpha32">#52FFFFFF</color>
+    <color name="white_alpha80">#CCFFFFFF</color>
     <!-- TODO This is temorary name -->
     <color name="primary_200">#33F6A636</color>
     <color name="secondary900_alpha14">#1420201F</color>

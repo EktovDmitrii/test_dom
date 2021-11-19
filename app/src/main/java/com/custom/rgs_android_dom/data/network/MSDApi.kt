@@ -118,4 +118,8 @@ interface MSDApi {
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getChannelMembers(@Path("channelId") channelId: String): Single<List<ChannelMemberResponse>>
 
+    @Multipart
+    @POST("chat/users/me/channels/{channelId}/files")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun postFileInChat(@Part file: MultipartBody.Part, @Path("channelId") channel: String): Single<ChatFileResponse>
 }
