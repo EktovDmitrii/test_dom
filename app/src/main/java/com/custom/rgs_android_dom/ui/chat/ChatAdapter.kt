@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.ui.chat
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.custom.rgs_android_dom.R
@@ -13,7 +14,7 @@ import com.custom.rgs_android_dom.domain.chat.models.ChatMessageModel
 import com.custom.rgs_android_dom.domain.chat.models.Sender
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.utils.recycler_view.VerticalItemDecoration
-import java.sql.Date
+
 
 class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -27,7 +28,7 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val message = chatItems[position]
-        when (holder){
+        when (holder) {
             is MyMessageViewHolder -> {
                 holder.bind(message as ChatMessageModel)
             }
@@ -40,11 +41,10 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-
     override fun getItemViewType(position: Int): Int {
         return when (chatItems[position]) {
             is ChatMessageModel -> {
-                if ((chatItems[position] as ChatMessageModel).sender == Sender.ME){
+                if ((chatItems[position] as ChatMessageModel).sender == Sender.ME) {
                     ITEM_TYPE_MY_MESSAGE
                 } else {
                     ITEM_TYPE_OPPONENT_MESSAGE
@@ -62,19 +62,35 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ITEM_TYPE_MY_MESSAGE -> {
-                val binding = ItemChatMessageMyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                val binding = ItemChatMessageMyBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
                 MyMessageViewHolder(binding)
             }
             ITEM_TYPE_OPPONENT_MESSAGE -> {
-                val binding = ItemChatMessageOpponentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                val binding = ItemChatMessageOpponentBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
                 OpponentMessageViewHolder(binding)
             }
             ITEM_TYPE_DATE_DIVIDER -> {
-                val binding = ItemChatDateDividerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                val binding = ItemChatDateDividerBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
                 DateDividerViewHolder(binding)
             }
             else -> {
-                val binding = ItemChatMessageMyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                val binding = ItemChatMessageMyBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
                 MyMessageViewHolder(binding)
             }
         }
@@ -84,28 +100,36 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return chatItems.size
     }
 
-    fun setItems(chatItems: List<ChatItemModel>){
+    fun setItems(chatItems: List<ChatItemModel>) {
         this.chatItems.clear()
         this.chatItems.addAll(chatItems)
         notifyDataSetChanged()
     }
 
-    fun addNewItems(chatItems: List<ChatItemModel>){
-        chatItems.forEach {chatItem->
+    fun addNewItems(chatItems: List<ChatItemModel>) {
+        chatItems.forEach { chatItem ->
             this.chatItems.add(chatItem)
-            notifyItemInserted(this.chatItems.size-1)
+            notifyItemInserted(this.chatItems.size - 1)
         }
-
     }
 
-    inner class MyMessageViewHolder(private val binding: ItemChatMessageMyBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class MyMessageViewHolder(private val binding: ItemChatMessageMyBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: ChatMessageModel) {
+
+            binding.messageTextView.text = model.message
+            binding.timeTextView.text = model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
+
+            binding.messageTextView.post {
+                prepareText(binding, model.message)
+            }
+
             val files = model.files
-            if (files != null && files.isNotEmpty()){
+            if (files != null && files.isNotEmpty()) {
                 binding.attachedFilesRecyclerView.visible()
 
-                binding.messageContainerLinearLayout.gone()
+                binding.messageContainerConstraintLayout.gone()
                 binding.timeTextView.gone()
 
                 val adapter = ChatMyFilesAdapter(model.createdAt)
@@ -122,70 +146,166 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 binding.attachedFilesRecyclerView.gone()
 
-                binding.messageContainerLinearLayout.visible()
+                binding.messageContainerConstraintLayout.visible()
                 binding.timeTextView.visible()
 
                 binding.messageTextView.text = model.message
-                binding.timeTextView.text = model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
+                binding.timeTextView.text =
+                    model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
             }
-
         }
 
-    }
+        private fun prepareText(binding: ItemChatMessageMyBinding, message: String) {
+            val layout = binding.messageTextView.layout
+            var lastLineWidth: Float
+            var lineCount: Int
 
-    inner class OpponentMessageViewHolder(private val binding: ItemChatMessageOpponentBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(model: ChatMessageModel) {
-            binding.nameTextView.text = "Мой_Сервис Дом"
-            model.member?.let { member->
-                binding.nameTextView.text = "${member.firstName} ${member.lastName}, ${member.type}"
-
-                if (member.avatar.isNotEmpty()){
-                    GlideApp.with(binding.avatarImageView)
-                        .load(GlideUrlProvider.makeAvatarGlideUrl(member.avatar))
-                        .circleCrop()
-                        .transition(DrawableTransitionOptions.withCrossFade())
-                        .error(R.drawable.ic_chat_avatar_stub)
-                        .into(binding.avatarImageView)
-                } else {
-                    binding.avatarImageView.setImageResource(R.drawable.ic_chat_avatar_stub)
-                }
-
+            binding.messageTextView.let {
+                lineCount = layout?.lineCount ?: 1
+                lastLineWidth = layout?.getLineWidth(lineCount - 1) ?: 0F
             }
-            val files = model.files
-            if (files != null && files.isNotEmpty()){
-                binding.attachedFilesRecyclerView.visible()
 
-                binding.messageTextView.gone()
-                binding.timeTextView.gone()
-
-                val adapter = ChatOpponentFilesAdapter(model.createdAt)
-                binding.attachedFilesRecyclerView.adapter = adapter
-                binding.attachedFilesRecyclerView.addItemDecoration(
-                    VerticalItemDecoration(
-                        gap = 12.dp(binding.attachedFilesRecyclerView.context)
-                    )
+            val availableSpace =
+                displayWidth(binding.messageTextView.context) - 2F * (8 + 131 + 8 + 16 + 16 * 2).dpToPx(
+                    binding.messageTextView.context
                 )
 
-                adapter.setItems(files)
+            if ((lineCount > 1 && lastLineWidth > availableSpace) ||
+                (lineCount == 1 && lastLineWidth > availableSpace)
+            ) {
+                val lp =
+                    binding.messageTextView.layoutParams as ConstraintLayout.LayoutParams
+                if (lp.endToStart == binding.timeTextView.id) {
+                    lp.endToStart = ConstraintLayout.LayoutParams.UNSET
+                    lp.endToEnd = binding.messageContainerConstraintLayout.id
+                    lp.marginEnd = 0
+                    binding.messageTextView.layoutParams = lp
+                }
+                binding.messageTextView.text = StringBuilder().append(message).append("\n")
+            } else if (lineCount == 1 && lastLineWidth < availableSpace) {
+                val lp =
+                    binding.messageTextView.layoutParams as ConstraintLayout.LayoutParams
+                if (lp.endToStart != binding.timeTextView.id) {
+                    lp.endToStart = binding.timeTextView.id
+                    lp.marginEnd = 10
+                    binding.messageTextView.layoutParams = lp
+                }
+                binding.messageTextView.text = message
+            }
+        }
+    }
 
-            } else {
-                binding.attachedFilesRecyclerView.gone()
+    inner class OpponentMessageViewHolder(private val binding: ItemChatMessageOpponentBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-                binding.messageTextView.visible()
-                binding.timeTextView.visible()
+        fun bind(model: ChatMessageModel) {
+
+            model.member?.let { member ->
+
+                binding.nameTextView.text = "Мой_Сервис Дом"
+                model.member?.let { member ->
+
+                    binding.nameTextView.text =
+                        "${member.firstName} ${member.lastName}, ${member.type}"
+
+                    if (member.avatar.isNotEmpty()) {
+                        GlideApp.with(binding.avatarImageView)
+                            .load(GlideUrlProvider.makeAvatarGlideUrl(member.avatar))
+                            .circleCrop()
+                            .transition(DrawableTransitionOptions.withCrossFade())
+                            .error(R.drawable.ic_chat_avatar_stub)
+                            .into(binding.avatarImageView)
+                    } else {
+                        binding.avatarImageView.setImageResource(R.drawable.ic_chat_avatar_stub)
+                    }
+
+                }
+                val files = model.files
+                if (files != null && files.isNotEmpty()) {
+                    binding.attachedFilesRecyclerView.visible()
+
+                    binding.messageTextView.gone()
+                    binding.timeTextView.gone()
+
+                    val adapter = ChatOpponentFilesAdapter(model.createdAt)
+                    binding.attachedFilesRecyclerView.adapter = adapter
+                    binding.attachedFilesRecyclerView.addItemDecoration(
+                        VerticalItemDecoration(
+                            gap = 12.dp(binding.attachedFilesRecyclerView.context)
+                        )
+                    )
+
+                    adapter.setItems(files)
+
+                } else {
+                    binding.attachedFilesRecyclerView.gone()
+
+                    binding.messageTextView.visible()
+                    binding.timeTextView.visible()
+
+                    binding.messageTextView.text = model.message
+                    binding.timeTextView.text =
+                        model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
+                }
 
                 binding.messageTextView.text = model.message
-                binding.timeTextView.text = model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
+                binding.timeTextView.text =
+                    model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
+            }
+
+            binding.messageTextView.post {
+                prepareText(binding, model.message)
+            }
+
+        }
+
+        private fun prepareText(binding: ItemChatMessageOpponentBinding, message: String) {
+            val layout = binding.messageTextView.layout
+            var lastLineWidth: Float
+            var lineCount: Int
+
+            binding.messageTextView.let {
+                lineCount = layout?.lineCount ?: 1
+                lastLineWidth = layout?.getLineWidth(lineCount - 1) ?: 0F
+            }
+
+            val availableSpace =
+                displayWidth(binding.messageTextView.context) - 2F * (8 + 90 + 8 + 16 + 16 * 2).dpToPx(
+                    binding.messageTextView.context
+                )
+
+            if ((lineCount > 1 && lastLineWidth > availableSpace) ||
+                (lineCount == 1 && lastLineWidth > availableSpace)
+            ) {
+                val lp =
+                    binding.messageTextView.layoutParams as ConstraintLayout.LayoutParams
+                if (lp.endToStart == binding.timeTextView.id) {
+                    lp.endToStart = ConstraintLayout.LayoutParams.UNSET
+                    lp.endToEnd = binding.messageContainerConstraintLayout.id
+                    lp.marginEnd = 0
+                    binding.messageTextView.layoutParams = lp
+                }
+                binding.messageTextView.text = StringBuilder().append(message).append("\n")
+            } else if (lineCount == 1 && lastLineWidth < availableSpace) {
+                val lp =
+                    binding.messageTextView.layoutParams as ConstraintLayout.LayoutParams
+                if (lp.endToStart != binding.timeTextView.id) {
+                    lp.endToStart = binding.timeTextView.id
+                    lp.marginEnd = 10
+                    binding.messageTextView.layoutParams = lp
+                }
+                binding.messageTextView.text = message
             }
 
         }
     }
 
-    inner class DateDividerViewHolder(private val binding: ItemChatDateDividerBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class DateDividerViewHolder(private val binding: ItemChatDateDividerBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: ChatDateDividerModel) {
             binding.dateTextView.text = model.date
         }
     }
+
 }
