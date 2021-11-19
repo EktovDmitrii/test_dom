@@ -12,7 +12,9 @@ import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.utils.*
 import org.joda.time.LocalDateTime
 
-class ChatOpponentFilesAdapter(private val createdAt: LocalDateTime) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChatOpponentFilesAdapter(
+    private val onFileClick: (ChatFileModel) -> Unit = {}
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var chatFiles: ArrayList<ChatFileModel> = arrayListOf()
 
@@ -42,11 +44,11 @@ class ChatOpponentFilesAdapter(private val createdAt: LocalDateTime) : RecyclerV
         return when (viewType) {
             ITEM_TYPE_IMAGE -> {
                 val binding = ItemChatImageOpponentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                OpponentImageViewHolder(binding)
+                OpponentImageViewHolder(binding, onFileClick)
             }
             ITEM_TYPE_DOCUMENT -> {
                 val binding = ItemChatDocumentOpponentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                OpponentDocumentViewHolder(binding)
+                OpponentDocumentViewHolder(binding, onFileClick)
             }
             else -> {
                 throw Exception("Unknown view holder")
@@ -65,7 +67,10 @@ class ChatOpponentFilesAdapter(private val createdAt: LocalDateTime) : RecyclerV
     }
 
 
-    inner class OpponentImageViewHolder(private val binding: ItemChatImageOpponentBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class OpponentImageViewHolder(
+        private val binding: ItemChatImageOpponentBinding,
+        private val onFileClick: (ChatFileModel) -> Unit = {}
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: ChatFileModel) {
             val imageBytes = Base64.decode(model.miniPreview, Base64.DEFAULT)
@@ -75,16 +80,27 @@ class ChatOpponentFilesAdapter(private val createdAt: LocalDateTime) : RecyclerV
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(binding.opponentImageView)
 
-            binding.dateTextView.text = createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
+            binding.dateTextView.text = model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
+
+            binding.root.setOnDebouncedClickListener {
+                onFileClick(model)
+            }
         }
     }
 
-    inner class OpponentDocumentViewHolder(private val binding: ItemChatDocumentOpponentBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class OpponentDocumentViewHolder(
+        private val binding: ItemChatDocumentOpponentBinding,
+        private val onFileClick: (ChatFileModel) -> Unit = {}
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: ChatFileModel) {
             binding.docNameTextView.text = model.name
             binding.sizeTextView.text = "${model.size.sizeInMb.roundTo(2)}mb"
-            binding.dateTextView.text = createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
+            binding.dateTextView.text = model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
+
+            binding.root.setOnDebouncedClickListener {
+                onFileClick(model)
+            }
         }
     }
 

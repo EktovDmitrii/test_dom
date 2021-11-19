@@ -1,10 +1,14 @@
 package com.custom.rgs_android_dom.utils
 
+import android.util.Log
 import org.joda.time.*
 import org.joda.time.format.DateTimeFormat
 
 const val DATE_PATTERN_DATE_ONLY = "dd.MM.yyyy"
-const val DATE_PATTERN_DAY_FULL_ONLY = "dd.MMM"
+const val DATE_PATTERN_MONTH_FULL_ONLY = "dd MMM"
+const val DATE_PATTERN_MONTH_FULL_AND_TIME = "dd MMM в HH:mm"
+const val DATE_PATTERN_YEAR_MONTH_FULL_AND_TIME = "dd MMM yyyy в HH:mm"
+const val DATE_PATTERN_YEAR_MONTH_FULL_ONLY = "dd MMM yyyy"
 const val DATE_PATTERN_DAY_MONTH_FULL_ONLY = "dd MMMM"
 const val DATE_PATTERN_DATE_AND_TIME = "dd.MM.yyyy HH:mm:ss"
 const val DATE_PATTERN_TIME_ONLY_WITHOUT_SEC = "HH:mm"
@@ -29,4 +33,41 @@ fun DateTime.formatTo(pattern: String = DATE_PATTERN_DATE_AND_TIME): String {
 
 fun LocalDateTime.getPeriod(comparedDate: LocalDateTime): Period {
     return Period.fieldDifference(this, comparedDate)
+}
+
+fun LocalDateTime.toHumanReadableDate(showTime: Boolean = true): String {
+
+    val hoursPattern = DateTimeFormat.forPattern(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
+
+    val today = LocalDateTime.now()
+
+    Log.d("MyLog", "IN COMPARE " + (today.compareTo(this)))
+
+    return when {
+        today.toLocalDate().compareTo(this.toLocalDate()) == 0 -> {
+            if (showTime) {
+                String.format("Сегодня в %s", hoursPattern.print(this))
+            } else {
+                "Сегодня"
+            }
+        }
+
+        today.minusDays(1).toLocalDate().compareTo(this.toLocalDate()) == 0 -> { //Вчера
+            if (showTime) {
+                String.format("Вчера в %s", hoursPattern.print(this))
+            } else {
+                "Вчера"
+            }
+        }
+
+        else -> {
+            if (showTime) {
+                val pattern = if (today.year == this.year) DATE_PATTERN_MONTH_FULL_AND_TIME else DATE_PATTERN_YEAR_MONTH_FULL_AND_TIME
+                this.toString(DateTimeFormat.forPattern(pattern))
+            } else {
+                val pattern = if (today.year == this.year) DATE_PATTERN_MONTH_FULL_ONLY else DATE_PATTERN_YEAR_MONTH_FULL_ONLY
+                this.toString(DateTimeFormat.forPattern(pattern))
+            }
+        }
+    }
 }

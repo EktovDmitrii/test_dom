@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/black">
+
+    <RelativeLayout
+        android:id="@+id/toolbarRelativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="64dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/backImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:paddingHorizontal="14dp"
+            android:tint="@color/white"
+            app:srcCompat="@drawable/ic_back_24px"/>
+
+        <TextView
+            android:id="@+id/dateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/titleTextView"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/suisse_book"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            tools:text="Сегодня в 21:22"/>
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_toEndOf="@+id/backImageView"
+            android:layout_toStartOf="@+id/moreImageView"
+            android:fontFamily="@font/suisse_bold"
+            android:gravity="center"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            tools:text="IMG_102.PNG" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/moreImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="start"
+            android:paddingHorizontal="14dp"
+            android:tint="@color/white"
+            app:srcCompat="@drawable/ic_menu_24px" />
+
+    </RelativeLayout>
+
+    <com.google.android.exoplayer2.ui.StyledPlayerView
+        android:id="@+id/player_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:show_buffering="when_playing"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

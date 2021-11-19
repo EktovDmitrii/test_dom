@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.ui.photo.add
+package com.custom.rgs_android_dom.ui.client.personal_data.add_photo
 
 import android.os.Bundle
 import android.view.View

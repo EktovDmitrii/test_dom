@@ -7,15 +7,13 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.*
-import com.custom.rgs_android_dom.domain.chat.models.ChatDateDividerModel
-import com.custom.rgs_android_dom.domain.chat.models.ChatItemModel
-import com.custom.rgs_android_dom.domain.chat.models.ChatMessageModel
-import com.custom.rgs_android_dom.domain.chat.models.Sender
+import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.utils.recycler_view.VerticalItemDecoration
-import java.sql.Date
 
-class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChatAdapter(
+    private val onFileClick: (ChatFileModel) -> Unit = {}
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var chatItems: ArrayList<ChatItemModel> = arrayListOf()
 
@@ -63,11 +61,11 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return when (viewType) {
             ITEM_TYPE_MY_MESSAGE -> {
                 val binding = ItemChatMessageMyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                MyMessageViewHolder(binding)
+                MyMessageViewHolder(binding, onFileClick)
             }
             ITEM_TYPE_OPPONENT_MESSAGE -> {
                 val binding = ItemChatMessageOpponentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                OpponentMessageViewHolder(binding)
+                OpponentMessageViewHolder(binding, onFileClick)
             }
             ITEM_TYPE_DATE_DIVIDER -> {
                 val binding = ItemChatDateDividerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -98,7 +96,10 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     }
 
-    inner class MyMessageViewHolder(private val binding: ItemChatMessageMyBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class MyMessageViewHolder(
+        private val binding: ItemChatMessageMyBinding,
+        private val onFileClick: (ChatFileModel) -> Unit = {}
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: ChatMessageModel) {
             val files = model.files
@@ -108,7 +109,10 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 binding.messageContainerLinearLayout.gone()
                 binding.timeTextView.gone()
 
-                val adapter = ChatMyFilesAdapter(model.createdAt)
+                val adapter = ChatMyFilesAdapter(){
+                    onFileClick(it)
+                }
+
                 binding.attachedFilesRecyclerView.adapter = adapter
                 binding.attachedFilesRecyclerView.addItemDecoration(
                     VerticalItemDecoration(
@@ -133,7 +137,10 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     }
 
-    inner class OpponentMessageViewHolder(private val binding: ItemChatMessageOpponentBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class OpponentMessageViewHolder(
+        private val binding: ItemChatMessageOpponentBinding,
+        private val onFileClick: (ChatFileModel) -> Unit = {}
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: ChatMessageModel) {
             binding.nameTextView.text = "Мой_Сервис Дом"
@@ -142,7 +149,7 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 if (member.avatar.isNotEmpty()){
                     GlideApp.with(binding.avatarImageView)
-                        .load(GlideUrlProvider.makeAvatarGlideUrl(member.avatar))
+                        .load(GlideUrlProvider.makeHeadersGlideUrl(member.avatar))
                         .circleCrop()
                         .transition(DrawableTransitionOptions.withCrossFade())
                         .error(R.drawable.ic_chat_avatar_stub)
@@ -159,7 +166,10 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 binding.messageTextView.gone()
                 binding.timeTextView.gone()
 
-                val adapter = ChatOpponentFilesAdapter(model.createdAt)
+                val adapter = ChatOpponentFilesAdapter(){
+                    onFileClick(it)
+                }
+
                 binding.attachedFilesRecyclerView.adapter = adapter
                 binding.attachedFilesRecyclerView.addItemDecoration(
                     VerticalItemDecoration(

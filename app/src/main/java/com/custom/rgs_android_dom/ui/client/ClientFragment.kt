@@ -113,7 +113,7 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
                 binding.avatarImageView.setImageResource(R.drawable.ic_avatar)
             } else {
                 GlideApp.with(requireContext())
-                    .load(GlideUrlProvider.makeAvatarGlideUrl(state.avatar))
+                    .load(GlideUrlProvider.makeHeadersGlideUrl(state.avatar))
                     .circleCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .error(R.drawable.ic_avatar)

@@ -9,10 +9,13 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.custom.rgs_android_dom.databinding.*
 import com.custom.rgs_android_dom.domain.chat.models.*
+import com.custom.rgs_android_dom.ui.countries.model.CountryPresentationModel
 import com.custom.rgs_android_dom.utils.*
 import org.joda.time.LocalDateTime
 
-class ChatMyFilesAdapter(private val createdAt: LocalDateTime) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChatMyFilesAdapter(
+    private val onFileClick: (ChatFileModel) -> Unit = {}
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var chatFiles: ArrayList<ChatFileModel> = arrayListOf()
 
@@ -42,11 +45,11 @@ class ChatMyFilesAdapter(private val createdAt: LocalDateTime) : RecyclerView.Ad
         return when (viewType) {
             ITEM_TYPE_IMAGE -> {
                 val binding = ItemChatImageMyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                MyImageViewHolder(binding)
+                MyImageViewHolder(binding, onFileClick)
             }
             ITEM_TYPE_DOCUMENT -> {
                 val binding = ItemChatDocumentMyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                MyDocumentViewHolder(binding)
+                MyDocumentViewHolder(binding, onFileClick)
             }
             else -> {
                 throw Exception("Unknown view holder")
@@ -65,7 +68,10 @@ class ChatMyFilesAdapter(private val createdAt: LocalDateTime) : RecyclerView.Ad
     }
 
 
-    inner class MyImageViewHolder(private val binding: ItemChatImageMyBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class MyImageViewHolder(
+        private val binding: ItemChatImageMyBinding,
+        private val onFileClick: (ChatFileModel) -> Unit = {}
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: ChatFileModel) {
             val imageBytes = Base64.decode(model.miniPreview, Base64.DEFAULT)
@@ -75,16 +81,27 @@ class ChatMyFilesAdapter(private val createdAt: LocalDateTime) : RecyclerView.Ad
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(binding.myImageView)
 
-            binding.dateTextView.text = createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
+            binding.dateTextView.text = model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
+
+            binding.root.setOnDebouncedClickListener {
+                onFileClick(model)
+            }
         }
     }
 
-    inner class MyDocumentViewHolder(private val binding: ItemChatDocumentMyBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class MyDocumentViewHolder(
+        private val binding: ItemChatDocumentMyBinding,
+        private val onFileClick: (ChatFileModel) -> Unit = {}
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: ChatFileModel) {
             binding.docNameTextView.text = model.name
             binding.sizeTextView.text = "${model.size.sizeInMb.roundTo(2)}mb"
-            binding.dateTextView.text = createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
+            binding.dateTextView.text = model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
+
+            binding.root.setOnDebouncedClickListener {
+                onFileClick(model)
+            }
         }
     }
 
