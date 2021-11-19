@@ -30,12 +30,12 @@
     <color name="secondary_default">#7D7E7E</color>
     <color name="primary500_alpha12">#1FEEA641</color>
     <color name="white_alpha32">#52FFFFFF</color>
+    <color name="white_alpha64">#A3FFFFFF</color>
     <color name="white_alpha80">#CCFFFFFF</color>
     <!-- TODO This is temorary name -->
     <color name="primary_200">#33F6A636</color>
     <color name="secondary900_alpha14">#1420201F</color>
     <color name="secondary450">#B7B9BB</color>
-    <color name="white_alpha64">#A3FFFFFF</color>
 
     <!-- Text color for text input layout bottom line (overriden from default resources) -->
     <color name="mtrl_textinput_default_box_stroke_color">@color/white</color>

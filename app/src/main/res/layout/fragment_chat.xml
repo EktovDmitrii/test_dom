@@ -52,7 +52,7 @@
             tools:listitem="@layout/item_chat_message_opponent" />
 
         <com.custom.rgs_android_dom.views.MSDImageView
-            android:id="@+id/downImageView"
+            android:id="@+id/scrollDownImageView"
             style="@style/Icon.Filled.White"
             android:layout_width="32dp"
             android:layout_height="32dp"
@@ -66,9 +66,9 @@
             android:id="@+id/sendMessageBottomAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="96dp"
             android:clickable="false"
             android:focusable="false"
+            android:minHeight="96dp"
             android:orientation="vertical"
             app:contentInsetStart="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -100,7 +100,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_add_16px" />
-
 
                 <com.custom.rgs_android_dom.views.edit_text.MSDBaseEditText
                     android:id="@+id/messageEditText"
@@ -141,7 +140,6 @@
                     app:srcCompat="@drawable/ic_arrow_up_16px" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         </com.google.android.material.bottomappbar.BottomAppBar>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,7 +6,6 @@ import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentChatBinding
-import com.custom.rgs_android_dom.ui.alert.AlertDialogFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.chat.files.upload.UploadFilesFragment
 import com.custom.rgs_android_dom.utils.*
@@ -44,7 +43,7 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
             uploadFilesFragment.show(childFragmentManager, uploadFilesFragment.TAG)
         }
 
-        subscribe(viewModel.chatItemsObserver){
+        subscribe(viewModel.chatItemsObserver) {
             chatAdapter.setItems(it)
             binding.messagesRecyclerView.scrollToPosition(chatAdapter.itemCount - 1)
         }
@@ -58,15 +57,13 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
             toast(it)
         }
 
-
         binding.messagesRecyclerView.addOnScrollListener(
-            ChatAnimationManager(
-                context,
-                binding.downImageView
+            ChatAnimator(
+                binding.scrollDownImageView
             )
         )
 
-        binding.downImageView.setOnDebouncedClickListener {
+        binding.scrollDownImageView.setOnDebouncedClickListener {
             binding.messagesRecyclerView.smoothScrollToPosition(chatAdapter.itemCount - 1)
         }
 

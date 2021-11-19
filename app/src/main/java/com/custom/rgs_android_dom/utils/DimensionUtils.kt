@@ -9,9 +9,9 @@ fun Int.pxToDp(context: Context): Int {
         .displayMetrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT)
 }
 
-fun Int.dpToPx(context: Context?): Int {
-    return this * (context?.resources
-        ?.displayMetrics?.densityDpi?.div(DisplayMetrics.DENSITY_DEFAULT)!!)
+fun Int.dpToPx(context: Context): Int {
+    return this * (context.resources
+        .displayMetrics.densityDpi.div(DisplayMetrics.DENSITY_DEFAULT))
 }
 
 fun Int.dp(context: Context): Int {

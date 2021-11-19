@@ -1,14 +1,12 @@
 package com.custom.rgs_android_dom.ui.chat
 
 import android.animation.ObjectAnimator
-import android.content.Context
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.custom.rgs_android_dom.utils.dpToPx
 
 
-class ChatAnimationManager(
-    val context: Context?,
+class ChatAnimator(
     private val animatingView: View
 ) : RecyclerView.OnScrollListener() {
 
@@ -41,7 +39,7 @@ class ChatAnimationManager(
         showAnim = ObjectAnimator.ofFloat(
             animatingView,
             "translationY",
-            -(animatingView.height + 12.dpToPx(context) ).toFloat()
+            -(animatingView.height + 12.dpToPx(animatingView.context)).toFloat()
         ).apply {
             this.duration = animDuration
         }
