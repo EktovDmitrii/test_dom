@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:paddingStart="131dp"
-    android:layout_marginTop="12dp"
-    android:paddingEnd="8dp">
+    android:layout_marginTop="12dp">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/messageContainerLinearLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/messageContainerConstraintLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
+        android:layout_marginStart="131dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/rectangle_filled_primary_500_radius_16dp"
         android:paddingHorizontal="16dp"
         android:paddingVertical="6dp">
+
 
         <TextView
             android:id="@+id/messageTextView"
@@ -26,23 +28,28 @@
             android:lineSpacingMultiplier="0"
             android:textColor="@color/white"
             android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/timeTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="Он вышел не на свою полосу, когда я перестраивался. Сейчас расскажу звонком" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        <TextView
+            android:id="@+id/timeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/suisse_regular"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:textColor="@color/white_alpha64"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="SmallSp"
+            tools:text="20:34"
+            tools:textColor="#000000" />
 
-    <TextView
-        android:id="@+id/timeTextView"
-        android:layout_width="29dp"
-        android:layout_height="22dp"
-        android:gravity="center"
-        android:fontFamily="@font/suisse_regular"
-        android:textSize="10sp"
-        android:textColor="@color/secondary400"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/messageContainerLinearLayout"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="4dp"
-        android:includeFontPadding="false"
-        tools:text="20:34"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

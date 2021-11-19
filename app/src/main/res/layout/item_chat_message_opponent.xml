@@ -32,7 +32,52 @@
             android:layout_height="28dp"
             app:srcCompat="@drawable/chat_avatar_stub"/>
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/messageContainerConstraintLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/rectangle_filled_primary_500_radius_16dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="6dp">
+
+
+            <TextView
+                android:id="@+id/messageTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/suisse_regular"
+                android:includeFontPadding="false"
+                android:lineSpacingExtra="24dp"
+                android:lineSpacingMultiplier="0"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/timeTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Он вышел не на свою полосу, когда я перестраивался. Сейчас расскажу звонком" />
+
+            <TextView
+                android:id="@+id/timeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/suisse_regular"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:textColor="@color/white_alpha64"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:ignore="SmallSp"
+                tools:text="20:34"
+                tools:textColor="#000000" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!--<androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -69,7 +114,7 @@
                 android:includeFontPadding="false"
                 tools:text="20:34"/>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>-->
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>
