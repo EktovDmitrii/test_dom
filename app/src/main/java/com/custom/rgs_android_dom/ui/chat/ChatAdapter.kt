@@ -120,10 +120,10 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             this.chatItems.add(chatItem)
             notifyItemInserted(this.chatItems.size - 1)
         }
+
     }
 
-    inner class MyMessageViewHolder(private val binding: ItemChatMessageMyBinding/*ItemChatMessageMyBinding*/) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class MyMessageViewHolder(private val binding: ItemChatMessageMyBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: ChatMessageModel) {
 
