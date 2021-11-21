@@ -58,9 +58,7 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
         }
 
         binding.messagesRecyclerView.addOnScrollListener(
-            ChatAnimator(
-                binding.scrollDownImageView
-            )
+            ChatAnimator(binding.scrollDownImageView)
         )
 
         binding.scrollDownImageView.setOnDebouncedClickListener {

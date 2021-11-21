@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="12dp">
+    android:layout_marginTop="12dp"
+    android:gravity="end">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/messageContainerConstraintLayout"
+    <com.custom.rgs_android_dom.views.MSDChatMessageItemLayout
+        android:id="@+id/messageContainerMSDChatMessageItemLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
+        android:layout_gravity="bottom|end"
         android:layout_marginStart="131dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/rectangle_filled_primary_500_radius_16dp"
@@ -21,35 +23,30 @@
             android:id="@+id/messageTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
             android:fontFamily="@font/suisse_regular"
+            android:gravity="start|top"
             android:includeFontPadding="false"
             android:lineSpacingExtra="24dp"
             android:lineSpacingMultiplier="0"
             android:textColor="@color/white"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/timeTextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:text="Он вышел не на свою полосу, когда я перестраивался. Сейчас расскажу звонком" />
 
         <TextView
             android:id="@+id/timeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="29dp"
+            android:layout_height="22dp"
+            android:layout_gravity="bottom|end"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/suisse_regular"
             android:gravity="center"
             android:includeFontPadding="false"
             android:textColor="@color/white_alpha64"
             android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:ignore="SmallSp"
-            tools:text="20:34"
-            tools:textColor="#000000" />
+            tools:text="20:34" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.custom.rgs_android_dom.views.MSDChatMessageItemLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/attachedFilesRecyclerView"
@@ -60,4 +57,4 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="2" />
 
-</RelativeLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

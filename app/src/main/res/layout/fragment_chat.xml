@@ -6,34 +6,9 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height"
-        android:orientation="horizontal">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/backImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:paddingHorizontal="20dp"
-            app:srcCompat="@drawable/ic_back_24px" />
-
-        <com.custom.rgs_android_dom.views.text.MSDTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/my_service_medium"
-            android:textColor="@color/secondary900"
-            android:textSize="18sp"
-            app:translationTextKey="Мастер онлайн" />
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/toolbar_height">
+        android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/messagesRecyclerView"
@@ -62,43 +37,35 @@
             app:layout_constraintTop_toBottomOf="@id/messagesRecyclerView"
             app:srcCompat="@drawable/ic_arrow_down_10px" />
 
-        <com.google.android.material.bottomappbar.BottomAppBar
+        <FrameLayout
             android:id="@+id/sendMessageBottomAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="false"
             android:focusable="false"
             android:minHeight="96dp"
-            android:orientation="vertical"
             app:contentInsetStart="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="BottomAppBar">
+            app:layout_constraintStart_toStartOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="36dp"
-                android:background="@color/secondary100"
+                android:background="@color/white"
                 android:clickable="false"
                 android:focusable="false">
 
                 <com.custom.rgs_android_dom.views.MSDImageView
                     android:id="@+id/attachImageView"
-                    style="@style/Icon.Filled.White"
+                    style="@style/Icon.Filled.Secondary100"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginBottom="40dp"
                     android:enabled="false"
                     android:tint="@color/secondary500"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_add_16px" />
 
                 <com.custom.rgs_android_dom.views.edit_text.MSDBaseEditText
@@ -109,16 +76,16 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="36dp"
                     android:includeFontPadding="false"
                     android:inputType="textMultiLine"
                     android:lines="5"
                     android:maxLength="1000"
+                    android:minHeight="48dp"
                     android:minLines="1"
                     android:paddingVertical="12dp"
                     android:paddingStart="20dp"
                     android:paddingEnd="28dp"
-                    android:scrollbarStyle="outsideInset"
                     android:scrollbars="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/sendMessageImageView"
@@ -129,28 +96,51 @@
                 <com.custom.rgs_android_dom.views.MSDImageView
                     android:id="@+id/sendMessageImageView"
                     style="@style/Icon.Filled.Primary"
-                    android:layout_marginStart="36dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_marginTop="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginBottom="40dp"
                     android:enabled="false"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_arrow_up_16px" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </com.google.android.material.bottomappbar.BottomAppBar>
+        </FrameLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="@dimen/toolbar_height"
+        android:layout_height="96dp"
         android:scaleType="fitXY"
-        android:visibility="visible"
-        app:srcCompat="@drawable/chat_fade_background" />
+        app:srcCompat="@drawable/chat_fade_background_96dp" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/backImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:paddingHorizontal="20dp"
+            app:srcCompat="@drawable/ic_back_24px" />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/my_service_medium"
+            android:textColor="@color/secondary900"
+            android:textSize="18sp"
+            app:translationTextKey="Мастер онлайн" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <ProgressBar
         android:id="@+id/loadingProgressBar"
