@@ -20,7 +20,6 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private const val ITEM_TYPE_MY_MESSAGE = 1
         private const val ITEM_TYPE_OPPONENT_MESSAGE = 2
         private const val ITEM_TYPE_DATE_DIVIDER = 3
-        private const val ITEM_TYPE_FAKE_TOOLBAR = 4
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -49,9 +48,6 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             is ChatDateDividerModel -> {
                 ITEM_TYPE_DATE_DIVIDER
-            }
-            is ChatFakeToolbarItemModel -> {
-                ITEM_TYPE_FAKE_TOOLBAR
             }
             else -> {
                 ITEM_TYPE_MY_MESSAGE
@@ -85,14 +81,6 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 )
                 DateDividerViewHolder(binding)
             }
-            ITEM_TYPE_FAKE_TOOLBAR -> {
-                val binding = ItemChatFakeToolbarBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
-                ToolbarItemViewHolder(binding)
-            }
             else -> {
                 val binding = ItemChatMessageMyBinding.inflate(
                     LayoutInflater.from(parent.context),
@@ -110,7 +98,6 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     fun setItems(chatItems: List<ChatItemModel>) {
         this.chatItems.clear()
-        this.chatItems.add(ChatFakeToolbarItemModel)
         this.chatItems.addAll(chatItems)
         notifyDataSetChanged()
     }
@@ -220,8 +207,5 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             binding.dateTextView.text = model.date
         }
     }
-
-    inner class ToolbarItemViewHolder(binding: ItemChatFakeToolbarBinding) :
-        RecyclerView.ViewHolder(binding.root)
 
 }

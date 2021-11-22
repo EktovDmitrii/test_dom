@@ -6,24 +6,28 @@ import androidx.recyclerview.widget.RecyclerView
 import com.custom.rgs_android_dom.utils.dpToPx
 
 
-class ChatAnimator(
-    private val animatingView: View
-) : RecyclerView.OnScrollListener() {
+class ChatAnimator(private val animatingView: View) : RecyclerView.OnScrollListener() {
 
     private val animDuration = 300L
     private var hideAnim: ObjectAnimator? = null
     private var showAnim: ObjectAnimator? = null
     private var isShown = false
+    private var animatingViewBottomOffset = 12
 
 
-    private fun showToLastChatItemButton() {
-        isShown = true
-        showAnim?.start()
-    }
+    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        super.onScrolled(recyclerView, dx, dy)
 
-    private fun hideToLastChatItemButton() {
-        isShown = false
-        hideAnim?.start()
+        prepareAnimations()
+
+        if (dy > 0 && !isShown) {
+            showScrollDownButton()
+        } else if ((dy < 0 && isShown)) {
+            hideScrollDownButton()
+        } else if (!recyclerView.canScrollVertically(1) && isShown) {
+            hideScrollDownButton()
+        }
+
     }
 
     private fun prepareAnimations() {
@@ -39,26 +43,22 @@ class ChatAnimator(
         showAnim = ObjectAnimator.ofFloat(
             animatingView,
             "translationY",
-            -(animatingView.height + 12.dpToPx(animatingView.context)).toFloat()
+            -(animatingView.height + animatingViewBottomOffset.dpToPx(animatingView.context)).toFloat()
         ).apply {
             this.duration = animDuration
         }
 
     }
 
-    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-        super.onScrolled(recyclerView, dx, dy)
+    private fun showScrollDownButton() {
+        isShown = true
+        showAnim?.start()
+    }
 
-        prepareAnimations()
 
-        if (dy > 0 && !isShown) {
-            showToLastChatItemButton()
-        } else if ((dy < 0 && isShown)) {
-            hideToLastChatItemButton()
-        } else if (!recyclerView.canScrollVertically(1) && isShown) {
-            hideToLastChatItemButton()
-        }
-
+    private fun hideScrollDownButton() {
+        isShown = false
+        hideAnim?.start()
     }
 
 }
