@@ -28,7 +28,13 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
     val downloadFileObserver: LiveData<ChatFileModel> = downloadFileController
 
     init {
-        chatInteractor.getChatItems()
+
+        chatInteractor.subscribeToSocketEvents()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
+
+        chatInteractor.getChatHistory()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
@@ -46,7 +52,7 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
                 }
             ).addTo(dataCompositeDisposable)
 
-        chatInteractor.getNewItemsSubject()
+        chatInteractor.newChatItemsSubject
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
@@ -104,6 +110,20 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
             }
         }
 
+    }
+
+    fun onCallClick(){
+        chatInteractor.startCall()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
     }
 
     private fun postFilesInChat(files: List<File>){

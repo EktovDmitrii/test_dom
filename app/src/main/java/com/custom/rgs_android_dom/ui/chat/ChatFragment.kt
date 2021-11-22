@@ -75,6 +75,10 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
             uploadFilesFragment.show(childFragmentManager, uploadFilesFragment.TAG)
         }
 
+        binding.ttv.setOnDebouncedClickListener {
+            viewModel.onCallClick()
+        }
+
         subscribe(viewModel.chatItemsObserver){
             chatAdapter.setItems(it)
             binding.messagesRecyclerView.scrollToPosition(chatAdapter.itemCount-1)
@@ -92,6 +96,7 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
         subscribe(viewModel.downloadFileObserver){
             downloadFile(it)
         }
+
 
     }
 

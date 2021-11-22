@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.domain.web_socket.models
+package com.custom.rgs_android_dom.domain.chat.models
 
 abstract class WsEventModel<out T>(
     var event: Event? = null,
@@ -7,7 +7,8 @@ abstract class WsEventModel<out T>(
 
     enum class Event {
         POSTED,
-        CHANNEL_VIEWED
+        CHANNEL_VIEWED,
+        CALL_JOIN
     }
 
 }

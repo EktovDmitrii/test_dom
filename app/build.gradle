@@ -215,4 +215,7 @@ dependencies {
     //Exo Player
     implementation 'com.google.android.exoplayer:exoplayer:2.16.1'
 
+    //Live Kit
+    implementation "io.livekit:livekit-android:0.7.0"
+
 }

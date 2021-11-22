@@ -1,13 +1,11 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
 import com.custom.rgs_android_dom.BuildConfig
+import com.custom.rgs_android_dom.data.network.responses.CallInfoResponse
 import com.custom.rgs_android_dom.data.network.responses.ChannelMemberResponse
 import com.custom.rgs_android_dom.data.network.responses.ChatFileResponse
 import com.custom.rgs_android_dom.data.network.responses.ChatMessageResponse
-import com.custom.rgs_android_dom.domain.chat.models.ChannelMemberModel
-import com.custom.rgs_android_dom.domain.chat.models.ChatFileModel
-import com.custom.rgs_android_dom.domain.chat.models.ChatMessageModel
-import com.custom.rgs_android_dom.domain.chat.models.Sender
+import com.custom.rgs_android_dom.domain.chat.models.*
 import org.joda.time.LocalDateTime
 
 object ChatMapper{
@@ -79,6 +77,19 @@ object ChatMapper{
             size = fileResponse.size,
             width = fileResponse.width,
             createdAt = createdAt
+        )
+    }
+
+    fun responseToCallInfo(response: CallInfoResponse): CallInfoModel {
+        return CallInfoModel(
+            acceptedAt = response.acceptedAt,
+            channelId = response.channelId ?: "",
+            declinedAt = response.declinedAt,
+            id = response.id ?: "",
+            initiatorUserId = response.initiatorUserId ?: "",
+            recipientUserId = response.recipientUserId ?: "",
+            registeredAt = response.registeredAt,
+            taskId = response.taskId ?: ""
         )
     }
 
