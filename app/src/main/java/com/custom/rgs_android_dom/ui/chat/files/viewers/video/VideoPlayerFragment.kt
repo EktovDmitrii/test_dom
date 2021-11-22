@@ -1,8 +1,11 @@
 package com.custom.rgs_android_dom.ui.chat.files.viewers.video
 
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.custom.rgs_android_dom.R
+import com.custom.rgs_android_dom.data.network.url.ExoPlayerDataSourceProvider
 import com.custom.rgs_android_dom.databinding.FragmentVideoPlayerBinding
 import com.custom.rgs_android_dom.domain.chat.models.ChatFileModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
@@ -10,6 +13,11 @@ import com.custom.rgs_android_dom.ui.chat.files.manage.ManageFileFragment
 import com.custom.rgs_android_dom.ui.chat.files.viewers.image.ImageViewerFragment
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.utils.activity.clearLightStatusBar
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
+import com.google.android.exoplayer2.upstream.DataSource
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -19,13 +27,14 @@ class VideoPlayerFragment : BaseFragment<VideoPlayerViewModel, FragmentVideoPlay
     companion object {
         private const val ARG_FILE = "ARG_FILE"
 
-        fun newInstance(chatFile: ChatFileModel): ImageViewerFragment {
-            return ImageViewerFragment().args {
+        fun newInstance(chatFile: ChatFileModel): VideoPlayerFragment {
+            return VideoPlayerFragment().args {
                 putSerializable(ARG_FILE, chatFile)
             }
         }
-
     }
+
+    private var player: ExoPlayer? = null
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(requireArguments().getSerializable(ARG_FILE) as ChatFileModel)
@@ -47,6 +56,7 @@ class VideoPlayerFragment : BaseFragment<VideoPlayerViewModel, FragmentVideoPlay
                 .load(GlideUrlProvider.makeHeadersGlideUrl(it))
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(binding.pictureZoomageView)*/
+            playVideo(it)
         }
 
         subscribe(viewModel.dateObserver){
@@ -67,6 +77,32 @@ class VideoPlayerFragment : BaseFragment<VideoPlayerViewModel, FragmentVideoPlay
     override fun setStatusBarColor() {
         setStatusBarColor(R.color.black)
         requireActivity().clearLightStatusBar()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        player?.release()
+        player = null
+    }
+
+    private fun playVideo(url: String){
+        player = ExoPlayer.Builder(requireContext())
+            .setMediaSourceFactory( DefaultMediaSourceFactory(ExoPlayerDataSourceProvider.prepareDataSource()).setLiveTargetOffsetMs(5000))
+            .build()
+
+        val mediaItem: MediaItem = MediaItem.Builder()
+            .setUri(Uri.parse(url))
+            .setLiveConfiguration(
+                MediaItem.LiveConfiguration.Builder()
+                    .setMaxPlaybackSpeed(1.02f)
+                    .build()
+            )
+            .build()
+        player?.setMediaItem(mediaItem)
+        player?.playWhenReady = true
+        player?.prepare()
+
+        binding.videoPlayerView.player = player
     }
 
 }

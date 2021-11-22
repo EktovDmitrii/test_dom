@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.utils
 
-import android.util.Log
 import org.joda.time.*
 import org.joda.time.format.DateTimeFormat
 
@@ -40,8 +39,6 @@ fun LocalDateTime.toHumanReadableDate(showTime: Boolean = true): String {
     val hoursPattern = DateTimeFormat.forPattern(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
 
     val today = LocalDateTime.now()
-
-    Log.d("MyLog", "IN COMPARE " + (today.compareTo(this)))
 
     return when {
         today.toLocalDate().compareTo(this.toLocalDate()) == 0 -> {
