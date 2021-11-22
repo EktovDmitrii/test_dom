@@ -114,14 +114,16 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="match_parent"
-        android:layout_height="96dp"
+        android:layout_marginTop="@dimen/toolbar_height_chat"
+        android:layout_height="28dp"
         android:scaleType="fitXY"
-        app:srcCompat="@drawable/chat_fade_background_96dp" />
+        app:srcCompat="@drawable/chat_fade_background_28dp" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height"
-        android:orientation="horizontal">
+        android:layout_height="@dimen/toolbar_height_chat"
+        android:orientation="horizontal"
+        android:background="@color/white">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/backImageView"
@@ -129,7 +131,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:paddingHorizontal="20dp"
-            app:srcCompat="@drawable/ic_back_24px" />
+            app:srcCompat="@drawable/ic_back" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:layout_width="wrap_content"

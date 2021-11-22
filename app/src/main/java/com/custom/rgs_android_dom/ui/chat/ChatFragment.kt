@@ -43,17 +43,17 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
             uploadFilesFragment.show(childFragmentManager, uploadFilesFragment.TAG)
         }
 
-        subscribe(viewModel.chatItemsObserver){
+        subscribe(viewModel.chatItemsObserver) {
             chatAdapter.setItems(it)
-            binding.messagesRecyclerView.scrollToPosition(chatAdapter.itemCount-1)
+            binding.messagesRecyclerView.scrollToPosition(chatAdapter.itemCount - 1)
         }
 
-        subscribe(viewModel.newItemsObserver){
+        subscribe(viewModel.newItemsObserver) {
             chatAdapter.addNewItems(it)
-            binding.messagesRecyclerView.scrollToPosition(chatAdapter.itemCount-1)
+            binding.messagesRecyclerView.scrollToPosition(chatAdapter.itemCount - 1)
         }
 
-        subscribe(viewModel.networkErrorObserver){
+        subscribe(viewModel.networkErrorObserver) {
             toast(it)
         }
 
