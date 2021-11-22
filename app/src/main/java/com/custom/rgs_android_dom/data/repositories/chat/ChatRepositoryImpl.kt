@@ -13,6 +13,7 @@ import com.custom.rgs_android_dom.utils.toMultipartFormData
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
+import org.joda.time.LocalDateTime
 import java.io.File
 
 class ChatRepositoryImpl(private val api: MSDApi,
@@ -53,7 +54,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
         val client = clientSharedPreferences.getClient()
         val channelId = client?.getChatChannelId() ?: ""
         return api.postFileInChat(file.toMultipartFormData(), channelId).map {
-            ChatMapper.responseToChatFile(it)
+            ChatMapper.responseToChatFile(it, client?.id ?: "", LocalDateTime.now())
         }
     }
 

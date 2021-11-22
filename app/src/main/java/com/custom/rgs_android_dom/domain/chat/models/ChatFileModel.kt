@@ -1,6 +1,10 @@
 package com.custom.rgs_android_dom.domain.chat.models
 
+import org.joda.time.LocalDateTime
+import java.io.Serializable
+
 data class ChatFileModel(
+    val senderId: String,
     val extension: String,
     val hasPreviewImage: Boolean,
     val height: Int,
@@ -9,5 +13,6 @@ data class ChatFileModel(
     val miniPreview: String?,
     val name: String,
     val size: Long,
-    val width: Long
-)
+    val width: Long,
+    val createdAt: LocalDateTime
+): Serializable

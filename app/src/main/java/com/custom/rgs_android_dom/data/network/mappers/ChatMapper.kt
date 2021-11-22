@@ -8,6 +8,7 @@ import com.custom.rgs_android_dom.domain.chat.models.ChannelMemberModel
 import com.custom.rgs_android_dom.domain.chat.models.ChatFileModel
 import com.custom.rgs_android_dom.domain.chat.models.ChatMessageModel
 import com.custom.rgs_android_dom.domain.chat.models.Sender
+import org.joda.time.LocalDateTime
 
 object ChatMapper{
 
@@ -18,7 +19,7 @@ object ChatMapper{
             ChatMessageModel(
                 channelId = messageResponse.channelId,
                 files = messageResponse.files?.map { fileResponse->
-                    responseToChatFile(fileResponse)
+                    responseToChatFile(fileResponse, messageResponse.userId, messageResponse.createdAt.toLocalDateTime())
                 },
                 id = messageResponse.id ?: "",
                 message = messageResponse.message.replace("\\n", "\n"),
@@ -35,7 +36,7 @@ object ChatMapper{
         return ChatMessageModel(
             channelId = messageResponse.channelId,
             files = messageResponse.files?.map { fileResponse->
-                responseToChatFile(fileResponse)
+                responseToChatFile(fileResponse, messageResponse.userId, messageResponse.createdAt.toLocalDateTime())
             },
             id = messageResponse.id ?: "",
             message = messageResponse.message.replace("\\n", "\n"),
@@ -65,8 +66,9 @@ object ChatMapper{
         }
     }
 
-    fun responseToChatFile(fileResponse: ChatFileResponse): ChatFileModel {
+    fun responseToChatFile(fileResponse: ChatFileResponse, senderId: String, createdAt: LocalDateTime): ChatFileModel {
         return ChatFileModel(
+            senderId = senderId,
             extension = fileResponse.extension,
             hasPreviewImage= fileResponse.hasPreviewImage,
             height = fileResponse.height,
@@ -75,7 +77,8 @@ object ChatMapper{
             miniPreview = fileResponse.miniPreview,
             name = fileResponse.name,
             size = fileResponse.size,
-            width = fileResponse.width
+            width = fileResponse.width,
+            createdAt = createdAt
         )
     }
 

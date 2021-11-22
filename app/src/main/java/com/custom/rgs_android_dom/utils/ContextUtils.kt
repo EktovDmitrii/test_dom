@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.utils
 
+import android.app.DownloadManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
@@ -26,6 +27,9 @@ fun Context.editSharedPrefs(name: String, action: (SharedPreferences.Editor) -> 
         .apply { action(this) }
         .apply()
 
-fun Context.getSharedPrefs(name: String) =
+fun Context.getSharedPrefs(name: String): SharedPreferences =
     getSharedPreferences(name, Context.MODE_PRIVATE)
+
+fun Context.getDownloadManager() =
+    getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 

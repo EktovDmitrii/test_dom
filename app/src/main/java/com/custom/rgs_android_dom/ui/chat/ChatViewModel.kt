@@ -3,8 +3,12 @@ package com.custom.rgs_android_dom.ui.chat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
+import com.custom.rgs_android_dom.domain.chat.models.ChatFileModel
 import com.custom.rgs_android_dom.domain.chat.models.ChatItemModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.chat.files.viewers.image.ImageViewerFragment
+import com.custom.rgs_android_dom.ui.chat.files.viewers.video.VideoPlayerFragment
+import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -19,6 +23,9 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
 
     private val newItemsController = MutableLiveData<List<ChatItemModel>>()
     val newItemsObserver: LiveData<List<ChatItemModel>> = newItemsController
+
+    private val downloadFileController = MutableLiveData<ChatFileModel>()
+    val downloadFileObserver: LiveData<ChatFileModel> = downloadFileController
 
     init {
         chatInteractor.getChatItems()
@@ -82,6 +89,22 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
             ).addTo(dataCompositeDisposable)
     }
 
+    fun onFileClick(chatFile: ChatFileModel){
+        when {
+            chatFile.mimeType.contains("image") -> {
+                val imageViewerFragment = ImageViewerFragment.newInstance(chatFile)
+                ScreenManager.showScreen(imageViewerFragment)
+            }
+            chatFile.mimeType.contains("video") -> {
+                val videoPlayerFragment = VideoPlayerFragment.newInstance(chatFile)
+                ScreenManager.showScreen(videoPlayerFragment)
+            }
+            else -> {
+                downloadFileController.value = chatFile
+            }
+        }
+
+    }
 
     private fun postFilesInChat(files: List<File>){
         chatInteractor.postFilesToChat(files)
