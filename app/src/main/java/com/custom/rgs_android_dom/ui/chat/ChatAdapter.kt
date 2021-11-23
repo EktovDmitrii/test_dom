@@ -1,7 +1,13 @@
 package com.custom.rgs_android_dom.ui.chat
 
+import android.graphics.Paint
+import android.graphics.Rect
+import android.text.Layout
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import androidx.core.view.marginEnd
+import androidx.core.view.marginStart
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.custom.rgs_android_dom.R
@@ -110,7 +116,8 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     }
 
-    inner class MyMessageViewHolder(private val binding: ItemChatMessageMyBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class MyMessageViewHolder(private val binding: ItemChatMessageMyBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: ChatMessageModel) {
 
@@ -118,7 +125,7 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             if (files != null && files.isNotEmpty()) {
 
                 binding.attachedFilesRecyclerView.visible()
-                binding.messageContainerMSDChatMessageItemLayout.gone()
+                binding.messageContainerLinearLayout.gone()
                 binding.timeTextView.gone()
 
                 val adapter = ChatMyFilesAdapter(model.createdAt)
@@ -132,13 +139,46 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             } else {
 
                 binding.attachedFilesRecyclerView.gone()
-                binding.messageContainerMSDChatMessageItemLayout.visible()
+                binding.messageContainerLinearLayout.visible()
                 binding.timeTextView.visible()
-
-                binding.messageTextView.text = model.message
 
                 binding.timeTextView.text =
                     model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
+                binding.messageTextView.text = model.message
+
+                val lineCount = binding.messageTextView.lineCount
+                val lastLineWidth: Int
+
+                val bounds = Rect()
+                binding.messageTextView.getLineBounds((lineCount - 1), bounds)
+                lastLineWidth = bounds.width()
+
+                val parent = binding.timeTextView.parent as FrameLayout
+
+                val availableWidth =
+                    parent.width - binding.timeTextView.width /*parent.paddingStart - parent.paddingEnd*/
+                binding.messageTextView.text = StringBuilder(model.message).append("5555555")
+
+            /*if (availableWidth <= lastLineWidth) {
+                    binding.messageTextView.text = StringBuilder(model.message).append("5555555")
+                }*/
+
+                /*if (lineCount > 1 &&
+                    lastLineWidth + binding.timeTextView.width + 50 > binding.messageTextView.width &&
+                    lastLineWidth + binding.timeTextView.width + 50 < availableWidth
+                ) {
+                    binding.messageTextView.text = StringBuilder(model.message).append("\n")
+                } else if (lineCount > 1 &&
+                    lastLineWidth + binding.timeTextView.width >= availableWidth
+                ) {
+                    binding.messageTextView.text = StringBuilder(model.message).append("")
+                } else if (lineCount == 1 && lastLineWidth + binding.timeTextView.width >= availableWidth) {
+                    binding.messageTextView.text =
+                        StringBuilder(model.message).append("")
+                } else {
+                    return
+                }*/
+
             }
         }
 
