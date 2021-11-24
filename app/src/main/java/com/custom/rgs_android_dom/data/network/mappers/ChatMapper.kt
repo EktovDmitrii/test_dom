@@ -82,13 +82,10 @@ object ChatMapper{
 
     fun responseToCallInfo(response: CallInfoResponse): CallInfoModel {
         return CallInfoModel(
-            acceptedAt = response.acceptedAt,
             channelId = response.channelId ?: "",
-            declinedAt = response.declinedAt,
             id = response.id ?: "",
             initiatorUserId = response.initiatorUserId ?: "",
             recipientUserId = response.recipientUserId ?: "",
-            registeredAt = response.registeredAt,
             taskId = response.taskId ?: ""
         )
     }

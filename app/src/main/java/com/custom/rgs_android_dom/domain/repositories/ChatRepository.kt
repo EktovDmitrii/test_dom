@@ -32,4 +32,6 @@ interface ChatRepository {
 
     fun getWsEventsSubject(): PublishSubject<WsEventModel<*>>
 
+    suspend fun connectToLiveKitRoom(token: String)
+
 }

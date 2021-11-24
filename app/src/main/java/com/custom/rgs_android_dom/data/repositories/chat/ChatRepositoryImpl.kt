@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.data.repositories.chat
 
+import android.content.Context
 import android.util.Log
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.MSDApi
@@ -16,6 +17,15 @@ import com.custom.rgs_android_dom.domain.chat.models.WsEventModel
 import com.custom.rgs_android_dom.utils.WsResponseParser
 import com.custom.rgs_android_dom.utils.toMultipartFormData
 import com.google.gson.Gson
+import io.livekit.android.ConnectOptions
+import io.livekit.android.LiveKit
+import io.livekit.android.room.Room
+import io.livekit.android.room.RoomListener
+import io.livekit.android.room.participant.RemoteParticipant
+import io.livekit.android.room.track.RemoteTrackPublication
+import io.livekit.android.room.track.Track
+import io.livekit.android.room.track.TrackPublication
+import io.livekit.android.room.track.VideoTrack
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
@@ -27,7 +37,8 @@ import java.io.File
 class ChatRepositoryImpl(private val api: MSDApi,
                          private val clientSharedPreferences: ClientSharedPreferences,
                          private val gson: Gson,
-                         private val authContentProviderManager: AuthContentProviderManager
+                         private val authContentProviderManager: AuthContentProviderManager,
+                         private val context: Context
 ) : ChatRepository {
 
     companion object {
@@ -68,8 +79,21 @@ class ChatRepositoryImpl(private val api: MSDApi,
         }
     }
 
-    override fun connectToWebSocket(){
+    private var room: Room? = null
+    private val roomListener = object : RoomListener {
+        override fun onTrackSubscribed(
+            track: Track,
+            publication: TrackPublication,
+            participant: RemoteParticipant,
+            room: Room
+        ) {
+            if (track is VideoTrack) {
 
+            }
+        }
+    }
+
+    override fun connectToWebSocket(){
         val token = authContentProviderManager.getAccessToken()
         Log.d(TAG, "CONNECTING TO SOCKET " + token)
         if (token != null){
@@ -156,5 +180,15 @@ class ChatRepositoryImpl(private val api: MSDApi,
         return api.startCall(channelId).map {
             ChatMapper.responseToCallInfo(it)
         }
+    }
+
+    override suspend fun connectToLiveKitRoom(token: String) {
+        room = LiveKit.connect(
+            context,
+            BuildConfig.LIVEKIT_URL,
+            token,
+            ConnectOptions(),
+            roomListener
+        )
     }
 }

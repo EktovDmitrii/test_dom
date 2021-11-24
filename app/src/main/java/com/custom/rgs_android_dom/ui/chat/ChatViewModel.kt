@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.ui.chat
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.chat.models.ChatFileModel
 import com.custom.rgs_android_dom.domain.chat.models.ChatItemModel
@@ -14,6 +15,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.launch
 import java.io.File
 
 class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel() {
@@ -73,6 +75,20 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
             .subscribeBy(
                 onNext = {
                     postFilesInChat(it)
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
+        chatInteractor.callJoinSubject
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    viewModelScope.launch {
+                        chatInteractor.connectToLiveKitRoom(it.token)
+                    }
                 },
                 onError = {
                     logException(this, it)

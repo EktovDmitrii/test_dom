@@ -5,14 +5,8 @@ import org.joda.time.LocalDateTime
 
 data class CallInfoResponse(
 
-    @SerializedName("acceptedAt")
-    val acceptedAt: LocalDateTime,
-
     @SerializedName("channelId")
     val channelId: String?,
-
-    @SerializedName("declinedAt")
-    val declinedAt: LocalDateTime,
 
     @SerializedName("id")
     val id: String?,
@@ -22,9 +16,6 @@ data class CallInfoResponse(
 
     @SerializedName("recipientUserId")
     val recipientUserId: String?,
-
-    @SerializedName("registeredAt")
-    val registeredAt: LocalDateTime,
 
     @SerializedName("taskId")
     val taskId: String?

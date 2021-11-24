@@ -136,6 +136,10 @@ class ChatInteractor(
         return chatRepository.startCall()
     }
 
+    suspend fun connectToLiveKitRoom(token: String){
+        chatRepository.connectToLiveKitRoom(token)
+    }
+
     private fun onNewMessage(newMessage: ChatMessageModel){
         val chatItems = arrayListOf<ChatItemModel>()
         newMessage.member = cachedChannelMembers.find { it.userId == newMessage.userId }
