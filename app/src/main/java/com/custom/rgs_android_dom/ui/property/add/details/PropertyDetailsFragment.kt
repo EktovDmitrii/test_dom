@@ -1,13 +1,18 @@
 package com.custom.rgs_android_dom.ui.property.add.details
 
+import android.annotation.SuppressLint
+import android.content.Context.LAYOUT_INFLATER_SERVICE
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
-import android.view.View
+import android.view.*
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.PopupWindow
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPropertyDetailsBinding
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyField
-import com.custom.rgs_android_dom.domain.property.models.PropertyAddressModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.utils.*
@@ -15,14 +20,20 @@ import com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentPropertyDetailsBinding>(R.layout.fragment_property_details) {
+
+class PropertyDetailsFragment :
+    BaseFragment<PropertyDetailsViewModel, FragmentPropertyDetailsBinding>(R.layout.fragment_property_details) {
 
     companion object {
         private const val ARG_PROPERTY_NAME = "ARG_PROPERTY_NAME"
         private const val ARG_PROPERTY_ADDRESS = "ARG_PROPERTY_ADDRESS"
         private const val ARG_PROPERTY_TYPE = "ARG_PROPERTY_TYPE"
 
-        fun newInstance(propertyName: String, propertyAddress: String, propertyType: PropertyType): PropertyDetailsFragment {
+        fun newInstance(
+            propertyName: String,
+            propertyAddress: String,
+            propertyType: PropertyType
+        ): PropertyDetailsFragment {
             return PropertyDetailsFragment().args {
                 putString(ARG_PROPERTY_NAME, propertyName)
                 putString(ARG_PROPERTY_ADDRESS, propertyAddress)
@@ -94,28 +105,70 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
             viewModel.onIsTemporarySelected(it)
         }
 
-        subscribe(viewModel.propertyDetailsObserver){
+        binding.isOwnInfoImageView.also {
+            it.setOnDebouncedClickListener {
+                showPopUpWindow(it)
+            }
+        }
+
+        binding.isInRentInfoImageView.setOnDebouncedClickListener {
+
+        }
+
+        binding.isTemporaryInfoImageView.setOnDebouncedClickListener {
+
+        }
+
+        subscribe(viewModel.propertyDetailsObserver) {
             binding.addTextView.isEnabled = it.isAddTextViewEnabled
-            if (it.updatePropertyAddressEditText){
+            if (it.updatePropertyAddressEditText) {
                 binding.addressTextInputLayout.setText(it.address.addressString)
             }
         }
 
-        subscribe(viewModel.validateExceptionObserver){
-            when(it.field){
+        subscribe(viewModel.validateExceptionObserver) {
+            when (it.field) {
                 PropertyField.ADDRESS -> {
                     binding.addressTextInputLayout.setState(MSDTextInputLayout.State.ERROR)
                 }
             }
         }
 
-        subscribe(viewModel.networkErrorObserver){
+        subscribe(viewModel.networkErrorObserver) {
             toast(it)
         }
 
-        subscribe(viewModel.notificationObserver){
+        subscribe(viewModel.notificationObserver) {
             notification(it)
         }
+    }
+
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun showPopUpWindow(anchorView: View) {
+
+        var popupWindow: PopupWindow
+
+        LayoutInflater.from(anchorView.context)
+            .inflate(R.layout.popup_info_window, null, false)
+            .also { contentView ->
+
+                popupWindow = PopupWindow(contentView).apply {
+                    this.width = WindowManager.LayoutParams.WRAP_CONTENT
+                    this.height = WindowManager.LayoutParams.WRAP_CONTENT
+                    this.elevation = 10F
+                    this.isFocusable = true
+                    val offsetX = context?.let { (-176).dp(it) } ?: 0
+                    this.setBackgroundDrawable(resources.getDrawable(R.drawable.ic_background_info_popup,null)/*ColorDrawable(Color.WHITE)*/)
+                    this.showAsDropDown(anchorView, offsetX, 0, Gravity.NO_GRAVITY)
+                }
+
+                contentView.setOnTouchListener { _, _ ->
+                    popupWindow.dismiss()
+                    true
+                }
+            }
+
     }
 
     override fun onError() {
