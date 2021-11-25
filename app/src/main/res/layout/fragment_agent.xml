@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -23,7 +24,7 @@
                 android:layout_gravity="start"
                 android:paddingHorizontal="14dp"
                 android:tint="@color/secondary800"
-                app:srcCompat="@drawable/ic_back_24px"/>
+                app:srcCompat="@drawable/ic_back_24px" />
 
             <com.custom.rgs_android_dom.views.text.MSDTextView
                 android:layout_width="wrap_content"
@@ -32,7 +33,7 @@
                 android:fontFamily="@font/my_service_medium"
                 android:textColor="@color/secondary900"
                 android:textSize="16sp"
-                app:translationTextKey="Данные агента"/>
+                app:translationTextKey="Данные агента" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/editImageView"
@@ -41,10 +42,8 @@
                 android:layout_gravity="end"
                 android:paddingHorizontal="14dp"
                 android:tint="@color/secondary800"
-                app:srcCompat="@drawable/ic_edit_24px"/>
-
+                app:srcCompat="@drawable/ic_edit_24px" />
         </FrameLayout>
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -100,6 +99,7 @@
                     app:translationTextKey="Код агента и номер телефона можно изменить только по запросу" />
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/requestEditTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -108,52 +108,8 @@
                     android:lineSpacingMultiplier="0"
                     android:textColor="@color/secondary500"
                     android:textSize="14sp"
-                    app:translationTextKey="Чтобы редактировать данные," />
-
-                <com.custom.rgs_android_dom.views.text.MSDTextView
-                    android:id="@+id/requestEditTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/suisse_regular"
-                    android:lineSpacingExtra="24dp"
-                    android:lineSpacingMultiplier="0"
-                    android:textColor="@color/primary500"
-                    android:textSize="14sp"
-                    app:isUnderlined="true"
-                    app:translationTextKey="оставьте заявку" />
-
+                    app:translationTextKey="Пожалуйста, оставьте заявку, чтобы изменить код и номер телефона агента." />
             </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/editRequestedLinearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/rectangle_filled_secondary_900_alpha4_radius_8dp"
-                android:orientation="vertical"
-                android:paddingStart="16dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="64dp"
-                android:paddingBottom="8dp"
-                android:visibility="gone"
-                tools:visibility="visible">
-
-                <com.custom.rgs_android_dom.views.text.MSDTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/suisse_regular"
-                    android:includeFontPadding="false"
-                    android:lineSpacingExtra="24dp"
-                    android:lineSpacingMultiplier="0"
-                    android:textColor="@color/secondary500"
-                    android:textSize="14sp"
-                    app:translationTextKey="Заявка на редактирование данных будет рассмотрена" />
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
         </androidx.appcompat.widget.LinearLayoutCompat>
-
     </androidx.core.widget.NestedScrollView>
-
 </RelativeLayout>
