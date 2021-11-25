@@ -1,10 +1,8 @@
 package com.custom.rgs_android_dom.domain.repositories
 
-import com.custom.rgs_android_dom.domain.chat.models.CallInfoModel
-import com.custom.rgs_android_dom.domain.chat.models.ChannelMemberModel
-import com.custom.rgs_android_dom.domain.chat.models.ChatFileModel
-import com.custom.rgs_android_dom.domain.chat.models.ChatMessageModel
-import com.custom.rgs_android_dom.domain.chat.models.WsEventModel
+import com.custom.rgs_android_dom.domain.chat.models.*
+import io.livekit.android.room.Room
+import io.livekit.android.room.track.VideoTrack
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
@@ -24,7 +22,7 @@ interface ChatRepository {
 
     fun getFilesToUploadSubject(): PublishSubject<List<File>>
 
-    fun startCall(): Single<CallInfoModel>
+    fun requestLiveKitToken(): Single<CallInfoModel>
 
     fun connectToWebSocket()
 
@@ -32,6 +30,14 @@ interface ChatRepository {
 
     fun getWsEventsSubject(): PublishSubject<WsEventModel<*>>
 
-    suspend fun connectToLiveKitRoom(token: String)
+    suspend fun connectToLiveKitRoom(token: String, callType: CallType)
+
+    fun getRoomInfoSubject(): PublishSubject<RoomInfoModel>
+
+    fun leaveLiveKitRoom()
+
+    fun getRoomDisconnectedSubject(): PublishSubject<Unit>
+
+    fun getActualRoomInfo(): RoomInfoModel?
 
 }

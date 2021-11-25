@@ -6,6 +6,8 @@ import com.custom.rgs_android_dom.domain.repositories.ChatRepository
 import com.custom.rgs_android_dom.domain.chat.models.WsChatMessageModel
 import com.custom.rgs_android_dom.utils.*
 import io.livekit.android.LiveKit
+import io.livekit.android.room.Room
+import io.livekit.android.room.track.VideoTrack
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -132,12 +134,31 @@ class ChatInteractor(
         }
     }
 
-    fun startCall(): Single<CallInfoModel>{
-        return chatRepository.startCall()
+    fun requestLiveKitToken(): Completable {
+        return chatRepository.requestLiveKitToken()
+            .flatMapCompletable {
+                Completable.complete()
+            }
     }
 
-    suspend fun connectToLiveKitRoom(token: String){
-        chatRepository.connectToLiveKitRoom(token)
+    suspend fun connectToLiveKitRoom(token: String, callType: CallType){
+        chatRepository.connectToLiveKitRoom(token, callType)
+    }
+
+    fun getRoomInfoSubject(): PublishSubject<RoomInfoModel>{
+        return chatRepository.getRoomInfoSubject()
+    }
+
+    fun getRoomDisconnectedSubject(): PublishSubject<Unit>{
+        return chatRepository.getRoomDisconnectedSubject()
+    }
+
+    fun leaveLiveKitRoom(){
+        chatRepository.leaveLiveKitRoom()
+    }
+
+    fun getActualRoomInfo(): RoomInfoModel?{
+        return chatRepository.getActualRoomInfo()
     }
 
     private fun onNewMessage(newMessage: ChatMessageModel){

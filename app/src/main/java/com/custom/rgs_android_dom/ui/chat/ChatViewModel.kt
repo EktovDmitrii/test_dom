@@ -4,9 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
+import com.custom.rgs_android_dom.domain.chat.models.CallType
 import com.custom.rgs_android_dom.domain.chat.models.ChatFileModel
 import com.custom.rgs_android_dom.domain.chat.models.ChatItemModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.chat.call.CallFragment
 import com.custom.rgs_android_dom.ui.chat.files.viewers.image.ImageViewerFragment
 import com.custom.rgs_android_dom.ui.chat.files.viewers.video.VideoPlayerFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -81,19 +83,6 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
                 }
             ).addTo(dataCompositeDisposable)
 
-        chatInteractor.callJoinSubject
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onNext = {
-                    viewModelScope.launch {
-                        chatInteractor.connectToLiveKitRoom(it.token)
-                    }
-                },
-                onError = {
-                    logException(this, it)
-                }
-            ).addTo(dataCompositeDisposable)
     }
 
     fun onBackClick(){
@@ -129,17 +118,8 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
     }
 
     fun onCallClick(){
-        chatInteractor.startCall()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onSuccess = {
-
-                },
-                onError = {
-                    logException(this, it)
-                }
-            ).addTo(dataCompositeDisposable)
+        val callFragment = CallFragment.newInstance(CallType.VIDEO_CALL)
+        ScreenManager.showScreen(callFragment)
     }
 
     private fun postFilesInChat(files: List<File>){

@@ -14,6 +14,7 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
         private const val PREF_KEY_CLIENT_ID = "PREF_KEY_CLIENT_ID"
         private const val PREF_KEY_PHONE = "PREF_KEY_PHONE"
         private const val PREF_KEY_CLIENT = "PREF_KEY_CLIENT"
+        private const val PREF_KEY_LIVEKIT_ROOM_TOKEN = "PREF_KEY_LIVEKIT_ROOM_TOKEN"
     }
 
     private val preferences = context.getSharedPrefs(PREFS_NAME)
@@ -41,6 +42,22 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
             return gson.fromJson(clientString, ClientModel::class.java)
         }
         return null
+    }
+
+    fun saveLiveKitRoomToken(token: String){
+        preferences.edit {
+            putString(PREF_KEY_LIVEKIT_ROOM_TOKEN, token)
+        }
+    }
+
+    fun getLiveKitRoomToken(): String?{
+        return preferences.getString(PREF_KEY_LIVEKIT_ROOM_TOKEN, null)
+    }
+
+    fun removeLiveKitRoomToken(){
+        preferences.edit {
+            remove(PREF_KEY_LIVEKIT_ROOM_TOKEN)
+        }
     }
 
     fun clear() {

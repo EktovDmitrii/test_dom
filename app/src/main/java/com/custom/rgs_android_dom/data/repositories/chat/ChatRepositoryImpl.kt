@@ -8,12 +8,8 @@ import com.custom.rgs_android_dom.data.network.mappers.ChatMapper
 import com.custom.rgs_android_dom.data.network.requests.SendMessageRequest
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
-import com.custom.rgs_android_dom.domain.chat.models.CallInfoModel
-import com.custom.rgs_android_dom.domain.chat.models.ChannelMemberModel
-import com.custom.rgs_android_dom.domain.chat.models.ChatFileModel
-import com.custom.rgs_android_dom.domain.chat.models.ChatMessageModel
+import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.domain.repositories.ChatRepository
-import com.custom.rgs_android_dom.domain.chat.models.WsEventModel
 import com.custom.rgs_android_dom.utils.WsResponseParser
 import com.custom.rgs_android_dom.utils.toMultipartFormData
 import com.google.gson.Gson
@@ -54,6 +50,15 @@ class ChatRepositoryImpl(private val api: MSDApi,
     private val wsEventSubject: PublishSubject<WsEventModel<*>> = PublishSubject.create()
     private val wsResponseParser = WsResponseParser(gson)
 
+    private val roomInfoSubject = PublishSubject.create<RoomInfoModel>()
+    private val roomDisconnectedSubject = PublishSubject.create<Unit>()
+
+    private var room: Room? = null
+    private var myVideoTrack: VideoTrack? = null
+    private var opponentVideoTrack: VideoTrack? = null
+    private var isInCall: Boolean = false
+    private var callType: CallType? = null
+
     private var webSocket: WebSocket? = null
     private val webSocketListener = object : WebSocketListener() {
 
@@ -79,8 +84,9 @@ class ChatRepositoryImpl(private val api: MSDApi,
         }
     }
 
-    private var room: Room? = null
+
     private val roomListener = object : RoomListener {
+
         override fun onTrackSubscribed(
             track: Track,
             publication: TrackPublication,
@@ -88,7 +94,33 @@ class ChatRepositoryImpl(private val api: MSDApi,
             room: Room
         ) {
             if (track is VideoTrack) {
+                opponentVideoTrack = track
 
+                val roomInfo = RoomInfoModel(
+                    opponentVideoTrack = opponentVideoTrack
+                )
+                roomInfoSubject.onNext(roomInfo)
+            }
+        }
+
+        override fun onDisconnect(room: Room, error: Exception?) {
+            super.onDisconnect(room, error)
+            clearRoomData()
+            roomDisconnectedSubject.onNext(Unit)
+        }
+
+        override fun onFailedToConnect(room: Room, error: Exception) {
+            super.onFailedToConnect(room, error)
+            clearRoomData()
+            roomDisconnectedSubject.onNext(Unit)
+        }
+
+        override fun onParticipantDisconnected(room: Room, participant: RemoteParticipant) {
+            super.onParticipantDisconnected(room, participant)
+            // TODO Remove this in the future
+            if (room.remoteParticipants.isEmpty()){
+                /*clearRoomData()
+                roomDisconnectedSubject.onNext(Unit)*/
             }
         }
     }
@@ -174,7 +206,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
         filesToUploadSubject.onNext(files)
     }
 
-    override fun startCall(): Single<CallInfoModel> {
+    override fun requestLiveKitToken(): Single<CallInfoModel> {
         val client = clientSharedPreferences.getClient()
         val channelId = client?.getChatChannelId() ?: ""
         return api.startCall(channelId).map {
@@ -182,13 +214,82 @@ class ChatRepositoryImpl(private val api: MSDApi,
         }
     }
 
-    override suspend fun connectToLiveKitRoom(token: String) {
+    override suspend fun connectToLiveKitRoom(token: String, callType: CallType) {
+        val withVideo = callType == CallType.VIDEO_CALL
+
+        this.callType = callType
+
         room = LiveKit.connect(
             context,
             BuildConfig.LIVEKIT_URL,
             token,
-            ConnectOptions(),
+            ConnectOptions(
+            ),
             roomListener
         )
+
+        val room = room
+        if (room != null){
+            val localParticipant = room.localParticipant
+
+            localParticipant.setMicrophoneEnabled(true)
+            localParticipant.setCameraEnabled(withVideo)
+
+            val audioTrack = localParticipant.createAudioTrack()
+            localParticipant.publishAudioTrack(audioTrack)
+
+            if (withVideo){
+                val videoTrack = localParticipant.createVideoTrack()
+                localParticipant.publishVideoTrack(videoTrack)
+                videoTrack.startCapture()
+
+                myVideoTrack = videoTrack
+            }
+
+            clientSharedPreferences.saveLiveKitRoomToken(token)
+
+            val roomInfo = RoomInfoModel(
+                callType = callType,
+                room = room,
+                myVideoTrack = myVideoTrack
+            )
+            roomInfoSubject.onNext(roomInfo)
+            isInCall = true
+
+        }
+    }
+
+    override fun getRoomInfoSubject(): PublishSubject<RoomInfoModel> {
+        return roomInfoSubject
+    }
+
+    override fun leaveLiveKitRoom() {
+        room?.disconnect()
+        clearRoomData()
+    }
+
+    override fun getRoomDisconnectedSubject(): PublishSubject<Unit> {
+        return roomDisconnectedSubject
+    }
+
+    private fun clearRoomData(){
+        room = null
+        callType = null
+        myVideoTrack = null
+        opponentVideoTrack = null
+        isInCall = false
+        clientSharedPreferences.removeLiveKitRoomToken()
+    }
+
+
+    override fun getActualRoomInfo(): RoomInfoModel? {
+        return if (isInCall){
+            RoomInfoModel(
+                callType = callType,
+                room = room,
+                myVideoTrack = myVideoTrack,
+                opponentVideoTrack = opponentVideoTrack
+            )
+        } else null
     }
 }
