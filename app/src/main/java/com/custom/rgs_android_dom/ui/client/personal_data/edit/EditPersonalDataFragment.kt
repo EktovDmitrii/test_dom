@@ -121,6 +121,10 @@ class EditPersonalDataFragment : BaseFragment<EditPersonalDataViewModel, Fragmen
 
         }
 
+        binding.editRequestTextView.setOnDebouncedClickListener{
+            viewModel.onEditRequestClick()
+        }
+
         subscribe(viewModel.isSaveTextViewEnabledObserver){
             binding.saveTextView.isEnabled = it
         }

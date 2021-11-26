@@ -124,4 +124,8 @@ class EditPersonalDataViewModel(private val clientInteractor: ClientInteractor) 
         closeController.value = Unit
     }
 
+    fun onEditRequestClick() {
+
+    }
+
 }

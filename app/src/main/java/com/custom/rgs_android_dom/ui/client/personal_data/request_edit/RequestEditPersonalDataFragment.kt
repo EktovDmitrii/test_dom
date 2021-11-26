@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.ui.client.agent.request_edit
+package com.custom.rgs_android_dom.ui.client.personal_data.request_edit
 
 import android.os.Bundle
 import android.view.View
@@ -8,7 +8,7 @@ import com.custom.rgs_android_dom.databinding.FragmentRequestEditAgentBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.utils.*
 
-class RequestEditAgentFragment() : BaseBottomSheetFragment<RequestEditAgentViewModel, FragmentRequestEditAgentBinding>() {
+class RequestEditPersonalDataFragment() : BaseBottomSheetFragment<RequestEditPersonalDataViewModel, FragmentRequestEditAgentBinding>() {
 
     override val TAG: String = "REQUEST_EDIT_AGENT_FRAGMENT"
 

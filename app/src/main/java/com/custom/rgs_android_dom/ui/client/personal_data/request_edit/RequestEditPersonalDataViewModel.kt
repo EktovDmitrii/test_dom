@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.ui.client.agent.request_edit
+package com.custom.rgs_android_dom.ui.client.personal_data.request_edit
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,7 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
-class RequestEditAgentViewModel(
+class RequestEditPersonalDataViewModel(
     private val clientInteractor: ClientInteractor
 ) : BaseViewModel() {
 
