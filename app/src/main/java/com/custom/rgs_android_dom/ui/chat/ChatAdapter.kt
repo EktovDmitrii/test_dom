@@ -28,7 +28,7 @@ class ChatAdapter(
         val message = chatItems[position]
 
         var previousChatItemModel: ChatItemModel
-        var previousItemType = 0
+        var previousItemType: Int? = null
 
         if (position > 0) {
 
@@ -140,8 +140,8 @@ class ChatAdapter(
         private val onFileClick: (ChatFileModel) -> Unit = {}
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(model: ChatMessageModel, previousItemType: Int) {
-            if (previousItemType > 0 && previousItemType == ITEM_TYPE_OPPONENT_MESSAGE || previousItemType == ITEM_TYPE_DATE_DIVIDER) {
+        fun bind(model: ChatMessageModel, previousItemType: Int?) {
+            if (previousItemType != null && previousItemType > 0 && previousItemType == ITEM_TYPE_OPPONENT_MESSAGE || previousItemType == ITEM_TYPE_DATE_DIVIDER) {
                 binding.messageContainerFrameLayout.background =
                     AppCompatResources.getDrawable(
                         binding.messageContainerFrameLayout.context,
@@ -187,8 +187,8 @@ class ChatAdapter(
         private val onFileClick: (ChatFileModel) -> Unit = {}
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(model: ChatMessageModel, previousItemType: Int) {
-            if (previousItemType > 0 &&
+        fun bind(model: ChatMessageModel, previousItemType: Int?) {
+            if (previousItemType != null && previousItemType > 0 &&
                 (previousItemType == ITEM_TYPE_MY_MESSAGE || previousItemType == ITEM_TYPE_DATE_DIVIDER)
             ) {
                 binding.messageContainerFrameLayout.background =

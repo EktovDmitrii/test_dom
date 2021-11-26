@@ -61,7 +61,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="12dp"
-                    android:layout_marginBottom="40dp"
+                    android:layout_marginBottom="26dp"
                     android:enabled="false"
                     android:tint="@color/secondary500"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -76,7 +76,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="36dp"
+                    android:layout_marginBottom="22dp"
                     android:includeFontPadding="false"
                     android:inputType="textMultiLine"
                     android:lines="5"
@@ -100,49 +100,89 @@
                     android:layout_height="40dp"
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="12dp"
-                    android:layout_marginBottom="40dp"
+                    android:layout_marginBottom="26dp"
                     android:enabled="false"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:srcCompat="@drawable/ic_arrow_up_16px" />
+                    app:srcCompat="@drawable/ic_arrow_up_16dp" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </FrameLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height_chat"
+            android:background="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/backImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:paddingHorizontal="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_back_24dp" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/titleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@id/backImageView"
+                android:fontFamily="@font/my_service_medium"
+                android:textColor="@color/secondary900"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/backImageView"
+                app:layout_constraintTop_toTopOf="parent"
+                app:translationTextKey="Мастер онлайн" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/dropDownImageView"
+                android:layout_width="16dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/titleTextView"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_dropdown_16dp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/audioCallImageView"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintBottom_toBottomOf="@id/titleTextView"
+                app:layout_constraintEnd_toStartOf="@id/videoCallImageView"
+                app:layout_constraintTop_toTopOf="@id/titleTextView"
+                app:srcCompat="@drawable/ic_chat_accept_24dp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/videoCallImageView"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintBottom_toBottomOf="@id/titleTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/titleTextView"
+                app:srcCompat="@drawable/ic_chat_video_call_24dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/toolbar_height_chat"
         android:layout_height="28dp"
+        android:layout_marginTop="@dimen/toolbar_height_chat"
         android:scaleType="fitXY"
         app:srcCompat="@drawable/chat_fade_background_28dp" />
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height_chat"
-        android:orientation="horizontal"
-        android:background="@color/white">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/backImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:paddingHorizontal="20dp"
-            app:srcCompat="@drawable/ic_back_24dp" />
-
-        <com.custom.rgs_android_dom.views.text.MSDTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/my_service_medium"
-            android:textColor="@color/secondary900"
-            android:textSize="18sp"
-            app:translationTextKey="Мастер онлайн" />
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <ProgressBar
         android:id="@+id/loadingProgressBar"
