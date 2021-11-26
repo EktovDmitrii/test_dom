@@ -13,9 +13,9 @@ object GlideUrlProvider : KoinComponent {
 
     private val registrationRepository: RegistrationRepository by inject()
 
-    fun makeAvatarGlideUrl(avatar: String): GlideUrl{
+    fun makeHeadersGlideUrl(url: String): GlideUrl{
         return GlideUrl(
-            avatar,
+            url,
             LazyHeaders.Builder()
                 .addHeader(AUTHORIZATION_HEADER, "$AUTHORIZATION_BEARER ${registrationRepository.getAccessToken()}")
                 .build()

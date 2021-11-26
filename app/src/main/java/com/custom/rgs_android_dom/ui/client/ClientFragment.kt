@@ -3,7 +3,6 @@ package com.custom.rgs_android_dom.ui.client
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.custom.rgs_android_dom.BuildConfig
@@ -108,12 +107,11 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
                 binding.agentInfoTextView.text = "Я знаю код агента"
             }
 
-            Log.d("MyLog", "AVATAR IS EMPTY " + state.avatar.isEmpty())
             if (state.avatar.isEmpty()){
                 binding.avatarImageView.setImageResource(R.drawable.ic_avatar)
             } else {
                 GlideApp.with(requireContext())
-                    .load(GlideUrlProvider.makeAvatarGlideUrl(state.avatar))
+                    .load(GlideUrlProvider.makeHeadersGlideUrl(state.avatar))
                     .circleCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .error(R.drawable.ic_avatar)

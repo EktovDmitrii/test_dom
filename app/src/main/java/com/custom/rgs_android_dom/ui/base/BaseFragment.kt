@@ -7,6 +7,7 @@ import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.utils.activity.setLightStatusBar
 import com.custom.rgs_android_dom.utils.hideSoftwareKeyboard
 import com.custom.rgs_android_dom.utils.setStatusBarColor
 import com.custom.rgs_android_dom.utils.subscribe
@@ -16,7 +17,6 @@ import org.koin.core.parameter.emptyParametersHolder
 import java.lang.reflect.ParameterizedType
 import kotlin.random.Random
 import kotlin.reflect.KClass
-
 
 abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(layout: Int) : Fragment(layout) {
 
@@ -59,6 +59,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(layout: Int) : 
 
     open fun setStatusBarColor(){
         setStatusBarColor(R.color.white)
+        requireActivity().setLightStatusBar()
     }
 
     @Suppress("UNCHECKED_CAST")

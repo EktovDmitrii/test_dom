@@ -12,8 +12,9 @@ import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.utils.recycler_view.VerticalItemDecoration
 
-
-class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChatAdapter(
+    private val onFileClick: (ChatFileModel) -> Unit = {}
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var chatItems: ArrayList<ChatItemModel> = arrayListOf()
 
@@ -82,20 +83,12 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ITEM_TYPE_MY_MESSAGE -> {
-                val binding = ItemChatMessageMyBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
-                MyMessageViewHolder(binding)
+                val binding = ItemChatMessageMyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                MyMessageViewHolder(binding, onFileClick)
             }
             ITEM_TYPE_OPPONENT_MESSAGE -> {
-                val binding = ItemChatMessageOpponentBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
-                OpponentMessageViewHolder(binding)
+                val binding = ItemChatMessageOpponentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                OpponentMessageViewHolder(binding, onFileClick)
             }
             ITEM_TYPE_DATE_DIVIDER -> {
                 val binding = ItemChatDateDividerBinding.inflate(
@@ -134,10 +127,10 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     }
 
-    inner class MyMessageViewHolder(private val binding: ItemChatMessageMyBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(model: ChatMessageModel, previousItemType: Int) {
+    inner class MyMessageViewHolder(
+        private val binding: ItemChatMessageMyBinding,
+        private val onFileClick: (ChatFileModel) -> Unit = {}
+    ) : RecyclerView.ViewHolder(binding.root) {
 
             if (previousItemType > 0 && previousItemType == ITEM_TYPE_OPPONENT_MESSAGE || previousItemType == ITEM_TYPE_DATE_DIVIDER) {
                 binding.messageContainerFrameLayout.background =
@@ -154,7 +147,10 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 binding.messageContainerLinearLayout.gone()
                 binding.timeTextView.gone()
 
-                val adapter = ChatMyFilesAdapter(model.createdAt)
+                val adapter = ChatMyFilesAdapter(){
+                    onFileClick(it)
+                }
+
                 binding.attachedFilesRecyclerView.adapter = adapter
                 binding.attachedFilesRecyclerView.addItemDecoration(
                     VerticalItemDecoration(
@@ -191,7 +187,10 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     )
             }
 
-            model.member?.let { member ->
+    inner class OpponentMessageViewHolder(
+        private val binding: ItemChatMessageOpponentBinding,
+        private val onFileClick: (ChatFileModel) -> Unit = {}
+    ) : RecyclerView.ViewHolder(binding.root) {
 
                 binding.nameTextView.text = "Мой_Сервис Дом"
                 model.member?.let { member ->
@@ -199,16 +198,16 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     binding.nameTextView.text =
                         "${member.firstName} ${member.lastName}, ${member.type}"
 
-                    if (member.avatar.isNotEmpty()) {
-                        GlideApp.with(binding.avatarImageView)
-                            .load(GlideUrlProvider.makeAvatarGlideUrl(member.avatar))
-                            .circleCrop()
-                            .transition(DrawableTransitionOptions.withCrossFade())
-                            .error(R.drawable.chat_avatar_stub)
-                            .into(binding.avatarImageView)
-                    } else {
-                        binding.avatarImageView.setImageResource(R.drawable.chat_avatar_stub)
-                    }
+                if (member.avatar.isNotEmpty()){
+                    GlideApp.with(binding.avatarImageView)
+                        .load(GlideUrlProvider.makeHeadersGlideUrl(member.avatar))
+                        .circleCrop()
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .error(R.drawable.ic_chat_avatar_stub)
+                        .into(binding.avatarImageView)
+                } else {
+                    binding.avatarImageView.setImageResource(R.drawable.ic_chat_avatar_stub)
+                }
 
                 }
                 val files = model.files
@@ -218,14 +217,18 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     binding.messageTextView.gone()
                     binding.timeTextView.gone()
 
-                    val adapter = ChatOpponentFilesAdapter(model.createdAt)
-                    binding.attachedFilesRecyclerView.adapter = adapter
-                    binding.attachedFilesRecyclerView.addItemDecoration(
-                        VerticalItemDecoration(
-                            gap = 12.dp(binding.attachedFilesRecyclerView.context)
-                        )
+                val adapter = ChatOpponentFilesAdapter(){
+                    onFileClick(it)
+                }
+
+                binding.attachedFilesRecyclerView.adapter = adapter
+                binding.attachedFilesRecyclerView.addItemDecoration(
+                    VerticalItemDecoration(
+                        gap = 12.dp(binding.attachedFilesRecyclerView.context)
                     )
-                    adapter.setItems(files)
+                )
+
+                adapter.setItems(files)
 
                 } else {
 
