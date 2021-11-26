@@ -1,13 +1,8 @@
 package com.custom.rgs_android_dom.ui.chat
 
-import android.graphics.Paint
-import android.graphics.Rect
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import androidx.core.view.marginEnd
-import androidx.core.view.marginStart
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.custom.rgs_android_dom.R
@@ -30,12 +25,35 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val message = chatItems[position]
+
+        var previousChatItemModel: ChatItemModel
+        var previousItemType = 0
+
+        if (position > 0) {
+
+            previousChatItemModel = chatItems[position - 1]
+
+            when (previousChatItemModel) {
+
+                is ChatMessageModel -> {
+                    previousItemType = if (previousChatItemModel.sender == Sender.ME) {
+                        ITEM_TYPE_MY_MESSAGE
+                    } else ITEM_TYPE_OPPONENT_MESSAGE
+                }
+
+                is ChatDateDividerModel -> {
+                    previousItemType = ITEM_TYPE_DATE_DIVIDER
+                }
+
+            }
+        }
+
         when (holder) {
             is MyMessageViewHolder -> {
-                holder.bind(message as ChatMessageModel)
+                holder.bind(message as ChatMessageModel, previousItemType)
             }
             is OpponentMessageViewHolder -> {
-                holder.bind(message as ChatMessageModel)
+                holder.bind(message as ChatMessageModel, previousItemType)
             }
             is DateDividerViewHolder -> {
                 holder.bind(message as ChatDateDividerModel)
@@ -119,7 +137,15 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class MyMessageViewHolder(private val binding: ItemChatMessageMyBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(model: ChatMessageModel) {
+        fun bind(model: ChatMessageModel, previousItemType: Int) {
+
+            if (previousItemType > 0 && previousItemType == ITEM_TYPE_OPPONENT_MESSAGE || previousItemType == ITEM_TYPE_DATE_DIVIDER) {
+                binding.messageContainerFrameLayout.background =
+                    AppCompatResources.getDrawable(
+                        binding.messageContainerFrameLayout.context,
+                        R.drawable.rectangle_filled_primary_500_radius_16dp_top_end_4dp
+                    )
+            }
 
             val files = model.files
             if (files != null && files.isNotEmpty()) {
@@ -146,39 +172,6 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
                 binding.messageTextView.text = model.message
 
-                val lineCount = binding.messageTextView.lineCount
-                val lastLineWidth: Int
-
-                val bounds = Rect()
-                binding.messageTextView.getLineBounds((lineCount - 1), bounds)
-                lastLineWidth = bounds.width()
-
-                val parent = binding.timeTextView.parent as FrameLayout
-
-                val availableWidth =
-                    parent.width - binding.timeTextView.width /*parent.paddingStart - parent.paddingEnd*/
-                binding.messageTextView.text = StringBuilder(model.message).append("5555555")
-
-            /*if (availableWidth <= lastLineWidth) {
-                    binding.messageTextView.text = StringBuilder(model.message).append("5555555")
-                }*/
-
-                /*if (lineCount > 1 &&
-                    lastLineWidth + binding.timeTextView.width + 50 > binding.messageTextView.width &&
-                    lastLineWidth + binding.timeTextView.width + 50 < availableWidth
-                ) {
-                    binding.messageTextView.text = StringBuilder(model.message).append("\n")
-                } else if (lineCount > 1 &&
-                    lastLineWidth + binding.timeTextView.width >= availableWidth
-                ) {
-                    binding.messageTextView.text = StringBuilder(model.message).append("")
-                } else if (lineCount == 1 && lastLineWidth + binding.timeTextView.width >= availableWidth) {
-                    binding.messageTextView.text =
-                        StringBuilder(model.message).append("")
-                } else {
-                    return
-                }*/
-
             }
         }
 
@@ -187,7 +180,16 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class OpponentMessageViewHolder(private val binding: ItemChatMessageOpponentBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(model: ChatMessageModel) {
+        fun bind(model: ChatMessageModel, previousItemType: Int) {
+
+            if (previousItemType > 0 &&
+                (previousItemType == ITEM_TYPE_MY_MESSAGE || previousItemType == ITEM_TYPE_DATE_DIVIDER)) {
+                binding.messageContainerFrameLayout.background =
+                    AppCompatResources.getDrawable(
+                        binding.messageContainerFrameLayout.context,
+                        R.drawable.rectangle_filled_secondary_100_radius_16dp_top_start_radius_4dp
+                    )
+            }
 
             model.member?.let { member ->
 
@@ -202,10 +204,10 @@ class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                             .load(GlideUrlProvider.makeAvatarGlideUrl(member.avatar))
                             .circleCrop()
                             .transition(DrawableTransitionOptions.withCrossFade())
-                            .error(R.drawable.ic_chat_avatar_stub)
+                            .error(R.drawable.chat_avatar_stub)
                             .into(binding.avatarImageView)
                     } else {
-                        binding.avatarImageView.setImageResource(R.drawable.ic_chat_avatar_stub)
+                        binding.avatarImageView.setImageResource(R.drawable.chat_avatar_stub)
                     }
 
                 }
