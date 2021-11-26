@@ -83,11 +83,19 @@ class ChatAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ITEM_TYPE_MY_MESSAGE -> {
-                val binding = ItemChatMessageMyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                val binding = ItemChatMessageMyBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
                 MyMessageViewHolder(binding, onFileClick)
             }
             ITEM_TYPE_OPPONENT_MESSAGE -> {
-                val binding = ItemChatMessageOpponentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                val binding = ItemChatMessageOpponentBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
                 OpponentMessageViewHolder(binding, onFileClick)
             }
             ITEM_TYPE_DATE_DIVIDER -> {
@@ -132,6 +140,7 @@ class ChatAdapter(
         private val onFileClick: (ChatFileModel) -> Unit = {}
     ) : RecyclerView.ViewHolder(binding.root) {
 
+        fun bind(model: ChatMessageModel, previousItemType: Int) {
             if (previousItemType > 0 && previousItemType == ITEM_TYPE_OPPONENT_MESSAGE || previousItemType == ITEM_TYPE_DATE_DIVIDER) {
                 binding.messageContainerFrameLayout.background =
                     AppCompatResources.getDrawable(
@@ -147,7 +156,7 @@ class ChatAdapter(
                 binding.messageContainerLinearLayout.gone()
                 binding.timeTextView.gone()
 
-                val adapter = ChatMyFilesAdapter(){
+                val adapter = ChatMyFilesAdapter() {
                     onFileClick(it)
                 }
 
@@ -173,13 +182,15 @@ class ChatAdapter(
 
     }
 
-    inner class OpponentMessageViewHolder(private val binding: ItemChatMessageOpponentBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class OpponentMessageViewHolder(
+        private val binding: ItemChatMessageOpponentBinding,
+        private val onFileClick: (ChatFileModel) -> Unit = {}
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: ChatMessageModel, previousItemType: Int) {
-
             if (previousItemType > 0 &&
-                (previousItemType == ITEM_TYPE_MY_MESSAGE || previousItemType == ITEM_TYPE_DATE_DIVIDER)) {
+                (previousItemType == ITEM_TYPE_MY_MESSAGE || previousItemType == ITEM_TYPE_DATE_DIVIDER)
+            ) {
                 binding.messageContainerFrameLayout.background =
                     AppCompatResources.getDrawable(
                         binding.messageContainerFrameLayout.context,
@@ -187,18 +198,13 @@ class ChatAdapter(
                     )
             }
 
-    inner class OpponentMessageViewHolder(
-        private val binding: ItemChatMessageOpponentBinding,
-        private val onFileClick: (ChatFileModel) -> Unit = {}
-    ) : RecyclerView.ViewHolder(binding.root) {
+            binding.nameTextView.text = "Мой_Сервис Дом"
+            model.member?.let { member ->
 
-                binding.nameTextView.text = "Мой_Сервис Дом"
-                model.member?.let { member ->
+                binding.nameTextView.text =
+                    "${member.firstName} ${member.lastName}, ${member.type}"
 
-                    binding.nameTextView.text =
-                        "${member.firstName} ${member.lastName}, ${member.type}"
-
-                if (member.avatar.isNotEmpty()){
+                if (member.avatar.isNotEmpty()) {
                     GlideApp.with(binding.avatarImageView)
                         .load(GlideUrlProvider.makeHeadersGlideUrl(member.avatar))
                         .circleCrop()
@@ -209,15 +215,15 @@ class ChatAdapter(
                     binding.avatarImageView.setImageResource(R.drawable.ic_chat_avatar_stub)
                 }
 
-                }
-                val files = model.files
-                if (files != null && files.isNotEmpty()) {
+            }
+            val files = model.files
+            if (files != null && files.isNotEmpty()) {
 
-                    binding.attachedFilesRecyclerView.visible()
-                    binding.messageTextView.gone()
-                    binding.timeTextView.gone()
+                binding.attachedFilesRecyclerView.visible()
+                binding.messageTextView.gone()
+                binding.timeTextView.gone()
 
-                val adapter = ChatOpponentFilesAdapter(){
+                val adapter = ChatOpponentFilesAdapter() {
                     onFileClick(it)
                 }
 
@@ -230,17 +236,16 @@ class ChatAdapter(
 
                 adapter.setItems(files)
 
-                } else {
+            } else {
 
-                    binding.attachedFilesRecyclerView.gone()
-                    binding.messageTextView.visible()
-                    binding.timeTextView.visible()
+                binding.attachedFilesRecyclerView.gone()
+                binding.messageTextView.visible()
+                binding.timeTextView.visible()
 
-                    binding.messageTextView.text = model.message
+                binding.messageTextView.text = model.message
 
-                    binding.timeTextView.text =
-                        model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
-                }
+                binding.timeTextView.text =
+                    model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
             }
         }
     }
