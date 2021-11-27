@@ -30,7 +30,7 @@
             android:id="@+id/avatarImageView"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            app:srcCompat="@drawable/chat_avatar_stub" />
+            app:srcCompat="@drawable/ic_chat_avatar_stub" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -54,7 +54,7 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="10dp">
 
-                    <TextView
+                    <com.custom.rgs_android_dom.views.text.MSDTextView
                         android:id="@+id/messageTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -70,15 +70,15 @@
 
                 <TextView
                     android:id="@+id/timeTextView"
-                    android:layout_width="29dp"
-                    android:layout_height="22dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="11dp"
                     android:fontFamily="@font/suisse_regular"
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:textColor="@color/secondary400"
-                    android:textSize="10sp"
+                    android:textSize="12sp"
                     tools:text="20:34" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>

@@ -17,15 +17,15 @@
 
         <TextView
             android:id="@+id/timeTextView"
-            android:layout_width="29dp"
-            android:layout_height="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="11dp"
             android:layout_marginEnd="12dp"
             android:fontFamily="@font/suisse_regular"
             android:gravity="center"
             android:includeFontPadding="false"
             android:textColor="@color/secondary400"
-            android:textSize="10sp"
+            android:textSize="12sp"
             tools:text="20:34" />
 
         <FrameLayout

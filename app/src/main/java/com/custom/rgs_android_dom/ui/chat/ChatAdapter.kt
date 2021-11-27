@@ -27,34 +27,12 @@ class ChatAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val message = chatItems[position]
 
-        var previousChatItemModel: ChatItemModel
-        var previousItemType: Int? = null
-
-        if (position > 0) {
-
-            previousChatItemModel = chatItems[position - 1]
-
-            when (previousChatItemModel) {
-
-                is ChatMessageModel -> {
-                    previousItemType = if (previousChatItemModel.sender == Sender.ME) {
-                        ITEM_TYPE_MY_MESSAGE
-                    } else ITEM_TYPE_OPPONENT_MESSAGE
-                }
-
-                is ChatDateDividerModel -> {
-                    previousItemType = ITEM_TYPE_DATE_DIVIDER
-                }
-
-            }
-        }
-
         when (holder) {
             is MyMessageViewHolder -> {
-                holder.bind(message as ChatMessageModel, previousItemType)
+                holder.bind(message as ChatMessageModel)
             }
             is OpponentMessageViewHolder -> {
-                holder.bind(message as ChatMessageModel, previousItemType)
+                holder.bind(message as ChatMessageModel)
             }
             is DateDividerViewHolder -> {
                 holder.bind(message as ChatDateDividerModel)
@@ -140,14 +118,9 @@ class ChatAdapter(
         private val onFileClick: (ChatFileModel) -> Unit = {}
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(model: ChatMessageModel, previousItemType: Int?) {
-            if (previousItemType != null && previousItemType > 0 && previousItemType == ITEM_TYPE_OPPONENT_MESSAGE || previousItemType == ITEM_TYPE_DATE_DIVIDER) {
-                binding.messageContainerFrameLayout.background =
-                    AppCompatResources.getDrawable(
-                        binding.messageContainerFrameLayout.context,
-                        R.drawable.rectangle_filled_primary_500_radius_16dp_top_end_4dp
-                    )
-            }
+        fun bind(model: ChatMessageModel) {
+
+            drawItemBackground()
 
             val files = model.files
             if (files != null && files.isNotEmpty()) {
@@ -173,10 +146,42 @@ class ChatAdapter(
                 binding.messageContainerLinearLayout.visible()
                 binding.timeTextView.visible()
 
+                binding.messageTextView.text = model.message
                 binding.timeTextView.text =
                     model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
-                binding.messageTextView.text = model.message
 
+            }
+        }
+
+        private fun drawItemBackground() {
+
+            val previousChatItemModel: ChatItemModel?
+            val context = binding.messageContainerFrameLayout.context
+
+            val allCornersTheSameRadiusDrawable = AppCompatResources.getDrawable(
+                context,
+                R.drawable.rectangle_filled_primary_500_radius_16dp
+            )
+
+            val topEndCornerWithDifferentRadiusDrawable = AppCompatResources.getDrawable(
+                context,
+                R.drawable.rectangle_filled_primary_500_radius_16dp_top_end_4dp
+            )
+
+            if (absoluteAdapterPosition > 0) {
+
+                previousChatItemModel = chatItems[absoluteAdapterPosition - 1]
+
+                if (previousChatItemModel is ChatMessageModel &&
+                    previousChatItemModel.sender == Sender.OPPONENT ||
+                    (previousChatItemModel is ChatDateDividerModel)
+                ) {
+                    binding.messageContainerFrameLayout.background = topEndCornerWithDifferentRadiusDrawable
+                } else if (topEndCornerWithDifferentRadiusDrawable != null &&
+                    binding.messageContainerFrameLayout.background.constantState == topEndCornerWithDifferentRadiusDrawable.constantState
+                ) {
+                    binding.messageContainerFrameLayout.background = allCornersTheSameRadiusDrawable
+                }
             }
         }
 
@@ -187,16 +192,9 @@ class ChatAdapter(
         private val onFileClick: (ChatFileModel) -> Unit = {}
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(model: ChatMessageModel, previousItemType: Int?) {
-            if (previousItemType != null && previousItemType > 0 &&
-                (previousItemType == ITEM_TYPE_MY_MESSAGE || previousItemType == ITEM_TYPE_DATE_DIVIDER)
-            ) {
-                binding.messageContainerFrameLayout.background =
-                    AppCompatResources.getDrawable(
-                        binding.messageContainerFrameLayout.context,
-                        R.drawable.rectangle_filled_secondary_100_radius_16dp_top_start_radius_4dp
-                    )
-            }
+        fun bind(model: ChatMessageModel) {
+
+            drawItemBackground()
 
             binding.nameTextView.text = "Мой_Сервис Дом"
             model.member?.let { member ->
@@ -246,6 +244,38 @@ class ChatAdapter(
 
                 binding.timeTextView.text =
                     model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
+            }
+        }
+
+        private fun drawItemBackground() {
+
+            val previousChatItemModel: ChatItemModel?
+            val context = binding.messageContainerFrameLayout.context
+
+            val allCornersTheSameRadiusDrawable = AppCompatResources.getDrawable(
+                context,
+                R.drawable.rectangle_filled_secondary_100_radius_16dp
+            )
+
+            val topStartCornerWithDifferentRadiusDrawable = AppCompatResources.getDrawable(
+                context,
+                R.drawable.rectangle_filled_secondary_100_radius_16dp_top_start_radius_4dp
+            )
+
+            if (absoluteAdapterPosition > 0) {
+
+                previousChatItemModel = chatItems[absoluteAdapterPosition - 1]
+
+                if (previousChatItemModel is ChatMessageModel &&
+                    previousChatItemModel.sender == Sender.ME ||
+                    (previousChatItemModel is ChatDateDividerModel)
+                ) {
+                    binding.messageContainerFrameLayout.background = topStartCornerWithDifferentRadiusDrawable
+                } else if (topStartCornerWithDifferentRadiusDrawable != null &&
+                    binding.messageContainerFrameLayout.background.constantState == topStartCornerWithDifferentRadiusDrawable.constantState
+                ) {
+                    binding.messageContainerFrameLayout.background = allCornersTheSameRadiusDrawable
+                }
             }
         }
     }
