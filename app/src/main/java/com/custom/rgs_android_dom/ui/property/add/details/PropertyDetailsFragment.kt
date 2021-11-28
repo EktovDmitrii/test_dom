@@ -1,13 +1,14 @@
 package com.custom.rgs_android_dom.ui.property.add.details
 
 import android.annotation.SuppressLint
-import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.*
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.util.Log
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.WindowManager
 import android.widget.PopupWindow
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPropertyDetailsBinding
@@ -105,18 +106,22 @@ class PropertyDetailsFragment :
             viewModel.onIsTemporarySelected(it)
         }
 
-        binding.isOwnInfoImageView.also {
-            it.setOnDebouncedClickListener {
-                showPopUpWindow(it)
+        binding.isOwnInfoImageView.also { isOwnInfoImageView ->
+            isOwnInfoImageView.setOnDebouncedClickListener {
+                showPopUpWindow(isOwnInfoImageView, true)
             }
         }
 
-        binding.isInRentInfoImageView.setOnDebouncedClickListener {
-
+        binding.isInRentInfoImageView.also { isInRentInfoImageView ->
+            isInRentInfoImageView.setOnDebouncedClickListener {
+                showPopUpWindow(isInRentInfoImageView, true)
+            }
         }
 
-        binding.isTemporaryInfoImageView.setOnDebouncedClickListener {
-
+        binding.isTemporaryInfoImageView.also { isTemporaryInfoImageView ->
+            isTemporaryInfoImageView.setOnDebouncedClickListener {
+                showPopUpWindow(isTemporaryInfoImageView, false)
+            }
         }
 
         subscribe(viewModel.propertyDetailsObserver) {
@@ -145,22 +150,52 @@ class PropertyDetailsFragment :
 
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun showPopUpWindow(anchorView: View) {
-
-        var popupWindow: PopupWindow
+    private fun showPopUpWindow(anchorView: View, belowAnchorView: Boolean) {
 
         LayoutInflater.from(anchorView.context)
-            .inflate(R.layout.popup_info_window, null, false)
+            .inflate(
+                if (belowAnchorView) {
+                    R.layout.popup_window_below_info_icon
+                } else {
+                    R.layout.popup_window_over_info_icon
+                }, null, false
+            )
             .also { contentView ->
 
-                popupWindow = PopupWindow(contentView).apply {
+                val popupWindow = PopupWindow(contentView).apply {
                     this.width = WindowManager.LayoutParams.WRAP_CONTENT
                     this.height = WindowManager.LayoutParams.WRAP_CONTENT
-                    this.elevation = 10F
                     this.isFocusable = true
-                    val offsetX = context?.let { (-176).dp(it) } ?: 0
-                    this.setBackgroundDrawable(resources.getDrawable(R.drawable.ic_background_info_popup,null)/*ColorDrawable(Color.WHITE)*/)
-                    this.showAsDropDown(anchorView, offsetX, 0, Gravity.NO_GRAVITY)
+
+                    val view = this.contentView
+                    view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+                    this.setBackgroundDrawable(
+                        /*ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.ic_pin,
+                        null
+                    )*/ColorDrawable(Color.GRAY)
+                    )
+                    this.showAsDropDown(
+                        anchorView,
+                        anchorView.width - view.measuredWidth + anchorView.width / 2,
+                        if (belowAnchorView) {
+                            0
+                        } else {
+                            -anchorView.height - view.measuredHeight
+                        }
+
+                    )
+
+                    /*val offsetX = (-(192 + 100)).dp(anchorView.context)
+                    this.setBackgroundDrawable(
+                        *//*ResourcesCompat.getDrawable(
+                            resources,
+                            R.drawable.ic_pin,
+                            null
+                        )*//*ColorDrawable(Color.GRAY)
+                    )
+                    this.showAsDropDown(anchorView, offsetX, 0, Gravity.START)*/
                 }
 
                 contentView.setOnTouchListener { _, _ ->
