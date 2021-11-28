@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentPersonalDataBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.client.agent.request_edit.RequestEditAgentFragment
 import com.custom.rgs_android_dom.ui.client.personal_data.add_photo.AddPhotoFragment
 import com.custom.rgs_android_dom.utils.*
 
@@ -15,6 +16,8 @@ class PersonalDataFragment : BaseFragment<PersonalDataViewModel, FragmentPersona
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        makeRequestLink()
 
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
@@ -89,6 +92,21 @@ class PersonalDataFragment : BaseFragment<PersonalDataViewModel, FragmentPersona
             }
 
         }
+    }
+
+    private fun makeRequestLink() {
+        /*binding.requestEditTextView.makeStringWithLink(
+            resources.getColor(R.color.primary500,null),
+            Pair(
+                "оставьте заявку",
+                View.OnClickListener {
+                    val requestEditAgentFragment = RequestEditAgentFragment()
+                    requestEditAgentFragment.show(
+                        childFragmentManager,
+                        requestEditAgentFragment.TAG
+                    )
+                })
+        )*/
     }
 
 }
