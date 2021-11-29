@@ -39,6 +39,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
     companion object {
         private const val TAG = "MSDWebSocket"
+        private const val LIVEKIT_TAG = "MSDLiveKit"
 
         private const val CLOSE_REASON_NORMAL = 1000
     }
@@ -94,6 +95,9 @@ class ChatRepositoryImpl(private val api: MSDApi,
             room: Room
         ) {
             if (track is VideoTrack) {
+
+                Log.d(LIVEKIT_TAG, "Received video track")
+
                 opponentVideoTrack = track
 
                 val roomInfo = RoomInfoModel(
@@ -105,24 +109,19 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
         override fun onDisconnect(room: Room, error: Exception?) {
             super.onDisconnect(room, error)
-            clearRoomData()
-            roomDisconnectedSubject.onNext(Unit)
+            Log.d(LIVEKIT_TAG, "On on disconnected " + error?.message)
+            //clearRoomData()
+            //roomDisconnectedSubject.onNext(Unit)
         }
 
         override fun onFailedToConnect(room: Room, error: Exception) {
             super.onFailedToConnect(room, error)
+            Log.d(LIVEKIT_TAG, "On failed to connect " + error.message)
+
             clearRoomData()
             roomDisconnectedSubject.onNext(Unit)
         }
 
-        override fun onParticipantDisconnected(room: Room, participant: RemoteParticipant) {
-            super.onParticipantDisconnected(room, participant)
-            // TODO Remove this in the future
-            if (room.remoteParticipants.isEmpty()){
-                /*clearRoomData()
-                roomDisconnectedSubject.onNext(Unit)*/
-            }
-        }
     }
 
     override fun connectToWebSocket(){
@@ -214,7 +213,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
         }
     }
 
-    override suspend fun connectToLiveKitRoom(token: String, callType: CallType) {
+    override suspend fun connectToLiveKitRoom(callJoin: CallJoinModel, callType: CallType) {
         val withVideo = callType == CallType.VIDEO_CALL
 
         this.callType = callType
@@ -222,7 +221,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
         room = LiveKit.connect(
             context,
             BuildConfig.LIVEKIT_URL,
-            token,
+            callJoin.token,
             ConnectOptions(
             ),
             roomListener
@@ -246,7 +245,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
                 myVideoTrack = videoTrack
             }
 
-            clientSharedPreferences.saveLiveKitRoomToken(token)
+            clientSharedPreferences.saveLiveKitRoomCredentials(callJoin)
 
             val roomInfo = RoomInfoModel(
                 callType = callType,
@@ -264,23 +263,16 @@ class ChatRepositoryImpl(private val api: MSDApi,
     }
 
     override fun leaveLiveKitRoom() {
-        room?.disconnect()
+        if (room?.state == Room.State.CONNECTED){
+            Log.d("MyLog", "Connected to room")
+            room?.disconnect()
+        }
         clearRoomData()
     }
 
     override fun getRoomDisconnectedSubject(): PublishSubject<Unit> {
         return roomDisconnectedSubject
     }
-
-    private fun clearRoomData(){
-        room = null
-        callType = null
-        myVideoTrack = null
-        opponentVideoTrack = null
-        isInCall = false
-        clientSharedPreferences.removeLiveKitRoomToken()
-    }
-
 
     override fun getActualRoomInfo(): RoomInfoModel? {
         return if (isInCall){
@@ -291,5 +283,22 @@ class ChatRepositoryImpl(private val api: MSDApi,
                 opponentVideoTrack = opponentVideoTrack
             )
         } else null
+    }
+
+    override fun clearRoomDataOnOpponentDeclined() {
+        clearRoomData()
+        roomDisconnectedSubject.onNext(Unit)
+    }
+
+    private fun clearRoomData(){
+        room = null
+        isInCall = false
+        clientSharedPreferences.clearLiveKitRoomCredentials()
+        callType = null
+        /*
+        myVideoTrack = null
+        opponentVideoTrack = null
+        isInCall = false
+        */
     }
 }

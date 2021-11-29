@@ -30,7 +30,7 @@ interface ChatRepository {
 
     fun getWsEventsSubject(): PublishSubject<WsEventModel<*>>
 
-    suspend fun connectToLiveKitRoom(token: String, callType: CallType)
+    suspend fun connectToLiveKitRoom(callJoin: CallJoinModel, callType: CallType)
 
     fun getRoomInfoSubject(): PublishSubject<RoomInfoModel>
 
@@ -39,5 +39,7 @@ interface ChatRepository {
     fun getRoomDisconnectedSubject(): PublishSubject<Unit>
 
     fun getActualRoomInfo(): RoomInfoModel?
+
+    fun clearRoomDataOnOpponentDeclined()
 
 }

@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.chat.call
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -44,7 +45,7 @@ class CallViewModel(private val callType: CallType,
             .subscribeBy(
                 onNext = {
                     viewModelScope.launch {
-                        chatInteractor.connectToLiveKitRoom(it.token, callType)
+                        chatInteractor.connectToLiveKitRoom(it, callType)
                     }
                 },
                 onError = {
@@ -80,7 +81,6 @@ class CallViewModel(private val callType: CallType,
     }
 
     fun onBackClick(){
-        chatInteractor.leaveLiveKitRoom()
         closeController.value = Unit
     }
 
@@ -100,6 +100,7 @@ class CallViewModel(private val callType: CallType,
     private fun requestLiveKitToken(){
         val actualRoomInfo = chatInteractor.getActualRoomInfo()
         if (actualRoomInfo != null){
+            Log.d("MyLog", "Actual room info not null")
             actualRoomInfo?.let {
                 roomInfoController.value = it
             }

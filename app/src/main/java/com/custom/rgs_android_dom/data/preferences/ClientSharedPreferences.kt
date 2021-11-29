@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.data.preferences
 
 import android.content.Context
 import androidx.core.content.edit
+import com.custom.rgs_android_dom.domain.chat.models.CallJoinModel
 import com.custom.rgs_android_dom.domain.client.models.ClientModel
 import com.custom.rgs_android_dom.utils.getSharedPrefs
 import com.f2prateek.rx.preferences2.RxSharedPreferences
@@ -15,6 +16,7 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
         private const val PREF_KEY_PHONE = "PREF_KEY_PHONE"
         private const val PREF_KEY_CLIENT = "PREF_KEY_CLIENT"
         private const val PREF_KEY_LIVEKIT_ROOM_TOKEN = "PREF_KEY_LIVEKIT_ROOM_TOKEN"
+        private const val PREF_KEY_LIVEKIT_CALL_ID = "PREF_KEY_LIVEKIT_ROOM_TOKEN"
     }
 
     private val preferences = context.getSharedPrefs(PREFS_NAME)
@@ -44,19 +46,27 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
         return null
     }
 
-    fun saveLiveKitRoomToken(token: String){
+    fun saveLiveKitRoomCredentials(callJoin: CallJoinModel){
         preferences.edit {
-            putString(PREF_KEY_LIVEKIT_ROOM_TOKEN, token)
+            putString(PREF_KEY_LIVEKIT_ROOM_TOKEN, callJoin.token)
+            putString(PREF_KEY_LIVEKIT_CALL_ID, callJoin.callId)
         }
     }
 
-    fun getLiveKitRoomToken(): String?{
-        return preferences.getString(PREF_KEY_LIVEKIT_ROOM_TOKEN, null)
+    fun getLiveKitRoomCredentials(): CallJoinModel?{
+        if (preferences.contains(PREF_KEY_LIVEKIT_ROOM_TOKEN)){
+            return CallJoinModel(
+                token = preferences.getString(PREF_KEY_LIVEKIT_ROOM_TOKEN, "") ?: "",
+                callId = preferences.getString(PREF_KEY_LIVEKIT_CALL_ID, "") ?: ""
+            )
+        }
+        return null
     }
 
-    fun removeLiveKitRoomToken(){
-        preferences.edit {
+    fun clearLiveKitRoomCredentials(){
+        preferences.edit{
             remove(PREF_KEY_LIVEKIT_ROOM_TOKEN)
+            remove(PREF_KEY_LIVEKIT_CALL_ID)
         }
     }
 

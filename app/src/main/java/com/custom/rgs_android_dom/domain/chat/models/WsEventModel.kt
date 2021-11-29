@@ -8,7 +8,8 @@ abstract class WsEventModel<out T>(
     enum class Event {
         POSTED,
         CHANNEL_VIEWED,
-        CALL_JOIN
+        CALL_JOIN,
+        CALL_DECLINED
     }
 
 }

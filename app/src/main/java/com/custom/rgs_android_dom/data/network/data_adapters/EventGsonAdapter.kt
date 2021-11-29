@@ -22,6 +22,9 @@ class EventGsonAdapter : TypeAdapter<WsEventModel.Event>() {
             WsEventModel.Event.CALL_JOIN -> {
                 "webrtc.call.can-join"
             }
+            WsEventModel.Event.CALL_DECLINED -> {
+                "webrtc.call.declined"
+            }
         }
         out.value(eventString)
     }
@@ -36,6 +39,9 @@ class EventGsonAdapter : TypeAdapter<WsEventModel.Event>() {
             }
             WsResponseParser.EVENT_CALL_JOIN -> {
                 WsEventModel.Event.CALL_JOIN
+            }
+            WsResponseParser.EVENT_CALL_DECLINED -> {
+                WsEventModel.Event.CALL_DECLINED
             }
             else -> null
         }

@@ -13,6 +13,7 @@ import com.custom.rgs_android_dom.databinding.FragmentCallBinding
 import com.custom.rgs_android_dom.domain.chat.models.CallType
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.utils.*
+import com.custom.rgs_android_dom.utils.activity.clearLightStatusBar
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 import org.webrtc.RendererCommon
@@ -105,7 +106,6 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
             roomInfo.room?.let { room ->
                 room.initVideoRenderer(binding.mySurfaceRenderer)
                 room.initVideoRenderer(binding.opponentSurfaceRenderer)
-
                 val audioManager = requireContext().getSystemService(AUDIO_SERVICE) as AudioManager
                 with(audioManager) {
                     previousSpeakerphoneOn = isSpeakerphoneOn
@@ -126,8 +126,9 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
             }
 
             roomInfo.opponentVideoTrack?.let {
-                binding.opponentSurfaceRenderer.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FILL, RendererCommon.ScalingType.SCALE_ASPECT_FILL)
                 it.addRenderer(binding.opponentSurfaceRenderer)
+                binding.opponentSurfaceRenderer.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FILL, RendererCommon.ScalingType.SCALE_ASPECT_FILL)
+
             }
         }
 
@@ -135,7 +136,6 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d("MyLog", "On destory")
         binding.opponentSurfaceRenderer.release()
         binding.mySurfaceRenderer.release()
         val audioManager = requireContext().getSystemService(AUDIO_SERVICE) as AudioManager
@@ -145,6 +145,11 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
             mode = AudioManager.MODE_NORMAL
         }
 
+    }
+
+    override fun setStatusBarColor() {
+        setStatusBarColor(R.color.black)
+        requireActivity().clearLightStatusBar()
     }
 
 }

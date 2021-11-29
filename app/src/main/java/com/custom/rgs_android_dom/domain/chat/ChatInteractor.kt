@@ -122,6 +122,9 @@ class ChatInteractor(
                         callJoinSubject.onNext(callJoinModel)
                     }
                 }
+                WsEventModel.Event.CALL_DECLINED -> {
+                    chatRepository.clearRoomDataOnOpponentDeclined()
+                }
             }
             Completable.complete()
         }
@@ -141,8 +144,8 @@ class ChatInteractor(
             }
     }
 
-    suspend fun connectToLiveKitRoom(token: String, callType: CallType){
-        chatRepository.connectToLiveKitRoom(token, callType)
+    suspend fun connectToLiveKitRoom(callJoin: CallJoinModel, callType: CallType){
+        chatRepository.connectToLiveKitRoom(callJoin, callType)
     }
 
     fun getRoomInfoSubject(): PublishSubject<RoomInfoModel>{
