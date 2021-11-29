@@ -416,6 +416,14 @@ class ClientInteractor(
         return clientRepository.getEditAgentRequestedSubject()
     }
 
+    fun requestEditPersonalData(): Completable {
+        return clientRepository.requestEditPersonalData()
+    }
+
+    fun getEditPersonalDataRequestedSubject(): PublishSubject<Boolean> {
+        return clientRepository.getEditPersonalDataRequestedSubject()
+    }
+
     fun loadAndSaveClient(): Completable {
         return clientRepository.loadAndSaveClient()
     }

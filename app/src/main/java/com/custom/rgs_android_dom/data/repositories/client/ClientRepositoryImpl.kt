@@ -25,6 +25,7 @@ class ClientRepositoryImpl(
 
     private val clientUpdatedSubject: PublishSubject<ClientModel> = PublishSubject.create()
     private val editAgentRequestedSubject: PublishSubject<Boolean> = PublishSubject.create()
+    private val editPersonalDataRequestedSubject: PublishSubject<Boolean> = PublishSubject.create()
 
     override fun updateClient(
         firstName: String?,
@@ -159,5 +160,17 @@ class ClientRepositoryImpl(
         return api.getUser().map {
             ClientMapper.responseToUserDetails(it)
         }
+    }
+
+    override fun requestEditPersonalData(): Completable {
+        // Todo Replace with real request later
+        return Completable.fromCallable{
+            Thread.sleep(2000)
+            editPersonalDataRequestedSubject.onNext(true)
+        }
+    }
+
+    override fun getEditPersonalDataRequestedSubject(): PublishSubject<Boolean> {
+        return editPersonalDataRequestedSubject
     }
 }

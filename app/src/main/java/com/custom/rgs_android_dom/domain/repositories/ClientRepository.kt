@@ -45,4 +45,8 @@ interface ClientRepository {
 
     fun getUserDetails(): Single<UserDetailsModel>
 
+    fun requestEditPersonalData(): Completable
+
+    fun getEditPersonalDataRequestedSubject(): PublishSubject<Boolean>
+
 }
