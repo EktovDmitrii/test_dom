@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.ui.client.personal_data.edit
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.view.isVisible
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentEditPersonalDataBinding
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
@@ -88,6 +89,14 @@ class EditPersonalDataFragment :
             viewModel.onBackClick()
         }
 
+        binding.editRequestTextView.setOnDebouncedClickListener {
+            val requestEditPersonalDataFragment = RequestEditPersonalDataFragment()
+            requestEditPersonalDataFragment.show(
+                childFragmentManager,
+                requestEditPersonalDataFragment.TAG
+            )
+        }
+
         subscribe(viewModel.editPersonalDataObserver) { state ->
             binding.lastNameEditText.isEnabled = !state.isLastNameSaved
             binding.lastNameEditText.setText(state.lastName)
@@ -121,14 +130,6 @@ class EditPersonalDataFragment :
 
             binding.emailEditText.setText(state.email)
 
-        }
-
-        binding.editRequestTextView.setOnDebouncedClickListener {
-            val requestEditPersonalDataFragment = RequestEditPersonalDataFragment()
-            requestEditPersonalDataFragment.show(
-                childFragmentManager,
-                requestEditPersonalDataFragment.TAG
-            )
         }
 
         subscribe(viewModel.isSaveTextViewEnabledObserver) {
@@ -193,6 +194,10 @@ class EditPersonalDataFragment :
 
         subscribe(viewModel.networkErrorObserver) {
             toast(it)
+        }
+
+        subscribe(viewModel.editPersonalDataRequestedObserver) { wasRequested ->
+            binding.requestEditLinearLayout.isVisible = !wasRequested
         }
     }
 

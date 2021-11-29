@@ -25,6 +25,9 @@ class EditPersonalDataViewModel(private val clientInteractor: ClientInteractor) 
     private val editPersonalDataController = MutableLiveData<EditPersonalDataViewState>()
     val editPersonalDataObserver: LiveData<EditPersonalDataViewState> = editPersonalDataController
 
+    private val editPersonalDataRequestedController = MutableLiveData<Boolean>()
+    val editPersonalDataRequestedObserver: LiveData<Boolean> = editPersonalDataRequestedController
+
     private val isSaveTextViewEnabledController = MutableLiveData<Boolean>()
     val isSaveTextViewEnabledObserver: LiveData<Boolean> = isSaveTextViewEnabledController
 
@@ -50,6 +53,18 @@ class EditPersonalDataViewModel(private val clientInteractor: ClientInteractor) 
             .subscribeBy(
                 onNext = {
                     isSaveTextViewEnabledController.value = it
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
+        clientInteractor.getEditPersonalDataRequestedSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    editPersonalDataRequestedController.value = it
                 },
                 onError = {
                     logException(this, it)

@@ -134,6 +134,7 @@
                 app:translationLabelKey="app.personal_info.phone.title" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/requestEditLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
