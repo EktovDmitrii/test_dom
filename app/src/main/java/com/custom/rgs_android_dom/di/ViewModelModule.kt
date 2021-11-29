@@ -33,6 +33,7 @@ import com.custom.rgs_android_dom.ui.splash.SplashViewModel
 import com.custom.rgs_android_dom.ui.web_view.WebViewViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import com.custom.rgs_android_dom.ui.client.personal_data.request_edit.RequestEditPersonalDataViewModel
 
 val viewModelModule = module {
     viewModel { parameters -> RegistrationCodeViewModel(phone = parameters[0], token = parameters[1], registrationInteractor = get(), clientInteractor = get()) }
@@ -55,7 +56,8 @@ val viewModelModule = module {
     viewModel { parameters-> PropertyInfoViewModel(objectId = parameters.get(), propertyInteractor = get()) }
     viewModel { ScreenStubViewModel() }
     viewModel { RequestEditAgentViewModel(clientInteractor = get()) }
-    viewModel { parameters -> SelectAddressViewModel(propertyCount = parameters.get(), propertyInteractor = get(), addressInteractor = get(), context = get()) }
+    viewModel { RequestEditPersonalDataViewModel(clientInteractor = get()) }
+    viewModel { parameters -> SelectAddressViewModel( propertyCount = parameters.get(), propertyInteractor = get(), addressInteractor = get(), context = get()) }
     viewModel { RequestLocationRationaleViewModel() }
     viewModel { AddressSuggestionsViewModel(addressInteractor = get()) }
     viewModel { MainStubViewModel(registrationInteractor = get()) }

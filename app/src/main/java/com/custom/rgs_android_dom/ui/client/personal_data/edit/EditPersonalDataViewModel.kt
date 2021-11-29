@@ -9,6 +9,8 @@ import com.custom.rgs_android_dom.domain.client.models.Gender
 import com.custom.rgs_android_dom.domain.client.view_states.EditPersonalDataViewState
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.client.agent.request_edit.RequestEditAgentFragment
+import com.custom.rgs_android_dom.ui.client.personal_data.request_edit.RequestEditPersonalDataFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
@@ -22,6 +24,9 @@ class EditPersonalDataViewModel(private val clientInteractor: ClientInteractor) 
 
     private val editPersonalDataController = MutableLiveData<EditPersonalDataViewState>()
     val editPersonalDataObserver: LiveData<EditPersonalDataViewState> = editPersonalDataController
+
+    private val editPersonalDataRequestedController = MutableLiveData<Boolean>()
+    val editPersonalDataRequestedObserver: LiveData<Boolean> = editPersonalDataRequestedController
 
     private val isSaveTextViewEnabledController = MutableLiveData<Boolean>()
     val isSaveTextViewEnabledObserver: LiveData<Boolean> = isSaveTextViewEnabledController
@@ -48,6 +53,18 @@ class EditPersonalDataViewModel(private val clientInteractor: ClientInteractor) 
             .subscribeBy(
                 onNext = {
                     isSaveTextViewEnabledController.value = it
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
+        clientInteractor.getEditPersonalDataRequestedSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    editPersonalDataRequestedController.value = it
                 },
                 onError = {
                     logException(this, it)
@@ -122,6 +139,10 @@ class EditPersonalDataViewModel(private val clientInteractor: ClientInteractor) 
 
     fun onBackClick(){
         closeController.value = Unit
+    }
+
+    fun onEditRequestClick() {
+
     }
 
 }
