@@ -8,7 +8,6 @@ import com.custom.rgs_android_dom.domain.error.model.MSDErrorModel
 import io.reactivex.Completable
 import io.reactivex.Single
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.http.*
 import kotlin.reflect.KClass
 
@@ -122,4 +121,9 @@ interface MSDApi {
     @POST("chat/users/me/channels/{channelId}/files")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun postFileInChat(@Part file: MultipartBody.Part, @Path("channelId") channel: String): Single<ChatFileResponse>
+
+    @POST("chat/users/me/channels/{channelId}/webrtc/calls")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun startCall(@Path("channelId") channelId: String): Single<CallInfoResponse>
+
 }

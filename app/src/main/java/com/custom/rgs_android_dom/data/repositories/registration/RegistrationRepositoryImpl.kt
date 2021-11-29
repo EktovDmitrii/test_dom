@@ -1,14 +1,13 @@
 package com.custom.rgs_android_dom.data.repositories.registration
 
-import android.util.Log
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.requests.GetCodeRequest
 import com.custom.rgs_android_dom.data.network.requests.LoginRequest
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.domain.repositories.RegistrationRepository
-import com.custom.rgs_android_dom.domain.repositories.WebSocketRepository
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthState
+import com.custom.rgs_android_dom.domain.repositories.ChatRepository
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -18,7 +17,7 @@ import org.joda.time.DateTime
 class RegistrationRepositoryImpl(
     private val api: MSDApi,
     private val clientSharedPreferences: ClientSharedPreferences,
-    private val webSocketRepository: WebSocketRepository,
+    private val chatRepository: ChatRepository,
     private val authContentProviderManager: AuthContentProviderManager
 ) : RegistrationRepository {
 
@@ -46,7 +45,7 @@ class RegistrationRepositoryImpl(
         )
             .map { authResponse ->
                 authContentProviderManager.saveAuth(authResponse.token)
-                webSocketRepository.connect()
+                chatRepository.connectToWebSocket()
                 return@map authResponse.isNewUser
             }
     }
@@ -58,7 +57,7 @@ class RegistrationRepositoryImpl(
     override fun logout(): Completable {
         return api.postLogout().doFinally {
             if (isAuthorized()){
-                webSocketRepository.disconnect()
+                chatRepository.disconnectFromWebSocket()
                 authContentProviderManager.clear()
                 clientSharedPreferences.clear()
                 logout.onNext(Unit)
@@ -68,7 +67,7 @@ class RegistrationRepositoryImpl(
 
     override fun clearAuth() {
         if (isAuthorized()){
-            webSocketRepository.disconnect()
+            chatRepository.disconnectFromWebSocket()
             authContentProviderManager.clear()
             clientSharedPreferences.clear()
             logout.onNext(Unit)

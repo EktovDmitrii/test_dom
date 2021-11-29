@@ -1,6 +1,6 @@
 package com.custom.rgs_android_dom.data.network.data_adapters
 
-import com.custom.rgs_android_dom.domain.web_socket.models.WsEventModel
+import com.custom.rgs_android_dom.domain.chat.models.WsEventModel
 import com.custom.rgs_android_dom.utils.WsResponseParser
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
@@ -19,6 +19,12 @@ class EventGsonAdapter : TypeAdapter<WsEventModel.Event>() {
             WsEventModel.Event.CHANNEL_VIEWED -> {
                 "channel_viewed"
             }
+            WsEventModel.Event.CALL_JOIN -> {
+                "webrtc.call.can-join"
+            }
+            WsEventModel.Event.CALL_DECLINED -> {
+                "webrtc.call.declined"
+            }
         }
         out.value(eventString)
     }
@@ -30,6 +36,12 @@ class EventGsonAdapter : TypeAdapter<WsEventModel.Event>() {
             }
             WsResponseParser.EVENT_CHANNEL_VIEWED -> {
                 WsEventModel.Event.CHANNEL_VIEWED
+            }
+            WsResponseParser.EVENT_CALL_JOIN -> {
+                WsEventModel.Event.CALL_JOIN
+            }
+            WsResponseParser.EVENT_CALL_DECLINED -> {
+                WsEventModel.Event.CALL_DECLINED
             }
             else -> null
         }

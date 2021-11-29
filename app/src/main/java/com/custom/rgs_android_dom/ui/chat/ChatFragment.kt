@@ -74,7 +74,23 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
             uploadFilesFragment.show(childFragmentManager, uploadFilesFragment.TAG)
         }
 
-        subscribe(viewModel.chatItemsObserver) {
+        binding.audioCallImageView.setOnDebouncedClickListener {
+            viewModel.onAudioCallClick()
+        }
+
+        binding.videoCallImageView.setOnDebouncedClickListener {
+            viewModel.onVideoCallClick()
+        }
+
+        binding.messagesRecyclerView.addOnScrollListener(
+            ChatAnimator(binding.scrollDownImageView)
+        )
+
+        binding.scrollDownImageView.setOnDebouncedClickListener {
+            binding.messagesRecyclerView.smoothScrollToPosition(chatAdapter.itemCount - 1)
+        }
+
+        subscribe(viewModel.chatItemsObserver){
             chatAdapter.setItems(it)
             binding.messagesRecyclerView.scrollToPosition(chatAdapter.itemCount - 1)
         }
@@ -90,14 +106,6 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
 
         subscribe(viewModel.downloadFileObserver) {
             downloadFile(it)
-        }
-
-        binding.messagesRecyclerView.addOnScrollListener(
-            ChatAnimator(binding.scrollDownImageView)
-        )
-
-        binding.scrollDownImageView.setOnDebouncedClickListener {
-            binding.messagesRecyclerView.smoothScrollToPosition(chatAdapter.itemCount - 1)
         }
 
     }

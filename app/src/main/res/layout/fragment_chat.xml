@@ -43,7 +43,6 @@
             android:layout_height="wrap_content"
             android:clickable="false"
             android:focusable="false"
-            android:minHeight="96dp"
             app:contentInsetStart="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent">
