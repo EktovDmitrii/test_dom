@@ -6,6 +6,7 @@ import android.text.style.ClickableSpan
 import android.text.style.URLSpan
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.ColorInt
 
 fun TextView.stripUnderlines() {
     val s = SpannableString(text)
@@ -20,13 +21,16 @@ fun TextView.stripUnderlines() {
     text = s
 }
 
-fun TextView.makeLinks(vararg links: Pair<String, View.OnClickListener>) {
+fun TextView.makeStringWithLink(
+    @ColorInt linkColor: Int,
+    vararg links: Pair<String, View.OnClickListener>
+) {
     val spannableString = SpannableString(this.text)
     var startIndexOfLink = -1
     for (link in links) {
         val clickableSpan = object : ClickableSpan() {
             override fun updateDrawState(textPaint: TextPaint) {
-                textPaint.color = textPaint.linkColor
+                textPaint.color = linkColor
                 textPaint.isUnderlineText = false
             }
 
@@ -37,7 +41,7 @@ fun TextView.makeLinks(vararg links: Pair<String, View.OnClickListener>) {
             }
         }
         startIndexOfLink = this.text.toString().indexOf(link.first, startIndexOfLink + 1)
-      if(startIndexOfLink == -1) continue
+        if (startIndexOfLink == -1) continue
         spannableString.setSpan(
             clickableSpan, startIndexOfLink, startIndexOfLink + link.first.length,
             Spanned.SPAN_EXCLUSIVE_EXCLUSIVE

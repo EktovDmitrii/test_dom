@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.domain.chat
 
+import android.util.Log
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.domain.repositories.ChatRepository
@@ -167,6 +168,7 @@ class ChatInteractor(
     private fun onNewMessage(newMessage: ChatMessageModel){
         val chatItems = arrayListOf<ChatItemModel>()
         newMessage.member = cachedChannelMembers.find { it.userId == newMessage.userId }
+        // TODO Find out how chat messages can be empty
         if (cachedChatItems.isNotEmpty()){
             val prevMessage = cachedChatItems[cachedChatItems.size-1] as ChatMessageModel
             getDateDivider(newMessage.createdAt, prevMessage.createdAt)?.let { dateDivider->
