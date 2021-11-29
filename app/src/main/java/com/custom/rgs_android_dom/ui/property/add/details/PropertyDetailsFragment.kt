@@ -1,15 +1,16 @@
 package com.custom.rgs_android_dom.ui.property.add.details
 
 import android.annotation.SuppressLint
+import android.app.Dialog
+import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.WindowManager
+import android.view.*
 import android.widget.PopupWindow
+import androidx.core.content.getSystemService
+import androidx.core.content.res.ResourcesCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPropertyDetailsBinding
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
@@ -152,7 +153,7 @@ class PropertyDetailsFragment :
     @SuppressLint("ClickableViewAccessibility")
     private fun showPopUpWindow(anchorView: View, belowAnchorView: Boolean) {
 
-        LayoutInflater.from(anchorView.context)
+        (anchorView.context.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater)
             .inflate(
                 if (belowAnchorView) {
                     R.layout.popup_window_below_info_icon
@@ -167,15 +168,15 @@ class PropertyDetailsFragment :
                     this.height = WindowManager.LayoutParams.WRAP_CONTENT
                     this.isFocusable = true
 
+                    this.setBackgroundDrawable(
+                        /*contentView.context.getDrawable(
+
+                        )*/ColorDrawable(Color.TRANSPARENT)
+                    )
+
                     val view = this.contentView
                     view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-                    this.setBackgroundDrawable(
-                        /*ResourcesCompat.getDrawable(
-                        resources,
-                        R.drawable.ic_pin,
-                        null
-                    )*/ColorDrawable(Color.GRAY)
-                    )
+
                     this.showAsDropDown(
                         anchorView,
                         anchorView.width - view.measuredWidth + anchorView.width / 2,
@@ -184,24 +185,14 @@ class PropertyDetailsFragment :
                         } else {
                             -anchorView.height - view.measuredHeight
                         }
-
                     )
-
-                    /*val offsetX = (-(192 + 100)).dp(anchorView.context)
-                    this.setBackgroundDrawable(
-                        *//*ResourcesCompat.getDrawable(
-                            resources,
-                            R.drawable.ic_pin,
-                            null
-                        )*//*ColorDrawable(Color.GRAY)
-                    )
-                    this.showAsDropDown(anchorView, offsetX, 0, Gravity.START)*/
                 }
 
                 contentView.setOnTouchListener { _, _ ->
                     popupWindow.dismiss()
                     true
                 }
+
             }
 
     }
