@@ -1,83 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-
     android:layout_marginTop="12dp"
-    android:paddingStart="8dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingStart="8dp">
 
     <TextView
         android:id="@+id/nameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
         android:fontFamily="@font/suisse_regular"
-        android:textSize="12sp"
-        android:textColor="@color/secondary900_alpha56"
         android:includeFontPadding="false"
-        android:layout_marginStart="52dp"
-        android:text="Мой_Сервис Дом"/>
+        android:text="Мой_Сервис Дом"
+        android:textColor="@color/secondary900_alpha56"
+        android:textSize="12sp" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="6dp">
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="49dp"
+        android:orientation="horizontal">
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <com.custom.rgs_android_dom.views.MSDImageView
             android:id="@+id/avatarImageView"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            app:srcCompat="@drawable/ic_chat_avatar_stub"/>
+            app:srcCompat="@drawable/ic_chat_avatar_stub" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:orientation="vertical"
-            android:layout_marginStart="4dp">
+            android:layout_marginStart="8dp"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/messageTextView"
-                android:layout_width="wrap_content"
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/messageContainerLinearLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/suisse_regular"
-                android:textSize="16sp"
-                android:paddingVertical="6dp"
-                android:paddingHorizontal="16dp"
-                android:background="@drawable/rectangle_filled_secondary_100_radius_16dp"
-                android:textColor="@color/secondary900"
-                android:includeFontPadding="false"
-                android:lineSpacingExtra="24dp"
-                android:lineSpacingMultiplier="0"
-                android:layout_marginEnd="57dp"
-                tools:text="Он вышел не на свою полосу, когда я перестраивался. Сейчас расскажу звонком"/>
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/timeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/suisse_regular"
-                android:textSize="10sp"
-                android:textColor="@color/secondary400"
-                android:layout_alignParentEnd="true"
-                android:layout_below="@+id/messageContainerLinearLayout"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="4dp"
-                android:includeFontPadding="false"
-                tools:text="20:34"/>
+                <FrameLayout
+                    android:id="@+id/messageContainerFrameLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/rectangle_filled_secondary_100_radius_16dp"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="10dp">
+
+                    <com.custom.rgs_android_dom.views.text.MSDTextView
+                        android:id="@+id/messageTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/suisse_regular"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="24dp"
+                        android:lineSpacingMultiplier="0"
+                        android:textColor="@color/secondary800"
+                        android:textSize="16sp"
+                        tools:text="Он вышел не на свою полосу, когда я перестраивался. Сейчас расскажу звонком" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/timeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="11dp"
+                    android:fontFamily="@font/suisse_regular"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/secondary400"
+                    android:textSize="12sp"
+                    tools:text="20:34" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/attachedFilesRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:orientation="vertical"/>
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
-
     </androidx.appcompat.widget.LinearLayoutCompat>
-
 </androidx.appcompat.widget.LinearLayoutCompat>
+
