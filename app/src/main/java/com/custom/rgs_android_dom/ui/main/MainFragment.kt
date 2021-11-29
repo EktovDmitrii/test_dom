@@ -32,18 +32,18 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
     private var scroller: OverScroller? = null
     private var peekHeight: Int? = null
 
-    private val bottomSheetCallback = object : BottomSheetCallback(){
+    private val bottomSheetCallback = object : BottomSheetCallback() {
         override fun onStateChanged(bottomSheet: View, newState: Int) {
             try {
-                if (!bottomSheetInited){
+                if (!bottomSheetInited) {
                     scroller?.abortAnimation()
                 }
-            } catch(e: Throwable) {
+            } catch (e: Throwable) {
                 logException(this, e)
             }
 
-            if (newState == STATE_EXPANDED || newState == STATE_HALF_EXPANDED){
-                if (!bottomSheetInited && newState == STATE_EXPANDED){
+            if (newState == STATE_EXPANDED || newState == STATE_HALF_EXPANDED) {
+                if (!bottomSheetInited && newState == STATE_EXPANDED) {
                     afterBottomSheetInit()
                 }
                 onSlideStateChanged(SlideState.TOP)
@@ -51,7 +51,7 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
         }
 
         override fun onSlide(bottomSheet: View, slideOffset: Float) {
-            if (slideOffset < 0.49f && slideOffset > 0.0f){
+            if (slideOffset < 0.49f && slideOffset > 0.0f) {
                 onSlideStateChanged(SlideState.MOVING_BOTTOM)
             } else if (slideOffset == 0.0f) {
                 onSlideStateChanged(SlideState.BOTTOM)
@@ -115,21 +115,19 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
             val bottomSheetTopPadding =
                 when (bottomSheetMainFragment) {
                     is ClientFragment -> {
-                        92.dp(requireContext())
+                        binding.toolbarLinearLayout.height
                     }
                     is MainStubFragment -> {
-                        92.dp(requireContext())
-                    }
-                    is PropertyInfoFragment -> {
-                        12.dp(requireContext())
+                        binding.toolbarLinearLayout.height
                     }
                     else -> 0.dp(requireContext())
                 }
 
-            peekHeight =  binding.root.getLocationOnScreen().y - binding.callContainerLinearLayout.getLocationOnScreen().y +
-                    8.dp(requireContext()) + bottomSheetTopPadding
+            peekHeight =
+                binding.root.getLocationOnScreen().y - binding.callContainerLinearLayout.getLocationOnScreen().y +
+                        8.dp(requireContext()) + bottomSheetTopPadding
 
-            binding.bottomContainer.setPadding(0, bottomSheetTopPadding,0,0)
+            binding.bottomContainer.setPadding(0, bottomSheetTopPadding, 0, 0)
 
             beforeBottomSheetInit()
 
@@ -137,7 +135,7 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
                 bottomSheetBehavior?.state = STATE_COLLAPSED
             }
 
-            if (bottomSheetBehavior?.state == STATE_EXPANDED){
+            if (bottomSheetBehavior?.state == STATE_EXPANDED) {
                 afterBottomSheetInit()
             } else {
                 bottomSheetBehavior?.state = STATE_EXPANDED
@@ -179,10 +177,10 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
         })
     }
 
-    private fun onSlideStateChanged(newState: SlideState){
-        when (newState){
-            SlideState.TOP-> {
-                if (canTransitReverse){
+    private fun onSlideStateChanged(newState: SlideState) {
+        when (newState) {
+            SlideState.TOP -> {
+                if (canTransitReverse) {
                     transitionBackground.reverseTransition(100)
                     canTransitReverse = false
                 }
@@ -190,7 +188,7 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
                 canTransit = true
             }
             SlideState.MOVING_BOTTOM -> {
-                if (canTransit){
+                if (canTransit) {
                     binding.swipeMoreTextView.startAnimation(animationSet)
                     transitionBackground.startTransition(100)
                     canTransit = false
@@ -203,7 +201,7 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
         }
     }
 
-    private fun beforeBottomSheetInit(){
+    private fun beforeBottomSheetInit() {
         binding.bottomContainer.invisible()
         binding.fakeBottomContainer.visible()
         bottomSheetInited = false
@@ -212,7 +210,7 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
         bottomSheetBehavior?.peekHeight = binding.root.getLocationOnScreen().y
     }
 
-    private fun afterBottomSheetInit(){
+    private fun afterBottomSheetInit() {
         binding.bottomContainer.visible()
         binding.fakeBottomContainer.gone()
         bottomSheetInited = true
@@ -225,6 +223,6 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
 
     }
 
-    enum class SlideState {TOP, MOVING_BOTTOM, BOTTOM}
+    enum class SlideState { TOP, MOVING_BOTTOM, BOTTOM }
 
 }
