@@ -11,9 +11,6 @@ data class ClientResponse (
 	@SerializedName("addresses")
 	val addresses: List<AddressResponse>?,
 
-	@SerializedName("agent")
-	val agent: AgentResponse?,
-
 	@SerializedName("birthDate")
 	val birthDate: DateTime?,
 
@@ -81,14 +78,6 @@ data class AddressResponse (
 
 	@SerializedName("type")
 	val type: String?
-)
-
-data class AgentResponse (
-	@SerializedName("code")
-	val code: String?,
-	
-	@SerializedName("phone")
-	val phone: String?
 )
 
 data class ContactResponse (
