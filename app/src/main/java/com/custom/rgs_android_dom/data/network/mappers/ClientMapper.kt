@@ -2,6 +2,8 @@ package com.custom.rgs_android_dom.data.network.mappers
 
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.requests.*
+import com.custom.rgs_android_dom.data.network.responses.AgentHolderResponse
+import com.custom.rgs_android_dom.data.network.responses.AgentResponse
 import com.custom.rgs_android_dom.data.network.responses.ClientResponse
 import com.custom.rgs_android_dom.data.network.responses.UserResponse
 import com.custom.rgs_android_dom.domain.client.models.*
@@ -31,10 +33,7 @@ object ClientMapper {
                     type = it.type
                 )
             },
-            agent = ClientAgent(
-                code = response.agent?.code,
-                phone = response.agent?.phone
-            ),
+            agent = null,
             birthDate = response.birthDate,
             contacts = response.contacts?.map {
                 ClientContact(
@@ -76,10 +75,11 @@ object ClientMapper {
 
     }
 
-    fun agentToRequest(code: String, phone: String): UpdateAgentRequest {
-        return UpdateAgentRequest(
-            code = code,
-            phone = phone.formatPhoneForApi()
+    fun agentToRequest(code: String, phone: String, assignType: String): AssignAgentRequest {
+        return AssignAgentRequest(
+            agentCode = code,
+            agentPhone = phone.formatPhoneForApi(),
+            assignType = assignType
         )
     }
 
@@ -117,6 +117,18 @@ object ClientMapper {
             return UserDetailsModel(avatarUrl = "${AVATAR_ENDPOINT}/${avatarFileId}", avatarFileId = avatarFileId)
         }
         return UserDetailsModel(avatarUrl = "", avatarFileId = "")
+    }
+
+    fun responseToAgent(response: AgentHolderResponse?): ClientAgent? {
+        return if (response != null){
+            ClientAgent(
+                code = response.agent.agentCode,
+                phone = response.assignPhone
+            )
+        } else {
+            null
+        }
+
     }
 
 }

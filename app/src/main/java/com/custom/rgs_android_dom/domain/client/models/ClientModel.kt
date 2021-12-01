@@ -7,7 +7,7 @@ data class ClientModel (
 	val userId: String,
 	val id: String?,
 	val addresses: List<ClientAddress>?,
-	val agent: ClientAgent?,
+	var agent: ClientAgent?,
 	val birthDate: DateTime?,
 	val contacts: List<ClientContact>?,
 	val documents: List<ClientDocument>?,

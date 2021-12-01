@@ -1,27 +1,18 @@
 package com.custom.rgs_android_dom.ui.chat.call
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.chat.models.CallType
-import com.custom.rgs_android_dom.domain.chat.models.ChatFileModel
-import com.custom.rgs_android_dom.domain.chat.models.ChatItemModel
 import com.custom.rgs_android_dom.domain.chat.models.RoomInfoModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.ui.chat.files.viewers.image.ImageViewerFragment
-import com.custom.rgs_android_dom.ui.chat.files.viewers.video.VideoPlayerFragment
-import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.logException
-import io.livekit.android.room.Room
-import io.livekit.android.room.track.VideoTrack
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
-import java.io.File
 
 class CallViewModel(private val callType: CallType,
                     private val chatInteractor: ChatInteractor
@@ -100,7 +91,6 @@ class CallViewModel(private val callType: CallType,
     private fun requestLiveKitToken(){
         val actualRoomInfo = chatInteractor.getActualRoomInfo()
         if (actualRoomInfo != null){
-            Log.d("MyLog", "Actual room info not null")
             actualRoomInfo?.let {
                 roomInfoController.value = it
             }

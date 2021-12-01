@@ -68,7 +68,7 @@ class ProfileInteractorTest {
         clientInteractor.onAgentCodeChanged(AGENTCODE)
         clientInteractor.onAgentPhoneChanged(PHONEAGENT, true)
         clientInteractor.onGenderSelected(GENDER)
-        clientInteractor.updateClient().blockingGet()
+        clientInteractor.updateNewClient().blockingGet()
 
         assertEquals(GENDER, profileViewState.gender)
 
@@ -139,7 +139,7 @@ class ProfileInteractorTest {
     fun saveProfileTest(){
         clientInteractor.onAgentCodeChanged(AGENTCODE)
 
-        var ex = clientInteractor.updateClient().blockingGet()
+        var ex = clientInteractor.updateNewClient().blockingGet()
         if(ex is ValidateClientException){
             assertTrue(true)
         }  else {
@@ -149,7 +149,7 @@ class ProfileInteractorTest {
         clientInteractor.onAgentCodeChanged("")
         clientInteractor.onAgentPhoneChanged(PHONEAGENT, true)
 
-        ex =  clientInteractor.updateClient().blockingGet()
+        ex =  clientInteractor.updateNewClient().blockingGet()
         if(ex is ValidateClientException){
             assertTrue(true)
         }  else {
@@ -159,7 +159,7 @@ class ProfileInteractorTest {
         clientInteractor.onAgentCodeChanged(AGENTCODE)
         clientInteractor.onAgentPhoneChanged(PHONEAGENT, true)
 
-        ex = clientInteractor.updateClient().blockingGet()
+        ex = clientInteractor.updateNewClient().blockingGet()
         assertTrue(ex == null)
 
     }
@@ -172,7 +172,7 @@ class ProfileInteractorTest {
         clientInteractor.onAgentCodeChanged(AGENTCODE)
         clientInteractor.onAgentPhoneChanged(PHONEAGENT, true)
         clientInteractor.onGenderSelected(GENDER)
-        clientInteractor.updateClient().blockingGet()
+        clientInteractor.updateNewClient().blockingGet()
 
         val client = clientInteractor.getClient().blockingGet()
 
