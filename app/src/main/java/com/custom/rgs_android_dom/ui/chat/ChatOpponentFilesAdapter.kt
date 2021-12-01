@@ -12,7 +12,7 @@ import com.custom.rgs_android_dom.databinding.*
 import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.utils.*
 import org.joda.time.LocalDateTime
-const val TAG = "ChatOpponentFilesAdapter"
+
 class ChatOpponentFilesAdapter(
     private val onFileClick: (ChatFileModel) -> Unit = {}
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -22,6 +22,7 @@ class ChatOpponentFilesAdapter(
     companion object {
         private const val ITEM_TYPE_IMAGE = 1
         private const val ITEM_TYPE_DOCUMENT = 2
+        private const val MIN_READABLE_FILE_SIZE = 0.01
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -96,10 +97,10 @@ class ChatOpponentFilesAdapter(
 
         fun bind(model: ChatFileModel) {
             binding.docNameTextView.text = model.name
-            binding.sizeTextView.text = if (model.size.sizeInMb.roundTo(2) > 0.01) {
+            binding.sizeTextView.text = if (model.size.sizeInMb.roundTo(2) > MIN_READABLE_FILE_SIZE) {
                 "${model.size.sizeInMb.roundTo(2)}mb"
             } else {
-                "0.01mb"
+                "${MIN_READABLE_FILE_SIZE}mb"
             }
             binding.dateTextView.text = model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
 
