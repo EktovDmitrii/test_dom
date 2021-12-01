@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="12dp">
 
-
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/messageContainerLinearLayout"
         android:layout_width="wrap_content"
@@ -37,7 +36,6 @@
             android:paddingTop="8dp"
             android:paddingBottom="10dp">
 
-
             <TextView
                 android:id="@+id/messageTextView"
                 android:layout_width="wrap_content"
@@ -54,11 +52,11 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/attachedFilesRecyclerView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:orientation="vertical"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
