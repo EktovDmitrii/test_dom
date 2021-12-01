@@ -15,7 +15,7 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/toolbarLinearLayout"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="69dp"
             android:background="@drawable/rectangle_filled_primary_400_bottom_radius_24dp"
             android:clickable="true"
             app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +25,7 @@
             <ImageView
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_margin="16dp"
+                android:layout_margin="10dp"
                 android:id="@+id/toolbarChatIcon"
                 android:src="@drawable/ic_main_chat_tmp"/>
 
