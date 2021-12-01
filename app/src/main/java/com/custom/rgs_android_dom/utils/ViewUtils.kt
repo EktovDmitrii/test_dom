@@ -3,7 +3,9 @@ package com.custom.rgs_android_dom.utils
 import android.graphics.Point
 import android.graphics.Rect
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import androidx.annotation.Px
 
 fun View.gone() {
     visibility = View.GONE
@@ -40,4 +42,28 @@ inline fun  View.afterMeasured(crossinline measuredCallback: () -> Unit) {
             }
         }
     })
+}
+
+fun View.setMargins(
+    left: Int? = null,
+    top: Int? = null,
+    right: Int? = null,
+    bottom: Int? = null
+) {
+    if (layoutParams is ViewGroup.MarginLayoutParams) {
+        val params = layoutParams as ViewGroup.MarginLayoutParams
+        top?.let {
+            params.topMargin = it
+        }
+        left?.let {
+            params.leftMargin = it
+        }
+        right?.let {
+            params.rightMargin = it
+        }
+        bottom?.let {
+            params.bottomMargin = it
+        }
+        requestLayout()
+    }
 }

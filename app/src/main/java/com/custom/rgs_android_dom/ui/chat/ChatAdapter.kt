@@ -1,5 +1,7 @@
 package com.custom.rgs_android_dom.ui.chat
 
+import android.text.method.LinkMovementMethod
+import android.text.util.Linkify
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
@@ -147,7 +149,7 @@ class ChatAdapter(
                 binding.messageTextView.text = model.message
                 binding.timeTextView.text =
                     model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
-
+                Linkify.addLinks(binding.messageTextView, Linkify.ALL)
             }
         }
 
@@ -170,14 +172,11 @@ class ChatAdapter(
 
                 previousChatItemModel = chatItems[absoluteAdapterPosition - 1]
 
-                if (previousChatItemModel is ChatMessageModel &&
-                    previousChatItemModel.sender == Sender.OPPONENT ||
-                    (previousChatItemModel is ChatDateDividerModel)
-                ) {
+                if (previousChatItemModel is ChatMessageModel && previousChatItemModel.sender == Sender.OPPONENT
+                    || (previousChatItemModel is ChatDateDividerModel)) {
                     binding.messageContainerFrameLayout.background = topEndCornerWithDifferentRadiusDrawable
-                } else if (topEndCornerWithDifferentRadiusDrawable != null &&
-                    binding.messageContainerFrameLayout.background.constantState == topEndCornerWithDifferentRadiusDrawable.constantState
-                ) {
+                } else if (topEndCornerWithDifferentRadiusDrawable != null
+                    && binding.messageContainerFrameLayout.background.constantState == topEndCornerWithDifferentRadiusDrawable.constantState) {
                     binding.messageContainerFrameLayout.background = allCornersTheSameRadiusDrawable
                 }
             }
@@ -192,20 +191,20 @@ class ChatAdapter(
 
         fun bind(model: ChatMessageModel) {
 
-            drawItemBackground()
+            decorateItem()
 
             binding.nameTextView.text = "Мой_Сервис Дом"
             model.member?.let { member ->
 
-                binding.nameTextView.text =
-                    "${member.firstName} ${member.lastName}, ${member.type}"
+                // TODO Replace with real position key (${member.type})
+                binding.nameTextView.text = "${member.lastName} ${member.firstName}, консультант"
 
                 if (member.avatar.isNotEmpty()) {
                     GlideApp.with(binding.avatarImageView)
                         .load(GlideUrlProvider.makeHeadersGlideUrl(member.avatar))
                         .circleCrop()
                         .transition(DrawableTransitionOptions.withCrossFade())
-                        .error(R.drawable.ic_chat_avatar_stub)
+                        .error(R.drawable.ic_avatar_no_stroke)
                         .into(binding.avatarImageView)
                 } else {
                     binding.avatarImageView.setImageResource(R.drawable.ic_chat_avatar_stub)
@@ -228,7 +227,6 @@ class ChatAdapter(
                         gap = 12.dp(binding.attachedFilesRecyclerView.context)
                     )
                 )
-
                 adapter.setItems(files)
 
             } else {
@@ -238,12 +236,13 @@ class ChatAdapter(
 
                 binding.messageTextView.text = model.message
 
-                binding.timeTextView.text =
-                    model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
+                binding.timeTextView.text = model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
+
+                Linkify.addLinks(binding.messageTextView, Linkify.ALL)
             }
         }
 
-        private fun drawItemBackground() {
+        private fun decorateItem() {
 
             val previousChatItemModel: ChatItemModel?
             val context = binding.messageContainerFrameLayout.context
@@ -262,16 +261,27 @@ class ChatAdapter(
 
                 previousChatItemModel = chatItems[absoluteAdapterPosition - 1]
 
-                if (previousChatItemModel is ChatMessageModel &&
-                    previousChatItemModel.sender == Sender.ME ||
-                    (previousChatItemModel is ChatDateDividerModel)
-                ) {
+                if (previousChatItemModel is ChatMessageModel && previousChatItemModel.sender == Sender.ME
+                    || (previousChatItemModel is ChatDateDividerModel)) {
                     binding.messageContainerFrameLayout.background = topStartCornerWithDifferentRadiusDrawable
                 } else if (topStartCornerWithDifferentRadiusDrawable != null &&
-                    binding.messageContainerFrameLayout.background.constantState == topStartCornerWithDifferentRadiusDrawable.constantState
-                ) {
+                    binding.messageContainerFrameLayout.background.constantState == topStartCornerWithDifferentRadiusDrawable.constantState) {
                     binding.messageContainerFrameLayout.background = allCornersTheSameRadiusDrawable
                 }
+
+                if (previousChatItemModel is ChatMessageModel){
+                    binding.avatarImageView.invisibleIf(previousChatItemModel.sender == Sender.OPPONENT)
+                    binding.nameTextView.visibleIf(previousChatItemModel.sender == Sender.ME)
+
+                    val topMargin = if (previousChatItemModel.sender == Sender.ME) 12.dp(context) else 4.dp(context)
+                    binding.root.setMargins(top = topMargin)
+                }
+            } else {
+                binding.avatarImageView.visible()
+                binding.nameTextView.visible()
+
+                val topMargin = 12.dp(context)
+                binding.root.setMargins(top = topMargin)
             }
         }
     }
