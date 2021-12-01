@@ -218,8 +218,7 @@ class ChatAdapter(
             if (files != null && files.isNotEmpty()) {
 
                 binding.attachedFilesRecyclerView.visible()
-                binding.messageTextView.gone()
-                binding.timeTextView.gone()
+                binding.messageContainerLinearLayout.gone()
 
                 val adapter = ChatOpponentFilesAdapter() {
                     onFileClick(it)
@@ -237,8 +236,7 @@ class ChatAdapter(
             } else {
 
                 binding.attachedFilesRecyclerView.gone()
-                binding.messageTextView.visible()
-                binding.timeTextView.visible()
+                binding.messageContainerLinearLayout.visible()
 
                 binding.messageTextView.text = model.message
 
