@@ -64,6 +64,7 @@
                         android:lineSpacingMultiplier="0"
                         android:textColor="@color/secondary800"
                         android:textSize="16sp"
+                        android:textColorLink="@color/secondary800"
                         tools:text="Он вышел не на свою полосу, когда я перестраивался. Сейчас расскажу звонком" />
 
                 </FrameLayout>

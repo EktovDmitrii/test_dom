@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="12dp">
 
-
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/messageContainerLinearLayout"
         android:layout_width="wrap_content"
@@ -37,7 +36,6 @@
             android:paddingTop="8dp"
             android:paddingBottom="10dp">
 
-
             <TextView
                 android:id="@+id/messageTextView"
                 android:layout_width="wrap_content"
@@ -48,12 +46,12 @@
                 android:lineSpacingMultiplier="0"
                 android:textColor="@color/white"
                 android:textSize="16sp"
+                android:textColorLink="@color/white"
                 tools:text="Он вышел не на свою полосу, когда я перестраивался. Сейчас расскажу звонком" />
 
         </FrameLayout>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/attachedFilesRecyclerView"
@@ -62,6 +60,7 @@
         android:orientation="vertical"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_marginEnd="8dp"
         tools:itemCount="2" />
 
 </RelativeLayout>
