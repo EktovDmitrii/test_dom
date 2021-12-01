@@ -264,7 +264,6 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
     override fun leaveLiveKitRoom() {
         if (room?.state == Room.State.CONNECTED){
-            Log.d("MyLog", "Connected to room")
             room?.disconnect()
         }
         clearRoomData()

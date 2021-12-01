@@ -17,8 +17,6 @@ interface ClientRepository {
                      middleName: String?,
                      birthday: LocalDateTime?,
                      gender: Gender?,
-                     agentCode: String?,
-                     agentPhone: String?,
                      phone: String?,
                      email: String?,
                     avatar: String?): Completable
@@ -29,7 +27,7 @@ interface ClientRepository {
 
     fun getClientUpdatedSubject(): Observable<ClientModel>
 
-    fun updateAgent(code: String, phone: String): Completable
+    fun assignAgent(code: String, phone: String, assignType: String): Completable
 
     fun updatePassport(serial: String, number: String): Completable
 
