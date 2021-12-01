@@ -127,7 +127,6 @@ class ChatAdapter(
 
                 binding.attachedFilesRecyclerView.visible()
                 binding.messageContainerLinearLayout.gone()
-                binding.timeTextView.gone()
 
                 val adapter = ChatMyFilesAdapter() {
                     onFileClick(it)
@@ -144,7 +143,6 @@ class ChatAdapter(
 
                 binding.attachedFilesRecyclerView.gone()
                 binding.messageContainerLinearLayout.visible()
-                binding.timeTextView.visible()
 
                 binding.messageTextView.text = model.message
                 binding.timeTextView.text =
