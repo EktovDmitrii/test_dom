@@ -123,7 +123,8 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
     private fun showApartmentLayout(propertyDetailsViewState: PropertyDetailsViewState) {
         binding.apartmentDataLinearLayout.visibility = View.VISIBLE
         binding.homeDataLinearLayout.visibility = View.GONE
-        binding.cityNameApartmentTextInputLayout.setText(propertyDetailsViewState.address.cityName)
+        val cityName = propertyDetailsViewState.address.cityName
+        binding.cityNameApartmentTextInputLayout.setText( if ( cityName.isNotEmpty() ) { cityName } else {"Неопределено"} )
         binding.corpusApartmentTextInputLayout.setText(propertyDetailsViewState.corpus)
     }
 
