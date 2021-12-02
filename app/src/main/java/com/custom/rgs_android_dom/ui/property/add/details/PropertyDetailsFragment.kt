@@ -116,7 +116,8 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
     private fun showHouseLayout(propertyDetailsViewState: PropertyDetailsViewState) {
         binding.apartmentDataLinearLayout.visibility = View.GONE
         binding.homeDataLinearLayout.visibility = View.VISIBLE
-        binding.cityNameHomeTextInputLayout.setText(propertyDetailsViewState.address.cityName)
+        val cityName = propertyDetailsViewState.address.cityName
+        binding.cityNameHomeTextInputLayout.setText( if ( cityName.isNotEmpty() ) { cityName } else {"Не определено"} )
         binding.corpusHomeTextInputLayout.setText(propertyDetailsViewState.corpus)
     }
 
@@ -124,7 +125,7 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
         binding.apartmentDataLinearLayout.visibility = View.VISIBLE
         binding.homeDataLinearLayout.visibility = View.GONE
         val cityName = propertyDetailsViewState.address.cityName
-        binding.cityNameApartmentTextInputLayout.setText( if ( cityName.isNotEmpty() ) { cityName } else {"Неопределено"} )
+        binding.cityNameApartmentTextInputLayout.setText( if ( cityName.isNotEmpty() ) { cityName } else {"Не определено"} )
         binding.corpusApartmentTextInputLayout.setText(propertyDetailsViewState.corpus)
     }
 

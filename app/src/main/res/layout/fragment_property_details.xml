@@ -214,7 +214,7 @@
                     android:inputType="none"
                     app:boxStrokeWidth="0dp"
                     app:boxStrokeWidthFocused="0dp"
-                    app:translationHintKey="Населенный пункт" />
+                    app:translationHintKey="Населённый пункт" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
