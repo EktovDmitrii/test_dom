@@ -169,18 +169,15 @@ class PropertyDetailsFragment :
                     this.height = WindowManager.LayoutParams.WRAP_CONTENT
                     this.isFocusable = true
 
-                    this.setBackgroundDrawable(
-                        AppCompatResources.getDrawable(
-                            anchorView.context,
-                            R.drawable.popup_info_window_background
-                        )/*ColorDrawable(Color.TRANSPARENT)*/
-                    )
+                    /*this.setBackgroundDrawable(
+                       ColorDrawable(Color.TRANSPARENT)
+                    )*/
                     //this.showAtLocation(anchorView,Gravity.CENTER,0,0)
                     //this.showAsDropDown( anchorView,0,0, Gravity.CENTER)
-                    val view = this.contentView
-                    view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+                    /*val view = this.contentView
+                    view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)*/
 
-                    this.showAsDropDown(
+                   /* this.showAsDropDown(
                         anchorView,
                         anchorView.width - view.measuredWidth + anchorView.width / 2,
                         if (belowAnchorView) {
@@ -188,7 +185,7 @@ class PropertyDetailsFragment :
                         } else {
                             -anchorView.height - view.measuredHeight
                         }
-                    )
+                    )*/
                 }
 
                 contentView.setOnTouchListener { _, _ ->

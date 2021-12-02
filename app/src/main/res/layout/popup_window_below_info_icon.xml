@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:background="@drawable/popup_info_window_background"
+    android:layout_gravity="center">
 
-    <!--<androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="8dp"
-        android:layout_height="8dp"
-        android:layout_gravity="end"
-        android:layout_marginEnd="12dp"
-        app:srcCompat="@drawable/image_info_window_corner_over_info_text" />-->
-
-    <!--<com.custom.rgs_android_dom.views.text.MSDTextView
+    <com.custom.rgs_android_dom.views.text.MSDTextView
         android:layout_width="192dp"
         android:layout_height="78dp"
         android:layout_gravity="center"
@@ -25,5 +19,5 @@
         android:textColor="@color/secondary500"
         android:textSize="13sp"
         app:translationTextKey="Понадобится для формирования страхового полиса" />
--->
-</androidx.appcompat.widget.LinearLayoutCompat>
+
+</FrameLayout>
