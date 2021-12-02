@@ -175,13 +175,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="match_parent"
-        android:layout_height="28dp"
-        android:layout_marginTop="@dimen/toolbar_height_chat"
-        android:scaleType="fitXY"
-        app:srcCompat="@drawable/chat_fade_background_28dp" />
-
     <ProgressBar
         android:id="@+id/loadingProgressBar"
         style="@style/ProgressBarStyle"

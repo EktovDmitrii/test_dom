@@ -59,6 +59,15 @@ class SelectPropertyTypeFragment : BaseFragment<SelectPropertyTypeViewModel, Fra
             binding.selectAppartmentLinearLayout.isSelected = it.isSelectAppartmentLinearLayoutSelected
             binding.selectHomeLinearLayout.isSelected = it.isSelectHomeLinearLayoutSelected
             binding.infoboxFrameLayout.isVisible = it.isInfoboxFrameLayoutVisible
+            if (binding.infoboxFrameLayout.isVisible){
+                if ( binding.selectHomeLinearLayout.isSelected ) {
+                    binding.homeTextView.visible()
+                    binding.apartmentTextView.gone()
+                } else {
+                    binding.homeTextView.gone()
+                    binding.apartmentTextView.visible()
+                }
+            }
             binding.nextTextView.isEnabled = it.isNextTextViewEnabled
         }
 

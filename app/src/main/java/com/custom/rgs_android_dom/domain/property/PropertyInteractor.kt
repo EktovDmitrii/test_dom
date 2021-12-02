@@ -47,8 +47,7 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
         isTemporary = null,
         totalArea = "",
         comment = "",
-        isAddTextViewEnabled = false,
-        updatePropertyAddressEditText = false
+        isAddTextViewEnabled = false
     )
 
     /**
@@ -143,7 +142,6 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
             name = propertyName,
             type = type.type,
             address = address.copy(),
-            updatePropertyAddressEditText = true,
             isAddTextViewEnabled = address.addressString.isNotEmpty()
         )
         return propertyDetailsViewState
@@ -153,7 +151,7 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
         // TODO Do not forget to make a copy of such data, to avoid data loss while navigation between fragments
         val addressCopy = propertyDetailsViewState.address.copy()
         addressCopy.addressString = newAddress
-        propertyDetailsViewState = propertyDetailsViewState.copy(address = addressCopy, updatePropertyAddressEditText = false)
+        propertyDetailsViewState = propertyDetailsViewState.copy(address = addressCopy)
         checkIfPropertyDetailsFieldsFilled()
     }
 

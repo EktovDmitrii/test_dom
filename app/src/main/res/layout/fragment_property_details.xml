@@ -45,20 +45,20 @@
             android:gravity="center"
             android:textColor="@color/secondary900"
             android:textSize="16sp"
-            app:translationTextKey="Информация об объекте" />
+            app:translationTextKey="Общая информация" />
 
     </RelativeLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarRelativeLayout"
+        app:layout_constraintBottom_toTopOf="@+id/actionsBottomAppBar"
         android:orientation="horizontal"
         android:overScrollMode="never"
-        android:paddingTop="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/actionsBottomAppBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarRelativeLayout">
+        android:paddingTop="16dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -77,169 +77,209 @@
                 android:textSize="14sp"
                 app:translationTextKey="Адрес" />
 
-            <androidx.appcompat.widget.LinearLayoutCompat
+            <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
+                android:id="@+id/addressTextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_gravity="center_vertical"
+                android:imeOptions="actionNext"
+                android:paddingHorizontal="20dp"
+                android:maxLength="250"
+                android:inputType="none"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:translationHintKey="Адрес" />
 
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="71dp"
-                    android:layout_weight="0.67">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/apartmentDataLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
 
-                    <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
-                        android:id="@+id/addressTextInputLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:imeOptions="actionNext"
-                        android:maxLength="250"
-                        android:paddingHorizontal="20dp"
-                        app:translationHintKey="Адрес" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/secondary100" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="71dp"
+                        android:layout_weight="1">
+
+                        <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
+                            android:id="@+id/corpusApartmentTextInputLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:imeOptions="actionNext"
+                            android:paddingHorizontal="20dp"
+                            app:translationHintKey="Корпус" />
+
+                    </FrameLayout>
 
                     <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:layout_gravity="bottom"
-                        android:background="@color/secondary100" />
-
-                    <View
-                        android:layout_width="0.5dp"
+                        android:layout_width="1dp"
                         android:layout_height="match_parent"
-                        android:layout_gravity="end"
                         android:background="@color/secondary100" />
 
-                </FrameLayout>
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="71dp"
+                        android:layout_weight="1">
 
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="71dp"
-                    android:layout_weight="0.335">
+                        <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
+                            android:id="@+id/entranceTextInputLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:paddingHorizontal="20dp"
+                            app:translationHintKey="Подъезд" />
 
-                    <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
-                        android:id="@+id/entranceTextInputLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:imeOptions="actionNext"
-                        android:inputType="number"
-                        android:paddingHorizontal="20dp"
-                        app:translationHintKey="Подъезд" />
+                    </FrameLayout>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/secondary100" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="71dp"
+                        android:layout_weight="1">
+
+                        <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
+                            android:id="@+id/floorTextInputLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:paddingHorizontal="20dp"
+                            app:translationHintKey="Этаж" />
+
+                    </FrameLayout>
 
                     <View
-                        android:layout_width="0.5dp"
+                        android:layout_width="1dp"
                         android:layout_height="match_parent"
-                        android:layout_gravity="start"
+                        android:layout_gravity="top"
                         android:background="@color/secondary100" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:layout_gravity="bottom"
-                        android:background="@color/secondary100" />
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="71dp"
+                        android:layout_weight="1">
 
-                </FrameLayout>
+                        <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
+                            android:id="@+id/flatTextInputLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:paddingHorizontal="20dp"
+                            app:translationHintKey="Квартира" />
+
+                    </FrameLayout>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/secondary100" />
+
+                <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
+                    android:id="@+id/city_name_apartment_text_input_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:paddingHorizontal="20dp"
+                    android:maxLength="250"
+                    android:inputType="none"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="0dp"
+                    app:translationHintKey="Населённый пункт" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/homeDataLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:visibility="gone">
 
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="71dp"
-                    android:layout_weight="0.33">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/secondary100" />
 
-                    <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
-                        android:id="@+id/corpusTextInputLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:imeOptions="actionNext"
-                        android:paddingHorizontal="20dp"
-                        app:translationHintKey="Корпус" />
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="71dp"
+                        android:layout_weight="1">
+
+                        <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
+                            android:id="@+id/corpusHomeTextInputLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:imeOptions="actionNext"
+                            android:paddingHorizontal="20dp"
+                            app:translationHintKey="Корпус" />
+
+                    </FrameLayout>
 
                     <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:layout_gravity="top"
-                        android:background="@color/secondary100" />
-
-                    <View
-                        android:layout_width="0.5dp"
+                        android:layout_width="1dp"
                         android:layout_height="match_parent"
-                        android:layout_gravity="end"
                         android:background="@color/secondary100" />
 
-                </FrameLayout>
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="71dp"
+                        android:layout_weight="1">
 
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="71dp"
-                    android:layout_weight="0.33">
+                        <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
+                            android:id="@+id/city_name_home_text_input_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionNext"
+                            android:layout_gravity="center_vertical"
+                            android:paddingHorizontal="20dp"
+                            android:maxLength="250"
+                            android:inputType="none"
+                            app:boxStrokeWidth="0dp"
+                            app:boxStrokeWidthFocused="0dp"
+                            app:translationHintKey="Населенный пункт" />
 
-                    <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
-                        android:id="@+id/floorTextInputLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:imeOptions="actionNext"
-                        android:inputType="number"
-                        android:paddingHorizontal="20dp"
-                        app:translationHintKey="Этаж" />
+                    </FrameLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:layout_gravity="top"
-                        android:background="@color/secondary100" />
-
-                    <View
-                        android:layout_width="0.5dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="end"
-                        android:background="@color/secondary100" />
-
-                    <View
-                        android:layout_width="0.5dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="start"
-                        android:background="@color/secondary100" />
-
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="71dp"
-                    android:layout_weight="0.33">
-
-                    <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
-                        android:id="@+id/flatTextInputLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:imeOptions="actionNext"
-                        android:inputType="number"
-                        android:paddingHorizontal="20dp"
-                        app:translationHintKey="Квартира" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:layout_gravity="top"
-                        android:background="@color/secondary100" />
-
-                    <View
-                        android:layout_width="0.5dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="start"
-                        android:background="@color/secondary100" />
-
-                </FrameLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
+
 
             <com.custom.rgs_android_dom.views.text.MSDTextView
                 android:layout_width="match_parent"
@@ -333,10 +373,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginTop="10dp"
                 android:imeOptions="actionNext"
-                android:inputType="numberDecimal"
                 android:paddingHorizontal="20dp"
+                android:layout_marginTop="10dp"
+                android:inputType="numberDecimal"
                 app:decimalLimit="6.2"
                 app:translationHintKey="Площадь (м²)" />
 
@@ -358,11 +398,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginTop="10dp"
-                android:inputType="textMultiLine"
-                android:lines="5"
-                android:maxLength="500"
                 android:paddingHorizontal="20dp"
+                android:layout_marginTop="10dp"
+                android:maxLength="500"
+                android:lines="5"
+                android:inputType="textMultiLine"
                 app:translationHintKey="Добавить комментарий" />
 
             <View
@@ -375,25 +415,24 @@
 
     </androidx.core.widget.NestedScrollView>
 
-
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/actionsBottomAppBar"
         android:layout_width="match_parent"
         android:layout_height="82dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         android:paddingHorizontal="20dp"
         android:paddingStart="20dp"
         android:paddingTop="12dp"
         android:paddingEnd="20dp"
         android:paddingBottom="22dp"
         app:contentInsetStart="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         tools:ignore="BottomAppBar">
 
         <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullwidth
             android:id="@+id/addTextView"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_width="match_parent"
             android:enabled="false"
             app:translationTextKey="Добавить объект" />
 

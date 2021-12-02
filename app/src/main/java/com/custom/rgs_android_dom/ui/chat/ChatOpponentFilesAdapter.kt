@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui.chat
 
 import android.util.Base64
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,7 @@ class ChatOpponentFilesAdapter(
     companion object {
         private const val ITEM_TYPE_IMAGE = 1
         private const val ITEM_TYPE_DOCUMENT = 2
+        private const val MIN_READABLE_FILE_SIZE = 0.01
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -95,7 +97,11 @@ class ChatOpponentFilesAdapter(
 
         fun bind(model: ChatFileModel) {
             binding.docNameTextView.text = model.name
-            binding.sizeTextView.text = "${model.size.sizeInMb.roundTo(2)}mb"
+            binding.sizeTextView.text = if (model.size.sizeInMb.roundTo(2) > MIN_READABLE_FILE_SIZE) {
+                "${model.size.sizeInMb.roundTo(2)}mb"
+            } else {
+                "${MIN_READABLE_FILE_SIZE}mb"
+            }
             binding.dateTextView.text = model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
 
             binding.root.setOnDebouncedClickListener {
