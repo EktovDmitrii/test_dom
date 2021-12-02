@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/popup_info_window_below_background"
+    android:background="@drawable/popup_info_window_above_background"
     android:layout_gravity="center">
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/infoTextView"
         android:layout_width="192dp"
         android:layout_height="78dp"
+        android:layout_marginBottom="12dp"
         android:layout_gravity="center"
         android:fontFamily="@font/suisse_regular"
-        android:lineSpacingExtra="20sp"
-        android:lineSpacingMultiplier="0"
         android:paddingHorizontal="16dp"
         android:paddingVertical="8dp"
-        android:layout_marginBottom="4dp"
         android:textColor="@color/secondary500"
         android:textSize="13sp"
         app:translationTextKey="Понадобится для формирования страхового полиса" />

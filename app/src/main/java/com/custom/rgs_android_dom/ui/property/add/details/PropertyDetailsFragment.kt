@@ -1,17 +1,11 @@
 package com.custom.rgs_android_dom.ui.property.add.details
 
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.content.Context.LAYOUT_INFLATER_SERVICE
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
+import android.util.Size
 import android.view.*
 import android.widget.PopupWindow
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.content.getSystemService
-import androidx.core.content.res.ResourcesCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPropertyDetailsBinding
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
@@ -23,6 +17,7 @@ import com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
+const val TAG = "PropertyDetailsFragment"
 
 class PropertyDetailsFragment :
     BaseFragment<PropertyDetailsViewModel, FragmentPropertyDetailsBinding>(R.layout.fragment_property_details) {
@@ -110,19 +105,19 @@ class PropertyDetailsFragment :
 
         binding.isOwnInfoImageView.also { isOwnInfoImageView ->
             isOwnInfoImageView.setOnDebouncedClickListener {
-                showPopUpWindow(isOwnInfoImageView, true)
+                showPopUpWindow(isOwnInfoImageView)
             }
         }
 
         binding.isInRentInfoImageView.also { isInRentInfoImageView ->
             isInRentInfoImageView.setOnDebouncedClickListener {
-                showPopUpWindow(isInRentInfoImageView, true)
+                showPopUpWindow(isInRentInfoImageView)
             }
         }
 
         binding.isTemporaryInfoImageView.also { isTemporaryInfoImageView ->
             isTemporaryInfoImageView.setOnDebouncedClickListener {
-                showPopUpWindow(isTemporaryInfoImageView, false)
+                showPopUpWindow(isTemporaryInfoImageView)
             }
         }
 
@@ -152,47 +147,66 @@ class PropertyDetailsFragment :
 
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun showPopUpWindow(anchorView: View, belowAnchorView: Boolean) {
+    private fun showPopUpWindow(anchorView: View) {
 
-        (anchorView.context.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater)
-            .inflate(
-                if (belowAnchorView) {
-                    R.layout.popup_window_below_info_icon
-                } else {
-                    R.layout.popup_window_over_info_icon
-                }, null, false
-            )
-            .also { contentView ->
+        val context = anchorView.context
 
-                val popupWindow = PopupWindow(contentView).apply {
-                    this.width = WindowManager.LayoutParams.WRAP_CONTENT
-                    this.height = WindowManager.LayoutParams.WRAP_CONTENT
-                    this.isFocusable = true
+        PopupWindow().apply {
 
-                    /*this.setBackgroundDrawable(
-                       ColorDrawable(Color.TRANSPARENT)
-                    )*/
-                    //this.showAtLocation(anchorView,Gravity.CENTER,0,0)
-                    //this.showAsDropDown( anchorView,0,0, Gravity.CENTER)
-                    /*val view = this.contentView
-                    view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)*/
+            width = WindowManager.LayoutParams.WRAP_CONTENT
+            height = WindowManager.LayoutParams.WRAP_CONTENT
+            isFocusable = true
 
-                   /* this.showAsDropDown(
-                        anchorView,
-                        anchorView.width - view.measuredWidth + anchorView.width / 2,
-                        if (belowAnchorView) {
-                            0
-                        } else {
-                            -anchorView.height - view.measuredHeight
-                        }
-                    )*/
-                }
+            val inflater: LayoutInflater =
+                (context.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater)
 
-                contentView.setOnTouchListener { _, _ ->
-                    popupWindow.dismiss()
-                    true
-                }
+            contentView = inflater.inflate(R.layout.popup_window_below_info_icon, null, false)
+            contentView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+
+            val anchorViewLocation = IntArray(2)
+            anchorView.getLocationOnScreen(anchorViewLocation)
+
+            val bottomBarLocation = IntArray(2)
+            binding.actionsBottomAppBar.getLocationOnScreen(bottomBarLocation)
+
+            val showBelow: Boolean
+
+            contentView = if (bottomBarLocation[1] - anchorViewLocation[1] > contentView.measuredHeight) {
+                showBelow = true
+                inflater.inflate(R.layout.popup_window_below_info_icon, null, false)
+            } else {
+                showBelow = false
+                inflater.inflate(R.layout.popup_window_above_info_icon, null, false)
             }
+            contentView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+
+            val contentViewDimensions = Size(
+                contentView.measuredWidth,
+                contentView.measuredHeight
+            )
+
+            val infoTextView = contentView.findViewById<View>(R.id.infoTextView)
+
+
+            if (showBelow) {
+                showAtLocation(
+                    anchorView,
+                    Gravity.START or Gravity.TOP,
+                    anchorViewLocation[0] - (contentViewDimensions.width - anchorView.width) / 2 ,
+                    anchorViewLocation[1] + 8.dp(context))
+            } else {
+                showAtLocation(
+                    anchorView,
+                    Gravity.START or Gravity.TOP,
+                    anchorViewLocation[0] - (contentViewDimensions.width - anchorView.width) / 2 ,
+                    anchorViewLocation[1] - contentViewDimensions.height + (contentViewDimensions.height - infoTextView.measuredHeight)/2 + 8.dp(context) )
+            }
+
+            contentView.setOnTouchListener { _, _ ->
+                this.dismiss()
+                true
+            }
+        }
 
     }
 
