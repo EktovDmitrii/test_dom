@@ -1,13 +1,12 @@
 package com.custom.rgs_android_dom.ui.property.add.details
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPropertyDetailsBinding
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyField
-import com.custom.rgs_android_dom.domain.property.models.PropertyAddressModel
+import com.custom.rgs_android_dom.domain.property.details.view_states.PropertyDetailsViewState
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.utils.*
@@ -53,16 +52,11 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
             viewModel.onAddClick()
         }
 
-        binding.addressTextInputLayout.addTextWatcher {
-            binding.addressTextInputLayout.setState(MSDTextInputLayout.State.NORMAL)
-            viewModel.onAddressChanged(it)
-        }
-
         binding.entranceTextInputLayout.addTextWatcher {
             viewModel.onEntranceChanged(it)
         }
 
-        binding.corpusTextInputLayout.addTextWatcher {
+        binding.corpusApartmentTextInputLayout.addTextWatcher {
             viewModel.onCorpusChanged(it)
         }
 
@@ -73,7 +67,6 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
         binding.flatTextInputLayout.addTextWatcher {
             viewModel.onFlatChanged(it)
         }
-
         binding.totalAreaInputLayout.addTextWatcher {
             viewModel.onTotalAreaChanged(it)
         }
@@ -96,8 +89,10 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
 
         subscribe(viewModel.propertyDetailsObserver){
             binding.addTextView.isEnabled = it.isAddTextViewEnabled
-            if (it.updatePropertyAddressEditText){
-                binding.addressTextInputLayout.setText(it.address.addressString)
+            binding.addressTextInputLayout.setText(it.address.addressString)
+            when(it.type){
+                PropertyType.APARTMENT.type -> { showApartmentLayout(it) }
+                PropertyType.HOUSE.type -> { showHouseLayout(it) }
             }
         }
 
@@ -116,6 +111,22 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
         subscribe(viewModel.notificationObserver){
             notification(it)
         }
+    }
+
+    private fun showHouseLayout(propertyDetailsViewState: PropertyDetailsViewState) {
+        binding.apartmentDataLinearLayout.visibility = View.GONE
+        binding.homeDataLinearLayout.visibility = View.VISIBLE
+        val cityName = propertyDetailsViewState.address.cityName
+        binding.cityNameHomeTextInputLayout.setText( if ( cityName.isNotEmpty() ) { cityName } else {"Не определено"} )
+        binding.corpusHomeTextInputLayout.setText(propertyDetailsViewState.corpus)
+    }
+
+    private fun showApartmentLayout(propertyDetailsViewState: PropertyDetailsViewState) {
+        binding.apartmentDataLinearLayout.visibility = View.VISIBLE
+        binding.homeDataLinearLayout.visibility = View.GONE
+        val cityName = propertyDetailsViewState.address.cityName
+        binding.cityNameApartmentTextInputLayout.setText( if ( cityName.isNotEmpty() ) { cityName } else {"Не определено"} )
+        binding.corpusApartmentTextInputLayout.setText(propertyDetailsViewState.corpus)
     }
 
     override fun onError() {

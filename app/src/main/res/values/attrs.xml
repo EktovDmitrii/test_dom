@@ -9,6 +9,8 @@
     <attr name="mask" format="string"/>
     <attr name="inputHeight" format="dimension"/>
 
+
+
     <declare-styleable name="MSDTextView">
         <attr name="translationTextKey"/>
         <attr name="isUnderlined" format="boolean"/>
@@ -154,6 +156,8 @@
         <attr name="focusedTranslationHintKey" format="string"/>
         <attr name="android:text"/>
         <attr name="unfocusOnDone" format="boolean"/>
+        <attr name="boxStrokeWidth" format="dimension"/>
+        <attr name="boxStrokeWidthFocused" format="dimension"/>
     </declare-styleable>
 
     <declare-styleable name="MSDGenderSelector">

@@ -37,13 +37,13 @@
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:fontFamily="@font/my_service_bold"
+            android:gravity="center"
             android:textColor="@color/secondary900"
             android:textSize="16sp"
-            android:layout_alignParentBottom="true"
-            android:gravity="center"
-            android:layout_centerHorizontal="true"
-            app:translationTextKey="Выберите тип объекта"/>
+            app:translationTextKey="Тип недвижимости" />
 
     </RelativeLayout>
 
@@ -80,7 +80,7 @@
                 android:fontFamily="@font/suisse_book"
                 android:textColor="@color/secondary900"
                 android:textSize="16sp"
-                app:translationTextKey="Частный дом" />
+                app:translationTextKey="Дом" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -126,9 +126,11 @@
         android:paddingStart="16dp"
         android:paddingEnd="36dp"
         android:paddingVertical="8dp"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/apartmentTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/suisse_regular"
@@ -137,7 +139,21 @@
             android:includeFontPadding="false"
             android:lineSpacingExtra="24dp"
             android:lineSpacingMultiplier="0"
+            android:visibility="gone"
             app:translationTextKey="Если хотите добавить квартиру, часть квартиры или этаж во владении в частном доме, выберите Квартиру." />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/home_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/suisse_regular"
+            android:textColor="@color/secondary500"
+            android:textSize="14sp"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="24dp"
+            android:lineSpacingMultiplier="0"
+            android:visibility="visible"
+            app:translationTextKey="Если хотите добавить частный дом, загородный дом, дачу или таунхаус, выберите Дом." />
     </FrameLayout>
 
 
