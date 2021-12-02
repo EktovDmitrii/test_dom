@@ -138,11 +138,11 @@ class MSDTextInputLayout @JvmOverloads constructor(
             }
         }
 
-        attrs.getDimension(R.styleable.MSDTextInputLayout_boxStrokeWidth,0f).let { boxStrokeWidth ->
+        attrs.getDimension(R.styleable.MSDTextInputLayout_boxStrokeWidth,1f).let { boxStrokeWidth ->
             binding.containerTextInputLayout.boxStrokeWidth = boxStrokeWidth.toInt()
         }
 
-        attrs.getDimension(R.styleable.MSDTextInputLayout_boxStrokeWidthFocused,0f).let { boxStrokeWidthFocused ->
+        attrs.getDimension(R.styleable.MSDTextInputLayout_boxStrokeWidthFocused,1f).let { boxStrokeWidthFocused ->
             binding.containerTextInputLayout.boxStrokeWidthFocused = boxStrokeWidthFocused.toInt()
         }
     }

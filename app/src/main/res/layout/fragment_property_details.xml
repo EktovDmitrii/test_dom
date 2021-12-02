@@ -270,6 +270,8 @@
                             android:paddingHorizontal="20dp"
                             android:maxLength="250"
                             android:inputType="none"
+                            app:boxStrokeWidth="0dp"
+                            app:boxStrokeWidthFocused="0dp"
                             app:translationHintKey="Населенный пункт" />
 
                     </FrameLayout>
