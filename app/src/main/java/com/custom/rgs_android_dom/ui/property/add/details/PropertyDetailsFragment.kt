@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.PopupWindow
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.getSystemService
 import androidx.core.content.res.ResourcesCompat
 import com.custom.rgs_android_dom.R
@@ -169,11 +170,13 @@ class PropertyDetailsFragment :
                     this.isFocusable = true
 
                     this.setBackgroundDrawable(
-                        /*contentView.context.getDrawable(
-
-                        )*/ColorDrawable(Color.TRANSPARENT)
+                        AppCompatResources.getDrawable(
+                            anchorView.context,
+                            R.drawable.popup_info_window_background
+                        )/*ColorDrawable(Color.TRANSPARENT)*/
                     )
-
+                    //this.showAtLocation(anchorView,Gravity.CENTER,0,0)
+                    //this.showAsDropDown( anchorView,0,0, Gravity.CENTER)
                     val view = this.contentView
                     view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
 
@@ -192,7 +195,6 @@ class PropertyDetailsFragment :
                     popupWindow.dismiss()
                     true
                 }
-
             }
 
     }
