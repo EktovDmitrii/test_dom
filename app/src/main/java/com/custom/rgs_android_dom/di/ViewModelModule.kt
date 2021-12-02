@@ -13,6 +13,7 @@ import com.custom.rgs_android_dom.ui.client.personal_data.edit.EditPersonalDataV
 import com.custom.rgs_android_dom.ui.client.personal_data.PersonalDataViewModel
 import com.custom.rgs_android_dom.ui.location.rationale.RequestLocationRationaleViewModel
 import com.custom.rgs_android_dom.ui.address.suggestions.AddressSuggestionsViewModel
+import com.custom.rgs_android_dom.ui.chat.call.CallViewModel
 import com.custom.rgs_android_dom.ui.chat.files.manage.ManageFileViewModel
 import com.custom.rgs_android_dom.ui.chat.files.upload.UploadFilesViewModel
 import com.custom.rgs_android_dom.ui.chat.files.viewers.image.ImageViewerViewModel
@@ -32,6 +33,7 @@ import com.custom.rgs_android_dom.ui.splash.SplashViewModel
 import com.custom.rgs_android_dom.ui.web_view.WebViewViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import com.custom.rgs_android_dom.ui.client.personal_data.request_edit.RequestEditPersonalDataViewModel
 
 val viewModelModule = module {
     viewModel { parameters -> RegistrationCodeViewModel(phone = parameters[0], token = parameters[1], registrationInteractor = get(), clientInteractor = get()) }
@@ -54,7 +56,8 @@ val viewModelModule = module {
     viewModel { parameters-> PropertyInfoViewModel(objectId = parameters.get(), propertyInteractor = get()) }
     viewModel { ScreenStubViewModel() }
     viewModel { RequestEditAgentViewModel(clientInteractor = get()) }
-    viewModel { parameters -> SelectAddressViewModel(propertyCount = parameters.get(), propertyInteractor = get(), addressInteractor = get(), context = get()) }
+    viewModel { RequestEditPersonalDataViewModel(clientInteractor = get()) }
+    viewModel { parameters -> SelectAddressViewModel( propertyCount = parameters.get(), propertyInteractor = get(), addressInteractor = get(), context = get()) }
     viewModel { RequestLocationRationaleViewModel() }
     viewModel { AddressSuggestionsViewModel(addressInteractor = get()) }
     viewModel { MainStubViewModel(registrationInteractor = get()) }
@@ -64,4 +67,5 @@ val viewModelModule = module {
     viewModel { parameters-> ImageViewerViewModel(chatFile = parameters.get()) }
     viewModel { parameters-> ManageFileViewModel(chatFile = parameters.get()) }
     viewModel { parameters -> VideoPlayerViewModel(chatFile = parameters.get()) }
+    viewModel { parameters -> CallViewModel(callType = parameters[0], chatInteractor = get()) }
 }

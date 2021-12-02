@@ -34,6 +34,9 @@ class ClientInteractor(
 
         private val DOC_SERIAL_LENGTH = 4
         private val DOC_NUMBER_LENGTH = 6
+
+        private const val ASSIGN_TYPE_REG = "reg"
+        private const val ASSIGN_TYPE_PROFILE = "profile"
     }
 
     var fillClientStateSubject = BehaviorRelay.create<FillClientViewState>()
@@ -51,7 +54,7 @@ class ClientInteractor(
         fillClientStateSubject.accept(fillClientViewState)
     }
 
-    fun updateClient(): Completable {
+    fun updateNewClient(): Completable {
 
         val errorsValidate = ArrayList<ValidateFieldModel>()
 
@@ -87,18 +90,31 @@ class ClientInteractor(
             }
         }
 
+        if (fillClientViewState.agentPhone == null && fillClientViewState.agentCode != null){
+            errorsValidate.add(ValidateFieldModel(ClientField.AGENTPHONE, "Укажите телефон агента"))
+        }
+
         if (errorsValidate.isNotEmpty()){
             return Completable.error(SpecificValidateClientExceptions(errorsValidate))
         }
 
-        return updateClient(
+        val clientCompletable = updateClient(
             firstName = fillClientViewState.name?.trim(),
             lastName = fillClientViewState.surname?.trim(),
             birthday = birthday,
             gender = fillClientViewState.gender,
-            agentCode = fillClientViewState.agentCode?.trim(),
-            agentPhone = fillClientViewState.agentPhone
         )
+
+        val agentCompletable = if (fillClientViewState.agentCode != null){
+            clientRepository.assignAgent(
+                code = fillClientViewState.agentCode?.trim() ?: "",
+                phone = fillClientViewState.agentPhone ?: "",
+                assignType = ASSIGN_TYPE_REG
+            )
+        } else {
+            Completable.complete()
+        }
+        return Completable.concatArray(clientCompletable, agentCompletable)
     }
 
     fun onNameChanged(name: String) {
@@ -364,8 +380,6 @@ class ClientInteractor(
                 birthday = birthday,
                 gender = editPersonalDataViewState.gender,
                 email = if (editPersonalDataViewState.email.isNotEmpty()) editPersonalDataViewState.email else null,
-                agentCode = editPersonalDataViewState.agentCode,
-                agentPhone = editPersonalDataViewState.agentPhone,
                 avatar = it.avatarFileId
             )
         }
@@ -405,7 +419,7 @@ class ClientInteractor(
         if (errorsValidate.isNotEmpty()){
             return Completable.error(SpecificValidateClientExceptions(errorsValidate))
         }
-        return clientRepository.updateAgent(editAgentViewState.agentCode, editAgentViewState.agentPhone)
+        return clientRepository.assignAgent(editAgentViewState.agentCode, editAgentViewState.agentPhone, ASSIGN_TYPE_PROFILE)
     }
 
     fun requestEditAgent(): Completable {
@@ -414,6 +428,14 @@ class ClientInteractor(
 
     fun getEditAgentRequestedSubject(): PublishSubject<Boolean> {
         return clientRepository.getEditAgentRequestedSubject()
+    }
+
+    fun requestEditPersonalData(): Completable {
+        return clientRepository.requestEditPersonalData()
+    }
+
+    fun getEditPersonalDataRequestedSubject(): PublishSubject<Boolean> {
+        return clientRepository.getEditPersonalDataRequestedSubject()
     }
 
     fun loadAndSaveClient(): Completable {
@@ -433,8 +455,6 @@ class ClientInteractor(
                     middleName = clientModel.middleName,
                     birthday = clientModel.birthDate?.toLocalDateTime(),
                     gender = clientModel.gender,
-                    agentCode = clientModel.agent?.code,
-                    agentPhone = clientModel.agent?.phone,
                     phone = clientModel.phone,
                     email = clientModel.contacts?.find { it.type == "email" }?.contact,
                     avatar = fileId
@@ -458,8 +478,6 @@ class ClientInteractor(
                 middleName = clientModel.middleName,
                 birthday = clientModel.birthDate?.toLocalDateTime(),
                 gender = clientModel.gender,
-                agentCode = clientModel.agent?.code,
-                agentPhone = clientModel.agent?.phone,
                 phone = clientModel.phone,
                 email = clientModel.contacts?.find { it.type == "email" }?.contact,
                 avatar = null
@@ -507,13 +525,11 @@ class ClientInteractor(
         middleName: String? = null,
         birthday: LocalDateTime? = null,
         gender: Gender? = null,
-        agentCode: String? = null,
-        agentPhone: String? = null,
         phone: String? = null,
         email: String? = null,
         avatar: String? = null
     ): Completable {
-        return clientRepository.updateClient(firstName, lastName, middleName, birthday, gender, agentCode, agentPhone, phone, email, avatar)
+        return clientRepository.updateClient(firstName, lastName, middleName, birthday, gender, phone, email, avatar)
             .doOnComplete { fillClientStateSubject.accept(fillClientViewState) }
     }
 

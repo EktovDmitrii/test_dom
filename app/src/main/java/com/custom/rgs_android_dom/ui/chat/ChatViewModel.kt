@@ -2,10 +2,13 @@ package com.custom.rgs_android_dom.ui.chat
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
+import com.custom.rgs_android_dom.domain.chat.models.CallType
 import com.custom.rgs_android_dom.domain.chat.models.ChatFileModel
 import com.custom.rgs_android_dom.domain.chat.models.ChatItemModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.chat.call.CallFragment
 import com.custom.rgs_android_dom.ui.chat.files.viewers.image.ImageViewerFragment
 import com.custom.rgs_android_dom.ui.chat.files.viewers.video.VideoPlayerFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -14,6 +17,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.launch
 import java.io.File
 
 class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel() {
@@ -28,7 +32,13 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
     val downloadFileObserver: LiveData<ChatFileModel> = downloadFileController
 
     init {
-        chatInteractor.getChatItems()
+
+        chatInteractor.subscribeToSocketEvents()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
+
+        chatInteractor.getChatHistory()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
@@ -46,7 +56,7 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
                 }
             ).addTo(dataCompositeDisposable)
 
-        chatInteractor.getNewItemsSubject()
+        chatInteractor.newChatItemsSubject
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
@@ -72,6 +82,7 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
+
     }
 
     fun onBackClick(){
@@ -104,6 +115,16 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
             }
         }
 
+    }
+
+    fun onAudioCallClick() {
+        val callFragment = CallFragment.newInstance(CallType.AUDIO_CALL)
+        ScreenManager.showScreen(callFragment)
+    }
+
+    fun onVideoCallClick() {
+        val callFragment = CallFragment.newInstance(CallType.VIDEO_CALL)
+        ScreenManager.showScreen(callFragment)
     }
 
     private fun postFilesInChat(files: List<File>){

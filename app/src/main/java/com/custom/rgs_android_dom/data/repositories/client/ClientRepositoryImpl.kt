@@ -13,6 +13,7 @@ import com.custom.rgs_android_dom.utils.PATTERN_DATE_TIME_MILLIS
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
 import com.custom.rgs_android_dom.utils.formatTo
 import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
@@ -25,6 +26,7 @@ class ClientRepositoryImpl(
 
     private val clientUpdatedSubject: PublishSubject<ClientModel> = PublishSubject.create()
     private val editAgentRequestedSubject: PublishSubject<Boolean> = PublishSubject.create()
+    private val editPersonalDataRequestedSubject: PublishSubject<Boolean> = PublishSubject.create()
 
     override fun updateClient(
         firstName: String?,
@@ -32,15 +34,11 @@ class ClientRepositoryImpl(
         middleName: String?,
         birthday: LocalDateTime?,
         gender: Gender?,
-        agentCode: String?,
-        agentPhone: String?,
         phone: String?,
         email: String?,
         avatar: String?
     ): Completable {
         val request = UpdateClientRequest(
-            agentCode = agentCode,
-            agentPhone = agentPhone?.formatPhoneForApi(),
             avatar = avatar,
             birthdate = birthday?.formatTo(PATTERN_DATE_TIME_MILLIS),
             firstName = firstName,
@@ -68,23 +66,30 @@ class ClientRepositoryImpl(
             return api.getMyClient().map { response ->
                 val client = ClientMapper.responseToClient(response)
                 clientSharedPreferences.saveClient(client)
-                return@map client
+
+                val agent = ClientMapper.responseToAgent(api.getAgent().blockingGet())
+                clientSharedPreferences.saveAgent(agent)
+                return@map clientSharedPreferences.getClient()
             }
         }
     }
 
 
     override fun loadAndSaveClient(): Completable {
-        return api.getMyClient().flatMapCompletable { response ->
+        return api.getMyClient().flatMapCompletable { response->
             val client = ClientMapper.responseToClient(response)
+            val agentResponse = api.getAgent().blockingGet()
+            val agent = ClientMapper.responseToAgent(agentResponse)
+            client.agent = agent
 
             val cachedClient = clientSharedPreferences.getClient()
             if (cachedClient != null && cachedClient != client || cachedClient == null){
                 clientSharedPreferences.saveClient(client)
+                clientSharedPreferences.saveAgent(agent)
                 clientUpdatedSubject.onNext(client)
             }
 
-            Completable.complete()
+            return@flatMapCompletable Completable.complete()
         }
     }
 
@@ -92,13 +97,15 @@ class ClientRepositoryImpl(
         return clientUpdatedSubject.hide()
     }
 
-    override fun updateAgent(code: String, phone: String): Completable {
-        val agentRequest = ClientMapper.agentToRequest(code, phone)
-        return api.updateAgent(agentRequest)
+    override fun assignAgent(code: String, phone: String, assignType: String): Completable {
+        val request = ClientMapper.agentToRequest(code, phone, assignType)
+        return api.assignAgent(request)
             .flatMapCompletable {response->
-                val client = ClientMapper.responseToClient(response)
-                clientSharedPreferences.saveClient(client)
-                clientUpdatedSubject.onNext(client)
+                val agent = ClientMapper.responseToAgent(response)
+                clientSharedPreferences.saveAgent(agent)
+                clientSharedPreferences.getClient()?.let {client->
+                    clientUpdatedSubject.onNext(client)
+                }
                 Completable.complete()
             }
     }
@@ -159,5 +166,17 @@ class ClientRepositoryImpl(
         return api.getUser().map {
             ClientMapper.responseToUserDetails(it)
         }
+    }
+
+    override fun requestEditPersonalData(): Completable {
+        // Todo Replace with real request later
+        return Completable.fromCallable{
+            Thread.sleep(2000)
+            editPersonalDataRequestedSubject.onNext(true)
+        }
+    }
+
+    override fun getEditPersonalDataRequestedSubject(): PublishSubject<Boolean> {
+        return editPersonalDataRequestedSubject
     }
 }

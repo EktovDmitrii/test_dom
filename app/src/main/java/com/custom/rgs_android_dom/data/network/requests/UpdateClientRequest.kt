@@ -3,12 +3,6 @@ package com.custom.rgs_android_dom.data.network.requests
 import com.google.gson.annotations.SerializedName
 
 data class UpdateClientRequest(
-    @SerializedName("agentCode")
-    val agentCode: String? = null,
-
-    @SerializedName("agentPhone")
-    val agentPhone: String? = null,
-
     @SerializedName("avatar")
     val avatar: String? = null,
 

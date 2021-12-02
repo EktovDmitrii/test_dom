@@ -19,6 +19,7 @@ import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.chat.files.upload.UploadFilesFragment
 import com.custom.rgs_android_dom.utils.*
 
+
 class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.fragment_chat) {
 
     private val chatAdapter: ChatAdapter
@@ -73,7 +74,23 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
             uploadFilesFragment.show(childFragmentManager, uploadFilesFragment.TAG)
         }
 
-        subscribe(viewModel.chatItemsObserver) {
+        binding.audioCallImageView.setOnDebouncedClickListener {
+            viewModel.onAudioCallClick()
+        }
+
+        binding.videoCallImageView.setOnDebouncedClickListener {
+            viewModel.onVideoCallClick()
+        }
+
+        binding.messagesRecyclerView.addOnScrollListener(
+            ChatAnimator(binding.scrollDownImageView)
+        )
+
+        binding.scrollDownImageView.setOnDebouncedClickListener {
+            binding.messagesRecyclerView.smoothScrollToPosition(chatAdapter.itemCount - 1)
+        }
+
+        subscribe(viewModel.chatItemsObserver){
             chatAdapter.setItems(it)
             binding.messagesRecyclerView.scrollToPosition(chatAdapter.itemCount - 1)
         }

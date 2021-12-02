@@ -6,9 +6,9 @@ import com.custom.rgs_android_dom.data.network.responses.*
 import com.custom.rgs_android_dom.data.network.requests.*
 import com.custom.rgs_android_dom.domain.error.model.MSDErrorModel
 import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Single
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.http.*
 import kotlin.reflect.KClass
 
@@ -52,10 +52,6 @@ interface MSDApi {
     @GET("catalog/translations")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getTranslations(@Query("platform") platform: String,@Query("lang") lang: String, @Query("project") project: String): Single<TranslationListResponse>
-
-    @POST("clients/me/agents")
-    @ErrorType(MSDNetworkErrorResponse::class)
-    fun updateAgent(@Body body: UpdateAgentRequest): Single<ClientResponse>
 
     @POST("clients/me/documents")
     @ErrorType(MSDNetworkErrorResponse::class)
@@ -122,4 +118,16 @@ interface MSDApi {
     @POST("chat/users/me/channels/{channelId}/files")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun postFileInChat(@Part file: MultipartBody.Part, @Path("channelId") channel: String): Single<ChatFileResponse>
+
+    @POST("chat/users/me/channels/{channelId}/webrtc/calls")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun startCall(@Path("channelId") channelId: String): Single<CallInfoResponse>
+
+    @POST("insurance/clients/me/agents")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun assignAgent(@Body request: AssignAgentRequest): Single<AgentHolderResponse>
+
+    @GET("insurance/clients/me/agents")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getAgent(): Maybe<AgentHolderResponse?>
 }

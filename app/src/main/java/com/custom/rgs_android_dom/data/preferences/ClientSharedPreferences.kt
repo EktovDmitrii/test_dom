@@ -2,6 +2,8 @@ package com.custom.rgs_android_dom.data.preferences
 
 import android.content.Context
 import androidx.core.content.edit
+import com.custom.rgs_android_dom.domain.chat.models.CallJoinModel
+import com.custom.rgs_android_dom.domain.client.models.ClientAgent
 import com.custom.rgs_android_dom.domain.client.models.ClientModel
 import com.custom.rgs_android_dom.utils.getSharedPrefs
 import com.f2prateek.rx.preferences2.RxSharedPreferences
@@ -14,6 +16,9 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
         private const val PREF_KEY_CLIENT_ID = "PREF_KEY_CLIENT_ID"
         private const val PREF_KEY_PHONE = "PREF_KEY_PHONE"
         private const val PREF_KEY_CLIENT = "PREF_KEY_CLIENT"
+        private const val PREF_KEY_LIVEKIT_ROOM_TOKEN = "PREF_KEY_LIVEKIT_ROOM_TOKEN"
+        private const val PREF_KEY_LIVEKIT_CALL_ID = "PREF_KEY_LIVEKIT_ROOM_TOKEN"
+        private const val PREF_KEY_AGENT = "PREF_KEY_AGENT"
     }
 
     private val preferences = context.getSharedPrefs(PREFS_NAME)
@@ -38,9 +43,45 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
     fun getClient(): ClientModel? {
         val clientString = preferences.getString(PREF_KEY_CLIENT, null)
         if (clientString != null){
-            return gson.fromJson(clientString, ClientModel::class.java)
+            val client = gson.fromJson(clientString, ClientModel::class.java)
+            client.agent = getAgent()
+            return client
         }
         return null
+    }
+
+    fun saveAgent(agent: ClientAgent?){
+        preferences.edit {
+            if (agent != null){
+                putString(PREF_KEY_AGENT, gson.toJson(agent))
+            } else {
+                remove(PREF_KEY_AGENT)
+            }
+        }
+    }
+
+    fun saveLiveKitRoomCredentials(callJoin: CallJoinModel){
+        preferences.edit {
+            putString(PREF_KEY_LIVEKIT_ROOM_TOKEN, callJoin.token)
+            putString(PREF_KEY_LIVEKIT_CALL_ID, callJoin.callId)
+        }
+    }
+
+    fun getLiveKitRoomCredentials(): CallJoinModel?{
+        if (preferences.contains(PREF_KEY_LIVEKIT_ROOM_TOKEN)){
+            return CallJoinModel(
+                token = preferences.getString(PREF_KEY_LIVEKIT_ROOM_TOKEN, "") ?: "",
+                callId = preferences.getString(PREF_KEY_LIVEKIT_CALL_ID, "") ?: ""
+            )
+        }
+        return null
+    }
+
+    fun clearLiveKitRoomCredentials(){
+        preferences.edit{
+            remove(PREF_KEY_LIVEKIT_ROOM_TOKEN)
+            remove(PREF_KEY_LIVEKIT_CALL_ID)
+        }
     }
 
     fun clear() {
@@ -48,5 +89,13 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
             clear()
         }
         rxPreferences.clear()
+    }
+
+    private fun getAgent(): ClientAgent? {
+        val agentString = preferences.getString(PREF_KEY_AGENT, null)
+        if (agentString != null){
+            return gson.fromJson(agentString, ClientAgent::class.java)
+        }
+        return null
     }
 }

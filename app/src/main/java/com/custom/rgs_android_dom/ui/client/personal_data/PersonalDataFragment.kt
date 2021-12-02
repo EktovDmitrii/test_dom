@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentPersonalDataBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.client.agent.request_edit.RequestEditAgentFragment
 import com.custom.rgs_android_dom.ui.client.personal_data.add_photo.AddPhotoFragment
 import com.custom.rgs_android_dom.utils.*
 

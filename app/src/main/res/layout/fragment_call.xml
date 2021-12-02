@@ -39,14 +39,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbarAudioVideoCalls">
 
-        <View
-            android:id="@+id/largeVideoImageView"
+        <io.livekit.android.renderer.TextureViewRenderer
+            android:id="@+id/opponentSurfaceRenderer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="24dp" />
 
-        <View
-            android:id="@+id/smallVideoImageView"
+        <io.livekit.android.renderer.TextureViewRenderer
+            android:id="@+id/mySurfaceRenderer"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="bottom|end"
