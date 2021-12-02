@@ -1,50 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingEnd="139dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <FrameLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <FrameLayout
+        <com.custom.rgs_android_dom.views.MSDImageView
+            android:id="@+id/opponentImageView"
             android:layout_width="196dp"
             android:layout_height="208dp"
-            android:layout_gravity="end">
+            android:background="@drawable/rectangle_filled_secondary_100_radius_16dp" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/opponentImageView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/dateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="11dp"
+            android:fontFamily="@font/suisse_regular"
+            android:includeFontPadding="false"
+            android:textColor="@color/secondary400"
+            android:textSize="12sp"
+            tools:text="21:22" />
 
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|bottom"
-                android:foregroundGravity="center"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="6dp"
-                android:paddingHorizontal="6dp"
-                android:background="@drawable/rectangle_filled_secondary_900_alpha80_radius_12dp">
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
-                <TextView
-                    android:id="@+id/dateTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="22dp"
-                    android:fontFamily="@font/suisse_regular"
-                    android:textColor="@color/white_alpha80"
-                    android:textSize="12sp"
-                    android:includeFontPadding="false"
-                    android:gravity="center"
-                    tools:text="21:22" />
-
-            </FrameLayout>
-
-        </FrameLayout>
-
-    </FrameLayout>
-
-</androidx.appcompat.widget.LinearLayoutCompat>
+</FrameLayout>

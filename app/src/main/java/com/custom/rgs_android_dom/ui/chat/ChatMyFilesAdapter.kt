@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui.chat
 
 import android.util.Base64
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -96,7 +97,11 @@ class ChatMyFilesAdapter(
 
         fun bind(model: ChatFileModel) {
             binding.docNameTextView.text = model.name
-            binding.sizeTextView.text = "${model.size.sizeInMb.roundTo(2)}mb"
+            binding.sizeTextView.text = if (model.size.sizeInMb.roundTo(2) > 0.01) {
+                "${model.size.sizeInMb.roundTo(2)}mb"
+            } else {
+                "0.01mb"
+            }
             binding.dateTextView.text = model.createdAt.formatTo(DATE_PATTERN_TIME_ONLY_WITHOUT_SEC)
 
             binding.root.setOnDebouncedClickListener {
