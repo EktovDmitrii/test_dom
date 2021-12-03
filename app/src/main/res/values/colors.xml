@@ -19,6 +19,7 @@
     <color name="error600">#D45054</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="black_alpha40">#66000000</color>
     <color name="secondary900_alpha92">#EB20201F</color>
     <color name="secondary900_alpha20">#3220201F</color>
     <color name="secondary900_alpha50">#1F20201F</color>

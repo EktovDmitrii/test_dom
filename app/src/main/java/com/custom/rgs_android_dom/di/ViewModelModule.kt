@@ -34,6 +34,7 @@ import com.custom.rgs_android_dom.ui.web_view.WebViewViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import com.custom.rgs_android_dom.ui.client.personal_data.request_edit.RequestEditPersonalDataViewModel
+import com.custom.rgs_android_dom.ui.property.add.files.PropertyUploadFilesViewModel
 
 val viewModelModule = module {
     viewModel { parameters -> RegistrationCodeViewModel(phone = parameters[0], token = parameters[1], registrationInteractor = get(), clientInteractor = get()) }
@@ -68,4 +69,5 @@ val viewModelModule = module {
     viewModel { parameters-> ManageFileViewModel(chatFile = parameters.get()) }
     viewModel { parameters -> VideoPlayerViewModel(chatFile = parameters.get()) }
     viewModel { parameters -> CallViewModel(callType = parameters[0], chatInteractor = get()) }
+    viewModel { PropertyUploadFilesViewModel(propertyInteractor = get()) }
 }

@@ -87,6 +87,10 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
             viewModel.onIsTemporarySelected(it)
         }
 
+        binding.uploadDocumentImageView.setOnDebouncedClickListener {
+
+        }
+
         subscribe(viewModel.propertyDetailsObserver){
             binding.addTextView.isEnabled = it.isAddTextViewEnabled
             binding.addressTextInputLayout.setText(it.address.addressString)
