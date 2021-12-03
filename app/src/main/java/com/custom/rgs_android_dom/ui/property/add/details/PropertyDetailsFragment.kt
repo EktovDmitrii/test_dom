@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.ui.property.add.details
 import android.annotation.SuppressLint
 import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.os.Bundle
+import android.util.Log
 import android.util.Size
 import android.view.*
 import android.widget.PopupWindow
@@ -163,7 +164,7 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
             width = WindowManager.LayoutParams.WRAP_CONTENT
             height = WindowManager.LayoutParams.WRAP_CONTENT
             isFocusable = true
-
+            isClippingEnabled = false
             val inflater: LayoutInflater =
                 (context.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater)
 
@@ -199,13 +200,15 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
                 showAtLocation(
                     anchorView,
                     Gravity.START or Gravity.TOP,
-                    anchorViewLocation[0] - (contentViewDimensions.width - anchorView.width) / 2 ,
+                    anchorViewLocation[0] - contentViewDimensions.width
+                    +(contentViewDimensions.width - infoTextView.measuredWidth),
                     anchorViewLocation[1] + 8.dp(context))
             } else {
                 showAtLocation(
                     anchorView,
                     Gravity.START or Gravity.TOP,
-                    anchorViewLocation[0] - (contentViewDimensions.width - anchorView.width) / 2 ,
+                    anchorViewLocation[0] - contentViewDimensions.width
+                            +(contentViewDimensions.width - infoTextView.measuredWidth),
                     anchorViewLocation[1] - contentViewDimensions.height + (contentViewDimensions.height - infoTextView.measuredHeight)/2 + 8.dp(context) )
             }
 
