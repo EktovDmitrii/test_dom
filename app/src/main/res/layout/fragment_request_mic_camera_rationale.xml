@@ -28,13 +28,13 @@
             android:gravity="center"
             android:lineSpacingExtra="24dp"
             android:lineSpacingMultiplier="0"
-            app:translationTextKey="Разрешите доступ к вашей геопозиции, чтобы нам проще было вас найти и помочь"/>
+            app:translationTextKey="Разрешите доступ, чтобы консультант или мастер могли слышать вас"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iconImageView"
             android:layout_width="wrap_content"
             android:layout_height="232dp"
-            app:srcCompat="@drawable/device_location"
+            app:srcCompat="@drawable/device_microphone"
             android:paddingHorizontal="33dp"
             android:layout_marginTop="24dp"/>
 

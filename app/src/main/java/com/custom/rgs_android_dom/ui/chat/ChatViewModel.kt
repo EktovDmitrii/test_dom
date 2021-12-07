@@ -118,12 +118,12 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
     }
 
     fun onAudioCallClick() {
-        val callFragment = CallFragment.newInstance(CallType.AUDIO_CALL)
+        val callFragment = CallFragment.newInstance(CallType.AUDIO_CALL, chatInteractor.getCurrentConsultant())
         ScreenManager.showScreen(callFragment)
     }
 
     fun onVideoCallClick() {
-        val callFragment = CallFragment.newInstance(CallType.VIDEO_CALL)
+        val callFragment = CallFragment.newInstance(CallType.VIDEO_CALL, chatInteractor.getCurrentConsultant())
         ScreenManager.showScreen(callFragment)
     }
 

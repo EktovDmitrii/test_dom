@@ -68,3 +68,11 @@ fun LocalDateTime.toHumanReadableDate(showTime: Boolean = true): String {
         }
     }
 }
+
+fun Duration.toReadableTime(): String {
+    val hours = standardSeconds / 3600
+    val minutes = (standardSeconds % 3600) / 60
+    val seconds = standardSeconds % 60
+
+    return if (hours >0 ) String.format("%02d:%02d:%02d", hours, minutes, seconds) else String.format("%02d:%02d", minutes, seconds)
+}
