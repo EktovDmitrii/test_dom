@@ -67,5 +67,5 @@ val viewModelModule = module {
     viewModel { parameters-> ImageViewerViewModel(chatFile = parameters.get()) }
     viewModel { parameters-> ManageFileViewModel(chatFile = parameters.get()) }
     viewModel { parameters -> VideoPlayerViewModel(chatFile = parameters.get()) }
-    viewModel { parameters -> CallViewModel(callType = parameters[0], chatInteractor = get()) }
+    viewModel { parameters -> CallViewModel(callType = parameters[0], consultant = parameters[1], chatInteractor = get()) }
 }

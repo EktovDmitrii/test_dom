@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/oval_filled_white_alpha24" android:state_enabled="false"/>
+    <item android:drawable="@drawable/oval_filled_white" android:state_activated="true"/>
+    <item android:drawable="@drawable/oval_filled_secondary_800"/>
+</selector>
