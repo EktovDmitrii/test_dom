@@ -14,14 +14,19 @@ import com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentPropertyDetailsBinding>(R.layout.fragment_property_details) {
+class PropertyDetailsFragment :
+    BaseFragment<PropertyDetailsViewModel, FragmentPropertyDetailsBinding>(R.layout.fragment_property_details) {
 
     companion object {
         private const val ARG_PROPERTY_NAME = "ARG_PROPERTY_NAME"
         private const val ARG_PROPERTY_ADDRESS = "ARG_PROPERTY_ADDRESS"
         private const val ARG_PROPERTY_TYPE = "ARG_PROPERTY_TYPE"
 
-        fun newInstance(propertyName: String, propertyAddress: String, propertyType: PropertyType): PropertyDetailsFragment {
+        fun newInstance(
+            propertyName: String,
+            propertyAddress: String,
+            propertyType: PropertyType
+        ): PropertyDetailsFragment {
             return PropertyDetailsFragment().args {
                 putString(ARG_PROPERTY_NAME, propertyName)
                 putString(ARG_PROPERTY_ADDRESS, propertyAddress)
@@ -60,6 +65,10 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
             viewModel.onCorpusChanged(it)
         }
 
+        binding.corpusHomeTextInputLayout.addTextWatcher {
+            viewModel.onCorpusChanged(it)
+        }
+
         binding.floorTextInputLayout.addTextWatcher {
             viewModel.onFloorChanged(it)
         }
@@ -87,28 +96,32 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
             viewModel.onIsTemporarySelected(it)
         }
 
-        subscribe(viewModel.propertyDetailsObserver){
+        subscribe(viewModel.propertyDetailsObserver) {
             binding.addTextView.isEnabled = it.isAddTextViewEnabled
             binding.addressTextInputLayout.setText(it.address.addressString)
-            when(it.type){
-                PropertyType.APARTMENT.type -> { showApartmentLayout(it) }
-                PropertyType.HOUSE.type -> { showHouseLayout(it) }
+            when (it.type) {
+                PropertyType.APARTMENT.type -> {
+                    showApartmentLayout(it)
+                }
+                PropertyType.HOUSE.type -> {
+                    showHouseLayout(it)
+                }
             }
         }
 
-        subscribe(viewModel.validateExceptionObserver){
-            when(it.field){
+        subscribe(viewModel.validateExceptionObserver) {
+            when (it.field) {
                 PropertyField.ADDRESS -> {
                     binding.addressTextInputLayout.setState(MSDTextInputLayout.State.ERROR)
                 }
             }
         }
 
-        subscribe(viewModel.networkErrorObserver){
+        subscribe(viewModel.networkErrorObserver) {
             toast(it)
         }
 
-        subscribe(viewModel.notificationObserver){
+        subscribe(viewModel.notificationObserver) {
             notification(it)
         }
     }
@@ -117,7 +130,13 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
         binding.apartmentDataLinearLayout.visibility = View.GONE
         binding.homeDataLinearLayout.visibility = View.VISIBLE
         val cityName = propertyDetailsViewState.address.cityName
-        binding.cityNameHomeTextInputLayout.setText( if ( cityName.isNotEmpty() ) { cityName } else {"Не определено"} )
+        binding.cityNameHomeTextInputLayout.setText(
+            if (cityName.isNotEmpty()) {
+                cityName
+            } else {
+                "Не определено"
+            }
+        )
         binding.corpusHomeTextInputLayout.setText(propertyDetailsViewState.corpus)
     }
 
@@ -125,7 +144,13 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
         binding.apartmentDataLinearLayout.visibility = View.VISIBLE
         binding.homeDataLinearLayout.visibility = View.GONE
         val cityName = propertyDetailsViewState.address.cityName
-        binding.cityNameApartmentTextInputLayout.setText( if ( cityName.isNotEmpty() ) { cityName } else {"Не определено"} )
+        binding.cityNameApartmentTextInputLayout.setText(
+            if (cityName.isNotEmpty()) {
+                cityName
+            } else {
+                "Не определено"
+            }
+        )
         binding.corpusApartmentTextInputLayout.setText(propertyDetailsViewState.corpus)
     }
 
