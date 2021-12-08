@@ -110,6 +110,18 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
             propertyUploadFilesFragment.show(childFragmentManager, propertyUploadFilesFragment.TAG)
         }
 
+        binding.isOwnInfoImageView.setOnDebouncedClickListener {
+                showPopUpWindow(binding.isOwnInfoImageView)
+            }
+
+        binding.isInRentInfoImageView.setOnDebouncedClickListener {
+                showPopUpWindow(binding.isInRentInfoImageView)
+        }
+
+        binding.isTemporaryInfoImageView.setOnDebouncedClickListener {
+                showPopUpWindow(binding.isTemporaryInfoImageView)
+        }
+
         subscribe(viewModel.propertyDetailsObserver){
             binding.addTextView.isEnabled = it.isAddTextViewEnabled
             binding.addressTextInputLayout.setText(it.address.addressString)
@@ -203,7 +215,6 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
             )
 
             val infoTextView = contentView.findViewById<View>(R.id.infoTextView)
-
 
             if (showBelow) {
                 showAtLocation(
