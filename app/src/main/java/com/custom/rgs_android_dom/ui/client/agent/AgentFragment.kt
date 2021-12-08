@@ -47,6 +47,8 @@ class AgentFragment : BaseFragment<AgentViewModel, FragmentAgentBinding>(R.layou
 
         subscribe(viewModel.editAgentRequestedObserver) { wasRequested ->
             binding.requestEditLinearLayout.isVisible = !wasRequested
+            binding.answerEditLinearLayout.isVisible = wasRequested
+
         }
 
     }
