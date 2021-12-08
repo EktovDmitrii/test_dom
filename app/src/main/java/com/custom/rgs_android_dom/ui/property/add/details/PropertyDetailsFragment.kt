@@ -66,6 +66,10 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
             viewModel.onCorpusChanged(it)
         }
 
+        binding.corpusHomeTextInputLayout.addTextWatcher {
+            viewModel.onCorpusChanged(it)
+        }
+
         binding.floorTextInputLayout.addTextWatcher {
             viewModel.onFloorChanged(it)
         }
@@ -93,19 +97,7 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
             viewModel.onIsTemporarySelected(it)
         }
 
-        binding.isOwnInfoImageView.setOnDebouncedClickListener {
-                showPopUpWindow(binding.isOwnInfoImageView)
-            }
-
-        binding.isInRentInfoImageView.setOnDebouncedClickListener {
-                showPopUpWindow(binding.isInRentInfoImageView)
-        }
-
-        binding.isTemporaryInfoImageView.setOnDebouncedClickListener {
-                showPopUpWindow(binding.isTemporaryInfoImageView)
-        }
-
-        subscribe(viewModel.propertyDetailsObserver) {
+        subscribe(viewModel.propertyDetailsObserver){
             binding.addTextView.isEnabled = it.isAddTextViewEnabled
             binding.addressTextInputLayout.setText(it.address.addressString)
             when(it.type){
