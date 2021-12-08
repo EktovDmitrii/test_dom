@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.ui.client.agent.edit
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentEditAgentBinding
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField

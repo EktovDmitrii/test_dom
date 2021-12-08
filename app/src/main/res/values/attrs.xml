@@ -57,6 +57,7 @@
 
     <declare-styleable name="MSDImageView">
         <attr name="android:enabled"/>
+        <attr name="isActivated" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="MSDTextViewIcon">
