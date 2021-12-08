@@ -2,19 +2,29 @@ package com.custom.rgs_android_dom.ui.property.add.details
 
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPropertyDetailsBinding
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
+import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyDocumentValidationException
+import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyDocumentValidationException.*
 import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyField
+import com.custom.rgs_android_dom.domain.property.details.exceptions.ValidatePropertyException
 import com.custom.rgs_android_dom.domain.property.details.view_states.PropertyDetailsViewState
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
+import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
+import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsAdapter
+import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsFragment
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentPropertyDetailsBinding>(R.layout.fragment_property_details) {
+class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentPropertyDetailsBinding>(R.layout.fragment_property_details),
+    ConfirmBottomSheetFragment.ConfirmListener {
 
     companion object {
         private const val ARG_PROPERTY_NAME = "ARG_PROPERTY_NAME"
@@ -37,7 +47,6 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
             requireArguments().getSerializable(ARG_PROPERTY_TYPE)
         )
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -87,13 +96,20 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
             viewModel.onIsTemporarySelected(it)
         }
 
-        binding.uploadDocumentImageView.setOnDebouncedClickListener {
+        binding.listDocumentsRecyclerView.run {
+            adapter = PropertyUploadDocumentsAdapter { uri -> viewModel.onRemoveDocumentClick(uri) }
+            layoutManager =  LinearLayoutManager(binding.root.context).also { it.orientation = LinearLayoutManager.HORIZONTAL }
+        }
 
+        binding.uploadDocumentFrameLayout.setOnDebouncedClickListener {
+            val propertyUploadFilesFragment = PropertyUploadDocumentsFragment()
+            propertyUploadFilesFragment.show(childFragmentManager, propertyUploadFilesFragment.TAG)
         }
 
         subscribe(viewModel.propertyDetailsObserver){
             binding.addTextView.isEnabled = it.isAddTextViewEnabled
             binding.addressTextInputLayout.setText(it.address.addressString)
+            (binding.listDocumentsRecyclerView.adapter as PropertyUploadDocumentsAdapter).setItems(it.documents)
             when(it.type){
                 PropertyType.APARTMENT.type -> { showApartmentLayout(it) }
                 PropertyType.HOUSE.type -> { showHouseLayout(it) }
@@ -101,9 +117,18 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
         }
 
         subscribe(viewModel.validateExceptionObserver){
-            when(it.field){
-                PropertyField.ADDRESS -> {
-                    binding.addressTextInputLayout.setState(MSDTextInputLayout.State.ERROR)
+            when(it){
+                is ValidatePropertyException -> {
+                    when(it.field){
+                        PropertyField.ADDRESS -> binding.addressTextInputLayout.setState(MSDTextInputLayout.State.ERROR)
+                    }
+                }
+                is PropertyDocumentValidationException -> {
+                    when(it){
+                        is UnsupportedFileType -> {notification("Файл не может быть в формате .${it.extension}")}
+                        FileSizeExceeded -> {notification("Размер файла больше 10 mb")}
+                        TotalFilesSizeExceeded -> {notification("Место для документов заполнено")}
+                    }
                 }
             }
         }
@@ -115,19 +140,35 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
         subscribe(viewModel.notificationObserver){
             notification(it)
         }
+
+        subscribe(viewModel.showConfirmCloseObserver){
+            val confirmDialog = ConfirmBottomSheetFragment.newInstance(
+                icon = R.drawable.ic_confirm_cancel,
+                title = "Хотите выйти?",
+                description = "Если вы покинете страницу сейчас, данные об объекте недвижимости не сохранятся",
+                confirmText = "Да, выйти",
+                cancelText = "Нет, остаться"
+            )
+            confirmDialog.show(childFragmentManager, ConfirmBottomSheetFragment.TAG)
+        }
+
+    }
+
+    override fun onConfirmClick() {
+        ScreenManager.closeScope(ADD_PROPERTY)
     }
 
     private fun showHouseLayout(propertyDetailsViewState: PropertyDetailsViewState) {
-        binding.apartmentDataLinearLayout.visibility = View.GONE
-        binding.homeDataLinearLayout.visibility = View.VISIBLE
+        binding.apartmentDataLinearLayout.gone()
+        binding.homeDataLinearLayout.visible()
         val cityName = propertyDetailsViewState.address.cityName
         binding.cityNameHomeTextInputLayout.setText( if ( cityName.isNotEmpty() ) { cityName } else {"Не определено"} )
         binding.corpusHomeTextInputLayout.setText(propertyDetailsViewState.corpus)
     }
 
     private fun showApartmentLayout(propertyDetailsViewState: PropertyDetailsViewState) {
-        binding.apartmentDataLinearLayout.visibility = View.VISIBLE
-        binding.homeDataLinearLayout.visibility = View.GONE
+        binding.apartmentDataLinearLayout.visible()
+        binding.homeDataLinearLayout.gone()
         val cityName = propertyDetailsViewState.address.cityName
         binding.cityNameApartmentTextInputLayout.setText( if ( cityName.isNotEmpty() ) { cityName } else {"Не определено"} )
         binding.corpusApartmentTextInputLayout.setText(propertyDetailsViewState.corpus)

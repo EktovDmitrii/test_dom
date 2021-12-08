@@ -1,23 +1,40 @@
 package com.custom.rgs_android_dom.domain.property
 
+import android.content.Context
+import android.net.Uri
+import com.custom.rgs_android_dom.data.network.mappers.PropertyMapper
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
+import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyDocumentValidationException
+import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyDocumentValidationException.*
 import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyField
 import com.custom.rgs_android_dom.domain.property.details.exceptions.ValidatePropertyException
 import com.custom.rgs_android_dom.domain.property.details.view_states.PropertyDetailsViewState
+import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.domain.property.view_states.SelectPropertyTypeViewState
 import com.custom.rgs_android_dom.domain.property.view_states.SelectAddressViewState
 import com.custom.rgs_android_dom.domain.repositories.PropertyRepository
+import com.custom.rgs_android_dom.utils.convertToFile
+import com.custom.rgs_android_dom.utils.sizeInMb
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
+import java.io.File
 
-class PropertyInteractor(private val propertyRepository: PropertyRepository){
+class PropertyInteractor (private val propertyRepository: PropertyRepository,private val context: Context) {
+
+    companion object{
+        const val TOTAL_MAX_SIZE = 250   // Mb
+        const val ONE_FILE_MAX_SIZE = 10 // Mb
+    }
 
     val selectAddressViewStateSubject = PublishSubject.create<SelectAddressViewState>()
     val selectPropertyTypeViewStateSubject = PublishSubject.create<SelectPropertyTypeViewState>()
     val propertyDetailsViewStateSubject = PublishSubject.create<PropertyDetailsViewState>()
+    val propertyDocumentUploadedSubject = propertyRepository.getPropertyDocumentUploadedSubject()
+    private lateinit var documentValidationException: PropertyDocumentValidationException
 
     private var selectAddressViewState = SelectAddressViewState(
         isNextTextViewEnabled = false,
@@ -47,7 +64,8 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
         isTemporary = null,
         totalArea = "",
         comment = "",
-        isAddTextViewEnabled = false
+        isAddTextViewEnabled = false,
+        documents = listOf()
     )
 
     /**
@@ -121,7 +139,7 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
         selectPropertyTypeViewStateSubject.onNext(selectPropertyTypeViewState)
     }
 
-    fun selectAppartment(){
+    fun selectApartment(){
         selectPropertyTypeViewState = selectPropertyTypeViewState.copy(
             isSelectHomeLinearLayoutSelected = false,
             isSelectAppartmentLinearLayoutSelected = true,
@@ -137,7 +155,11 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
      *
      */
 
-    fun initPropertyDetails(propertyName: String, type: PropertyType, address: AddressItemModel): PropertyDetailsViewState {
+    fun initPropertyDetails(
+        propertyName: String,
+        type: PropertyType,
+        address: AddressItemModel
+    ): PropertyDetailsViewState {
         propertyDetailsViewState = propertyDetailsViewState.copy(
             name = propertyName,
             type = type.type,
@@ -192,52 +214,85 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
     }
 
     fun addProperty(): Completable {
-        var addressString = propertyDetailsViewState.address.addressString.trim()
 
-        if (addressString.isEmpty()){
-            return Completable.error(
-                ValidatePropertyException(
-                    field = PropertyField.ADDRESS,
-                    errorMessage = ""
+        val documentsToPost = urisToFiles(propertyDetailsViewState.documents)
+        if (validateFiles(documentsToPost)) {
+
+            var addressString = propertyDetailsViewState.address.addressString.trim()
+
+            if (addressString.isEmpty()) {
+                return Completable.error(
+                    ValidatePropertyException(
+                        field = PropertyField.ADDRESS,
+                        errorMessage = ""
+                    )
                 )
-            )
-        }
-        propertyDetailsViewState.corpus.takeIf { it.isNotEmpty() }?.let {
-            addressString = "$addressString, корпус $it"
-        }
-        propertyDetailsViewState.entrance.takeIf { it.isNotEmpty() }?.let {
-            addressString = "$addressString, подъезд $it"
-        }
-        propertyDetailsViewState.floor.takeIf { it.isNotEmpty() }?.let {
-            addressString = "$addressString, этаж $it"
-        }
-        propertyDetailsViewState.flat.takeIf { it.isNotEmpty() }?.let {
-            addressString = "$addressString, квартира $it"
-        }
+            }
+            propertyDetailsViewState.corpus.takeIf { it.isNotEmpty() }?.let {
+                addressString = "$addressString, корпус $it"
+            }
+            propertyDetailsViewState.entrance.takeIf { it.isNotEmpty() }?.let {
+                addressString = "$addressString, подъезд $it"
+            }
+            propertyDetailsViewState.floor.takeIf { it.isNotEmpty() }?.let {
+                addressString = "$addressString, этаж $it"
+            }
+            propertyDetailsViewState.flat.takeIf { it.isNotEmpty() }?.let {
+                addressString = "$addressString, квартира $it"
+            }
 
-        propertyDetailsViewState.address.addressString = addressString
+            propertyDetailsViewState.address.addressString = addressString
 
-        val totalArea = if (propertyDetailsViewState.totalArea.isNotEmpty()) propertyDetailsViewState.totalArea.toFloat() else null
-        val comment = propertyDetailsViewState.comment.ifEmpty { null }
+            val totalArea = if (propertyDetailsViewState.totalArea.isNotEmpty()) propertyDetailsViewState.totalArea.toFloat() else null
+            val comment = propertyDetailsViewState.comment.ifEmpty { null }
 
-        return propertyRepository.addProperty(
-            name = propertyDetailsViewState.name,
-            type = propertyDetailsViewState.type,
-            address = propertyDetailsViewState.address.copy(),
-            isOwn = propertyDetailsViewState.isOwn,
-            isRent = propertyDetailsViewState.isRent,
-            isTemporary = propertyDetailsViewState.isTemporary,
-            totalArea = totalArea,
-            comment = comment
-        )
+            return postDocumentsSingle(documentsToPost)
+                .flatMapCompletable { propertyDocuments ->
+                    propertyRepository.addProperty(
+                        name = propertyDetailsViewState.name,
+                        type = propertyDetailsViewState.type,
+                        address = propertyDetailsViewState.address.copy(),
+                        isOwn = propertyDetailsViewState.isOwn,
+                        isRent = propertyDetailsViewState.isRent,
+                        isTemporary = propertyDetailsViewState.isTemporary,
+                        totalArea = totalArea,
+                        comment = comment,
+                        documents = propertyDocuments
+                    )
+                }
+        } else {
+            return Completable.error( documentValidationException )
+        }
+    }
+
+    private fun postDocumentsSingle(files: List<File>) : Single<List<PropertyDocument>>{
+        return Observable.fromArray(files)
+            .flatMapIterable {it}
+            .flatMapSingle { file ->
+                propertyRepository.postPropertyDocument(file)
+                    .map { PropertyMapper.postPropertyDocumentToPropertyDocument(it,file) }
+            }
+            .toList()
+    }
+
+    private fun urisToFiles(uris: List<Uri>): List<File>{
+        val files = mutableListOf<File>()
+
+        uris.forEach { uri ->
+            val file = uri.convertToFile(context = context)
+            if (file != null) {
+                files.add(file)
+            }
+        }
+        return files
     }
 
     fun getAllProperty(): Single<List<PropertyItemModel>> {
         return propertyRepository.getAllProperty()
     }
 
-    fun getPropertyItem(objectId: String): Single<PropertyItemModel>{
-        return propertyRepository.getAllProperty().map {allProperty->
+    fun getPropertyItem(objectId: String): Single<PropertyItemModel> {
+        return propertyRepository.getAllProperty().map { allProperty ->
             allProperty.find { it.id == objectId }
         }
     }
@@ -250,6 +305,76 @@ class PropertyInteractor(private val propertyRepository: PropertyRepository){
         propertyDetailsViewState = propertyDetailsViewState.copy(isAddTextViewEnabled = propertyDetailsViewState.address.addressString.isNotEmpty())
         propertyDetailsViewStateSubject.onNext(propertyDetailsViewState)
     }
+
+    fun onFilesToUploadSelected(files: List<Uri>) {
+        propertyRepository.onFilesToUploadSelected(files)
+    }
+
+    private fun validateFiles( files: List<File> ): Boolean{
+
+        var totalSizeMediaFiles = 0
+        var totalSizeTextFiles = 0
+        val mediaFilesExtensions = listOf("jpeg", "jpg", "png", "bmp")
+
+            files.forEach { file ->
+                if(!validateExtension(file)){
+                    documentValidationException =  UnsupportedFileType(file.extension)
+                    return false
+                }
+
+                if(!validateSize(file)){
+                    documentValidationException =  FileSizeExceeded
+                    return false
+                }
+
+                val fileExtension = file.extension
+
+                if (mediaFilesExtensions.contains(fileExtension)){
+                    totalSizeMediaFiles += file.sizeInMb.toInt()
+                } else {
+                    totalSizeTextFiles += file.sizeInMb.toInt()
+                }
+
+                if(totalSizeMediaFiles  > TOTAL_MAX_SIZE || totalSizeTextFiles > TOTAL_MAX_SIZE){
+                    documentValidationException =  TotalFilesSizeExceeded
+                    return false
+                }
+
+            }
+
+        return true
+    }
+
+    private fun validateExtension(file: File): Boolean {
+        val supportedFileExtensions = listOf("jpeg", "jpg", "png", "bmp", "pdf", "txt", "doc", "rtf")
+        if (!supportedFileExtensions.contains(file.extension)){
+            return false
+        }
+        return true
+    }
+
+    private fun validateSize(file: File): Boolean {
+        if (file.sizeInMb > ONE_FILE_MAX_SIZE){
+            return false
+        }
+        return true
+    }
+
+    fun updateDocuments(it: List<Uri>) {
+        val current: MutableList<Uri> = mutableListOf()
+        current.addAll(propertyDetailsViewState.documents)
+        current.addAll(it)
+        propertyDetailsViewState = propertyDetailsViewState.copy(documents = current)
+        propertyDetailsViewStateSubject.onNext(propertyDetailsViewState)
+    }
+
+    fun onRemoveDocument(uri: Uri) {
+        val current: MutableList<Uri> = propertyDetailsViewState.documents as MutableList<Uri>
+        current.remove(uri)
+        propertyDetailsViewState = propertyDetailsViewState.copy(documents = current)
+        propertyDetailsViewStateSubject.onNext(propertyDetailsViewState)
+    }
+
 }
 
 

@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.chat
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -140,5 +141,4 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
                 }
             ).addTo(dataCompositeDisposable)
     }
-
 }

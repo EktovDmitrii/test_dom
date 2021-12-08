@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/black"
+    android:padding="8dp"
     android:orientation="vertical">
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
@@ -11,30 +11,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/rectangle_filled_white_radius_13dp"
-        android:paddingVertical="18dp"
-        android:paddingHorizontal="16dp"
-        android:textSize="20sp"
         android:fontFamily="@font/suisse_regular"
+        android:gravity="center"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="18dp"
         android:textColor="@color/secondary900"
-        app:translationTextKey="Фото или Видео"
-        android:gravity="center"/>
+        android:textSize="20sp"
+        app:translationTextKey="Фото или Видео" />
 
     <View
         android:id="@+id/dividerView"
         android:layout_width="match_parent"
-        android:layout_height="7.5dp"/>
+        android:layout_height="0.5dp"
+        android:background="@color/secondary200"/>
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
-        android:id="@+id/cancelTextView"
+        android:id="@+id/uploadFilesTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/rectangle_filled_white_radius_13dp"
-        android:paddingVertical="18dp"
+        android:fontFamily="@font/suisse_regular"
+        android:gravity="center"
         android:paddingHorizontal="16dp"
-        android:fontFamily="@font/my_service_bold"
-        android:textSize="20sp"
+        android:paddingVertical="18dp"
         android:textColor="@color/secondary900"
-        app:translationTextKey="Отмена"
-        android:gravity="center"/>
+        android:textSize="20sp"
+        app:translationTextKey="Файлы" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

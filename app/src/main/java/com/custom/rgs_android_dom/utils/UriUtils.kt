@@ -30,3 +30,16 @@ fun Uri.convertToFile(activity: Activity): File? {
     }
     return null
 }
+
+fun Uri.convertToFile(context: Context): File? {
+    val name = getFileName(context) ?: ""
+    val parcelFileDescriptor = context.contentResolver.openFileDescriptor(this, "r", null)
+    parcelFileDescriptor?.let {
+        val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
+        val file = File(context.cacheDir, name)
+        val outputStream = FileOutputStream(file)
+        inputStream.copyTo(outputStream)
+        return file
+    }
+    return null
+}

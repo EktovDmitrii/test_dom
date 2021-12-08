@@ -372,6 +372,11 @@
                 android:paddingHorizontal="20dp"
                 app:translationHintKey="Добавить комментарий" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/secondary250" />
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -400,6 +405,7 @@
                     android:paddingVertical="8dp">
 
                     <FrameLayout
+                        android:id="@+id/uploadDocumentFrameLayout"
                         android:layout_width="84dp"
                         android:layout_height="116dp"
                         android:background="@drawable/rectangle_stroke_1dp_dashed_secondary_300_radius_8dp">
@@ -421,9 +427,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/listDocumentsRecyclerView"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                        android:layout_height="116dp" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 

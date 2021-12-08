@@ -1,9 +1,13 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
+import com.custom.rgs_android_dom.BuildConfig.BASE_URL
+import com.custom.rgs_android_dom.data.network.responses.PostPropertyDocumentResponse
 import com.custom.rgs_android_dom.data.network.responses.PropertyItemResponse
 import com.custom.rgs_android_dom.domain.property.models.PropertyAddressModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
+import com.custom.rgs_android_dom.domain.repositories.PostPropertyDocument
+import java.io.File
 
 object PropertyMapper {
 
@@ -13,7 +17,7 @@ object PropertyMapper {
         val isTemporary = if (response.isTemporary == "yes") true else if (response.isTemporary == "no") false else null
 
         return PropertyItemModel(
-            address = response.address?.let { address->
+            address = response.address?.let { address ->
                 PropertyAddressModel(
                     address = address.address ?: "",
                     cityFiasId = address.cityFiasId ?: "",
@@ -36,6 +40,20 @@ object PropertyMapper {
             status = response.status ?: "",
             totalArea = response.totalArea,
             type = response.type
+        )
+    }
+
+    fun responseToPostPropertyDocument(response: PostPropertyDocumentResponse): PostPropertyDocument {
+        return PostPropertyDocument(fileId = response.id)
+    }
+
+    fun postPropertyDocumentToPropertyDocument(
+        postPropertyDocument: PostPropertyDocument,
+        file: File
+    ): PropertyDocument {
+        return PropertyDocument(
+            link = BASE_URL + "/store/" + postPropertyDocument.fileId,
+            name = file.name
         )
     }
 }

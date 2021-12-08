@@ -56,7 +56,7 @@ class SelectPropertyTypeViewModel(private val propertyName: String,
 
     fun onSelectAppartmentClick(){
         propertyType = PropertyType.APARTMENT
-        propertyInteractor.selectAppartment()
+        propertyInteractor.selectApartment()
     }
 
     fun onBackClick(){
