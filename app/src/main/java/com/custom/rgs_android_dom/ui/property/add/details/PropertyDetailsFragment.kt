@@ -93,22 +93,16 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
             viewModel.onIsTemporarySelected(it)
         }
 
-        binding.isOwnInfoImageView.also { isOwnInfoImageView ->
-            isOwnInfoImageView.setOnDebouncedClickListener {
-                showPopUpWindow(isOwnInfoImageView)
+        binding.isOwnInfoImageView.setOnDebouncedClickListener {
+                showPopUpWindow(binding.isOwnInfoImageView)
             }
+
+        binding.isInRentInfoImageView.setOnDebouncedClickListener {
+                showPopUpWindow(binding.isInRentInfoImageView)
         }
 
-        binding.isInRentInfoImageView.also { isInRentInfoImageView ->
-            isInRentInfoImageView.setOnDebouncedClickListener {
-                showPopUpWindow(isInRentInfoImageView)
-            }
-        }
-
-        binding.isTemporaryInfoImageView.also { isTemporaryInfoImageView ->
-            isTemporaryInfoImageView.setOnDebouncedClickListener {
-                showPopUpWindow(isTemporaryInfoImageView)
-            }
+        binding.isTemporaryInfoImageView.setOnDebouncedClickListener {
+                showPopUpWindow(binding.isTemporaryInfoImageView)
         }
 
         subscribe(viewModel.propertyDetailsObserver) {
@@ -158,6 +152,7 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
     private fun showPopUpWindow(anchorView: View) {
 
         val context = anchorView.context
+        val triangleHeight = 8.dp(context)
 
         PopupWindow().apply {
 
@@ -202,14 +197,14 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
                     Gravity.START or Gravity.TOP,
                     anchorViewLocation[0] - contentViewDimensions.width
                     +(contentViewDimensions.width - infoTextView.measuredWidth),
-                    anchorViewLocation[1] + 8.dp(context))
+                    anchorViewLocation[1] + triangleHeight)
             } else {
                 showAtLocation(
                     anchorView,
                     Gravity.START or Gravity.TOP,
                     anchorViewLocation[0] - contentViewDimensions.width
                             +(contentViewDimensions.width - infoTextView.measuredWidth),
-                    anchorViewLocation[1] - contentViewDimensions.height + (contentViewDimensions.height - infoTextView.measuredHeight)/2 + 8.dp(context) )
+                    anchorViewLocation[1] - contentViewDimensions.height + (contentViewDimensions.height - infoTextView.measuredHeight)/2 + triangleHeight )
             }
 
             contentView.setOnTouchListener { _, _ ->
