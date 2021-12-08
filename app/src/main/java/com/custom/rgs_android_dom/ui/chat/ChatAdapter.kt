@@ -207,7 +207,7 @@ class ChatAdapter(
                         .error(R.drawable.ic_avatar_no_stroke)
                         .into(binding.avatarImageView)
                 } else {
-                    binding.avatarImageView.setImageResource(R.drawable.ic_chat_avatar_stub)
+                    binding.avatarImageView.setImageResource(R.drawable.ic_avatar_no_stroke)
                 }
 
             }
