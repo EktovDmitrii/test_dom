@@ -18,11 +18,16 @@ import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 import java.io.File
 
-class PropertyRepositoryImpl(private val api: MSDApi,
-                             private val clientSharedPreferences: ClientSharedPreferences) : PropertyRepository {
+class PropertyRepositoryImpl(private val api: MSDApi, private val clientSharedPreferences: ClientSharedPreferences) : PropertyRepository {
+
+    companion object{
+        const val STORE_BUCKET = "docs"
+        const val STORE_EXTENSION = ""
+        const val STORE_METADATA = ""
+    }
 
     private val propertyAddedSubject = PublishSubject.create<Unit>()
-    private val propertyDocumentUploadedSubject = PublishSubject.create<List<Uri>>()
+    private val propertyDocumentsUploadedSubject = PublishSubject.create<List<Uri>>()
 
 
     override fun addProperty(
@@ -52,12 +57,7 @@ class PropertyRepositoryImpl(private val api: MSDApi,
             isTemporary = isTemporary,
             totalArea = totalArea,
             comment = comment,
-            documents = documents.map { document ->
-               PropertyDocumentRequest(
-                   link = document.link,
-                   name = document.name
-               )
-            }
+            documents = PropertyMapper.propertyDocumentsToPropertyDocumentsRequest(documents)
         )
         return api.addProperty(addPropertyRequest).doOnComplete {
             propertyAddedSubject.onNext(Unit)
@@ -81,15 +81,15 @@ class PropertyRepositoryImpl(private val api: MSDApi,
     }
 
     override fun getPropertyDocumentUploadedSubject(): PublishSubject<List<Uri>> {
-        return propertyDocumentUploadedSubject
+        return propertyDocumentsUploadedSubject
     }
 
     override fun onFilesToUploadSelected(files: List<Uri>) {
-        propertyDocumentUploadedSubject.onNext(files)
+        propertyDocumentsUploadedSubject.onNext(files)
     }
 
     override fun postPropertyDocument(file: File): Single<PostPropertyDocument>{
-        return api.postPropertyDocument(file.toMultipartFormData())
+        return api.postPropertyDocument(file.toMultipartFormData(), STORE_BUCKET, STORE_EXTENSION, STORE_METADATA)
             .map { PropertyMapper.responseToPostPropertyDocument(it) }
     }
 

@@ -34,7 +34,7 @@
         android:layout_marginTop="8dp">
 
         <com.custom.rgs_android_dom.views.MSDImageView
-            android:id="@+id/closeImageView"
+            android:id="@+id/remove_image_view"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_gravity="center"

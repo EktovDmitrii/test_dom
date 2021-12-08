@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyDocumentValidationException
+import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyDocumentValidationException.*
 import com.custom.rgs_android_dom.domain.property.details.exceptions.ValidatePropertyException
 import com.custom.rgs_android_dom.domain.property.details.view_states.PropertyDetailsViewState
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
@@ -14,6 +15,7 @@ import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.logException
+import com.custom.rgs_android_dom.utils.notification
 import com.custom.rgs_android_dom.views.MSDYesNoSelector
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -29,9 +31,6 @@ class PropertyDetailsViewModel(
 
     private val propertyDetailsViewStateController = MutableLiveData<PropertyDetailsViewState>()
     val propertyDetailsObserver: LiveData<PropertyDetailsViewState> = propertyDetailsViewStateController
-
-    private val validateExceptionController = MutableLiveData<Throwable>()
-    val validateExceptionObserver: LiveData<Throwable> = validateExceptionController
 
     private val showConfirmCloseController = MutableLiveData<Unit>()
     val showConfirmCloseObserver: LiveData<Unit> = showConfirmCloseController
@@ -86,11 +85,14 @@ class PropertyDetailsViewModel(
                     when (it) {
                         is ValidatePropertyException -> {
                             loadingStateController.value = LoadingState.CONTENT
-                            validateExceptionController.value = it
                         }
-                        is PropertyDocumentValidationException ->{
+                        is PropertyDocumentValidationException -> {
                             loadingStateController.value = LoadingState.CONTENT
-                            validateExceptionController.value = it
+                            when(it){
+                                is UnsupportedFileType -> { notificationController.value = "\"Файл не может быть в формате .${it.extension}\"" }
+                                FileSizeExceeded -> { notificationController.value = "Размер файла больше 10 mb" }
+                                TotalFilesSizeExceeded -> { notificationController.value = "Место для документов заполнено" }
+                            }
                         }
                         else -> {
                             loadingStateController.value = LoadingState.ERROR
@@ -98,7 +100,6 @@ class PropertyDetailsViewModel(
                             handleNetworkException(it)
                         }
                     }
-
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)

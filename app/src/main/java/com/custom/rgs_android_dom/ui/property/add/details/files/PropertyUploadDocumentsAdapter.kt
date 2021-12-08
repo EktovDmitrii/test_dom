@@ -2,7 +2,6 @@ package com.custom.rgs_android_dom.ui.property.add.details.files
 
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -11,14 +10,9 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.custom.rgs_android_dom.databinding.ItemPropertyUploadDocumentBinding
 import com.custom.rgs_android_dom.utils.*
-import java.io.File
-import java.nio.file.Files
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
-
 import com.bumptech.glide.request.RequestOptions
-
 
 class PropertyUploadDocumentsAdapter(private val onRemoveDocument: (Uri) -> Unit) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -27,10 +21,7 @@ class PropertyUploadDocumentsAdapter(private val onRemoveDocument: (Uri) -> Unit
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val model = propertyUploadDocumentsItems[position]
-        (holder as PropertyUploadDocumentsViewHolder).bind(model) { pos, uri ->
-            onRemoveDocument(uri)
-            removeItem(pos)
-        }
+        (holder as PropertyUploadDocumentsViewHolder).bind(model)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -39,7 +30,7 @@ class PropertyUploadDocumentsAdapter(private val onRemoveDocument: (Uri) -> Unit
             parent,
             false
         )
-        return PropertyUploadDocumentsViewHolder(binding)
+        return PropertyUploadDocumentsViewHolder(binding, onRemoveDocument)
     }
 
     override fun getItemCount(): Int {
@@ -50,23 +41,19 @@ class PropertyUploadDocumentsAdapter(private val onRemoveDocument: (Uri) -> Unit
         this.propertyUploadDocumentsItems.clear()
         if (files != null) {
             propertyUploadDocumentsItems.addAll(files)
+            notifyDataSetChanged()
         }
-        notifyDataSetChanged()
-    }
-
-    private fun removeItem(position: Int) {
-        propertyUploadDocumentsItems.remove(propertyUploadDocumentsItems[position])
-        notifyItemRemoved(position)
     }
 
     inner class PropertyUploadDocumentsViewHolder(
-        private val binding: ItemPropertyUploadDocumentBinding
+        private val binding: ItemPropertyUploadDocumentBinding,
+        private val onRemoveDocument: (Uri) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(file: Uri, onCloseDocument: (position: Int, file: Uri) -> Unit) {
+        fun bind(file: Uri) {
 
-            binding.closeImageView.setOnDebouncedClickListener {
-                onCloseDocument(absoluteAdapterPosition, file)
+            binding.removeImageView.setOnDebouncedClickListener {
+                onRemoveDocument(file)
             }
 
             binding.progressBarContainerFrameLayout.visible()

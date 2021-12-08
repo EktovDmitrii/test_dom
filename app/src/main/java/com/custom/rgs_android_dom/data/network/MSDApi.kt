@@ -135,9 +135,9 @@ interface MSDApi {
     @POST("store")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun postPropertyDocument(@Part file: MultipartBody.Part,
-                             @Query("bucketName") bucketName: String = "docs",
-                             @Query("extension") extension: String = "",
-                             @Query("metadata") metadata: String = "")
+                             @Query("bucketName") bucketName: String,
+                             @Query("extension") extension: String,
+                             @Query("metadata") metadata: String)
     : Single<PostPropertyDocumentResponse>
 
 }

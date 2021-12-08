@@ -2,14 +2,9 @@ package com.custom.rgs_android_dom.ui.property.add.details
 
 import android.os.Bundle
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPropertyDetailsBinding
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
-import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyDocumentValidationException
-import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyDocumentValidationException.*
-import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyField
-import com.custom.rgs_android_dom.domain.property.details.exceptions.ValidatePropertyException
 import com.custom.rgs_android_dom.domain.property.details.view_states.PropertyDetailsViewState
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.ui.base.BaseFragment
@@ -19,7 +14,6 @@ import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsAdapter
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsFragment
 import com.custom.rgs_android_dom.utils.*
-import com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -39,6 +33,9 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
             }
         }
     }
+
+    private val adapter: PropertyUploadDocumentsAdapter
+        get() = binding.listDocumentsRecyclerView.adapter as PropertyUploadDocumentsAdapter
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
@@ -96,10 +93,7 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
             viewModel.onIsTemporarySelected(it)
         }
 
-        binding.listDocumentsRecyclerView.run {
-            adapter = PropertyUploadDocumentsAdapter { uri -> viewModel.onRemoveDocumentClick(uri) }
-            layoutManager =  LinearLayoutManager(binding.root.context).also { it.orientation = LinearLayoutManager.HORIZONTAL }
-        }
+        binding.listDocumentsRecyclerView.adapter = PropertyUploadDocumentsAdapter { uri -> viewModel.onRemoveDocumentClick(uri) }
 
         binding.uploadDocumentFrameLayout.setOnDebouncedClickListener {
             val propertyUploadFilesFragment = PropertyUploadDocumentsFragment()
@@ -109,27 +103,10 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
         subscribe(viewModel.propertyDetailsObserver){
             binding.addTextView.isEnabled = it.isAddTextViewEnabled
             binding.addressTextInputLayout.setText(it.address.addressString)
-            (binding.listDocumentsRecyclerView.adapter as PropertyUploadDocumentsAdapter).setItems(it.documents)
+            adapter.setItems(it.documents)
             when(it.type){
                 PropertyType.APARTMENT.type -> { showApartmentLayout(it) }
                 PropertyType.HOUSE.type -> { showHouseLayout(it) }
-            }
-        }
-
-        subscribe(viewModel.validateExceptionObserver){
-            when(it){
-                is ValidatePropertyException -> {
-                    when(it.field){
-                        PropertyField.ADDRESS -> binding.addressTextInputLayout.setState(MSDTextInputLayout.State.ERROR)
-                    }
-                }
-                is PropertyDocumentValidationException -> {
-                    when(it){
-                        is UnsupportedFileType -> {notification("Файл не может быть в формате .${it.extension}")}
-                        FileSizeExceeded -> {notification("Размер файла больше 10 mb")}
-                        TotalFilesSizeExceeded -> {notification("Место для документов заполнено")}
-                    }
-                }
             }
         }
 
