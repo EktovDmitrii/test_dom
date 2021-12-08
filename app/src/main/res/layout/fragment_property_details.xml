@@ -272,7 +272,7 @@
                             android:paddingHorizontal="20dp"
                             app:boxStrokeWidth="0dp"
                             app:boxStrokeWidthFocused="0dp"
-                            app:translationHintKey="Населенный пункт" />
+                            app:translationHintKey="Населённый пункт" />
 
                     </FrameLayout>
 
@@ -299,7 +299,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:paddingHorizontal="20dp"
-                app:translationLabelKey="Объект в собственности?" />
+                app:translationLabelKey="Объект в собственности?">
+
+                <com.custom.rgs_android_dom.views.MSDImageView
+                    android:id="@+id/isOwnInfoImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    app:srcCompat="@drawable/ic_info_24dp" />
+
+            </com.custom.rgs_android_dom.views.MSDYesNoSelector>
 
             <View
                 android:layout_width="match_parent"
@@ -313,7 +323,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:paddingHorizontal="20dp"
-                app:translationLabelKey="Сдаётся в аренду?" />
+                app:translationLabelKey="Сдаётся в аренду?">
+
+                <com.custom.rgs_android_dom.views.MSDImageView
+                    android:id="@+id/isInRentInfoImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    app:srcCompat="@drawable/ic_info_24dp" />
+
+            </com.custom.rgs_android_dom.views.MSDYesNoSelector>
 
             <View
                 android:layout_width="match_parent"
@@ -327,7 +347,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:paddingHorizontal="20dp"
-                app:translationLabelKey="Временное проживание?" />
+                app:translationLabelKey="Временное проживание?">
+
+                <com.custom.rgs_android_dom.views.MSDImageView
+                    android:id="@+id/isTemporaryInfoImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    app:srcCompat="@drawable/ic_info_24dp" />
+
+            </com.custom.rgs_android_dom.views.MSDYesNoSelector>
 
             <View
                 android:layout_width="match_parent"
