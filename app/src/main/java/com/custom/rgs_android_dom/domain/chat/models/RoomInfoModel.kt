@@ -8,11 +8,10 @@ import io.livekit.android.room.track.VideoTrack
 data class RoomInfoModel(
     var callType: CallType? = null,
     var room: Room? = null,
-    var primaryVideoTrack: VideoTrack? = null,
-    var secondaryVideoTrack: VideoTrack? = null,
+    var consultantVideoTrack: VideoTrack? = null,
+    var myVideoTrack: VideoTrack? = null,
     var cameraEnabled: Boolean,
     var micEnabled: Boolean,
-    var videoTracksInversed: Boolean = false,
-    var localAudioTrack: LocalAudioTrack? = null,
-    var localVideoTrack: VideoTrack? = null
+    var videoTracksSwitched: Boolean = false,
+    var localAudioTrack: LocalAudioTrack? = null
 )

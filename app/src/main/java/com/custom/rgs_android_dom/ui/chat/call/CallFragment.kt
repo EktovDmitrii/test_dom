@@ -163,40 +163,29 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
             binding.micOffImageView.isActivated = roomInfo.micEnabled == false
             binding.cameraOffImageView.isActivated = roomInfo.cameraEnabled == false
 
-            if (roomInfo.secondaryVideoTrack != null && roomInfo.cameraEnabled){
+            if (roomInfo.myVideoTrack != null && roomInfo.cameraEnabled){
                 binding.secondarySurfaceContainer.visible()
-                roomInfo.secondaryVideoTrack?.addRenderer(binding.secondarySurfaceRenderer)
-
-                if (roomInfo.videoTracksInversed && roomInfo.callType == CallType.VIDEO_CALL){
-                    binding.waitingConsultantVideoFrameLayout.gone()
-                }
+                roomInfo.myVideoTrack?.addRenderer(binding.secondarySurfaceRenderer)
             } else {
                 binding.secondarySurfaceContainer.gone()
-                if (!roomInfo.videoTracksInversed && roomInfo.callType == CallType.VIDEO_CALL){
-                    binding.waitingConsultantVideoFrameLayout.gone()
-                }
             }
 
-            if (roomInfo.primaryVideoTrack != null){
+            if (roomInfo.consultantVideoTrack != null){
                 binding.primarySurfaceRenderer.visible()
-
-                roomInfo.primaryVideoTrack?.addRenderer(binding.primarySurfaceRenderer)
+                roomInfo.consultantVideoTrack?.addRenderer(binding.primarySurfaceRenderer)
                 binding.primarySurfaceRenderer.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FILL, RendererCommon.ScalingType.SCALE_ASPECT_FILL)
 
-                if (!roomInfo.videoTracksInversed && roomInfo.callType == CallType.VIDEO_CALL){
+                if (roomInfo.callType == CallType.VIDEO_CALL){
                     binding.waitingConsultantVideoFrameLayout.gone()
                 }
-
             } else {
                 binding.primarySurfaceRenderer.gone()
-
-                if (!roomInfo.videoTracksInversed && roomInfo.callType == CallType.VIDEO_CALL){
-                    binding.waitingConsultantVideoFrameLayout.gone()
-                }
             }
 
-        }
+            // TODO change z-order of surface views according to variable roomInfo?.videoTracksSwitched
 
+
+        }
 
         subscribe(viewModel.consultantObserver){consultant->
             binding.consultantNameTextView.text = "${consultant.lastName} ${consultant.firstName}, консультант"
