@@ -1,6 +1,12 @@
 package com.custom.rgs_android_dom.ui.property.add.details
 
+import android.annotation.SuppressLint
+import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.os.Bundle
+import android.util.Log
+import android.util.Size
+import android.view.*
+import android.widget.PopupWindow
 import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPropertyDetailsBinding
@@ -14,19 +20,14 @@ import com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-class PropertyDetailsFragment :
-    BaseFragment<PropertyDetailsViewModel, FragmentPropertyDetailsBinding>(R.layout.fragment_property_details) {
+class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentPropertyDetailsBinding>(R.layout.fragment_property_details) {
 
     companion object {
         private const val ARG_PROPERTY_NAME = "ARG_PROPERTY_NAME"
         private const val ARG_PROPERTY_ADDRESS = "ARG_PROPERTY_ADDRESS"
         private const val ARG_PROPERTY_TYPE = "ARG_PROPERTY_TYPE"
 
-        fun newInstance(
-            propertyName: String,
-            propertyAddress: String,
-            propertyType: PropertyType
-        ): PropertyDetailsFragment {
+        fun newInstance(propertyName: String, propertyAddress: String, propertyType: PropertyType): PropertyDetailsFragment {
             return PropertyDetailsFragment().args {
                 putString(ARG_PROPERTY_NAME, propertyName)
                 putString(ARG_PROPERTY_ADDRESS, propertyAddress)
@@ -96,32 +97,28 @@ class PropertyDetailsFragment :
             viewModel.onIsTemporarySelected(it)
         }
 
-        subscribe(viewModel.propertyDetailsObserver) {
+        subscribe(viewModel.propertyDetailsObserver){
             binding.addTextView.isEnabled = it.isAddTextViewEnabled
             binding.addressTextInputLayout.setText(it.address.addressString)
-            when (it.type) {
-                PropertyType.APARTMENT.type -> {
-                    showApartmentLayout(it)
-                }
-                PropertyType.HOUSE.type -> {
-                    showHouseLayout(it)
-                }
+            when(it.type){
+                PropertyType.APARTMENT.type -> { showApartmentLayout(it) }
+                PropertyType.HOUSE.type -> { showHouseLayout(it) }
             }
         }
 
-        subscribe(viewModel.validateExceptionObserver) {
-            when (it.field) {
+        subscribe(viewModel.validateExceptionObserver){
+            when(it.field){
                 PropertyField.ADDRESS -> {
                     binding.addressTextInputLayout.setState(MSDTextInputLayout.State.ERROR)
                 }
             }
         }
 
-        subscribe(viewModel.networkErrorObserver) {
+        subscribe(viewModel.networkErrorObserver){
             toast(it)
         }
 
-        subscribe(viewModel.notificationObserver) {
+        subscribe(viewModel.notificationObserver){
             notification(it)
         }
     }
@@ -130,13 +127,7 @@ class PropertyDetailsFragment :
         binding.apartmentDataLinearLayout.visibility = View.GONE
         binding.homeDataLinearLayout.visibility = View.VISIBLE
         val cityName = propertyDetailsViewState.address.cityName
-        binding.cityNameHomeTextInputLayout.setText(
-            if (cityName.isNotEmpty()) {
-                cityName
-            } else {
-                "Не определено"
-            }
-        )
+        binding.cityNameHomeTextInputLayout.setText( if ( cityName.isNotEmpty() ) { cityName } else {"Не определено"} )
         binding.corpusHomeTextInputLayout.setText(propertyDetailsViewState.corpus)
     }
 
@@ -144,14 +135,76 @@ class PropertyDetailsFragment :
         binding.apartmentDataLinearLayout.visibility = View.VISIBLE
         binding.homeDataLinearLayout.visibility = View.GONE
         val cityName = propertyDetailsViewState.address.cityName
-        binding.cityNameApartmentTextInputLayout.setText(
-            if (cityName.isNotEmpty()) {
-                cityName
-            } else {
-                "Не определено"
-            }
-        )
+        binding.cityNameApartmentTextInputLayout.setText( if ( cityName.isNotEmpty() ) { cityName } else {"Не определено"} )
         binding.corpusApartmentTextInputLayout.setText(propertyDetailsViewState.corpus)
+    }
+
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun showPopUpWindow(anchorView: View) {
+
+        val context = anchorView.context
+        val triangleHeight = 8.dp(context)
+
+        PopupWindow().apply {
+
+            width = WindowManager.LayoutParams.WRAP_CONTENT
+            height = WindowManager.LayoutParams.WRAP_CONTENT
+            isFocusable = true
+            isClippingEnabled = false
+            val inflater: LayoutInflater =
+                (context.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater)
+
+            contentView = inflater.inflate(R.layout.popup_window_below_info_icon, null, false)
+            contentView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+
+            val anchorViewLocation = IntArray(2)
+            anchorView.getLocationOnScreen(anchorViewLocation)
+
+            val bottomBarLocation = IntArray(2)
+            binding.actionsBottomAppBar.getLocationOnScreen(bottomBarLocation)
+
+            val showBelow: Boolean
+
+            contentView = if (bottomBarLocation[1] - anchorViewLocation[1] > contentView.measuredHeight) {
+                showBelow = true
+                inflater.inflate(R.layout.popup_window_below_info_icon, null, false)
+            } else {
+                showBelow = false
+                inflater.inflate(R.layout.popup_window_above_info_icon, null, false)
+            }
+            contentView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+
+            val contentViewDimensions = Size(
+                contentView.measuredWidth,
+                contentView.measuredHeight
+            )
+
+            val infoTextView = contentView.findViewById<View>(R.id.infoTextView)
+
+
+            if (showBelow) {
+                showAtLocation(
+                    anchorView,
+                    Gravity.START or Gravity.TOP,
+                    anchorViewLocation[0] - contentViewDimensions.width
+                    +(contentViewDimensions.width - infoTextView.measuredWidth),
+                    anchorViewLocation[1] + triangleHeight)
+            } else {
+                showAtLocation(
+                    anchorView,
+                    Gravity.START or Gravity.TOP,
+                    anchorViewLocation[0] - contentViewDimensions.width
+                            +(contentViewDimensions.width - infoTextView.measuredWidth),
+                    anchorViewLocation[1] - contentViewDimensions.height + (contentViewDimensions.height - infoTextView.measuredHeight)/2 + triangleHeight )
+            }
+
+            contentView.setOnTouchListener { _, _ ->
+                this.dismiss()
+                true
+            }
+        }
+
     }
 
     override fun onError() {
