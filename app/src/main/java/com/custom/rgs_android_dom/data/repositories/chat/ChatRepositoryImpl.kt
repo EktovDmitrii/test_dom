@@ -103,11 +103,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
             room: Room
         ) {
             if (track is VideoTrack) {
-                roomInfo = if (roomInfo?.videoTracksInversed == false){
-                    roomInfo?.copy(primaryVideoTrack = track)
-                } else {
-                    roomInfo?.copy(secondaryVideoTrack = track)
-                }
+                roomInfo = roomInfo?.copy(consultantVideoTrack = track)
 
                 roomInfo?.let {
                     roomInfoSubject.onNext(it)
@@ -138,11 +134,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
             super.onTrackMuted(publication, participant, room)
 
             if (publication.track is VideoTrack) {
-                roomInfo = if (roomInfo?.videoTracksInversed == false){
-                    roomInfo?.copy(primaryVideoTrack = null)
-                } else {
-                    roomInfo?.copy(secondaryVideoTrack = null)
-                }
+                roomInfo = roomInfo?.copy(consultantVideoTrack = null)
 
                 roomInfo?.let {
                     roomInfoSubject.onNext(it)
@@ -157,11 +149,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
         ) {
             super.onTrackUnmuted(publication, participant, room)
             if (publication.track is VideoTrack) {
-                roomInfo = if (roomInfo?.videoTracksInversed == false){
-                    roomInfo?.copy(primaryVideoTrack = publication.track as VideoTrack)
-                } else {
-                    roomInfo?.copy(secondaryVideoTrack = publication.track as VideoTrack)
-                }
+                roomInfo = roomInfo?.copy(consultantVideoTrack = publication.track as VideoTrack)
 
                 roomInfo?.let {
                     roomInfoSubject.onNext(it)
@@ -294,8 +282,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
             localParticipant.publishVideoTrack(videoTrack)
             videoTrack.startCapture()
             roomInfo = roomInfo?.copy(
-                secondaryVideoTrack = videoTrack,
-                localVideoTrack =  videoTrack
+                myVideoTrack = videoTrack
             )
         }
 
@@ -342,31 +329,15 @@ class ChatRepositoryImpl(private val api: MSDApi,
     override suspend fun enableCamera(enable: Boolean) {
         roomInfo = roomInfo?.copy(cameraEnabled = enable)
 
-        if (roomInfo?.videoTracksInversed == false){
-
-            if (enable && roomInfo?.secondaryVideoTrack == null){
-                val videoTrack = roomInfo?.room?.localParticipant?.createVideoTrack()
-                roomInfo?.room?.localParticipant?.publishVideoTrack(videoTrack!!)
-                videoTrack?.startCapture()
-                roomInfo = roomInfo?.copy(
-                    secondaryVideoTrack = videoTrack,
-                    localVideoTrack =  videoTrack
-                )
-            }
-            roomInfo?.secondaryVideoTrack?.enabled = enable
-        } else {
-            if (enable && roomInfo?.primaryVideoTrack == null){
-                val videoTrack = roomInfo?.room?.localParticipant?.createVideoTrack()
-                roomInfo?.room?.localParticipant?.publishVideoTrack(videoTrack!!)
-                videoTrack?.startCapture()
-                roomInfo = roomInfo?.copy(
-                    primaryVideoTrack = videoTrack,
-                    localVideoTrack =  videoTrack
-                )
-            }
-
-            roomInfo?.primaryVideoTrack?.enabled = enable
+        if (enable && roomInfo?.myVideoTrack == null){
+            val videoTrack = roomInfo?.room?.localParticipant?.createVideoTrack()
+            roomInfo?.room?.localParticipant?.publishVideoTrack(videoTrack!!)
+            videoTrack?.startCapture()
+            roomInfo = roomInfo?.copy(
+                myVideoTrack = videoTrack
+            )
         }
+        roomInfo?.myVideoTrack?.enabled = enable
 
         roomInfo?.let {
             roomInfoSubject.onNext(it)
