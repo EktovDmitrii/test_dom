@@ -1,7 +1,6 @@
 package com.custom.rgs_android_dom.ui.property.add.details
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
@@ -15,7 +14,6 @@ import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.logException
-import com.custom.rgs_android_dom.utils.notification
 import com.custom.rgs_android_dom.views.MSDYesNoSelector
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo

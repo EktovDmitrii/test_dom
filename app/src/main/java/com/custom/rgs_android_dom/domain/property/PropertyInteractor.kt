@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.domain.property
 
-import android.app.Activity
 import android.content.Context
 import android.net.Uri
 import com.custom.rgs_android_dom.data.network.mappers.PropertyMapper
@@ -377,6 +376,3 @@ class PropertyInteractor (private val propertyRepository: PropertyRepository,pri
     }
 
 }
-
-
-
