@@ -48,6 +48,7 @@ class ImageViewerFragment : BaseFragment<ImageViewerViewModel, FragmentImageView
                 .load(GlideUrlProvider.makeHeadersGlideUrl(it))
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(binding.pictureZoomageView)
+            hideSoftwareKeyboard()
         }
 
         subscribe(viewModel.dateObserver){
