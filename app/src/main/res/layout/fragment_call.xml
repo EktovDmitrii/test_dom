@@ -61,7 +61,7 @@
                 android:id="@+id/phoneImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_phone_24px"
+                app:srcCompat="@drawable/ic_phone_call_24px"
                 android:layout_gravity="end"/>
 
         </FrameLayout>
