@@ -5,6 +5,9 @@ import android.content.Context.AUDIO_SERVICE
 import android.media.AudioManager
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -29,6 +32,9 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
 
         private const val REQUEST_CODE_MIC = 1
         private const val REQUEST_CODE_MIC_AND_CAMERA = 2
+
+        private const val SMALL_SCREEN_WIDTH = 136
+        private const val SMALL_SCREEN_HEIGHT = 180
 
         fun newInstance(callType: CallType, consultant: ChannelMemberModel?): CallFragment {
             return CallFragment().args {
@@ -103,8 +109,12 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
 
         }
 
-        binding.switchSurfacesImageView.setOnDebouncedClickListener {
+        binding.switchSurfacesPrimaryImageView.setOnDebouncedClickListener {
+            viewModel.videoTracksSwitched(false)
+        }
 
+        binding.switchSurfacesSecondaryImageView.setOnDebouncedClickListener {
+            viewModel.videoTracksSwitched(true)
         }
 
         subscribe(viewModel.callTypeObserver) {
@@ -184,6 +194,15 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
 
             // TODO change z-order of surface views according to variable roomInfo?.videoTracksSwitched
 
+            if (roomInfo.videoTracksSwitched){
+                binding.primarySurfaceContainer.z = 1F
+                binding.secondarySurfaceContainer.z = 0f
+                switchSurfacesSecondaryToBecomeFullScreen()
+            } else {
+                binding.primarySurfaceContainer.z = 0F
+                binding.secondarySurfaceContainer.z = 1f
+                switchSurfacesPrimaryToBecomeFullScreen()
+            }
 
         }
 
@@ -206,6 +225,48 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
             binding.subtitleTextView.text = it
         }
 
+    }
+
+    private fun switchSurfacesPrimaryToBecomeFullScreen() {
+
+        // primary container layout parameters
+        binding.primarySurfaceContainer.visible()
+        binding.primarySurfaceContainer.layoutParams = ViewGroup.LayoutParams( MATCH_PARENT, MATCH_PARENT)
+
+        binding.primarySurfaceRenderer.layoutParams = ViewGroup.LayoutParams( MATCH_PARENT, MATCH_PARENT)
+
+        binding.switchSurfacesPrimaryImageView.gone()
+
+        // secondary container layout parameters
+        binding.secondarySurfaceContainer.visible()
+        binding.secondarySurfaceContainer.layoutParams = ViewGroup.LayoutParams( WRAP_CONTENT, WRAP_CONTENT)
+
+        binding.secondarySurfaceRenderer.layoutParams = ViewGroup.LayoutParams(
+            SMALL_SCREEN_WIDTH.dp(binding.secondarySurfaceRenderer.context),
+            SMALL_SCREEN_HEIGHT.dp(binding.secondarySurfaceRenderer.context))
+
+        binding.switchSurfacesSecondaryImageView.visible()
+    }
+
+    private fun switchSurfacesSecondaryToBecomeFullScreen() {
+
+        // primary container layout parameters
+        binding.primarySurfaceContainer.visible()
+        binding.primarySurfaceContainer.layoutParams = ViewGroup.LayoutParams( WRAP_CONTENT, WRAP_CONTENT)
+
+        binding.primarySurfaceRenderer.layoutParams = ViewGroup.LayoutParams(
+            SMALL_SCREEN_WIDTH.dp(binding.secondarySurfaceRenderer.context),
+            SMALL_SCREEN_HEIGHT.dp(binding.secondarySurfaceRenderer.context))
+
+        binding.switchSurfacesPrimaryImageView.visible()
+
+        // secondary container layout parameters
+        binding.secondarySurfaceContainer.visible()
+        binding.secondarySurfaceContainer.layoutParams = ViewGroup.LayoutParams( MATCH_PARENT, MATCH_PARENT)
+
+        binding.secondarySurfaceRenderer.layoutParams = ViewGroup.LayoutParams( MATCH_PARENT, MATCH_PARENT)
+
+        binding.switchSurfacesSecondaryImageView.gone()
     }
 
     override fun onDestroy() {

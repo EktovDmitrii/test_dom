@@ -149,5 +149,9 @@ class CallViewModel(private val callType: CallType,
         }
     }
 
+    fun videoTracksSwitched(isSwitched: Boolean) {
+       roomInfoController.value = roomInfoController.value?.copy(videoTracksSwitched = isSwitched)
+    }
+
 
 }
