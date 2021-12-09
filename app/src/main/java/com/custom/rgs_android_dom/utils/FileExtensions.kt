@@ -17,3 +17,5 @@ val File.sizeInKb get() = size / 1024
 val File.sizeInMb get() = sizeInKb / 1024
 
 val Long.sizeInMb get() = ((this.toDouble()) / 1024) / 1024
+
+val File.extension: String get() = name.substringAfterLast('.', "")

@@ -1,6 +1,9 @@
 package com.custom.rgs_android_dom.domain.property.details.view_states
 
+import android.net.Uri
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
+import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentModel
+import java.io.File
 
 data class PropertyDetailsViewState(
     val name: String,
@@ -15,5 +18,6 @@ data class PropertyDetailsViewState(
     val isTemporary: String?,
     val totalArea: String,
     val comment: String,
-    val isAddTextViewEnabled: Boolean
+    val isAddTextViewEnabled: Boolean,
+    val documents: List<Uri> = listOf()
 )
