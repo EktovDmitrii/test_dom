@@ -26,8 +26,11 @@ import java.io.File
 class PropertyInteractor (private val propertyRepository: PropertyRepository,private val context: Context) {
 
     companion object{
-        const val TOTAL_MAX_SIZE = 250   // Mb
-        const val ONE_FILE_MAX_SIZE = 10 // Mb
+        private const val TOTAL_MAX_SIZE = 250.0   // Mb
+        private const val ONE_FILE_MAX_SIZE = 10.0 // Mb
+
+        private val supportedFileExtensions = listOf("jpeg", "jpg", "png", "bmp", "pdf", "txt", "doc", "docx", "rtf")
+        private val mediaFilesExtensions = listOf("jpeg", "jpg", "png", "bmp")
     }
 
     val selectAddressViewStateSubject = PublishSubject.create<SelectAddressViewState>()
@@ -312,9 +315,8 @@ class PropertyInteractor (private val propertyRepository: PropertyRepository,pri
 
     private fun validateFiles( files: List<File> ): Boolean{
 
-        var totalSizeMediaFiles = 0
-        var totalSizeTextFiles = 0
-        val mediaFilesExtensions = listOf("jpeg", "jpg", "png", "bmp")
+        var totalSizeMediaFiles = 0.0
+        var totalSizeTextFiles = 0.0
 
             files.forEach { file ->
                 if(!validateExtension(file)){
@@ -330,9 +332,9 @@ class PropertyInteractor (private val propertyRepository: PropertyRepository,pri
                 val fileExtension = file.extension
 
                 if (mediaFilesExtensions.contains(fileExtension)){
-                    totalSizeMediaFiles += file.sizeInMb.toInt()
+                    totalSizeMediaFiles += file.sizeInMb
                 } else {
-                    totalSizeTextFiles += file.sizeInMb.toInt()
+                    totalSizeTextFiles += file.sizeInMb
                 }
 
                 if(totalSizeMediaFiles  > TOTAL_MAX_SIZE || totalSizeTextFiles > TOTAL_MAX_SIZE){
@@ -346,7 +348,6 @@ class PropertyInteractor (private val propertyRepository: PropertyRepository,pri
     }
 
     private fun validateExtension(file: File): Boolean {
-        val supportedFileExtensions = listOf("jpeg", "jpg", "png", "bmp", "pdf", "txt", "doc", "rtf")
         if (!supportedFileExtensions.contains(file.extension)){
             return false
         }

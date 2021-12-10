@@ -141,17 +141,6 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
             notification(it)
         }
 
-        subscribe(viewModel.showConfirmCloseObserver){
-            val confirmDialog = ConfirmBottomSheetFragment.newInstance(
-                icon = R.drawable.ic_confirm_cancel,
-                title = "Хотите выйти?",
-                description = "Если вы покинете страницу сейчас, данные об объекте недвижимости не сохранятся",
-                confirmText = "Да, выйти",
-                cancelText = "Нет, остаться"
-            )
-            confirmDialog.show(childFragmentManager, ConfirmBottomSheetFragment.TAG)
-        }
-
     }
 
     override fun onConfirmClick() {

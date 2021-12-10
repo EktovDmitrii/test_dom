@@ -36,9 +36,6 @@ class PropertyDetailsViewModel(
     private val propertyDetailsViewStateController = MutableLiveData<PropertyDetailsViewState>()
     val propertyDetailsObserver: LiveData<PropertyDetailsViewState> = propertyDetailsViewStateController
 
-    private val showConfirmCloseController = MutableLiveData<Unit>()
-    val showConfirmCloseObserver: LiveData<Unit> = showConfirmCloseController
-
     private val internetConnectionController = MutableLiveData<Boolean>()
 
     init {
@@ -47,11 +44,11 @@ class PropertyDetailsViewModel(
         connectivityManager.registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {
 
             override fun onAvailable(network: Network) {
-                internetAvailability(true)
+                onInternetConnectionChanged(true)
             }
 
             override fun onLost(network: Network) {
-                internetAvailability(false)
+                onInternetConnectionChanged(false)
             }
 
         })
@@ -87,7 +84,7 @@ class PropertyDetailsViewModel(
 
 
     fun onBackClick() {
-        showConfirmCloseController.value = Unit
+        close()
     }
 
     fun onAddClick() {
@@ -174,7 +171,7 @@ class PropertyDetailsViewModel(
         propertyInteractor.onRemoveDocument(uri)
     }
 
-    fun internetAvailability(isAvailable: Boolean) {
+    fun onInternetConnectionChanged(isAvailable: Boolean) {
         internetConnectionController.postValue(isAvailable)
         if (isAvailable && loadingStateObserver.value == LoadingState.LOADING)
             loadingStateController.postValue(LoadingState.CONTENT)
