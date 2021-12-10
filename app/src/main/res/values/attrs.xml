@@ -9,8 +9,6 @@
     <attr name="mask" format="string"/>
     <attr name="inputHeight" format="dimension"/>
 
-
-
     <declare-styleable name="MSDTextView">
         <attr name="translationTextKey"/>
         <attr name="isUnderlined" format="boolean"/>

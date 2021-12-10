@@ -14,6 +14,7 @@ import com.custom.rgs_android_dom.databinding.FragmentCallBinding
 import com.custom.rgs_android_dom.domain.chat.models.CallType
 import com.custom.rgs_android_dom.domain.chat.models.ChannelMemberModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.chat.call.media_output_chooser.MediaOutputChooserFragment
 import com.custom.rgs_android_dom.ui.chat.call.rationale.RequestMicCameraRationaleFragment
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.utils.activity.clearLightStatusBar
@@ -105,6 +106,11 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
 
         binding.switchSurfacesImageView.setOnDebouncedClickListener {
 
+        }
+
+        binding.mediaOutputImageView.setOnDebouncedClickListener {
+            val mediaOutputChooserFragment = MediaOutputChooserFragment()
+            mediaOutputChooserFragment.show(childFragmentManager, mediaOutputChooserFragment.TAG)
         }
 
         subscribe(viewModel.callTypeObserver) {
