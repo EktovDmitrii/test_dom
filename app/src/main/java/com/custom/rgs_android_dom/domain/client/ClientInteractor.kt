@@ -47,6 +47,10 @@ class ClientInteractor(
     private var editPersonalDataViewState = EditPersonalDataViewState()
     private var editAgentViewState = EditAgentViewState()
 
+    //todo
+    fun saveText(text: Boolean) {
+        clientRepository.saveTextToAgent(text)
+    }
 
     fun onKnowAgentCodeClick() {
         fillClientViewState =

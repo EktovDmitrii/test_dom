@@ -15,7 +15,7 @@ object AgentMapper {
             isEditAgentButtonVisible = phone.isEmpty(),
             agentPhone = phone,
             agentCode = client.agent?.code ?: "",
-            isRequestEditContainerVisible = client.agent?.phone?.isNotEmpty() == true,
+            isRequestEditContainerVisible = client.agent?.saveText == true,  //todo
             isEditRequested = false
         )
     }

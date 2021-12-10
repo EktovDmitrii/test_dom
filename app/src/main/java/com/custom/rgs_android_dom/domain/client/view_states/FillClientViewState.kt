@@ -13,6 +13,7 @@ data class FillClientViewState(
     val gender: Gender? = null,
     val agentCode: String? = null,
     val agentPhone: String? = null,
+    val agentSaveText: String? = null, //todo
     val agentPhoneValid: Boolean = false,
     val isValidate: Boolean = false
 ){

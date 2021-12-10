@@ -51,6 +51,7 @@ class AgentViewModel(private val clientInteractor: ClientInteractor) : BaseViewM
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
+                    clientInteractor.saveText(it)   //todo
                     editAgentRequestedController.value = it
                 },
                 onError = {

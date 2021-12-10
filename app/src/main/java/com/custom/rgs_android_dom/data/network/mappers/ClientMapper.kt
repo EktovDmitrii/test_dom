@@ -80,6 +80,7 @@ object ClientMapper {
             agentCode = code,
             agentPhone = phone.formatPhoneForApi(),
             assignType = assignType
+
         )
     }
 
@@ -123,7 +124,8 @@ object ClientMapper {
         return if (response != null){
             ClientAgent(
                 code = response.agent.agentCode,
-                phone = response.assignPhone
+                phone = response.assignPhone,
+                saveText = null // todo
             )
         } else {
             null

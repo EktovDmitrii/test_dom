@@ -97,6 +97,10 @@ class ClientRepositoryImpl(
         return clientUpdatedSubject.hide()
     }
 
+    override fun saveTextToAgent(saveText: Boolean) {   //todo
+        clientSharedPreferences.saveText(true)
+    }
+
     override fun assignAgent(code: String, phone: String, assignType: String): Completable {
         val request = ClientMapper.agentToRequest(code, phone, assignType)
         return api.assignAgent(request)
@@ -159,6 +163,7 @@ class ClientRepositoryImpl(
     }
 
     override fun getEditAgentRequestedSubject(): PublishSubject<Boolean> {
+
         return editAgentRequestedSubject
     }
 
