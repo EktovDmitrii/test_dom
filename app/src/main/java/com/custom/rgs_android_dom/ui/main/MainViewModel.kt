@@ -1,5 +1,7 @@
 package com.custom.rgs_android_dom.ui.main
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.data.network.responses.TokenResponse
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthState
@@ -7,6 +9,8 @@ import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.chat.ChatFragment
+import com.custom.rgs_android_dom.ui.client.ClientFragment
+import com.custom.rgs_android_dom.ui.main.stub.MainStubFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.registration.agreement.RegistrationAgreementFragment
@@ -24,34 +28,72 @@ class MainViewModel(private val registrationInteractor: RegistrationInteractor,
                     private val clientInteractor: ClientInteractor
 ) : BaseViewModel() {
 
+    private val isProfileLayoutVisibleController = MutableLiveData<Boolean>()
+    val isProfileLayoutVisibleObserver: LiveData<Boolean> = isProfileLayoutVisibleController
 
     private val authContentProviderManager: AuthContentProviderManager by inject()
-
     private val logoutCompositeDisposable = CompositeDisposable()
 
     init {
         checkSignedAgreement()
         subscribeAuthStateChanges()
-    }
 
-    fun subscribeLogout() {
-        /*registrationInteractor.getLogoutSubject()
+        isProfileLayoutVisibleController.value = registrationInteractor.isAuthorized()
+
+        registrationInteractor.getLoginSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
-                    closeController.value = Unit
+                    isProfileLayoutVisibleController.value = true
                 },
                 onError = {
                     logException(this, it)
                 }
-            ).addTo(logoutCompositeDisposable)*/
+            ).addTo(dataCompositeDisposable)
+    }
+
+    fun subscribeLogout() {
+        registrationInteractor.getLogoutSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    /*ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+                    closeController.value = Unit*/
+                    isProfileLayoutVisibleController.value = false
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(logoutCompositeDisposable)
     }
 
 
     fun unsubscribeLogout() {
         //logoutCompositeDisposable.clear()
+    }
+
+    fun onChatClick() {
+        if (registrationInteractor.isAuthorized()){
+            ScreenManager.showScreen(ChatFragment())
+        }
+    }
+
+    fun onMainClick(){
+        ScreenManager.showBottomScreen(MainStubFragment())
+    }
+
+    fun onCatalogueClick(){
+
+    }
+
+    fun onProfileClick(){
+        ScreenManager.showBottomScreen(ClientFragment())
+    }
+
+    fun onLoginClick(){
+        ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
     }
 
     private fun checkSignedAgreement(){
@@ -110,12 +152,6 @@ class MainViewModel(private val registrationInteractor: RegistrationInteractor,
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe()
             .addTo(dataCompositeDisposable)
-    }
-
-    fun onChatClick() {
-        if (registrationInteractor.isAuthorized()){
-            ScreenManager.showScreen(ChatFragment())
-        }
     }
 
 }
