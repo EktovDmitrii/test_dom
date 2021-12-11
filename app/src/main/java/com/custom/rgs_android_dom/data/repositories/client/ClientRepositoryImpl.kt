@@ -106,6 +106,9 @@ class ClientRepositoryImpl(
         return api.assignAgent(request)
             .flatMapCompletable {response->
                 val agent = ClientMapper.responseToAgent(response)
+
+                    clientSharedPreferences.saveText(false)
+
                 clientSharedPreferences.saveAgent(agent)
                 clientSharedPreferences.getClient()?.let {client->
                     clientUpdatedSubject.onNext(client)

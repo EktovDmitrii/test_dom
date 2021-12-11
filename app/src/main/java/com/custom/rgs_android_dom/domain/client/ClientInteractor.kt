@@ -423,6 +423,7 @@ class ClientInteractor(
         if (errorsValidate.isNotEmpty()){
             return Completable.error(SpecificValidateClientExceptions(errorsValidate))
         }
+
         return clientRepository.assignAgent(editAgentViewState.agentCode, editAgentViewState.agentPhone, ASSIGN_TYPE_PROFILE)
     }
 

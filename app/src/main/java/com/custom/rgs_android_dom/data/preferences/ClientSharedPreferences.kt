@@ -47,7 +47,6 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
     }
 
 
-
     fun saveClient(client: ClientModel){
         preferences.edit {
             putString(PREF_KEY_CLIENT, gson.toJson(client))

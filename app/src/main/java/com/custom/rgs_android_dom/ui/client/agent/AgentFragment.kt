@@ -42,8 +42,8 @@ class AgentFragment : BaseFragment<AgentViewModel, FragmentAgentBinding>(R.layou
                 binding.agentPhoneTextView.setNoValue()
             }
 
-            binding.requestEditLinearLayout.isVisible = state.isRequestEditContainerVisible
-            binding.answerEditLinearLayout.isVisible = !state.isRequestEditContainerVisible
+            binding.requestEditLinearLayout.isVisible = !state.isRequestEditContainerVisible
+            binding.answerEditLinearLayout.isVisible = state.isRequestEditContainerVisible
         }
 
         subscribe(viewModel.editAgentRequestedObserver) { wasRequested ->
