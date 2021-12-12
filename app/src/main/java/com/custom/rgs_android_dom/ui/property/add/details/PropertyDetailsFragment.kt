@@ -24,8 +24,7 @@ import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentPropertyDetailsBinding>(R.layout.fragment_property_details),
-    ConfirmBottomSheetFragment.ConfirmListener {
+class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentPropertyDetailsBinding>(R.layout.fragment_property_details){
 
     companion object {
         private const val ARG_PROPERTY_NAME = "ARG_PROPERTY_NAME"
@@ -141,10 +140,6 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
             notification(it)
         }
 
-    }
-
-    override fun onConfirmClick() {
-        ScreenManager.closeScope(ADD_PROPERTY)
     }
 
     private fun showHouseLayout(propertyDetailsViewState: PropertyDetailsViewState) {

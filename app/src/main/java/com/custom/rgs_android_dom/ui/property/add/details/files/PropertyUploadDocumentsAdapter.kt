@@ -39,12 +39,10 @@ class PropertyUploadDocumentsAdapter(private val onRemoveDocument: (Uri) -> Unit
         return propertyUploadDocumentsItems.size
     }
 
-    fun setItems(files: List<Uri>?) {
-        this.propertyUploadDocumentsItems.clear()
-        if (files != null) {
-            propertyUploadDocumentsItems.addAll(files)
-            notifyDataSetChanged()
-        }
+    fun setItems(files: List<Uri>) {
+        propertyUploadDocumentsItems.clear()
+        propertyUploadDocumentsItems.addAll(files)
+        notifyDataSetChanged()
     }
 
     inner class PropertyUploadDocumentsViewHolder(
