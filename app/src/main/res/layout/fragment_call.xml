@@ -122,8 +122,7 @@
                     android:id="@+id/primarySurfaceContainer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    tools:visibility="visible">
+                    android:layout_gravity="bottom|end">
 
                     <io.livekit.android.renderer.TextureViewRenderer
                         android:id="@+id/primarySurfaceRenderer"
@@ -136,6 +135,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
+                        android:layout_gravity="start|top"
                         android:visibility="gone"
                         app:srcCompat="@drawable/ic_arrow_long_left_up_24px" />
 
@@ -162,6 +162,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
+                        android:layout_gravity="start|top"
                         app:srcCompat="@drawable/ic_arrow_long_left_up_24px" />
 
                 </FrameLayout>

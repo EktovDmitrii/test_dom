@@ -4,8 +4,8 @@ import android.Manifest
 import android.content.Context.AUDIO_SERVICE
 import android.media.AudioManager
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
@@ -198,11 +198,11 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
             if (roomInfo.videoTracksSwitched){
                 binding.primarySurfaceContainer.z = 1F
                 binding.secondarySurfaceContainer.z = 0f
-                switchSurfacesSecondaryToBecomeFullScreen()
+                secondaryContainerFullScreen()
             } else {
                 binding.primarySurfaceContainer.z = 0F
                 binding.secondarySurfaceContainer.z = 1f
-                switchSurfacesPrimaryToBecomeFullScreen()
+                primaryContainerFullScreen()
             }
 
         }
@@ -228,38 +228,73 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
 
     }
 
-    private fun switchSurfacesPrimaryToBecomeFullScreen() {
+    private fun primaryContainerFullScreen() {
 
         // primary container layout parameters
         binding.primarySurfaceContainer.visible()
-        binding.primarySurfaceContainer.layoutParams = FrameLayout.LayoutParams( MATCH_PARENT, MATCH_PARENT)
-        binding.primarySurfaceRenderer.layoutParams = FrameLayout.LayoutParams( MATCH_PARENT, MATCH_PARENT)
+
+        val primarySurfaceContainerLayoutParams = binding.primarySurfaceContainer.layoutParams as FrameLayout.LayoutParams
+        primarySurfaceContainerLayoutParams.width = MATCH_PARENT
+        primarySurfaceContainerLayoutParams.height = MATCH_PARENT
+        primarySurfaceContainerLayoutParams.setMargins(0,0,0,0)
+        binding.primarySurfaceContainer.layoutParams = primarySurfaceContainerLayoutParams
+
+        val primarySurfaceRendererLayoutParams = binding.primarySurfaceRenderer.layoutParams
+        primarySurfaceRendererLayoutParams.width = MATCH_PARENT
+        primarySurfaceRendererLayoutParams.height = MATCH_PARENT
+        binding.primarySurfaceRenderer.layoutParams = primarySurfaceRendererLayoutParams
+
         binding.switchSurfacesPrimaryImageView.gone()
 
         // secondary container layout parameters
         binding.secondarySurfaceContainer.visible()
-        binding.secondarySurfaceContainer.layoutParams = FrameLayout.LayoutParams( WRAP_CONTENT, WRAP_CONTENT)
-        binding.secondarySurfaceRenderer.layoutParams = FrameLayout.LayoutParams(
-            SMALL_SCREEN_WIDTH.dp(binding.secondarySurfaceRenderer.context),
-            SMALL_SCREEN_HEIGHT.dp(binding.secondarySurfaceRenderer.context))
+
+        val secondarySurfaceContainerLayoutParams = binding.secondarySurfaceContainer.layoutParams as FrameLayout.LayoutParams
+        secondarySurfaceContainerLayoutParams.width = WRAP_CONTENT
+        secondarySurfaceContainerLayoutParams.height = WRAP_CONTENT
+        secondarySurfaceContainerLayoutParams.setMargins(0,0, 16.dp(requireContext()), 16.dp(requireContext()))
+        binding.secondarySurfaceContainer.layoutParams = secondarySurfaceContainerLayoutParams
+
+        val secondarySurfaceRendererLayoutParams = binding.secondarySurfaceRenderer.layoutParams
+        secondarySurfaceRendererLayoutParams.width = SMALL_SCREEN_WIDTH.dp(requireContext())
+        secondarySurfaceRendererLayoutParams.height = SMALL_SCREEN_HEIGHT.dp(requireContext())
+        binding.secondarySurfaceRenderer.layoutParams = secondarySurfaceRendererLayoutParams
 
         binding.switchSurfacesSecondaryImageView.visible()
     }
 
-    private fun switchSurfacesSecondaryToBecomeFullScreen() {
+    private fun secondaryContainerFullScreen() {
 
         // primary container layout parameters
         binding.primarySurfaceContainer.visible()
-        binding.primarySurfaceContainer.layoutParams = FrameLayout.LayoutParams( WRAP_CONTENT, WRAP_CONTENT)
-        binding.primarySurfaceRenderer.layoutParams = FrameLayout.LayoutParams(
-            SMALL_SCREEN_WIDTH.dp(binding.secondarySurfaceRenderer.context),
-            SMALL_SCREEN_HEIGHT.dp(binding.secondarySurfaceRenderer.context))
+
+        val primarySurfaceContainerLayoutParams = binding.primarySurfaceContainer.layoutParams as FrameLayout.LayoutParams
+        primarySurfaceContainerLayoutParams.width = WRAP_CONTENT
+        primarySurfaceContainerLayoutParams.height = WRAP_CONTENT
+        primarySurfaceContainerLayoutParams.setMargins(0,0, 16.dp(requireContext()), 16.dp(requireContext()))
+        binding.primarySurfaceContainer.layoutParams = primarySurfaceContainerLayoutParams
+
+        val primarySurfaceRendererLayoutParams = binding.primarySurfaceRenderer.layoutParams
+        primarySurfaceRendererLayoutParams.width = SMALL_SCREEN_WIDTH.dp(requireContext())
+        primarySurfaceRendererLayoutParams.height = SMALL_SCREEN_HEIGHT.dp(requireContext())
+        binding.primarySurfaceRenderer.layoutParams = primarySurfaceRendererLayoutParams
+
         binding.switchSurfacesPrimaryImageView.visible()
 
         // secondary container layout parameters
         binding.secondarySurfaceContainer.visible()
-        binding.secondarySurfaceContainer.layoutParams = FrameLayout.LayoutParams( MATCH_PARENT, MATCH_PARENT)
-        binding.secondarySurfaceRenderer.layoutParams = FrameLayout.LayoutParams( MATCH_PARENT, MATCH_PARENT)
+
+        val secondarySurfaceContainerLayoutParams = binding.secondarySurfaceContainer.layoutParams as FrameLayout.LayoutParams
+        secondarySurfaceContainerLayoutParams.width = MATCH_PARENT
+        secondarySurfaceContainerLayoutParams.height = MATCH_PARENT
+        secondarySurfaceContainerLayoutParams.setMargins(0,0,0,0)
+        binding.secondarySurfaceContainer.layoutParams = secondarySurfaceContainerLayoutParams
+
+        val secondarySurfaceRendererLayoutParams = binding.secondarySurfaceRenderer.layoutParams
+        secondarySurfaceRendererLayoutParams.width = MATCH_PARENT
+        secondarySurfaceRendererLayoutParams.height = MATCH_PARENT
+        binding.secondarySurfaceRenderer.layoutParams = secondarySurfaceRendererLayoutParams
+
         binding.switchSurfacesSecondaryImageView.gone()
     }
 
