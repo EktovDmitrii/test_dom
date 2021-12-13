@@ -381,15 +381,16 @@ class ChatRepositoryImpl(private val api: MSDApi,
     }
 
     override suspend fun switchCamera() {
-        val localVideoTrackOptions = roomInfo?.room?.videoTrackCaptureDefaults
-        val myVideoTrackOptions = (roomInfo?.room as Room).localParticipant.videoTrackCaptureDefaults
+        val room = roomInfo?.room as Room
+        val localVideoTrackOptions = room.videoTrackCaptureDefaults
+        val myVideoTrackOptions = room.localParticipant.videoTrackCaptureDefaults
         val myVideoTrack = (roomInfo?.myVideoTrack as LocalVideoTrack)
-        if (localVideoTrackOptions?.position == CameraPosition.FRONT){
-            (roomInfo?.room as Room).localParticipant.videoTrackCaptureDefaults = myVideoTrackOptions.copy(position = CameraPosition.BACK)
+        if (localVideoTrackOptions.position == CameraPosition.FRONT){
+            room.localParticipant.videoTrackCaptureDefaults = myVideoTrackOptions.copy(position = CameraPosition.BACK)
         } else {
-            (roomInfo?.room as Room).localParticipant.videoTrackCaptureDefaults = myVideoTrackOptions.copy(position = CameraPosition.FRONT)
+            room.localParticipant.videoTrackCaptureDefaults = myVideoTrackOptions.copy(position = CameraPosition.FRONT)
         }
-        myVideoTrack.restartTrack((roomInfo?.room as Room).localParticipant.videoTrackCaptureDefaults)
+        myVideoTrack.restartTrack(room.localParticipant.videoTrackCaptureDefaults)
         roomInfo?.let {
             roomInfoSubject.onNext(it)
         }
