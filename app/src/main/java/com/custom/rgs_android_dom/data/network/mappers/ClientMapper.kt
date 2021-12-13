@@ -3,7 +3,6 @@ package com.custom.rgs_android_dom.data.network.mappers
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.requests.*
 import com.custom.rgs_android_dom.data.network.responses.AgentHolderResponse
-import com.custom.rgs_android_dom.data.network.responses.AgentResponse
 import com.custom.rgs_android_dom.data.network.responses.ClientResponse
 import com.custom.rgs_android_dom.data.network.responses.UserResponse
 import com.custom.rgs_android_dom.domain.client.models.*
@@ -123,7 +122,8 @@ object ClientMapper {
         return if (response != null){
             ClientAgent(
                 code = response.agent.agentCode,
-                phone = response.assignPhone
+                phone = response.assignPhone,
+                editAgentWasRequested = null
             )
         } else {
             null
