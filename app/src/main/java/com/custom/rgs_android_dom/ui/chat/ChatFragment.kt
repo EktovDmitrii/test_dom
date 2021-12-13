@@ -54,6 +54,7 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
 
         binding.messagesRecyclerView.adapter = ChatAdapter() {
             viewModel.onFileClick(it)
+            hideSoftwareKeyboard()
         }
 
         binding.backImageView.setOnDebouncedClickListener {
@@ -127,6 +128,8 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
         binding.loadingProgressBar.gone()
         binding.sendMessageBottomAppBar.visible()
     }
+
+
 
     private fun downloadFile(chatFile: ChatFileModel) {
         val url = "${BuildConfig.BASE_URL}/api/chat/users/${chatFile.senderId}/files/${chatFile.id}"

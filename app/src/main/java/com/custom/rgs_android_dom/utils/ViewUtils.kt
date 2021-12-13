@@ -23,6 +23,10 @@ infix fun View.visibleIf(expr: Boolean) {
     visibility = if (expr) View.VISIBLE else View.GONE
 }
 
+infix fun View.goneIf(expr: Boolean) {
+    visibility = if (expr) View.GONE else View.VISIBLE
+}
+
 infix fun View.invisibleIf(expr: Boolean) {
     visibility = if (expr) View.INVISIBLE else View.VISIBLE
 }

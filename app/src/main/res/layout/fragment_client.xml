@@ -21,12 +21,14 @@
             android:layout_height="match_parent"
             android:fillViewport="true"
             android:overScrollMode="never"
-            android:background="@drawable/rectangle_gradient_white_secondary200">
+            android:paddingBottom="168dp"
+            android:clipToPadding="false">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@drawable/rectangle_gradient_white_secondary200">
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:layout_width="match_parent"
