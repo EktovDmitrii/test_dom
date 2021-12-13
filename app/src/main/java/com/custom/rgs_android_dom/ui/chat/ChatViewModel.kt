@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.chat
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -118,12 +119,12 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
     }
 
     fun onAudioCallClick() {
-        val callFragment = CallFragment.newInstance(CallType.AUDIO_CALL)
+        val callFragment = CallFragment.newInstance(CallType.AUDIO_CALL, chatInteractor.getCurrentConsultant())
         ScreenManager.showScreen(callFragment)
     }
 
     fun onVideoCallClick() {
-        val callFragment = CallFragment.newInstance(CallType.VIDEO_CALL)
+        val callFragment = CallFragment.newInstance(CallType.VIDEO_CALL, chatInteractor.getCurrentConsultant())
         ScreenManager.showScreen(callFragment)
     }
 
@@ -140,5 +141,4 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
                 }
             ).addTo(dataCompositeDisposable)
     }
-
 }

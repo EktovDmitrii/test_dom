@@ -34,7 +34,7 @@
             android:id="@+id/iconImageView"
             android:layout_width="wrap_content"
             android:layout_height="232dp"
-            app:srcCompat="@drawable/device"
+            app:srcCompat="@drawable/device_location"
             android:paddingHorizontal="33dp"
             android:layout_marginTop="24dp"/>
 

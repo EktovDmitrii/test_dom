@@ -19,6 +19,7 @@
     <color name="error600">#D45054</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="black_alpha40">#66000000</color>
     <color name="secondary900_alpha92">#EB20201F</color>
     <color name="secondary900_alpha20">#3220201F</color>
     <color name="secondary900_alpha50">#1F20201F</color>
@@ -30,6 +31,7 @@
     <color name="error600_alpha12">#1FD45054</color>
     <color name="secondary_default">#7D7E7E</color>
     <color name="primary500_alpha12">#1FEEA641</color>
+    <color name="white_alpha24">#3DFFFFFF</color>
     <color name="white_alpha32">#52FFFFFF</color>
     <color name="white_alpha64">#A3FFFFFF</color>
     <color name="white_alpha80">#CCFFFFFF</color>

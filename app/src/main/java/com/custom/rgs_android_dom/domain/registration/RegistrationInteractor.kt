@@ -40,4 +40,8 @@ class RegistrationInteractor(private val registrationRepository: RegistrationRep
         registrationRepository.forceSaveAuthCredentials()
     }
 
+    fun getLoginSubject(): PublishSubject<Unit>{
+        return registrationRepository.getLoginSubject()
+    }
+
 }

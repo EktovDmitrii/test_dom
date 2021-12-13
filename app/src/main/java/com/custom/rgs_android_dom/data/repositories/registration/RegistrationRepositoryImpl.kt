@@ -26,6 +26,7 @@ class RegistrationRepositoryImpl(
     }
 
     private val logout = PublishSubject.create<Unit>()
+    private val loginSubject = PublishSubject.create<Unit>()
 
     override fun getCurrentPhone(): String {
         return clientSharedPreferences.getPhone() ?: ""
@@ -46,6 +47,7 @@ class RegistrationRepositoryImpl(
             .map { authResponse ->
                 authContentProviderManager.saveAuth(authResponse.token)
                 chatRepository.connectToWebSocket()
+                loginSubject.onNext(Unit)
                 return@map authResponse.isNewUser
             }
     }
@@ -115,5 +117,9 @@ class RegistrationRepositoryImpl(
             getRefreshToken() ?: "",
             authContentProviderManager.getRefreshTokenExpiresAt() ?: DateTime.now()
         )
+    }
+
+    override fun getLoginSubject(): PublishSubject<Unit> {
+        return loginSubject
     }
 }

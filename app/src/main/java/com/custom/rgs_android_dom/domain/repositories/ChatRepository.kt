@@ -6,6 +6,7 @@ import io.livekit.android.room.track.VideoTrack
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
+import org.joda.time.Duration
 import java.io.File
 
 interface ChatRepository {
@@ -30,7 +31,7 @@ interface ChatRepository {
 
     fun getWsEventsSubject(): PublishSubject<WsEventModel<*>>
 
-    suspend fun connectToLiveKitRoom(callJoin: CallJoinModel, callType: CallType)
+    suspend fun connectToLiveKitRoom(callJoin: CallJoinModel, callType: CallType, cameraEnabled: Boolean, micEnabled: Boolean)
 
     fun getRoomInfoSubject(): PublishSubject<RoomInfoModel>
 
@@ -41,5 +42,11 @@ interface ChatRepository {
     fun getActualRoomInfo(): RoomInfoModel?
 
     fun clearRoomDataOnOpponentDeclined()
+
+    fun getCallDurationSubject(): PublishSubject<Duration>
+
+    suspend fun enableMic(enable: Boolean)
+
+    suspend fun enableCamera(enable: Boolean)
 
 }

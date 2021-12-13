@@ -37,4 +37,6 @@ interface RegistrationRepository {
     fun getAuthStateSubject(): PublishSubject<AuthState>
 
     fun forceSaveAuthCredentials()
+
+    fun getLoginSubject(): PublishSubject<Unit>
 }

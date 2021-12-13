@@ -6,62 +6,223 @@
     android:layout_height="match_parent"
     android:background="@color/black">
 
-    <FrameLayout
-        android:id="@+id/toolbarAudioVideoCalls"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.custom.rgs_android_dom.views.text.MSDTextView
-            android:id="@+id/titleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/my_service_medium"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            app:translationTextKey="Звонок"
-            tools:text="Звонок" />
-
-    </FrameLayout>
-
-
-    <FrameLayout
-        android:id="@+id/videoContainer"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/rejectImageView"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/rectangle_filled_secondary_900_bottom_radius_24dp"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbarAudioVideoCalls">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottomButtonsLinearLayout">
 
-        <io.livekit.android.renderer.TextureViewRenderer
-            android:id="@+id/opponentSurfaceRenderer"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="24dp" />
+            android:layout_height="@dimen/toolbar_height_chat"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="16dp"
+            android:paddingTop="8dp">
 
-        <io.livekit.android.renderer.TextureViewRenderer
-            android:id="@+id/mySurfaceRenderer"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="48dp" />
-    </FrameLayout>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/minimizeImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_minimize_24px"
+                android:layout_gravity="start"/>
 
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_horizontal">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/rejectImageView"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
-        android:layout_marginBottom="56dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/titleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/my_service_bold"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:layout_gravity="center_horizontal"
+                    app:translationTextKey="Подключаемся..." />
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/subtitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/suisse_regular"
+                    android:textColor="@color/secondary400"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    app:translationTextKey="Ищем свободного оператора" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/phoneImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_phone_call_24px"
+                android:layout_gravity="end"/>
+
+        </FrameLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:id="@+id/avatarFrameLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="172dp"
+                android:layout_centerHorizontal="true">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/avatarImageView"
+                    android:layout_width="136dp"
+                    android:layout_height="136dp"
+                    app:srcCompat="@drawable/ic_call_consultant"/>
+
+                <FrameLayout
+                    android:id="@+id/waitingConsultantVideoFrameLayout"
+                    android:layout_width="137dp"
+                    android:layout_height="137dp"
+                    android:background="@drawable/rectangle_filled_secondary_800_radius_32dp"
+                    android:visibility="gone">
+
+                    <ProgressBar
+                        style="@style/ProgressBarStyle"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center"/>
+                </FrameLayout>
+
+            </FrameLayout>
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/consultantNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/avatarFrameLayout"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/suisse_book"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:translationTextKey="Мастер онлайн" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="16dp">
+
+                <io.livekit.android.renderer.TextureViewRenderer
+                    android:id="@+id/primarySurfaceRenderer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <FrameLayout
+                    android:id="@+id/secondarySurfaceContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <io.livekit.android.renderer.TextureViewRenderer
+                        android:id="@+id/secondarySurfaceRenderer"
+                        android:layout_width="136dp"
+                        android:layout_height="180dp" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/switchSurfacesImageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        app:srcCompat="@drawable/ic_arrow_long_left_up_24px"/>
+
+                </FrameLayout>
+
+            </FrameLayout>
+
+        </RelativeLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/bottomButtonsLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="106dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_reject_44" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center">
+
+        <com.custom.rgs_android_dom.views.MSDImageView
+            android:id="@+id/switchCameraImageView"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="17dp"
+            app:isActivated="true"
+            app:tint="@color/button_call_icon_color"
+            android:background="@drawable/button_call_background"
+            app:srcCompat="@drawable/ic_camera_change_24px"/>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp">
+
+            <com.custom.rgs_android_dom.views.MSDImageView
+                android:id="@+id/cameraOffImageView"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="17dp"
+                app:tint="@color/button_call_icon_color"
+                android:background="@drawable/button_call_background"
+                app:isActivated="true"
+                app:srcCompat="@drawable/ic_camera_off_24px"/>
+
+            <ProgressBar
+                android:id="@+id/waitingCameraPermissionProgressBar"
+                style="@style/ProgressBarStyle"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:visibility="gone"/>
+
+        </FrameLayout>
+
+        <com.custom.rgs_android_dom.views.MSDImageView
+            android:id="@+id/micOffImageView"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="17dp"
+            android:layout_marginStart="20dp"
+            app:isActivated="true"
+            app:tint="@color/button_call_icon_color"
+            android:background="@drawable/button_call_background"
+            app:srcCompat="@drawable/ic_microphone_24px"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/endCallImageView"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="17dp"
+            android:layout_marginStart="20dp"
+            app:tint="@color/white"
+            android:background="@drawable/oval_filled_error_500"
+            app:srcCompat="@drawable/ic_call_24px"/>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

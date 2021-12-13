@@ -35,6 +35,7 @@ class ImageViewerFragment : BaseFragment<ImageViewerViewModel, FragmentImageView
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
         }
@@ -69,5 +70,5 @@ class ImageViewerFragment : BaseFragment<ImageViewerViewModel, FragmentImageView
         setStatusBarColor(R.color.black)
         requireActivity().clearLightStatusBar()
     }
-
+    
 }

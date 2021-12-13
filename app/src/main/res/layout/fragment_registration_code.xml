@@ -87,10 +87,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/suisse_regular"
-                app:translationTextKey="Отправить код повторно"
                 android:textColor="@color/primary_500_secondary_400_text_color"
                 android:textSize="14sp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:translationTextKey="Отправить код повторно" />
         </FrameLayout>
 
 

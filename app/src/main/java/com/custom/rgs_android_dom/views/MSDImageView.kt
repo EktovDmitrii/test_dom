@@ -12,5 +12,14 @@ class MSDImageView(context: Context, attributeSet: AttributeSet) : AppCompatImag
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDImageView, 0, 0)
         val isEnabled = attrs.getBoolean(R.styleable.MSDImageView_android_enabled, true)
         setEnabled(isEnabled)
+
+        if (attrs.hasValue(R.styleable.MSDImageView_isActivated)){
+            val isActivated = attrs.getBoolean(R.styleable.MSDImageView_isActivated, true)
+            setActivated(isActivated)
+        }
+    }
+
+    override fun setActivated(activated: Boolean) {
+        super.setActivated(activated)
     }
 }

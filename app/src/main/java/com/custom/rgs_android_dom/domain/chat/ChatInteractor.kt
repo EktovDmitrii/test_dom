@@ -14,6 +14,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 import org.joda.time.LocalDateTime
+import org.joda.time.Seconds
 import java.io.File
 
 class ChatInteractor(
@@ -22,6 +23,7 @@ class ChatInteractor(
 ){
     companion object {
         private const val TYPE_SYSTEM_MESSAGE = "system_"
+        private const val TYPE_MEMBER_CONSULTANT = "consultant"
         private const val MAX_UPLOAD_IMAGE_SIZE = 10
     }
 
@@ -145,8 +147,8 @@ class ChatInteractor(
             }
     }
 
-    suspend fun connectToLiveKitRoom(callJoin: CallJoinModel, callType: CallType){
-        chatRepository.connectToLiveKitRoom(callJoin, callType)
+    suspend fun connectToLiveKitRoom(callJoin: CallJoinModel, callType: CallType, cameraEnabled: Boolean, micEnabled: Boolean){
+        chatRepository.connectToLiveKitRoom(callJoin, callType, cameraEnabled, micEnabled)
     }
 
     fun getRoomInfoSubject(): PublishSubject<RoomInfoModel>{
@@ -163,6 +165,25 @@ class ChatInteractor(
 
     fun getActualRoomInfo(): RoomInfoModel?{
         return chatRepository.getActualRoomInfo()
+    }
+
+    fun getCallTimeSubject(): Observable<String>{
+        return chatRepository.getCallDurationSubject()
+            .map {duration->
+                return@map duration.toReadableTime()
+            }
+    }
+
+    suspend fun enableCamera(enable: Boolean){
+        chatRepository.enableCamera(enable)
+    }
+
+    suspend fun enableMic(enable: Boolean){
+        chatRepository.enableMic(enable)
+    }
+
+    fun getCurrentConsultant(): ChannelMemberModel? {
+        return cachedChannelMembers.find { it.type == TYPE_MEMBER_CONSULTANT }
     }
 
     private fun onNewMessage(newMessage: ChatMessageModel){
