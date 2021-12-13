@@ -8,10 +8,12 @@ import android.view.animation.*
 import android.widget.OverScroller
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.view.children
+import androidx.fragment.app.Fragment
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentMainBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.ui.main.stub.MainStubFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -75,10 +77,28 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
 
         binding.contentConstraintLayout.background = transitionBackground
 
+        selectedMenu = binding.bottomNavigationLayout.navMainLinearLayout
+        activateMenu(true)
+
         ScreenManager.initBottomSheet(R.id.bottomContainer)
+
         ScreenManager.onBottomSheetChanged = {
             bottomSheetMainFragment = it
             measureAndShowFragment()
+
+            // TODO Replace this later, when we will have normal navigation
+            when (it::class.java.canonicalName){
+                MainStubFragment::class.java.canonicalName -> {
+                    activateMenu(false)
+                    selectedMenu = binding.bottomNavigationLayout.navMainLinearLayout
+                    activateMenu(true)
+                }
+                ClientFragment::class.java.canonicalName -> {
+                    activateMenu(false)
+                    selectedMenu = binding.bottomNavigationLayout.navProfileLinearLayout
+                    activateMenu(true)
+                }
+            }
         }
         //ScreenManager.showBottomScreen(ClientFragment())
         ScreenManager.showBottomScreen(MainStubFragment())
@@ -87,8 +107,6 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
             viewModel.onChatClick()
         }
 
-        selectedMenu = binding.bottomNavigationLayout.navMainLinearLayout
-        activateMenu(true)
 
         binding.bottomNavigationLayout.navMainLinearLayout.setOnDebouncedClickListener {
             activateMenu(false)
@@ -107,9 +125,9 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
         }
 
         binding.bottomNavigationLayout.navChatLinearLayout.setOnDebouncedClickListener {
-            activateMenu(false)
+            /*activateMenu(false)
             selectedMenu = binding.bottomNavigationLayout.navChatLinearLayout
-            activateMenu(true)
+            activateMenu(true)*/
 
             viewModel.onChatClick()
         }
