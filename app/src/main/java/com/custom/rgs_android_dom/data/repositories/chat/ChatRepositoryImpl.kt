@@ -19,9 +19,7 @@ import io.livekit.android.room.Room
 import io.livekit.android.room.RoomListener
 import io.livekit.android.room.participant.Participant
 import io.livekit.android.room.participant.RemoteParticipant
-import io.livekit.android.room.track.Track
-import io.livekit.android.room.track.TrackPublication
-import io.livekit.android.room.track.VideoTrack
+import io.livekit.android.room.track.*
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -276,7 +274,6 @@ class ChatRepositoryImpl(private val api: MSDApi,
             micEnabled = micEnabled,
             localAudioTrack = audioTrack
         )
-
         if (withVideo){
             val videoTrack = localParticipant.createVideoTrack()
             localParticipant.publishVideoTrack(videoTrack)
@@ -381,5 +378,20 @@ class ChatRepositoryImpl(private val api: MSDApi,
     private fun stopCallTimer(){
         callTimeDisposable?.dispose()
         callStartTime = null
+    }
+
+    override suspend fun switchCamera() {
+        val localVideoTrackOptions = roomInfo?.room?.videoTrackCaptureDefaults
+        val myVideoTrackOptions = (roomInfo?.room as Room).localParticipant.videoTrackCaptureDefaults
+        val myVideoTrack = (roomInfo?.myVideoTrack as LocalVideoTrack)
+        if (localVideoTrackOptions?.position == CameraPosition.FRONT){
+            (roomInfo?.room as Room).localParticipant.videoTrackCaptureDefaults = myVideoTrackOptions.copy(position = CameraPosition.BACK)
+        } else {
+            (roomInfo?.room as Room).localParticipant.videoTrackCaptureDefaults = myVideoTrackOptions.copy(position = CameraPosition.FRONT)
+        }
+        myVideoTrack.restartTrack((roomInfo?.room as Room).localParticipant.videoTrackCaptureDefaults)
+        roomInfo?.let {
+            roomInfoSubject.onNext(it)
+        }
     }
 }
