@@ -94,6 +94,8 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
         binding.endCallImageView.setOnDebouncedClickListener {
             viewModel.onRejectClick()
         }
@@ -116,6 +118,10 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
 
         binding.switchSurfacesSecondaryImageView.setOnDebouncedClickListener {
             viewModel.videoTracksSwitched(true)
+        }
+
+        binding.minimizeImageView.setOnDebouncedClickListener {
+            viewModel.onMinimizeClick()
         }
 
         subscribe(viewModel.callTypeObserver) {

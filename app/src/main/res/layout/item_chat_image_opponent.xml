@@ -29,5 +29,5 @@
             tools:text="21:22" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
-
 </FrameLayout>
+

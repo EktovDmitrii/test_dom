@@ -28,8 +28,7 @@
             android:id="@+id/myImageView"
             android:layout_width="208dp"
             android:layout_height="196dp"
-            android:background="@drawable/rectangle_filled_primary_500_radius_16dp"
-            />
+            android:background="@drawable/rectangle_filled_primary_500_radius_16dp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

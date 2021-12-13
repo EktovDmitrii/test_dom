@@ -13,7 +13,6 @@ import com.custom.rgs_android_dom.utils.PATTERN_DATE_TIME_MILLIS
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
 import com.custom.rgs_android_dom.utils.formatTo
 import io.reactivex.Completable
-import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
@@ -76,14 +75,14 @@ class ClientRepositoryImpl(
 
 
     override fun loadAndSaveClient(): Completable {
-        return api.getMyClient().flatMapCompletable { response->
+        return api.getMyClient().flatMapCompletable { response ->
             val client = ClientMapper.responseToClient(response)
             val agentResponse = api.getAgent().blockingGet()
             val agent = ClientMapper.responseToAgent(agentResponse)
             client.agent = agent
 
             val cachedClient = clientSharedPreferences.getClient()
-            if (cachedClient != null && cachedClient != client || cachedClient == null){
+            if (cachedClient != null && cachedClient != client || cachedClient == null) {
                 clientSharedPreferences.saveClient(client)
                 clientSharedPreferences.saveAgent(agent)
                 clientUpdatedSubject.onNext(client)
@@ -97,13 +96,18 @@ class ClientRepositoryImpl(
         return clientUpdatedSubject.hide()
     }
 
+    override fun saveTextToAgent(saveText: Boolean) {
+        clientSharedPreferences.saveEditAgentWasRequested(true)
+    }
+
     override fun assignAgent(code: String, phone: String, assignType: String): Completable {
         val request = ClientMapper.agentToRequest(code, phone, assignType)
         return api.assignAgent(request)
-            .flatMapCompletable {response->
+            .flatMapCompletable { response ->
                 val agent = ClientMapper.responseToAgent(response)
+                clientSharedPreferences.saveEditAgentWasRequested(false)
                 clientSharedPreferences.saveAgent(agent)
-                clientSharedPreferences.getClient()?.let {client->
+                clientSharedPreferences.getClient()?.let { client ->
                     clientUpdatedSubject.onNext(client)
                 }
                 Completable.complete()
@@ -112,7 +116,7 @@ class ClientRepositoryImpl(
 
     override fun updatePassport(serial: String, number: String): Completable {
         val updateDocumentsRequest = ClientMapper.passportToRequest(serial, number)
-        return api.postDocuments(updateDocumentsRequest).flatMapCompletable {response->
+        return api.postDocuments(updateDocumentsRequest).flatMapCompletable { response ->
             val client = ClientMapper.responseToClient(response)
             clientSharedPreferences.saveClient(client)
             clientUpdatedSubject.onNext(client)
@@ -122,7 +126,7 @@ class ClientRepositoryImpl(
 
     override fun saveSecondPhone(phone: String): Completable {
         val updateContactsRequest = ClientMapper.phoneToRequest(phone.formatPhoneForApi())
-        return api.postContacts(updateContactsRequest).flatMapCompletable { response->
+        return api.postContacts(updateContactsRequest).flatMapCompletable { response ->
             val client = ClientMapper.responseToClient(response)
             clientSharedPreferences.saveClient(client)
             clientUpdatedSubject.onNext(client)
@@ -132,7 +136,7 @@ class ClientRepositoryImpl(
 
     override fun updateSecondPhone(phone: String, id: String): Completable {
         val updateContactsRequest = ClientMapper.phoneToRequest(phone.formatPhoneForApi(), id)
-        return api.putContacts(updateContactsRequest).flatMapCompletable { response->
+        return api.putContacts(updateContactsRequest).flatMapCompletable { response ->
             val client = ClientMapper.responseToClient(response)
             clientSharedPreferences.saveClient(client)
             clientUpdatedSubject.onNext(client)
@@ -142,7 +146,7 @@ class ClientRepositoryImpl(
 
     override fun deleteContacts(ids: ArrayList<String>): Completable {
         val deleteContactsRequest = DeleteContactsRequest(ids = ids)
-        return api.deleteContacts(deleteContactsRequest).flatMapCompletable { response->
+        return api.deleteContacts(deleteContactsRequest).flatMapCompletable { response ->
             val client = ClientMapper.responseToClient(response)
             clientSharedPreferences.saveClient(client)
             clientUpdatedSubject.onNext(client)
@@ -152,13 +156,14 @@ class ClientRepositoryImpl(
 
     override fun requestEditAgent(): Completable {
         // Todo Replace with real request later
-        return Completable.fromCallable{
+        return Completable.fromCallable {
             Thread.sleep(2000)
             editAgentRequestedSubject.onNext(true)
         }
     }
 
     override fun getEditAgentRequestedSubject(): PublishSubject<Boolean> {
+
         return editAgentRequestedSubject
     }
 
@@ -170,7 +175,7 @@ class ClientRepositoryImpl(
 
     override fun requestEditPersonalData(): Completable {
         // Todo Replace with real request later
-        return Completable.fromCallable{
+        return Completable.fromCallable {
             Thread.sleep(2000)
             editPersonalDataRequestedSubject.onNext(true)
         }
