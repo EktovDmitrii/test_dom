@@ -122,8 +122,7 @@
                     android:id="@+id/primarySurfaceContainer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="bottom|end"
-                    android:visibility="gone"
+                    android:layout_gravity="center"
                     tools:visibility="visible">
 
                     <io.livekit.android.renderer.TextureViewRenderer

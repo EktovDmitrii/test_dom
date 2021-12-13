@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.FrameLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -231,17 +232,14 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
 
         // primary container layout parameters
         binding.primarySurfaceContainer.visible()
-        binding.primarySurfaceContainer.layoutParams = ViewGroup.LayoutParams( MATCH_PARENT, MATCH_PARENT)
-
-        binding.primarySurfaceRenderer.layoutParams = ViewGroup.LayoutParams( MATCH_PARENT, MATCH_PARENT)
-
+        binding.primarySurfaceContainer.layoutParams = FrameLayout.LayoutParams( MATCH_PARENT, MATCH_PARENT)
+        binding.primarySurfaceRenderer.layoutParams = FrameLayout.LayoutParams( MATCH_PARENT, MATCH_PARENT)
         binding.switchSurfacesPrimaryImageView.gone()
 
         // secondary container layout parameters
         binding.secondarySurfaceContainer.visible()
-        binding.secondarySurfaceContainer.layoutParams = ViewGroup.LayoutParams( WRAP_CONTENT, WRAP_CONTENT)
-
-        binding.secondarySurfaceRenderer.layoutParams = ViewGroup.LayoutParams(
+        binding.secondarySurfaceContainer.layoutParams = FrameLayout.LayoutParams( WRAP_CONTENT, WRAP_CONTENT)
+        binding.secondarySurfaceRenderer.layoutParams = FrameLayout.LayoutParams(
             SMALL_SCREEN_WIDTH.dp(binding.secondarySurfaceRenderer.context),
             SMALL_SCREEN_HEIGHT.dp(binding.secondarySurfaceRenderer.context))
 
@@ -252,20 +250,16 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
 
         // primary container layout parameters
         binding.primarySurfaceContainer.visible()
-        binding.primarySurfaceContainer.layoutParams = ViewGroup.LayoutParams( WRAP_CONTENT, WRAP_CONTENT)
-
-        binding.primarySurfaceRenderer.layoutParams = ViewGroup.LayoutParams(
+        binding.primarySurfaceContainer.layoutParams = FrameLayout.LayoutParams( WRAP_CONTENT, WRAP_CONTENT)
+        binding.primarySurfaceRenderer.layoutParams = FrameLayout.LayoutParams(
             SMALL_SCREEN_WIDTH.dp(binding.secondarySurfaceRenderer.context),
             SMALL_SCREEN_HEIGHT.dp(binding.secondarySurfaceRenderer.context))
-
         binding.switchSurfacesPrimaryImageView.visible()
 
         // secondary container layout parameters
         binding.secondarySurfaceContainer.visible()
-        binding.secondarySurfaceContainer.layoutParams = ViewGroup.LayoutParams( MATCH_PARENT, MATCH_PARENT)
-
-        binding.secondarySurfaceRenderer.layoutParams = ViewGroup.LayoutParams( MATCH_PARENT, MATCH_PARENT)
-
+        binding.secondarySurfaceContainer.layoutParams = FrameLayout.LayoutParams( MATCH_PARENT, MATCH_PARENT)
+        binding.secondarySurfaceRenderer.layoutParams = FrameLayout.LayoutParams( MATCH_PARENT, MATCH_PARENT)
         binding.switchSurfacesSecondaryImageView.gone()
     }
 
