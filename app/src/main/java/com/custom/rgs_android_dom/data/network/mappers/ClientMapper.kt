@@ -3,7 +3,6 @@ package com.custom.rgs_android_dom.data.network.mappers
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.requests.*
 import com.custom.rgs_android_dom.data.network.responses.AgentHolderResponse
-import com.custom.rgs_android_dom.data.network.responses.AgentResponse
 import com.custom.rgs_android_dom.data.network.responses.ClientResponse
 import com.custom.rgs_android_dom.data.network.responses.UserResponse
 import com.custom.rgs_android_dom.domain.client.models.*
@@ -80,7 +79,6 @@ object ClientMapper {
             agentCode = code,
             agentPhone = phone.formatPhoneForApi(),
             assignType = assignType
-
         )
     }
 
@@ -125,7 +123,7 @@ object ClientMapper {
             ClientAgent(
                 code = response.agent.agentCode,
                 phone = response.assignPhone,
-                saveText = null // todo
+                editAgentWasRequested = null
             )
         } else {
             null
