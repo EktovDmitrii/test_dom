@@ -112,11 +112,11 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
 
         }
 
-        binding.switchSurfacesPrimaryImageView.setOnDebouncedClickListener {
+        binding.switchSurfacesConsultantImageView.setOnDebouncedClickListener {
             viewModel.videoTracksSwitched(false)
         }
 
-        binding.switchSurfacesSecondaryImageView.setOnDebouncedClickListener {
+        binding.switchSurfacesMyImageView.setOnDebouncedClickListener {
             viewModel.videoTracksSwitched(true)
         }
 
@@ -155,8 +155,8 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         subscribe(viewModel.roomInfoObserver){roomInfo->
             if (!renderersInited){
                 roomInfo.room?.let { room ->
-                    room.initVideoRenderer(binding.primarySurfaceRenderer)
-                    room.initVideoRenderer(binding.secondarySurfaceRenderer)
+                    room.initVideoRenderer(binding.consultantSurfaceRenderer)
+                    room.initVideoRenderer(binding.mySurfaceRenderer)
 
                     val audioManager = requireContext().getSystemService(AUDIO_SERVICE) as AudioManager
                     with(audioManager) {
@@ -181,34 +181,32 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
             binding.cameraOffImageView.isActivated = roomInfo.cameraEnabled == false
 
             if (roomInfo.myVideoTrack != null && roomInfo.cameraEnabled){
-                binding.secondarySurfaceContainer.visible()
-                roomInfo.myVideoTrack?.addRenderer(binding.secondarySurfaceRenderer)
+                binding.mySurfaceContainer.visible()
+                roomInfo.myVideoTrack?.addRenderer(binding.mySurfaceRenderer)
             } else {
-                binding.secondarySurfaceContainer.gone()
+                binding.mySurfaceContainer.gone()
             }
 
             if (roomInfo.consultantVideoTrack != null){
-                binding.primarySurfaceRenderer.visible()
-                roomInfo.consultantVideoTrack?.addRenderer(binding.primarySurfaceRenderer)
-                binding.primarySurfaceRenderer.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FILL, RendererCommon.ScalingType.SCALE_ASPECT_FILL)
+                binding.consultantSurfaceRenderer.visible()
+                roomInfo.consultantVideoTrack?.addRenderer(binding.consultantSurfaceRenderer)
+                binding.consultantSurfaceRenderer.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FILL, RendererCommon.ScalingType.SCALE_ASPECT_FILL)
 
                 if (roomInfo.callType == CallType.VIDEO_CALL){
                     binding.waitingConsultantVideoFrameLayout.gone()
                 }
             } else {
-                binding.primarySurfaceRenderer.gone()
+                binding.consultantSurfaceRenderer.gone()
             }
 
-            // TODO change z-order of surface views according to variable roomInfo?.videoTracksSwitched
-
             if (roomInfo.videoTracksSwitched){
-                binding.primarySurfaceContainer.z = 1F
-                binding.secondarySurfaceContainer.z = 0f
-                secondaryContainerFullScreen()
+                binding.consultantSurfaceContainer.z = 1F
+                binding.mySurfaceContainer.z = 0f
+                myContainerFullScreen()
             } else {
-                binding.primarySurfaceContainer.z = 0F
-                binding.secondarySurfaceContainer.z = 1f
-                primaryContainerFullScreen()
+                binding.consultantSurfaceContainer.z = 0F
+                binding.mySurfaceContainer.z = 1f
+                consultantContainerFullScreen()
             }
 
         }
@@ -234,80 +232,62 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
 
     }
 
-    private fun primaryContainerFullScreen() {
+    private fun consultantContainerFullScreen() {
 
-        // primary container layout parameters
-        binding.primarySurfaceContainer.visible()
+        binding.consultantSurfaceContainer.visible()
+        binding.switchSurfacesConsultantImageView.gone()
 
-        val primarySurfaceContainerLayoutParams = binding.primarySurfaceContainer.layoutParams as FrameLayout.LayoutParams
-        primarySurfaceContainerLayoutParams.width = MATCH_PARENT
-        primarySurfaceContainerLayoutParams.height = MATCH_PARENT
-        primarySurfaceContainerLayoutParams.setMargins(0,0,0,0)
-        binding.primarySurfaceContainer.layoutParams = primarySurfaceContainerLayoutParams
+        with(binding.consultantSurfaceContainer.layoutParams as FrameLayout.LayoutParams){
+            width = MATCH_PARENT
+            height = MATCH_PARENT
+            setMargins(0,0,0,0)
+            gravity = Gravity.CENTER
+            binding.consultantSurfaceContainer.layoutParams = this
+        }
 
-        val primarySurfaceRendererLayoutParams = binding.primarySurfaceRenderer.layoutParams
-        primarySurfaceRendererLayoutParams.width = MATCH_PARENT
-        primarySurfaceRendererLayoutParams.height = MATCH_PARENT
-        binding.primarySurfaceRenderer.layoutParams = primarySurfaceRendererLayoutParams
+        binding.mySurfaceContainer.visible()
+        binding.switchSurfacesMyImageView.visible()
 
-        binding.switchSurfacesPrimaryImageView.gone()
+        with(binding.mySurfaceContainer.layoutParams as FrameLayout.LayoutParams){
+            width = SMALL_SCREEN_WIDTH.dp(requireContext())
+            height = SMALL_SCREEN_HEIGHT.dp(requireContext())
+            setMargins(0,0, 16.dp(requireContext()), 16.dp(requireContext()))
+            gravity = Gravity.BOTTOM or Gravity.END
+            binding.mySurfaceContainer.layoutParams = this
+        }
 
-        // secondary container layout parameters
-        binding.secondarySurfaceContainer.visible()
-
-        val secondarySurfaceContainerLayoutParams = binding.secondarySurfaceContainer.layoutParams as FrameLayout.LayoutParams
-        secondarySurfaceContainerLayoutParams.width = WRAP_CONTENT
-        secondarySurfaceContainerLayoutParams.height = WRAP_CONTENT
-        secondarySurfaceContainerLayoutParams.setMargins(0,0, 16.dp(requireContext()), 16.dp(requireContext()))
-        binding.secondarySurfaceContainer.layoutParams = secondarySurfaceContainerLayoutParams
-
-        val secondarySurfaceRendererLayoutParams = binding.secondarySurfaceRenderer.layoutParams
-        secondarySurfaceRendererLayoutParams.width = SMALL_SCREEN_WIDTH.dp(requireContext())
-        secondarySurfaceRendererLayoutParams.height = SMALL_SCREEN_HEIGHT.dp(requireContext())
-        binding.secondarySurfaceRenderer.layoutParams = secondarySurfaceRendererLayoutParams
-
-        binding.switchSurfacesSecondaryImageView.visible()
     }
 
-    private fun secondaryContainerFullScreen() {
+    private fun myContainerFullScreen() {
 
-        // primary container layout parameters
-        binding.primarySurfaceContainer.visible()
+        binding.mySurfaceContainer.visible()
+        binding.switchSurfacesMyImageView.gone()
 
-        val primarySurfaceContainerLayoutParams = binding.primarySurfaceContainer.layoutParams as FrameLayout.LayoutParams
-        primarySurfaceContainerLayoutParams.width = WRAP_CONTENT
-        primarySurfaceContainerLayoutParams.height = WRAP_CONTENT
-        primarySurfaceContainerLayoutParams.setMargins(0,0, 16.dp(requireContext()), 16.dp(requireContext()))
-        binding.primarySurfaceContainer.layoutParams = primarySurfaceContainerLayoutParams
+        with(binding.mySurfaceContainer.layoutParams as FrameLayout.LayoutParams){
+            width = MATCH_PARENT
+            height = MATCH_PARENT
+            setMargins(0,0,0,0)
+            gravity = Gravity.CENTER
+            binding.mySurfaceContainer.layoutParams = this
+        }
 
-        val primarySurfaceRendererLayoutParams = binding.primarySurfaceRenderer.layoutParams
-        primarySurfaceRendererLayoutParams.width = SMALL_SCREEN_WIDTH.dp(requireContext())
-        primarySurfaceRendererLayoutParams.height = SMALL_SCREEN_HEIGHT.dp(requireContext())
-        binding.primarySurfaceRenderer.layoutParams = primarySurfaceRendererLayoutParams
+        binding.consultantSurfaceContainer.visible()
+        binding.switchSurfacesConsultantImageView.visible()
 
-        binding.switchSurfacesPrimaryImageView.visible()
+        with(binding.consultantSurfaceContainer.layoutParams as FrameLayout.LayoutParams){
+            width = SMALL_SCREEN_WIDTH.dp(requireContext())
+            height = SMALL_SCREEN_HEIGHT.dp(requireContext())
+            setMargins(0,0, 16.dp(requireContext()), 16.dp(requireContext()))
+            gravity = Gravity.BOTTOM or Gravity.END
+            binding.consultantSurfaceContainer.layoutParams = this
+        }
 
-        // secondary container layout parameters
-        binding.secondarySurfaceContainer.visible()
-
-        val secondarySurfaceContainerLayoutParams = binding.secondarySurfaceContainer.layoutParams as FrameLayout.LayoutParams
-        secondarySurfaceContainerLayoutParams.width = MATCH_PARENT
-        secondarySurfaceContainerLayoutParams.height = MATCH_PARENT
-        secondarySurfaceContainerLayoutParams.setMargins(0,0,0,0)
-        binding.secondarySurfaceContainer.layoutParams = secondarySurfaceContainerLayoutParams
-
-        val secondarySurfaceRendererLayoutParams = binding.secondarySurfaceRenderer.layoutParams
-        secondarySurfaceRendererLayoutParams.width = MATCH_PARENT
-        secondarySurfaceRendererLayoutParams.height = MATCH_PARENT
-        binding.secondarySurfaceRenderer.layoutParams = secondarySurfaceRendererLayoutParams
-
-        binding.switchSurfacesSecondaryImageView.gone()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        binding.primarySurfaceRenderer.release()
-        binding.secondarySurfaceRenderer.release()
+        binding.consultantSurfaceRenderer.release()
+        binding.mySurfaceRenderer.release()
         val audioManager = requireContext().getSystemService(AUDIO_SERVICE) as AudioManager
         with(audioManager) {
             isSpeakerphoneOn = previousSpeakerphoneOn
