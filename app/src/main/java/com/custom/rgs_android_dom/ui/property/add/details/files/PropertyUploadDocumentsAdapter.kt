@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -13,6 +14,7 @@ import com.custom.rgs_android_dom.utils.*
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.request.RequestOptions
+import com.custom.rgs_android_dom.R
 
 class PropertyUploadDocumentsAdapter(private val onRemoveDocument: (Uri) -> Unit) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -37,18 +39,19 @@ class PropertyUploadDocumentsAdapter(private val onRemoveDocument: (Uri) -> Unit
         return propertyUploadDocumentsItems.size
     }
 
-    fun setItems(files: List<Uri>?) {
-        this.propertyUploadDocumentsItems.clear()
-        if (files != null) {
-            propertyUploadDocumentsItems.addAll(files)
-            notifyDataSetChanged()
-        }
+    fun setItems(files: List<Uri>) {
+        propertyUploadDocumentsItems.clear()
+        propertyUploadDocumentsItems.addAll(files)
+        notifyDataSetChanged()
     }
 
     inner class PropertyUploadDocumentsViewHolder(
         private val binding: ItemPropertyUploadDocumentBinding,
         private val onRemoveDocument: (Uri) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
+
+        private val textFilesExtensions = listOf("pdf", "txt", "doc", "docx", "rtf")
+        private val mediaFilesExtensions = listOf("jpeg", "jpg", "png", "bmp")
 
         fun bind(file: Uri) {
 
@@ -64,36 +67,44 @@ class PropertyUploadDocumentsAdapter(private val onRemoveDocument: (Uri) -> Unit
                 )
             }
 
-            GlideApp.with(binding.root)
-                .load(file)
-                .listener(object : RequestListener<Drawable> {
+            val extension = file.convertToFile(binding.root.context)?.extension
 
-                    override fun onLoadFailed(
-                        e: GlideException?,
-                        model: Any?,
-                        target: com.bumptech.glide.request.target.Target<Drawable>?,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        binding.progressBarContainerFrameLayout.gone()
-                        return false
-                    }
+            if (textFilesExtensions.contains(extension) ||
+                !mediaFilesExtensions.contains(extension)){
+                binding.textFilesPlaceHolderImageView.visible()
+                binding.previewImageView.gone()
+                binding.progressBarContainerFrameLayout.gone()
+            } else {
+                binding.textFilesPlaceHolderImageView.gone()
+                binding.previewImageView.visible()
+                GlideApp.with(binding.root)
+                    .load(file)
+                    .listener(object : RequestListener<Drawable> {
 
-                    override fun onResourceReady(
-                        resource: Drawable?,
-                        model: Any?,
-                        target: com.bumptech.glide.request.target.Target<Drawable>?,
-                        dataSource: DataSource?,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        binding.progressBarContainerFrameLayout.gone()
-                        return false
-                    }
-                })
-                .apply(requestOptions)
-                .into(binding.previewImageView)
+                        override fun onLoadFailed(
+                            e: GlideException?,
+                            model: Any?,
+                            target: com.bumptech.glide.request.target.Target<Drawable>?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            binding.progressBarContainerFrameLayout.gone()
+                            return false
+                        }
 
+                        override fun onResourceReady(
+                            resource: Drawable?,
+                            model: Any?,
+                            target: com.bumptech.glide.request.target.Target<Drawable>?,
+                            dataSource: DataSource?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            binding.progressBarContainerFrameLayout.gone()
+                            return false
+                        }
+                    })
+                    .apply(requestOptions)
+                    .into(binding.previewImageView)
+            }
         }
-
     }
-
 }
