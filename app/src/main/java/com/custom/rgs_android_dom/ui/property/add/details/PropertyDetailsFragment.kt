@@ -3,11 +3,12 @@ package com.custom.rgs_android_dom.ui.property.add.details
 import android.annotation.SuppressLint
 import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.os.Bundle
-import android.util.Log
 import android.util.Size
-import android.view.*
-import android.widget.PopupWindow
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
+import android.widget.PopupWindow
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPropertyDetailsBinding
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
@@ -23,8 +24,7 @@ import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentPropertyDetailsBinding>(R.layout.fragment_property_details),
-    ConfirmBottomSheetFragment.ConfirmListener {
+class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentPropertyDetailsBinding>(R.layout.fragment_property_details){
 
     companion object {
         private const val ARG_PROPERTY_NAME = "ARG_PROPERTY_NAME"
@@ -140,21 +140,6 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
             notification(it)
         }
 
-        subscribe(viewModel.showConfirmCloseObserver){
-            val confirmDialog = ConfirmBottomSheetFragment.newInstance(
-                icon = R.drawable.ic_confirm_cancel,
-                title = "Хотите выйти?",
-                description = "Если вы покинете страницу сейчас, данные об объекте недвижимости не сохранятся",
-                confirmText = "Да, выйти",
-                cancelText = "Нет, остаться"
-            )
-            confirmDialog.show(childFragmentManager, ConfirmBottomSheetFragment.TAG)
-        }
-
-    }
-
-    override fun onConfirmClick() {
-        ScreenManager.closeScope(ADD_PROPERTY)
     }
 
     private fun showHouseLayout(propertyDetailsViewState: PropertyDetailsViewState) {
