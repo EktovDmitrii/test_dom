@@ -11,48 +11,48 @@
         android:layout_height="0dp"
         android:background="@drawable/rectangle_filled_secondary_900_bottom_radius_24dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/bottomButtonsLinearLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottomButtonsLinearLayout">
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_height_chat"
             android:paddingHorizontal="16dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="16dp">
+            android:paddingBottom="16dp"
+            android:paddingTop="8dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/minimizeImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                app:srcCompat="@drawable/ic_minimize_24px" />
+                app:srcCompat="@drawable/ic_minimize_24px"
+                android:layout_gravity="start"/>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_gravity="center_horizontal">
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:id="@+id/titleTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
                     android:fontFamily="@font/my_service_bold"
                     android:textColor="@color/white"
                     android:textSize="16sp"
+                    android:layout_gravity="center_horizontal"
                     app:translationTextKey="Подключаемся..." />
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:id="@+id/subtitleTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
                     android:fontFamily="@font/suisse_regular"
                     android:textColor="@color/secondary400"
                     android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
                     app:translationTextKey="Ищем свободного оператора" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -61,8 +61,8 @@
                 android:id="@+id/phoneImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                app:srcCompat="@drawable/ic_phone_call_24px" />
+                app:srcCompat="@drawable/ic_phone_call_24px"
+                android:layout_gravity="end"/>
 
         </FrameLayout>
 
@@ -74,14 +74,14 @@
                 android:id="@+id/avatarFrameLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="172dp">
+                android:layout_marginTop="172dp"
+                android:layout_centerHorizontal="true">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/avatarImageView"
                     android:layout_width="136dp"
                     android:layout_height="136dp"
-                    app:srcCompat="@drawable/ic_call_consultant" />
+                    app:srcCompat="@drawable/ic_call_consultant"/>
 
                 <FrameLayout
                     android:id="@+id/waitingConsultantVideoFrameLayout"
@@ -94,7 +94,7 @@
                         style="@style/ProgressBarStyle"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:layout_gravity="center" />
+                        android:layout_gravity="center"/>
                 </FrameLayout>
 
             </FrameLayout>
@@ -146,7 +146,7 @@
                     android:layout_width="136dp"
                     android:layout_height="180dp"
                     android:visibility="gone"
-                    tools:visibility="visible" >
+                    tools:visibility="visible">
 
                     <io.livekit.android.renderer.TextureViewRenderer
                         android:id="@+id/mySurfaceRenderer"
@@ -176,20 +176,21 @@
         android:id="@+id/bottomButtonsLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="106dp"
-        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:gravity="center">
 
         <com.custom.rgs_android_dom.views.MSDImageView
             android:id="@+id/switchCameraImageView"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:background="@drawable/button_call_background"
             android:paddingHorizontal="16dp"
             android:paddingVertical="17dp"
             app:isActivated="true"
-            app:srcCompat="@drawable/ic_camera_change_24px"
-            app:tint="@color/button_call_icon_color" />
+            android:enabled="false"
+            app:tint="@color/button_call_icon_color"
+            android:background="@drawable/button_call_background"
+            app:srcCompat="@drawable/ic_camera_change_24px"/>
 
         <FrameLayout
             android:layout_width="wrap_content"
@@ -200,12 +201,12 @@
                 android:id="@+id/cameraOffImageView"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:background="@drawable/button_call_background"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="17dp"
+                app:tint="@color/button_call_icon_color"
+                android:background="@drawable/button_call_background"
                 app:isActivated="true"
-                app:srcCompat="@drawable/ic_camera_off_24px"
-                app:tint="@color/button_call_icon_color" />
+                app:srcCompat="@drawable/ic_camera_off_24px"/>
 
             <ProgressBar
                 android:id="@+id/waitingCameraPermissionProgressBar"
@@ -213,7 +214,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"
-                android:visibility="gone" />
+                android:visibility="gone"/>
 
         </FrameLayout>
 
@@ -221,24 +222,24 @@
             android:id="@+id/micOffImageView"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:layout_marginStart="20dp"
-            android:background="@drawable/button_call_background"
             android:paddingHorizontal="16dp"
             android:paddingVertical="17dp"
+            android:layout_marginStart="20dp"
             app:isActivated="true"
-            app:srcCompat="@drawable/ic_microphone_24px"
-            app:tint="@color/button_call_icon_color" />
+            app:tint="@color/button_call_icon_color"
+            android:background="@drawable/button_call_background"
+            app:srcCompat="@drawable/ic_microphone_24px"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/endCallImageView"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:layout_marginStart="20dp"
-            android:background="@drawable/oval_filled_error_500"
             android:paddingHorizontal="16dp"
             android:paddingVertical="17dp"
-            app:srcCompat="@drawable/ic_call_24px"
-            app:tint="@color/white" />
+            android:layout_marginStart="20dp"
+            app:tint="@color/white"
+            android:background="@drawable/oval_filled_error_500"
+            app:srcCompat="@drawable/ic_call_24px"/>
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>

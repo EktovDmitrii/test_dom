@@ -212,4 +212,8 @@ class ChatInteractor(
         }
         return null
     }
+
+    suspend fun switchCamera() {
+        chatRepository.switchCamera()
+    }
 }

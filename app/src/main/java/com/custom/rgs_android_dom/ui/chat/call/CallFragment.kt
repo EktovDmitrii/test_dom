@@ -94,8 +94,6 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
         binding.endCallImageView.setOnDebouncedClickListener {
             viewModel.onRejectClick()
         }
@@ -106,6 +104,11 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
 
         binding.cameraOffImageView.setOnDebouncedClickListener {
             viewModel.onEnableCameraClick(binding.cameraOffImageView.isActivated)
+            if(binding.cameraOffImageView.isActivated) {
+                binding.cameraOffImageView.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_chat_video_call_24dp))
+            } else {
+                binding.cameraOffImageView.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_camera_off_24px))
+            }
         }
 
         binding.switchCameraImageView.setOnDebouncedClickListener {
@@ -118,10 +121,6 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
 
         binding.switchSurfacesMyImageView.setOnDebouncedClickListener {
             viewModel.videoTracksSwitched(true)
-        }
-
-        binding.minimizeImageView.setOnDebouncedClickListener {
-            viewModel.onMinimizeClick()
         }
 
         subscribe(viewModel.callTypeObserver) {
