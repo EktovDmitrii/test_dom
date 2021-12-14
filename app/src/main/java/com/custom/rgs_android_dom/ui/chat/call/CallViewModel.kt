@@ -153,5 +153,10 @@ class CallViewModel(private val callType: CallType,
         }
     }
 
+    fun onSwitchCameraClick() {
+        viewModelScope.launch {
+            chatInteractor.switchCamera()
+        }
+    }
 
 }

@@ -49,4 +49,6 @@ interface ChatRepository {
 
     suspend fun enableCamera(enable: Boolean)
 
+    suspend fun switchCamera()
+
 }

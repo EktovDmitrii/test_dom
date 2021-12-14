@@ -169,6 +169,7 @@
             android:paddingHorizontal="16dp"
             android:paddingVertical="17dp"
             app:isActivated="true"
+            android:enabled="false"
             app:tint="@color/button_call_icon_color"
             android:background="@drawable/button_call_background"
             app:srcCompat="@drawable/ic_camera_change_24px"/>
