@@ -112,7 +112,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         }
 
         binding.switchCameraImageView.setOnDebouncedClickListener {
-
+            viewModel.onSwitchCameraClick()
         }
 
         binding.switchSurfacesConsultantImageView.setOnDebouncedClickListener {
@@ -126,7 +126,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         subscribe(viewModel.callTypeObserver) {
             when (it) {
                 CallType.AUDIO_CALL -> {
-
+                    if (binding.switchCameraImageView.isEnabled) binding.switchCameraImageView.isEnabled = false
                     requestMicPermissionsAction.launch(
                         arrayOf(
                             Manifest.permission.RECORD_AUDIO,
@@ -175,7 +175,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
 
                 }
             }
-
+            binding.switchCameraImageView.isEnabled = roomInfo.cameraEnabled
             binding.micOffImageView.isActivated = roomInfo.micEnabled == false
             binding.cameraOffImageView.isActivated = roomInfo.cameraEnabled == false
 
