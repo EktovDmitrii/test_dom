@@ -103,7 +103,7 @@ class CallViewModel(private val callType: CallType,
         closeController.value = Unit
     }
 
-    fun onRejectClick() {
+    fun onRejectClick(){
         chatInteractor.leaveLiveKitRoom()
         closeController.value = Unit
     }
@@ -153,10 +153,12 @@ class CallViewModel(private val callType: CallType,
         }
     }
 
-    fun onSwitchCameraClick() {
-        viewModelScope.launch {
-            chatInteractor.switchCamera()
-        }
+    fun onSwitchCameraClick(){
+        viewModelScope.launch {chatInteractor.switchCamera()}
+    }
+
+    fun onVideoTrackSwitchClick(isSwitched: Boolean){
+        roomInfoController.value = roomInfoController.value?.copy(videoTracksSwitched = isSwitched)
     }
 
 }

@@ -4,7 +4,10 @@ import android.Manifest
 import android.content.Context.AUDIO_SERVICE
 import android.media.AudioManager
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.widget.FrameLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -29,6 +32,10 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
 
         private const val REQUEST_CODE_MIC = 1
         private const val REQUEST_CODE_MIC_AND_CAMERA = 2
+
+        private const val SMALL_SCREEN_WIDTH = 136
+        private const val SMALL_SCREEN_HEIGHT = 180
+        private const val SMALL_SCREEN_MARGIN = 16
 
         fun newInstance(callType: CallType, consultant: ChannelMemberModel?): CallFragment {
             return CallFragment().args {
@@ -105,17 +112,21 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         }
 
         binding.switchCameraImageView.setOnDebouncedClickListener {
-
+            viewModel.onSwitchCameraClick()
         }
 
-        binding.switchSurfacesImageView.setOnDebouncedClickListener {
+        binding.switchSurfacesConsultantImageView.setOnDebouncedClickListener {
+            viewModel.onVideoTrackSwitchClick(false)
+        }
 
+        binding.switchSurfacesMyImageView.setOnDebouncedClickListener {
+            viewModel.onVideoTrackSwitchClick(true)
         }
 
         subscribe(viewModel.callTypeObserver) {
             when (it) {
                 CallType.AUDIO_CALL -> {
-
+                    if (binding.switchCameraImageView.isEnabled) binding.switchCameraImageView.isEnabled = false
                     requestMicPermissionsAction.launch(
                         arrayOf(
                             Manifest.permission.RECORD_AUDIO,
@@ -143,8 +154,8 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         subscribe(viewModel.roomInfoObserver){roomInfo->
             if (!renderersInited){
                 roomInfo.room?.let { room ->
-                    room.initVideoRenderer(binding.primarySurfaceRenderer)
-                    room.initVideoRenderer(binding.secondarySurfaceRenderer)
+                    room.initVideoRenderer(binding.consultantSurfaceRenderer)
+                    room.initVideoRenderer(binding.mySurfaceRenderer)
 
                     val audioManager = requireContext().getSystemService(AUDIO_SERVICE) as AudioManager
                     with(audioManager) {
@@ -164,31 +175,38 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
 
                 }
             }
-
+            binding.switchCameraImageView.isEnabled = roomInfo.cameraEnabled
             binding.micOffImageView.isActivated = roomInfo.micEnabled == false
             binding.cameraOffImageView.isActivated = roomInfo.cameraEnabled == false
 
             if (roomInfo.myVideoTrack != null && roomInfo.cameraEnabled){
-                binding.secondarySurfaceContainer.visible()
-                roomInfo.myVideoTrack?.addRenderer(binding.secondarySurfaceRenderer)
+                binding.mySurfaceContainer.visible()
+                roomInfo.myVideoTrack?.addRenderer(binding.mySurfaceRenderer)
             } else {
-                binding.secondarySurfaceContainer.gone()
+                binding.mySurfaceContainer.gone()
             }
 
             if (roomInfo.consultantVideoTrack != null){
-                binding.primarySurfaceRenderer.visible()
-                roomInfo.consultantVideoTrack?.addRenderer(binding.primarySurfaceRenderer)
-                binding.primarySurfaceRenderer.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FILL, RendererCommon.ScalingType.SCALE_ASPECT_FILL)
+                binding.consultantSurfaceRenderer.visible()
+                roomInfo.consultantVideoTrack?.addRenderer(binding.consultantSurfaceRenderer)
+                binding.consultantSurfaceRenderer.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FILL, RendererCommon.ScalingType.SCALE_ASPECT_FILL)
 
                 if (roomInfo.callType == CallType.VIDEO_CALL){
                     binding.waitingConsultantVideoFrameLayout.gone()
                 }
             } else {
-                binding.primarySurfaceRenderer.gone()
+                binding.consultantSurfaceRenderer.gone()
             }
 
-            // TODO change z-order of surface views according to variable roomInfo?.videoTracksSwitched
-
+            if (roomInfo.videoTracksSwitched){
+                binding.consultantSurfaceContainer.z = 1F
+                binding.mySurfaceContainer.z = 0f
+                myContainerFullScreen()
+            } else {
+                binding.consultantSurfaceContainer.z = 0F
+                binding.mySurfaceContainer.z = 1f
+                consultantContainerFullScreen()
+            }
 
         }
 
@@ -213,10 +231,62 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
 
     }
 
+    private fun consultantContainerFullScreen() {
+
+        binding.consultantSurfaceContainer.visible()
+        binding.switchSurfacesConsultantImageView.gone()
+
+        with(binding.consultantSurfaceContainer.layoutParams as FrameLayout.LayoutParams){
+            width = MATCH_PARENT
+            height = MATCH_PARENT
+            setMargins(0,0,0,0)
+            gravity = Gravity.CENTER
+            binding.consultantSurfaceContainer.layoutParams = this
+        }
+
+        binding.mySurfaceContainer.visible()
+        binding.switchSurfacesMyImageView.visible()
+
+        with(binding.mySurfaceContainer.layoutParams as FrameLayout.LayoutParams){
+            width = SMALL_SCREEN_WIDTH.dp(requireContext())
+            height = SMALL_SCREEN_HEIGHT.dp(requireContext())
+            setMargins(0,0, SMALL_SCREEN_MARGIN.dp(requireContext()), SMALL_SCREEN_MARGIN.dp(requireContext()))
+            gravity = Gravity.BOTTOM or Gravity.END
+            binding.mySurfaceContainer.layoutParams = this
+        }
+
+    }
+
+    private fun myContainerFullScreen() {
+
+        binding.mySurfaceContainer.visible()
+        binding.switchSurfacesMyImageView.gone()
+
+        with(binding.mySurfaceContainer.layoutParams as FrameLayout.LayoutParams){
+            width = MATCH_PARENT
+            height = MATCH_PARENT
+            setMargins(0,0,0,0)
+            gravity = Gravity.CENTER
+            binding.mySurfaceContainer.layoutParams = this
+        }
+
+        binding.consultantSurfaceContainer.visible()
+        binding.switchSurfacesConsultantImageView.visible()
+
+        with(binding.consultantSurfaceContainer.layoutParams as FrameLayout.LayoutParams){
+            width = SMALL_SCREEN_WIDTH.dp(requireContext())
+            height = SMALL_SCREEN_HEIGHT.dp(requireContext())
+            setMargins(0,0, SMALL_SCREEN_MARGIN.dp(requireContext()), SMALL_SCREEN_MARGIN.dp(requireContext()))
+            gravity = Gravity.BOTTOM or Gravity.END
+            binding.consultantSurfaceContainer.layoutParams = this
+        }
+
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        binding.primarySurfaceRenderer.release()
-        binding.secondarySurfaceRenderer.release()
+        binding.consultantSurfaceRenderer.release()
+        binding.mySurfaceRenderer.release()
         val audioManager = requireContext().getSystemService(AUDIO_SERVICE) as AudioManager
         with(audioManager) {
             isSpeakerphoneOn = previousSpeakerphoneOn
