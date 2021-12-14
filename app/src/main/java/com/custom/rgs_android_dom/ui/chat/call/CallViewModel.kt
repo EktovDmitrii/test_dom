@@ -131,6 +131,10 @@ class CallViewModel(private val callType: CallType,
         }
     }
 
+    fun onMinimizeClick(){
+        closeController.value = Unit
+    }
+
     private fun requestLiveKitToken(){
         val actualRoomInfo = chatInteractor.getActualRoomInfo()
         if (actualRoomInfo != null){

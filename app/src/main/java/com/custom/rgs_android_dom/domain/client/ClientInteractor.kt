@@ -47,6 +47,10 @@ class ClientInteractor(
     private var editPersonalDataViewState = EditPersonalDataViewState()
     private var editAgentViewState = EditAgentViewState()
 
+    //todo
+    fun saveText(text: Boolean) {
+        clientRepository.saveTextToAgent(text)
+    }
 
     fun onKnowAgentCodeClick() {
         fillClientViewState =
@@ -419,6 +423,7 @@ class ClientInteractor(
         if (errorsValidate.isNotEmpty()){
             return Completable.error(SpecificValidateClientExceptions(errorsValidate))
         }
+
         return clientRepository.assignAgent(editAgentViewState.agentCode, editAgentViewState.agentPhone, ASSIGN_TYPE_PROFILE)
     }
 

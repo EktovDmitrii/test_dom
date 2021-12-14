@@ -6,10 +6,14 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.*
 import android.widget.OverScroller
+import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.view.children
+import androidx.fragment.app.Fragment
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentMainBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.ui.main.stub.MainStubFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -31,6 +35,8 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
     private var bottomSheetBehavior: BottomSheetBehavior<*>? = null
     private var scroller: OverScroller? = null
     private var peekHeight: Int? = null
+
+    private var selectedMenu: LinearLayoutCompat? = null
 
     private val bottomSheetCallback = object : BottomSheetCallback() {
         override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -71,17 +77,82 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
 
         binding.contentConstraintLayout.background = transitionBackground
 
+        selectedMenu = binding.bottomNavigationLayout.navMainLinearLayout
+        activateMenu(true)
+
+        ScreenManager.initBottomSheet(R.id.bottomContainer)
+
+        ScreenManager.onBottomSheetChanged = {
+            bottomSheetMainFragment = it
+            measureAndShowFragment()
+
+            // TODO Replace this later, when we will have normal navigation
+            when (it::class.java.canonicalName){
+                MainStubFragment::class.java.canonicalName -> {
+                    activateMenu(false)
+                    selectedMenu = binding.bottomNavigationLayout.navMainLinearLayout
+                    activateMenu(true)
+                }
+                ClientFragment::class.java.canonicalName -> {
+                    activateMenu(false)
+                    selectedMenu = binding.bottomNavigationLayout.navProfileLinearLayout
+                    activateMenu(true)
+                }
+            }
+        }
+        //ScreenManager.showBottomScreen(ClientFragment())
+        ScreenManager.showBottomScreen(MainStubFragment())
+
         binding.toolbarChatIcon.setOnDebouncedClickListener {
             viewModel.onChatClick()
         }
 
-        ScreenManager.initBottomSheet(R.id.bottomContainer)
-        ScreenManager.onBottomSheetChanged = {
-            bottomSheetMainFragment = it
-            measureAndShowFragment()
+
+        binding.bottomNavigationLayout.navMainLinearLayout.setOnDebouncedClickListener {
+            activateMenu(false)
+            selectedMenu = binding.bottomNavigationLayout.navMainLinearLayout
+            activateMenu(true)
+
+            viewModel.onMainClick()
         }
-        //ScreenManager.showBottomScreen(ClientFragment())
-        ScreenManager.showBottomScreen(MainStubFragment())
+
+        binding.bottomNavigationLayout.navCatalogueLinearLayout.setOnDebouncedClickListener {
+            activateMenu(false)
+            selectedMenu = binding.bottomNavigationLayout.navCatalogueLinearLayout
+            activateMenu(true)
+
+            viewModel.onCatalogueClick()
+        }
+
+        binding.bottomNavigationLayout.navChatLinearLayout.setOnDebouncedClickListener {
+            /*activateMenu(false)
+            selectedMenu = binding.bottomNavigationLayout.navChatLinearLayout
+            activateMenu(true)*/
+
+            viewModel.onChatClick()
+        }
+
+        binding.bottomNavigationLayout.navLoginLinearLayout.setOnDebouncedClickListener {
+            activateMenu(false)
+            selectedMenu = binding.bottomNavigationLayout.navLoginLinearLayout
+            activateMenu(true)
+
+            viewModel.onLoginClick()
+        }
+
+        binding.bottomNavigationLayout.navProfileLinearLayout.setOnDebouncedClickListener {
+            activateMenu(false)
+            selectedMenu = binding.bottomNavigationLayout.navProfileLinearLayout
+            activateMenu(true)
+
+            viewModel.onProfileClick()
+        }
+
+        subscribe(viewModel.isProfileLayoutVisibleObserver){
+            binding.bottomNavigationLayout.navProfileLinearLayout.visibleIf(it)
+            binding.bottomNavigationLayout.navLoginLinearLayout.goneIf(it)
+        }
+
     }
 
     override fun onStart() {
@@ -221,6 +292,12 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
             bottomSheetBehavior?.peekHeight = it
         }
 
+    }
+
+    private fun activateMenu(isActivated: Boolean){
+        selectedMenu?.children?.forEach {
+            it.isActivated = isActivated
+        }
     }
 
     enum class SlideState { TOP, MOVING_BOTTOM, BOTTOM }

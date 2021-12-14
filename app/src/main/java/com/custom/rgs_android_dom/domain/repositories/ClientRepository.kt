@@ -27,6 +27,8 @@ interface ClientRepository {
 
     fun getClientUpdatedSubject(): Observable<ClientModel>
 
+    fun saveTextToAgent(saveText: Boolean)
+
     fun assignAgent(code: String, phone: String, assignType: String): Completable
 
     fun updatePassport(serial: String, number: String): Completable
