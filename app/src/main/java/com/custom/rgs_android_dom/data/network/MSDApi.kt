@@ -140,4 +140,7 @@ interface MSDApi {
                              @Query("metadata") metadata: String)
     : Single<PostPropertyDocumentResponse>
 
+    @GET("services/catalog/search/query")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getCatalogNodes(rootNodeId: String?, rootNodeCode: String?): Single<CatalogNodesResponse>
 }
