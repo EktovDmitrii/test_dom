@@ -21,10 +21,6 @@ class MainCatalogFragment : BaseBottomSheetFragment<MainStubViewModel, FragmentM
         TabLayout(requireContext()).isInlineLabel
     }
 
-    override fun onClose() {
-        hideSoftwareKeyboard()
-    }
-
     override fun getThemeResource(): Int {
         return R.style.BottomSheetNoDim
     }
