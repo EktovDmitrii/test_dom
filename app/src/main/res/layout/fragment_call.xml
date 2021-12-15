@@ -186,9 +186,8 @@
             android:layout_height="56dp"
             android:paddingHorizontal="16dp"
             android:paddingVertical="17dp"
-            app:isActivated="true"
-            android:enabled="false"
             app:tint="@color/button_call_icon_color"
+            android:enabled="false"
             android:background="@drawable/button_call_background"
             app:srcCompat="@drawable/ic_camera_change_24px"/>
 
@@ -206,7 +205,7 @@
                 app:tint="@color/button_call_icon_color"
                 android:background="@drawable/button_call_background"
                 app:isActivated="true"
-                app:srcCompat="@drawable/ic_camera_off_24px"/>
+                app:srcCompat="@drawable/button_call_camera_selector"/>
 
             <ProgressBar
                 android:id="@+id/waitingCameraPermissionProgressBar"

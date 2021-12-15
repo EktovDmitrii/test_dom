@@ -27,7 +27,7 @@ class RequestMicCameraRationaleFragment : BaseBottomSheetModalFragment<RequestMi
 
     override val TAG: String = "REQUEST_MIC_CAMERA_RATIONALE_FRAGMENT"
 
-    private var onDialogDismissListener: OnDialogDismissListener? = null
+    private var onDialogDismissListener: OnDialogAskRationaleDismissListener? = null
     private var requestCode: Int? = null
 
     private var showAppPermissionsResult = buildActivityResultRequest {
@@ -37,7 +37,7 @@ class RequestMicCameraRationaleFragment : BaseBottomSheetModalFragment<RequestMi
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val parentFragment = parentFragment
-        if (parentFragment is OnDialogDismissListener) {
+        if (parentFragment is OnDialogAskRationaleDismissListener) {
             onDialogDismissListener = parentFragment
         }
 
@@ -62,11 +62,11 @@ class RequestMicCameraRationaleFragment : BaseBottomSheetModalFragment<RequestMi
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        onDialogDismissListener?.onDialogDismiss(requestCode)
+        onDialogDismissListener?.onDialogAskRationaleDismiss(requestCode)
     }
 
-    interface OnDialogDismissListener {
-        fun onDialogDismiss(requestCode: Int?)
+    interface OnDialogAskRationaleDismissListener {
+        fun onDialogAskRationaleDismiss(requestCode: Int?)
     }
 
 }
