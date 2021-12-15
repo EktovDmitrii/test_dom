@@ -10,8 +10,8 @@ data class RoomInfoModel(
     var room: Room? = null,
     var consultantVideoTrack: VideoTrack? = null,
     var myVideoTrack: VideoTrack? = null,
+    var myAudioTrack: LocalAudioTrack? = null,
     var cameraEnabled: Boolean,
     var micEnabled: Boolean,
     var videoTracksSwitched: Boolean = false,
-    var localAudioTrack: LocalAudioTrack? = null
 )

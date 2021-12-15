@@ -19,9 +19,7 @@ import io.livekit.android.room.Room
 import io.livekit.android.room.RoomListener
 import io.livekit.android.room.participant.Participant
 import io.livekit.android.room.participant.RemoteParticipant
-import io.livekit.android.room.track.Track
-import io.livekit.android.room.track.TrackPublication
-import io.livekit.android.room.track.VideoTrack
+import io.livekit.android.room.track.*
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -261,38 +259,39 @@ class ChatRepositoryImpl(private val api: MSDApi,
             roomListener
         )
 
-        val localParticipant = room.localParticipant
+        val videoTrack = if (withVideo){
+            val videoTrack = room.localParticipant.createVideoTrack()
+            room.localParticipant.publishVideoTrack(videoTrack)
+            videoTrack.startCapture()
+            videoTrack
+        } else {
+            null
+        }
 
-        localParticipant.setMicrophoneEnabled(micEnabled)
-        localParticipant.setCameraEnabled(withVideo)
-
-        val audioTrack = localParticipant.createAudioTrack()
-        localParticipant.publishAudioTrack(audioTrack)
+        val audioTrack = if (micEnabled){
+            val audioTrack = room.localParticipant.createAudioTrack()
+            audioTrack.enabled = micEnabled
+            room.localParticipant.publishAudioTrack(audioTrack)
+            audioTrack
+        } else {
+            null
+        }
 
         roomInfo = RoomInfoModel(
             callType = callType,
             room = room,
             cameraEnabled = cameraEnabled,
             micEnabled = micEnabled,
-            localAudioTrack = audioTrack
+            myAudioTrack = audioTrack,
+            myVideoTrack = videoTrack
         )
 
-        if (withVideo){
-            val videoTrack = localParticipant.createVideoTrack()
-            localParticipant.publishVideoTrack(videoTrack)
-            videoTrack.startCapture()
-            roomInfo = roomInfo?.copy(
-                myVideoTrack = videoTrack
-            )
-        }
-
         clientSharedPreferences.saveLiveKitRoomCredentials(callJoin)
+        isInCall = true
 
         roomInfo?.let {
             roomInfoSubject.onNext(it)
         }
-
-        isInCall = true
 
     }
 
@@ -331,8 +330,12 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
         if (enable && roomInfo?.myVideoTrack == null){
             val videoTrack = roomInfo?.room?.localParticipant?.createVideoTrack()
-            roomInfo?.room?.localParticipant?.publishVideoTrack(videoTrack!!)
-            videoTrack?.startCapture()
+
+            videoTrack?.let {videoTrack->
+                roomInfo?.room?.localParticipant?.publishVideoTrack(videoTrack)
+                videoTrack.startCapture()
+            }
+
             roomInfo = roomInfo?.copy(
                 myVideoTrack = videoTrack
             )
@@ -346,7 +349,17 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
     override suspend fun enableMic(enable: Boolean) {
         roomInfo = roomInfo?.copy(micEnabled = enable)
-        roomInfo?.localAudioTrack?.enabled = enable
+
+        if (enable && roomInfo?.myAudioTrack == null){
+            val audioTrack =  roomInfo?.room?.localParticipant?.createAudioTrack()
+
+            audioTrack?.let { audioTrack->
+                roomInfo?.room?.localParticipant?.publishAudioTrack(audioTrack)
+            }
+            roomInfo = roomInfo?.copy(myAudioTrack = audioTrack)
+        }
+
+        roomInfo?.myAudioTrack?.enabled = enable
 
         roomInfo?.let {
             roomInfoSubject.onNext(it)
@@ -381,5 +394,21 @@ class ChatRepositoryImpl(private val api: MSDApi,
     private fun stopCallTimer(){
         callTimeDisposable?.dispose()
         callStartTime = null
+    }
+
+    override suspend fun switchCamera() {
+        val room = roomInfo?.room as Room
+        val localVideoTrackOptions = room.videoTrackCaptureDefaults
+        val myVideoTrackOptions = room.localParticipant.videoTrackCaptureDefaults
+        val myVideoTrack = (roomInfo?.myVideoTrack as LocalVideoTrack)
+        if (localVideoTrackOptions.position == CameraPosition.FRONT){
+            room.localParticipant.videoTrackCaptureDefaults = myVideoTrackOptions.copy(position = CameraPosition.BACK)
+        } else {
+            room.localParticipant.videoTrackCaptureDefaults = myVideoTrackOptions.copy(position = CameraPosition.FRONT)
+        }
+        myVideoTrack.restartTrack(room.localParticipant.videoTrackCaptureDefaults)
+        roomInfo?.let {
+            roomInfoSubject.onNext(it)
+        }
     }
 }

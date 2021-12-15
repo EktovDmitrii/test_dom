@@ -14,21 +14,25 @@ class PropertyUploadDocumentsFragment : BaseBottomSheetModalFragment<PropertyUpl
     override val TAG: String = "PROPERTY_UPLOAD_DOCUMENTS_FRAGMENT"
 
     companion object {
-        const val IMAGE_JPEG = "image/jpeg"
-        const val IMAGE_JPG = "image/jpg"
-        const val IMAGE_PNG = "image/png"
-        const val IMAGE_BMP = "image/bmp"
-        const val TEXT_TXT = "text/plain"
-        const val TEXT_PDF = "application/pdf"
-        const val TEXT_DOC = "application/msword"
-        const val TEXT_DOCX = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        const val TEXT_RTF = "application/rtf"
+        // Supported mime types
+        private const val IMAGE_JPEG = "image/jpeg"
+        private const val IMAGE_JPG = "image/jpg"
+        private const val IMAGE_PNG = "image/png"
+        private const val IMAGE_BMP = "image/bmp"
+        private const val TEXT_TXT = "text/plain"
+        private const val TEXT_PDF = "application/pdf"
+        private const val TEXT_DOC = "application/msword"
+        private const val TEXT_DOCX = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        private const val TEXT_RTF = "application/rtf"
+        private const val TEXT_RTF_2 = "text/rtf"
+
+        private val supportedMediaTypes = arrayOf("image/*")
+
+        private val supportedTextTypes = arrayOf(TEXT_TXT, TEXT_PDF, TEXT_DOC, TEXT_DOCX, TEXT_RTF, TEXT_RTF_2)
     }
 
-    private val supportedImages = arrayOf(IMAGE_JPEG, IMAGE_JPG, IMAGE_PNG, IMAGE_BMP)
-    private val supportedTextTypes = arrayOf(TEXT_TXT, TEXT_PDF, TEXT_DOC, TEXT_DOCX, TEXT_RTF)
 
-    private val chooseMediaAction = registerForActivityResult(PropertyDocumentsActivityContract(supportedImages)) { uris ->
+    private val chooseMediaAction = registerForActivityResult(PropertyDocumentsActivityContract(supportedMediaTypes)) { uris ->
         viewModel.onDocumentsSelected(uris)
     }
 

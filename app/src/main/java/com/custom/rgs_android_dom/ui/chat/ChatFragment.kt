@@ -130,7 +130,6 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
     }
 
 
-
     private fun downloadFile(chatFile: ChatFileModel) {
         val url = "${BuildConfig.BASE_URL}/api/chat/users/${chatFile.senderId}/files/${chatFile.id}"
         val request = DownloadManagerRequestProvider.makeDownloadManagerRequest(
@@ -153,7 +152,6 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
         val intent = Intent(Intent.ACTION_VIEW, uri)
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         requireContext().startActivity(intent)
-
         requireContext().unregisterReceiver(onDownloadCompleteReceiver)
     }
 

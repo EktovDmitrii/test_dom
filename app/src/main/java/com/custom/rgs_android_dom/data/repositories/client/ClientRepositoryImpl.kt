@@ -163,7 +163,6 @@ class ClientRepositoryImpl(
     }
 
     override fun getEditAgentRequestedSubject(): PublishSubject<Boolean> {
-
         return editAgentRequestedSubject
     }
 

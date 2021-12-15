@@ -32,4 +32,3 @@ fun Context.getSharedPrefs(name: String): SharedPreferences =
 
 fun Context.getDownloadManager() =
     getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-
