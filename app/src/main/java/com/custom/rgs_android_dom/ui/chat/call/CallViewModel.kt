@@ -119,7 +119,7 @@ class CallViewModel(private val callType: CallType,
         requestLiveKitToken()
     }
 
-    fun onEnableMicCall(enable: Boolean){
+    fun onEnableMicClick(enable: Boolean){
         viewModelScope.launch {
             chatInteractor.enableMic(enable)
         }

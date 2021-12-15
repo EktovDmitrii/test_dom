@@ -1,7 +1,9 @@
 package com.custom.rgs_android_dom.utils
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +12,8 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -116,21 +120,14 @@ fun Fragment.notification(message: String, duration: Long = 2000){
     myToast.view = popupBinding.root
 
     myToast.show()
-
-//    val popupWindow = PopupWindow(popupBinding.root, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true)
-//    popupWindow.animationStyle = R.style.PopupWindowAnimation
-//
-//    popupWindow.showAtLocation(window.decorView.rootView, Gravity.CENTER_VERTICAL or Gravity.BOTTOM, 0, 400)
-//
-//    popupWindow.contentView.bringToFront()
-//
-//    Handler(Looper.getMainLooper()).postDelayed({
-//        popupWindow.dismiss()
-//    }, duration)
 }
 
 fun Fragment.buildActivityResultRequest(function: (ActivityResult) -> Unit): ActivityResultLauncher<Intent> {
     return this.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         function(it)
     }
+}
+
+fun Fragment.hasPermissions(vararg permissions: String): Boolean = permissions.all {
+    ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
 }
