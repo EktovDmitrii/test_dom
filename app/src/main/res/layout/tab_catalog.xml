@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="48dp"
+    android:paddingTop="8dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal">
+
+    <com.custom.rgs_android_dom.views.MSDImageView
+        android:id="@+id/tabIconImageView"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="8dp"
+        tools:src="@drawable/ic_tab_catalog"/>
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/tabTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:fontFamily="@font/suisse_regular"
+        android:textSize="16sp"
+        android:textColor="@color/secondary500"
+        tools:text="Каталог"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

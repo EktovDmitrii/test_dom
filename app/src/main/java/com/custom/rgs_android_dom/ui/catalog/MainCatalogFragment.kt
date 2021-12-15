@@ -9,6 +9,7 @@ import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.main.stub.MainStubViewModel
 import com.custom.rgs_android_dom.utils.hideSoftwareKeyboard
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
+import com.google.android.material.tabs.TabLayout
 
 class MainCatalogFragment : BaseBottomSheetFragment<MainStubViewModel, FragmentMainCatalogBinding>() {
 
@@ -16,7 +17,8 @@ class MainCatalogFragment : BaseBottomSheetFragment<MainStubViewModel, FragmentM
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        MainCatalogPagerAdapter(this)
+        TabLayout(requireContext()).isInlineLabel
     }
 
     override fun onClose() {
