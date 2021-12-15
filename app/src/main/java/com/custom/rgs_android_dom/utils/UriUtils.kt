@@ -26,7 +26,6 @@ fun Uri.convertToFile(context: Context): File? {
         .append(name.substringBefore("."))
         .append(".")
         .append(name.substringAfter(".").toLowerCase(Locale.getDefault()))
-    Log.d("Syrgashev", "name: ${nameStringBuilder.toString()}")
     val parcelFileDescriptor = context.contentResolver.openFileDescriptor(this, "r", null)
     parcelFileDescriptor?.let {
         val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
