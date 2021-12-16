@@ -7,5 +7,5 @@ data class InsuranceProductResponse(
     val productId: String,
 
     @SerializedName("programId")
-    val programId: String
+    val programId: String?
 )

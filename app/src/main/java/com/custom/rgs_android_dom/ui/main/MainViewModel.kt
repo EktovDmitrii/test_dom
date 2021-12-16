@@ -1,10 +1,12 @@
 package com.custom.rgs_android_dom.ui.main
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.data.network.responses.TokenResponse
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthState
+import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel

@@ -21,6 +21,7 @@ import io.livekit.android.room.participant.Participant
 import io.livekit.android.room.participant.RemoteParticipant
 import io.livekit.android.room.track.*
 import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -207,8 +208,12 @@ class ChatRepositoryImpl(private val api: MSDApi,
     override fun getChannelMembers(): Single<List<ChannelMemberModel>> {
         val client = clientSharedPreferences.getClient()
         val channelId = client?.getChatChannelId() ?: ""
-        return api.getChannelMembers(channelId).map {
+        return api.getChannelMembers(channelId).toSingle().map {
             ChatMapper.responseToChannelMembers(it)
+        }.onErrorResumeNext {
+            Single.fromCallable {
+                listOf()
+            }
         }
     }
 

@@ -3,7 +3,6 @@ package com.custom.rgs_android_dom.ui.property.add.select_address
 import android.Manifest
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.EditText
@@ -14,10 +13,10 @@ import com.custom.rgs_android_dom.databinding.FragmentSelectAddressBinding
 import com.custom.rgs_android_dom.ui.MainActivity
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
-import com.custom.rgs_android_dom.ui.location.rationale.RequestLocationRationaleFragment
 import com.custom.rgs_android_dom.ui.address.suggestions.AddressSuggestionsFragment
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.rationale.RequestRationaleFragment
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.utils.activity.hideKeyboardForced
 import com.yandex.mapkit.Animation
@@ -30,7 +29,7 @@ import org.koin.core.parameter.parametersOf
 
 class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelectAddressBinding>(
     R.layout.fragment_select_address
-), RequestLocationRationaleFragment.OnDismissListener, ConfirmBottomSheetFragment.ConfirmListener, MainActivity.DispatchTouchEventListener {
+), RequestRationaleFragment.OnRequestRationaleDismissListener, ConfirmBottomSheetFragment.ConfirmListener, MainActivity.DispatchTouchEventListener {
 
     companion object {
         private const val ARG_PROPERTY_COUNT = "ARG_PROPERTY_COUNT"
@@ -39,6 +38,7 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
         private const val AZIMUTH = 0.0f
         private const val TILT = 0.0f
         private const val ANIMATION_DURATION = 1f
+        private const val REQUEST_CODE_LOCATION = 3
 
         fun newInstance(propertyCount: Int): SelectAddressFragment {
             return SelectAddressFragment().args {
@@ -211,7 +211,7 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
         binding.nextTextView.isEnabled = binding.propertyNameTextInputLayout.getText().isNotEmpty()
     }
 
-    override fun onDismiss() {
+    override fun onRequestRationaleDismiss(requestCode: Int?) {
         viewModel.onRequestLocationRationaleDialogClosed()
     }
 
@@ -242,7 +242,11 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
     }
 
     private fun showRequestLocationRationaleDialog(){
-        val requestLocationRationaleDialog = RequestLocationRationaleFragment()
+        val requestLocationRationaleDialog = RequestRationaleFragment.newInstance(
+            requestCode = REQUEST_CODE_LOCATION,
+            description = "Разрешите доступ к вашей геопозиции, чтобы нам проще было вас найти и помочь",
+            icon = R.drawable.device_location
+        )
         requestLocationRationaleDialog.show(childFragmentManager, requestLocationRationaleDialog.TAG)
     }
 

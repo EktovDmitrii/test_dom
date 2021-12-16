@@ -112,7 +112,7 @@ interface MSDApi {
 
     @GET("chat/channels/{channelId}/members")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getChannelMembers(@Path("channelId") channelId: String): Single<List<ChannelMemberResponse>>
+    fun getChannelMembers(@Path("channelId") channelId: String): Maybe<List<ChannelMemberResponse>>
 
     @Multipart
     @POST("chat/users/me/channels/{channelId}/files")
@@ -142,5 +142,13 @@ interface MSDApi {
 
     @GET("services/catalog/search/query")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getCatalogNodes(rootNodeId: String?, rootNodeCode: String?): Single<CatalogNodesResponse>
+    fun getCatalogNodes(@Query("rootNodeId") rootNodeId: String?, @Query("rootNodeCode") rootNodeCode: String?): Single<CatalogNodesResponse>
+
+    @GET("services/search/query")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getServices(@Query("size") size: Int, @Query("index") index: Int): Single<ServiceItemsResponse>
+
+    @GET("products/search/query")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getProducts(@Query("size") size: Int, @Query("index") index: Int): Single<ProductItemsResponse>
 }

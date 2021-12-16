@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.data.network.mappers
 
 import com.custom.rgs_android_dom.data.network.responses.CatalogNodeResponse
 import com.custom.rgs_android_dom.data.network.responses.ProductResponse
+import com.custom.rgs_android_dom.data.network.responses.ServiceResponse
 import com.custom.rgs_android_dom.domain.catalog.models.*
 import com.custom.rgs_android_dom.utils.asEnumOrDefault
 
@@ -77,6 +78,66 @@ object CatalogMapper {
             versionStatus = response.versionStatus,
             title = response.title,
             type = response.type
+        )
+    }
+
+    fun responseToService(response: ServiceResponse): ServiceModel {
+        return ServiceModel(
+            code = response.code,
+            activatedAt = response.activatedAt,
+            archivedAt = response.archivedAt,
+            createdAt = response.createdAt,
+            defaultProduct = if (response.defaultProduct != null){
+                DefaultProductModel(
+                    enabled = response.defaultProduct.enabled,
+                    productId = response.defaultProduct.productId,
+                    productName = response.defaultProduct.productName,
+                    serviceConsultingId = response.defaultProduct.serviceConsultingId,
+                    serviceConsultingName = response.defaultProduct.serviceConsultingName,
+                    tags = response.defaultProduct.tags
+                )
+            } else {
+                null
+            },
+            deliveryTime = response.deliveryTime,
+            deliveryType = response.deliveryType,
+            description = response.description,
+            descriptionFormat = response.descriptionFormat,
+            descriptionRef = response.descriptionRef,
+            iconLink = response.iconLink,
+            id = response.id,
+            internalDescription = response.internalDescription,
+            name = response.name,
+            objectRequired = response.objectRequired,
+            price = if (response.price != null){
+                ServicePriceModel(
+                    amount = response.price.amount,
+                    vatType = response.price.vatType
+                )
+            } else {
+                null
+            },
+            provider = if (response.provider != null){
+                ServiceProviderModel(
+                    name = response.provider.name,
+                    type = response.provider.type,
+                    providerId = response.provider.providerId
+                )
+            } else {
+                null
+            },
+            status = response.status,
+            title = response.title,
+            type = response.type,
+            unitType = response.unitType,
+            validityFrom = response.validityFrom,
+            validityTo = response.validityTo,
+            versionActivatedAt = response.versionActivatedAt,
+            versionArchivedAt = response.versionArchivedAt,
+            versionCode = response.versionCode,
+            versionCreatedAt = response.versionCreatedAt,
+            versionId = response.versionId,
+            versionStatus = response.versionStatus
         )
     }
 

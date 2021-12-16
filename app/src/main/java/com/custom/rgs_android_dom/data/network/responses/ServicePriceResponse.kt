@@ -2,12 +2,12 @@ package com.custom.rgs_android_dom.data.network.responses
 
 import com.google.gson.annotations.SerializedName
 
-data class ProductPriceResponse(
+data class ServicePriceResponse(
 
     @SerializedName("amount")
-    val amount: Int?,
+    val amount: Int,
 
     @SerializedName("vatType")
-    val vatType: String?
+    val vatType: String,
 
 )

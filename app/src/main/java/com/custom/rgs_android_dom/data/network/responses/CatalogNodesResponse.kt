@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class CatalogNodesResponse(
     @SerializedName("Items")
-    val items: List<CatalogNodeResponse>
+    val items: List<CatalogNodeResponse>?
 )

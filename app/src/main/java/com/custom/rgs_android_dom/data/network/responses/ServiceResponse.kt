@@ -3,7 +3,7 @@ package com.custom.rgs_android_dom.data.network.responses
 import com.google.gson.annotations.SerializedName
 import org.joda.time.DateTime
 
-data class ProductResponse(
+data class ServiceResponse(
     @SerializedName("Code")
     val code: String?,
 
@@ -13,17 +13,17 @@ data class ProductResponse(
     @SerializedName("archivedAt")
     val archivedAt: DateTime?,
 
-    @SerializedName("coolOff")
-    val coolOff: ProductCoolOffResponse?,
-
     @SerializedName("createdAt")
     val createdAt: DateTime?,
 
     @SerializedName("defaultProduct")
-    val defaultProduct: Boolean,
+    val defaultProduct: DefaultProductResponse?,
 
     @SerializedName("deliveryTime")
     val deliveryTime: String?,
+
+    @SerializedName("deliveryType")
+    val deliveryType: String?,
 
     @SerializedName("description")
     val description: String?,
@@ -34,41 +34,38 @@ data class ProductResponse(
     @SerializedName("descriptionRef")
     val descriptionRef: String?,
 
-    @SerializedName("duration")
-    val duration: ProductDurationResponse?,
-
     @SerializedName("iconLink")
     val iconLink: String?,
 
     @SerializedName("id")
     val id: String,
 
-    @SerializedName("insuranceProducts")
-    val insuranceProducts: List<InsuranceProductResponse>?,
-
     @SerializedName("internalDescription")
     val internalDescription: String?,
 
     @SerializedName("name")
-    val name: String,
+    val name: String?,
 
     @SerializedName("objectRequired")
     val objectRequired: Boolean?,
 
     @SerializedName("price")
-    val price: ProductPriceResponse?,
+    val price: ServicePriceResponse?,
+
+    @SerializedName("provider")
+    val provider: ServiceProviderResponse?,
 
     @SerializedName("status")
     val status: String?,
-
-    @SerializedName("tags")
-    val tags: List<String>?,
 
     @SerializedName("title")
     val title: String?,
 
     @SerializedName("type")
     val type: String?,
+
+    @SerializedName("unitType")
+    val unitType: String?,
 
     @SerializedName("validityFrom")
     val validityFrom: DateTime?,

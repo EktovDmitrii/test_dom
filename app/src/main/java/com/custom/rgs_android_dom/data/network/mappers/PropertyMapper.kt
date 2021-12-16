@@ -7,7 +7,7 @@ import com.custom.rgs_android_dom.data.network.responses.PropertyItemResponse
 import com.custom.rgs_android_dom.domain.property.models.PropertyAddressModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
-import com.custom.rgs_android_dom.domain.repositories.PostPropertyDocument
+import com.custom.rgs_android_dom.domain.property.models.PostPropertyDocument
 import java.io.File
 
 object PropertyMapper {

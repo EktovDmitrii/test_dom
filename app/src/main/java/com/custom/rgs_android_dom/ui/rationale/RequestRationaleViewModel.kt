@@ -1,8 +1,8 @@
-package com.custom.rgs_android_dom.ui.chat.call.rationale
+package com.custom.rgs_android_dom.ui.rationale
 
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 
-class RequestMicCameraRationaleViewModel() : BaseViewModel() {
+class RequestRationaleViewModel() : BaseViewModel() {
 
     fun onSettingsScreenClosed(){
         closeController.value = Unit
