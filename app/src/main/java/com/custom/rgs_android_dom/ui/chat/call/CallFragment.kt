@@ -54,6 +54,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
                 && permissionsResult[Manifest.permission.MODIFY_AUDIO_SETTINGS] == true){
 
                 viewModel.onVideoCallPermissionsGranted(true)
+                hideSoftwareKeyboard()
 
                 binding.waitingCameraPermissionProgressBar.gone()
                 binding.cameraOffImageView.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.button_call_camera_selector))
@@ -72,6 +73,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
                 && permissionsResult[Manifest.permission.MODIFY_AUDIO_SETTINGS] == true){
 
                 viewModel.onAudioCallPermissionsGranted(true)
+                hideSoftwareKeyboard()
                 binding.micOffImageView.isActivated = false
             } else {
                 viewModel.onAudioCallPermissionsGranted(false)
