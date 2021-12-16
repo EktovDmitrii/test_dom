@@ -92,6 +92,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        hideSoftwareKeyboard()
 
         binding.endCallImageView.setOnDebouncedClickListener {
             viewModel.onRejectClick()
