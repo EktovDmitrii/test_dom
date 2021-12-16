@@ -21,3 +21,6 @@ fun Double.roundTo(numFractionDigits: Int): Double {
     val factor = 10.0.pow(numFractionDigits.toDouble())
     return (this * factor).roundToInt() / factor
 }
+
+inline fun <reified T : Enum<T>> String?.asEnumOrDefault(defaultValue: T): T =
+    enumValues<T>().firstOrNull { it.name.equals(this, ignoreCase = true) } ?: defaultValue

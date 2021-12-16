@@ -17,14 +17,14 @@ import com.custom.rgs_android_dom.databinding.FragmentCallBinding
 import com.custom.rgs_android_dom.domain.chat.models.CallType
 import com.custom.rgs_android_dom.domain.chat.models.ChannelMemberModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.chat.call.rationale.RequestMicCameraRationaleFragment
+import com.custom.rgs_android_dom.ui.rationale.RequestRationaleFragment
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.utils.activity.clearLightStatusBar
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 import org.webrtc.RendererCommon
 
-class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.fragment_call), RequestMicCameraRationaleFragment.OnDialogAskRationaleDismissListener {
+class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.fragment_call), RequestRationaleFragment.OnRequestRationaleDismissListener {
 
     companion object {
         private const val ARG_CALL_TYPE = "ARG_CALL_TYPE"
@@ -308,16 +308,24 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
     }
 
     private fun showRequestRecordAudioRationaleDialog(){
-        val requestMicCameraRationaleFragment = RequestMicCameraRationaleFragment.newInstance(REQUEST_CODE_MIC)
-        requestMicCameraRationaleFragment.show(childFragmentManager, requestMicCameraRationaleFragment.TAG)
+        val requestRationaleFragment = RequestRationaleFragment.newInstance(
+            requestCode = REQUEST_CODE_MIC,
+            description = "Разрешите доступ, чтобы консультант или мастер могли слышать вас",
+            icon = R.drawable.device_microphone
+        )
+        requestRationaleFragment.show(childFragmentManager, requestRationaleFragment.TAG)
     }
 
     private fun showRequestRecordVideoRationaleDialog(){
-        val requestMicCameraRationaleFragment = RequestMicCameraRationaleFragment.newInstance(REQUEST_CODE_MIC_AND_CAMERA)
-        requestMicCameraRationaleFragment.show(childFragmentManager, requestMicCameraRationaleFragment.TAG)
+        val requestRationaleFragment = RequestRationaleFragment.newInstance(
+            requestCode = REQUEST_CODE_MIC_AND_CAMERA,
+            description = "Разрешите доступ, чтобы консультант или мастер могли видеть вас",
+            icon = R.drawable.device_microphone
+        )
+        requestRationaleFragment.show(childFragmentManager, requestRationaleFragment.TAG)
     }
 
-    override fun onDialogAskRationaleDismiss(requestCode: Int?) {
+    override fun onRequestRationaleDismiss(requestCode: Int?) {
         when (requestCode){
             REQUEST_CODE_MIC -> {
                 if (hasPermissions(Manifest.permission.RECORD_AUDIO)){
