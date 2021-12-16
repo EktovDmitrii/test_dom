@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentAgentBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.client.agent.request_edit.RequestEditAgentFragment
+import com.custom.rgs_android_dom.utils.gone
 import com.custom.rgs_android_dom.utils.makeStringWithLink
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
@@ -42,8 +43,14 @@ class AgentFragment : BaseFragment<AgentViewModel, FragmentAgentBinding>(R.layou
                 binding.agentPhoneTextView.setNoValue()
             }
 
-            binding.requestEditLinearLayout.isVisible = !state.isRequestEditContainerVisible
-            binding.answerEditLinearLayout.isVisible = state.isRequestEditContainerVisible
+            if(state.isEditAgentButtonVisible) {
+                binding.requestEditLinearLayout.gone()
+                binding.answerEditLinearLayout.gone()
+            } else {
+                binding.requestEditLinearLayout.isVisible = !state.isRequestEditContainerVisible
+                binding.answerEditLinearLayout.isVisible = state.isRequestEditContainerVisible
+            }
+
         }
 
         subscribe(viewModel.editAgentRequestedObserver) { wasRequested ->
