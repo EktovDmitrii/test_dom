@@ -70,10 +70,15 @@ object ScreenManager {
 
     fun closeCurrentBottomFragment() {
         val transaction = beginTransaction() ?: return
-        transaction.remove(bottomFragments.last())
-        transaction.commitAllowingStateLoss()
-        bottomFragments.removeLast()
-        onBottomSheetChanged(bottomFragments.last())
+        if (bottomFragments.isNotEmpty()){
+            transaction.remove(bottomFragments.last())
+            transaction.commitAllowingStateLoss()
+            bottomFragments.removeLast()
+            if (bottomFragments.isNotEmpty()){
+                onBottomSheetChanged(bottomFragments.last())
+            }
+        }
+
     }
 
     fun showScreenScope(fragment: BaseFragment<*, *>, scopeId: Int) {

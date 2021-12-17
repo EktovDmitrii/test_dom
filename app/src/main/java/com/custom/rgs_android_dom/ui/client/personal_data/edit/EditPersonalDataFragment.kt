@@ -197,7 +197,12 @@ class EditPersonalDataFragment :
         }
 
         subscribe(viewModel.editPersonalDataRequestedObserver) { wasRequested ->
-            binding.requestEditLinearLayout.isVisible = !wasRequested
+            binding.editRequestTextView.goneIf(wasRequested)
+            binding.descriptionTextView.text = if (wasRequested) {
+                "Заявка на редактирование данных будет рассмотрена"
+            } else {
+                "Чтобы редактировать личные данные,"
+            }
         }
     }
 

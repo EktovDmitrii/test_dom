@@ -16,7 +16,8 @@
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
-        <com.custom.rgs_android_dom.views.text.MSDTextView
+        <TextView
+            android:id="@+id/descriptionTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/suisse_book"
@@ -28,18 +29,17 @@
             android:gravity="center"
             android:lineSpacingExtra="24dp"
             android:lineSpacingMultiplier="0"
-            app:translationTextKey="Разрешите доступ, чтобы консультант или мастер могли слышать вас"/>
+            tools:text="Разрешите доступ, чтобы консультант или мастер могли слышать вас"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iconImageView"
             android:layout_width="wrap_content"
             android:layout_height="232dp"
-            app:srcCompat="@drawable/device_microphone"
             android:paddingHorizontal="33dp"
-            android:layout_marginTop="24dp"/>
+            android:layout_marginTop="24dp"
+            tools:src="@drawable/device_microphone"/>
 
         <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/actionsBottomAppBar"
             android:layout_width="match_parent"
             android:layout_height="82dp"
             android:layout_alignParentBottom="true"
@@ -52,14 +52,12 @@
             tools:ignore="BottomAppBar">
 
             <com.custom.rgs_android_dom.views.text.MSDTextView
-                android:id="@+id/openLocationSettingsTextView"
+                android:id="@+id/openSettingsTextView"
                 style="@style/Button.Filled.Primary"
                 android:layout_width="match_parent"
                 app:translationTextKey="Перейти в настройки" />
 
         </com.google.android.material.bottomappbar.BottomAppBar>
-
-
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -151,6 +151,9 @@ class RegistrationFillClientFragment : BaseFragment<RegistrationFillClientViewMo
                 }
             }
         }
+        subscribe(viewModel.networkErrorObserver) {
+            toast(it)
+        }
     }
 
     override fun onStart() {
@@ -178,7 +181,6 @@ class RegistrationFillClientFragment : BaseFragment<RegistrationFillClientViewMo
     override fun onError() {
         super.onError()
         binding.saveTextView.setLoading(false)
-        toast("Произошла ошибка")
     }
 
     override fun onContent() {
