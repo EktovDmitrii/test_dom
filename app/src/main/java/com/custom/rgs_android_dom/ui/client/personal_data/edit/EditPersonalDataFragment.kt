@@ -198,7 +198,7 @@ class EditPersonalDataFragment :
 
         subscribe(viewModel.editPersonalDataRequestedObserver) { wasRequested ->
             binding.editRequestTextView.isVisible = !wasRequested
-            binding.requestDescrTextView.text = if (wasRequested) {
+            binding.descriptionTextView.text = if (wasRequested) {
                 "Заявка на редактирование данных будет рассмотрена"
             } else {
                 "Чтобы редактировать личные данные,"

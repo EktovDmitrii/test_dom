@@ -147,7 +147,7 @@
                 android:visibility="visible">
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
-                    android:id="@+id/requestDescrTextView"
+                    android:id="@+id/descriptionTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/suisse_regular"
