@@ -33,6 +33,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(layout: Int) : 
         }
         subscribe(viewModel.closeObserver) {
             onClose()
+            viewModel.disposeAll()
         }
     }
 
