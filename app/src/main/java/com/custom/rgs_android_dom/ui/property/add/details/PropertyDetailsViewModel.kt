@@ -37,6 +37,7 @@ class PropertyDetailsViewModel(
     val propertyDetailsObserver: LiveData<PropertyDetailsViewState> = propertyDetailsViewStateController
 
     private val internetConnectionController = MutableLiveData<Boolean>()
+    val internetConnectionObserver: LiveData<Boolean> = internetConnectionController
 
     init {
 
@@ -122,7 +123,7 @@ class PropertyDetailsViewModel(
                     }
                 ).addTo(dataCompositeDisposable)
         } else {
-            loadingStateController.value = LoadingState.LOADING
+            loadingStateController.value = LoadingState.CONTENT
         }
 
     }
@@ -173,8 +174,8 @@ class PropertyDetailsViewModel(
 
     fun onInternetConnectionChanged(isAvailable: Boolean) {
         internetConnectionController.postValue(isAvailable)
-        if (isAvailable && loadingStateObserver.value == LoadingState.LOADING)
-            loadingStateController.postValue(LoadingState.CONTENT)
+        /*if (isAvailable && loadingStateObserver.value == LoadingState.LOADING)
+            loadingStateController.postValue(LoadingState.CONTENT)*/
     }
 
 }

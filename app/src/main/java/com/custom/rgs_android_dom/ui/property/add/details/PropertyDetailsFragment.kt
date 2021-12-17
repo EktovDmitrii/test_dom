@@ -15,9 +15,6 @@ import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.details.view_states.PropertyDetailsViewState
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
-import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
-import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsAdapter
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsFragment
 import com.custom.rgs_android_dom.utils.*
@@ -103,7 +100,7 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
             viewModel.onIsTemporarySelected(it)
         }
 
-        binding.listDocumentsRecyclerView.adapter = PropertyUploadDocumentsAdapter { uri -> viewModel.onRemoveDocumentClick(uri) }
+        binding.listDocumentsRecyclerView.adapter = PropertyUploadDocumentsAdapter(this ) { uri -> viewModel.onRemoveDocumentClick(uri) }
 
         binding.uploadDocumentFrameLayout.setOnDebouncedClickListener {
             val propertyUploadFilesFragment = PropertyUploadDocumentsFragment()
@@ -138,6 +135,10 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
 
         subscribe(viewModel.notificationObserver){
             notification(it)
+        }
+
+        subscribe(viewModel.internetConnectionObserver){
+            adapter.internetConnectionLiveData.value = it
         }
 
     }

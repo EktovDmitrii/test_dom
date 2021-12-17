@@ -5,6 +5,9 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -15,15 +18,19 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.request.RequestOptions
 import com.custom.rgs_android_dom.R
+import io.reactivex.subjects.PublishSubject
 
-class PropertyUploadDocumentsAdapter(private val onRemoveDocument: (Uri) -> Unit) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PropertyUploadDocumentsAdapter(
+    private val lifecycleOwner: LifecycleOwner,
+    private val onRemoveDocument: (Uri) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    val internetConnectionLiveData: MutableLiveData<Boolean> = MutableLiveData()
     private var propertyUploadDocumentsItems = mutableListOf<Uri>()
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val model = propertyUploadDocumentsItems[position]
-        (holder as PropertyUploadDocumentsViewHolder).bind(model)
+        (holder as PropertyUploadDocumentsViewHolder).bind(model,lifecycleOwner)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -53,7 +60,7 @@ class PropertyUploadDocumentsAdapter(private val onRemoveDocument: (Uri) -> Unit
         private val textFilesExtensions = listOf("pdf", "txt", "doc", "docx", "rtf")
         private val mediaFilesExtensions = listOf("jpeg", "jpg", "png", "bmp")
 
-        fun bind(file: Uri) {
+        fun bind(file: Uri, lifecycleOwner: LifecycleOwner) {
 
             binding.removeImageView.setOnDebouncedClickListener {
                 onRemoveDocument(file)
@@ -73,7 +80,9 @@ class PropertyUploadDocumentsAdapter(private val onRemoveDocument: (Uri) -> Unit
                 !mediaFilesExtensions.contains(extension)){
                 binding.textFilesPlaceHolderImageView.visible()
                 binding.previewImageView.gone()
-                binding.progressBarContainerFrameLayout.gone()
+                if(internetConnectionLiveData.value == true) {
+                    binding.progressBarContainerFrameLayout.gone()
+                }
             } else {
                 binding.textFilesPlaceHolderImageView.gone()
                 binding.previewImageView.visible()
@@ -87,7 +96,9 @@ class PropertyUploadDocumentsAdapter(private val onRemoveDocument: (Uri) -> Unit
                             target: com.bumptech.glide.request.target.Target<Drawable>?,
                             isFirstResource: Boolean
                         ): Boolean {
-                            binding.progressBarContainerFrameLayout.gone()
+                            if(internetConnectionLiveData.value == true) {
+                                binding.progressBarContainerFrameLayout.gone()
+                            }
                             return false
                         }
 
@@ -98,12 +109,22 @@ class PropertyUploadDocumentsAdapter(private val onRemoveDocument: (Uri) -> Unit
                             dataSource: DataSource?,
                             isFirstResource: Boolean
                         ): Boolean {
-                            binding.progressBarContainerFrameLayout.gone()
+                            if(internetConnectionLiveData.value == true) {
+                                binding.progressBarContainerFrameLayout.gone()
+                            }
                             return false
                         }
                     })
                     .apply(requestOptions)
                     .into(binding.previewImageView)
+            }
+
+            internetConnectionLiveData.observe(lifecycleOwner){
+                if(it){
+                    binding.progressBarContainerFrameLayout.gone()
+                } else {
+                    binding.progressBarContainerFrameLayout.visible()
+                }
             }
         }
     }
