@@ -15,6 +15,7 @@ import com.custom.rgs_android_dom.utils.formatTo
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import org.joda.time.LocalDateTime
 
@@ -25,7 +26,7 @@ class ClientRepositoryImpl(
 
     private val clientUpdatedSubject: PublishSubject<ClientModel> = PublishSubject.create()
     private val editAgentRequestedSubject: PublishSubject<Boolean> = PublishSubject.create()
-    private val editPersonalDataRequestedSubject: PublishSubject<Boolean> = PublishSubject.create()
+    private val editPersonalDataRequestedSubject: BehaviorSubject<Boolean> = BehaviorSubject.create()
 
     override fun updateClient(
         firstName: String?,
@@ -180,7 +181,7 @@ class ClientRepositoryImpl(
         }
     }
 
-    override fun getEditPersonalDataRequestedSubject(): PublishSubject<Boolean> {
+    override fun getEditPersonalDataRequestedSubject(): BehaviorSubject<Boolean> {
         return editPersonalDataRequestedSubject
     }
 }
