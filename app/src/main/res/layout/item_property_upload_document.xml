@@ -9,23 +9,28 @@
         android:id="@+id/previewImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/rectangle_filled_white_radius_8dp" />
+        android:background="@drawable/rectangle_filled_white_radius_8dp"/>
 
-    <com.custom.rgs_android_dom.views.MSDImageView
-        android:id="@+id/textFilesPlaceHolderImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        tools:visibility="visible"
-        android:layout_gravity="center"
-        android:src="@drawable/ic_default_file"
-        android:tint="@color/secondary600"
-        android:background="@drawable/rectangle_filled_white_radius_8dp" />
+    <FrameLayout
+        android:id="@+id/textFilesPlaceHolderFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rectangle_filled_black_alpha_10_radius_8dp">
+
+        <com.custom.rgs_android_dom.views.MSDImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_default_file"
+            android:tint="@color/secondary600" />
+
+    </FrameLayout>
 
     <FrameLayout
         android:id="@+id/progressBarContainerFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         android:background="@drawable/rectangle_filled_black_alpha_40_radius_8dp">
 
         <ProgressBar
