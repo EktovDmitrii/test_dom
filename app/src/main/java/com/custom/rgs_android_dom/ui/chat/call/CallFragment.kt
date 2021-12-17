@@ -130,6 +130,10 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
             viewModel.onVideoTrackSwitchClick(true)
         }
 
+        binding.minimizeImageView.setOnDebouncedClickListener {
+            viewModel.onMinimizeClick()
+        }
+
         subscribe(viewModel.callTypeObserver) {
             when (it) {
                 CallType.AUDIO_CALL -> {
@@ -332,8 +336,6 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
                 if (hasPermissions(Manifest.permission.RECORD_AUDIO)){
                     viewModel.onEnableMicClick(true)
                     binding.micOffImageView.isActivated = false
-                } else {
-                    showRequestRecordAudioRationaleDialog()
                 }
             }
             REQUEST_CODE_MIC_AND_CAMERA -> {
@@ -344,8 +346,6 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
                     binding.cameraOffImageView.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.button_call_camera_selector))
                     binding.cameraOffImageView.isActivated = false
                     binding.micOffImageView.isActivated = false
-                } else {
-                    showRequestRecordVideoRationaleDialog()
                 }
             }
         }
