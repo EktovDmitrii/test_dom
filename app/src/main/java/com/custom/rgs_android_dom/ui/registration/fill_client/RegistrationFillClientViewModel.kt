@@ -89,7 +89,7 @@ class RegistrationFillClientViewModel(
                             if (it is NetworkException) {
                                 it.toMSDErrorModel()?.let {
                                     validateExceptionController.value = when (it.messageKey) {
-                                        "errors.app.code.ins.093" -> SpecificValidateClientExceptions(
+                                        CODE_INS_093 -> SpecificValidateClientExceptions(
                                             listOf(
                                                 ValidateFieldModel(ClientField.AGENTCODE, "")
                                             )
@@ -132,4 +132,9 @@ class RegistrationFillClientViewModel(
         clientInteractor.onAgentPhoneChanged(agentPhone, isMaskFilled)
     }
 
+    companion object {
+
+        private const val CODE_INS_093 = "companion object"
+
+    }
 }
