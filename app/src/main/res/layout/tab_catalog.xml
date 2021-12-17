@@ -3,25 +3,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="48dp"
-    android:orientation="horizontal"
-    android:paddingHorizontal="8dp"
+    android:orientation="vertical"
     android:paddingTop="8dp">
 
-    <com.custom.rgs_android_dom.views.MSDImageView
-        android:id="@+id/tabIconImageView"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="8dp"
-        android:tint="@color/catalog_tab_item_color"
-        tools:src="@drawable/ic_tab_catalog" />
-
-    <com.custom.rgs_android_dom.views.text.MSDTextView
-        android:id="@+id/tabTitleTextView"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="24dp"
-        android:fontFamily="@font/suisse_regular"
-        android:textColor="@color/catalog_tab_item_color"
-        android:textSize="16sp"
-        tools:text="Каталог" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="7dp">
+
+        <com.custom.rgs_android_dom.views.MSDImageView
+            android:id="@+id/tabIconImageView"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="8dp"
+            android:tint="@color/catalog_tab_item_color"
+            tools:src="@drawable/ic_tab_catalog" />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/tabTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:fontFamily="@font/suisse_regular"
+            android:textColor="@color/catalog_tab_item_color"
+            android:textSize="16sp"
+            tools:text="Каталог" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/catalog_tab_underline_color"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

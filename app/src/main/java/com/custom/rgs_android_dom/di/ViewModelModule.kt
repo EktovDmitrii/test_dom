@@ -13,6 +13,11 @@ import com.custom.rgs_android_dom.ui.client.personal_data.edit.EditPersonalDataV
 import com.custom.rgs_android_dom.ui.client.personal_data.PersonalDataViewModel
 import com.custom.rgs_android_dom.ui.location.rationale.RequestLocationRationaleViewModel
 import com.custom.rgs_android_dom.ui.address.suggestions.AddressSuggestionsViewModel
+import com.custom.rgs_android_dom.ui.catalog.MainCatalogViewModel
+import com.custom.rgs_android_dom.ui.catalog.tabs.availableservices.TabAvailableServicesViewModel
+import com.custom.rgs_android_dom.ui.catalog.tabs.catalog.TabCatalogViewModel
+import com.custom.rgs_android_dom.ui.catalog.tabs.favoriteservices.TabFavoriteServicesViewModel
+import com.custom.rgs_android_dom.ui.catalog.tabs.products.TabProductsViewModel
 import com.custom.rgs_android_dom.ui.chat.call.CallViewModel
 import com.custom.rgs_android_dom.ui.chat.files.manage.ManageFileViewModel
 import com.custom.rgs_android_dom.ui.chat.files.upload.UploadFilesViewModel
@@ -70,4 +75,10 @@ val viewModelModule = module {
     viewModel { parameters -> VideoPlayerViewModel(chatFile = parameters.get()) }
     viewModel { parameters -> CallViewModel(callType = parameters[0], consultant = parameters[1], chatInteractor = get()) }
     viewModel { PropertyUploadDocumentsViewModel(propertyInteractor = get()) }
+    viewModel { MainCatalogViewModel() }
+    viewModel { TabCatalogViewModel() }
+    viewModel { TabProductsViewModel() }
+    viewModel { TabAvailableServicesViewModel() }
+    viewModel { TabFavoriteServicesViewModel() }
+
 }

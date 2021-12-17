@@ -8,6 +8,7 @@ import com.custom.rgs_android_dom.data.providers.auth.manager.AuthState
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
 import com.custom.rgs_android_dom.ui.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.ui.main.stub.MainStubFragment
@@ -85,7 +86,7 @@ class MainViewModel(private val registrationInteractor: RegistrationInteractor,
     }
 
     fun onCatalogueClick(){
-
+        ScreenManager.showBottomScreen(MainCatalogFragment())
     }
 
     fun onProfileClick(){
