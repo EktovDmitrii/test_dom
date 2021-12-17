@@ -45,7 +45,7 @@ val viewModelModule = module {
     viewModel { parameters-> RegistrationFillClientViewModel(phone = parameters.get(), clientInteractor= get()) }
     viewModel { parameters-> CountriesViewModel(selectedCountryLetterCode = parameters.get(), countriesInteractor = get())}
     viewModel { ClientViewModel(clientInteractor = get(), registrationInteractor = get(), propertyInteractor = get()) }
-    viewModel { MainViewModel(registrationInteractor = get(), clientInteractor = get()) }
+    viewModel { MainViewModel(registrationInteractor = get(), clientInteractor = get(), catalogInteractor = get()) }
     viewModel { PersonalDataViewModel(clientInteractor = get()) }
     viewModel { EditPersonalDataViewModel(clientInteractor = get()) }
     viewModel { AgentViewModel(clientInteractor = get()) }

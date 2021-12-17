@@ -27,7 +27,8 @@ import org.joda.time.DateTime
 import org.koin.core.component.inject
 
 class MainViewModel(private val registrationInteractor: RegistrationInteractor,
-                    private val clientInteractor: ClientInteractor
+                    private val clientInteractor: ClientInteractor,
+                    private val catalogInteractor: CatalogInteractor
 ) : BaseViewModel() {
 
     private val isProfileLayoutVisibleController = MutableLiveData<Boolean>()
@@ -51,6 +52,23 @@ class MainViewModel(private val registrationInteractor: RegistrationInteractor,
                 },
                 onError = {
                     logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
+        catalogInteractor.getCatalogCategories()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    for (category in it){
+                        Log.d("MyLog", "CATEGORY " + category.title)
+                        for (subCategory in category.subCategories){
+                            Log.d("MyLog", "SUB CATEGORY " + subCategory.title + " PRODUCTS " + subCategory.productsCount)
+                        }
+                    }
+                },
+                onError = {
+                    it.printStackTrace()
                 }
             ).addTo(dataCompositeDisposable)
     }
