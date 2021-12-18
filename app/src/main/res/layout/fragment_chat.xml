@@ -17,6 +17,7 @@
             android:clipToPadding="false"
             android:overScrollMode="never"
             android:paddingBottom="10dp"
+            android:paddingTop="78dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@+id/sendMessageBottomAppBar"
             app:layout_constraintEnd_toEndOf="parent"
