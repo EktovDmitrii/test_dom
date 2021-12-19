@@ -33,8 +33,8 @@ class ClientInteractor(
         private val MIN_DATE = LocalDateTime.now().minusYears(16).plusDays(-1)
         private val MAX_DATE = LocalDateTime.parse("1900-01-01")
 
-        private val DOC_SERIAL_LENGTH = 4
-        private val DOC_NUMBER_LENGTH = 6
+        private const val DOC_SERIAL_LENGTH = 4
+        private const val DOC_NUMBER_LENGTH = 6
 
         private const val ASSIGN_TYPE_REG = "reg"
         private const val ASSIGN_TYPE_PROFILE = "profile"

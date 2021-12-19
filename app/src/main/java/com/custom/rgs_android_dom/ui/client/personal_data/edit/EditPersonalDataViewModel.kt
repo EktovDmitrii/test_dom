@@ -120,7 +120,7 @@ class EditPersonalDataViewModel(private val clientInteractor: ClientInteractor) 
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
             .subscribeBy(
                 onComplete = {
-                    onBackClick()
+                    closeController.value = Unit
                 },
                 onError = {
                     when(it){
