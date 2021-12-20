@@ -8,19 +8,17 @@ import android.view.animation.*
 import android.widget.OverScroller
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.view.children
-import androidx.fragment.app.Fragment
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentMainBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.ui.main.stub.MainStubFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
-import com.custom.rgs_android_dom.ui.property.info.PropertyInfoFragment
 import com.custom.rgs_android_dom.utils.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.*
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.fragment_main) {
 
@@ -31,6 +29,7 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
     private var canTransitReverse = false
     private var bottomSheetInited = false
 
+    private val sharedNavViewModel by sharedViewModel<SharedNavViewModel>()
     private var bottomSheetMainFragment: BaseBottomSheetFragment<*, *>? = null
     private var bottomSheetBehavior: BottomSheetBehavior<*>? = null
     private var scroller: OverScroller? = null
@@ -152,7 +151,9 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
             binding.bottomNavigationLayout.navProfileLinearLayout.visibleIf(it)
             binding.bottomNavigationLayout.navLoginLinearLayout.goneIf(it)
         }
-
+        subscribe(sharedNavViewModel.isNavigationVisibleObserver) {
+            binding.bottomNavigationLayout.navigationMenu.visibleIf(it)
+        }
     }
 
     override fun onStart() {

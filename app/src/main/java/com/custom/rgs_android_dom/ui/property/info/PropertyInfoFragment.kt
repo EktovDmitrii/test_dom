@@ -1,21 +1,24 @@
 package com.custom.rgs_android_dom.ui.property.info
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPropertyInfoBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
-import com.custom.rgs_android_dom.ui.about_app.AboutAppFragment
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
-import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.main.SharedNavViewModel
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
 class PropertyInfoFragment: BaseBottomSheetFragment<PropertyInfoViewModel, FragmentPropertyInfoBinding>() {
+
+    private val sharedNavViewModel by sharedViewModel<SharedNavViewModel>()
+
     override val TAG: String = "PROPERTY_INFO_FRAGMENT"
 
     companion object {
@@ -36,7 +39,7 @@ class PropertyInfoFragment: BaseBottomSheetFragment<PropertyInfoViewModel, Fragm
         super.onViewCreated(view, savedInstanceState)
 
         binding.backImageView.setOnDebouncedClickListener {
-            ScreenManager.closeCurrentBottomFragment()
+            onClose()
         }
 
         binding.moreImageView.setOnDebouncedClickListener {
@@ -79,5 +82,15 @@ class PropertyInfoFragment: BaseBottomSheetFragment<PropertyInfoViewModel, Fragm
 
     override fun getThemeResource(): Int {
         return R.style.BottomSheetNoDim
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        sharedNavViewModel.hideNav()
+    }
+
+    override fun onClose() {
+        sharedNavViewModel.showNav()
+        super.onClose()
     }
 }
