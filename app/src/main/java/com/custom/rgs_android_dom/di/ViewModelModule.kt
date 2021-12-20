@@ -34,6 +34,7 @@ import com.custom.rgs_android_dom.ui.web_view.WebViewViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import com.custom.rgs_android_dom.ui.client.personal_data.request_edit.RequestEditPersonalDataViewModel
+import com.custom.rgs_android_dom.ui.main.SharedNavViewModel
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsViewModel
 
 val viewModelModule = module {
@@ -70,4 +71,5 @@ val viewModelModule = module {
     viewModel { parameters -> CallViewModel(callType = parameters[0], consultant = parameters[1], chatInteractor = get()) }
     viewModel { PropertyUploadDocumentsViewModel(propertyInteractor = get()) }
     viewModel { RequestRationaleViewModel() }
+    viewModel { SharedNavViewModel() }
 }
