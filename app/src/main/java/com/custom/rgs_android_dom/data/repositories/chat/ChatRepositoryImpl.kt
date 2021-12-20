@@ -415,4 +415,13 @@ class ChatRepositoryImpl(private val api: MSDApi,
             roomInfoSubject.onNext(it)
         }
     }
+
+    override suspend fun switchVideoTrack() {
+        val newValue = roomInfo?.videoTracksSwitched ?: false
+        roomInfo = roomInfo?.copy(videoTracksSwitched = !newValue)
+
+        roomInfo?.let {
+            roomInfoSubject.onNext(it)
+        }
+    }
 }

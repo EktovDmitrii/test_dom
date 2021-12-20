@@ -49,4 +49,6 @@ interface ChatRepository {
 
     suspend fun switchCamera()
 
+    suspend fun switchVideoTrack()
+
 }

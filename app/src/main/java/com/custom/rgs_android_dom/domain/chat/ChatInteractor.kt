@@ -211,4 +211,8 @@ class ChatInteractor(
     suspend fun switchCamera() {
         chatRepository.switchCamera()
     }
+
+    suspend fun switchVideoTrack() {
+        chatRepository.switchVideoTrack()
+    }
 }
