@@ -183,4 +183,8 @@
         <attr name="icon"/>
     </declare-styleable>
 
+    <declare-styleable name="MSDRoundFrameLayout">
+        <attr name="cornerRadius" format="dimension"/>
+    </declare-styleable>
+
 </resources>
