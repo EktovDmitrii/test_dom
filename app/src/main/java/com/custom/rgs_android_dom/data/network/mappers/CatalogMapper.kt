@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
+import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.responses.CatalogNodeResponse
 import com.custom.rgs_android_dom.data.network.responses.ProductResponse
 import com.custom.rgs_android_dom.data.network.responses.ProductShortResponse
@@ -22,9 +23,9 @@ object CatalogMapper {
                     id = subNode.id,
                     title = subNode.title ?: "",
                     parentCategoryId = categoryNode.id,
-                    icon = subNode.iconLink ?: "",
+                    icon = "${BuildConfig.BASE_URL}/api/store/${subNode.iconLink}",
                     productTags = subNode.productTags ?: listOf(),
-                    productsCount = 0
+                    products = listOf()
                 )
                 subCategories.add(subCategory)
             }
@@ -32,7 +33,9 @@ object CatalogMapper {
             val category = CatalogCategoryModel(
                 id = categoryNode.id,
                 title = categoryNode.title ?: "",
+                icon = "${BuildConfig.BASE_URL}/api/store/${categoryNode.iconLink}",
                 productTags = categoryNode.productTags ?: listOf(),
+                products = listOf(),
                 subCategories = subCategories
             )
             catalogCategories.add(category)

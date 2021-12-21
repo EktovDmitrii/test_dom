@@ -33,6 +33,7 @@
         android:fontFamily="@font/suisse_regular"
         android:textColor="@color/secondary600"
         android:textSize="10sp"
+        android:includeFontPadding="false"
         tools:text="12 услуг" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
@@ -40,6 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
+        android:includeFontPadding="false"
         android:fontFamily="@font/suisse_semi_bold"
         android:textColor="@color/secondary900"
         android:textSize="14sp"

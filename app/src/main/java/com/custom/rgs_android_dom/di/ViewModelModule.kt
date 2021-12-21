@@ -50,7 +50,7 @@ val viewModelModule = module {
     viewModel { parameters-> RegistrationFillClientViewModel(phone = parameters.get(), clientInteractor= get()) }
     viewModel { parameters-> CountriesViewModel(selectedCountryLetterCode = parameters.get(), countriesInteractor = get())}
     viewModel { ClientViewModel(clientInteractor = get(), registrationInteractor = get(), propertyInteractor = get()) }
-    viewModel { MainViewModel(registrationInteractor = get(), clientInteractor = get(), catalogInteractor = get()) }
+    viewModel { MainViewModel(registrationInteractor = get(), clientInteractor = get()) }
     viewModel { PersonalDataViewModel(clientInteractor = get()) }
     viewModel { EditPersonalDataViewModel(clientInteractor = get()) }
     viewModel { AgentViewModel(clientInteractor = get()) }
@@ -76,7 +76,7 @@ val viewModelModule = module {
     viewModel { PropertyUploadDocumentsViewModel(propertyInteractor = get()) }
     viewModel { RequestRationaleViewModel() }
     viewModel { MainCatalogViewModel() }
-    viewModel { TabCatalogViewModel() }
+    viewModel { TabCatalogViewModel(catalogInteractor = get()) }
     viewModel { TabProductsViewModel() }
     viewModel { TabAvailableServicesViewModel() }
     viewModel { TabFavoriteServicesViewModel() }

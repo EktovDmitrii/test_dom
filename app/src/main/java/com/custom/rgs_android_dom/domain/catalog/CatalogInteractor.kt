@@ -13,8 +13,10 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
             for (catalogCategory in catalogCategories){
                 for (subCategory in catalogCategory.subCategories){
                     val availableProducts = catalogRepository.getProductsAvailableForPurchase(subCategory.productTags).blockingGet()
-                    subCategory.productsCount = availableProducts.size
+                    subCategory.products = availableProducts
                 }
+                val availableProducts = catalogRepository.getProductsAvailableForPurchase(catalogCategory.productTags).blockingGet()
+                catalogCategory.products = availableProducts
             }
             return@map catalogCategories.filter { it.subCategories.isNotEmpty() }
         }

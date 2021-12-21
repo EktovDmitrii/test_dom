@@ -48,4 +48,5 @@ class MainCatalogFragment :
     override fun getThemeResource(): Int {
         return R.style.BottomSheetNoDim
     }
+
 }

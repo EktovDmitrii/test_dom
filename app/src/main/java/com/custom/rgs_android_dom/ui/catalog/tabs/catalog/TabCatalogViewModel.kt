@@ -3,144 +3,41 @@ package com.custom.rgs_android_dom.ui.catalog.tabs.catalog
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
+import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.catalog.mocks.*
+import com.custom.rgs_android_dom.utils.logException
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 
-class TabCatalogViewModel : BaseViewModel() {
+class TabCatalogViewModel(private val catalogInteractor: CatalogInteractor) : BaseViewModel() {
 
     private val viewStateController = MutableLiveData<ProductViewState>()
     val viewStateObserver: LiveData<ProductViewState> = viewStateController
 
+    private val catalogCategoriesController = MutableLiveData<List<CatalogCategoryModel>>()
+    val catalogCategoriesObserver: LiveData<List<CatalogCategoryModel>> = catalogCategoriesController
+
     init {
-        viewStateController.value = ProductViewState(
-            primaryCategories = listOf(
-                ProductItemModel(title = "Выездная диагностика", servicesQuantity = "4 услуги"),
-                ProductItemModel(title = "Выездная диагностика", servicesQuantity = "4 услуги"),
-                ProductItemModel(title = "Выездная диагностика", servicesQuantity = "4 услуги"),
-                MoreProductsItemModel()
-            ),
-            secondaryCategories = listOf(
-                SecondaryCategoryModel(
-                    title = "Сантехника",
-                    modelsWithPicture = listOf(
-                        SecondaryCategoryModelWithPicture(title = "Устранение засоров"),
-                        SecondaryCategoryModelWithPicture(title = "Работы с унитазами"),
-                        SecondaryCategoryModelWithPicture(title = "Работы с душевыми стойками")
-                    ),
-                    modelsWithoutPicture = listOf(
-                        SecondaryCategoryModelWithoutPicture(
-                            title = "Установка раковины, мойки",
-                            servicesQuantity = "10 видов услуг"
-                        )
-                    )
-                ),
-                SecondaryCategoryModel(
-                    title = "Электромонтажные работы",
-                    modelsWithPicture = listOf(
-                        SecondaryCategoryModelWithPicture(title = "Работы с розетками"),
-                        SecondaryCategoryModelWithPicture(title = "Люстры и светильники"),
-                        SecondaryCategoryModelWithPicture(title = "Электросчетчики")
-                    ),
-                    modelsWithoutPicture = listOf(
-                        SecondaryCategoryModelWithoutPicture(
-                            title = "Установка автоматов и подключение щита",
-                            servicesQuantity = "10 видов услуг"
-                        ),
-                        SecondaryCategoryModelWithoutPicture(
-                            title = "Демонтаж старого и прокладка нового кабеля",
-                            servicesQuantity = "12 видов услуг"
-                        )
-                    )
-                ),
-                SecondaryCategoryModel(
-                    title = "Уборка",
-                    modelsWithPicture = listOf(
-                        SecondaryCategoryModelWithPicture(title = "Разовая уборка"),
-                        SecondaryCategoryModelWithPicture(title = "Генеральная уборка"),
-                        SecondaryCategoryModelWithPicture(title = "Химчистка")
-                    ),
-                    modelsWithoutPicture = listOf(
-                        SecondaryCategoryModelWithoutPicture(
-                            title = "Уборка после ремонт",
-                            servicesQuantity = "10 видов услуг"
-                        ),
-                        SecondaryCategoryModelWithoutPicture(
-                            title = "Уборка после пожара",
-                            servicesQuantity = "12 видов услуг"
-                        )
-                    )
-                ),
-                SecondaryCategoryModel(
-                    title = "Бытовая техника",
-                    modelsWithPicture = listOf(
-                        SecondaryCategoryModelWithPicture(title = "Установка стиральной, посудомоечной машины"),
-                        SecondaryCategoryModelWithPicture(title = "Водонагреватели и эл.сушилки"),
-                        SecondaryCategoryModelWithPicture(title = "Электропли-ты, духовые шкафы и пр.")
-                    ),
-                    modelsWithoutPicture = listOf(
-                        SecondaryCategoryModelWithoutPicture(
-                            title = "Установка вытяжки и монтаж вентиляции",
-                            servicesQuantity = "10 видов услуг"
-                        )
-                    )
-                ),
-                SecondaryCategoryModel(
-                    title = "Двери, замки",
-                    modelsWithPicture = listOf(
-                        SecondaryCategoryModelWithPicture(title = "Аварийное вскрытие без ключа"),
-                        SecondaryCategoryModelWithPicture(title = "Аварийное вскрытие с ключом"),
-                        SecondaryCategoryModelWithPicture(title = "Аварийное вскрытие сейфов")
-                    ),
-                    modelsWithoutPicture = listOf(
-                        SecondaryCategoryModelWithoutPicture(
-                            title = "Аварийное вскрытие автомобиля",
-                            servicesQuantity = "10 видов услуг"
-                        )
-                    )
-                )
-            ),
-            tertiaryCategories = listOf(
-                TertiaryCategoryModel(
-                    title = "Замена стекла",
-                    items = listOf(
-                        TertiaryItemModel(
-                            title = "Ремонт окон",
-                            quantity = "23 вида услуг"
-                        ),
-                        TertiaryItemModel(
-                            title = "Утепление балкона",
-                            quantity = "10 видов услуг"
-                        )
-                    )
-                ),
-                TertiaryCategoryModel(
-                    title = "Работы по кровле",
-                    items = listOf(
-                        TertiaryItemModel(
-                            title = "Монтаж стропильной конструкции кровли",
-                            quantity = "10 видов услуг"
-                        ),
-                        TertiaryItemModel(
-                            title = "Монтаж обрешетки",
-                            quantity = "10 видов услуг"
-                        ),
-                        TertiaryItemModel(
-                            title = "Устройство «кровельного пирога» (изоляции кровли)",
-                            quantity = "10 видов услуг"
-                        )
-                    )
-                ),
-                TertiaryCategoryModel(
-                    title = "Распил и вывоз деревьев",
-                    items = listOf(
-                        TertiaryItemModel(
-                            title = "Распил и вывоз деревьев",
-                            quantity = "10 видов услуг"
-                        )
-                    )
-                )
-            )
-        )
+        catalogInteractor.getCatalogCategories()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                loadingStateController.value = LoadingState.LOADING
+            }
+            .subscribeBy(
+                onSuccess = {
+                    catalogCategoriesController.value = it
+                    loadingStateController.value = LoadingState.CONTENT
+                },
+                onError = {
+                    logException(this, it)
+                    loadingStateController.value = LoadingState.CONTENT
+                }
+            ).addTo(dataCompositeDisposable)
     }
 
     fun onShowAllPrimaryCategoryClick() {

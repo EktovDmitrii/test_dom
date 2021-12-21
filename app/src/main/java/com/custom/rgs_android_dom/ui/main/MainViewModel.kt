@@ -1,12 +1,9 @@
 package com.custom.rgs_android_dom.ui.main
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.custom.rgs_android_dom.data.network.responses.TokenResponse
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthState
-import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
@@ -24,12 +21,10 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import org.joda.time.DateTime
 import org.koin.core.component.inject
 
 class MainViewModel(private val registrationInteractor: RegistrationInteractor,
-                    private val clientInteractor: ClientInteractor,
-                    private val catalogInteractor: CatalogInteractor
+                    private val clientInteractor: ClientInteractor
 ) : BaseViewModel() {
 
     private val isProfileLayoutVisibleController = MutableLiveData<Boolean>()
@@ -56,22 +51,6 @@ class MainViewModel(private val registrationInteractor: RegistrationInteractor,
                 }
             ).addTo(dataCompositeDisposable)
 
-        catalogInteractor.getCatalogCategories()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onSuccess = {
-                    for (category in it){
-                        Log.d("MyLog", "CATEGORY " + category.title)
-                        for (subCategory in category.subCategories){
-                            Log.d("MyLog", "SUB CATEGORY " + subCategory.title + " PRODUCTS " + subCategory.productsCount)
-                        }
-                    }
-                },
-                onError = {
-                    it.printStackTrace()
-                }
-            ).addTo(dataCompositeDisposable)
     }
 
     fun subscribeLogout() {
