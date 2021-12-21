@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.domain.client.mappers
 
 import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
 import com.custom.rgs_android_dom.domain.client.models.ClientModel
+import com.custom.rgs_android_dom.domain.client.models.ClientProductsModel
 import com.custom.rgs_android_dom.domain.client.view_states.EditPersonalDataViewState
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_ONLY
 import com.custom.rgs_android_dom.utils.PhoneMaskHelper
@@ -57,6 +58,10 @@ object EditPersonalDataViewStateMapper {
             agentCode = client.agent?.code,
             agentPhone = client.agent?.phone
         )
+    }
+
+    fun from(client: ClientModel,products: ClientProductsModel): EditPersonalDataViewState{
+        return from(client).copy(isBuyer = products.total != 0)
     }
 
 }

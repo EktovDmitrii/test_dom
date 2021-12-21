@@ -188,9 +188,14 @@ class ClientInteractor(
     }
 
     fun getEditPersonalDataViewState(): Single<EditPersonalDataViewState>{
-        return clientRepository.getClient().map {
+        /*return clientRepository.getClient().map {
             editPersonalDataViewState = EditPersonalDataViewStateMapper.from(it)
             return@map editPersonalDataViewState
+        }.doOnSuccess {
+            CacheHelper.loadAndSaveClient()
+        }*/
+        return Single.zip(clientRepository.getClient(),clientRepository.getClientProducts()){ client, products ->
+            EditPersonalDataViewStateMapper.from(client,products)
         }.doOnSuccess {
             CacheHelper.loadAndSaveClient()
         }
@@ -510,18 +515,34 @@ class ClientInteractor(
 
     private fun validateEditPersonalDataState(){
         var isSaveTextViewEnabled = false
-        if (!editPersonalDataViewState.isFirstNameSaved && editPersonalDataViewState.firstName.isNotEmpty()
-            || !editPersonalDataViewState.isLastNameSaved && editPersonalDataViewState.lastName.isNotEmpty()
-            || !editPersonalDataViewState.isMiddleNameSaved && editPersonalDataViewState.middleName.isNotEmpty()
-            || !editPersonalDataViewState.isBirthdaySaved && editPersonalDataViewState.birthday.isNotEmpty()
-            || !editPersonalDataViewState.isGenderSaved && editPersonalDataViewState.gender != null
-            || !editPersonalDataViewState.isPhoneSaved && editPersonalDataViewState.phone.isNotEmpty()
-            || !editPersonalDataViewState.isDocSerialSaved && editPersonalDataViewState.docSerial.isNotEmpty()
-            || !editPersonalDataViewState.isDocNumberSaved && editPersonalDataViewState.docNumber.isNotEmpty()
-            || editPersonalDataViewState.wasSecondPhoneEdited
-            || editPersonalDataViewState.wasEmailEdited){
-            isSaveTextViewEnabled = true
+        if(editPersonalDataViewState.isBuyer){
+            if (!editPersonalDataViewState.isFirstNameSaved && editPersonalDataViewState.firstName.isNotEmpty()
+                || !editPersonalDataViewState.isLastNameSaved && editPersonalDataViewState.lastName.isNotEmpty()
+                || !editPersonalDataViewState.isMiddleNameSaved && editPersonalDataViewState.middleName.isNotEmpty()
+                || !editPersonalDataViewState.isBirthdaySaved && editPersonalDataViewState.birthday.isNotEmpty()
+                || !editPersonalDataViewState.isGenderSaved && editPersonalDataViewState.gender != null
+                || !editPersonalDataViewState.isPhoneSaved && editPersonalDataViewState.phone.isNotEmpty()
+                || !editPersonalDataViewState.isDocSerialSaved && editPersonalDataViewState.docSerial.isNotEmpty()
+                || !editPersonalDataViewState.isDocNumberSaved && editPersonalDataViewState.docNumber.isNotEmpty()
+                || editPersonalDataViewState.wasSecondPhoneEdited
+                || editPersonalDataViewState.wasEmailEdited){
+                isSaveTextViewEnabled = true
+            }
+        } else {
+            if (editPersonalDataViewState.firstName.isNotEmpty()
+                || editPersonalDataViewState.lastName.isNotEmpty()
+                || editPersonalDataViewState.middleName.isNotEmpty()
+                || editPersonalDataViewState.birthday.isNotEmpty()
+                || editPersonalDataViewState.gender != null
+                || editPersonalDataViewState.phone.isNotEmpty()
+                || editPersonalDataViewState.docSerial.isNotEmpty()
+                || editPersonalDataViewState.docNumber.isNotEmpty()
+                || editPersonalDataViewState.wasSecondPhoneEdited
+                || editPersonalDataViewState.wasEmailEdited){
+                isSaveTextViewEnabled = true
+            }
         }
+
         validateSubject.accept(isSaveTextViewEnabled)
     }
 

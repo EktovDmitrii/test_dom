@@ -9,7 +9,7 @@ import org.json.JSONObject
 class WsResponseParser(private val gson: Gson) {
 
     companion object {
-        const val FILED_EVENT = "event"
+        const val FILED_EVENT = "event" // очепятка?
         const val FIELD_DATA = "data"
         const val FIELD_CALL_ID = "callId"
         const val FIELD_TOKEN = "token"

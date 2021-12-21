@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.data.network.requests.DeleteContactsRequest
 import com.custom.rgs_android_dom.data.network.requests.UpdateClientRequest
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.domain.client.models.ClientModel
+import com.custom.rgs_android_dom.domain.client.models.ClientProductsModel
 import com.custom.rgs_android_dom.domain.client.models.Gender
 import com.custom.rgs_android_dom.domain.client.models.UserDetailsModel
 import com.custom.rgs_android_dom.domain.repositories.ClientRepository
@@ -23,6 +24,13 @@ class ClientRepositoryImpl(
     private val api: MSDApi,
     private val clientSharedPreferences: ClientSharedPreferences
 ) : ClientRepository {
+
+    companion object {
+        private const val PRODUCTS_PAGE_SIZE = ""
+        private const val PRODUCTS_PAGE_INDEX = ""
+        private const val PRODUCTS_CONTRACT_ID = ""
+        private const val PRODUCTS_STATUS = ""
+    }
 
     private val clientUpdatedSubject: PublishSubject<ClientModel> = PublishSubject.create()
     private val editAgentRequestedSubject: PublishSubject<Boolean> = PublishSubject.create()
@@ -184,4 +192,16 @@ class ClientRepositoryImpl(
     override fun getEditPersonalDataRequestedSubject(): BehaviorSubject<Boolean> {
         return editPersonalDataRequestedSubject
     }
+
+    override fun getClientProducts(): Single<ClientProductsModel> {
+        return api.getClientProducts(
+            PRODUCTS_PAGE_SIZE,
+            PRODUCTS_PAGE_INDEX,
+            PRODUCTS_CONTRACT_ID,
+            PRODUCTS_STATUS
+        ).map {
+            ClientMapper.responseToClientProducts(it)
+        }
+    }
+
 }
