@@ -52,8 +52,14 @@ open class BaseViewModel : ViewModel(), KoinComponent {
     }
 
     override fun onCleared() {
-        dataCompositeDisposable.clear()
+        disposeAll()
         super.onCleared()
+    }
+
+    fun disposeAll() {
+        if (!dataCompositeDisposable.isDisposed) {
+            dataCompositeDisposable.clear()
+        }
     }
 
     enum class LoadingState{

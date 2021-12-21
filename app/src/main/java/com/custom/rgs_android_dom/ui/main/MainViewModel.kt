@@ -1,15 +1,13 @@
 package com.custom.rgs_android_dom.ui.main
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.custom.rgs_android_dom.data.network.responses.TokenResponse
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthState
-import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
 import com.custom.rgs_android_dom.ui.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.ui.main.stub.MainStubFragment
@@ -23,7 +21,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import org.joda.time.DateTime
 import org.koin.core.component.inject
 
 class MainViewModel(private val registrationInteractor: RegistrationInteractor,
@@ -53,6 +50,7 @@ class MainViewModel(private val registrationInteractor: RegistrationInteractor,
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
+
     }
 
     fun subscribeLogout() {
@@ -87,7 +85,7 @@ class MainViewModel(private val registrationInteractor: RegistrationInteractor,
     }
 
     fun onCatalogueClick(){
-
+        ScreenManager.showBottomScreen(MainCatalogFragment())
     }
 
     fun onProfileClick(){

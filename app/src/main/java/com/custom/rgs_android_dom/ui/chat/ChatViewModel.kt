@@ -94,11 +94,9 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
         chatInteractor.sendMessage(message = newMessage)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onError = {
-                    handleNetworkException(it)
-                }
-            ).addTo(dataCompositeDisposable)
+            .doOnError { handleNetworkException(it) }
+            .subscribeBy()
+            .addTo(dataCompositeDisposable)
     }
 
     fun onFileClick(chatFile: ChatFileModel){
