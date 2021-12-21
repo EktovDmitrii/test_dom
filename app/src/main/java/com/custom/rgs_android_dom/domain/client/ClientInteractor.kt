@@ -188,12 +188,7 @@ class ClientInteractor(
     }
 
     fun getEditPersonalDataViewState(): Single<EditPersonalDataViewState>{
-        /*return clientRepository.getClient().map {
-            editPersonalDataViewState = EditPersonalDataViewStateMapper.from(it)
-            return@map editPersonalDataViewState
-        }.doOnSuccess {
-            CacheHelper.loadAndSaveClient()
-        }*/
+
         return Single.zip(clientRepository.getClient(),clientRepository.getClientProducts()){ client, products ->
             EditPersonalDataViewStateMapper.from(client,products)
         }.doOnSuccess {

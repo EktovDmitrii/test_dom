@@ -11,7 +11,8 @@ import com.custom.rgs_android_dom.utils.formatTo
 
 object EditPersonalDataViewStateMapper {
 
-    fun from(client: ClientModel): EditPersonalDataViewState {
+    fun from(client: ClientModel, products: ClientProductsModel): EditPersonalDataViewState {
+
         val phoneMask = PhoneMaskHelper.getMaskForPhone(client.phone)
 
         val passport = client.documents?.find { it.type == ClientMapper.DOCTYPE_NATIONAL_PASSPORT }
@@ -24,7 +25,7 @@ object EditPersonalDataViewStateMapper {
             it.type == ClientMapper.CONTACT_TYPE_PHONE && it.contact != client.phone
         }?.id ?: ""
 
-        if (secondPhone.isNotEmpty()){
+        if (secondPhone.isNotEmpty()) {
             val secondPhoneMask = PhoneMaskHelper.getMaskForPhone(secondPhone)
             secondPhone = secondPhone.formatPhoneByMask(secondPhoneMask, "#")
         }
@@ -56,12 +57,9 @@ object EditPersonalDataViewStateMapper {
             email = client.contacts?.find { it.type == "email" }?.contact ?: "",
             emailId = emailId,
             agentCode = client.agent?.code,
-            agentPhone = client.agent?.phone
+            agentPhone = client.agent?.phone,
+            isBuyer = products.clientProducts.isNotEmpty()
         )
-    }
-
-    fun from(client: ClientModel,products: ClientProductsModel): EditPersonalDataViewState{
-        return from(client).copy(isBuyer = products.total != 0)
     }
 
 }
