@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal">
+
+    <com.custom.rgs_android_dom.views.MSDImageView
+        android:id="@+id/subcategoryImageView"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="3dp"
+        tools:background="@drawable/rectangle_filled_lime_radius_8dp" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:fontFamily="@font/suisse_semi_bold"
+                android:textColor="@color/secondary900"
+                android:textSize="14sp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/moreImageView"
+                tools:text="Установка раковины, мойки" />
+
+            <TextView
+                android:id="@+id/subtitleTextView"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:fontFamily="@font/suisse_regular"
+                android:textColor="@color/secondary500"
+                android:textSize="14sp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+                app:layout_constraintEnd_toStartOf="@+id/moreImageView"
+                tools:text="10 видов услуг" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/moreImageView"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                app:layout_constraintTop_toTopOf="@id/titleTextView"
+                app:layout_constraintBottom_toBottomOf="@+id/subtitleTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:tint="@color/secondary500"
+                app:srcCompat="@drawable/ic_arrow_right_24px" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="12dp"
+            android:background="@color/secondary900_alpha8" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
