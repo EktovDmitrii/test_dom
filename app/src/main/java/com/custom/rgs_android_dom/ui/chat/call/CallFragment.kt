@@ -123,11 +123,11 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         }
 
         binding.switchSurfacesConsultantImageView.setOnDebouncedClickListener {
-            viewModel.onVideoTrackSwitchClick(false)
+            viewModel.onVideoTrackSwitchClick()
         }
 
         binding.switchSurfacesMyImageView.setOnDebouncedClickListener {
-            viewModel.onVideoTrackSwitchClick(true)
+            viewModel.onVideoTrackSwitchClick()
         }
 
         binding.minimizeImageView.setOnDebouncedClickListener {
