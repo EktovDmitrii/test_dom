@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/serviceTitleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/my_service_bold"
+        android:textColor="@color/secondary900"
+        android:textSize="16sp"
+        app:translationTextKey="Сантехника" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/leftLinearLayout"
+                android:layout_width="104dp"
+                android:layout_height="156dp"
+                android:layout_gravity="start"
+                android:background="@drawable/rectangle_filled_lime_radius_16dp"
+                android:orientation="vertical">
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/leftTitleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:fontFamily="@font/suisse_regular"
+                    android:textColor="@color/secondary900"
+                    android:textSize="12sp"
+                    tools:text="Устранение засоров" />
+
+                <com.custom.rgs_android_dom.views.MSDImageView
+                    android:id="@+id/leftImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/centerLinearLayout"
+                android:layout_width="104dp"
+                android:layout_height="156dp"
+                android:layout_gravity="center"
+                android:background="@drawable/rectangle_filled_lime_radius_16dp"
+                android:orientation="vertical">
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/centerTitleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:fontFamily="@font/suisse_regular"
+                    android:textColor="@color/secondary900"
+                    android:textSize="12sp"
+                    tools:text="Работа с унитазами" />
+
+                <com.custom.rgs_android_dom.views.MSDImageView
+                    android:id="@+id/centerImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/rightLinearLayout"
+                android:layout_width="104dp"
+                android:layout_height="156dp"
+                android:layout_gravity="end"
+                android:background="@drawable/rectangle_filled_lime_radius_16dp"
+                android:orientation="vertical">
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/rightTitleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:fontFamily="@font/suisse_regular"
+                    android:textColor="@color/secondary900"
+                    android:textSize="12sp"
+                    tools:text="Устранение засоров" />
+
+                <com.custom.rgs_android_dom.views.MSDImageView
+                    android:id="@+id/rightImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </FrameLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/withoutPictureRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:overScrollMode="never"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_catalog_secondary_without_picture" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginTop="8dp"
+        android:paddingStart="52dp">
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:fontFamily="@font/suisse_regular"
+            android:textColor="@color/secondary500"
+            android:textSize="14sp"
+            app:translationTextKey="Все услуги в категории" />
+
+        <com.custom.rgs_android_dom.views.MSDImageView
+            android:id="@+id/arrowRightImageView"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="end|center_vertical"
+            android:src="@drawable/ic_arrow_right_16dp" />
+
+    </FrameLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

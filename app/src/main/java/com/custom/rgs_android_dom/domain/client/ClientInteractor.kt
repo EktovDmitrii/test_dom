@@ -18,6 +18,7 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import org.joda.time.LocalDateTime
 import java.io.File
@@ -439,7 +440,7 @@ class ClientInteractor(
         return clientRepository.requestEditPersonalData()
     }
 
-    fun getEditPersonalDataRequestedSubject(): PublishSubject<Boolean> {
+    fun getEditPersonalDataRequestedSubject(): BehaviorSubject<Boolean> {
         return clientRepository.getEditPersonalDataRequestedSubject()
     }
 

@@ -10,6 +10,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.DownloadManagerRequestProvider
@@ -21,6 +23,10 @@ import com.custom.rgs_android_dom.utils.*
 
 
 class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.fragment_chat) {
+
+    companion object{
+        private const val UP_DIRECTION = 1
+    }
 
     private val chatAdapter: ChatAdapter
         get() = binding.messagesRecyclerView.adapter as ChatAdapter
@@ -83,13 +89,24 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
             viewModel.onVideoCallClick()
         }
 
-        binding.messagesRecyclerView.addOnScrollListener(
-            ChatAnimator(binding.scrollDownImageView)
-        )
-
         binding.scrollDownImageView.setOnDebouncedClickListener {
             binding.messagesRecyclerView.smoothScrollToPosition(chatAdapter.itemCount - 1)
         }
+
+        binding.messagesRecyclerView.addOnScrollListener ( object:OnScrollListener(){
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0 && ! binding.scrollDownImageView.isActivated) {
+                    binding.scrollDownImageView.isActivated = true
+                } else if ((dy < 0 && binding.scrollDownImageView.isActivated)) {
+                    binding.scrollDownImageView.isActivated = false
+                } else if (!recyclerView.canScrollVertically(UP_DIRECTION) && binding.scrollDownImageView.isActivated) {
+                    binding.scrollDownImageView.isActivated = false
+                }
+            }
+
+        })
 
         subscribe(viewModel.chatItemsObserver){
             chatAdapter.setItems(it)
