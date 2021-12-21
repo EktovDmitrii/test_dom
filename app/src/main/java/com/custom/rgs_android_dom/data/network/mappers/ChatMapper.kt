@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.data.network.responses.ChannelMemberResponse
 import com.custom.rgs_android_dom.data.network.responses.ChatFileResponse
 import com.custom.rgs_android_dom.data.network.responses.ChatMessageResponse
 import com.custom.rgs_android_dom.domain.chat.models.*
+import org.joda.time.DateTimeZone
 import org.joda.time.LocalDateTime
 
 object ChatMapper{
@@ -23,7 +24,7 @@ object ChatMapper{
                 message = messageResponse.message.replace("\\n", "\n"),
                 userId = messageResponse.userId,
                 sender = if (messageResponse.userId == userId) Sender.ME else Sender.OPPONENT,
-                createdAt = messageResponse.createdAt.toLocalDateTime(),
+                createdAt = messageResponse.createdAt.withZone(DateTimeZone.getDefault()).toLocalDateTime(),
                 type = messageResponse.type,
                 member = null
             )
@@ -40,7 +41,7 @@ object ChatMapper{
             message = messageResponse.message.replace("\\n", "\n"),
             userId = messageResponse.userId,
             sender = if (messageResponse.userId == userId) Sender.ME else Sender.OPPONENT,
-            createdAt = messageResponse.createdAt.toLocalDateTime(),
+            createdAt = messageResponse.createdAt.withZone(DateTimeZone.getDefault()).toLocalDateTime(),
             type = messageResponse.type,
             member = null
         )

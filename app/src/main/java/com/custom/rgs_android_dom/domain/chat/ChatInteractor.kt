@@ -1,20 +1,15 @@
 package com.custom.rgs_android_dom.domain.chat
 
-import android.util.Log
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.domain.repositories.ChatRepository
 import com.custom.rgs_android_dom.domain.chat.models.WsChatMessageModel
 import com.custom.rgs_android_dom.utils.*
-import io.livekit.android.LiveKit
-import io.livekit.android.room.Room
-import io.livekit.android.room.track.VideoTrack
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 import org.joda.time.LocalDateTime
-import org.joda.time.Seconds
 import java.io.File
 
 class ChatInteractor(
@@ -215,5 +210,9 @@ class ChatInteractor(
 
     suspend fun switchCamera() {
         chatRepository.switchCamera()
+    }
+
+    suspend fun switchVideoTrack() {
+        chatRepository.switchVideoTrack()
     }
 }
