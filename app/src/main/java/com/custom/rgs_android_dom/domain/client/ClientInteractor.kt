@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.domain.client
 
-import android.util.Log
 import com.custom.rgs_android_dom.data.repositories.files.FilesRepositoryImpl.Companion.STORE_AVATARS
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
@@ -194,7 +193,6 @@ class ClientInteractor(
             return@zip editPersonalDataViewState
         }.doOnSuccess {
             CacheHelper.loadAndSaveClient()
-            CacheHelper.loadAndSaveHasProducts()
         }
     }
 
@@ -512,7 +510,7 @@ class ClientInteractor(
 
     private fun validateEditPersonalDataState(){
         var isSaveTextViewEnabled = false
-        if(editPersonalDataViewState.isBuyer){
+        if(editPersonalDataViewState.hasProducts){
             if (!editPersonalDataViewState.isFirstNameSaved && editPersonalDataViewState.firstName.isNotEmpty()
                 || !editPersonalDataViewState.isLastNameSaved && editPersonalDataViewState.lastName.isNotEmpty()
                 || !editPersonalDataViewState.isMiddleNameSaved && editPersonalDataViewState.middleName.isNotEmpty()

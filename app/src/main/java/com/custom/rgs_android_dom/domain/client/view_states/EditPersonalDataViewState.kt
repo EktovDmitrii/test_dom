@@ -29,5 +29,5 @@ data class EditPersonalDataViewState(
     val wasEmailEdited: Boolean = false,
     val agentCode: String? = null,
     val agentPhone: String? = null,
-    val isBuyer:Boolean = false
+    val hasProducts:Boolean = false
 )

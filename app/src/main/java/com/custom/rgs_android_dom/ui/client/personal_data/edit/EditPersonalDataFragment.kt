@@ -3,7 +3,6 @@ package com.custom.rgs_android_dom.ui.client.personal_data.edit
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.core.view.isVisible
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentEditPersonalDataBinding
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
@@ -98,8 +97,7 @@ class EditPersonalDataFragment :
         }
 
         subscribe(viewModel.editPersonalDataObserver) { state ->
-
-            if (state.isBuyer){
+            if (state.hasProducts){
                 binding.lastNameEditText.isEnabled = !state.isLastNameSaved
                 binding.lastNameEditText.setText(state.lastName)
 

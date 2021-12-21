@@ -20,8 +20,6 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
         private const val PREF_KEY_LIVEKIT_CALL_ID = "PREF_KEY_LIVEKIT_ROOM_TOKEN"
         private const val PREF_KEY_AGENT = "PREF_KEY_AGENT"
         private const val PREF_EDIT_AGENT_WAS_REQUESTED = "PREF_TEXT_AGENT"
-        private const val PREF_KEY_HAS_PRODUCTS = "PREF_KEY_HAS_PRODUCTS"
-
     }
 
     private val preferences = context.getSharedPrefs(PREFS_NAME)
@@ -112,10 +110,6 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
             return gson.fromJson(agentString, ClientAgent::class.java)
         }
         return null
-    }
-
-    fun hasProducts(): Boolean {
-        return preferences.getBoolean(PREF_KEY_HAS_PRODUCTS, false)
     }
 
 }

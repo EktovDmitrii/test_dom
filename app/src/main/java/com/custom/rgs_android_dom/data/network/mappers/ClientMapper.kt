@@ -131,7 +131,7 @@ object ClientMapper {
 
     fun responseToClientProducts(response: ClientProductsResponse) : ClientProductsModel {
         val clientProducts =  arrayListOf<ClientProductModel>()
-        return if (response.clientProducts.isNotEmpty()){
+        return if (!response.clientProducts.isNullOrEmpty()){
             response.clientProducts.forEach {
                 clientProducts.add(responseToClientProduct(it))
             }
@@ -140,7 +140,7 @@ object ClientMapper {
                 index = response.index,
                 total = response.total
             )
-        } else{
+        } else {
             ClientProductsModel(
                 index = response.index,
                 total = response.total

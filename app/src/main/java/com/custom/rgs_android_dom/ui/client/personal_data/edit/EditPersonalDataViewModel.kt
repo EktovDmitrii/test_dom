@@ -44,6 +44,7 @@ class EditPersonalDataViewModel(private val clientInteractor: ClientInteractor) 
                     editPersonalDataController.value = it
                 },
                 onError = {
+
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
