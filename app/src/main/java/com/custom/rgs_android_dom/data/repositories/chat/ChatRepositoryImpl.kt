@@ -21,7 +21,6 @@ import io.livekit.android.room.participant.Participant
 import io.livekit.android.room.participant.RemoteParticipant
 import io.livekit.android.room.track.*
 import io.reactivex.Completable
-import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -412,6 +411,15 @@ class ChatRepositoryImpl(private val api: MSDApi,
             room.localParticipant.videoTrackCaptureDefaults = myVideoTrackOptions.copy(position = CameraPosition.FRONT)
         }
         myVideoTrack.restartTrack(room.localParticipant.videoTrackCaptureDefaults)
+        roomInfo?.let {
+            roomInfoSubject.onNext(it)
+        }
+    }
+
+    override suspend fun switchVideoTrack() {
+        val newValue = roomInfo?.videoTracksSwitched ?: false
+        roomInfo = roomInfo?.copy(videoTracksSwitched = !newValue)
+
         roomInfo?.let {
             roomInfoSubject.onNext(it)
         }

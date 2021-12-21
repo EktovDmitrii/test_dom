@@ -154,11 +154,15 @@ class CallViewModel(private val callType: CallType,
     }
 
     fun onSwitchCameraClick(){
-        viewModelScope.launch {chatInteractor.switchCamera()}
+        viewModelScope.launch {
+            chatInteractor.switchCamera()
+        }
     }
 
-    fun onVideoTrackSwitchClick(isSwitched: Boolean){
-        roomInfoController.value = roomInfoController.value?.copy(videoTracksSwitched = isSwitched)
+    fun onVideoTrackSwitchClick(){
+        viewModelScope.launch {
+            chatInteractor.switchVideoTrack()
+        }
     }
 
 }
