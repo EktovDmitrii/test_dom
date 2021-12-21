@@ -15,10 +15,10 @@ import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.ui.main.stub.MainStubFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.property.info.PropertyInfoFragment
 import com.custom.rgs_android_dom.utils.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.*
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.fragment_main) {
 
@@ -29,7 +29,6 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
     private var canTransitReverse = false
     private var bottomSheetInited = false
 
-    private val sharedNavViewModel by sharedViewModel<SharedNavViewModel>()
     private var bottomSheetMainFragment: BaseBottomSheetFragment<*, *>? = null
     private var bottomSheetBehavior: BottomSheetBehavior<*>? = null
     private var scroller: OverScroller? = null
@@ -88,14 +87,21 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
             // TODO Replace this later, when we will have normal navigation
             when (it::class.java.canonicalName){
                 MainStubFragment::class.java.canonicalName -> {
+                    binding.bottomNavigationLayout.navigationMenu.visible()
+
                     activateMenu(false)
                     selectedMenu = binding.bottomNavigationLayout.navMainLinearLayout
                     activateMenu(true)
                 }
                 ClientFragment::class.java.canonicalName -> {
+                    binding.bottomNavigationLayout.navigationMenu.visible()
+
                     activateMenu(false)
                     selectedMenu = binding.bottomNavigationLayout.navProfileLinearLayout
                     activateMenu(true)
+                }
+                PropertyInfoFragment::class.java.canonicalName -> {
+                    binding.bottomNavigationLayout.navigationMenu.gone()
                 }
             }
         }
@@ -150,9 +156,6 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
         subscribe(viewModel.isProfileLayoutVisibleObserver){
             binding.bottomNavigationLayout.navProfileLinearLayout.visibleIf(it)
             binding.bottomNavigationLayout.navLoginLinearLayout.goneIf(it)
-        }
-        subscribe(sharedNavViewModel.isNavigationVisibleObserver) {
-            binding.bottomNavigationLayout.navigationMenu.visibleIf(it)
         }
     }
 
