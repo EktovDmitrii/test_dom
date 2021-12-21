@@ -29,14 +29,15 @@
 
         <com.custom.rgs_android_dom.views.MSDImageView
             android:id="@+id/scrollDownImageView"
-            style="@style/Icon.Filled.White"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginEnd="12dp"
             android:padding="8dp"
+            android:background="@drawable/rectangle_filled_white_radius_16dp"
+            app:srcCompat="@drawable/ic_arrow_down_16dp"
+            android:stateListAnimator="@animator/scroll_down_icon_animation"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/messagesRecyclerView"
-            app:srcCompat="@drawable/ic_arrow_down_10px" />
+            app:layout_constraintTop_toBottomOf="@id/messagesRecyclerView" />
 
         <FrameLayout
             android:id="@+id/sendMessageBottomAppBar"
