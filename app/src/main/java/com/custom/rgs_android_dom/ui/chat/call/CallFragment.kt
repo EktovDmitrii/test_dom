@@ -16,6 +16,7 @@ import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentCallBinding
 import com.custom.rgs_android_dom.domain.chat.models.CallType
 import com.custom.rgs_android_dom.domain.chat.models.ChannelMemberModel
+import com.custom.rgs_android_dom.domain.chat.models.RoomInfoModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.rationale.RequestRationaleFragment
 import com.custom.rgs_android_dom.utils.*
@@ -123,11 +124,11 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         }
 
         binding.switchSurfacesConsultantImageView.setOnDebouncedClickListener {
-            viewModel.onVideoTrackSwitchClick(false)
+            viewModel.onVideoTrackSwitchClick()
         }
 
         binding.switchSurfacesMyImageView.setOnDebouncedClickListener {
-            viewModel.onVideoTrackSwitchClick(true)
+            viewModel.onVideoTrackSwitchClick()
         }
 
         binding.minimizeImageView.setOnDebouncedClickListener {
@@ -190,6 +191,8 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
             binding.micOffImageView.isActivated = roomInfo.micEnabled == false
             binding.cameraOffImageView.isActivated = roomInfo.cameraEnabled == false
 
+            binding.consultantSurfaceContainer.visibleIf(roomInfo.consultantVideoTrack != null)
+
             if (roomInfo.consultantVideoTrack != null){
                 binding.consultantSurfaceRenderer.visible()
                 roomInfo.consultantVideoTrack?.addRenderer(binding.consultantSurfaceRenderer)
@@ -205,11 +208,11 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
             if (roomInfo.videoTracksSwitched){
                 binding.consultantSurfaceContainer.z = 1F
                 binding.mySurfaceContainer.z = 0f
-                setMyVideoFullScreen()
+                setMyVideoFullScreen(roomInfo)
             } else {
                 binding.consultantSurfaceContainer.z = 0F
                 binding.mySurfaceContainer.z = 1f
-                setConsultantVideoFullScreen()
+                setConsultantVideoFullScreen(roomInfo)
             }
 
             if (roomInfo.myVideoTrack != null && roomInfo.cameraEnabled){
@@ -242,7 +245,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
 
     }
 
-    private fun setConsultantVideoFullScreen() {
+    private fun setConsultantVideoFullScreen(roomInfoModel: RoomInfoModel) {
 
         binding.consultantSurfaceContainer.visible()
         binding.switchSurfacesConsultantImageView.gone()
@@ -266,9 +269,10 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
             binding.mySurfaceContainer.layoutParams = this
         }
 
+        binding.mySurfaceContainer.setOnDebouncedClickListener { }
     }
 
-    private fun setMyVideoFullScreen() {
+    private fun setMyVideoFullScreen(roomInfoModel: RoomInfoModel) {
 
         binding.mySurfaceContainer.visible()
         binding.switchSurfacesMyImageView.gone()
@@ -281,15 +285,22 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
             binding.mySurfaceContainer.layoutParams = this
         }
 
-        binding.consultantSurfaceContainer.visible()
-        binding.switchSurfacesConsultantImageView.visible()
+        if (roomInfoModel.consultantVideoTrack != null){
+            binding.consultantSurfaceContainer.visible()
+            binding.switchSurfacesConsultantImageView.visible()
 
-        with(binding.consultantSurfaceContainer.layoutParams as FrameLayout.LayoutParams){
-            width = SMALL_SCREEN_WIDTH.dp(requireContext())
-            height = SMALL_SCREEN_HEIGHT.dp(requireContext())
-            setMargins(0,0, SMALL_SCREEN_MARGIN.dp(requireContext()), SMALL_SCREEN_MARGIN.dp(requireContext()))
-            gravity = Gravity.BOTTOM or Gravity.END
-            binding.consultantSurfaceContainer.layoutParams = this
+            with(binding.consultantSurfaceContainer.layoutParams as FrameLayout.LayoutParams){
+                width = SMALL_SCREEN_WIDTH.dp(requireContext())
+                height = SMALL_SCREEN_HEIGHT.dp(requireContext())
+                setMargins(0,0, SMALL_SCREEN_MARGIN.dp(requireContext()), SMALL_SCREEN_MARGIN.dp(requireContext()))
+                gravity = Gravity.BOTTOM or Gravity.END
+                binding.consultantSurfaceContainer.layoutParams = this
+            }
+        } else {
+            binding.consultantSurfaceContainer.gone()
+            binding.mySurfaceContainer.setOnDebouncedClickListener {
+                setConsultantVideoFullScreen(roomInfoModel)
+            }
         }
 
     }
