@@ -100,7 +100,7 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
             viewModel.onIsTemporarySelected(it)
         }
 
-        binding.listDocumentsRecyclerView.adapter = PropertyUploadDocumentsAdapter(this ) { uri -> viewModel.onRemoveDocumentClick(uri) }
+        binding.listDocumentsRecyclerView.adapter = PropertyUploadDocumentsAdapter { uri -> viewModel.onRemoveDocumentClick(uri) }
 
         binding.uploadDocumentFrameLayout.setOnDebouncedClickListener {
             val propertyUploadFilesFragment = PropertyUploadDocumentsFragment()
@@ -138,7 +138,7 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
         }
 
         subscribe(viewModel.internetConnectionObserver){
-            adapter.internetConnectionLiveData.value = it
+            adapter.onInternetConnectionChanged(it)
         }
 
     }
@@ -158,7 +158,6 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
         binding.cityNameApartmentTextInputLayout.setText( if ( cityName.isNotEmpty() ) { cityName } else {"Не определено"} )
         binding.corpusApartmentTextInputLayout.setText(propertyDetailsViewState.corpus)
     }
-
 
     @SuppressLint("ClickableViewAccessibility")
     private fun showPopUpWindow(anchorView: View) {

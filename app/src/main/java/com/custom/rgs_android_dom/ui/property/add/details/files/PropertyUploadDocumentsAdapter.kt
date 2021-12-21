@@ -21,16 +21,15 @@ import com.custom.rgs_android_dom.R
 import io.reactivex.subjects.PublishSubject
 
 class PropertyUploadDocumentsAdapter(
-    private val lifecycleOwner: LifecycleOwner,
     private val onRemoveDocument: (Uri) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    val internetConnectionLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    private var isInternetAvailable = false
     private var propertyUploadDocumentsItems = mutableListOf<Uri>()
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val model = propertyUploadDocumentsItems[position]
-        (holder as PropertyUploadDocumentsViewHolder).bind(model,lifecycleOwner)
+        (holder as PropertyUploadDocumentsViewHolder).bind(model)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -52,6 +51,11 @@ class PropertyUploadDocumentsAdapter(
         notifyDataSetChanged()
     }
 
+    fun onInternetConnectionChanged(it: Boolean) {
+        isInternetAvailable = it
+        notifyDataSetChanged()
+    }
+
     inner class PropertyUploadDocumentsViewHolder(
         private val binding: ItemPropertyUploadDocumentBinding,
         private val onRemoveDocument: (Uri) -> Unit
@@ -60,7 +64,7 @@ class PropertyUploadDocumentsAdapter(
         private val textFilesExtensions = listOf("pdf", "txt", "doc", "docx", "rtf")
         private val mediaFilesExtensions = listOf("jpeg", "jpg", "png", "bmp")
 
-        fun bind(file: Uri, lifecycleOwner: LifecycleOwner) {
+        fun bind(file: Uri) {
 
             binding.removeImageView.setOnDebouncedClickListener {
                 onRemoveDocument(file)
@@ -80,7 +84,7 @@ class PropertyUploadDocumentsAdapter(
                 !mediaFilesExtensions.contains(extension)){
                 binding.textFilesPlaceHolderImageView.visible()
                 binding.previewImageView.gone()
-                if(internetConnectionLiveData.value == true) {
+                if(isInternetAvailable) {
                     binding.progressBarContainerFrameLayout.gone()
                 }
             } else {
@@ -96,7 +100,7 @@ class PropertyUploadDocumentsAdapter(
                             target: com.bumptech.glide.request.target.Target<Drawable>?,
                             isFirstResource: Boolean
                         ): Boolean {
-                            if(internetConnectionLiveData.value == true) {
+                            if(isInternetAvailable) {
                                 binding.progressBarContainerFrameLayout.gone()
                             }
                             return false
@@ -109,7 +113,7 @@ class PropertyUploadDocumentsAdapter(
                             dataSource: DataSource?,
                             isFirstResource: Boolean
                         ): Boolean {
-                            if(internetConnectionLiveData.value == true) {
+                            if(isInternetAvailable) {
                                 binding.progressBarContainerFrameLayout.gone()
                             }
                             return false
@@ -118,13 +122,10 @@ class PropertyUploadDocumentsAdapter(
                     .apply(requestOptions)
                     .into(binding.previewImageView)
             }
-
-            internetConnectionLiveData.observe(lifecycleOwner){
-                if(it){
-                    binding.progressBarContainerFrameLayout.gone()
-                } else {
-                    binding.progressBarContainerFrameLayout.visible()
-                }
+            if(isInternetAvailable){
+                binding.progressBarContainerFrameLayout.gone()
+            } else {
+                binding.progressBarContainerFrameLayout.visible()
             }
         }
     }
