@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.domain.client
 
+import android.util.Log
 import com.custom.rgs_android_dom.data.repositories.files.FilesRepositoryImpl.Companion.STORE_AVATARS
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
@@ -188,11 +189,12 @@ class ClientInteractor(
     }
 
     fun getEditPersonalDataViewState(): Single<EditPersonalDataViewState>{
-
-        return Single.zip(clientRepository.getClient(),clientRepository.getClientProducts()){ client, products ->
-            EditPersonalDataViewStateMapper.from(client,products)
+        return Single.zip(clientRepository.getClient(),clientRepository.getClientProducts()){ clientModel, productsModel ->
+            editPersonalDataViewState = EditPersonalDataViewStateMapper.from(clientModel,productsModel)
+            return@zip editPersonalDataViewState
         }.doOnSuccess {
             CacheHelper.loadAndSaveClient()
+            CacheHelper.loadAndSaveHasProducts()
         }
     }
 

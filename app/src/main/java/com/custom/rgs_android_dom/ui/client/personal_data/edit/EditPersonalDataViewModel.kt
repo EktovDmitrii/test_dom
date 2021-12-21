@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.client.personal_data.edit
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.client.ClientInteractor

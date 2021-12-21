@@ -152,7 +152,7 @@ interface MSDApi {
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getProducts(@Query("size") size: Int, @Query("index") index: Int): Single<ProductItemsResponse>
 
-    @GET("/clients/me/balance/products")
+    @GET("clients/me/balance/products")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getClientProducts(@Query("size") size: String,
                           @Query("index") index: String,

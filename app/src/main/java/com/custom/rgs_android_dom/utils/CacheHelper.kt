@@ -30,4 +30,8 @@ object CacheHelper {
             )
             .addTo(compositeDisposable)
     }
+
+    fun loadAndSaveHasProducts() {
+        TODO("Not yet implemented")
+    }
 }
