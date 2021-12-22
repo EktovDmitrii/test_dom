@@ -186,7 +186,7 @@
         <attr name="verticalDecorationGap" format="dimension"/>
     </declare-styleable>
 
-    <declare-styleable name="MSDRoundFrameLayout">
+    <declare-styleable name="MSDRoundedFrameLayout">
         <attr name="cornerRadius" format="dimension"/>
     </declare-styleable>
 

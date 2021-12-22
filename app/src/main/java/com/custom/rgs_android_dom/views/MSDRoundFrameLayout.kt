@@ -9,7 +9,7 @@ import android.widget.FrameLayout
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.utils.dp
 
-class MSDRoundFrameLayout @JvmOverloads constructor(
+class MSDRoundedFrameLayout @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -20,8 +20,8 @@ class MSDRoundFrameLayout @JvmOverloads constructor(
     private var cornerRadius = 1f
 
     init {
-        val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDRoundFrameLayout, 0, 0)
-        attrs.getDimension(R.styleable.MSDRoundFrameLayout_cornerRadius, 1f).let { radius ->
+        val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDRoundedFrameLayout, 0, 0)
+        attrs.getDimension(R.styleable.MSDRoundedFrameLayout_cornerRadius, 1f).let { radius ->
             cornerRadius = radius.dp(context)
         }
     }

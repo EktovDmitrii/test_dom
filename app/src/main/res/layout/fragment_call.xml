@@ -118,7 +118,7 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginBottom="16dp">
 
-                <com.custom.rgs_android_dom.views.MSDRoundFrameLayout
+                <com.custom.rgs_android_dom.views.MSDRoundedFrameLayout
                     android:id="@+id/consultantSurfaceContainer"
                     app:cornerRadius="10dp"
                     android:layout_width="match_parent"
@@ -140,9 +140,9 @@
                         tools:visibility="visible"
                         app:srcCompat="@drawable/ic_arrow_long_left_up_24px" />
 
-                </com.custom.rgs_android_dom.views.MSDRoundFrameLayout>
+                </com.custom.rgs_android_dom.views.MSDRoundedFrameLayout>
 
-                <com.custom.rgs_android_dom.views.MSDRoundFrameLayout
+                <com.custom.rgs_android_dom.views.MSDRoundedFrameLayout
                     android:id="@+id/mySurfaceContainer"
                     android:layout_width="136dp"
                     android:layout_height="180dp"
@@ -167,7 +167,7 @@
                         tools:visibility="visible"
                         app:srcCompat="@drawable/ic_arrow_long_left_up_24px" />
 
-                </com.custom.rgs_android_dom.views.MSDRoundFrameLayout>
+                </com.custom.rgs_android_dom.views.MSDRoundedFrameLayout>
 
             </FrameLayout>
 
