@@ -34,12 +34,6 @@ class MSDRoundedFrameLayout @JvmOverloads constructor(
         path.close()
     }
 
-//    fun setCornerRadius(radius: Float) {
-//        cornerRadius = radius.dp(context)
-//        requestLayout()
-//        invalidate()
-//    }
-
     override fun dispatchDraw(canvas: Canvas) {
         val save = canvas.save()
         canvas.clipPath(this.path)
