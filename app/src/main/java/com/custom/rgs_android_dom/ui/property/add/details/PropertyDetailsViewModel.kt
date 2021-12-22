@@ -174,8 +174,6 @@ class PropertyDetailsViewModel(
 
     fun onInternetConnectionChanged(isAvailable: Boolean) {
         internetConnectionController.postValue(isAvailable)
-        /*if (isAvailable && loadingStateObserver.value == LoadingState.LOADING)
-            loadingStateController.postValue(LoadingState.CONTENT)*/
     }
 
 }
