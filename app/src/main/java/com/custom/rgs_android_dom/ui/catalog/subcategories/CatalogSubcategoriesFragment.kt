@@ -7,9 +7,10 @@ import com.custom.rgs_android_dom.databinding.FragmentCatalogSubcategoriesBindin
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.utils.args
+import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
+import com.custom.rgs_android_dom.utils.subscribe
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
-
 
 class CatalogSubcategoriesFragment : BaseBottomSheetFragment<CatalogSubcategoriesViewModel, FragmentCatalogSubcategoriesBinding>() {
 
@@ -22,10 +23,12 @@ class CatalogSubcategoriesFragment : BaseBottomSheetFragment<CatalogSubcategorie
                 putSerializable(ARG_CATALOG_CATEGORY, category)
             }
         }
-
     }
 
     override val TAG: String = "CATALOG_SUBCATEGORIES_FRAGMENT"
+
+    private val adapter: CatalogSubcategoriesDetailsAdapter
+        get() = binding.subcategoriesDetailsRecyclerView.adapter as CatalogSubcategoriesDetailsAdapter
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(requireArguments().getSerializable(ARG_CATALOG_CATEGORY) as CatalogCategoryModel)
@@ -33,6 +36,24 @@ class CatalogSubcategoriesFragment : BaseBottomSheetFragment<CatalogSubcategorie
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val adapter = CatalogSubcategoriesDetailsAdapter(){
+
+        }
+
+        binding.subcategoriesDetailsRecyclerView.adapter = adapter
+
+        binding.backImageView.setOnDebouncedClickListener {
+            viewModel.onBackClick()
+        }
+
+        subscribe(viewModel.titleObserver){
+            binding.titleTextView.text = it
+        }
+
+        subscribe(viewModel.subcategoriesObserver){
+            adapter.setItems(it)
+        }
 
     }
 

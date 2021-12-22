@@ -52,5 +52,15 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <com.custom.rgs_android_dom.views.MSDRecyclerView
+        android:id="@+id/subcategoriesDetailsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:verticalDecorationGap="20dp"
+        android:paddingHorizontal="20dp"
+        android:overScrollMode="never"
+        android:paddingBottom="168dp"
+        android:clipToPadding="false"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

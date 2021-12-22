@@ -195,8 +195,10 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
 
             bottomSheetBehavior?.addBottomSheetCallback(bottomSheetCallback)
 
-            val bottomSheetTopPadding =
-                when (bottomSheetMainFragment) {
+            val bottomSheetTopPadding = binding.toolbarLinearLayout.height
+
+            // TODO Improve this later
+                /*when (bottomSheetMainFragment) {
                     is ClientFragment -> {
                         binding.toolbarLinearLayout.height
                     }
@@ -210,7 +212,7 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
                         binding.toolbarLinearLayout.height
                     }
                     else -> 0.dp(requireContext())
-                }
+                }*/
 
             peekHeight =
                 binding.root.getLocationOnScreen().y - binding.callContainerLinearLayout.getLocationOnScreen().y +

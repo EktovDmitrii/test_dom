@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogSubCategoryModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesFragment
+import com.custom.rgs_android_dom.ui.catalog.subcategory.CatalogSubcategoryFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -41,7 +42,10 @@ class TabCatalogViewModel(private val catalogInteractor: CatalogInteractor) : Ba
 
 
     fun onSubCategoryClick(subCategory: CatalogSubCategoryModel){
-
+        if (subCategory.products.isNotEmpty()){
+            val catalogSubcategoryFragment = CatalogSubcategoryFragment.newInstance(subCategory)
+            ScreenManager.showBottomScreen(catalogSubcategoryFragment)
+        }
     }
 
     fun onAllProductsClick(category: CatalogCategoryModel){

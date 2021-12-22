@@ -82,9 +82,7 @@ class CatalogCategoriesAdapter(
                 val catalogSubCategoriesWithBigImageAdapter = CatalogSubcategoriesWithBigImageAdapter(
                     onSubCategoryClick = onSubCategoryClick
                 )
-                binding.subcategoriesWithBigImageRecyclerView.addItemDecoration(
-                    HorizontalItemDecoration(gap = 11.dp(binding.root.context))
-                )
+
                 binding.subcategoriesWithBigImageRecyclerView.adapter = catalogSubCategoriesWithBigImageAdapter
                 catalogSubCategoriesWithBigImageAdapter.setItems(subCategoriesWithBigImage)
                 
@@ -97,9 +95,6 @@ class CatalogCategoriesAdapter(
                 onSubCategoryClick = onSubCategoryClick
             )
 
-            binding.subcategoriesWithSmallImageRecyclerView.addItemDecoration(
-                VerticalItemDecoration(gap = 12.dp(binding.root.context))
-            )
             binding.subcategoriesWithSmallImageRecyclerView.adapter = catalogSubCategoriesWithSmallImageAdapter
             catalogSubCategoriesWithSmallImageAdapter.setItems(subCategoriesWithSmallImage)
 
