@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class ClientProductsResponse(
 
     @SerializedName("clientProducts")
-    val clientProducts: List<ClientProductResponse>,
+    val clientProducts: List<ClientProductResponse>?,
 
     @SerializedName("index")
     val index: Int = 0,

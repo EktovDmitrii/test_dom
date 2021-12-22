@@ -149,7 +149,7 @@ object ClientMapper {
             clientId = response.clientId,
             contractId = response.contractId,
             id = response.id,
-            objectIds = response.objectIds,
+            objectIds = response.objectIds ?: arrayListOf(),
             productCode = response.productCode,
             productDescription = response.productDescription,
             productDescriptionRef = response.productDescriptionRef,

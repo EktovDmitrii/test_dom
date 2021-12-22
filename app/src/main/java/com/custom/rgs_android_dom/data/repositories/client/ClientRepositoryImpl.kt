@@ -194,12 +194,7 @@ class ClientRepositoryImpl(
     }
 
     override fun getClientProducts(): Single<ClientProductsModel> {
-        return api.getClientProducts(
-            "",
-            "",
-            "",
-            ""
-        ).map {
+        return api.getClientProducts().map {
             ClientMapper.responseToClientProducts(it)
         }
     }

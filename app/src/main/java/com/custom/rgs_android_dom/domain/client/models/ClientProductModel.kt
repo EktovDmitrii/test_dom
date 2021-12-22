@@ -5,7 +5,7 @@ data class ClientProductModel(
     val clientId: String,
     val contractId: String,
     val id: String,
-    val objectIds: List<String>,
+    val objectIds: List<String> = arrayListOf(),
     val productCode: String,
     val productDescription: String,
     val productDescriptionRef: String,
@@ -15,7 +15,7 @@ data class ClientProductModel(
     val productTitle: String,
     val productType: String,
     val productVersionId: String,
-    val status: String = "draft",
+    val status: String,
     val validityFrom: String,
     val validityTo: String
 )
