@@ -16,6 +16,7 @@ import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.ui.main.stub.MainStubFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.property.info.PropertyInfoFragment
 import com.custom.rgs_android_dom.utils.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.*
@@ -87,14 +88,21 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
             // TODO Replace this later, when we will have normal navigation
             when (it::class.java.canonicalName){
                 MainStubFragment::class.java.canonicalName -> {
+                    binding.bottomNavigationLayout.navigationMenu.visible()
+
                     activateMenu(false)
                     selectedMenu = binding.bottomNavigationLayout.navMainLinearLayout
                     activateMenu(true)
                 }
                 ClientFragment::class.java.canonicalName -> {
+                    binding.bottomNavigationLayout.navigationMenu.visible()
+
                     activateMenu(false)
                     selectedMenu = binding.bottomNavigationLayout.navProfileLinearLayout
                     activateMenu(true)
+                }
+                PropertyInfoFragment::class.java.canonicalName -> {
+                    binding.bottomNavigationLayout.navigationMenu.gone()
                 }
             }
         }
@@ -150,7 +158,6 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
             binding.bottomNavigationLayout.navProfileLinearLayout.visibleIf(it)
             binding.bottomNavigationLayout.navLoginLinearLayout.goneIf(it)
         }
-
     }
 
     override fun onStart() {
