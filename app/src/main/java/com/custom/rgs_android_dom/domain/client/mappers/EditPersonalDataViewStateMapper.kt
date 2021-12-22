@@ -58,7 +58,7 @@ object EditPersonalDataViewStateMapper {
             emailId = emailId,
             agentCode = client.agent?.code,
             agentPhone = client.agent?.phone,
-            hasProducts = !products.clientProducts.isEmpty()
+            hasProducts = products.clientProducts.isNotEmpty()
         )
     }
 

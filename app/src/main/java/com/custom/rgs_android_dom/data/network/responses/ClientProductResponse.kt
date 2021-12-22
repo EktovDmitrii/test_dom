@@ -1,55 +1,57 @@
 package com.custom.rgs_android_dom.data.network.responses
 
+import com.google.gson.annotations.SerializedName
+
 data class ClientProductResponse(
 
     @SerializedName("ProductDescriptionFormat")
-    val productDescriptionFormat: String,
+    val productDescriptionFormat: String?,
 
     @SerializedName("clientId")
-    val clientId: String,
+    val clientId: String?,
 
     @SerializedName("contractId")
-    val contractId: String,
+    val contractId: String?,
 
     @SerializedName("id")
-    val id: String,
+    val id: String?,
 
     @SerializedName("objectIds")
     val objectIds: List<String>?,
 
     @SerializedName("productCode")
-    val productCode: String,
+    val productCode: String?,
 
     @SerializedName("productDescription")
-    val productDescription: String,
+    val productDescription: String?,
 
     @SerializedName("productDescriptionRef")
-    val productDescriptionRef: String,
+    val productDescriptionRef: String?,
 
     @SerializedName("productIcon")
-    val productIcon: String,
+    val productIcon: String?,
 
     @SerializedName("productId")
-    val productId: String,
+    val productId: String?,
 
     @SerializedName("productName")
-    val productName: String,
+    val productName: String?,
 
     @SerializedName("productTitle")
-    val productTitle: String,
+    val productTitle: String?,
 
     @SerializedName("productType")
-    val productType: String,
+    val productType: String?,
 
     @SerializedName("productVersionId")
-    val productVersionId: String,
+    val productVersionId: String?,
 
     @SerializedName("status")
-    val status: String = "draft",
+    val status: String?,
 
     @SerializedName("validityFrom")
-    val validityFrom: String,
+    val validityFrom: String?,
 
     @SerializedName("validityTo")
-    val validityTo: String
+    val validityTo: String?
 )

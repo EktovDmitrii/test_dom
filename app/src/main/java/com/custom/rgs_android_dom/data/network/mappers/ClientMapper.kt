@@ -131,7 +131,7 @@ object ClientMapper {
 
     fun responseToClientProducts(response: ClientProductsResponse) : ClientProductsModel {
         val clientProducts =  arrayListOf<ClientProductModel>()
-        if (!response.clientProducts.isNullOrEmpty()){
+        if (response.clientProducts?.isNotEmpty() == true){
             response.clientProducts.forEach {
                 clientProducts.add(responseToClientProduct(it))
             }
@@ -145,23 +145,23 @@ object ClientMapper {
 
     private fun responseToClientProduct(response: ClientProductResponse): ClientProductModel {
         return ClientProductModel(
-            productDescriptionFormat = response.productDescriptionFormat,
-            clientId = response.clientId,
-            contractId = response.contractId,
-            id = response.id,
+            productDescriptionFormat = response.productDescriptionFormat ?: "",
+            clientId = response.clientId ?: "",
+            contractId = response.contractId ?: "",
+            id = response.id ?: "",
             objectIds = response.objectIds ?: arrayListOf(),
-            productCode = response.productCode,
-            productDescription = response.productDescription,
-            productDescriptionRef = response.productDescriptionRef,
-            productIcon = response.productIcon,
-            productId = response.productId,
-            productName = response.productName,
-            productTitle = response.productTitle,
-            productType = response.productType,
-            productVersionId = response.productVersionId,
-            status = response.status,
-            validityFrom = response.validityFrom,
-            validityTo = response.validityTo
+            productCode = response.productCode ?: "",
+            productDescription = response.productDescription ?: "",
+            productDescriptionRef = response.productDescriptionRef ?: "",
+            productIcon = response.productIcon ?: "",
+            productId = response.productId ?: "",
+            productName = response.productName ?: "",
+            productTitle = response.productTitle ?: "",
+            productType = response.productType ?: "",
+            productVersionId = response.productVersionId ?: "",
+            status = response.status ?: "",
+            validityFrom = response.validityFrom ?: "",
+            validityTo = response.validityTo ?: ""
         )
     }
 
