@@ -10,7 +10,7 @@ data class ProductShortResponse(
     val type: String,
 
     @SerializedName("title")
-    val title: String,
+    val title: String?,
 
     @SerializedName("code")
     val code: String,
