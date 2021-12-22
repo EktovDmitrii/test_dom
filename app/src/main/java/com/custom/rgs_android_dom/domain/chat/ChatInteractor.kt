@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.domain.chat
 
+import android.util.Log
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.domain.repositories.ChatRepository
@@ -99,7 +100,6 @@ class ChatInteractor(
             }
     }
 
-
     fun subscribeToSocketEvents(): Completable {
         return chatRepository.getWsEventsSubject().flatMapCompletable {
             when (it.event){
@@ -196,13 +196,14 @@ class ChatInteractor(
             chatItems.add(dateDivider)
             chatItems.add(newMessage)
         }
+        cachedChatItems.addAll(chatItems)
         newChatItemsSubject.onNext(chatItems)
     }
 
     private fun getDateDivider(currentMessageDate: LocalDateTime, previousMessageDate: LocalDateTime?): ChatDateDividerModel? {
         previousMessageDate?.let { previousMessageDate->
-            if (previousMessageDate.getPeriod(currentMessageDate).days >0 ) {
-                return ChatDateDividerModel(currentMessageDate.formatTo((DATE_PATTERN_DAY_MONTH_FULL_ONLY)))
+            if (previousMessageDate.getPeriod(currentMessageDate).days > 0) {
+                return ChatDateDividerModel(currentMessageDate.formatTo(DATE_PATTERN_DAY_MONTH_FULL_ONLY))
             }
         }
         return null
