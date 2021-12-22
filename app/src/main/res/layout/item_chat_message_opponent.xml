@@ -13,7 +13,7 @@
         android:id="@+id/nameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
+        android:layout_marginStart="52dp"
         android:fontFamily="@font/suisse_regular"
         android:includeFontPadding="false"
         android:text="Мой_Сервис Дом"

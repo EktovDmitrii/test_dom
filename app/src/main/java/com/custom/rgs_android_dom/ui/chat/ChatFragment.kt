@@ -68,11 +68,11 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
         }
 
         binding.messageEditText.addTextChangedListener {
-            binding.sendMessageImageView.isEnabled = it.toString().isNotEmpty()
+            binding.sendMessageImageView.isEnabled = it.toString().trim().isNotEmpty()
         }
 
         binding.sendMessageImageView.setOnDebouncedClickListener {
-            viewModel.onSendMessageClick(binding.messageEditText.text.toString().trim())
+            viewModel.onSendMessageClick(binding.messageEditText.text.toString())
             binding.messageEditText.text?.clear()
         }
 
