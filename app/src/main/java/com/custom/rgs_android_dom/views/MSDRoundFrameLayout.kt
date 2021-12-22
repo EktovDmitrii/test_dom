@@ -28,12 +28,22 @@ class MSDRoundFrameLayout @JvmOverloads constructor(
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
+        path.reset()
         rectF = RectF(0f, 0f, w.toFloat(), h.toFloat())
-        this.path.addRoundRect(rectF, cornerRadius, cornerRadius, Path.Direction.CW);
+        this.path.addRoundRect(rectF, cornerRadius, cornerRadius, Path.Direction.CW)
+        path.close()
     }
 
+//    fun setCornerRadius(radius: Float) {
+//        cornerRadius = radius.dp(context)
+//        requestLayout()
+//        invalidate()
+//    }
+
     override fun dispatchDraw(canvas: Canvas) {
+        val save = canvas.save()
         canvas.clipPath(this.path)
         super.dispatchDraw(canvas)
+        canvas.restoreToCount(save)
     }
 }
