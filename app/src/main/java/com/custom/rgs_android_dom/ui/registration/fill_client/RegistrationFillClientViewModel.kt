@@ -134,7 +134,7 @@ class RegistrationFillClientViewModel(
 
     companion object {
 
-        private const val CODE_INS_093 = "companion object"
+        private const val CODE_INS_093 = "errors.app.code.ins.093"
 
     }
 }
