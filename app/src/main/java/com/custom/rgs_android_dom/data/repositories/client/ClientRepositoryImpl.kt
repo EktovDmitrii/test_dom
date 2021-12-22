@@ -26,13 +26,6 @@ class ClientRepositoryImpl(
     private val clientSharedPreferences: ClientSharedPreferences
 ) : ClientRepository {
 
-    companion object {
-        private const val PRODUCTS_PAGE_SIZE = ""
-        private const val PRODUCTS_PAGE_INDEX = ""
-        private const val PRODUCTS_CONTRACT_ID = ""
-        private const val PRODUCTS_STATUS = ""
-    }
-
     private val clientUpdatedSubject: PublishSubject<ClientModel> = PublishSubject.create()
     private val editAgentRequestedSubject: PublishSubject<Boolean> = PublishSubject.create()
     private val editPersonalDataRequestedSubject: BehaviorSubject<Boolean> = BehaviorSubject.create()

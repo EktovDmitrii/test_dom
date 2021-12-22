@@ -111,5 +111,4 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
         }
         return null
     }
-
 }

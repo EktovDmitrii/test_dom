@@ -30,5 +30,4 @@ object CacheHelper {
             )
             .addTo(compositeDisposable)
     }
-
 }

@@ -9,7 +9,7 @@ import org.json.JSONObject
 class WsResponseParser(private val gson: Gson) {
 
     companion object {
-        const val FILED_EVENT = "event" // очепятка?
+        const val FIELD_EVENT = "event"
         const val FIELD_DATA = "data"
         const val FIELD_CALL_ID = "callId"
         const val FIELD_TOKEN = "token"
@@ -24,7 +24,7 @@ class WsResponseParser(private val gson: Gson) {
     fun parse(message: String, userId: String): WsEventModel<*>?{
         try{
             val jsonResponse = JSONObject(message).getJSONObject(FIELD_DATA)
-            return when (jsonResponse.getString(FILED_EVENT)){
+            return when (jsonResponse.getString(FIELD_EVENT)){
                 EVENT_POSTED -> {
                     val chatMessageResponse = gson.fromJson(jsonResponse.getJSONObject(FIELD_DATA).toString(), ChatMessageResponse::class.java)
                     val chatMessageModel = ChatMapper.responseToChatMessage(chatMessageResponse, userId)

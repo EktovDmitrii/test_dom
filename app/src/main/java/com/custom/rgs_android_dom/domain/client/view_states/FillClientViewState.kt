@@ -18,10 +18,10 @@ data class FillClientViewState(
     val isValidate: Boolean = false
 ){
     fun onNameChanged(name: String): FillClientViewState {
-        return if (name.isNotEmpty()){
-            this.copy(name = name)
+        if (name.isNotEmpty()){
+            return this.copy(name = name)
         } else {
-            this.copy(name = null)
+            return this.copy(name = null)
         }
     }
 }

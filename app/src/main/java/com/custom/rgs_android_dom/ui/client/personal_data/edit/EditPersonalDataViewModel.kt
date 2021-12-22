@@ -1,20 +1,12 @@
 package com.custom.rgs_android_dom.ui.client.personal_data.edit
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
-import com.custom.rgs_android_dom.domain.client.exceptions.ValidateClientException
 import com.custom.rgs_android_dom.domain.client.models.Gender
 import com.custom.rgs_android_dom.domain.client.view_states.EditPersonalDataViewState
-import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.ui.client.agent.request_edit.RequestEditAgentFragment
-import com.custom.rgs_android_dom.ui.client.personal_data.request_edit.RequestEditPersonalDataFragment
-import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
-import com.custom.rgs_android_dom.ui.navigation.ScreenManager
-import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -44,7 +36,6 @@ class EditPersonalDataViewModel(private val clientInteractor: ClientInteractor) 
                     editPersonalDataController.value = it
                 },
                 onError = {
-
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
