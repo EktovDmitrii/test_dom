@@ -1,12 +1,13 @@
 package com.custom.rgs_android_dom.ui.catalog.tabs.catalog
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
+import com.custom.rgs_android_dom.domain.catalog.models.CatalogSubCategoryModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.ui.catalog.tabs.catalog.mocks.*
+import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesFragment
+import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -15,8 +16,6 @@ import io.reactivex.schedulers.Schedulers
 
 class TabCatalogViewModel(private val catalogInteractor: CatalogInteractor) : BaseViewModel() {
 
-    private val viewStateController = MutableLiveData<ProductViewState>()
-    val viewStateObserver: LiveData<ProductViewState> = viewStateController
 
     private val catalogCategoriesController = MutableLiveData<List<CatalogCategoryModel>>()
     val catalogCategoriesObserver: LiveData<List<CatalogCategoryModel>> = catalogCategoriesController
@@ -40,22 +39,15 @@ class TabCatalogViewModel(private val catalogInteractor: CatalogInteractor) : Ba
             ).addTo(dataCompositeDisposable)
     }
 
-    fun onShowAllPrimaryCategoryClick() {
-        notificationController.value = "onShowAllPrimaryCategoryClick"
+
+    fun onSubCategoryClick(subCategory: CatalogSubCategoryModel){
+
     }
 
-    fun onProductClick() {
-        //navigate to product or smth
-        notificationController.value = "onProductClick"
+    fun onAllProductsClick(category: CatalogCategoryModel){
+        val catalogSubcategoriesFragment = CatalogSubcategoriesFragment.newInstance(category)
+        ScreenManager.showBottomScreen(catalogSubcategoriesFragment)
     }
 
-    fun onMoreProductsClick() {
-        // retrieve more products
-        notificationController.value = "onMoreProductsClick"
-    }
-
-    fun onServiceClick() {
-        notificationController.value = "onServiceClick"
-    }
 
 }

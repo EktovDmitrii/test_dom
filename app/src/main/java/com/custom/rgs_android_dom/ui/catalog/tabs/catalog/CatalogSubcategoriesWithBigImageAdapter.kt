@@ -23,7 +23,7 @@ class CatalogSubcategoriesWithBigImageAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatalogSubCategoryWithBigImageViewHolder {
         val binding = ItemCatalogSubcategoryWithBigImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CatalogSubCategoryWithBigImageViewHolder(binding)
+        return CatalogSubCategoryWithBigImageViewHolder(binding, onSubCategoryClick)
     }
 
     override fun getItemCount(): Int {
