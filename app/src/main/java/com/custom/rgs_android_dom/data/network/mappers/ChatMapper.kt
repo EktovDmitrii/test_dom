@@ -18,7 +18,7 @@ object ChatMapper{
             ChatMessageModel(
                 channelId = messageResponse.channelId,
                 files = messageResponse.files?.map { fileResponse->
-                    responseToChatFile(fileResponse, messageResponse.userId, messageResponse.createdAt.toLocalDateTime())
+                    responseToChatFile(fileResponse, messageResponse.userId, messageResponse.createdAt.withZone(DateTimeZone.getDefault()).toLocalDateTime())
                 },
                 id = messageResponse.id ?: "",
                 message = messageResponse.message.replace("\\n", "\n"),
@@ -35,7 +35,7 @@ object ChatMapper{
         return ChatMessageModel(
             channelId = messageResponse.channelId,
             files = messageResponse.files?.map { fileResponse->
-                responseToChatFile(fileResponse, messageResponse.userId, messageResponse.createdAt.toLocalDateTime())
+                responseToChatFile(fileResponse, messageResponse.userId, messageResponse.createdAt.withZone(DateTimeZone.getDefault()).toLocalDateTime())
             },
             id = messageResponse.id ?: "",
             message = messageResponse.message.replace("\\n", "\n"),

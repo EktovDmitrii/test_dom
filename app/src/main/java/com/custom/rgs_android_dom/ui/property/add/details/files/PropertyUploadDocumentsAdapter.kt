@@ -82,13 +82,13 @@ class PropertyUploadDocumentsAdapter(
 
             if (textFilesExtensions.contains(extension) ||
                 !mediaFilesExtensions.contains(extension)){
-                binding.textFilesPlaceHolderImageView.visible()
+                binding.textFilesPlaceHolderFrameLayout.visible()
                 binding.previewImageView.gone()
                 if(isInternetAvailable) {
                     binding.progressBarContainerFrameLayout.gone()
                 }
             } else {
-                binding.textFilesPlaceHolderImageView.gone()
+                binding.textFilesPlaceHolderFrameLayout.gone()
                 binding.previewImageView.visible()
                 GlideApp.with(binding.root)
                     .load(file)

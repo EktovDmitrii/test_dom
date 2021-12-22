@@ -30,6 +30,7 @@ import io.reactivex.subjects.PublishSubject
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 import org.joda.time.Duration
 import org.joda.time.LocalDateTime
 import java.io.File
@@ -230,7 +231,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
         val client = clientSharedPreferences.getClient()
         val channelId = client?.getChatChannelId() ?: ""
         return api.postFileInChat(file.toMultipartFormData(), channelId).map {
-            ChatMapper.responseToChatFile(it, client?.id ?: "", LocalDateTime.now())
+            ChatMapper.responseToChatFile(it, client?.id ?: "", LocalDateTime.now(DateTimeZone.getDefault()))
         }
     }
 

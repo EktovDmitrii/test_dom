@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -68,7 +69,7 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
         }
 
         binding.messageEditText.addTextChangedListener {
-            binding.sendMessageImageView.isEnabled = it.toString().isNotEmpty()
+            binding.sendMessageImageView.isEnabled = it.toString().trim().isNotEmpty()
         }
 
         binding.sendMessageImageView.setOnDebouncedClickListener {
@@ -99,7 +100,7 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
                 super.onScrolled(recyclerView, dx, dy)
                 if (dy > 0 && ! binding.scrollDownImageView.isActivated) {
                     binding.scrollDownImageView.isActivated = true
-                } else if ((dy < 0 && binding.scrollDownImageView.isActivated)) {
+                } else if (dy < 0 && binding.scrollDownImageView.isActivated) {
                     binding.scrollDownImageView.isActivated = false
                 } else if (!recyclerView.canScrollVertically(UP_DIRECTION) && binding.scrollDownImageView.isActivated) {
                     binding.scrollDownImageView.isActivated = false

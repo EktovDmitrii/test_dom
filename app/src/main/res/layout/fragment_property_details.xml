@@ -457,6 +457,7 @@
                         android:layout_height="116dp"
                         android:orientation="horizontal"
                         tools:listitem="@layout/item_property_upload_document"
+                        tools:itemCount="1"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
