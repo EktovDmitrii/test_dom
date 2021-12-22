@@ -1,23 +1,48 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
+import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.responses.CatalogNodeResponse
 import com.custom.rgs_android_dom.data.network.responses.ProductResponse
+import com.custom.rgs_android_dom.data.network.responses.ProductShortResponse
 import com.custom.rgs_android_dom.data.network.responses.ServiceResponse
 import com.custom.rgs_android_dom.domain.catalog.models.*
 import com.custom.rgs_android_dom.utils.asEnumOrDefault
 
 object CatalogMapper {
 
-    fun responseToCatalogNode(response: CatalogNodeResponse): CatalogNodeModel {
-        return CatalogNodeModel(
-            id = response.id,
-            code = response.code ?: "",
-            iconLink = response.iconLink ?: "",
-            name = response.name ?: "",
-            parentNodeId = response.parentNodeId ?: "",
-            productTags = response.productTags ?: listOf(),
-            title = response.title ?: ""
-        )
+    fun responseToCatalogCategories(response: List<CatalogNodeResponse>): List<CatalogCategoryModel>{
+        val catalogCategories = arrayListOf<CatalogCategoryModel>()
+
+        val categoryNodes = response.filter { it.parentNodeId == null }
+        for (categoryNode in categoryNodes){
+            val subNodes = response.filter { it.parentNodeId == categoryNode.id }
+            val subCategories = arrayListOf<CatalogSubCategoryModel>()
+
+            for (subNode in subNodes){
+                val subCategory = CatalogSubCategoryModel(
+                    id = subNode.id,
+                    title = subNode.title ?: "",
+                    parentCategoryId = categoryNode.id,
+                    icon = "${BuildConfig.BASE_URL}/api/store/${subNode.iconLink}",
+                    productTags = subNode.productTags ?: listOf(),
+                    products = listOf()
+                )
+                subCategories.add(subCategory)
+            }
+
+            val category = CatalogCategoryModel(
+                id = categoryNode.id,
+                title = categoryNode.title ?: "",
+                icon = "${BuildConfig.BASE_URL}/api/store/${categoryNode.iconLink}",
+                productTags = categoryNode.productTags ?: listOf(),
+                products = listOf(),
+                subCategories = subCategories
+            )
+            catalogCategories.add(category)
+
+        }
+
+        return catalogCategories
     }
 
     fun responseToProduct(response: ProductResponse): ProductModel {
@@ -138,6 +163,18 @@ object CatalogMapper {
             versionCreatedAt = response.versionCreatedAt,
             versionId = response.versionId,
             versionStatus = response.versionStatus
+        )
+    }
+
+    fun responseToProductShort(response: ProductShortResponse): ProductShortModel {
+        return ProductShortModel(
+            id = response.id,
+            type = response.type,
+            title = response.title ?: "",
+            code = response.code,
+            versionId = response.versionId,
+            name = response.name,
+            price = response.price
         )
     }
 

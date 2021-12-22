@@ -21,7 +21,6 @@ import io.livekit.android.room.participant.Participant
 import io.livekit.android.room.participant.RemoteParticipant
 import io.livekit.android.room.track.*
 import io.reactivex.Completable
-import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -31,6 +30,7 @@ import io.reactivex.subjects.PublishSubject
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 import org.joda.time.Duration
 import org.joda.time.LocalDateTime
 import java.io.File
@@ -231,7 +231,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
         val client = clientSharedPreferences.getClient()
         val channelId = client?.getChatChannelId() ?: ""
         return api.postFileInChat(file.toMultipartFormData(), channelId).map {
-            ChatMapper.responseToChatFile(it, client?.id ?: "", LocalDateTime.now())
+            ChatMapper.responseToChatFile(it, client?.id ?: "", LocalDateTime.now(DateTimeZone.getDefault()))
         }
     }
 
@@ -412,6 +412,15 @@ class ChatRepositoryImpl(private val api: MSDApi,
             room.localParticipant.videoTrackCaptureDefaults = myVideoTrackOptions.copy(position = CameraPosition.FRONT)
         }
         myVideoTrack.restartTrack(room.localParticipant.videoTrackCaptureDefaults)
+        roomInfo?.let {
+            roomInfoSubject.onNext(it)
+        }
+    }
+
+    override suspend fun switchVideoTrack() {
+        val newValue = roomInfo?.videoTracksSwitched ?: false
+        roomInfo = roomInfo?.copy(videoTracksSwitched = !newValue)
+
         roomInfo?.let {
             roomInfoSubject.onNext(it)
         }

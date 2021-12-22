@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="104dp"
+    android:layout_height="156dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/logoImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        tools:background="@drawable/rectangle_filled_lime_radius_16dp"/>
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/titleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:fontFamily="@font/suisse_regular"
+        android:textColor="@color/secondary900"
+        android:textSize="12sp"
+        tools:text="Устранение засоров" />
+
+</FrameLayout>

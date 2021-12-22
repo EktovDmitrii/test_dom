@@ -8,12 +8,12 @@ import android.view.animation.*
 import android.widget.OverScroller
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.view.children
-import androidx.fragment.app.Fragment
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentMainBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.chat.ChatFragment
+import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
+import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.ui.main.stub.MainStubFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -89,14 +89,27 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
             // TODO Replace this later, when we will have normal navigation
             when (it::class.java.canonicalName){
                 MainStubFragment::class.java.canonicalName -> {
+                    binding.bottomNavigationLayout.navigationMenu.visible()
+
                     activateMenu(false)
                     selectedMenu = binding.bottomNavigationLayout.navMainLinearLayout
                     activateMenu(true)
                 }
                 ClientFragment::class.java.canonicalName -> {
+                    binding.bottomNavigationLayout.navigationMenu.visible()
+
                     activateMenu(false)
                     selectedMenu = binding.bottomNavigationLayout.navProfileLinearLayout
                     activateMenu(true)
+                }
+                MainCatalogFragment::class.java.canonicalName -> {
+                    activateMenu(false)
+                    selectedMenu = binding.bottomNavigationLayout.navCatalogueLinearLayout
+                    activateMenu(true)
+                }
+                PropertyInfoFragment::class.java.canonicalName -> {
+                    binding.bottomNavigationLayout.navigationMenu.gone()
+
                 }
             }
         }
@@ -152,7 +165,6 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
             binding.bottomNavigationLayout.navProfileLinearLayout.visibleIf(it)
             binding.bottomNavigationLayout.navLoginLinearLayout.goneIf(it)
         }
-
     }
 
     override fun onStart() {
@@ -183,16 +195,24 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
 
             bottomSheetBehavior?.addBottomSheetCallback(bottomSheetCallback)
 
-            val bottomSheetTopPadding =
-                when (bottomSheetMainFragment) {
+            val bottomSheetTopPadding = binding.toolbarLinearLayout.height
+
+            // TODO Improve this later
+                /*when (bottomSheetMainFragment) {
                     is ClientFragment -> {
                         binding.toolbarLinearLayout.height
                     }
                     is MainStubFragment -> {
                         binding.toolbarLinearLayout.height
                     }
+                    is MainCatalogFragment -> {
+                        binding.toolbarLinearLayout.height
+                    }
+                    is CatalogSubcategoriesFragment -> {
+                        binding.toolbarLinearLayout.height
+                    }
                     else -> 0.dp(requireContext())
-                }
+                }*/
 
             peekHeight =
                 binding.root.getLocationOnScreen().y - binding.callContainerLinearLayout.getLocationOnScreen().y +

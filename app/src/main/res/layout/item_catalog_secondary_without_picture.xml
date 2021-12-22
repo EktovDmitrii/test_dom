@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="57dp"
+    android:orientation="horizontal">
+
+    <com.custom.rgs_android_dom.views.MSDImageView
+        android:layout_width="36dp"
+        android:layout_height="48dp"
+        android:layout_gravity="start|top"
+        android:background="@drawable/rectangle_filled_lime_radius_8dp" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="0dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingVertical="4dp">
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/titleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:fontFamily="@font/suisse_semi_bold"
+                    android:textColor="@color/secondary900"
+                    android:textSize="14sp"
+                    tools:text="Установка раковины, мойки" />
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/quantityTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:fontFamily="@font/suisse_regular"
+                    android:textColor="@color/secondary500"
+                    android:textSize="14sp"
+                    tools:text="12 услуг" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.custom.rgs_android_dom.views.MSDImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_arrow_right_24px" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="8dp"
+            android:background="@color/secondary900_alpha8" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

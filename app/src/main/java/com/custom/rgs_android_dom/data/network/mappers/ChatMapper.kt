@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.data.network.responses.ChannelMemberResponse
 import com.custom.rgs_android_dom.data.network.responses.ChatFileResponse
 import com.custom.rgs_android_dom.data.network.responses.ChatMessageResponse
 import com.custom.rgs_android_dom.domain.chat.models.*
+import org.joda.time.DateTimeZone
 import org.joda.time.LocalDateTime
 
 object ChatMapper{
@@ -17,13 +18,13 @@ object ChatMapper{
             ChatMessageModel(
                 channelId = messageResponse.channelId,
                 files = messageResponse.files?.map { fileResponse->
-                    responseToChatFile(fileResponse, messageResponse.userId, messageResponse.createdAt.toLocalDateTime())
+                    responseToChatFile(fileResponse, messageResponse.userId, messageResponse.createdAt.withZone(DateTimeZone.getDefault()).toLocalDateTime())
                 },
                 id = messageResponse.id ?: "",
                 message = messageResponse.message.replace("\\n", "\n"),
                 userId = messageResponse.userId,
                 sender = if (messageResponse.userId == userId) Sender.ME else Sender.OPPONENT,
-                createdAt = messageResponse.createdAt.toLocalDateTime(),
+                createdAt = messageResponse.createdAt.withZone(DateTimeZone.getDefault()).toLocalDateTime(),
                 type = messageResponse.type,
                 member = null
             )
@@ -34,13 +35,13 @@ object ChatMapper{
         return ChatMessageModel(
             channelId = messageResponse.channelId,
             files = messageResponse.files?.map { fileResponse->
-                responseToChatFile(fileResponse, messageResponse.userId, messageResponse.createdAt.toLocalDateTime())
+                responseToChatFile(fileResponse, messageResponse.userId, messageResponse.createdAt.withZone(DateTimeZone.getDefault()).toLocalDateTime())
             },
             id = messageResponse.id ?: "",
             message = messageResponse.message.replace("\\n", "\n"),
             userId = messageResponse.userId,
             sender = if (messageResponse.userId == userId) Sender.ME else Sender.OPPONENT,
-            createdAt = messageResponse.createdAt.toLocalDateTime(),
+            createdAt = messageResponse.createdAt.withZone(DateTimeZone.getDefault()).toLocalDateTime(),
             type = messageResponse.type,
             member = null
         )

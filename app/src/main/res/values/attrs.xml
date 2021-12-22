@@ -9,8 +9,6 @@
     <attr name="mask" format="string"/>
     <attr name="inputHeight" format="dimension"/>
 
-
-
     <declare-styleable name="MSDTextView">
         <attr name="translationTextKey"/>
         <attr name="isUnderlined" format="boolean"/>
@@ -181,6 +179,11 @@
         <attr name="android:enabled"/>
         <attr name="inputHeight"/>
         <attr name="icon"/>
+    </declare-styleable>
+
+    <declare-styleable name="MSDRecyclerView">
+        <attr name="horizontalDecorationGap" format="dimension"/>
+        <attr name="verticalDecorationGap" format="dimension"/>
     </declare-styleable>
 
     <declare-styleable name="MSDRoundFrameLayout">
