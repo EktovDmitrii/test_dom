@@ -34,10 +34,6 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         private const val REQUEST_CODE_MIC = 1
         private const val REQUEST_CODE_MIC_AND_CAMERA = 2
 
-        private const val SMALL_SCREEN_WIDTH = 136
-        private const val SMALL_SCREEN_HEIGHT = 180
-        private const val SMALL_SCREEN_MARGIN = 16
-
         fun newInstance(callType: CallType, consultant: ChannelMemberModel?): CallFragment {
             return CallFragment().args {
                 putSerializable(ARG_CALL_TYPE, callType)
@@ -46,6 +42,16 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
                 }
             }
         }
+    }
+
+    private val smallVideoWidth by lazy {
+        resources.getDimensionPixelSize(R.dimen.chat_small_video_width)
+    }
+    private val smallVideoHeight by lazy {
+        resources.getDimensionPixelSize(R.dimen.chat_small_video_height)
+    }
+    private val smallVideoMargin by lazy {
+        resources.getDimensionPixelSize(R.dimen.material_margin_normal)
     }
 
     private val requestMicAndCameraPermissionsAction =
@@ -262,9 +268,9 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         binding.switchSurfacesMyImageView.visible()
 
         with(binding.mySurfaceContainer.layoutParams as FrameLayout.LayoutParams){
-            width = SMALL_SCREEN_WIDTH.dp(requireContext())
-            height = SMALL_SCREEN_HEIGHT.dp(requireContext())
-            setMargins(0,0, SMALL_SCREEN_MARGIN.dp(requireContext()), SMALL_SCREEN_MARGIN.dp(requireContext()))
+            width = smallVideoWidth
+            height = smallVideoHeight
+            setMargins(0,0, smallVideoMargin, smallVideoMargin)
             gravity = Gravity.BOTTOM or Gravity.END
             binding.mySurfaceContainer.layoutParams = this
         }
@@ -290,9 +296,9 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
             binding.switchSurfacesConsultantImageView.visible()
 
             with(binding.consultantSurfaceContainer.layoutParams as FrameLayout.LayoutParams){
-                width = SMALL_SCREEN_WIDTH.dp(requireContext())
-                height = SMALL_SCREEN_HEIGHT.dp(requireContext())
-                setMargins(0,0, SMALL_SCREEN_MARGIN.dp(requireContext()), SMALL_SCREEN_MARGIN.dp(requireContext()))
+                width = smallVideoWidth
+                height = smallVideoHeight
+                setMargins(0,0, smallVideoMargin, smallVideoMargin)
                 gravity = Gravity.BOTTOM or Gravity.END
                 binding.consultantSurfaceContainer.layoutParams = this
             }
