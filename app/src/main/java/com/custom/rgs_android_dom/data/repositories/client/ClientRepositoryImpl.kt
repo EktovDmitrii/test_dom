@@ -195,10 +195,10 @@ class ClientRepositoryImpl(
 
     override fun getClientProducts(): Single<ClientProductsModel> {
         return api.getClientProducts(
-            PRODUCTS_PAGE_SIZE,
-            PRODUCTS_PAGE_INDEX,
-            PRODUCTS_CONTRACT_ID,
-            PRODUCTS_STATUS
+            "",
+            "",
+            "",
+            ""
         ).map {
             ClientMapper.responseToClientProducts(it)
         }
