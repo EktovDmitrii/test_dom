@@ -7,15 +7,13 @@ import com.custom.rgs_android_dom.databinding.ItemCatalogCategoryBinding
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogSubCategoryModel
 import com.custom.rgs_android_dom.ui.base.BaseViewHolder
-import com.custom.rgs_android_dom.utils.dp
-import com.custom.rgs_android_dom.utils.gone
-import com.custom.rgs_android_dom.utils.goneIf
+import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.utils.recycler_view.HorizontalItemDecoration
 import com.custom.rgs_android_dom.utils.recycler_view.VerticalItemDecoration
-import com.custom.rgs_android_dom.utils.visible
 
 class CatalogCategoriesAdapter(
-
+    private val onSubCategoryClick: (CatalogSubCategoryModel) -> Unit = {},
+    private val onAllProductsClick: (CatalogCategoryModel) -> Unit = {}
 ) : RecyclerView.Adapter<BaseViewHolder<*>>() {
 
     companion object {
@@ -37,7 +35,7 @@ class CatalogCategoriesAdapter(
         return when (viewType) {
             TYPE_CATEGORY_ITEM -> {
                 val binding = ItemCatalogCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                ItemCatalogCategoryViewHolder(binding)
+                ItemCatalogCategoryViewHolder(binding, onSubCategoryClick, onAllProductsClick)
             }
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -61,7 +59,8 @@ class CatalogCategoriesAdapter(
 
     inner class ItemCatalogCategoryViewHolder(
         private val binding: ItemCatalogCategoryBinding,
-        private val onSubCategoryClick: (CatalogSubCategoryModel) -> Unit = {}) : BaseViewHolder<CatalogCategoryModel>(binding.root) {
+        private val onSubCategoryClick: (CatalogSubCategoryModel) -> Unit = {},
+        private val onAllProductsClick: (CatalogCategoryModel) -> Unit = {}) : BaseViewHolder<CatalogCategoryModel>(binding.root) {
 
         override fun bind(item: CatalogCategoryModel) {
             binding.categoryTitleTextView.text = item.title
@@ -80,10 +79,10 @@ class CatalogCategoriesAdapter(
             binding.allProductsConstraintLayout.goneIf(item.subCategories.isEmpty())
 
             if (subCategoriesWithBigImage.isNotEmpty()){
-                val catalogSubCategoriesWithBigImageAdapter = CatalogSubcategoriesWithBigImageAdapter()
-                binding.subcategoriesWithBigImageRecyclerView.addItemDecoration(
-                    HorizontalItemDecoration(gap = 11.dp(binding.root.context))
+                val catalogSubCategoriesWithBigImageAdapter = CatalogSubcategoriesWithBigImageAdapter(
+                    onSubCategoryClick = onSubCategoryClick
                 )
+
                 binding.subcategoriesWithBigImageRecyclerView.adapter = catalogSubCategoriesWithBigImageAdapter
                 catalogSubCategoriesWithBigImageAdapter.setItems(subCategoriesWithBigImage)
                 
@@ -92,13 +91,16 @@ class CatalogCategoriesAdapter(
                 binding.subcategoriesWithBigImageRecyclerView.gone()
             }
 
-            val catalogSubCategoriesWithSmallImageAdapter = CatalogSubcategoriesWithSmallImageAdapter()
-
-            binding.subcategoriesWithSmallImageRecyclerView.addItemDecoration(
-                VerticalItemDecoration(gap = 12.dp(binding.root.context))
+            val catalogSubCategoriesWithSmallImageAdapter = CatalogSubcategoriesWithSmallImageAdapter(
+                onSubCategoryClick = onSubCategoryClick
             )
+
             binding.subcategoriesWithSmallImageRecyclerView.adapter = catalogSubCategoriesWithSmallImageAdapter
             catalogSubCategoriesWithSmallImageAdapter.setItems(subCategoriesWithSmallImage)
+
+            binding.allProductsConstraintLayout.setOnDebouncedClickListener {
+                onAllProductsClick(item)
+            }
 
         }
     }

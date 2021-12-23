@@ -6,6 +6,8 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentTabCatalogBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesFragment
+import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.dp
 import com.custom.rgs_android_dom.utils.recycler_view.VerticalItemDecoration
 import com.custom.rgs_android_dom.utils.setStatusBarColor
@@ -25,7 +27,14 @@ class TabCatalogFragment : BaseFragment<TabCatalogViewModel, FragmentTabCatalogB
             VerticalItemDecoration(gap = 24.dp(binding.root.context))
         )
 
-        binding.catalogCategoriesRecyclerView.adapter = CatalogCategoriesAdapter()
+        binding.catalogCategoriesRecyclerView.adapter = CatalogCategoriesAdapter(
+            onSubCategoryClick = {
+                viewModel.onSubCategoryClick(it)
+            },
+            onAllProductsClick = {
+                viewModel.onAllProductsClick(it)
+            }
+        )
 
         subscribe(viewModel.catalogCategoriesObserver){
             catalogCategoriesAdapter.setItems(it)

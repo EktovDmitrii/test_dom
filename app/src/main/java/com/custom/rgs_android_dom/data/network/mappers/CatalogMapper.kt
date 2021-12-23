@@ -170,7 +170,7 @@ object CatalogMapper {
         return ProductShortModel(
             id = response.id,
             type = response.type,
-            title = response.title,
+            title = response.title ?: "",
             code = response.code,
             versionId = response.versionId,
             name = response.name,
