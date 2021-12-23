@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.ui.chat
 
-import android.text.method.LinkMovementMethod
 import android.text.util.Linkify
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -122,7 +121,7 @@ class ChatAdapter(
 
         fun bind(model: ChatMessageModel) {
 
-            drawItemBackground()
+            decorateItem()
 
             val files = model.files
             if (files != null && files.isNotEmpty()) {
@@ -153,10 +152,13 @@ class ChatAdapter(
             }
         }
 
-        private fun drawItemBackground() {
+        private fun decorateItem() {
 
             val previousChatItemModel: ChatItemModel?
             val context = binding.messageContainerFrameLayout.context
+            val marginTopToDateDivider = 22
+            val marginTopToSenderMe = 4
+            val marginTopToSenderOpponent = 24
 
             val allCornersTheSameRadiusDrawable = AppCompatResources.getDrawable(
                 context,
@@ -168,18 +170,25 @@ class ChatAdapter(
                 R.drawable.rectangle_filled_primary_500_radius_16dp_top_end_4dp
             )
 
-            if (absoluteAdapterPosition > 0) {
+            previousChatItemModel = chatItems[absoluteAdapterPosition - 1]
 
-                previousChatItemModel = chatItems[absoluteAdapterPosition - 1]
+            if (previousChatItemModel is ChatMessageModel && previousChatItemModel.sender == Sender.OPPONENT
+                || (previousChatItemModel is ChatDateDividerModel)) {
 
-                if (previousChatItemModel is ChatMessageModel && previousChatItemModel.sender == Sender.OPPONENT
-                    || (previousChatItemModel is ChatDateDividerModel)) {
-                    binding.messageContainerFrameLayout.background = topEndCornerWithDifferentRadiusDrawable
-                } else if (topEndCornerWithDifferentRadiusDrawable != null
-                    && binding.messageContainerFrameLayout.background.constantState == topEndCornerWithDifferentRadiusDrawable.constantState) {
-                    binding.messageContainerFrameLayout.background = allCornersTheSameRadiusDrawable
+                when(previousChatItemModel){
+                    is ChatMessageModel -> {
+                        binding.myMessageContainerRelativeLayout.setMargins(top = marginTopToSenderOpponent)
+                    }
+                    is ChatDateDividerModel -> {
+                        binding.myMessageContainerRelativeLayout.setMargins(top = marginTopToDateDivider)
+                    }
                 }
+                binding.messageContainerFrameLayout.background = topEndCornerWithDifferentRadiusDrawable
+            } else {
+                binding.myMessageContainerRelativeLayout.setMargins(top = marginTopToSenderMe)
+                binding.messageContainerFrameLayout.background = allCornersTheSameRadiusDrawable
             }
+
         }
 
     }
@@ -214,7 +223,7 @@ class ChatAdapter(
             val files = model.files
             if (files != null && files.isNotEmpty()) {
 
-                binding.attachedFilesRecyclerView.visible()
+                binding.attachedFilesContainerFrameLayout.visible()
                 binding.messageContainerLinearLayout.gone()
 
                 val adapter = ChatOpponentFilesAdapter() {
@@ -231,7 +240,7 @@ class ChatAdapter(
 
             } else {
 
-                binding.attachedFilesRecyclerView.gone()
+                binding.attachedFilesContainerFrameLayout.gone()
                 binding.messageContainerLinearLayout.visible()
 
                 binding.messageTextView.text = model.message
@@ -246,6 +255,9 @@ class ChatAdapter(
 
             val previousChatItemModel: ChatItemModel?
             val context = binding.messageContainerFrameLayout.context
+            val marginTopToDateDivider = 22
+            val marginTopToSenderMe = 30
+            val marginTopToSenderOpponent = 4
 
             val allCornersTheSameRadiusDrawable = AppCompatResources.getDrawable(
                 context,
@@ -257,32 +269,28 @@ class ChatAdapter(
                 R.drawable.rectangle_filled_secondary_100_radius_16dp_top_start_radius_4dp
             )
 
-            if (absoluteAdapterPosition > 0) {
+            previousChatItemModel = chatItems[absoluteAdapterPosition - 1]
 
-                previousChatItemModel = chatItems[absoluteAdapterPosition - 1]
-
-                if (previousChatItemModel is ChatMessageModel && previousChatItemModel.sender == Sender.ME
-                    || (previousChatItemModel is ChatDateDividerModel)) {
+            if (previousChatItemModel is ChatMessageModel && previousChatItemModel.sender == Sender.ME
+                || (previousChatItemModel is ChatDateDividerModel)) {
+                    when(previousChatItemModel){
+                        is ChatMessageModel -> {
+                            binding.opponentContainerLinearLayout.setMargins(top = marginTopToSenderMe)
+                        }
+                        is ChatDateDividerModel -> {
+                            binding.opponentContainerLinearLayout.setMargins(top = marginTopToDateDivider)
+                        }
+                    }
+                    binding.avatarImageView.visible()
+                    binding.nameTextView.visible()
                     binding.messageContainerFrameLayout.background = topStartCornerWithDifferentRadiusDrawable
-                } else if (topStartCornerWithDifferentRadiusDrawable != null &&
-                    binding.messageContainerFrameLayout.background.constantState == topStartCornerWithDifferentRadiusDrawable.constantState) {
+                } else {
+                    binding.opponentContainerLinearLayout.setMargins(top = marginTopToSenderOpponent)
+                    binding.avatarImageView.invisible()
+                    binding.nameTextView.gone()
                     binding.messageContainerFrameLayout.background = allCornersTheSameRadiusDrawable
                 }
 
-                if (previousChatItemModel is ChatMessageModel){
-                    binding.avatarImageView.invisibleIf(previousChatItemModel.sender == Sender.OPPONENT)
-                    binding.nameTextView.visibleIf(previousChatItemModel.sender == Sender.ME)
-
-                    val topMargin = if (previousChatItemModel.sender == Sender.ME) 12.dp(context) else 4.dp(context)
-                    binding.root.setMargins(top = topMargin)
-                }
-            } else {
-                binding.avatarImageView.visible()
-                binding.nameTextView.visible()
-
-                val topMargin = 12.dp(context)
-                binding.root.setMargins(top = topMargin)
-            }
         }
     }
 
