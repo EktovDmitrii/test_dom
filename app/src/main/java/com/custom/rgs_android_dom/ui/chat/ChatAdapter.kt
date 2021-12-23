@@ -188,7 +188,6 @@ class ChatAdapter(
                 binding.myMessageContainerRelativeLayout.setMargins(top = marginTopToSenderMe)
                 binding.messageContainerFrameLayout.background = allCornersTheSameRadiusDrawable
             }
-
         }
 
     }

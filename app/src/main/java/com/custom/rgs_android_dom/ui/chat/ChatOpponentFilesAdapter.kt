@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.ui.chat
 
-import android.content.res.Resources
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.RequestOptions
 import com.custom.rgs_android_dom.databinding.*
 import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.utils.*
