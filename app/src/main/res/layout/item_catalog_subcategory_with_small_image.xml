@@ -7,7 +7,7 @@
     android:orientation="horizontal">
 
     <com.custom.rgs_android_dom.views.MSDImageView
-        android:id="@+id/subcategoryImageView"
+        android:id="@+id/logoImageView"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_marginTop="3dp"

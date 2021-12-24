@@ -11,6 +11,7 @@ import com.custom.rgs_android_dom.databinding.ItemCatalogSubcategoryWithSmallIma
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogSubCategoryModel
 import com.custom.rgs_android_dom.utils.GlideApp
 import com.custom.rgs_android_dom.utils.dp
+import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 
 class CatalogSubcategoriesWithSmallImageAdapter(
     private val onSubCategoryClick: (CatalogSubCategoryModel) -> Unit = {}
@@ -24,7 +25,7 @@ class CatalogSubcategoriesWithSmallImageAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatalogSubCategoryWithSmallImageViewHolder {
         val binding = ItemCatalogSubcategoryWithSmallImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CatalogSubCategoryWithSmallImageViewHolder(binding)
+        return CatalogSubCategoryWithSmallImageViewHolder(binding, onSubCategoryClick)
     }
 
     override fun getItemCount(): Int {
@@ -47,8 +48,11 @@ class CatalogSubcategoriesWithSmallImageAdapter(
             GlideApp.with(binding.root.context)
                 .load(GlideUrlProvider.makeHeadersGlideUrl(model.icon))
                 .transform(RoundedCorners(8.dp(binding.root.context)))
-                .error(R.drawable.ic_call_consultant)
-                .into(binding.subcategoryImageView)
+                .into(binding.logoImageView)
+
+            binding.root.setOnDebouncedClickListener {
+                onSubCategoryClick(model)
+            }
         }
 
     }
