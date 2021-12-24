@@ -82,6 +82,6 @@ val viewModelModule = module {
     viewModel { TabProductsViewModel() }
     viewModel { TabAvailableServicesViewModel() }
     viewModel { TabFavoriteServicesViewModel() }
-    viewModel { parameters -> CatalogSubcategoriesViewModel(category = parameters.get()) }
-    viewModel { parameters -> CatalogSubcategoryViewModel(subCategory = parameters.get()) }
+    viewModel { parameters -> CatalogSubcategoriesViewModel(category = parameters.get(), catalogInteractor = get()) }
+    viewModel { parameters -> CatalogSubcategoryViewModel(subCategory = parameters.get(), catalogInteractor = get()) }
 }

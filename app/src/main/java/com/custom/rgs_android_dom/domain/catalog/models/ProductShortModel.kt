@@ -9,5 +9,6 @@ data class ProductShortModel(
     val code: String,
     val versionId: String,
     val name: String,
-    val price: Int
+    val price: Int,
+    val tags: List<String>
 ): Serializable

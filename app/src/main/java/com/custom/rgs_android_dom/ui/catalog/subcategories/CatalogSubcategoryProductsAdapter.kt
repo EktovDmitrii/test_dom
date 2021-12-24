@@ -5,9 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.custom.rgs_android_dom.databinding.ItemCatalogSubcategoryDetailsProductBinding
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
+import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 
 class CatalogSubcategoryProductsAdapter(
-    private val productClick: (ProductShortModel) -> Unit = {}
+    private val onProductClick: (ProductShortModel) -> Unit = {}
 ) : RecyclerView.Adapter<CatalogSubcategoryProductsAdapter.CatalogSubcategoryProductsViewHolder>() {
 
     private var products: List<ProductShortModel> = listOf()
@@ -18,7 +19,7 @@ class CatalogSubcategoryProductsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatalogSubcategoryProductsViewHolder {
         val binding = ItemCatalogSubcategoryDetailsProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CatalogSubcategoryProductsViewHolder(binding)
+        return CatalogSubcategoryProductsViewHolder(binding, onProductClick)
     }
 
     override fun getItemCount(): Int {
@@ -37,6 +38,10 @@ class CatalogSubcategoryProductsAdapter(
         fun bind(model: ProductShortModel) {
             binding.titleTextView.text = model.title
             binding.priceTextView.text = "от ${model.price} ₽/шт"
+
+            binding.root.setOnDebouncedClickListener {
+                onProductClick(model)
+            }
         }
 
     }

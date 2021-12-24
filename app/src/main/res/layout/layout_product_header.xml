@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        tools:src="@drawable/rectangle_filled_lime_radius_16dp"/>
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/my_service_bold"
+        android:textColor="@color/secondary900"
+        android:textSize="20sp"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        tools:text="Сантехника" />
+
+    <TextView
+        android:id="@+id/descriptionTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/suisse_regular"
+        android:textColor="@color/secondary900"
+        android:textSize="16sp"
+        android:gravity="center_horizontal"
+        tools:text="Мы оказываем установку унитаза любой модели и сложности: от подвесного унитаза до классической модели." />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/suisse_regular"
+        android:textColor="@color/secondary600"
+        android:letterSpacing="0.25"
+        android:textSize="10sp"
+        android:textAllCaps="true"
+        android:layout_marginTop="24dp"
+        app:translationTextKey="стоимость" />
+
+    <TextView
+        android:id="@+id/priceTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/my_service_bold"
+        android:textColor="@color/primary500"
+        android:textSize="24sp"
+        android:layout_marginTop="4dp"
+        tools:text="1500 ₽" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

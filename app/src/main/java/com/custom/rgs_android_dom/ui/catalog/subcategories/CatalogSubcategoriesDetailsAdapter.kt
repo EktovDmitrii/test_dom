@@ -18,7 +18,7 @@ import com.custom.rgs_android_dom.utils.gone
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 
 class CatalogSubcategoriesDetailsAdapter(
-    private val productClick: (ProductShortModel) -> Unit = {}
+    private val onProductClick: (ProductShortModel) -> Unit = {}
 ) : RecyclerView.Adapter<CatalogSubcategoriesDetailsAdapter.CatalogSubcategoriesDetailsViewHolder>() {
 
     private var subCategories: List<CatalogSubCategoryModel> = listOf()
@@ -29,7 +29,7 @@ class CatalogSubcategoriesDetailsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatalogSubcategoriesDetailsViewHolder {
         val binding = ItemCatalogSubcategoryDetailsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CatalogSubcategoriesDetailsViewHolder(binding)
+        return CatalogSubcategoriesDetailsViewHolder(binding, onProductClick)
     }
 
     override fun getItemCount(): Int {
@@ -69,14 +69,11 @@ class CatalogSubcategoriesDetailsAdapter(
                     binding.productsRecyclerView.isVisible = recyclerVisible
 
                     binding.productsRecyclerView.tag = recyclerVisible
-
                 }
 
             } else {
                 binding.productsRecyclerView.gone()
             }
-
         }
-
     }
 }
