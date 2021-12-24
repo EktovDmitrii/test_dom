@@ -8,8 +8,8 @@ data class ClientProductsResponse(
     val clientProducts: List<ClientProductResponse>?,
 
     @SerializedName("index")
-    val index: Int = 0,
+    val index: Int,
 
     @SerializedName("total")
-    val total: Int = 0
+    val total: Int
 )
