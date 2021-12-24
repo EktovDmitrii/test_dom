@@ -11,21 +11,44 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
 
     override val TAG: String = "MAIN_FRAGMENT"
 
+    private var isAuthorized = false
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.signInLinearLayout.setOnDebouncedClickListener {
-            viewModel.onSignInClick()
+        binding.loginLinearLayout.setOnDebouncedClickListener {
+            viewModel.onLoginClick()
         }
 
         binding.profileLinearLayout.setOnDebouncedClickListener {
             viewModel.onProfileClick()
         }
 
-        subscribe(viewModel.registrationObserver) {
-            binding.profileLinearLayout.visibleIf(it)
-            binding.signInLinearLayout.goneIf(it)
+        binding.noPropertyLinearLayout.setOnDebouncedClickListener {
+            viewModel.onNoPropertyClick()
         }
+
+        binding.propertyAvailableLinearLayout.setOnDebouncedClickListener {
+            viewModel.onPropertyAvailableClick()
+        }
+
+        subscribe(viewModel.registrationObserver) {
+            isAuthorized = it
+            binding.profileLinearLayout.visibleIf(it)
+            binding.loginLinearLayout.goneIf(it)
+            if (it) {
+                viewModel.getPropertyAvailability()
+            } else {
+                binding.propertyAvailableLinearLayout.gone()
+                binding.noPropertyLinearLayout.gone()
+            }
+        }
+
+        subscribe(viewModel.propertyAvailabilityObserver) {
+            binding.propertyAvailableLinearLayout.visibleIf(it && isAuthorized)
+            binding.noPropertyLinearLayout.goneIf(it  || !isAuthorized)
+        }
+
     }
 
     override fun onClose() {
