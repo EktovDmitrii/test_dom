@@ -4,10 +4,6 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -17,14 +13,12 @@ import com.custom.rgs_android_dom.utils.*
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.request.RequestOptions
-import com.custom.rgs_android_dom.R
-import io.reactivex.subjects.PublishSubject
 
 class PropertyUploadDocumentsAdapter(
     private val onRemoveDocument: (Uri) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var isInternetAvailable = false
+    private var isConnected = false
     private var propertyUploadDocumentsItems = mutableListOf<Uri>()
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -52,7 +46,7 @@ class PropertyUploadDocumentsAdapter(
     }
 
     fun onInternetConnectionChanged(it: Boolean) {
-        isInternetAvailable = it
+        isConnected = it
         notifyDataSetChanged()
     }
 
@@ -84,7 +78,7 @@ class PropertyUploadDocumentsAdapter(
                 !mediaFilesExtensions.contains(extension)){
                 binding.textFilesPlaceHolderFrameLayout.visible()
                 binding.previewImageView.gone()
-                if(isInternetAvailable) {
+                if(isConnected) {
                     binding.progressBarContainerFrameLayout.gone()
                 }
             } else {
@@ -100,7 +94,7 @@ class PropertyUploadDocumentsAdapter(
                             target: com.bumptech.glide.request.target.Target<Drawable>?,
                             isFirstResource: Boolean
                         ): Boolean {
-                            if(isInternetAvailable) {
+                            if(isConnected) {
                                 binding.progressBarContainerFrameLayout.gone()
                             }
                             return false
@@ -113,7 +107,7 @@ class PropertyUploadDocumentsAdapter(
                             dataSource: DataSource?,
                             isFirstResource: Boolean
                         ): Boolean {
-                            if(isInternetAvailable) {
+                            if(isConnected) {
                                 binding.progressBarContainerFrameLayout.gone()
                             }
                             return false
@@ -122,7 +116,7 @@ class PropertyUploadDocumentsAdapter(
                     .apply(requestOptions)
                     .into(binding.previewImageView)
             }
-            if(isInternetAvailable){
+            if(isConnected){
                 binding.progressBarContainerFrameLayout.gone()
             } else {
                 binding.progressBarContainerFrameLayout.visible()
