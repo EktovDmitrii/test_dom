@@ -15,20 +15,22 @@
         android:textSize="16sp"
         tools:text="Сантехника" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.custom.rgs_android_dom.views.MSDRecyclerView
         android:id="@+id/subcategoriesWithBigImageRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="156dp"
         android:orientation="horizontal"
         android:layout_marginTop="12dp"
+        app:horizontalDecorationGap="11dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.custom.rgs_android_dom.views.MSDRecyclerView
         android:id="@+id/subcategoriesWithSmallImageRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="16dp"
+        app:verticalDecorationGap="12dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
