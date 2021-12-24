@@ -45,4 +45,10 @@ class CatalogRepositoryImpl(private val api: MSDApi): CatalogRepository {
         }
     }
 
+    override fun getProduct(productId: String): Single<ProductModel> {
+        return api.getProduct(productId).map { response->
+            CatalogMapper.responseToProduct(response)
+        }
+    }
+
 }
