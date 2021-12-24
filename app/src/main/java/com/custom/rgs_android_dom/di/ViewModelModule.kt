@@ -4,7 +4,7 @@ import com.custom.rgs_android_dom.ui.about_app.AboutAppViewModel
 import com.custom.rgs_android_dom.ui.chat.ChatViewModel
 import com.custom.rgs_android_dom.ui.countries.CountriesViewModel
 import com.custom.rgs_android_dom.ui.demo.DemoViewModel
-import com.custom.rgs_android_dom.ui.main.MainViewModel
+import com.custom.rgs_android_dom.ui.root.RootViewModel
 import com.custom.rgs_android_dom.ui.client.ClientViewModel
 import com.custom.rgs_android_dom.ui.client.agent.AgentViewModel
 import com.custom.rgs_android_dom.ui.client.agent.edit.EditAgentViewModel
@@ -25,7 +25,7 @@ import com.custom.rgs_android_dom.ui.chat.files.manage.ManageFileViewModel
 import com.custom.rgs_android_dom.ui.chat.files.upload.UploadFilesViewModel
 import com.custom.rgs_android_dom.ui.chat.files.viewers.image.ImageViewerViewModel
 import com.custom.rgs_android_dom.ui.chat.files.viewers.video.VideoPlayerViewModel
-import com.custom.rgs_android_dom.ui.main.stub.MainStubViewModel
+import com.custom.rgs_android_dom.ui.root.main.MainViewModel
 import com.custom.rgs_android_dom.ui.client.personal_data.add_photo.AddPhotoViewModel
 import com.custom.rgs_android_dom.ui.property.add.details.PropertyDetailsViewModel
 import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressViewModel
@@ -52,7 +52,7 @@ val viewModelModule = module {
     viewModel { parameters-> RegistrationFillClientViewModel(phone = parameters.get(), clientInteractor= get()) }
     viewModel { parameters-> CountriesViewModel(selectedCountryLetterCode = parameters.get(), countriesInteractor = get())}
     viewModel { ClientViewModel(clientInteractor = get(), registrationInteractor = get(), propertyInteractor = get()) }
-    viewModel { MainViewModel(registrationInteractor = get(), clientInteractor = get()) }
+    viewModel { RootViewModel(registrationInteractor = get(), clientInteractor = get()) }
     viewModel { PersonalDataViewModel(clientInteractor = get()) }
     viewModel { EditPersonalDataViewModel(clientInteractor = get()) }
     viewModel { AgentViewModel(clientInteractor = get()) }
@@ -67,7 +67,7 @@ val viewModelModule = module {
     viewModel { RequestEditPersonalDataViewModel(clientInteractor = get()) }
     viewModel { parameters -> SelectAddressViewModel( propertyCount = parameters.get(), propertyInteractor = get(), addressInteractor = get(), context = get()) }
     viewModel { AddressSuggestionsViewModel(addressInteractor = get()) }
-    viewModel { MainStubViewModel(registrationInteractor = get()) }
+    viewModel { MainViewModel(registrationInteractor = get()) }
     viewModel { WebViewViewModel() }
     viewModel { AddPhotoViewModel(clientInteractor = get()) }
     viewModel { UploadFilesViewModel(chatInteractor = get()) }
