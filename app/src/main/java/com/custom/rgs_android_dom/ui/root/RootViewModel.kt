@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.ui.main
+package com.custom.rgs_android_dom.ui.root
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,11 +10,11 @@ import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
 import com.custom.rgs_android_dom.ui.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
-import com.custom.rgs_android_dom.ui.main.stub.MainStubFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.registration.agreement.RegistrationAgreementFragment
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
+import com.custom.rgs_android_dom.ui.root.main.MainFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -23,7 +23,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.component.inject
 
-class MainViewModel(private val registrationInteractor: RegistrationInteractor,
+class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                     private val clientInteractor: ClientInteractor
 ) : BaseViewModel() {
 
@@ -81,7 +81,7 @@ class MainViewModel(private val registrationInteractor: RegistrationInteractor,
     }
 
     fun onMainClick(){
-        ScreenManager.showBottomScreen(MainStubFragment())
+        ScreenManager.showBottomScreen(MainFragment())
     }
 
     fun onCatalogueClick(){

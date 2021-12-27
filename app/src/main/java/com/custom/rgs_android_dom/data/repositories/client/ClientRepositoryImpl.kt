@@ -5,9 +5,7 @@ import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
 import com.custom.rgs_android_dom.data.network.requests.DeleteContactsRequest
 import com.custom.rgs_android_dom.data.network.requests.UpdateClientRequest
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
-import com.custom.rgs_android_dom.domain.client.models.ClientModel
-import com.custom.rgs_android_dom.domain.client.models.Gender
-import com.custom.rgs_android_dom.domain.client.models.UserDetailsModel
+import com.custom.rgs_android_dom.domain.client.models.*
 import com.custom.rgs_android_dom.domain.repositories.ClientRepository
 import com.custom.rgs_android_dom.utils.PATTERN_DATE_TIME_MILLIS
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
@@ -73,7 +71,6 @@ class ClientRepositoryImpl(
             }
         }
     }
-
 
     override fun loadAndSaveClient(): Completable {
         return api.getMyClient().flatMapCompletable { response ->
@@ -184,4 +181,11 @@ class ClientRepositoryImpl(
     override fun getEditPersonalDataRequestedSubject(): BehaviorSubject<Boolean> {
         return editPersonalDataRequestedSubject
     }
+
+    override fun getClientProducts(): Single<ClientProductsModel> {
+        return api.getClientProducts().map {clientProductsResponse ->
+            ClientMapper.responseToClientProducts(clientProductsResponse)
+        }
+    }
+
 }
