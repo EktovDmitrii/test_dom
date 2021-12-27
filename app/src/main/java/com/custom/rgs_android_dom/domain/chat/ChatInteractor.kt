@@ -99,7 +99,6 @@ class ChatInteractor(
             }
     }
 
-
     fun subscribeToSocketEvents(): Completable {
         return chatRepository.getWsEventsSubject().flatMapCompletable {
             when (it.event){
@@ -196,6 +195,7 @@ class ChatInteractor(
             chatItems.add(dateDivider)
             chatItems.add(newMessage)
         }
+        cachedChatItems.addAll(chatItems)
         newChatItemsSubject.onNext(chatItems)
     }
 
