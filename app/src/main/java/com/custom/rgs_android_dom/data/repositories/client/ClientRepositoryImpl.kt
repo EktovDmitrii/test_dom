@@ -1,15 +1,11 @@
 package com.custom.rgs_android_dom.data.repositories.client
 
 import com.custom.rgs_android_dom.data.network.MSDApi
-import com.custom.rgs_android_dom.data.network.mappers.CatalogMapper
 import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
 import com.custom.rgs_android_dom.data.network.requests.DeleteContactsRequest
 import com.custom.rgs_android_dom.data.network.requests.UpdateClientRequest
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
-import com.custom.rgs_android_dom.domain.client.models.ClientModel
-import com.custom.rgs_android_dom.domain.client.models.ClientProductsModel
-import com.custom.rgs_android_dom.domain.client.models.Gender
-import com.custom.rgs_android_dom.domain.client.models.UserDetailsModel
+import com.custom.rgs_android_dom.domain.client.models.*
 import com.custom.rgs_android_dom.domain.repositories.ClientRepository
 import com.custom.rgs_android_dom.utils.PATTERN_DATE_TIME_MILLIS
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
@@ -187,8 +183,8 @@ class ClientRepositoryImpl(
     }
 
     override fun getClientProducts(): Single<ClientProductsModel> {
-        return api.getClientProducts().map {
-            ClientMapper.responseToClientProducts(it)
+        return api.getClientProducts().map {clientProductsResponse ->
+            ClientMapper.responseToClientProducts(clientProductsResponse)
         }
     }
 

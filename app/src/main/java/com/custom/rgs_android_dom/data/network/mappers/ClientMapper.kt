@@ -130,17 +130,12 @@ object ClientMapper {
     }
 
     fun responseToClientProducts(response: ClientProductsResponse) : ClientProductsModel {
-        val clientProducts =  arrayListOf<ClientProductModel>()
-        if (response.clientProducts?.isNotEmpty() == true){
-            response.clientProducts.forEach {
-                clientProducts.add(responseToClientProduct(it))
-            }
-         }
         return ClientProductsModel(
-            clientProducts = clientProducts,
-            index = response.index,
-            total = response.total
+            clientProducts = response.clientProducts?.map { clientProductResponse ->
+                responseToClientProduct(clientProductResponse)
+            }
         )
+
     }
 
     private fun responseToClientProduct(response: ClientProductResponse): ClientProductModel {
