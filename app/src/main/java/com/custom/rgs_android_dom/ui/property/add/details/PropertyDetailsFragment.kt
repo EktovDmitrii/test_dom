@@ -15,9 +15,6 @@ import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.details.view_states.PropertyDetailsViewState
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
-import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
-import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsAdapter
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsFragment
 import com.custom.rgs_android_dom.utils.*
@@ -140,6 +137,10 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
             notification(it)
         }
 
+        subscribe(viewModel.internetConnectionObserver){
+            adapter.onInternetConnectionChanged(it)
+        }
+
     }
 
     private fun showHouseLayout(propertyDetailsViewState: PropertyDetailsViewState) {
@@ -157,7 +158,6 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
         binding.cityNameApartmentTextInputLayout.setText( if ( cityName.isNotEmpty() ) { cityName } else {"Не определено"} )
         binding.corpusApartmentTextInputLayout.setText(propertyDetailsViewState.corpus)
     }
-
 
     @SuppressLint("ClickableViewAccessibility")
     private fun showPopUpWindow(anchorView: View) {

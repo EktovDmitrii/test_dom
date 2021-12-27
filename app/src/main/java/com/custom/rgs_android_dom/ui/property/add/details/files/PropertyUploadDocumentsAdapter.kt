@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -14,11 +13,12 @@ import com.custom.rgs_android_dom.utils.*
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.request.RequestOptions
-import com.custom.rgs_android_dom.R
 
-class PropertyUploadDocumentsAdapter(private val onRemoveDocument: (Uri) -> Unit) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PropertyUploadDocumentsAdapter(
+    private val onRemoveDocument: (Uri) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    private var isConnected = false
     private var propertyUploadDocumentsItems = mutableListOf<Uri>()
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -42,6 +42,11 @@ class PropertyUploadDocumentsAdapter(private val onRemoveDocument: (Uri) -> Unit
     fun setItems(files: List<Uri>) {
         propertyUploadDocumentsItems.clear()
         propertyUploadDocumentsItems.addAll(files)
+        notifyDataSetChanged()
+    }
+
+    fun onInternetConnectionChanged(it: Boolean) {
+        isConnected = it
         notifyDataSetChanged()
     }
 
@@ -73,7 +78,9 @@ class PropertyUploadDocumentsAdapter(private val onRemoveDocument: (Uri) -> Unit
                 !mediaFilesExtensions.contains(extension)){
                 binding.textFilesPlaceHolderFrameLayout.visible()
                 binding.previewImageView.gone()
-                binding.progressBarContainerFrameLayout.gone()
+                if(isConnected) {
+                    binding.progressBarContainerFrameLayout.gone()
+                }
             } else {
                 binding.textFilesPlaceHolderFrameLayout.gone()
                 binding.previewImageView.visible()
@@ -87,7 +94,9 @@ class PropertyUploadDocumentsAdapter(private val onRemoveDocument: (Uri) -> Unit
                             target: com.bumptech.glide.request.target.Target<Drawable>?,
                             isFirstResource: Boolean
                         ): Boolean {
-                            binding.progressBarContainerFrameLayout.gone()
+                            if(isConnected) {
+                                binding.progressBarContainerFrameLayout.gone()
+                            }
                             return false
                         }
 
@@ -98,12 +107,19 @@ class PropertyUploadDocumentsAdapter(private val onRemoveDocument: (Uri) -> Unit
                             dataSource: DataSource?,
                             isFirstResource: Boolean
                         ): Boolean {
-                            binding.progressBarContainerFrameLayout.gone()
+                            if(isConnected) {
+                                binding.progressBarContainerFrameLayout.gone()
+                            }
                             return false
                         }
                     })
                     .apply(requestOptions)
                     .into(binding.previewImageView)
+            }
+            if(isConnected){
+                binding.progressBarContainerFrameLayout.gone()
+            } else {
+                binding.progressBarContainerFrameLayout.visible()
             }
         }
     }
