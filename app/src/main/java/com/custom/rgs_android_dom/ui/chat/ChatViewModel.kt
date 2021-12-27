@@ -1,9 +1,7 @@
 package com.custom.rgs_android_dom.ui.chat
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.chat.models.CallType
 import com.custom.rgs_android_dom.domain.chat.models.ChatFileModel
@@ -18,7 +16,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.launch
 import java.io.File
 
 class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel() {
