@@ -174,7 +174,8 @@ object CatalogMapper {
             code = response.code,
             versionId = response.versionId,
             name = response.name,
-            price = response.price
+            price = response.price,
+            tags = response.tags
         )
     }
 
