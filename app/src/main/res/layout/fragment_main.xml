@@ -45,7 +45,8 @@
                         android:layout_height="60dp"
                         android:layout_gravity="center_horizontal"
                         app:shapeAppearanceOverlay="@style/RoundedCorners16dpImageViewStyle"
-                        app:srcCompat="@drawable/ic_login_60dp" />
+                        android:background="@drawable/rectangle_filled_white_radius_16dp"
+                        app:srcCompat="@drawable/ic_login_240px" />
 
                     <com.custom.rgs_android_dom.views.text.MSDTextView
                         android:layout_width="80dp"
@@ -73,7 +74,8 @@
                         android:layout_height="60dp"
                         android:layout_gravity="center_horizontal"
                         app:shapeAppearanceOverlay="@style/RoundedCorners16dpImageViewStyle"
-                        app:srcCompat="@drawable/ic_profile_60dp" />
+                        android:background="@drawable/rectangle_filled_white_radius_16dp"
+                        app:srcCompat="@drawable/ic_profile_240px" />
 
                     <com.custom.rgs_android_dom.views.text.MSDTextView
                         android:layout_width="80dp"
@@ -102,7 +104,7 @@
                         android:layout_height="60dp"
                         android:layout_gravity="center_horizontal"
                         app:shapeAppearanceOverlay="@style/RoundedCorners16dpImageViewStyle"
-                        app:srcCompat="@drawable/ic_home_gray_60dp" />
+                        app:srcCompat="@drawable/ic_home_gray_240px" />
 
                     <com.custom.rgs_android_dom.views.text.MSDTextView
                         android:layout_width="80dp"
@@ -131,7 +133,7 @@
                         android:layout_height="60dp"
                         android:layout_gravity="center_horizontal"
                         app:shapeAppearanceOverlay="@style/RoundedCorners16dpImageViewStyle"
-                        app:srcCompat="@drawable/ic_apartment_60dp" />
+                        app:srcCompat="@drawable/ic_apartment_240px" />
 
                     <com.custom.rgs_android_dom.views.text.MSDTextView
                         android:layout_width="80dp"
