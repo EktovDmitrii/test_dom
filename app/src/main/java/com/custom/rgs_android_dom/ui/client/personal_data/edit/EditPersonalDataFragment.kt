@@ -1,9 +1,7 @@
 package com.custom.rgs_android_dom.ui.client.personal_data.edit
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.core.view.isVisible
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentEditPersonalDataBinding
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
@@ -98,38 +96,29 @@ class EditPersonalDataFragment :
         }
 
         subscribe(viewModel.editPersonalDataObserver) { state ->
-            binding.lastNameEditText.isEnabled = !state.isLastNameSaved
+            if (state.hasProducts){
+                binding.lastNameEditText.isEnabled = !state.isLastNameSaved
+                binding.firstNameEditText.isEnabled = !state.isFirstNameSaved
+                binding.middleNameEditText.isEnabled = !state.isMiddleNameSaved
+                binding.birthdayEditText.isEnabled = !state.isBirthdaySaved
+                binding.genderSelector.isEnabled = !state.isGenderSaved
+                binding.passportSeriesEditText.isEnabled = !state.isDocSerialSaved
+                binding.passportNumberEditText.isEnabled = !state.isDocNumberSaved
+            }
+
             binding.lastNameEditText.setText(state.lastName)
-
-            binding.firstNameEditText.isEnabled = !state.isFirstNameSaved
             binding.firstNameEditText.setText(state.firstName)
-
-            binding.middleNameEditText.isEnabled = !state.isMiddleNameSaved
             binding.middleNameEditText.setText(state.middleName)
-
-            binding.birthdayEditText.isEnabled = !state.isBirthdaySaved
             binding.birthdayEditText.setText(state.birthday)
-
-            binding.genderSelector.isEnabled = !state.isGenderSaved
             state.gender?.let { gender ->
                 binding.genderSelector.setSelectedGender(gender)
             }
-
-            binding.passportSeriesEditText.isEnabled = !state.isDocSerialSaved
             binding.passportSeriesEditText.setText(state.docSerial)
-
-            binding.passportNumberEditText.isEnabled = !state.isDocNumberSaved
             binding.passportNumberEditText.setText(state.docNumber)
-
             binding.phoneEditText.isEnabled = !state.isPhoneSaved
             binding.phoneEditText.setText(state.phone)
-
-            if (state.secondPhone.isNotEmpty()) {
-                binding.additionalPhoneEditText.setText(state.secondPhone)
-            }
-
+            binding.additionalPhoneEditText.setText(state.secondPhone)
             binding.emailEditText.setText(state.email)
-
         }
 
         subscribe(viewModel.isSaveTextViewEnabledObserver) {
