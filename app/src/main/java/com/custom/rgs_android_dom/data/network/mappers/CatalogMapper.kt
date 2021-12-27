@@ -72,7 +72,7 @@ object CatalogMapper {
             } else {
                 null
             },
-            iconLink = response.iconLink,
+            iconLink = "${BuildConfig.BASE_URL}/api/store/${response.iconLink}",
             id = response.id,
             insuranceProducts = response.insuranceProducts?.map {
                 InsuranceProductModel(
@@ -129,7 +129,7 @@ object CatalogMapper {
             description = response.description,
             descriptionFormat = response.descriptionFormat,
             descriptionRef = response.descriptionRef,
-            iconLink = response.iconLink,
+            iconLink = "${BuildConfig.BASE_URL}/api/store/${response.iconLink}",
             id = response.id,
             internalDescription = response.internalDescription,
             name = response.name,

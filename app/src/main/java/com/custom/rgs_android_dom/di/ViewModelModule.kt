@@ -13,6 +13,7 @@ import com.custom.rgs_android_dom.ui.client.personal_data.edit.EditPersonalDataV
 import com.custom.rgs_android_dom.ui.client.personal_data.PersonalDataViewModel
 import com.custom.rgs_android_dom.ui.address.suggestions.AddressSuggestionsViewModel
 import com.custom.rgs_android_dom.ui.catalog.MainCatalogViewModel
+import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductViewModel
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesViewModel
 import com.custom.rgs_android_dom.ui.catalog.subcategory.CatalogSubcategoryViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.availableservices.TabAvailableServicesViewModel
@@ -84,4 +85,5 @@ val viewModelModule = module {
     viewModel { TabFavoriteServicesViewModel() }
     viewModel { parameters -> CatalogSubcategoriesViewModel(category = parameters.get(), catalogInteractor = get()) }
     viewModel { parameters -> CatalogSubcategoryViewModel(subCategory = parameters.get(), catalogInteractor = get()) }
+    viewModel { parameters -> SingleProductViewModel(product = parameters.get()) }
 }

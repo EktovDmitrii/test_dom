@@ -8,6 +8,8 @@ import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogSubCategoryModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
+import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -41,8 +43,10 @@ class CatalogSubcategoriesViewModel(
             .subscribeBy(
                 onSuccess = {product->
 
-                    if (product.defaultProduct){
+                    if (!product.defaultProduct){
                         // Open service (single product) details screen
+                        val singleProductFragment = SingleProductFragment.newInstance(product)
+                        ScreenManager.showBottomScreen(singleProductFragment)
                     } else {
                         // Open product details screen
                     }
