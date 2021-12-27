@@ -1,13 +1,10 @@
 package com.custom.rgs_android_dom.ui.splash
 
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
-import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.ui.main.MainFragment
-import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
+import com.custom.rgs_android_dom.ui.root.RootFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
-import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -57,7 +54,7 @@ class SplashViewModel(private val registrationInteractor: RegistrationInteractor
     }
 
     private fun showMainScreen(){
-        ScreenManager.showScreen(MainFragment())
+        ScreenManager.showScreen(RootFragment())
         closeController.value = Unit
     }
 }

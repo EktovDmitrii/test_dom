@@ -40,7 +40,7 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
         private const val ANIMATION_DURATION = 1f
         private const val REQUEST_CODE_LOCATION = 3
 
-        fun newInstance(propertyCount: Int): SelectAddressFragment {
+        fun newInstance(propertyCount: Int = 0): SelectAddressFragment {
             return SelectAddressFragment().args {
                 putInt(ARG_PROPERTY_COUNT, propertyCount)
             }

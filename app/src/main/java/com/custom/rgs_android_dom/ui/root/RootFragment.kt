@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.ui.main
+package com.custom.rgs_android_dom.ui.root
 
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.TransitionDrawable
@@ -9,20 +9,19 @@ import android.widget.OverScroller
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.view.children
 import com.custom.rgs_android_dom.R
-import com.custom.rgs_android_dom.databinding.FragmentMainBinding
+import com.custom.rgs_android_dom.databinding.FragmentRootBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
-import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
-import com.custom.rgs_android_dom.ui.main.stub.MainStubFragment
+import com.custom.rgs_android_dom.ui.root.main.MainFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.property.info.PropertyInfoFragment
 import com.custom.rgs_android_dom.utils.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.*
 
-class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.fragment_main) {
+class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.fragment_root) {
 
     private lateinit var transitionBackground: TransitionDrawable
 
@@ -88,7 +87,7 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
 
             // TODO Replace this later, when we will have normal navigation
             when (it::class.java.canonicalName){
-                MainStubFragment::class.java.canonicalName -> {
+                MainFragment::class.java.canonicalName -> {
                     binding.bottomNavigationLayout.navigationMenu.visible()
 
                     activateMenu(false)
@@ -114,7 +113,7 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>(R.layout.f
             }
         }
         //ScreenManager.showBottomScreen(ClientFragment())
-        ScreenManager.showBottomScreen(MainStubFragment())
+        ScreenManager.showBottomScreen(MainFragment())
 
         binding.toolbarChatIcon.setOnDebouncedClickListener {
             viewModel.onChatClick()

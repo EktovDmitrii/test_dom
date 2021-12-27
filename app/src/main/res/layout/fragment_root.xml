@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/contentConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/primary400"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/toolbarLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="69dp"
+            android:background="@drawable/rectangle_filled_primary_400_bottom_radius_24dp"
+            android:clickable="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="10dp"
+                android:id="@+id/toolbarChatIcon"
+                android:src="@drawable/ic_main_chat_tmp"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/callContainerLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="272dp"
+            android:background="@drawable/rectangle_filled_primary_500_top_radius_24dp"
+            android:layout_marginTop="8dp"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarLinearLayout"
+            tools:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/master_male"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/swipeMoreTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:alpha="0.5"
+            android:includeFontPadding="false"
+            android:fontFamily="@font/suisse_regular"
+            android:textSize="12sp"
+            android:visibility="invisible"
+            app:translationTextKey="Потяните, чтобы связаться с мастером"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarLinearLayout"
+            tools:visibility="visible"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/bottomContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:behavior_hideable="false"
+        android:paddingTop="92dp"
+        android:visibility="invisible"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"/>
+
+    <FrameLayout
+        android:id="@+id/fakeBottomContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="62dp"
+        android:background="@drawable/rectangle_filled_white_top_radius_24dp"/>
+
+    <include layout="@layout/layout_bottom_navigation_menu"
+        android:id="@+id/bottomNavigationLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="18dp"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+

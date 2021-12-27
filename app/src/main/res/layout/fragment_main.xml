@@ -1,96 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:overScrollMode="never">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/contentConstraintLayout"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/primary400"
+        android:background="@drawable/rectangle_filled_secondary_100_top_radius_24dp"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/toolbarLinearLayout"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="69dp"
-            android:background="@drawable/rectangle_filled_primary_400_bottom_radius_24dp"
-            android:clickable="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:focusable="true">
+            android:layout_height="204dp"
+            android:background="@drawable/rectangle_filled_white_radius_24dp" />
 
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="10dp"
-                android:id="@+id/toolbarChatIcon"
-                android:src="@drawable/ic_main_chat_tmp"/>
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/callContainerLinearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="272dp"
-            android:background="@drawable/rectangle_filled_primary_500_top_radius_24dp"
-            android:layout_marginTop="8dp"
-            android:visibility="invisible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbarLinearLayout"
-            tools:visibility="visible">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="170dp"
-                android:layout_height="wrap_content"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/master_male"/>
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <com.custom.rgs_android_dom.views.text.MSDTextView
-            android:id="@+id/swipeMoreTextView"
+        <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:alpha="0.5"
-            android:includeFontPadding="false"
-            android:fontFamily="@font/suisse_regular"
-            android:textSize="12sp"
-            android:visibility="invisible"
-            app:translationTextKey="Потяните, чтобы связаться с мастером"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbarLinearLayout"
-            tools:visibility="visible"/>
+            android:background="@color/secondary100"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:paddingHorizontal="9dp"
+            android:paddingTop="24dp"
+            android:paddingBottom="16dp"
+            android:scrollbars="none">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-    <FrameLayout
-        android:id="@+id/bottomContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:behavior_hideable="false"
-        android:paddingTop="92dp"
-        android:visibility="invisible"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"/>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/loginLinearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="3dp"
+                    android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/fakeBottomContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="62dp"
-        android:background="@drawable/rectangle_filled_white_top_radius_24dp"/>
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center_horizontal"
+                        app:shapeAppearanceOverlay="@style/RoundedCorners16dpImageViewStyle"
+                        android:background="@drawable/rectangle_filled_white_radius_16dp"
+                        app:srcCompat="@drawable/ic_login_240px" />
 
-    <include layout="@layout/layout_bottom_navigation_menu"
-        android:id="@+id/bottomNavigationLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:layout_marginBottom="18dp"/>
+                    <com.custom.rgs_android_dom.views.text.MSDTextView
+                        android:layout_width="80dp"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/suisse_regular"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/gray"
+                        android:textSize="13sp"
+                        app:translationTextKey="Войти" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/profileLinearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="3dp"
+                    android:orientation="vertical"
+                    android:visibility="visible">
 
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center_horizontal"
+                        app:shapeAppearanceOverlay="@style/RoundedCorners16dpImageViewStyle"
+                        android:background="@drawable/rectangle_filled_white_radius_16dp"
+                        app:srcCompat="@drawable/ic_profile_240px" />
+
+                    <com.custom.rgs_android_dom.views.text.MSDTextView
+                        android:layout_width="80dp"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/suisse_regular"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/gray"
+                        android:textSize="13sp"
+                        app:translationTextKey="Профиль" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/noPropertyLinearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="3dp"
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    tools:visibility="visible">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center_horizontal"
+                        app:shapeAppearanceOverlay="@style/RoundedCorners16dpImageViewStyle"
+                        app:srcCompat="@drawable/ic_home_gray_240px" />
+
+                    <com.custom.rgs_android_dom.views.text.MSDTextView
+                        android:layout_width="80dp"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/suisse_regular"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/gray"
+                        android:textSize="13sp"
+                        app:translationTextKey="Добавить" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/propertyAvailableLinearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="3dp"
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    tools:visibility="visible">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center_horizontal"
+                        app:shapeAppearanceOverlay="@style/RoundedCorners16dpImageViewStyle"
+                        app:srcCompat="@drawable/ic_apartment_240px" />
+
+                    <com.custom.rgs_android_dom.views.text.MSDTextView
+                        android:layout_width="80dp"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/suisse_regular"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/gray"
+                        android:textSize="13sp"
+                        app:translationTextKey="Дом" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </HorizontalScrollView>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="204dp"
+            android:layout_marginBottom="500dp"
+            android:background="@drawable/rectangle_filled_white_radius_24dp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.core.widget.NestedScrollView>

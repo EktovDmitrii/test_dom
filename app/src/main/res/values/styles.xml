@@ -3,4 +3,9 @@
     <style name="ShapeAppearanceOverlay.App.CornerSize4Percent" parent="">
         <item name="cornerSize">4%</item>
     </style>
+
+    <style name="RoundedCorners16dpImageViewStyle" >
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
 </resources>
