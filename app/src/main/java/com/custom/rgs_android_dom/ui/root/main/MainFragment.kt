@@ -36,9 +36,7 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             isAuthorized = it
             binding.profileLinearLayout.visibleIf(it)
             binding.loginLinearLayout.goneIf(it)
-            if (it) {
-                viewModel.getPropertyAvailability()
-            } else {
+            if (!it) {
                 binding.propertyAvailableLinearLayout.gone()
                 binding.noPropertyLinearLayout.gone()
             }

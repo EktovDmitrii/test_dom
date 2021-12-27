@@ -29,7 +29,10 @@ class MainViewModel(
     val propertyAvailabilityObserver: LiveData<Boolean> = propertyAvailabilityController
 
     init {
-        registrationController.value = registrationInteractor.isAuthorized()
+        registrationController.value = registrationInteractor.isAuthorized().let {
+            if (it) getPropertyAvailability()
+            return@let it
+        }
 
         registrationInteractor.getLoginSubject()
             .subscribeOn(Schedulers.io())
@@ -37,6 +40,7 @@ class MainViewModel(
             .subscribeBy(
                 onNext = {
                     registrationController.value = true
+                    getPropertyAvailability()
                 },
                 onError = {
                     logException(this, it)
@@ -57,7 +61,7 @@ class MainViewModel(
 
     }
 
-    fun getPropertyAvailability() {
+    private fun getPropertyAvailability() {
         propertyInteractor.getAllProperty()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -81,7 +85,7 @@ class MainViewModel(
     }
 
     fun onNoPropertyClick() {
-        ScreenManager.showScreenScope(SelectAddressFragment.newInstance(0), ADD_PROPERTY)
+        ScreenManager.showScreenScope(SelectAddressFragment.newInstance(), ADD_PROPERTY)
     }
 
     fun onPropertyAvailableClick() {
