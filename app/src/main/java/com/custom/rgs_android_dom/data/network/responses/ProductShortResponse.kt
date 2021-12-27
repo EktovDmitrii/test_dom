@@ -22,5 +22,8 @@ data class ProductShortResponse(
     val name: String,
 
     @SerializedName("price")
-    val price: Int
+    val price: Int,
+
+    @SerializedName("tags")
+    val tags: List<String>
 )

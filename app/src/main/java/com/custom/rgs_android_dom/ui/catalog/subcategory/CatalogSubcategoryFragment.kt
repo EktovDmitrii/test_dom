@@ -39,7 +39,7 @@ class CatalogSubcategoryFragment : BaseBottomSheetFragment<CatalogSubcategoryVie
         super.onViewCreated(view, savedInstanceState)
 
         val adapter = CatalogSubcategoryProductsAdapter(){
-
+            viewModel.onProductClick(it)
         }
 
         binding.productsRecyclerView.adapter = adapter
