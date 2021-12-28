@@ -27,7 +27,7 @@ import com.custom.rgs_android_dom.ui.chat.files.manage.ManageFileViewModel
 import com.custom.rgs_android_dom.ui.chat.files.upload.UploadFilesViewModel
 import com.custom.rgs_android_dom.ui.chat.files.viewers.image.ImageViewerViewModel
 import com.custom.rgs_android_dom.ui.chat.files.viewers.video.VideoPlayerViewModel
-import com.custom.rgs_android_dom.ui.root.main.MainViewModel
+import com.custom.rgs_android_dom.ui.main.MainViewModel
 import com.custom.rgs_android_dom.ui.client.personal_data.add_photo.AddPhotoViewModel
 import com.custom.rgs_android_dom.ui.property.add.details.PropertyDetailsViewModel
 import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressViewModel

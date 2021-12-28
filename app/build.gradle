@@ -221,4 +221,7 @@ dependencies {
     //Live Kit
     implementation "io.livekit:livekit-android:0.7.0"
 
+    //Flow layout
+    implementation 'com.nex3z:flow-layout:1.3.3'
+
 }
