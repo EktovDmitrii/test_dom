@@ -9,7 +9,6 @@
     </style>
 
     <style name="Button.Filled" parent="Widget.AppCompat.TextView">
-        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:fontFamily">@font/my_service_bold</item>
         <item name="android:gravity">center</item>
