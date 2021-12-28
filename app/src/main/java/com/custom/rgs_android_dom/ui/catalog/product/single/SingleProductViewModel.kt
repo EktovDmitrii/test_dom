@@ -15,9 +15,20 @@ class SingleProductViewModel(private val product: ProductModel) : BaseViewModel(
     private val productController = MutableLiveData<ProductModel>()
     val productObserver: LiveData<ProductModel> = productController
 
+    private val showMoreDialogController = MutableLiveData<Unit>()
+    val showMoreDialogObserver: LiveData<Unit> = showMoreDialogController
+
     init {
         productController.value = product
     }
 
+
+    fun onBackClick(){
+        closeController.value = Unit
+    }
+
+    fun onMoreClick(){
+        showMoreDialogController.value = Unit
+    }
 
 }

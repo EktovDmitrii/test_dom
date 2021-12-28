@@ -47,7 +47,7 @@ class CatalogSubcategoryViewModel(
             .subscribeBy(
                 onSuccess = {product->
 
-                    if (!product.defaultProduct){
+                    if (product.defaultProduct){
                         // Open service (single product) details screen
                         val singleProductFragment = SingleProductFragment.newInstance(product)
                         ScreenManager.showBottomScreen(singleProductFragment)

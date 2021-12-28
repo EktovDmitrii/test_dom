@@ -9,6 +9,8 @@ import com.custom.rgs_android_dom.databinding.FragmentClientBinding
 import com.custom.rgs_android_dom.databinding.FragmentSingleProductBinding
 import com.custom.rgs_android_dom.domain.catalog.models.ProductModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
+import com.custom.rgs_android_dom.ui.catalog.product.single.more.MoreSingleProductFragment
+import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.utils.recycler_view.HorizontalItemDecoration
 import org.koin.core.parameter.ParametersDefinition
@@ -47,6 +49,21 @@ class SingleProductFragment : BaseBottomSheetFragment<SingleProductViewModel, Fr
             binding.headerLayout.priceTextView.text = "${product.price?.amount} ₽/шт"
 
             binding.purchaseTextView.setSecondaryText("${product.price?.amount} ₽")
+
+            binding.headerLayout.usageTermsTextView.text = "${product.duration?.units} ${product.duration?.unitType?.description}"
+        }
+
+        binding.backImageView.setOnDebouncedClickListener {
+            viewModel.onBackClick()
+        }
+
+        binding.moreImageView.setOnDebouncedClickListener{
+            viewModel.onMoreClick()
+        }
+
+        subscribe(viewModel.showMoreDialogObserver){
+            val moreSingleProductFragment = MoreSingleProductFragment()
+            moreSingleProductFragment.show(childFragmentManager, moreSingleProductFragment.TAG)
         }
 
     }
