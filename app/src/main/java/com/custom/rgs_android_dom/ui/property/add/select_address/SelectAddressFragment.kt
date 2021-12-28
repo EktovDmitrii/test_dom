@@ -67,10 +67,12 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
                     val worldPoint = binding.mapView.screenToWorld(screenPoint)
                     viewModel.onLocationChanged(worldPoint)
                 }
+                if(binding.locationPinImageView.isActivated) binding.locationPinImageView.isActivated = false
             } else{
                 mapIsMoving = true
                 viewModel.onMapMoving()
                 binding.nextTextView.isEnabled = false
+                if(!binding.locationPinImageView.isActivated) binding.locationPinImageView.isActivated = true
             }
         }
 
@@ -168,8 +170,8 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
        }
 
        subscribe(viewModel.showPinLoaderObserver){
-           binding.loadingPinFrameLayout.visibleIf(it)
-           binding.locationPinImageView.invisibleIf(it)
+           //binding.loadingPinFrameLayout.visibleIf(it)
+           //binding.locationPinImageView.invisibleIf(it)
        }
     }
 
@@ -194,8 +196,8 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
         binding.veilContainer.veilLayout.veil()
         binding.veilContainer.root.visible()
         binding.addressDataConstraintLayout.gone()
-        binding.loadingPinFrameLayout.visible()
-        binding.locationPinImageView.invisible()
+        //binding.loadingPinFrameLayout.visible()
+        //binding.locationPinImageView.invisible()
         binding.nextTextView.isEnabled = false
     }
 
@@ -204,10 +206,11 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
         binding.veilContainer.veilLayout.unVeil()
         binding.veilContainer.root.gone()
         binding.addressDataConstraintLayout.visible()
-        binding.loadingPinFrameLayout.gone()
-        if (!mapIsMoving){
+        //binding.loadingPinFrameLayout.gone()
+        /*if (!mapIsMoving){
             binding.locationPinImageView.visible()
-        }
+        }*/
+        binding.locationPinImageView.visible()
         binding.nextTextView.isEnabled = binding.propertyNameTextInputLayout.getText().isNotEmpty()
     }
 
