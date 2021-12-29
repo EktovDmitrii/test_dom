@@ -48,7 +48,6 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
     }
 
     private var pinRect: Rect? = null
-    private var zoomFocusPoint: ScreenPoint? = null
 
     private val cameraListener =
         CameraListener { _, _, _, hasCompleted ->
@@ -65,9 +64,8 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
                 if(binding.locationPinImageView.isActivated) binding.locationPinImageView.isActivated = false
                 pinRect?.let { pinRect->
                     val screenPoint = pinRect.toScreenPoint()
-                    val worldPoint = binding.mapView.screenToWorld(screenPoint.copy())
-                    if (zoomFocusPoint == null) zoomFocusPoint = screenPoint.copy()
-                    binding.mapView.zoomFocusPoint = zoomFocusPoint
+                    val worldPoint = binding.mapView.screenToWorld(screenPoint)
+                    binding.mapView.zoomFocusPoint = screenPoint
                     viewModel.onLocationChanged(worldPoint)
                 }
             } else {
