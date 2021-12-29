@@ -1,5 +1,6 @@
-package com.custom.rgs_android_dom.ui.root.main
+package com.custom.rgs_android_dom.ui.main
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
@@ -90,6 +91,10 @@ class MainViewModel(
 
     fun onPropertyAvailableClick() {
         ScreenManager.showBottomScreen(ClientFragment())
+    }
+
+    fun onTagClick(tag: String){
+
     }
 
 }

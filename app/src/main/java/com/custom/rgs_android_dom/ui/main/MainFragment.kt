@@ -1,7 +1,9 @@
-package com.custom.rgs_android_dom.ui.root.main
+package com.custom.rgs_android_dom.ui.main
 
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
+import androidx.core.view.children
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentMainBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
@@ -30,6 +32,14 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
 
         binding.propertyAvailableLinearLayout.setOnDebouncedClickListener {
             viewModel.onPropertyAvailableClick()
+        }
+
+        binding.searchTagsLayout.tagsFlowLayout.children.forEach { view->
+            (view as TextView).let {
+                it.setOnDebouncedClickListener {
+                    viewModel.onTagClick(it.text.toString())
+                }
+            }
         }
 
         subscribe(viewModel.registrationObserver) {

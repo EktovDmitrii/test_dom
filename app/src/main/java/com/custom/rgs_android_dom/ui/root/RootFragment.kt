@@ -13,8 +13,9 @@ import com.custom.rgs_android_dom.databinding.FragmentRootBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
+import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
-import com.custom.rgs_android_dom.ui.root.main.MainFragment
+import com.custom.rgs_android_dom.ui.main.MainFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.property.info.PropertyInfoFragment
 import com.custom.rgs_android_dom.utils.*
@@ -86,6 +87,7 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
             measureAndShowFragment()
 
             // TODO Replace this later, when we will have normal navigation
+            binding.bottomNavigationLayout.navigationMenu.visible()
             when (it::class.java.canonicalName){
                 MainFragment::class.java.canonicalName -> {
                     binding.bottomNavigationLayout.navigationMenu.visible()
@@ -108,7 +110,9 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
                 }
                 PropertyInfoFragment::class.java.canonicalName -> {
                     binding.bottomNavigationLayout.navigationMenu.gone()
-
+                }
+                SingleProductFragment::class.java.canonicalName -> {
+                    binding.bottomNavigationLayout.navigationMenu.gone()
                 }
             }
         }
