@@ -42,7 +42,6 @@ class PropertyInteractor (private val propertyRepository: PropertyRepository,pri
     private var selectAddressViewState = SelectAddressViewState(
         isNextTextViewEnabled = false,
         propertyName = "",
-        isMyLocationImageViewVisible = false,
         updatePropertyNameEditText = false,
         propertyAddress = AddressItemModel.createEmpty()
     )
@@ -111,7 +110,6 @@ class PropertyInteractor (private val propertyRepository: PropertyRepository,pri
 
     fun onFailedToGetLocation(){
         selectAddressViewState = selectAddressViewState.copy(
-            isMyLocationImageViewVisible = false,
             updatePropertyNameEditText = false
         )
         selectAddressViewStateSubject.onNext(selectAddressViewState)
@@ -119,7 +117,6 @@ class PropertyInteractor (private val propertyRepository: PropertyRepository,pri
 
     fun onLocationLoaded(){
         selectAddressViewState = selectAddressViewState.copy(
-            isMyLocationImageViewVisible = true,
             updatePropertyNameEditText = false
         )
         selectAddressViewStateSubject.onNext(selectAddressViewState)
