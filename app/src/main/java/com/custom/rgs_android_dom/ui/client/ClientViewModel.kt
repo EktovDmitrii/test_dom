@@ -31,12 +31,10 @@ class ClientViewModel(
 ) : BaseViewModel() {
 
     private val clientShortViewStateController = MutableLiveData<ClientShortViewState>()
+    val clientShortViewStateObserver: LiveData<ClientShortViewState> = clientShortViewStateController
 
     private val propertyItemsController = MutableLiveData<List<Any>>()
     val propertyItemsObserver: LiveData<List<Any>> = propertyItemsController
-
-    val clientShortViewStateObserver: LiveData<ClientShortViewState> =
-        clientShortViewStateController
 
     private val navigateToMedAppController = MutableLiveData<Unit>()
     val navigateToMedAppObserver: LiveData<Unit> = navigateToMedAppController
