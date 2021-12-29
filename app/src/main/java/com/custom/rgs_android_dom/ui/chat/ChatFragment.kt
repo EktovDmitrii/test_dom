@@ -98,7 +98,7 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (dy > 0 && ! binding.scrollDownImageView.isActivated) {
+                if (dy > 5 && ! binding.scrollDownImageView.isActivated) {
                     binding.scrollDownImageView.isActivated = true
                 } else if (dy < 0 && binding.scrollDownImageView.isActivated) {
                     binding.scrollDownImageView.isActivated = false

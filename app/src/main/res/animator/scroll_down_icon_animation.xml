@@ -6,7 +6,7 @@
         <set android:ordering="together">
 
             <objectAnimator
-                android:duration="500"
+                android:duration="300"
                 android:interpolator="@android:interpolator/decelerate_cubic">
 
                 <propertyValuesHolder
@@ -17,9 +17,9 @@
             </objectAnimator>
 
             <objectAnimator
-                android:duration="300"
+                android:duration="50"
                 android:interpolator="@android:interpolator/linear"
-                android:startOffset="200">
+                android:startOffset="100">
 
                 <propertyValuesHolder
                     android:propertyName="elevation"
@@ -37,7 +37,7 @@
         <set android:ordering="together">
 
             <objectAnimator
-                android:duration="500"
+                android:duration="300"
                 android:interpolator="@android:interpolator/decelerate_cubic">
 
                 <propertyValuesHolder
@@ -48,7 +48,7 @@
             </objectAnimator>
 
             <objectAnimator
-                android:duration="100"
+                android:duration="50"
                 android:interpolator="@android:interpolator/linear">
 
                 <propertyValuesHolder
