@@ -40,9 +40,6 @@ class SelectAddressViewModel(private val propertyCount: Int,
     private val showConfirmCloseController = MutableLiveData<Unit>()
     val showConfirmCloseObserver: LiveData<Unit> = showConfirmCloseController
 
-    private val showPinLoaderController = MutableLiveData<Boolean>()
-    val showPinLoaderObserver: LiveData<Boolean> = showPinLoaderController
-
     init {
         propertyInteractor.selectAddressViewStateSubject
             .observeOn(AndroidSchedulers.mainThread())
@@ -106,11 +103,9 @@ class SelectAddressViewModel(private val propertyCount: Int,
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    showPinLoaderController.value = false
                     propertyInteractor.onPropertyAddressChanged(it)
                 },
                 onError = {
-                    showPinLoaderController.value = false
                     propertyInteractor.onPropertyAddressChanged(AddressItemModel.createEmpty())
                     logException(this, it)
                 }
@@ -128,10 +123,6 @@ class SelectAddressViewModel(private val propertyCount: Int,
                 propertyAddress = it.propertyAddress
             ), ADD_PROPERTY)
         }
-    }
-
-    fun onMapMoving(){
-        showPinLoaderController.value = true
     }
 
     private fun getUserLocation(){
