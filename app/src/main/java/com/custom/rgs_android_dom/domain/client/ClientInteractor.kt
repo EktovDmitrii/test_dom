@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.domain.client
 
-import android.util.Log
 import com.custom.rgs_android_dom.data.repositories.files.FilesRepositoryImpl.Companion.STORE_AVATARS
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
@@ -226,7 +225,6 @@ class ClientInteractor(
 
     fun getPersonalData(): Single<PersonalDataViewState> {
         return Single.zip(clientRepository.getClient(), clientRepository.getUserDetails()){clientModel, userDetailsModel ->
-            Log.d("Syrgashev", "ClientInteractor.getPersonalData() clientModel.agent: ${clientModel.agent}")
             PersonalDataMapper.from(clientModel, userDetailsModel)
         }
     }

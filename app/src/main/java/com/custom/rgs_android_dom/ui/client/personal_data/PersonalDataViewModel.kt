@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.ui.client.personal_data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
@@ -20,7 +19,6 @@ class PersonalDataViewModel(private val clientInteractor: ClientInteractor) : Ba
     val personalDataObserver: LiveData<PersonalDataViewState> = personalDataController
 
     init {
-        Log.d("Syrgashev", "PersonalDataViewModel.init: ")
         clientInteractor.getClientUpdatedSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
