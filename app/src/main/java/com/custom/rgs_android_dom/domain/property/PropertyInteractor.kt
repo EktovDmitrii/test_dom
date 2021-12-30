@@ -372,13 +372,4 @@ class PropertyInteractor (private val propertyRepository: PropertyRepository,pri
         propertyDetailsViewState = propertyDetailsViewState.copy(documents = current)
         propertyDetailsViewStateSubject.onNext(propertyDetailsViewState)
     }
-
-    /**
-     *
-     * Code for Document screen
-     *
-     */
-
-
-
 }
