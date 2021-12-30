@@ -226,6 +226,7 @@ class ClientInteractor(
 
     fun getPersonalData(): Single<PersonalDataViewState> {
         return Single.zip(clientRepository.getClient(), clientRepository.getUserDetails()){clientModel, userDetailsModel ->
+            Log.d("Syrgashev", "ClientInteractor.getPersonalData() clientModel.agent: ${clientModel.agent}")
             PersonalDataMapper.from(clientModel, userDetailsModel)
         }
     }

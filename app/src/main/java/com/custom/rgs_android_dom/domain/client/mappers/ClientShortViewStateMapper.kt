@@ -13,7 +13,7 @@ object ClientShortViewStateMapper {
         val phoneMask = PhoneMaskHelper.getMaskForPhone(clientModel.phone)
         val hasAgentInfo = clientModel.agent?.phone?.isNotEmpty() == true
         val isOpdSigned = clientModel.opdAgreement?.signedAt?.isNotEmpty() == true
-Log.d("Syrgashev", "hasAgentInfo: $hasAgentInfo")
+Log.d("Syrgashev", "${this.javaClass.simpleName} hasAgentInfo: $hasAgentInfo")
         return ClientShortViewState(
             firstName = clientModel.firstName,
             lastName = clientModel.lastName,

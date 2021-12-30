@@ -30,7 +30,7 @@ object ClientMapper {
                     type = it.type
                 )
             },
-            agent = null,
+            agent = null,//
             birthDate = response.birthDate,
             contacts = response.contacts?.map {
                 ClientContact(

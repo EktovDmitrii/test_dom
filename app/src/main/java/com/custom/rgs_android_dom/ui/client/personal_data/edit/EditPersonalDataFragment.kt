@@ -40,6 +40,7 @@ class EditPersonalDataFragment :
         }
 
         binding.birthdayEditText.setOnIconClickListener {
+            hideSoftwareKeyboard()
             showDatePicker(
                 maxDate = LocalDateTime.now().minusYears(16).plusDays(-1).toDate(),
                 minDate = LocalDateTime.parse("1900-01-01").toDate()
