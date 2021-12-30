@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="161dp"
+    android:layout_height="152dp"
+    android:background="@drawable/rectangle_filled_secondary_100_radius_12dp"
+    android:paddingHorizontal="12dp"
+    android:paddingVertical="12dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/previewImageView"
+        android:layout_width="56dp"
+        android:layout_height="78dp"
+        android:background="@drawable/rectangle_filled_white_radius_8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/documentNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/suisse_regular"
+        android:textColor="@color/secondary600"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/previewImageView"
+        tools:text="Example" />
+
+    <FrameLayout
+        android:id="@+id/deleteDocFrameLayout"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:visibility="gone"
+        android:background="@drawable/circle_filled_error_500"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/remove_image_view"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_cross_16dp" />
+
+    </FrameLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

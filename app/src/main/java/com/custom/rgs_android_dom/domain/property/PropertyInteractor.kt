@@ -373,4 +373,12 @@ class PropertyInteractor (private val propertyRepository: PropertyRepository,pri
         propertyDetailsViewStateSubject.onNext(propertyDetailsViewState)
     }
 
+    /**
+     *
+     * Code for Document screen
+     *
+     */
+
+
+
 }
