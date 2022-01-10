@@ -187,12 +187,8 @@
             android:id="@+id/switchCameraImageView"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="17dp"
-            app:tint="@color/button_call_icon_color"
             android:enabled="false"
-            android:background="@drawable/button_call_background"
-            app:srcCompat="@drawable/ic_camera_change_24px"/>
+            app:srcCompat="@drawable/camera_back_front_selector"/>
 
         <FrameLayout
             android:layout_width="wrap_content"
@@ -200,15 +196,11 @@
             android:layout_marginStart="20dp">
 
             <com.custom.rgs_android_dom.views.MSDImageView
-                android:id="@+id/cameraOffImageView"
+                android:id="@+id/cameraOnOffImageView"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="17dp"
-                app:tint="@color/button_call_icon_color"
-                android:background="@drawable/button_call_background"
-                app:isActivated="true"
-                app:srcCompat="@drawable/button_call_camera_selector"/>
+                app:isActivated="false"
+                app:srcCompat="@drawable/camera_on_off_selector"/>
 
             <ProgressBar
                 android:id="@+id/waitingCameraPermissionProgressBar"
@@ -221,27 +213,19 @@
         </FrameLayout>
 
         <com.custom.rgs_android_dom.views.MSDImageView
-            android:id="@+id/micOffImageView"
+            android:id="@+id/micOnOffImageView"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="17dp"
             android:layout_marginStart="20dp"
-            app:isActivated="true"
-            app:tint="@color/button_call_icon_color"
-            android:background="@drawable/button_call_background"
-            app:srcCompat="@drawable/ic_microphone_24px"/>
+            app:isActivated="false"
+            app:srcCompat="@drawable/mic_on_off_selector"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/endCallImageView"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="17dp"
             android:layout_marginStart="20dp"
-            app:tint="@color/white"
-            android:background="@drawable/oval_filled_error_500"
-            app:srcCompat="@drawable/ic_call_24px"/>
+            app:srcCompat="@drawable/ic_end_call_56dp"/>
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>
