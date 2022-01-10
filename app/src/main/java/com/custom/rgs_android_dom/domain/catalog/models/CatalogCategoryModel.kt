@@ -6,6 +6,7 @@ data class CatalogCategoryModel(
     val id: String,
     val title: String,
     val icon: String,
+    val isPrimary: Boolean = false,
     val productTags: List<String>,
     var products: List<ProductShortModel>,
     var subCategories: List<CatalogSubCategoryModel>

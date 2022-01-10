@@ -13,10 +13,14 @@ import com.custom.rgs_android_dom.ui.client.personal_data.edit.EditPersonalDataV
 import com.custom.rgs_android_dom.ui.client.personal_data.PersonalDataViewModel
 import com.custom.rgs_android_dom.ui.address.suggestions.AddressSuggestionsViewModel
 import com.custom.rgs_android_dom.ui.catalog.MainCatalogViewModel
+import com.custom.rgs_android_dom.ui.catalog.product.MyProductViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.single.more.MoreSingleProductViewModel
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesViewModel
 import com.custom.rgs_android_dom.ui.catalog.subcategory.CatalogSubcategoryViewModel
+import com.custom.rgs_android_dom.ui.catalog.product.ProductViewModel
+import com.custom.rgs_android_dom.ui.catalog.product.ServiceViewModel
+import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogPrimarySubcategoryViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.availableservices.TabAvailableServicesViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.catalog.TabCatalogViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.favoriteservices.TabFavoriteServicesViewModel
@@ -81,11 +85,15 @@ val viewModelModule = module {
     viewModel { RequestRationaleViewModel() }
     viewModel { MainCatalogViewModel() }
     viewModel { TabCatalogViewModel(catalogInteractor = get()) }
-    viewModel { TabProductsViewModel() }
+    viewModel { TabProductsViewModel(catalogInteractor = get()) }
     viewModel { TabAvailableServicesViewModel() }
     viewModel { TabFavoriteServicesViewModel() }
     viewModel { parameters -> CatalogSubcategoriesViewModel(category = parameters.get(), catalogInteractor = get()) }
     viewModel { parameters -> CatalogSubcategoryViewModel(subCategory = parameters.get(), catalogInteractor = get()) }
     viewModel { parameters -> SingleProductViewModel(product = parameters.get()) }
     viewModel { MoreSingleProductViewModel() }
+    viewModel { parameters -> ProductViewModel(productDetail = parameters.get()) }
+    viewModel { parameters -> CatalogPrimarySubcategoryViewModel(category = parameters.get()) }
+    viewModel { MyProductViewModel() }
+    viewModel { parameters -> ServiceViewModel(product = parameters.get()) }
 }
