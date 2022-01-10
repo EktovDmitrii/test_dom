@@ -4,6 +4,7 @@ import android.text.util.Linkify
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.custom.rgs_android_dom.R
@@ -198,12 +199,13 @@ class ChatAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: ChatMessageModel) {
-
             decorateItem()
+            val member = model.member
 
-            binding.nameTextView.text = "Мой_Сервис Дом"
-            model.member?.let { member ->
-
+            if (member == null){
+                binding.nameTextView.text = "Мой_Сервис Дом"
+                binding.avatarImageView.setImageDrawable(ResourcesCompat.getDrawable(binding.avatarImageView.resources, R.drawable.ic_chat_avatar_stub, null))
+            } else {
                 // TODO Replace with real position key (${member.type})
                 binding.nameTextView.text = "${member.lastName} ${member.firstName}, консультант"
 
@@ -217,8 +219,8 @@ class ChatAdapter(
                 } else {
                     binding.avatarImageView.setImageResource(R.drawable.ic_avatar_no_stroke)
                 }
-
             }
+
             val files = model.files
             if (files != null && files.isNotEmpty()) {
 
