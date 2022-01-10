@@ -32,7 +32,9 @@ interface ClientRepository {
 
     fun assignAgent(code: String, phone: String, assignType: String): Completable
 
-    fun updatePassport(serial: String, number: String): Completable
+    fun postPassport(serial: String, number: String): Completable
+
+    fun updatePassport(id: String, serial: String, number: String): Completable
 
     fun saveSecondPhone(phone: String): Completable
 

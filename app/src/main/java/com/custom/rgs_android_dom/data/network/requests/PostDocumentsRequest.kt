@@ -2,15 +2,12 @@ package com.custom.rgs_android_dom.data.network.requests
 
 import com.google.gson.annotations.SerializedName
 
-data class UpdateDocumentsRequest(
+data class PostDocumentsRequest(
     @SerializedName("documents")
-    val documents: List<UpdateDocumentRequest>
+    val postDocuments: List<PostDocumentRequest>
 )
 
-data class UpdateDocumentRequest(
-    @SerializedName("id")
-    val id: String,
-
+data class PostDocumentRequest(
     @SerializedName("serial")
     val serial: String,
 
