@@ -25,6 +25,9 @@ class CatalogSearchViewModel(
     private val productsController = MutableLiveData<List<ProductShortModel>>()
     val productsObserver: LiveData<List<ProductShortModel>> = productsController
 
+    private val queryNotEmptyController = MutableLiveData<Boolean>()
+    val queryNotEmptyObserver: LiveData<Boolean> = queryNotEmptyController
+
     private val searchSubject = PublishRelay.create<String>()
     private var products: List<ProductShortModel>? = null
 
@@ -64,7 +67,9 @@ class CatalogSearchViewModel(
         searchSubject.hide()
             .debounce(SEARCH_DELAY, TimeUnit.MILLISECONDS)
             .distinctUntilChanged()
+            .observeOn(AndroidSchedulers.mainThread())
             .flatMapSingle {
+                queryNotEmptyController.value = it.isNotEmpty()
                 catalogInteractor.getProductsAvailableForPurchase(it)
             }
             .subscribeOn(Schedulers.io())
@@ -72,6 +77,7 @@ class CatalogSearchViewModel(
             .subscribeBy(
                 onNext = {
                     productsController.value = it
+
                 },
                 onError = {
                     logException(this, it)

@@ -52,6 +52,9 @@ class CatalogSearchFragment : BaseFragment<CatalogSearchViewModel, FragmentCatal
             adapter.setItems(it)
         }
 
+        subscribe(viewModel.queryNotEmptyObserver){
+            binding.allProductsTextView.goneIf(it)
+        }
     }
 
 

@@ -59,7 +59,7 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
     }
 
     fun getProductsAvailableForPurchase(query: String?): Single<List<ProductShortModel>>{
-        val tags = if (query != null) listOf(query) else null
+        val tags = if (!query.isNullOrEmpty()) listOf(query) else null
         return catalogRepository.getProductsAvailableForPurchase(tags)
     }
 
