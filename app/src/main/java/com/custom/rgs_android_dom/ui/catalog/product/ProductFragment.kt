@@ -8,6 +8,7 @@ import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentProductBinding
 import com.custom.rgs_android_dom.domain.catalog.models.ProductModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
+import com.custom.rgs_android_dom.ui.catalog.ProductAdvantagesAdapter
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.utils.recycler_view.GridSpaceItemDecoration
 import org.koin.core.parameter.ParametersDefinition
@@ -37,6 +38,9 @@ class ProductFragment :
     private val inclusionAdapter: ProductInclusionAdapter
         get() = binding.includes.includesRecycler.adapter as ProductInclusionAdapter
 
+    private val advantagesAdapter: ProductAdvantagesAdapter
+        get() = binding.advantagesLayout.advantagesRecycler.adapter as ProductAdvantagesAdapter
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.backImageView.setOnDebouncedClickListener {
@@ -44,10 +48,13 @@ class ProductFragment :
         }
 
         binding.includes.includesRecycler.apply {
-            adapter = ProductInclusionAdapter()
+            adapter = ProductInclusionAdapter {
+                viewModel.onServiceClick()
+            }
             val spacingInPixels = resources.getDimensionPixelSize(R.dimen.material_margin_normal)
             addItemDecoration(GridSpaceItemDecoration(spacingInPixels))
         }
+        binding.advantagesLayout.advantagesRecycler.adapter = ProductAdvantagesAdapter()
 
         subscribe(viewModel.productObserver) { product ->
             GlideApp.with(requireContext())
@@ -58,8 +65,8 @@ class ProductFragment :
 
             binding.header.headerTitle.text = product.title
             binding.header.headerDescription.text = product.description
-            binding.price.priceValue.text = "${product.price?.amount}₽"
-            binding.detailButton.btnPrice.text = "${product.price?.amount}₽"
+            binding.price.priceValue.text = "${product.price?.amount} ₽"
+            binding.detailButton.btnPrice.text = "${product.price?.amount} ₽"
         }
     }
 }

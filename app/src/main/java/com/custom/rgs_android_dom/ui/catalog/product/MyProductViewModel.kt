@@ -47,4 +47,6 @@ class MyProductViewModel : BaseViewModel() {
         ScreenManager.showBottomScreen(serviceFragment)
     }
 
+    fun onOrderClick() { }
+
 }
