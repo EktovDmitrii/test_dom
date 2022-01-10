@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:clickable="true"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/searchFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_large_height">
+
+        <com.custom.rgs_android_dom.views.edit_text.MSDSearchInput
+            android:id="@+id/searchInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="20dp"
+            android:layout_gravity="center"
+            app:translationHintKey="Чем вам помочь?" />
+
+        <View
+            android:id="@+id/toolbarDividerView"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/secondary200"
+            android:layout_gravity="bottom"/>
+
+    </FrameLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:paddingTop="16dp"
+        android:paddingHorizontal="20dp"
+        android:clipToPadding="false">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/popularProductsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/my_service_bold"
+                android:textColor="@color/secondary900"
+                android:textSize="16sp"
+                android:visibility="gone"
+                app:translationTextKey="Популярные" />
+
+            <com.custom.rgs_android_dom.views.MSDRecyclerView
+                android:id="@+id/popularProductsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:verticalDecorationGap="12dp"
+                android:layout_marginBottom="32dp"/>
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/allProductsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/my_service_bold"
+                android:textColor="@color/secondary900"
+                android:textSize="16sp"
+                app:translationTextKey="Все услуги" />
+
+            <com.custom.rgs_android_dom.views.MSDRecyclerView
+                android:id="@+id/allProductsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:verticalDecorationGap="12dp"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

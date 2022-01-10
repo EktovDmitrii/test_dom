@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.domain.catalog
 import android.util.Log
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductModel
+import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
 import com.custom.rgs_android_dom.domain.catalog.models.ServiceModel
 import com.custom.rgs_android_dom.domain.repositories.CatalogRepository
 import io.reactivex.Single
@@ -55,6 +56,11 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
 
     fun getProduct(productId: String): Single<ProductModel>{
         return catalogRepository.getProduct(productId)
+    }
+
+    fun getProductsAvailableForPurchase(query: String?): Single<List<ProductShortModel>>{
+        val tags = if (query != null) listOf(query) else null
+        return catalogRepository.getProductsAvailableForPurchase(tags)
     }
 
 }
