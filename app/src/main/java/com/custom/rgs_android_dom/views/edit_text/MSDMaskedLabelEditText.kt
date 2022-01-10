@@ -102,9 +102,6 @@ class MSDMaskedLabelEditText @JvmOverloads constructor(
             }
         }
 
-        //TODO Find out why masked listener manually place +7 at the start of ET
-        binding.valueEditText.setText("")
-
         binding.valueEditText.addTextChangedListener {
             if (isFromUser){
                 textWatcher(it.toString())

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp"
+    android:paddingBottom="4dp"
+    android:paddingTop="@dimen/material_margin_super_small">
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/featuresTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/suisse_regular"
+        android:textAllCaps="true"
+        android:textColor="@color/secondary600"
+        android:textSize="10sp"
+        app:translationTextKey="Преимущества Мой_Сервис" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/featuresValue1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="@dimen/material_margin_super_small"
+        android:background="@drawable/rectangle_stroke_filled_white_radius_12dp"
+        android:drawableStart="@drawable/ic_catalog_stars"
+        android:drawablePadding="12dp"
+        android:elevation="2dp"
+        android:textColor="@color/secondary900"
+        android:textSize="16sp"
+        app:translationTextKey="Договор зафиксирует стоимость" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/featuresValue2"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="@dimen/material_margin_small"
+        android:background="@drawable/rectangle_stroke_filled_white_radius_12dp"
+        android:drawableStart="@drawable/ic_catalog_clip"
+        android:drawablePadding="12dp"
+        android:elevation="3dp"
+        android:textColor="@color/secondary900"
+        android:textSize="16sp"
+        app:translationTextKey="Гарантия на 12 месяцев" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -51,9 +51,6 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
 
     private val cameraListener =
         CameraListener { _, _, _, hasCompleted ->
-            binding.nextTextView.invisibleIf(!hasCompleted)
-            binding.veilContainer.root.goneIf(hasCompleted)
-            binding.addressDataConstraintLayout.goneIf(!hasCompleted)
             if (pinRect == null){
                 pinRect = Rect()
                 binding.locationPinImageView.getGlobalVisibleRect(pinRect)

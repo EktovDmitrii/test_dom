@@ -5,6 +5,7 @@
     <dimen name="toolbar_height_catalog">72dp</dimen>
     <dimen name="toolbar_large_height">64dp</dimen>
     <dimen name="material_margin_large">32dp</dimen>
+    <dimen name="material_margin_big">20dp</dimen>
     <dimen name="material_margin_normal">16dp</dimen>
     <dimen name="material_margin_small">8dp</dimen>
     <dimen name="material_margin_super_small">4dp</dimen>
