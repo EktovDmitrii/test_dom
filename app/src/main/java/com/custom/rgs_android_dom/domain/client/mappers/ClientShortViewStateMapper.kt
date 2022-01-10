@@ -8,7 +8,7 @@ import com.custom.rgs_android_dom.utils.formatPhoneByMask
 
 object ClientShortViewStateMapper {
 
-    fun from(clientModel: ClientModel, userDetais: UserDetailsModel): ClientShortViewState {
+    fun from(clientModel: ClientModel, userDetails: UserDetailsModel): ClientShortViewState {
         val phoneMask = PhoneMaskHelper.getMaskForPhone(clientModel.phone)
         val hasAgentInfo = clientModel.agent?.phone?.isNotEmpty() == true
         val isOpdSigned = clientModel.opdAgreement?.signedAt?.isNotEmpty() == true
@@ -19,7 +19,7 @@ object ClientShortViewStateMapper {
             phone = clientModel.phone.formatPhoneByMask(phoneMask, "#"),
             hasAgentInfo = hasAgentInfo,
             isOpdSigned = isOpdSigned,
-            avatar = userDetais.avatarUrl ?: ""
+            avatar = userDetails.avatarUrl ?: ""
         )
     }
 }

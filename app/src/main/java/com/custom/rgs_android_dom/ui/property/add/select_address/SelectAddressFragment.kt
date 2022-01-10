@@ -49,27 +49,24 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
 
     private var pinRect: Rect? = null
 
-    private var mapIsMoving = true
-
     private val cameraListener =
         CameraListener { _, _, _, hasCompleted ->
             if (pinRect == null){
                 pinRect = Rect()
                 binding.locationPinImageView.getGlobalVisibleRect(pinRect)
-                val screenPoint = ScreenPoint(pinRect!!.exactCenterX(), pinRect!!.exactCenterY() - 44.dp(requireContext()))
+                val screenPoint = pinRect!!.toScreenPoint()
                 binding.mapView.focusPoint = screenPoint
-
             }
             if (hasCompleted){
-                mapIsMoving = false
+                if(binding.locationPinImageView.isActivated) binding.locationPinImageView.isActivated = false
                 pinRect?.let { pinRect->
-                    val screenPoint = ScreenPoint(pinRect.exactCenterX(), pinRect.exactCenterY() - 44.dp(requireContext()))
+                    val screenPoint = pinRect.toScreenPoint()
                     val worldPoint = binding.mapView.screenToWorld(screenPoint)
+                    binding.mapView.zoomFocusPoint = screenPoint
                     viewModel.onLocationChanged(worldPoint)
                 }
-            } else{
-                mapIsMoving = true
-                viewModel.onMapMoving()
+            } else {
+                if(!binding.locationPinImageView.isActivated) binding.locationPinImageView.isActivated = true
                 binding.nextTextView.isEnabled = false
             }
         }
@@ -113,6 +110,7 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
 
        binding.mapView.map.addCameraListener(cameraListener)
        binding.mapView.map.isRotateGesturesEnabled = false
+       binding.mapView.zoomFocusPointMode = ZoomFocusPointMode.AFFECTS_ALL_GESTURES
 
        binding.editAddressTextView.setOnDebouncedClickListener {
            val addressSuggestionsFragment = AddressSuggestionsFragment()
@@ -133,7 +131,6 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
                 binding.propertyNameTextInputLayout.setText(selectAddressViewState.propertyName)
             }
             binding.nextTextView.isEnabled = selectAddressViewState.isNextTextViewEnabled
-            binding.myLocationImageView.visibleIf(selectAddressViewState.isMyLocationImageViewVisible)
             binding.addressPrimaryTextView.text =
                 if (selectAddressViewState.propertyAddress.addressString.isNotEmpty())
                     selectAddressViewState.propertyAddress.addressString
@@ -167,10 +164,6 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
            confirmDialog.show(childFragmentManager, ConfirmBottomSheetFragment.TAG)
        }
 
-       subscribe(viewModel.showPinLoaderObserver){
-           binding.loadingPinFrameLayout.visibleIf(it)
-           binding.locationPinImageView.invisibleIf(it)
-       }
     }
 
     override fun onStart() {
@@ -194,8 +187,6 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
         binding.veilContainer.veilLayout.veil()
         binding.veilContainer.root.visible()
         binding.addressDataConstraintLayout.gone()
-        binding.loadingPinFrameLayout.visible()
-        binding.locationPinImageView.invisible()
         binding.nextTextView.isEnabled = false
     }
 
@@ -204,10 +195,6 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
         binding.veilContainer.veilLayout.unVeil()
         binding.veilContainer.root.gone()
         binding.addressDataConstraintLayout.visible()
-        binding.loadingPinFrameLayout.gone()
-        if (!mapIsMoving){
-            binding.locationPinImageView.visible()
-        }
         binding.nextTextView.isEnabled = binding.propertyNameTextInputLayout.getText().isNotEmpty()
     }
 

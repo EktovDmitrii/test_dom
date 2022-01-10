@@ -13,8 +13,12 @@ import com.custom.rgs_android_dom.databinding.FragmentRootBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
+import com.custom.rgs_android_dom.ui.catalog.product.MyProductFragment
+import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
+import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
+import com.custom.rgs_android_dom.ui.catalog.product.ServiceFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
-import com.custom.rgs_android_dom.ui.root.main.MainFragment
+import com.custom.rgs_android_dom.ui.main.MainFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.property.info.PropertyInfoFragment
 import com.custom.rgs_android_dom.utils.*
@@ -86,6 +90,7 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
             measureAndShowFragment()
 
             // TODO Replace this later, when we will have normal navigation
+            binding.bottomNavigationLayout.navigationMenu.visible()
             when (it::class.java.canonicalName){
                 MainFragment::class.java.canonicalName -> {
                     binding.bottomNavigationLayout.navigationMenu.visible()
@@ -102,13 +107,17 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
                     activateMenu(true)
                 }
                 MainCatalogFragment::class.java.canonicalName -> {
+                    binding.bottomNavigationLayout.navigationMenu.visible()
                     activateMenu(false)
                     selectedMenu = binding.bottomNavigationLayout.navCatalogueLinearLayout
                     activateMenu(true)
                 }
-                PropertyInfoFragment::class.java.canonicalName -> {
+                PropertyInfoFragment::class.java.canonicalName, ProductFragment::class.java.canonicalName,
+                MyProductFragment::class.java.canonicalName, ServiceFragment::class.java.canonicalName -> {
                     binding.bottomNavigationLayout.navigationMenu.gone()
-
+                }
+                SingleProductFragment::class.java.canonicalName -> {
+                    binding.bottomNavigationLayout.navigationMenu.gone()
                 }
             }
         }

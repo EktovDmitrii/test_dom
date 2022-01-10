@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/primaryTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/secondary900"
+        android:textSize="16sp"
+        android:paddingHorizontal="20dp"
+        android:fontFamily="@font/my_service_bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:translationTextKey="Продукты для Дома"
+        />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/primaryAll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/suisse_regular"
+        android:textSize="16sp"
+        android:paddingEnd="20dp"
+        android:textColor="@color/primary500"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:translationTextKey="Все"
+        />
+
+    <com.custom.rgs_android_dom.views.MSDRecyclerView
+        android:id="@+id/primaryRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/primaryTitle"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:overScrollMode="never"
+        android:clipToPadding="false"
+        android:paddingHorizontal="20dp"
+        app:horizontalDecorationGap="16dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="13"
+        tools:listitem="@layout/item_catalog_primary_small_subcategory"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>
