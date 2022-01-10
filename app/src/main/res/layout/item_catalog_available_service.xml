@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/serviceLayout"
+    android:layout_width="match_parent"
+    android:layout_height="57dp">
+
+    <com.custom.rgs_android_dom.views.MSDImageView
+        android:id="@+id/iconImageView"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="6dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/temp2" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/nameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="23dp"
+        android:fontFamily="@font/suisse_semi_bold"
+        android:includeFontPadding="false"
+        android:textColor="@color/secondary900"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/quantityTextView"
+        app:layout_constraintStart_toEndOf="@id/iconImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Установка раковины" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/quantityTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/circle_grey_background"
+        android:fontFamily="@font/suisse_regular"
+        android:includeFontPadding="false"
+        android:textColor="@color/secondary900"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/nameTextView"
+        app:layout_constraintEnd_toStartOf="@id/nextImageView"
+        app:layout_constraintTop_toTopOf="@id/nameTextView"
+        tools:text="2" />
+
+    <com.custom.rgs_android_dom.views.MSDImageView
+        android:id="@+id/nextImageView"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/nameTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/nameTextView"
+        app:srcCompat="@drawable/ic_arrow_right_16dp" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/secondary900_alpha8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/nameTextView" />
+</androidx.constraintlayout.widget.ConstraintLayout>
