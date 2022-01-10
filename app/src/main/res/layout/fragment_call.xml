@@ -227,7 +227,6 @@
             android:layout_marginStart="20dp"
             app:srcCompat="@drawable/ic_end_call_56dp"/>
 
-
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

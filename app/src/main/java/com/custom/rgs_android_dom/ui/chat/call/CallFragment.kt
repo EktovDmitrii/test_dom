@@ -182,10 +182,9 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
                 }
             }
             binding.switchCameraImageView.isEnabled = roomInfo.cameraEnabled
-            binding.switchCameraImageView.isActivated = roomInfo.frontCameraEnabled
+            if (roomInfo.cameraEnabled) binding.switchCameraImageView.isActivated = roomInfo.frontCameraEnabled
 
             binding.micOnOffImageView.isActivated = roomInfo.micEnabled
-            binding.cameraOnOffImageView.isActivated = roomInfo.cameraEnabled
 
             binding.consultantSurfaceContainer.visibleIf(roomInfo.consultantVideoTrack != null)
 
