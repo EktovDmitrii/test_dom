@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingStart="20dp"
+    android:paddingEnd="22dp"
+    android:orientation="vertical">
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/addressTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/suisse_regular"
+        android:textAllCaps="true"
+        android:textColor="@color/secondary600"
+        android:textSize="10sp"
+        app:translationTextKey="Адрес"
+        />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/addressValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/secondary900"
+        android:fontFamily="@font/suisse_semi_bold"
+        app:translationTextKey="Дом (пр-т Победителей 147)"
+        android:layout_marginTop="@dimen/material_margin_super_small"
+        />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

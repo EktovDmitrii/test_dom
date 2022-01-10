@@ -33,6 +33,9 @@ class TabCatalogFragment : BaseFragment<TabCatalogViewModel, FragmentTabCatalogB
             },
             onAllProductsClick = {
                 viewModel.onAllProductsClick(it)
+            },
+            onAllPrimaryCategoriesClick = {
+                viewModel.onAllPrimaryCategoriesClick(it)
             }
         )
 

@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.ui.catalog.subcategories
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
@@ -10,6 +9,7 @@ import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -41,7 +41,7 @@ class CatalogSubcategoriesViewModel(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
-                onSuccess = {product->
+                onSuccess = { product->
 
                     if (product.defaultProduct){
                         // Open service (single product) details screen
@@ -49,6 +49,7 @@ class CatalogSubcategoriesViewModel(
                         ScreenManager.showBottomScreen(singleProductFragment)
                     } else {
                         // Open product details screen
+                        ScreenManager.showBottomScreen(ProductFragment.newInstance(product))
                     }
 
                 },
