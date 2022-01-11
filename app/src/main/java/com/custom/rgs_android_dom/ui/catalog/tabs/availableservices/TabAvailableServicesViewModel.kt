@@ -18,46 +18,46 @@ class TabAvailableServicesViewModel : BaseViewModel() {
             CatalogSubCategoryModel(
                 id = "0",
                 title = "Установка раковины",
-                icon = "",
+                icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
                 parentCategoryId = "",
                 products = listOf(
-                    ProductShortModel(id = "", type = "", title = "", code = "", versionId = "", name = "", price = 0, tags = emptyList()),
-                    ProductShortModel(id = "", type = "", title = "", code = "", versionId = "", name = "", price = 0, tags = emptyList()),
-                    ProductShortModel(id = "", type = "", title = "", code = "", versionId = "", name = "", price = 0, tags = emptyList())
+                    ProductShortModel(id = "", type = "", title = "Установка раковины", code = "", versionId = "", name = "", price = 150, tags = emptyList()),
+                    ProductShortModel(id = "", type = "", title = "Установка раковины", code = "", versionId = "", name = "", price = 150, tags = emptyList()),
+                    ProductShortModel(id = "", type = "", title = "Установка раковины", code = "", versionId = "", name = "", price = 150, tags = emptyList())
             ),
                 productTags = emptyList()
             ),
             CatalogSubCategoryModel(
                 id = "1",
                 title = "Установка мойки",
-                icon = "",
+                icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
                 parentCategoryId = "",
                 products = listOf(
-                    ProductShortModel(id = "", type = "", title = "", code = "", versionId = "", name = "", price = 0, tags = emptyList())
+                    ProductShortModel(id = "", type = "", title = "Установка мойки", code = "", versionId = "", name = "", price = 150, tags = emptyList())
                 ),
                 productTags = emptyList()
             ),
             CatalogSubCategoryModel(
                 id = "2",
                 title = "Установка ванны",
-                icon = "",
+                icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
                 parentCategoryId = "",
                 products = listOf(
-                    ProductShortModel(id = "", type = "", title = "", code = "", versionId = "", name = "", price = 0, tags = emptyList()),
-                    ProductShortModel(id = "", type = "", title = "", code = "", versionId = "", name = "", price = 0, tags = emptyList()),
+                    ProductShortModel(id = "", type = "", title = "Установка ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList()),
+                    ProductShortModel(id = "", type = "", title = "Установка ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList()),
                 ),
                 productTags = emptyList()
             ),
             CatalogSubCategoryModel(
                 id = "3",
                 title = "Ремонт ванны",
-                icon = "",
+                icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
                 parentCategoryId = "",
                 products = listOf(
-                    ProductShortModel(id = "", type = "", title = "", code = "", versionId = "", name = "", price = 0, tags = emptyList()),
-                    ProductShortModel(id = "", type = "", title = "", code = "", versionId = "", name = "", price = 0, tags = emptyList()),
-                    ProductShortModel(id = "", type = "", title = "", code = "", versionId = "", name = "", price = 0, tags = emptyList()),
-                    ProductShortModel(id = "", type = "", title = "", code = "", versionId = "", name = "", price = 0, tags = emptyList()),
+                    ProductShortModel(id = "", type = "", title = "Ремонт ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList()),
+                    ProductShortModel(id = "", type = "", title = "Ремонт ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList()),
+                    ProductShortModel(id = "", type = "", title = "Ремонт ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList()),
+                    ProductShortModel(id = "", type = "", title = "Ремонт ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList()),
                 ),
                 productTags = emptyList()
             )
