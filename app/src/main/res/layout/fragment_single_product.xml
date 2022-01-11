@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <include
         android:id="@+id/swipeAnchorLayout"
-        layout="@layout/layout_bottom_sheet_swipe_anchor"/>
+        layout="@layout/layout_bottom_sheet_swipe_anchor" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/menusLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height">
+        android:layout_height="@dimen/toolbar_height"
+        android:layout_below="@id/swipeAnchorLayout">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/backImageView"
@@ -20,59 +20,113 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="14dp"
             android:paddingVertical="5dp"
-            android:tint="@color/secondary600"
-            app:srcCompat="@drawable/ic_back_24px"
+            android:tint="@color/secondary800"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_back_24px" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/moreImageView"
+            android:id="@+id/searchImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingHorizontal="14dp"
-            android:tint="@color/secondary600"
             android:paddingVertical="5dp"
-            app:srcCompat="@drawable/ic_menu_24px"
+            android:tint="@color/secondary600"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_share_24px" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/menusLayout"
         android:overScrollMode="never">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="173dp">
 
-            <include layout="@layout/layout_single_product_header"
-                android:id="@+id/headerLayout"/>
-
-            <FrameLayout
+            <include
+                android:id="@+id/header"
+                layout="@layout/layout_catalog_header_info"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="22dp"
-                android:paddingHorizontal="20dp"
-                android:paddingTop="20dp"
-                android:layout_marginTop="-20dp"
-                android:background="@drawable/rectangle_filled_white_top_radius_24dp">
+                android:layout_height="wrap_content" />
 
-                <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderDoubleText
-                    android:id="@+id/purchaseTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:translationPrimaryTextKey="Заказать"
-                    app:translationSecondaryTextKey="4100 ₽"
-                    android:layout_gravity="bottom"/>
+            <include
+                android:id="@+id/price"
+                layout="@layout/layout_product_detail_price_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp" />
 
-            </FrameLayout>
+            <include
+                android:id="@+id/about"
+                layout="@layout/layout_catalog_about_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <include
+                android:id="@+id/longness"
+                layout="@layout/layout_service_detail_longness_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp" />
+
+            <include
+                android:id="@+id/advantagesLayout"
+                layout="@layout/layout_catalog_advantages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp" />
+
+            <include
+                android:id="@+id/validity"
+                layout="@layout/layout_product_detail_validity_date_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp" />
+
+            <include
+                android:id="@+id/territory"
+                layout="@layout/layout_product_detail_territory_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp" />
+
+            <include
+                android:id="@+id/features"
+                layout="@layout/layout_product_detail_features_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
-
     </androidx.core.widget.NestedScrollView>
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="12dp">
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/orderBtn"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/button_filled_primary_background"
+            android:fontFamily="@font/my_service_bold"
+            android:gravity="center"
+            android:paddingVertical="12dp"
+            android:text="Заказать"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+    </FrameLayout>
+
+</RelativeLayout>
