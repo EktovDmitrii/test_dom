@@ -32,6 +32,6 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:verticalDecorationGap="16dp"
         tools:itemCount="2"
-        tools:listitem="@layout/item_my_product_advantage_with_number" />
+        tools:listitem="@layout/item_product_advantage_with_number" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
