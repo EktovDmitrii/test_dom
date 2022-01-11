@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rectangle_filled_secondary_100_top_radius_24dp"
+    android:orientation="vertical"
+    android:paddingHorizontal="13dp"
+    android:paddingTop="24dp"
+    android:paddingBottom="24dp">
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/advantagesTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/suisse_regular"
+        android:textAllCaps="true"
+        android:textColor="@color/secondary600"
+        android:textSize="10sp"
+        app:translationTextKey="Преимущества продукта" />
+
+    <com.custom.rgs_android_dom.views.MSDRecyclerView
+        android:id="@+id/advantagesRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:verticalDecorationGap="16dp"
+        tools:itemCount="2"
+        tools:listitem="@layout/item_my_product_advantage_with_number" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

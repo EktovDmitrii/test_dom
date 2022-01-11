@@ -12,6 +12,122 @@ object CatalogMapper {
 
     fun responseToCatalogCategories(response: List<CatalogNodeResponse>): List<CatalogCategoryModel>{
         val catalogCategories = arrayListOf<CatalogCategoryModel>()
+        val primaryCategories = arrayListOf(
+            CatalogCategoryModel(
+                id = "0",
+                title = "Продукты для Дома",
+                icon = "${BuildConfig.BASE_URL}/api/store/0",
+                isPrimary = true,
+                productTags = emptyList(),
+                products = emptyList(),
+                subCategories = listOf(
+                    CatalogSubCategoryModel(
+                        id = "01",
+                        title = "Сезонное мытье окон",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
+                        parentCategoryId = "0",
+                        productTags = emptyList(),
+                        products = emptyList()
+                    ),
+                    CatalogSubCategoryModel(
+                        id = "02",
+                        title = "Тепловизионная диагностика недвижимости",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
+                        parentCategoryId = "0",
+                        productTags = emptyList(),
+                        products = emptyList()
+                    ),
+                    CatalogSubCategoryModel(
+                        id = "03",
+                        title = "Замена фильтров воды",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
+                        parentCategoryId = "0",
+                        productTags = emptyList(),
+                        products = emptyList()
+                    ),
+                    CatalogSubCategoryModel(
+                        id = "04",
+                        title = "Профилактика и чистка кондиционеров",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
+                        parentCategoryId = "0",
+                        productTags = emptyList(),
+                        products = emptyList()
+                    ),
+                    CatalogSubCategoryModel(
+                        id = "05",
+                        title = "Профилактика и ремонт стираль-ной машины",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
+                        parentCategoryId = "0",
+                        productTags = emptyList(),
+                        products = emptyList()
+                    ),
+                    CatalogSubCategoryModel(
+                        id = "06",
+                        title = "Осмотр всех инженерных узлов и крупной бытовой",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
+                        parentCategoryId = "0",
+                        productTags = emptyList(),
+                        products = emptyList()
+                    ),
+                    CatalogSubCategoryModel(
+                        id = "07",
+                        title = "Мастер онлайн",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
+                        parentCategoryId = "0",
+                        productTags = emptyList(),
+                        products = emptyList()
+                    ),
+                    CatalogSubCategoryModel(
+                        id = "08",
+                        title = "Выездная диагностика",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
+                        parentCategoryId = "0",
+                        productTags = emptyList(),
+                        products = emptyList()
+                    ),
+                    CatalogSubCategoryModel(
+                        id = "09",
+                        title = "Тепловизионная диагностика недвижимости",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
+                        parentCategoryId = "0",
+                        productTags = emptyList(),
+                        products = emptyList()
+                    ),
+                    CatalogSubCategoryModel(
+                        id = "10",
+                        title = "Тепловизионная диагностика недвижимости",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
+                        parentCategoryId = "0",
+                        productTags = emptyList(),
+                        products = emptyList()
+                    ),
+                    CatalogSubCategoryModel(
+                        id = "11",
+                        title = "Тепловизионная диагностика недвижимости",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
+                        parentCategoryId = "0",
+                        productTags = emptyList(),
+                        products = emptyList()
+                    ),
+                    CatalogSubCategoryModel(
+                        id = "12",
+                        title = "Тепловизионная диагностика недвижимости",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
+                        parentCategoryId = "0",
+                        productTags = emptyList(),
+                        products = emptyList()
+                    ),
+                    CatalogSubCategoryModel(
+                        id = "13",
+                        title = "Тепловизионная диагностика недвижимости",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
+                        parentCategoryId = "0",
+                        productTags = emptyList(),
+                        products = emptyList()
+                    )
+                )
+            )
+        )
 
         val categoryNodes = response.filter { it.parentNodeId == null }
         for (categoryNode in categoryNodes){
@@ -42,7 +158,7 @@ object CatalogMapper {
 
         }
 
-        return catalogCategories
+        return primaryCategories.plus(catalogCategories)
     }
 
     fun responseToProduct(response: ProductResponse): ProductModel {
@@ -175,7 +291,8 @@ object CatalogMapper {
             versionId = response.versionId,
             name = response.name,
             price = response.price,
-            tags = response.tags
+            tags = response.tags ?: listOf(),
+            defaultProduct = response.defaultProduct ?: false
         )
     }
 

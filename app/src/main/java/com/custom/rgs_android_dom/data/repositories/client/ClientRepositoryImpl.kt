@@ -116,9 +116,21 @@ class ClientRepositoryImpl(
             }
     }
 
-    override fun updatePassport(serial: String, number: String): Completable {
-        val updateDocumentsRequest = ClientMapper.passportToRequest(serial, number)
-        return api.postDocuments(updateDocumentsRequest).flatMapCompletable { response ->
+    override fun postPassport(serial: String, number: String): Completable {
+        val postDocumentsRequest = ClientMapper.passportToRequest(serial, number)
+        return api.postDocuments(postDocumentsRequest).flatMapCompletable { response ->
+            val client = ClientMapper.responseToClient(response)
+            clientSharedPreferences.saveClient(client)
+            clientSharedPreferences.getClient()?.let {
+                clientUpdatedSubject.onNext(it)
+            }
+            Completable.complete()
+        }
+    }
+
+    override fun updatePassport(id: String, serial: String, number: String): Completable {
+        val updateDocumentsRequest = ClientMapper.passportToRequest(id, serial, number)
+        return api.updateDocuments(updateDocumentsRequest).flatMapCompletable { response ->
             val client = ClientMapper.responseToClient(response)
             clientSharedPreferences.saveClient(client)
             clientSharedPreferences.getClient()?.let {

@@ -55,7 +55,11 @@ interface MSDApi {
 
     @POST("clients/me/documents")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun postDocuments(@Body body: UpdateDocumentsRequest): Single<ClientResponse>
+    fun postDocuments(@Body body: PostDocumentsRequest): Single<ClientResponse>
+
+    @PUT("clients/me/documents")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun updateDocuments(@Body body: UpdateDocumentsRequest): Single<ClientResponse>
 
     @POST("clients/me/contacts")
     @ErrorType(MSDNetworkErrorResponse::class)
@@ -158,7 +162,7 @@ interface MSDApi {
 
     @GET("clients/me/purchase/products/showcase")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getProductsAvailableForPurchase(@Query("tags") tags: String): Single<ProductsForPurchaseResponse>
+    fun getProductsAvailableForPurchase(@Query("tags") tags: String?): Single<ProductsForPurchaseResponse>
 
     @GET("products/{productId}")
     @ErrorType(MSDNetworkErrorResponse::class)

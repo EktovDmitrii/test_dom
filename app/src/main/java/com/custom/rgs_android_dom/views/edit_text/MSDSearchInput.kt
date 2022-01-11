@@ -68,6 +68,10 @@ class MSDSearchInput @JvmOverloads constructor(
         binding.searchEditText.hint = hint
     }
 
+    fun setText(text: String){
+        binding.searchEditText.text = text.toEditable()
+    }
+
     fun addTextChangedListener(textWatcher: (String) -> Unit){
         this.textWatcher = textWatcher
     }
@@ -113,6 +117,11 @@ class MSDSearchInput @JvmOverloads constructor(
 
     fun unfocus(){
         binding.searchEditText.unFocus()
+        binding.searchEditText.hideKeyboard()
+        binding.searchEditText.text?.clear()
+    }
+
+    fun clear(){
         binding.searchEditText.hideKeyboard()
         binding.searchEditText.text?.clear()
     }

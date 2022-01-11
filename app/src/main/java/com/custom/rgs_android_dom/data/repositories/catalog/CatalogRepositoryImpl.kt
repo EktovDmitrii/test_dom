@@ -33,8 +33,8 @@ class CatalogRepositoryImpl(private val api: MSDApi): CatalogRepository {
         }
     }
 
-    override fun getProductsAvailableForPurchase(tags: List<String>): Single<List<ProductShortModel>> {
-        return api.getProductsAvailableForPurchase(tags.joinToString(", ")).map { response->
+    override fun getProductsAvailableForPurchase(tags: List<String>?): Single<List<ProductShortModel>> {
+        return api.getProductsAvailableForPurchase(tags?.joinToString(", ")).map { response->
             return@map if (response.products != null) {
                 response.products.map {
                     CatalogMapper.responseToProductShort(it)

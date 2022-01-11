@@ -407,8 +407,10 @@ class ChatRepositoryImpl(private val api: MSDApi,
         val myVideoTrackOptions = room.localParticipant.videoTrackCaptureDefaults
         val myVideoTrack = (roomInfo?.myVideoTrack as LocalVideoTrack)
         if (localVideoTrackOptions.position == CameraPosition.FRONT){
+            roomInfo = roomInfo?.copy(frontCameraEnabled = false)
             room.localParticipant.videoTrackCaptureDefaults = myVideoTrackOptions.copy(position = CameraPosition.BACK)
         } else {
+            roomInfo = roomInfo?.copy(frontCameraEnabled = true)
             room.localParticipant.videoTrackCaptureDefaults = myVideoTrackOptions.copy(position = CameraPosition.FRONT)
         }
         myVideoTrack.restartTrack(room.localParticipant.videoTrackCaptureDefaults)
