@@ -2,27 +2,23 @@ package com.custom.rgs_android_dom.ui.property.document
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.RecyclerView
 import com.custom.rgs_android_dom.databinding.ItemPropertyDetailDocumentBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
+import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 
 class DocumentListAdapter(
-    private val onItemClick: (String) -> Unit,
-    private val onDeleteClick: (String) -> Unit
-) : androidx.recyclerview.widget.ListAdapter<PropertyDocument, DocumentsViewHolder>(
-    object :
-        DiffUtil.ItemCallback<PropertyDocument>() {
+    private val onDeleteClick: (Int) -> Unit
+) : RecyclerView.Adapter<DocumentListAdapter.DocumentsViewHolder>() {
 
-        override fun areItemsTheSame(
-            oldItem: PropertyDocument,
-            newItem: PropertyDocument
-        ): Boolean = oldItem == newItem
+    private var documents = mutableListOf<PropertyDocument>()
 
-        override fun areContentsTheSame(
-            oldItem: PropertyDocument,
-            newItem: PropertyDocument
-        ): Boolean = oldItem == newItem
-    }) {
+    private var isDeleteButtonVisible: Boolean = false
+
+    override fun onBindViewHolder(holder: DocumentsViewHolder, position: Int) {
+        (holder).bind(documents[position])
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DocumentsViewHolder {
         val binding = ItemPropertyDetailDocumentBinding.inflate(
@@ -30,11 +26,45 @@ class DocumentListAdapter(
             parent,
             false
         )
-        return DocumentsViewHolder.create(binding, onItemClick, onDeleteClick)
+        return DocumentsViewHolder(binding, onDeleteClick)
     }
 
-    override fun onBindViewHolder(holder: DocumentsViewHolder, position: Int) {
-        val model = getItem(position)
-        holder.bind(model)
+    override fun getItemCount(): Int {
+        return documents.size
+    }
+
+    fun setItems(files: List<PropertyDocument>, isDeleteButtonVisible: Boolean) {
+        this.isDeleteButtonVisible = isDeleteButtonVisible
+        documents.clear()
+        documents.addAll(files)
+        notifyDataSetChanged()
+    }
+
+    fun showDeleteButton(
+        isDeleteButtonVisible: Boolean
+    ){
+        this.isDeleteButtonVisible = isDeleteButtonVisible
+        notifyDataSetChanged()
+    }
+
+    inner class DocumentsViewHolder(
+        private val binding: ItemPropertyDetailDocumentBinding,
+        private val onDeleteClick: (Int) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(propertyDoc: PropertyDocument) {
+            binding.documentNameTextView.text = propertyDoc.name
+            binding.root.setOnDebouncedClickListener {
+            }
+            binding.deleteDocFrameLayout.isVisible = isDeleteButtonVisible
+
+            binding.deleteDocFrameLayout.setOnDebouncedClickListener {
+                documents.forEachIndexed { index, propertyDocument ->
+                    if (propertyDocument==propertyDoc)
+                        onDeleteClick(index)
+                }
+            }
+        }
+
     }
 }

@@ -1,122 +1,96 @@
 package com.custom.rgs_android_dom.ui.property.document
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
-import androidx.recyclerview.widget.GridLayoutManager
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentDocumentBinding
-import com.custom.rgs_android_dom.domain.property.models.PropertyDocumentsModel
+import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
-import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsAdapter
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsFragment
-import com.custom.rgs_android_dom.ui.property.document.detail_document.DetailDocumentFragment
+import com.custom.rgs_android_dom.ui.property.document.edit_document_list.EditDocumentListBottomSheetFragment
+import com.custom.rgs_android_dom.ui.property.document.edit_document_list.EditDocumentListener
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.gone
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
-import com.custom.rgs_android_dom.utils.visible
+import com.custom.rgs_android_dom.utils.visibleIf
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
-import com.custom.rgs_android_dom.ui.property.document.detail_document.SpacesItemDecoration
 
 class DocumentFragment :
-    BaseFragment<DocumentViewModel, FragmentDocumentBinding>(R.layout.fragment_document) {
+    BaseFragment<DocumentViewModel, FragmentDocumentBinding>(R.layout.fragment_document),
+    EditDocumentListener {
 
-    private var propertyDocumentsModel: PropertyDocumentsModel? = null
-
-    private var documentListAdapter: DocumentListAdapter = DocumentListAdapter(::onDocumentClick, ::onDeleteClick)
-
-    private var gridLayoutManager: GridLayoutManager? = null
+    private val documentListAdapter: DocumentListAdapter
+        get() = binding.listDocumentsRecyclerView.adapter as DocumentListAdapter
 
     companion object {
+        private const val ARG_OBJECT_ID = "ARG_OBJECT_ID"
         private const val ARG_PROPERTY_MODEL = "ARG_PROPERTY_MODEL"
 
         fun newInstance(
-            propertyDocumentsModel: PropertyDocumentsModel
+            objectId: String,
+            propertyItemModel: PropertyItemModel,
         ): DocumentFragment {
             return DocumentFragment().args {
-                putSerializable(ARG_PROPERTY_MODEL, propertyDocumentsModel)
+                putString(ARG_OBJECT_ID, objectId)
+                putSerializable(ARG_PROPERTY_MODEL, propertyItemModel)
             }
         }
     }
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
-            requireArguments().getString(ARG_PROPERTY_MODEL)
+            requireArguments().getString(ARG_OBJECT_ID),
+            requireArguments().getSerializable(ARG_PROPERTY_MODEL)
         )
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        propertyDocumentsModel = if (requireArguments().containsKey(ARG_PROPERTY_MODEL))
-            requireArguments().getSerializable(ARG_PROPERTY_MODEL) as PropertyDocumentsModel
-        else
-            null
-
-        propertyDocumentsModel?.let { viewModel.initData(it) }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initAdapter()
-        initButtons()
-        initObserver()
-    }
 
-    private fun initButtons() = with(binding) {
-        backImageView.setOnDebouncedClickListener {
+        binding.backImageView.setOnDebouncedClickListener {
             onClose()
         }
 
-        addDocTextView.setOnDebouncedClickListener {
+        binding.addDocTextView.setOnDebouncedClickListener {
             val propertyUploadFilesFragment = PropertyUploadDocumentsFragment()
             propertyUploadFilesFragment.show(childFragmentManager, propertyUploadFilesFragment.TAG)
         }
-        editDocumentListImageView.setOnDebouncedClickListener {
-            ScreenManager.showScreenScope(
-                DetailDocumentFragment.newInstance(
-                    propertyDocumentsModel?.propertyDocuments!!.first().link,
-                ), ADD_PROPERTY
+
+        binding.listDocumentsRecyclerView.adapter = DocumentListAdapter{ documentIndex ->
+            viewModel.deleteDocument(documentIndex)
+        }
+
+        binding.editDocumentListImageView.setOnDebouncedClickListener {
+            val editDocumentListBottomSheetFragment =
+                EditDocumentListBottomSheetFragment.newInstance(this)
+            editDocumentListBottomSheetFragment.show(
+                childFragmentManager,
+                editDocumentListBottomSheetFragment.TAG
             )
         }
-    }
-
-    private fun initObserver() = with(binding) {
+        binding.listDocumentsRecyclerView.apply {
+            adapter = documentListAdapter
+        }
         subscribe(viewModel.propertyDocumentsObserver) { propertyItem ->
 
-            if (propertyItem.propertyDocuments.isEmpty()) {
-                editDocumentListImageView.gone()
-                emptyDocListGroup.visible()
-            } else {
-                editDocumentListImageView.visible()
-                emptyDocListGroup.gone()
-            }
+            binding.editDocumentListImageView.visibleIf(propertyItem.documents.isNotEmpty())
+            binding.emptyDocListGroup.visibleIf(propertyItem.documents.isEmpty())
 
-            if (propertyItem.propertyDocuments.isNotEmpty()){
-                documentListAdapter.submitList(propertyItem.propertyDocuments)
+            if (propertyItem.documents.isNotEmpty()) {
+                documentListAdapter.setItems(
+                    propertyItem.documents,
+                    viewModel.isDeleteButtonVisible
+                )
             }
 
         }
     }
 
-    private fun initAdapter() {
-        gridLayoutManager = GridLayoutManager(activity, 2)
-        binding.listDocumentsRecyclerView.apply {
-            layoutManager = gridLayoutManager
-            adapter = documentListAdapter
-            addItemDecoration(SpacesItemDecoration(12))
-        }
-    }
-
-    private fun onDocumentClick(docUrl: String) {
-        viewModel.openDocument(docUrl)
-    }
-
-    private fun onDeleteClick(docUrl: String) {
-        viewModel.deleteDocument()
-
+    override fun changeDeleteButtonVisibility(isDeleteButtonVisible: Boolean) {
+        documentListAdapter.showDeleteButton(isDeleteButtonVisible)
     }
 
 }

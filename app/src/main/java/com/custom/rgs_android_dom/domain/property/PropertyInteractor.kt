@@ -394,7 +394,7 @@ class PropertyInteractor(
         val documentsToPost = urisToFiles(filesUri)
         return postDocumentsSingle(documentsToPost)
             .flatMap { propertyDocuments ->
-                val newDocumentsList = propertyItemModel.documents+propertyDocuments
+                val newDocumentsList = propertyItemModel.documents + propertyDocuments
                 propertyItemModel.documents = newDocumentsList
                 propertyRepository.updateProperty(
                     objectId,
@@ -402,4 +402,8 @@ class PropertyInteractor(
                 )
             }
     }
+
+    fun deleteDocument(
+
+    ){}
 }

@@ -1,5 +1,7 @@
 package com.custom.rgs_android_dom.domain.property.models
 
+import java.io.Serializable
+
 data class PropertyItemModel(
     val address: PropertyAddressModel?,
     val clientId: String,
@@ -13,4 +15,4 @@ data class PropertyItemModel(
     val status: String,
     val totalArea: Float?,
     val type: PropertyType
-)
+) : Serializable

@@ -1,15 +1,11 @@
 package com.custom.rgs_android_dom.ui.property.info
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
-import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
-import com.custom.rgs_android_dom.domain.property.models.PropertyDocumentsModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.property.document.DocumentFragment
 import com.custom.rgs_android_dom.utils.logException
@@ -87,14 +83,11 @@ class PropertyInfoViewModel(
         }
     }
 
-    fun onShowAllDocumentsClick(propertyId: String, documentsList: List<PropertyDocument>) {
-        val propertyDocumentsModel = PropertyDocumentsModel(
-            propertyId,
-            documentsList
-        )
+    fun onShowAllDocumentsClick() {
         ScreenManager.showScreen(
             DocumentFragment.newInstance(
-                propertyDocumentsModel,
+                objectId,
+                propertyItemObserver.value!!
             )
         )
     }
