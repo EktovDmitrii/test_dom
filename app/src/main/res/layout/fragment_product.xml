@@ -64,17 +64,24 @@
                 android:layout_marginBottom="24dp" />
 
             <include
-                android:id="@+id/features"
-                layout="@layout/layout_product_detail_features_info"
+                android:id="@+id/about"
+                layout="@layout/layout_catalog_about_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp" />
 
             <include
                 android:id="@+id/includes"
-                layout="@layout/layout_product_detail_includes_info"
+                layout="@layout/layout_product_includes_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <include
+                android:id="@+id/advantagesLayout"
+                layout="@layout/layout_catalog_advantages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp" />
 
             <include
                 android:id="@+id/validity"
@@ -86,6 +93,13 @@
             <include
                 android:id="@+id/territory"
                 layout="@layout/layout_product_detail_territory_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp" />
+
+            <include
+                android:id="@+id/features"
+                layout="@layout/layout_product_detail_features_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp" />
