@@ -270,28 +270,30 @@ class ChatAdapter(
                 R.drawable.rectangle_filled_secondary_100_radius_16dp_top_start_radius_4dp
             )
 
+            val currentChatItemModel = chatItems[absoluteAdapterPosition]
             previousChatItemModel = chatItems[absoluteAdapterPosition - 1]
 
             if (previousChatItemModel is ChatMessageModel && previousChatItemModel.sender == Sender.ME
-                || (previousChatItemModel is ChatDateDividerModel)) {
-                    when(previousChatItemModel){
-                        is ChatMessageModel -> {
-                            binding.opponentContainerLinearLayout.setMargins(top = marginTopToSenderMe)
-                        }
-                        is ChatDateDividerModel -> {
-                            binding.opponentContainerLinearLayout.setMargins(top = marginTopToDateDivider)
-                        }
+                || (previousChatItemModel is ChatDateDividerModel)
+                || (previousChatItemModel as ChatMessageModel).type != (currentChatItemModel as ChatMessageModel).type
+            ) {
+                when(previousChatItemModel){
+                    is ChatMessageModel -> {
+                        binding.opponentContainerLinearLayout.setMargins(top = marginTopToSenderMe)
                     }
-                    binding.avatarImageView.visible()
-                    binding.nameTextView.visible()
-                    binding.messageContainerFrameLayout.background = topStartCornerWithDifferentRadiusDrawable
-                } else {
-                    binding.opponentContainerLinearLayout.setMargins(top = marginTopToSenderOpponent)
-                    binding.avatarImageView.invisible()
-                    binding.nameTextView.gone()
-                    binding.messageContainerFrameLayout.background = allCornersTheSameRadiusDrawable
+                    is ChatDateDividerModel -> {
+                        binding.opponentContainerLinearLayout.setMargins(top = marginTopToDateDivider)
+                    }
                 }
-
+                binding.avatarImageView.visible()
+                binding.nameTextView.visible()
+                binding.messageContainerFrameLayout.background = topStartCornerWithDifferentRadiusDrawable
+            } else {
+                binding.opponentContainerLinearLayout.setMargins(top = marginTopToSenderOpponent)
+                binding.avatarImageView.invisible()
+                binding.nameTextView.gone()
+                binding.messageContainerFrameLayout.background = allCornersTheSameRadiusDrawable
+            }
         }
     }
 
