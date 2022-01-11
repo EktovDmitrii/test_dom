@@ -81,6 +81,10 @@ interface MSDApi {
     @ErrorType(MSDNetworkErrorResponse::class)
     fun addProperty(@Body body: AddPropertyRequest): Completable
 
+    @PUT("property/clients/me/objects/{objectId}")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun updatePropertyItem(@Path("objectId") objectId: String ,@Body body: UpdatePropertyRequest): Single<PropertyItemResponse>
+
     @GET("property/clients/me/objects")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getAllProperty(): Single<AllPropertyResponse>

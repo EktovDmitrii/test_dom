@@ -47,6 +47,4 @@
             android:src="@drawable/ic_cross_16dp" />
 
     </FrameLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

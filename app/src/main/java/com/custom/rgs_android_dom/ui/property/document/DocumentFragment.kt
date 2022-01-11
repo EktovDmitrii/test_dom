@@ -2,24 +2,16 @@ package com.custom.rgs_android_dom.ui.property.document
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentDocumentBinding
-import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
-import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
 import com.custom.rgs_android_dom.domain.property.models.PropertyDocumentsModel
-import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.property.add.details.PropertyDetailsFragment
+import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
+import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsFragment
-import com.custom.rgs_android_dom.ui.rationale.RequestRationaleFragment
+import com.custom.rgs_android_dom.ui.property.document.detail_document.DetailDocumentFragment
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.gone
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
@@ -27,13 +19,14 @@ import com.custom.rgs_android_dom.utils.subscribe
 import com.custom.rgs_android_dom.utils.visible
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
+import com.custom.rgs_android_dom.ui.property.document.detail_document.SpacesItemDecoration
 
 class DocumentFragment :
     BaseFragment<DocumentViewModel, FragmentDocumentBinding>(R.layout.fragment_document) {
 
     private var propertyDocumentsModel: PropertyDocumentsModel? = null
 
-    private var adapter: DocumentListAdapter? = null
+    private var documentListAdapter: DocumentListAdapter = DocumentListAdapter(::onDocumentClick, ::onDeleteClick)
 
     private var gridLayoutManager: GridLayoutManager? = null
 
@@ -68,8 +61,8 @@ class DocumentFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
-        initObserver()
         initButtons()
+        initObserver()
     }
 
     private fun initButtons() = with(binding) {
@@ -80,6 +73,13 @@ class DocumentFragment :
         addDocTextView.setOnDebouncedClickListener {
             val propertyUploadFilesFragment = PropertyUploadDocumentsFragment()
             propertyUploadFilesFragment.show(childFragmentManager, propertyUploadFilesFragment.TAG)
+        }
+        editDocumentListImageView.setOnDebouncedClickListener {
+            ScreenManager.showScreenScope(
+                DetailDocumentFragment.newInstance(
+                    propertyDocumentsModel?.propertyDocuments!!.first().link,
+                ), ADD_PROPERTY
+            )
         }
     }
 
@@ -94,20 +94,20 @@ class DocumentFragment :
                 emptyDocListGroup.gone()
             }
 
-            if (propertyItem.propertyDocuments.isNotEmpty())
-                adapter?.submitList(propertyItem.propertyDocuments)
+            if (propertyItem.propertyDocuments.isNotEmpty()){
+                documentListAdapter.submitList(propertyItem.propertyDocuments)
+            }
 
         }
     }
 
     private fun initAdapter() {
-        gridLayoutManager = GridLayoutManager(activity, 2, LinearLayoutManager.VERTICAL, false)
+        gridLayoutManager = GridLayoutManager(activity, 2)
         binding.listDocumentsRecyclerView.apply {
             layoutManager = gridLayoutManager
-            setHasFixedSize(true)
+            adapter = documentListAdapter
+            addItemDecoration(SpacesItemDecoration(12))
         }
-        adapter = DocumentListAdapter(::onDocumentClick, ::onDeleteClick)
-        binding.listDocumentsRecyclerView.adapter = adapter
     }
 
     private fun onDocumentClick(docUrl: String) {
@@ -118,4 +118,5 @@ class DocumentFragment :
         viewModel.deleteDocument()
 
     }
+
 }

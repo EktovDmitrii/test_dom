@@ -1,5 +1,7 @@
 package com.custom.rgs_android_dom.ui.property.info
 
+import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
@@ -30,13 +32,59 @@ class PropertyInfoViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    propertyItemController.value = it
+                    propertyInteractor.propertyInfoStateSubject.onNext(it)
                 },
                 onError = {
                     logException(this, it)
                     networkErrorController.value = "Не удалось загрузить объект"
                 }
             ).addTo(dataCompositeDisposable)
+
+        propertyInteractor.propertyInfoStateSubject
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    propertyItemController.value = it
+                },
+                onError = {
+                    logException(this, it)
+                }
+            )
+            .addTo(dataCompositeDisposable)
+
+        propertyInteractor.propertyDocumentUploadedSubject
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = { uri ->
+                    updateDocuments(uri)
+                },
+                onError = {
+                    logException(this, it)
+                }
+            )
+            .addTo(dataCompositeDisposable)
+    }
+
+    private fun updateDocuments(uri: List<Uri>) {
+        propertyItemController.value?.let {
+            propertyInteractor.updatePropertyItem(
+                objectId = objectId,
+                propertyItemModel = it,
+                filesUri = uri,
+            ).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                    onSuccess = {
+                        propertyInteractor.propertyInfoStateSubject.onNext(it)
+                    },
+                    onError = {
+                        logException(this, it)
+                        networkErrorController.value = "Не удалось загрузить объект"
+                    }
+                ).addTo(dataCompositeDisposable)
+        }
     }
 
     fun onShowAllDocumentsClick(propertyId: String, documentsList: List<PropertyDocument>) {
@@ -44,10 +92,10 @@ class PropertyInfoViewModel(
             propertyId,
             documentsList
         )
-        ScreenManager.showScreenScope(
+        ScreenManager.showScreen(
             DocumentFragment.newInstance(
                 propertyDocumentsModel,
-            ), ADD_PROPERTY
+            )
         )
     }
 

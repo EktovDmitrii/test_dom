@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui.property.info
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPropertyInfoBinding
@@ -84,7 +85,7 @@ class PropertyInfoFragment :
             if (propertyItem.comment.isNotEmpty()) {
                 binding.commentTextView.setValue(propertyItem.comment)
             }
-
+            Log.d("ZXC",propertyItem.toString())
             if (propertyItem.documents.isNotEmpty()) {
                 adapter.setItems(propertyItem.documents)
             }

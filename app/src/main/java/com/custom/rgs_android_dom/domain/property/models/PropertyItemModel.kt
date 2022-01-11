@@ -4,7 +4,7 @@ data class PropertyItemModel(
     val address: PropertyAddressModel?,
     val clientId: String,
     val comment: String,
-    val documents: List<PropertyDocument>,
+    var documents: List<PropertyDocument>,
     val id: String,
     val isOwn: Boolean?,
     val isRent: Boolean?,
