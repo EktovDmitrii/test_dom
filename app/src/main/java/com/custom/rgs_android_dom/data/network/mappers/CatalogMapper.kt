@@ -24,7 +24,7 @@ object CatalogMapper {
                     CatalogSubCategoryModel(
                         id = "01",
                         title = "Сезонное мытье окон",
-                        icon = "",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
                         parentCategoryId = "0",
                         productTags = emptyList(),
                         products = emptyList()
@@ -32,7 +32,7 @@ object CatalogMapper {
                     CatalogSubCategoryModel(
                         id = "02",
                         title = "Тепловизионная диагностика недвижимости",
-                        icon = "",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
                         parentCategoryId = "0",
                         productTags = emptyList(),
                         products = emptyList()
@@ -40,7 +40,7 @@ object CatalogMapper {
                     CatalogSubCategoryModel(
                         id = "03",
                         title = "Замена фильтров воды",
-                        icon = "",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
                         parentCategoryId = "0",
                         productTags = emptyList(),
                         products = emptyList()
@@ -48,7 +48,7 @@ object CatalogMapper {
                     CatalogSubCategoryModel(
                         id = "04",
                         title = "Профилактика и чистка кондиционеров",
-                        icon = "",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
                         parentCategoryId = "0",
                         productTags = emptyList(),
                         products = emptyList()
@@ -56,7 +56,7 @@ object CatalogMapper {
                     CatalogSubCategoryModel(
                         id = "05",
                         title = "Профилактика и ремонт стираль-ной машины",
-                        icon = "",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
                         parentCategoryId = "0",
                         productTags = emptyList(),
                         products = emptyList()
@@ -64,7 +64,7 @@ object CatalogMapper {
                     CatalogSubCategoryModel(
                         id = "06",
                         title = "Осмотр всех инженерных узлов и крупной бытовой",
-                        icon = "",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
                         parentCategoryId = "0",
                         productTags = emptyList(),
                         products = emptyList()
@@ -72,7 +72,7 @@ object CatalogMapper {
                     CatalogSubCategoryModel(
                         id = "07",
                         title = "Мастер онлайн",
-                        icon = "",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
                         parentCategoryId = "0",
                         productTags = emptyList(),
                         products = emptyList()
@@ -80,7 +80,7 @@ object CatalogMapper {
                     CatalogSubCategoryModel(
                         id = "08",
                         title = "Выездная диагностика",
-                        icon = "",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
                         parentCategoryId = "0",
                         productTags = emptyList(),
                         products = emptyList()
@@ -88,7 +88,7 @@ object CatalogMapper {
                     CatalogSubCategoryModel(
                         id = "09",
                         title = "Тепловизионная диагностика недвижимости",
-                        icon = "",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
                         parentCategoryId = "0",
                         productTags = emptyList(),
                         products = emptyList()
@@ -96,7 +96,7 @@ object CatalogMapper {
                     CatalogSubCategoryModel(
                         id = "10",
                         title = "Тепловизионная диагностика недвижимости",
-                        icon = "",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
                         parentCategoryId = "0",
                         productTags = emptyList(),
                         products = emptyList()
@@ -104,7 +104,7 @@ object CatalogMapper {
                     CatalogSubCategoryModel(
                         id = "11",
                         title = "Тепловизионная диагностика недвижимости",
-                        icon = "",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
                         parentCategoryId = "0",
                         productTags = emptyList(),
                         products = emptyList()
@@ -112,7 +112,7 @@ object CatalogMapper {
                     CatalogSubCategoryModel(
                         id = "12",
                         title = "Тепловизионная диагностика недвижимости",
-                        icon = "",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
                         parentCategoryId = "0",
                         productTags = emptyList(),
                         products = emptyList()
@@ -120,7 +120,7 @@ object CatalogMapper {
                     CatalogSubCategoryModel(
                         id = "13",
                         title = "Тепловизионная диагностика недвижимости",
-                        icon = "",
+                        icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
                         parentCategoryId = "0",
                         productTags = emptyList(),
                         products = emptyList()
