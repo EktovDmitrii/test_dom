@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
@@ -94,7 +95,13 @@ class MainViewModel(
     }
 
     fun onTagClick(tag: String){
+        val catalogSearchFragment = CatalogSearchFragment.newInstance(tag)
+        ScreenManager.showScreen(catalogSearchFragment)
+    }
 
+    fun onSearchClick(){
+        val catalogSearchFragment = CatalogSearchFragment.newInstance()
+        ScreenManager.showScreen(catalogSearchFragment)
     }
 
 }

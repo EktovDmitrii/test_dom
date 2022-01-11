@@ -25,5 +25,8 @@ data class ProductShortResponse(
     val price: Int,
 
     @SerializedName("tags")
-    val tags: List<String>
+    val tags: List<String>?,
+
+    @SerializedName("defaultProduct")
+    val defaultProduct: Boolean?
 )

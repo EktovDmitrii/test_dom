@@ -16,6 +16,7 @@ import com.custom.rgs_android_dom.ui.catalog.MainCatalogViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.MyProductViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.single.more.MoreSingleProductViewModel
+import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchViewModel
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesViewModel
 import com.custom.rgs_android_dom.ui.catalog.subcategory.CatalogSubcategoryViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.ProductViewModel
@@ -92,6 +93,7 @@ val viewModelModule = module {
     viewModel { parameters -> CatalogSubcategoryViewModel(subCategory = parameters.get(), catalogInteractor = get()) }
     viewModel { parameters -> SingleProductViewModel(product = parameters.get()) }
     viewModel { MoreSingleProductViewModel() }
+    viewModel { parameters -> CatalogSearchViewModel(tag = parameters[0], catalogInteractor = get()) }
     viewModel { parameters -> ProductViewModel(productDetail = parameters.get()) }
     viewModel { parameters -> CatalogPrimarySubcategoryViewModel(category = parameters.get()) }
     viewModel { MyProductViewModel() }
