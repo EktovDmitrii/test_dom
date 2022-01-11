@@ -10,6 +10,10 @@ import io.reactivex.Single
 
 class CatalogInteractor(private val catalogRepository: CatalogRepository) {
 
+    companion object {
+        private const val TAG_POPULAR_PRODUCTS = "ВыводитьНаГлавной"
+    }
+
     fun getCatalogCategories(): Single<List<CatalogCategoryModel>> {
         return catalogRepository.getCatalogCategories().map {catalogCategories->
 
@@ -33,15 +37,6 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
 
                 catalogCategory.products = availableProducts.filter { it.tags.any { it in catalogCategory.productTags }}
             }
-
-           /*for (catalogCategory in catalogCategories){
-                for (subCategory in catalogCategory.subCategories){
-                    val availableProducts = catalogRepository.getProductsAvailableForPurchase(subCategory.productTags).blockingGet()
-                    subCategory.products = availableProducts
-                }
-                val availableProducts = catalogRepository.getProductsAvailableForPurchase(catalogCategory.productTags).blockingGet()
-                catalogCategory.products = availableProducts
-            }*/
             return@map catalogCategories.filter { it.subCategories.isNotEmpty() }
         }
     }
@@ -61,6 +56,10 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
     fun getProductsAvailableForPurchase(query: String?): Single<List<ProductShortModel>>{
         val tags = if (!query.isNullOrEmpty()) listOf(query) else null
         return catalogRepository.getProductsAvailableForPurchase(tags)
+    }
+
+    fun getPopularProducts(): Single<List<ProductShortModel>>{
+        return catalogRepository.getProductsAvailableForPurchase(listOf(TAG_POPULAR_PRODUCTS))
     }
 
 }

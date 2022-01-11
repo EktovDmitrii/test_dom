@@ -80,9 +80,16 @@ object ClientMapper {
         )
     }
 
-    fun passportToRequest(serial: String, number: String): UpdateDocumentsRequest {
+    fun passportToRequest(serial: String, number: String): PostDocumentsRequest {
         val documents = arrayListOf(
-            DocumentRequest(serial = serial, number = number, type = DOCTYPE_NATIONAL_PASSPORT)
+            PostDocumentRequest(serial = serial, number = number, type = DOCTYPE_NATIONAL_PASSPORT)
+        )
+        return PostDocumentsRequest(postDocuments = documents)
+    }
+
+    fun passportToRequest(id: String, serial: String, number: String): UpdateDocumentsRequest {
+        val documents = arrayListOf(
+            UpdateDocumentRequest(id = id, serial = serial, number = number, type = DOCTYPE_NATIONAL_PASSPORT)
         )
         return UpdateDocumentsRequest(documents = documents)
     }

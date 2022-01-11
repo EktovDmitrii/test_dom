@@ -24,8 +24,11 @@ class CatalogSearchFragment : BaseFragment<CatalogSearchViewModel, FragmentCatal
         }
     }
 
-    private val adapter: CatalogSearchResultsAdapter
-        get() = binding.allProductsRecyclerView.adapter as CatalogSearchResultsAdapter
+    private val popularProductsAdapter: CatalogSearchResultsAdapter
+        get() = binding.popularProductsRecyclerView.adapter as CatalogSearchResultsAdapter
+
+    private val searchResultsAdapter: CatalogSearchResultsAdapter
+        get() = binding.searchResultsRecyclerView.adapter as CatalogSearchResultsAdapter
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(requireArguments().getString(ARG_TAG, null))
@@ -35,7 +38,11 @@ class CatalogSearchFragment : BaseFragment<CatalogSearchViewModel, FragmentCatal
         super.onViewCreated(view, savedInstanceState)
         hideSoftwareKeyboard()
 
-        binding.allProductsRecyclerView.adapter = CatalogSearchResultsAdapter(){
+        binding.searchResultsRecyclerView.adapter = CatalogSearchResultsAdapter {
+            viewModel.onProductClick(it)
+        }
+
+        binding.popularProductsRecyclerView.adapter = CatalogSearchResultsAdapter {
             viewModel.onProductClick(it)
         }
 
@@ -44,16 +51,31 @@ class CatalogSearchFragment : BaseFragment<CatalogSearchViewModel, FragmentCatal
         }
 
         binding.searchInput.setOnClearClickListener {
-            binding.searchInput.unfocus()
+            binding.searchInput.clear()
             viewModel.onClearClick()
         }
 
-        subscribe(viewModel.productsObserver){
-            adapter.setItems(it)
+        subscribe(viewModel.popularProductsObserver){
+            popularProductsAdapter.setItems(it)
         }
 
-        subscribe(viewModel.queryNotEmptyObserver){
-            binding.allProductsTextView.goneIf(it)
+        subscribe(viewModel.searchResultsObserver){
+            binding.popularProductsTextView.gone()
+            binding.popularProductsRecyclerView.gone()
+            searchResultsAdapter.setItems(it)
+        }
+
+        subscribe(viewModel.tagObserver){
+            binding.searchInput.setText(it)
+        }
+
+        subscribe(viewModel.arePopularProductsVisibleObserver){
+            binding.popularProductsTextView.visibleIf(it)
+            binding.popularProductsRecyclerView.visibleIf(it)
+        }
+
+        subscribe(viewModel.areSearchResultsVisibleObserver){
+            binding.searchResultsRecyclerView.visibleIf(it)
         }
     }
 

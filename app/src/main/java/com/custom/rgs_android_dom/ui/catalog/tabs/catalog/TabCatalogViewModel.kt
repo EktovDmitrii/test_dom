@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogSubCategoryModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogPrimarySubcategoriesFragment
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesFragment
 import com.custom.rgs_android_dom.ui.catalog.subcategory.CatalogSubcategoryFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -53,5 +54,9 @@ class TabCatalogViewModel(private val catalogInteractor: CatalogInteractor) : Ba
         ScreenManager.showBottomScreen(catalogSubcategoriesFragment)
     }
 
+    fun onAllPrimaryCategoriesClick(category: CatalogCategoryModel){
+        val primSubcategoriesFragment = CatalogPrimarySubcategoriesFragment.newInstance(category)
+        ScreenManager.showBottomScreen(primSubcategoriesFragment)
+    }
 
 }

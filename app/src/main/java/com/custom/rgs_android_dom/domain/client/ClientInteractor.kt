@@ -344,12 +344,14 @@ class ClientInteractor(
         }
 
         val updatePassportCompletable = if (!editPersonalDataViewState.isDocNumberSaved && editPersonalDataViewState.docNumber.isNotEmpty()){
-            updatePassport(editPersonalDataViewState.docSerial, editPersonalDataViewState.docNumber)
+            postPassport(editPersonalDataViewState.docSerial, editPersonalDataViewState.docNumber)
+        } else if ( editPersonalDataViewState.isDocNumberSaved && editPersonalDataViewState.docNumber.isNotEmpty()){
+            updatePassport(editPersonalDataViewState.docId, editPersonalDataViewState.docSerial, editPersonalDataViewState.docNumber)
         } else {
             Completable.complete()
         }
 
-        var updatePhoneCompletable = if (editPersonalDataViewState.wasSecondPhoneEdited && editPersonalDataViewState.secondPhone.isNotEmpty()){
+        val updatePhoneCompletable = if (editPersonalDataViewState.wasSecondPhoneEdited && editPersonalDataViewState.secondPhone.isNotEmpty()){
             if (editPersonalDataViewState.isSecondPhoneSaved){
                 clientRepository.updateSecondPhone(editPersonalDataViewState.secondPhone, editPersonalDataViewState.secondPhoneId)
             } else {
@@ -560,8 +562,11 @@ class ClientInteractor(
         validateSubject.accept(isSaveTextViewEnabled)
     }
 
-    private fun updatePassport(serial: String, number: String): Completable {
-        return clientRepository.updatePassport(serial, number)
+    private fun postPassport(serial: String, number: String): Completable {
+        return clientRepository.postPassport(serial, number)
+    }
+    private fun updatePassport(id:String, serial: String, number: String): Completable {
+        return clientRepository.updatePassport(id, serial, number)
     }
 
 }

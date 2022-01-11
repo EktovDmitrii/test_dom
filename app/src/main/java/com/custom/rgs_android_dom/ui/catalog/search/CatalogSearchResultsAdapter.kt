@@ -36,7 +36,7 @@ class CatalogSearchResultsAdapter(
         private val onProductClick: (ProductShortModel) -> Unit = {}) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: ProductShortModel) {
-            binding.titleTextView.text = model.title
+            binding.titleTextView.text = model.name
 
             binding.root.setOnDebouncedClickListener {
                 onProductClick(model)

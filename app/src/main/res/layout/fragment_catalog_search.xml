@@ -34,7 +34,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:paddingTop="16dp"
         android:paddingHorizontal="20dp"
         android:clipToPadding="false">
 
@@ -50,8 +49,10 @@
                 android:fontFamily="@font/my_service_bold"
                 android:textColor="@color/secondary900"
                 android:textSize="16sp"
+                android:layout_marginTop="16dp"
                 android:visibility="gone"
-                app:translationTextKey="Популярные" />
+                app:translationTextKey="Популярные"
+                tools:visibility="visible"/>
 
             <com.custom.rgs_android_dom.views.MSDRecyclerView
                 android:id="@+id/popularProductsRecyclerView"
@@ -60,25 +61,19 @@
                 android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:verticalDecorationGap="12dp"
-                android:layout_marginBottom="32dp"/>
-
-            <com.custom.rgs_android_dom.views.text.MSDTextView
-                android:id="@+id/allProductsTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/my_service_bold"
-                android:textColor="@color/secondary900"
-                android:textSize="16sp"
-                app:translationTextKey="Все услуги" />
+                android:layout_marginBottom="32dp"
+                tools:visibility="visible"/>
 
             <com.custom.rgs_android_dom.views.MSDRecyclerView
-                android:id="@+id/allProductsRecyclerView"
+                android:id="@+id/searchResultsRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:overScrollMode="never"
+                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:verticalDecorationGap="12dp"/>
+                app:verticalDecorationGap="12dp"
+                tools:visibility="visible"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

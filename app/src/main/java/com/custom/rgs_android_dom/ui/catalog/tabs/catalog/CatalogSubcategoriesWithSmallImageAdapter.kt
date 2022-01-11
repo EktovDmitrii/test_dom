@@ -48,6 +48,7 @@ class CatalogSubcategoriesWithSmallImageAdapter(
             GlideApp.with(binding.root.context)
                 .load(GlideUrlProvider.makeHeadersGlideUrl(model.icon))
                 .transform(RoundedCorners(8.dp(binding.root.context)))
+                .error(R.drawable.rectangle_filled_secondary_100_radius_8dp)
                 .into(binding.logoImageView)
 
             binding.root.setOnDebouncedClickListener {

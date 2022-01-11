@@ -55,7 +55,11 @@ interface MSDApi {
 
     @POST("clients/me/documents")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun postDocuments(@Body body: UpdateDocumentsRequest): Single<ClientResponse>
+    fun postDocuments(@Body body: PostDocumentsRequest): Single<ClientResponse>
+
+    @PUT("clients/me/documents")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun updateDocuments(@Body body: UpdateDocumentsRequest): Single<ClientResponse>
 
     @POST("clients/me/contacts")
     @ErrorType(MSDNetworkErrorResponse::class)

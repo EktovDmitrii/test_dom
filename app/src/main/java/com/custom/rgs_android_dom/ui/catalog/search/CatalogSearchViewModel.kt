@@ -22,23 +22,37 @@ class CatalogSearchViewModel(
         private const val SEARCH_DELAY = 500L
     }
 
-    private val productsController = MutableLiveData<List<ProductShortModel>>()
-    val productsObserver: LiveData<List<ProductShortModel>> = productsController
+    private val tagController = MutableLiveData<String>()
+    val tagObserver: LiveData<String> = tagController
 
-    private val queryNotEmptyController = MutableLiveData<Boolean>()
-    val queryNotEmptyObserver: LiveData<Boolean> = queryNotEmptyController
+    private val arePopularProductVisibleController = MutableLiveData<Boolean>()
+    val arePopularProductsVisibleObserver: LiveData<Boolean> = arePopularProductVisibleController
+
+    private val areSearchResultsVisibleController = MutableLiveData<Boolean>()
+    val areSearchResultsVisibleObserver: LiveData<Boolean> = areSearchResultsVisibleController
+
+    private val popularProductsController = MutableLiveData<List<ProductShortModel>>()
+    val popularProductsObserver: LiveData<List<ProductShortModel>> = popularProductsController
+
+    private val searchResultsController = MutableLiveData<List<ProductShortModel>>()
+    val searchResultsObserver: LiveData<List<ProductShortModel>> = searchResultsController
 
     private val searchSubject = PublishRelay.create<String>()
-    private var products: List<ProductShortModel>? = null
 
     init {
-        catalogInteractor.getProductsAvailableForPurchase(tag)
+        tag?.let { tag->
+            tagController.value = tag
+        }
+
+        arePopularProductVisibleController.value = (tag == null)
+
+        catalogInteractor.getPopularProducts()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    products = it
-                    productsController.value = it
+                    popularProductsController.value = it
+
                 },
                 onError = {
                     logException(this, it)
@@ -50,13 +64,18 @@ class CatalogSearchViewModel(
 
 
     fun onSearchQueryChanged(query: String){
-        searchSubject.accept(query)
+        if (query.isNotEmpty()){
+            arePopularProductVisibleController.value = false
+            searchSubject.accept(query)
+        } else {
+            arePopularProductVisibleController.value = true
+            areSearchResultsVisibleController.value = false
+        }
     }
 
     fun onClearClick(){
-        products?.let{
-            productsController.value = it
-        }
+        arePopularProductVisibleController.value = true
+        areSearchResultsVisibleController.value = false
     }
 
     fun onProductClick(product: ProductShortModel){
@@ -69,15 +88,16 @@ class CatalogSearchViewModel(
             .distinctUntilChanged()
             .observeOn(AndroidSchedulers.mainThread())
             .flatMapSingle {
-                queryNotEmptyController.value = it.isNotEmpty()
                 catalogInteractor.getProductsAvailableForPurchase(it)
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    productsController.value = it
-
+                    if (it.isNotEmpty()){
+                        searchResultsController.value = it
+                    }
+                    areSearchResultsVisibleController.value = it.isNotEmpty()
                 },
                 onError = {
                     logException(this, it)

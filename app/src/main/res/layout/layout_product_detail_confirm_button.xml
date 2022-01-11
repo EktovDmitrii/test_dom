@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingVertical="12dp"
+    android:paddingHorizontal="20dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/productArrangeBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="10dp"
+        android:background="@drawable/button_filled_primary_background">
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/btnTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_marginStart="24dp"
+            android:fontFamily="@font/my_service_bold"
+            android:gravity="center"
+            app:translationTextKey="Оформить продукт"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="12dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnPrice"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/btnPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_marginEnd="24dp"
+            android:fontFamily="@font/my_service_bold"
+            android:gravity="center"
+            app:translationTextKey="1500₽"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

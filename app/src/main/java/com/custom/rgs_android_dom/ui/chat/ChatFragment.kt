@@ -75,6 +75,7 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
         binding.sendMessageImageView.setOnDebouncedClickListener {
             viewModel.onSendMessageClick(binding.messageEditText.text.toString().trim())
             binding.messageEditText.text?.clear()
+            hideSoftwareKeyboard()
         }
 
         binding.attachImageView.setOnDebouncedClickListener {

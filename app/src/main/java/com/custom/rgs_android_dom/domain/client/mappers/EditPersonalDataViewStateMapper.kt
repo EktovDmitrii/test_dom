@@ -47,6 +47,7 @@ object EditPersonalDataViewStateMapper {
             isGenderSaved = client.gender != null,
             phone = client.phone.formatPhoneByMask(phoneMask, "#"),
             isPhoneSaved = client.phone.isNotEmpty(),
+            docId = passport?.id ?: "",
             docNumber = passport?.number ?: "",
             isDocNumberSaved = passport?.number?.isNotEmpty() == true,
             docSerial = passport?.serial ?: "",
