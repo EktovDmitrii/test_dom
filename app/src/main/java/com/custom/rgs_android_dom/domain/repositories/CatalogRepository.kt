@@ -14,7 +14,7 @@ interface CatalogRepository {
 
     fun getProducts(): Single<List<ProductModel>>
 
-    fun getProductsAvailableForPurchase(tags: List<String>): Single<List<ProductShortModel>>
+    fun getProductsAvailableForPurchase(tags: List<String>?): Single<List<ProductShortModel>>
 
     fun getProduct(productId: String): Single<ProductModel>
 }

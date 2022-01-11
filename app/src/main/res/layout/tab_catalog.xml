@@ -33,6 +33,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:drawable="@color/catalog_tab_underline_color"/>
+        android:background="@color/catalog_tab_underline_color"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

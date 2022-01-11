@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
@@ -59,14 +58,8 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
             if (permissionsResult[Manifest.permission.CAMERA] == true
                 && permissionsResult[Manifest.permission.RECORD_AUDIO] == true
                 && permissionsResult[Manifest.permission.MODIFY_AUDIO_SETTINGS] == true){
-
                 viewModel.onVideoCallPermissionsGranted(true)
-
                 binding.waitingCameraPermissionProgressBar.gone()
-                binding.cameraOffImageView.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.button_call_camera_selector))
-                binding.cameraOffImageView.isActivated = false
-                binding.micOffImageView.isActivated = false
-
             } else {
                 viewModel.onVideoCallPermissionsGranted(false)
                 showRequestRecordVideoRationaleDialog()
@@ -77,9 +70,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionsResult ->
             if (permissionsResult[Manifest.permission.RECORD_AUDIO] == true
                 && permissionsResult[Manifest.permission.MODIFY_AUDIO_SETTINGS] == true){
-
                 viewModel.onAudioCallPermissionsGranted(true)
-                binding.micOffImageView.isActivated = false
             } else {
                 viewModel.onAudioCallPermissionsGranted(false)
                 showRequestRecordAudioRationaleDialog()
@@ -105,17 +96,17 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
             viewModel.onRejectClick()
         }
 
-        binding.micOffImageView.setOnDebouncedClickListener {
+        binding.micOnOffImageView.setOnDebouncedClickListener {
             if (hasPermissions(Manifest.permission.RECORD_AUDIO)){
-                viewModel.onEnableMicClick(binding.micOffImageView.isActivated)
+                viewModel.onEnableMicClick(!binding.micOnOffImageView.isActivated)
             } else {
                 showRequestRecordAudioRationaleDialog()
             }
         }
 
-        binding.cameraOffImageView.setOnDebouncedClickListener {
+        binding.cameraOnOffImageView.setOnDebouncedClickListener {
             if (hasPermissions(Manifest.permission.CAMERA)){
-                viewModel.onEnableCameraClick(binding.cameraOffImageView.isActivated)
+                viewModel.onEnableCameraClick(!binding.cameraOnOffImageView.isActivated)
             } else{
                 showRequestRecordVideoRationaleDialog()
             }
@@ -144,7 +135,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         subscribe(viewModel.callTypeObserver) {
             when (it) {
                 CallType.AUDIO_CALL -> {
-                    if (binding.switchCameraImageView.isEnabled) binding.switchCameraImageView.isEnabled = false
+                    binding.switchCameraImageView.isEnabled = false
                     requestMicPermissionsAction.launch(
                         arrayOf(
                             Manifest.permission.RECORD_AUDIO,
@@ -155,9 +146,6 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
                 CallType.VIDEO_CALL -> {
                     binding.waitingConsultantVideoFrameLayout.visible()
                     binding.waitingCameraPermissionProgressBar.visible()
-                    binding.cameraOffImageView.setImageDrawable(null)
-                    binding.cameraOffImageView.isActivated = true
-
                     requestMicAndCameraPermissionsAction.launch(
                         arrayOf(
                             Manifest.permission.CAMERA,
@@ -186,7 +174,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
                     val result = audioManager.requestAudioFocus(
                         null,
                         AudioManager.STREAM_VOICE_CALL,
-                        AudioManager.AUDIOFOCUS_GAIN,
+                        AudioManager.AUDIOFOCUS_GAIN
                     )
 
                     renderersInited = true
@@ -194,8 +182,10 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
                 }
             }
             binding.switchCameraImageView.isEnabled = roomInfo.cameraEnabled
-            binding.micOffImageView.isActivated = roomInfo.micEnabled == false
-            binding.cameraOffImageView.isActivated = roomInfo.cameraEnabled == false
+            if (roomInfo.cameraEnabled) binding.switchCameraImageView.isActivated = roomInfo.frontCameraEnabled
+
+            binding.cameraOnOffImageView.isActivated = roomInfo.cameraEnabled
+            binding.micOnOffImageView.isActivated = roomInfo.micEnabled
 
             binding.consultantSurfaceContainer.visibleIf(roomInfo.consultantVideoTrack != null)
 
@@ -321,7 +311,6 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
             isMicrophoneMute = previousMicrophoneMute
             mode = AudioManager.MODE_NORMAL
         }
-
     }
 
     override fun setStatusBarColor() {
@@ -352,17 +341,13 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
             REQUEST_CODE_MIC -> {
                 if (hasPermissions(Manifest.permission.RECORD_AUDIO)){
                     viewModel.onEnableMicClick(true)
-                    binding.micOffImageView.isActivated = false
+                    binding.micOnOffImageView.isActivated = false
                 }
             }
             REQUEST_CODE_MIC_AND_CAMERA -> {
                 if (hasPermissions(Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA)){
                     viewModel.onEnableMicClick(true)
                     viewModel.onEnableCameraClick(true)
-
-                    binding.cameraOffImageView.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.button_call_camera_selector))
-                    binding.cameraOffImageView.isActivated = false
-                    binding.micOffImageView.isActivated = false
                 }
             }
         }

@@ -60,6 +60,7 @@ class CatalogSubcategoryFragment : BaseBottomSheetFragment<CatalogSubcategoryVie
             GlideApp.with(requireContext())
                 .load(GlideUrlProvider.makeHeadersGlideUrl(it))
                 .transform(RoundedCorners(8.dp(requireContext())))
+                .error(R.drawable.rectangle_filled_secondary_100_radius_8dp)
                 .into(binding.logoImageView)
         }
 

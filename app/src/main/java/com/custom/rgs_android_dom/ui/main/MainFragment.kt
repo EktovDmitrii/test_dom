@@ -42,6 +42,10 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             }
         }
 
+        binding.searchTagsLayout.searchCatalogCardView.setOnDebouncedClickListener {
+            viewModel.onSearchClick()
+        }
+
         subscribe(viewModel.registrationObserver) {
             isAuthorized = it
             binding.profileLinearLayout.visibleIf(it)

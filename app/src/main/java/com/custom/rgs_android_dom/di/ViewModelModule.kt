@@ -16,6 +16,7 @@ import com.custom.rgs_android_dom.ui.catalog.MainCatalogViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.MyProductViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.single.more.MoreSingleProductViewModel
+import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchViewModel
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesViewModel
 import com.custom.rgs_android_dom.ui.catalog.subcategory.CatalogSubcategoryViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.ProductViewModel
@@ -23,7 +24,6 @@ import com.custom.rgs_android_dom.ui.catalog.product.ServiceViewModel
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogPrimarySubcategoryViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.availableservices.TabAvailableServicesViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.catalog.TabCatalogViewModel
-import com.custom.rgs_android_dom.ui.catalog.tabs.favoriteservices.TabFavoriteServicesViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.products.TabProductsViewModel
 import com.custom.rgs_android_dom.ui.chat.call.CallViewModel
 import com.custom.rgs_android_dom.ui.rationale.RequestRationaleViewModel
@@ -87,11 +87,11 @@ val viewModelModule = module {
     viewModel { TabCatalogViewModel(catalogInteractor = get()) }
     viewModel { TabProductsViewModel(catalogInteractor = get()) }
     viewModel { TabAvailableServicesViewModel() }
-    viewModel { TabFavoriteServicesViewModel() }
     viewModel { parameters -> CatalogSubcategoriesViewModel(category = parameters.get(), catalogInteractor = get()) }
     viewModel { parameters -> CatalogSubcategoryViewModel(subCategory = parameters.get(), catalogInteractor = get()) }
     viewModel { parameters -> SingleProductViewModel(product = parameters.get()) }
     viewModel { MoreSingleProductViewModel() }
+    viewModel { parameters -> CatalogSearchViewModel(tag = parameters[0], catalogInteractor = get()) }
     viewModel { parameters -> ProductViewModel(productDetail = parameters.get()) }
     viewModel { parameters -> CatalogPrimarySubcategoryViewModel(category = parameters.get()) }
     viewModel { MyProductViewModel() }
