@@ -70,8 +70,11 @@ class CatalogSearchFragment : BaseFragment<CatalogSearchViewModel, FragmentCatal
         }
 
         subscribe(viewModel.arePopularProductsVisibleObserver){
-            binding.popularProductsTextView.visibleIf(it)
-            binding.popularProductsRecyclerView.visibleIf(it)
+            // TODO Temporary solution
+            /*binding.popularProductsTextView.visibleIf(it)
+            binding.popularProductsRecyclerView.visibleIf(it)*/
+            binding.popularProductsTextView.gone()
+            binding.popularProductsRecyclerView.gone()
         }
 
         subscribe(viewModel.areSearchResultsVisibleObserver){
