@@ -5,7 +5,7 @@ import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentMyProductBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
-import com.custom.rgs_android_dom.ui.catalog.MyProductAdvantagesAdapter
+import com.custom.rgs_android_dom.ui.catalog.ProductAdvantagesAdapter
 import com.custom.rgs_android_dom.ui.catalog.MyProductInclusionAdapter
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.utils.recycler_view.GridSpaceItemDecoration
@@ -26,8 +26,8 @@ class MyProductFragment :
     private val inclusionAdapter: MyProductInclusionAdapter
         get() = binding.includes.includesRecycler.adapter as MyProductInclusionAdapter
 
-    private val advantagesAdapter: MyProductAdvantagesAdapter
-        get() = binding.advantagesLayout.advantagesRecycler.adapter as MyProductAdvantagesAdapter
+    private val advantagesAdapter: ProductAdvantagesAdapter
+        get() = binding.advantagesLayout.advantagesRecycler.adapter as ProductAdvantagesAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,12 +36,13 @@ class MyProductFragment :
         }
 
         binding.includes.includesRecycler.apply {
-            adapter = MyProductInclusionAdapter {
-                viewModel.onServiceClick()
-            }
+            adapter = MyProductInclusionAdapter(
+                onServiceClick = { viewModel.onServiceClick() },
+                onOrderClick = { viewModel.onOrderClick() }
+            )
             val spacingInPixels = resources.getDimensionPixelSize(R.dimen.material_margin_normal)
             addItemDecoration(GridSpaceItemDecoration(spacingInPixels))
         }
-        binding.advantagesLayout.advantagesRecycler.adapter = MyProductAdvantagesAdapter()
+        binding.advantagesLayout.advantagesRecycler.adapter = ProductAdvantagesAdapter()
     }
 }

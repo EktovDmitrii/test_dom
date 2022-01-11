@@ -3,9 +3,9 @@ package com.custom.rgs_android_dom.ui.catalog
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.custom.rgs_android_dom.databinding.ItemMyProductAdvantageWithNumberBinding
+import com.custom.rgs_android_dom.databinding.ItemProductAdvantageWithNumberBinding
 
-class MyProductAdvantagesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ProductAdvantagesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var advantages: List<String> = listOf(
         "310 мастеров готовы к работе",
@@ -16,7 +16,7 @@ class MyProductAdvantagesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding =
-            ItemMyProductAdvantageWithNumberBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemProductAdvantageWithNumberBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ProductAdvantageViewHolder(binding)
     }
 
@@ -32,7 +32,7 @@ class MyProductAdvantagesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     inner class ProductAdvantageViewHolder(
-        private val binding: ItemMyProductAdvantageWithNumberBinding
+        private val binding: ItemProductAdvantageWithNumberBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(text: String) {

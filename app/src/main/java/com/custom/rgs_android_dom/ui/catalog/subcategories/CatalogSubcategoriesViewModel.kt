@@ -37,26 +37,13 @@ class CatalogSubcategoriesViewModel(
     }
 
     fun onProductClick(product: ProductShortModel){
-        catalogInteractor.getProduct(product.id)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onSuccess = { product->
-
-                    if (product.defaultProduct){
-                        // Open service (single product) details screen
-                        val singleProductFragment = SingleProductFragment.newInstance(product)
-                        ScreenManager.showBottomScreen(singleProductFragment)
-                    } else {
-                        // Open product details screen
-                        ScreenManager.showBottomScreen(ProductFragment.newInstance(product))
-                    }
-
-                },
-                onError = {
-                    logException(this, it)
-                }
-            ).addTo(dataCompositeDisposable)
+        if (product.defaultProduct){
+            // Open service (single product) details screen
+            ScreenManager.showBottomScreen(SingleProductFragment.newInstance(product.id))
+        } else {
+            // Open product details screen
+            ScreenManager.showBottomScreen(ProductFragment.newInstance(product.id))
+        }
     }
 
 }

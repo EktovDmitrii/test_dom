@@ -7,7 +7,8 @@ import com.custom.rgs_android_dom.databinding.ItemMyProductIncludesInfoBinding
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 
 class MyProductInclusionAdapter(
-    private val onServiceClick: () -> Unit = {}
+    private val onServiceClick: () -> Unit = {},
+    private val onOrderClick: () -> Unit = {}
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var inclusions: List<String> = listOf(
@@ -20,7 +21,7 @@ class MyProductInclusionAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding =
             ItemMyProductIncludesInfoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ProductFeatureViewHolder(binding, onServiceClick)
+        return ProductFeatureViewHolder(binding, onServiceClick, onOrderClick)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -36,13 +37,17 @@ class MyProductInclusionAdapter(
 
     inner class ProductFeatureViewHolder(
         private val binding: ItemMyProductIncludesInfoBinding,
-        private val onServiceClick: () -> Unit = {}
+        private val onServiceClick: () -> Unit = {},
+        private val onOrderClick: () -> Unit = {},
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(text: String) {
             binding.titleTextView.text = text
             binding.numberTextView.text = (absoluteAdapterPosition + 1).toString()
 
             binding.orderTextView.setOnDebouncedClickListener {
+                onOrderClick()
+            }
+            binding.layout.setOnDebouncedClickListener {
                 onServiceClick()
             }
         }

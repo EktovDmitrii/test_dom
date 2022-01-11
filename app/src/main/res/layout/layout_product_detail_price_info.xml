@@ -24,6 +24,6 @@
         android:fontFamily="@font/my_service_bold"
         android:textColor="@color/primary500"
         android:textSize="24sp"
-        app:translationTextKey="1500₽ / 6 месяцев" />
+        app:translationTextKey="1500 ₽" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
