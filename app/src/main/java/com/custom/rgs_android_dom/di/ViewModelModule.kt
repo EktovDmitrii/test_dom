@@ -24,7 +24,6 @@ import com.custom.rgs_android_dom.ui.catalog.product.ServiceViewModel
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogPrimarySubcategoryViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.availableservices.TabAvailableServicesViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.catalog.TabCatalogViewModel
-import com.custom.rgs_android_dom.ui.catalog.tabs.favoriteservices.TabFavoriteServicesViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.products.TabProductsViewModel
 import com.custom.rgs_android_dom.ui.chat.call.CallViewModel
 import com.custom.rgs_android_dom.ui.rationale.RequestRationaleViewModel
@@ -88,7 +87,6 @@ val viewModelModule = module {
     viewModel { TabCatalogViewModel(catalogInteractor = get()) }
     viewModel { TabProductsViewModel(catalogInteractor = get()) }
     viewModel { TabAvailableServicesViewModel() }
-    viewModel { TabFavoriteServicesViewModel() }
     viewModel { parameters -> CatalogSubcategoriesViewModel(category = parameters.get(), catalogInteractor = get()) }
     viewModel { parameters -> CatalogSubcategoryViewModel(subCategory = parameters.get(), catalogInteractor = get()) }
     viewModel { parameters -> SingleProductViewModel(product = parameters.get()) }

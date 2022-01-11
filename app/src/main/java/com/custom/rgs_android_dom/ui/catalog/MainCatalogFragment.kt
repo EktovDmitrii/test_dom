@@ -18,8 +18,7 @@ class MainCatalogFragment :
     private val tabs = listOf(
         Pair(R.drawable.ic_tab_catalog, "Каталог"),
         Pair(R.drawable.ic_tab_products, "Мои продукты"),
-        Pair(R.drawable.ic_tab_available_services, "Доступные услуги"),
-        Pair(R.drawable.ic_tab_favorite_services, "Избранные услуги")
+        Pair(R.drawable.ic_tab_available_services, "Доступные услуги")
     )
 
     private val pagerAdapter: MainCatalogPagerAdapter
