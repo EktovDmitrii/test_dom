@@ -37,6 +37,5 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.advantagesLayout.advantagesRecycler.adapter = ProductAdvantagesAdapter()
-        binding.advantagesLayout.advantagesTitle.text = "Преимущества услуги"
     }
 }

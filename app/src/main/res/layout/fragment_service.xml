@@ -79,7 +79,7 @@
 
             <include
                 android:id="@+id/about"
-                layout="@layout/layout_catalog_about_info"
+                layout="@layout/layout_product_about_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -92,7 +92,7 @@
 
             <include
                 android:id="@+id/advantagesLayout"
-                layout="@layout/layout_catalog_advantages"
+                layout="@layout/layout_service_advantages"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp" />

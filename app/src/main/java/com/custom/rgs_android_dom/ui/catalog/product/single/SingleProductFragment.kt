@@ -44,7 +44,6 @@ class SingleProductFragment : BaseBottomSheetFragment<SingleProductViewModel, Fr
                 .transform(RoundedCorners(24.dp(requireContext())))
                 .into(binding.header.headerImg)
 
-            binding.about.aboutTitle.text = "Подробнее об услуге"
             binding.header.headerTitle.text = product.title
             binding.header.headerDescription.text = product.description
             binding.price.priceValue.text = "${product.price?.amount} ₽"
@@ -52,7 +51,6 @@ class SingleProductFragment : BaseBottomSheetFragment<SingleProductViewModel, Fr
             binding.validity.validityValue.text = "${product.duration?.units} ${product.duration?.unitType?.description}"
         }
         binding.advantagesLayout.advantagesRecycler.adapter = ProductAdvantagesAdapter()
-        binding.advantagesLayout.advantagesTitle.text = "Преимущества услуги"
 
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
