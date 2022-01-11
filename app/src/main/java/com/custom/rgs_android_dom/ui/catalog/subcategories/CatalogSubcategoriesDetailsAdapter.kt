@@ -52,6 +52,7 @@ class CatalogSubcategoriesDetailsAdapter(
             GlideApp.with(binding.root.context)
                 .load(GlideUrlProvider.makeHeadersGlideUrl(model.icon))
                 .transform(RoundedCorners(12.dp(binding.root.context)))
+                .error(R.drawable.rectangle_filled_secondary_100_radius_12dp)
                 .into(binding.logoImageView)
 
             if (model.products.isNotEmpty()){

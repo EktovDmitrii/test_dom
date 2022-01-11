@@ -6,22 +6,21 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentProductBinding
-import com.custom.rgs_android_dom.domain.catalog.models.ProductModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.utils.recycler_view.GridSpaceItemDecoration
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-class ProductFragment :
-    BaseBottomSheetFragment<ProductViewModel, FragmentProductBinding>() {
+class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProductBinding>() {
+
     companion object {
 
-        private const val ARG_PRODUCT_DETAIL = "ARG_PRODUCT_DETAIL"
+        private const val ARG_PRODUCT_ID = "ARG_PRODUCT_ID"
 
-        fun newInstance(product: ProductModel): ProductFragment {
+        fun newInstance(productId: String): ProductFragment {
             return ProductFragment().args {
-                putSerializable(ARG_PRODUCT_DETAIL, product)
+                putString(ARG_PRODUCT_ID, productId)
             }
         }
     }
@@ -31,7 +30,7 @@ class ProductFragment :
     override fun getThemeResource(): Int = R.style.BottomSheetNoDim
 
     override fun getParameters(): ParametersDefinition = {
-        parametersOf(requireArguments().getSerializable(ARG_PRODUCT_DETAIL) as ProductModel)
+        parametersOf(requireArguments().getString(ARG_PRODUCT_ID))
     }
 
     private val inclusionAdapter: ProductInclusionAdapter

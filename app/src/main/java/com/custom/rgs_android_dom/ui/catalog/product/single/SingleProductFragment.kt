@@ -19,11 +19,11 @@ import org.koin.core.parameter.parametersOf
 class SingleProductFragment : BaseBottomSheetFragment<SingleProductViewModel, FragmentSingleProductBinding>() {
 
     companion object {
-        private const val ARG_PRODUCT = "ARG_PRODUCT"
+        private const val ARG_PRODUCT_ID = "ARG_PRODUCT_ID"
 
-        fun newInstance(product: ProductModel): SingleProductFragment {
+        fun newInstance(productId: String): SingleProductFragment {
             return SingleProductFragment().args {
-                putSerializable(ARG_PRODUCT, product)
+                putString(ARG_PRODUCT_ID, productId)
             }
         }
     }
@@ -31,7 +31,7 @@ class SingleProductFragment : BaseBottomSheetFragment<SingleProductViewModel, Fr
     override val TAG: String = "SINGLE_PRODUCT_FRAGMENT"
 
     override fun getParameters(): ParametersDefinition = {
-        parametersOf(requireArguments().getSerializable(ARG_PRODUCT) as ProductModel)
+        parametersOf(requireArguments().getString(ARG_PRODUCT_ID))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
