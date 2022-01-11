@@ -53,17 +53,16 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         resources.getDimensionPixelSize(R.dimen.material_margin_normal)
     }
 
-    private val requestMicAndCameraPermissionsAction =
+    private val requestCameraPermissionAction =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionsResult ->
-            if (permissionsResult[Manifest.permission.CAMERA] == true
-                && permissionsResult[Manifest.permission.RECORD_AUDIO] == true
-                && permissionsResult[Manifest.permission.MODIFY_AUDIO_SETTINGS] == true){
+            if (permissionsResult[Manifest.permission.CAMERA] == true){
                 viewModel.onVideoCallPermissionsGranted(true)
-                binding.waitingCameraPermissionProgressBar.gone()
             } else {
                 viewModel.onVideoCallPermissionsGranted(false)
                 showRequestRecordVideoRationaleDialog()
             }
+            binding.waitingCameraPermissionFrameLayout.gone()
+            binding.cameraOnOffImageView.visible()
         }
 
     private val requestMicPermissionsAction =
@@ -145,14 +144,9 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
                 }
                 CallType.VIDEO_CALL -> {
                     binding.waitingConsultantVideoFrameLayout.visible()
-                    binding.waitingCameraPermissionProgressBar.visible()
-                    requestMicAndCameraPermissionsAction.launch(
-                        arrayOf(
-                            Manifest.permission.CAMERA,
-                            Manifest.permission.RECORD_AUDIO,
-                            Manifest.permission.MODIFY_AUDIO_SETTINGS
-                        )
-                    )
+                    binding.waitingCameraPermissionFrameLayout.visible()
+                    binding.cameraOnOffImageView.gone()
+                    requestCameraPermissionAction.launch(arrayOf(Manifest.permission.CAMERA))
                 }
             }
         }
