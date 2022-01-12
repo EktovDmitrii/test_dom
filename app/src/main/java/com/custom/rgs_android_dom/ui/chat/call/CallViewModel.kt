@@ -114,7 +114,6 @@ class CallViewModel(private val callType: CallType,
     }
 
     fun onVideoCallPermissionsGranted(granted: Boolean){
-        micEnabled = granted
         cameraEnabled = granted
         requestLiveKitToken()
     }

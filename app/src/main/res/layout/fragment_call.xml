@@ -190,25 +190,27 @@
             android:enabled="false"
             app:srcCompat="@drawable/camera_back_front_selector"/>
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp">
-
-            <com.custom.rgs_android_dom.views.MSDImageView
+        <com.custom.rgs_android_dom.views.MSDImageView
                 android:id="@+id/cameraOnOffImageView"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 app:isActivated="false"
+                android:layout_marginStart="20dp"
                 app:srcCompat="@drawable/camera_on_off_selector"/>
 
+        <FrameLayout
+            android:id="@+id/waitingCameraPermissionFrameLayout"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/rectangle_filled_white_bottom_radius_28dp"
+            android:visibility="gone">
+
             <ProgressBar
-                android:id="@+id/waitingCameraPermissionProgressBar"
                 style="@style/ProgressBarStyle"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_gravity="center"
-                android:visibility="gone"/>
+                android:layout_gravity="center" />
 
         </FrameLayout>
 

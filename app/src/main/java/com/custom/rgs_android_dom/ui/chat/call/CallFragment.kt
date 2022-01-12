@@ -55,25 +55,46 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
 
     private val requestMicAndCameraPermissionsAction =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionsResult ->
-            if (permissionsResult[Manifest.permission.CAMERA] == true
-                && permissionsResult[Manifest.permission.RECORD_AUDIO] == true
-                && permissionsResult[Manifest.permission.MODIFY_AUDIO_SETTINGS] == true){
-                viewModel.onVideoCallPermissionsGranted(true)
-                binding.waitingCameraPermissionProgressBar.gone()
-            } else {
+
+            if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)){
                 viewModel.onVideoCallPermissionsGranted(false)
                 showRequestRecordVideoRationaleDialog()
+            } else if (permissionsResult[Manifest.permission.CAMERA] == true){
+                viewModel.onVideoCallPermissionsGranted(true)
             }
+            binding.waitingCameraPermissionFrameLayout.gone()
+            binding.cameraOnOffImageView.visible()
+
+            if (shouldShowRequestPermissionRationale(Manifest.permission.RECORD_AUDIO)){
+                viewModel.onAudioCallPermissionsGranted(false)
+                showRequestRecordAudioRationaleDialog()
+            } else if (permissionsResult[Manifest.permission.RECORD_AUDIO] == true
+                && permissionsResult[Manifest.permission.MODIFY_AUDIO_SETTINGS] == true){
+                viewModel.onAudioCallPermissionsGranted(true)
+            }
+        }
+
+    private val requestCameraPermissionAction =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { permissionResult ->
+
+            if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)){
+                viewModel.onVideoCallPermissionsGranted(false)
+                showRequestRecordVideoRationaleDialog()
+            } else if (permissionResult == true){
+                viewModel.onVideoCallPermissionsGranted(true)
+            }
+            binding.waitingCameraPermissionFrameLayout.gone()
+            binding.cameraOnOffImageView.visible()
         }
 
     private val requestMicPermissionsAction =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionsResult ->
-            if (permissionsResult[Manifest.permission.RECORD_AUDIO] == true
-                && permissionsResult[Manifest.permission.MODIFY_AUDIO_SETTINGS] == true){
-                viewModel.onAudioCallPermissionsGranted(true)
-            } else {
+            if (shouldShowRequestPermissionRationale(Manifest.permission.RECORD_AUDIO)){
                 viewModel.onAudioCallPermissionsGranted(false)
                 showRequestRecordAudioRationaleDialog()
+            } else if (permissionsResult[Manifest.permission.RECORD_AUDIO] == true
+                && permissionsResult[Manifest.permission.MODIFY_AUDIO_SETTINGS] == true){
+                viewModel.onAudioCallPermissionsGranted(true)
             }
         }
 
@@ -105,10 +126,14 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         }
 
         binding.cameraOnOffImageView.setOnDebouncedClickListener {
-            if (hasPermissions(Manifest.permission.CAMERA)){
-                viewModel.onEnableCameraClick(!binding.cameraOnOffImageView.isActivated)
-            } else{
+            if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)){
                 showRequestRecordVideoRationaleDialog()
+            } else {
+                if (hasPermissions(Manifest.permission.CAMERA)){
+                    viewModel.onEnableCameraClick(!binding.cameraOnOffImageView.isActivated)
+                } else {
+                    requestCameraPermissionAction.launch(Manifest.permission.CAMERA)
+                }
             }
         }
 
@@ -145,7 +170,8 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
                 }
                 CallType.VIDEO_CALL -> {
                     binding.waitingConsultantVideoFrameLayout.visible()
-                    binding.waitingCameraPermissionProgressBar.visible()
+                    binding.waitingCameraPermissionFrameLayout.visible()
+                    binding.cameraOnOffImageView.gone()
                     requestMicAndCameraPermissionsAction.launch(
                         arrayOf(
                             Manifest.permission.CAMERA,
@@ -215,7 +241,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
                 binding.mySurfaceContainer.visible()
                 roomInfo.myVideoTrack?.addRenderer(binding.mySurfaceRenderer)
             } else {
-                binding.mySurfaceContainer.gone()
+                expandConsultantVideoScreen()
             }
 
         }
@@ -266,6 +292,22 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         }
 
         binding.mySurfaceContainer.setOnDebouncedClickListener { }
+    }
+
+    private fun expandConsultantVideoScreen(){
+
+        binding.mySurfaceContainer.gone()
+        binding.switchSurfacesMyImageView.gone()
+        binding.consultantSurfaceContainer.visible()
+        binding.switchSurfacesConsultantImageView.gone()
+
+        with(binding.consultantSurfaceContainer.layoutParams as FrameLayout.LayoutParams){
+            width = MATCH_PARENT
+            height = MATCH_PARENT
+            setMargins(0,0,0,0)
+            gravity = Gravity.CENTER
+            binding.consultantSurfaceContainer.layoutParams = this
+        }
     }
 
     private fun setMyVideoFullScreen(roomInfoModel: RoomInfoModel) {
