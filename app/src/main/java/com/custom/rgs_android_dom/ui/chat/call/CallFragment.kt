@@ -74,6 +74,19 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
             }
         }
 
+    private val requestCameraPermissionAction =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { permissionResult ->
+
+            if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)){
+                viewModel.onVideoCallPermissionsGranted(false)
+                showRequestRecordVideoRationaleDialog()
+            } else if (permissionResult == true){
+                viewModel.onVideoCallPermissionsGranted(true)
+            }
+            binding.waitingCameraPermissionFrameLayout.gone()
+            binding.cameraOnOffImageView.visible()
+        }
+
     private val requestMicPermissionsAction =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionsResult ->
             if (shouldShowRequestPermissionRationale(Manifest.permission.RECORD_AUDIO)){
@@ -113,10 +126,14 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         }
 
         binding.cameraOnOffImageView.setOnDebouncedClickListener {
-            if (hasPermissions(Manifest.permission.CAMERA)){
-                viewModel.onEnableCameraClick(!binding.cameraOnOffImageView.isActivated)
-            } else{
+            if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)){
                 showRequestRecordVideoRationaleDialog()
+            } else {
+                if (hasPermissions(Manifest.permission.CAMERA)){
+                    viewModel.onEnableCameraClick(!binding.cameraOnOffImageView.isActivated)
+                } else {
+                    requestCameraPermissionAction.launch(Manifest.permission.CAMERA)
+                }
             }
         }
 
