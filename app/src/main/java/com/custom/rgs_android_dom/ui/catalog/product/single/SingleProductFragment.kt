@@ -5,14 +5,11 @@ import android.view.View
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
-import com.custom.rgs_android_dom.databinding.FragmentClientBinding
 import com.custom.rgs_android_dom.databinding.FragmentSingleProductBinding
 import com.custom.rgs_android_dom.domain.catalog.models.ProductModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
-import com.custom.rgs_android_dom.ui.catalog.product.single.more.MoreSingleProductFragment
-import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.catalog.ProductAdvantagesAdapter
 import com.custom.rgs_android_dom.utils.*
-import com.custom.rgs_android_dom.utils.recycler_view.HorizontalItemDecoration
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -34,6 +31,9 @@ class SingleProductFragment : BaseBottomSheetFragment<SingleProductViewModel, Fr
         parametersOf(requireArguments().getString(ARG_PRODUCT_ID))
     }
 
+    private val advantagesAdapter: ProductAdvantagesAdapter
+        get() = binding.advantagesLayout.advantagesRecycler.adapter as ProductAdvantagesAdapter
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -42,28 +42,18 @@ class SingleProductFragment : BaseBottomSheetFragment<SingleProductViewModel, Fr
             GlideApp.with(requireContext())
                 .load(GlideUrlProvider.makeHeadersGlideUrl(product.iconLink))
                 .transform(RoundedCorners(24.dp(requireContext())))
-                .into(binding.headerLayout.logoImageView)
+                .into(binding.header.headerImg)
 
-            binding.headerLayout.titleTextView.text = product.title
-            binding.headerLayout.descriptionTextView.text = product.description
-            binding.headerLayout.priceTextView.text = "${product.price?.amount} ₽/шт"
+            binding.header.headerTitle.text = product.title
+            binding.header.headerDescription.text = product.description
+            binding.price.priceValue.text = "${product.price?.amount} ₽"
 
-            binding.purchaseTextView.setSecondaryText("${product.price?.amount} ₽")
-
-            binding.headerLayout.usageTermsTextView.text = "${product.duration?.units} ${product.duration?.unitType?.description}"
+            binding.validity.validityValue.text = "${product.duration?.units} ${product.duration?.unitType?.description}"
         }
+        binding.advantagesLayout.advantagesRecycler.adapter = ProductAdvantagesAdapter()
 
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
-        }
-
-        binding.moreImageView.setOnDebouncedClickListener{
-            viewModel.onMoreClick()
-        }
-
-        subscribe(viewModel.showMoreDialogObserver){
-            val moreSingleProductFragment = MoreSingleProductFragment()
-            moreSingleProductFragment.show(childFragmentManager, moreSingleProductFragment.TAG)
         }
 
     }

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.ProductDurationModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductModel
+import com.custom.rgs_android_dom.domain.catalog.models.ProductPriceModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductUnitType
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.utils.logException
@@ -63,7 +64,7 @@ class ProductViewModel(
             internalDescription = null,
             name = "",
             objectRequired = null,
-            price = null,
+            price = ProductPriceModel(amount = 500, vatType = null),
             status = null,
             tags = emptyList(),
             title = "Поиск утечек тепла, сквозняков.",
