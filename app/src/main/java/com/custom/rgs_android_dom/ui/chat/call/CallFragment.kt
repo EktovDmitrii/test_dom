@@ -215,7 +215,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
                 binding.mySurfaceContainer.visible()
                 roomInfo.myVideoTrack?.addRenderer(binding.mySurfaceRenderer)
             } else {
-                binding.mySurfaceContainer.gone()
+                expandConsultantVideoScreen()
             }
 
         }
@@ -266,6 +266,22 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         }
 
         binding.mySurfaceContainer.setOnDebouncedClickListener { }
+    }
+
+    private fun expandConsultantVideoScreen(){
+
+        binding.mySurfaceContainer.gone()
+        binding.switchSurfacesMyImageView.gone()
+        binding.consultantSurfaceContainer.visible()
+        binding.switchSurfacesConsultantImageView.gone()
+
+        with(binding.consultantSurfaceContainer.layoutParams as FrameLayout.LayoutParams){
+            width = MATCH_PARENT
+            height = MATCH_PARENT
+            setMargins(0,0,0,0)
+            gravity = Gravity.CENTER
+            binding.consultantSurfaceContainer.layoutParams = this
+        }
     }
 
     private fun setMyVideoFullScreen(roomInfoModel: RoomInfoModel) {
