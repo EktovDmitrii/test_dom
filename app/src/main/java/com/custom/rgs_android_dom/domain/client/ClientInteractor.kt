@@ -313,7 +313,8 @@ class ClientInteractor(
             }
         }
 
-        if (!editPersonalDataViewState.isDocSerialSaved && editPersonalDataViewState.docSerial.isNotEmpty()){
+        if (editPersonalDataViewState.hasProducts && !editPersonalDataViewState.isDocSerialSaved && editPersonalDataViewState.docSerial.isNotEmpty()
+            || !editPersonalDataViewState.hasProducts && editPersonalDataViewState.docSerial.isNotEmpty()){
             if (editPersonalDataViewState.docSerial.trim().length != DOC_SERIAL_LENGTH){
                 errorsValidate.add(ValidateFieldModel(ClientField.DOC_SERIAL, "Проверьте, правильно ли введена серия паспорта"))
             }
@@ -322,7 +323,8 @@ class ClientInteractor(
             }
         }
 
-        if (!editPersonalDataViewState.isDocNumberSaved && editPersonalDataViewState.docNumber.isNotEmpty()){
+        if (editPersonalDataViewState.hasProducts && !editPersonalDataViewState.isDocNumberSaved && editPersonalDataViewState.docNumber.isNotEmpty()
+            || !editPersonalDataViewState.hasProducts && editPersonalDataViewState.docNumber.isNotEmpty()){
             if (editPersonalDataViewState.docNumber.trim().length != DOC_NUMBER_LENGTH){
                 errorsValidate.add(ValidateFieldModel(ClientField.DOC_NUMBER, "Проверьте, правильно ли введён номер паспорта"))
             }
@@ -345,7 +347,7 @@ class ClientInteractor(
 
         val updatePassportCompletable = if (!editPersonalDataViewState.isDocNumberSaved && editPersonalDataViewState.docNumber.isNotEmpty()){
             postPassport(editPersonalDataViewState.docSerial, editPersonalDataViewState.docNumber)
-        } else if ( editPersonalDataViewState.isDocNumberSaved && editPersonalDataViewState.docNumber.isNotEmpty()){
+        } else if (editPersonalDataViewState.isDocNumberSaved && editPersonalDataViewState.docNumber.isNotEmpty()){
             updatePassport(editPersonalDataViewState.docId, editPersonalDataViewState.docSerial, editPersonalDataViewState.docNumber)
         } else {
             Completable.complete()
