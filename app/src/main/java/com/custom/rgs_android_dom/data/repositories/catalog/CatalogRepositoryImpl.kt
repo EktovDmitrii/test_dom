@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.data.repositories.catalog
 
+import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.CatalogMapper
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
@@ -8,6 +9,8 @@ import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
 import com.custom.rgs_android_dom.domain.catalog.models.ServiceModel
 import com.custom.rgs_android_dom.domain.repositories.CatalogRepository
 import io.reactivex.Single
+import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 class CatalogRepositoryImpl(private val api: MSDApi): CatalogRepository {
 
@@ -34,7 +37,7 @@ class CatalogRepositoryImpl(private val api: MSDApi): CatalogRepository {
     }
 
     override fun getProductsAvailableForPurchase(tags: List<String>?): Single<List<ProductShortModel>> {
-        return api.getProductsAvailableForPurchase(tags?.joinToString(", ")).map { response->
+        return api.getProductsAvailableForPurchase(tags?.joinToString(",")).map { response->
             return@map if (response.products != null) {
                 response.products.map {
                     CatalogMapper.responseToProductShort(it)

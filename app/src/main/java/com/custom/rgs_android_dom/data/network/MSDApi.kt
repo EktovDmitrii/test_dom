@@ -158,7 +158,11 @@ interface MSDApi {
 
     @GET("clients/me/purchase/products/showcase")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getProductsAvailableForPurchase(@Query("tags") tags: String?): Single<ProductsForPurchaseResponse>
+    fun getProductsAvailableForPurchase(@Query("tags", encoded = true) tags: String?): Single<ProductsForPurchaseResponse>
+
+    /*@GET("clients/me/purchase/products/showcase")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getProductsAvailableForPurchase(@Query("tags") tags: String?): Single<ProductsForPurchaseResponse>*/
 
     @GET("products/{productId}")
     @ErrorType(MSDNetworkErrorResponse::class)
