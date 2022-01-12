@@ -24,6 +24,16 @@
         android:fontFamily="@font/my_service_bold"
         android:textColor="@color/primary500"
         android:textSize="24sp"
-        app:translationTextKey="1500 ₽" />
+        app:translationTextKey="от 1500 ₽" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/boughtDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/material_margin_super_small"
+        android:fontFamily="@font/suisse_regular"
+        android:textColor="@color/secondary500"
+        android:textSize="13sp"
+        app:translationTextKey="Точная стоимость сформируется после ответа на несколько уточняющих вопросов." />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

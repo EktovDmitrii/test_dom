@@ -94,10 +94,10 @@ val viewModelModule = module {
     viewModel { TabAvailableServicesViewModel() }
     viewModel { parameters -> CatalogSubcategoriesViewModel(category = parameters.get(), catalogInteractor = get()) }
     viewModel { parameters -> CatalogSubcategoryViewModel(subCategory = parameters.get(), catalogInteractor = get()) }
-    viewModel { parameters -> SingleProductViewModel(product = parameters.get()) }
+    viewModel { parameters -> SingleProductViewModel(productId = parameters.get(), catalogInteractor = get()) }
     viewModel { MoreSingleProductViewModel() }
     viewModel { parameters -> CatalogSearchViewModel(tag = parameters[0], catalogInteractor = get()) }
-    viewModel { parameters -> ProductViewModel(productDetail = parameters.get()) }
+    viewModel { parameters -> ProductViewModel(productId = parameters.get(), catalogInteractor = get()) }
     viewModel { parameters -> CatalogPrimarySubcategoryViewModel(category = parameters.get()) }
     viewModel { MyProductViewModel() }
     viewModel { parameters -> ServiceViewModel(product = parameters.get()) }

@@ -4,34 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/rectangle_filled_secondary_100_top_radius_24dp"
     android:orientation="vertical"
-    android:paddingStart="20dp"
-    android:paddingBottom="24dp"
-    android:paddingEnd="20dp">
+    android:paddingHorizontal="13dp"
+    android:paddingTop="24dp"
+    android:paddingBottom="24dp">
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
-        android:id="@+id/includesTitle"
+        android:id="@+id/advantagesTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/suisse_regular"
         android:textAllCaps="true"
         android:textColor="@color/secondary600"
         android:textSize="10sp"
-        app:translationTextKey="Что входит?" />
+        app:translationTextKey="Преимущества услуги" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/includesRecycler"
+    <com.custom.rgs_android_dom.views.MSDRecyclerView
+        android:id="@+id/advantagesRecycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:overScrollMode="never"
-        android:paddingHorizontal="5dp"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2"
-        tools:itemCount="4"
-        android:layout_marginBottom="4dp"
-        tools:listitem="@layout/item_my_product_includes_info" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:verticalDecorationGap="16dp"
+        tools:itemCount="2"
+        tools:listitem="@layout/item_product_advantage_with_number" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

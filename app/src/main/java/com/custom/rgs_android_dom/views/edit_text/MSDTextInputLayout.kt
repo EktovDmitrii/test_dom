@@ -53,6 +53,8 @@ class MSDTextInputLayout @JvmOverloads constructor(
 
         unfocusOnDone = attrs.getBoolean(R.styleable.MSDTextInputLayout_unfocusOnDone, false)
 
+        binding.containerTextInputLayout.isEnabled = attrs.getBoolean(R.styleable.MSDTextInputLayout_enabled, true)
+
         val imeOptions = attrs.getInt(R.styleable.MSDTextInputLayout_android_imeOptions, EditorInfo.IME_ACTION_NEXT)
         binding.valueEditText.imeOptions = imeOptions
 
