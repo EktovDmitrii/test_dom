@@ -34,9 +34,9 @@ object PropertyMapper {
             },
             clientId = response.clientId,
             comment = response.comment ?: "",
-            documents = response.documents?.map {
+            documents = (response.documents?.map {
                 PropertyDocument(link = it.link ?: "", name = it.name ?: "")
-            } ?: listOf(),
+            } ?: listOf()).toMutableList(),
             id = response.id,
             isOwn = isOwn,
             isRent = isRent,

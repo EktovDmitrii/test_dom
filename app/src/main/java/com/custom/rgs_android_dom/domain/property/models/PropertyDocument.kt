@@ -4,5 +4,5 @@ import java.io.Serializable
 
 data class PropertyDocument(
     val link: String,
-    val name: String
+    var name: String
 ) : Serializable

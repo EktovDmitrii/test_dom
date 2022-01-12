@@ -323,12 +323,12 @@ class PropertyInteractor(
         var totalSizeTextFiles = 0.0
 
         files.forEach { file ->
-            if (!validateExtension(file)) {
+            if (!isExtensionValid(file)) {
                 documentValidationException = UnsupportedFileType(file.extension)
                 return false
             }
 
-            if (!validateSize(file)) {
+            if (!isSizeValid(file)) {
                 documentValidationException = FileSizeExceeded
                 return false
             }
@@ -351,14 +351,14 @@ class PropertyInteractor(
         return true
     }
 
-    private fun validateExtension(file: File): Boolean {
+    private fun isExtensionValid(file: File): Boolean {
         if (!supportedFileExtensions.contains(file.extension)) {
             return false
         }
         return true
     }
 
-    private fun validateSize(file: File): Boolean {
+    private fun isSizeValid(file: File): Boolean {
         if (file.sizeInMb > ONE_FILE_MAX_SIZE) {
             return false
         }
@@ -380,12 +380,6 @@ class PropertyInteractor(
         propertyDetailsViewStateSubject.onNext(propertyDetailsViewState)
     }
 
-    /**
-     *
-     * Code for PropertyInfo Screen
-     *
-     */
-
     fun updatePropertyItem(
         objectId: String,
         propertyItemModel: PropertyItemModel,
@@ -395,7 +389,7 @@ class PropertyInteractor(
         return postDocumentsSingle(documentsToPost)
             .flatMap { propertyDocuments ->
                 val newDocumentsList = propertyItemModel.documents + propertyDocuments
-                propertyItemModel.documents = newDocumentsList
+                propertyItemModel.documents = newDocumentsList.toMutableList()
                 propertyRepository.updateProperty(
                     objectId,
                     propertyItemModel
@@ -403,7 +397,12 @@ class PropertyInteractor(
             }
     }
 
-    fun deleteDocument(
+    fun updateDocument(
+        objectId: String,
+        propertyItemModel: PropertyItemModel
+    ) = propertyRepository.updateProperty(
+        objectId,
+        propertyItemModel
+    )
 
-    ){}
 }

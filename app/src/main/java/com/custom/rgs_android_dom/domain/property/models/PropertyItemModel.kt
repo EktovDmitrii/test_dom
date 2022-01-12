@@ -6,7 +6,7 @@ data class PropertyItemModel(
     val address: PropertyAddressModel?,
     val clientId: String,
     val comment: String,
-    var documents: List<PropertyDocument>,
+    var documents: MutableList<PropertyDocument>,
     val id: String,
     val isOwn: Boolean?,
     val isRent: Boolean?,

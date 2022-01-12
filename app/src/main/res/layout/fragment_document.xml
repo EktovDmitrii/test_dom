@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.property.document.DocumentFragment">
+    tools:context=".ui.property.document.DocumentListFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineHorizontal"
@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="emptyListImageView,emptyListTextView,addDocTextView" />
+        app:constraint_referenced_ids="emptyListImageView,emptyListTextView,addDocumentTextView" />
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/toolbarAppBar"
@@ -66,9 +66,9 @@
         android:id="@+id/emptyListImageView"
         android:layout_width="160dp"
         android:layout_height="160dp"
+        android:src="@drawable/ic_stub_empty_doc_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/ic_stub_empty_doc_list"
         app:layout_constraintTop_toBottomOf="@id/guidelineHorizontal" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
@@ -86,7 +86,7 @@
         app:translationTextKey="У вас пока нет привязанных документов" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
-        android:id="@+id/addDocTextView"
+        android:id="@+id/addDocumentTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -106,13 +106,14 @@
         android:id="@+id/listDocumentsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:spanCount="2"
-        android:paddingTop="24dp"
         android:overScrollMode="never"
         android:paddingHorizontal="20dp"
+        android:paddingTop="24dp"
+        android:useDefaultMargins="true"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbarAppBar"
+        app:spanCount="2"
         tools:listitem="@layout/item_property_detail_document" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

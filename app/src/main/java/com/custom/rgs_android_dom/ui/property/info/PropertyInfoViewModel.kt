@@ -7,7 +7,7 @@ import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
-import com.custom.rgs_android_dom.ui.property.document.DocumentFragment
+import com.custom.rgs_android_dom.ui.property.document.DocumentListFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -85,11 +85,10 @@ class PropertyInfoViewModel(
 
     fun onShowAllDocumentsClick() {
         ScreenManager.showScreen(
-            DocumentFragment.newInstance(
+            DocumentListFragment.newInstance(
                 objectId,
                 propertyItemObserver.value!!
             )
         )
     }
-
 }

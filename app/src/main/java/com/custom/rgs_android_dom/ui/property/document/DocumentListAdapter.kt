@@ -9,7 +9,8 @@ import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 
 class DocumentListAdapter(
-    private val onDeleteClick: (Int) -> Unit
+    private val onDocumentClick: (PropertyDocument) -> Unit,
+    private val onDeleteClick: (PropertyDocument) -> Unit
 ) : RecyclerView.Adapter<DocumentListAdapter.DocumentsViewHolder>() {
 
     private var documents = mutableListOf<PropertyDocument>()
@@ -26,7 +27,7 @@ class DocumentListAdapter(
             parent,
             false
         )
-        return DocumentsViewHolder(binding, onDeleteClick)
+        return DocumentsViewHolder(binding, onDocumentClick, onDeleteClick)
     }
 
     override fun getItemCount(): Int {
@@ -40,29 +41,26 @@ class DocumentListAdapter(
         notifyDataSetChanged()
     }
 
-    fun showDeleteButton(
-        isDeleteButtonVisible: Boolean
-    ){
+    fun showDeleteButton(isDeleteButtonVisible: Boolean) {
         this.isDeleteButtonVisible = isDeleteButtonVisible
         notifyDataSetChanged()
     }
 
     inner class DocumentsViewHolder(
         private val binding: ItemPropertyDetailDocumentBinding,
-        private val onDeleteClick: (Int) -> Unit
+        private val onDocumentClick: (PropertyDocument) -> Unit,
+        private val onDeleteClick: (PropertyDocument) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(propertyDoc: PropertyDocument) {
-            binding.documentNameTextView.text = propertyDoc.name
+        fun bind(propertyDocument: PropertyDocument) {
+            binding.documentNameTextView.text = propertyDocument.name
             binding.root.setOnDebouncedClickListener {
+                onDocumentClick(propertyDocument)
             }
             binding.deleteDocFrameLayout.isVisible = isDeleteButtonVisible
 
             binding.deleteDocFrameLayout.setOnDebouncedClickListener {
-                documents.forEachIndexed { index, propertyDocument ->
-                    if (propertyDocument==propertyDoc)
-                        onDeleteClick(index)
-                }
+             onDeleteClick(propertyDocument)
             }
         }
 

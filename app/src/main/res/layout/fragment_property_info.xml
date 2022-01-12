@@ -80,7 +80,7 @@
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/secondary100"
+                android:background="@color/secondary50"
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -170,6 +170,7 @@
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
                         android:layout_marginHorizontal="20dp"
                         android:orientation="horizontal">
 
@@ -198,6 +199,7 @@
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="204dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginHorizontal="20dp"
                         android:orientation="horizontal">
 

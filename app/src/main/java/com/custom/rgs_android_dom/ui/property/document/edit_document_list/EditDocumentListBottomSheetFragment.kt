@@ -1,59 +1,59 @@
 package com.custom.rgs_android_dom.ui.property.document.edit_document_list
 
-import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.custom.rgs_android_dom.databinding.FragmentEditDocumentListBottomSheetBinding
-import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
-import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsFragment
-import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
-import org.koin.core.parameter.ParametersDefinition
-import org.koin.core.parameter.parametersOf
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import java.io.Serializable
 
-class EditDocumentListBottomSheetFragment :
-    BaseBottomSheetModalFragment<EditDocumentListViewModel, FragmentEditDocumentListBottomSheetBinding>() {
+class EditDocumentListBottomSheetFragment : BottomSheetDialogFragment() {
 
-    private var listener: EditDocumentListener? = null
+    private var editDocumentListListener: EditDocumentListListener? = null
+
+    private val binding: FragmentEditDocumentListBottomSheetBinding by viewBinding(createMethod = CreateMethod.INFLATE)
 
     companion object {
-        private const val ARG_LISTENER = "ARG_LISTENER"
+        const val TAG: String = "EDIT_DOCUMENT_LIST_FRAGMENT"
 
-        fun newInstance(editDocumentListener: EditDocumentListener): EditDocumentListBottomSheetFragment {
-            return EditDocumentListBottomSheetFragment().args {
-                putSerializable(ARG_LISTENER, editDocumentListener)
-            }
+        fun newInstance(): EditDocumentListBottomSheetFragment =
+            EditDocumentListBottomSheetFragment()
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        if (parentFragment is EditDocumentListListener) {
+            editDocumentListListener = parentFragment as EditDocumentListListener
         }
-    }
 
-    override fun getParameters(): ParametersDefinition = {
-        parametersOf(
-            requireArguments().getSerializable(ARG_LISTENER)
-        )
+        return binding.root
     }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        listener = if (requireArguments().containsKey(ARG_LISTENER)) {
-            requireArguments().getSerializable(ARG_LISTENER) as EditDocumentListener
-        } else {
-            null
-        }
-    }
-
-    override val TAG: String = "EDIT_DOC_LIST_FRAGMENT"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.addDocumentTextView.setOnDebouncedClickListener {
-            val propertyUploadFilesFragment = PropertyUploadDocumentsFragment()
-            propertyUploadFilesFragment.show(childFragmentManager, propertyUploadFilesFragment.TAG)
+            editDocumentListListener?.addDocumentToList()
+            dismissAllowingStateLoss()
         }
 
         binding.editDocumentListTextView.setOnDebouncedClickListener {
-            listener?.changeDeleteButtonVisibility(true)
-            dialog?.dismiss()
+            editDocumentListListener?.changeDeleteButtonVisibility(true)
+            dismissAllowingStateLoss()
         }
+    }
+
+    interface EditDocumentListListener : Serializable {
+        fun changeDeleteButtonVisibility(
+            isDeleteButtonVisible: Boolean
+        )
+        fun addDocumentToList()
     }
 }

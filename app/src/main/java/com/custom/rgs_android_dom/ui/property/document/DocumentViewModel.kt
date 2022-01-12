@@ -4,8 +4,11 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
+import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.property.document.detail_document.DetailDocumentFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -21,10 +24,10 @@ class DocumentViewModel(
     private val propertyItemController = MutableLiveData<PropertyItemModel>()
     val propertyDocumentsObserver: LiveData<PropertyItemModel> = propertyItemController
 
-    var isDeleteButtonVisible = false
+    private val downloadFileController = MutableLiveData<PropertyDocument>()
+    val downloadFileObserver: LiveData<PropertyDocument> = downloadFileController
 
     init {
-
         propertyItemController.postValue(propertyItemModel)
 
         propertyInteractor.propertyInfoStateSubject
@@ -74,7 +77,56 @@ class DocumentViewModel(
         }
     }
 
-    fun deleteDocument(index: Int) {
-        //TODO Совет
+    fun onFileClick(propertyDocument: PropertyDocument) {
+        val documentType = propertyDocument.link.substringAfterLast(".", "missing")
+        var documentIndex = 0
+        propertyItemController.value?.documents?.forEachIndexed { index, propertyDoc ->
+            if (propertyDoc == propertyDocument)
+                documentIndex = index
+        }
+        when (documentType) {
+            "jpg" -> showDetailDocumentScreen(documentIndex)
+            "jpeg" -> showDetailDocumentScreen(documentIndex)
+            "png" -> showDetailDocumentScreen(documentIndex)
+            "bmp" -> showDetailDocumentScreen(documentIndex)
+            else -> {
+                downloadFileController.value = propertyDocument
+            }
+        }
+    }
+
+    private fun showDetailDocumentScreen(documentIndex: Int) {
+        ScreenManager.showScreen(
+            DetailDocumentFragment.newInstance(
+                objectId,
+                documentIndex,
+                propertyItemController.value
+            )
+        )
+    }
+
+    fun deleteDocument(propertyDocument: PropertyDocument) {
+        val documentsList = propertyItemController.value?.documents
+        documentsList?.remove(propertyDocument)
+        val newPropertyItemModel = documentsList?.let {
+            propertyItemController.value?.copy(
+                documents = it
+            )
+        }
+
+        if (newPropertyItemModel != null) {
+            propertyInteractor.updateDocument(objectId, newPropertyItemModel)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                    onSuccess = {
+                        propertyInteractor.propertyInfoStateSubject.onNext(it)
+                    },
+                    onError = {
+                        logException(this, it)
+                        networkErrorController.value = "Не удалось загрузить объект"
+                    }
+                ).addTo(dataCompositeDisposable)
+        }
     }
 }
