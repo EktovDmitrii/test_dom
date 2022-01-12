@@ -19,9 +19,6 @@ class SingleProductViewModel(
     private val productController = MutableLiveData<ProductModel>()
     val productObserver: LiveData<ProductModel> = productController
 
-    private val showMoreDialogController = MutableLiveData<Unit>()
-    val showMoreDialogObserver: LiveData<Unit> = showMoreDialogController
-
     init {
         catalogInteractor.getProduct(productId)
             .subscribeOn(Schedulers.io())
@@ -38,10 +35,6 @@ class SingleProductViewModel(
 
     fun onBackClick(){
         closeController.value = Unit
-    }
-
-    fun onMoreClick(){
-        showMoreDialogController.value = Unit
     }
 
 }
