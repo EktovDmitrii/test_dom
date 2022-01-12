@@ -53,26 +53,35 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         resources.getDimensionPixelSize(R.dimen.material_margin_normal)
     }
 
-    private val requestCameraPermissionAction =
+    private val requestMicAndCameraPermissionsAction =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionsResult ->
-            if (permissionsResult[Manifest.permission.CAMERA] == true){
-                viewModel.onVideoCallPermissionsGranted(true)
-            } else {
+
+            if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)){
                 viewModel.onVideoCallPermissionsGranted(false)
                 showRequestRecordVideoRationaleDialog()
+            } else if (permissionsResult[Manifest.permission.CAMERA] == true){
+                viewModel.onVideoCallPermissionsGranted(true)
             }
             binding.waitingCameraPermissionFrameLayout.gone()
             binding.cameraOnOffImageView.visible()
+
+            if (shouldShowRequestPermissionRationale(Manifest.permission.RECORD_AUDIO)){
+                viewModel.onAudioCallPermissionsGranted(false)
+                showRequestRecordAudioRationaleDialog()
+            } else if (permissionsResult[Manifest.permission.RECORD_AUDIO] == true
+                && permissionsResult[Manifest.permission.MODIFY_AUDIO_SETTINGS] == true){
+                viewModel.onAudioCallPermissionsGranted(true)
+            }
         }
 
     private val requestMicPermissionsAction =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionsResult ->
-            if (permissionsResult[Manifest.permission.RECORD_AUDIO] == true
-                && permissionsResult[Manifest.permission.MODIFY_AUDIO_SETTINGS] == true){
-                viewModel.onAudioCallPermissionsGranted(true)
-            } else {
+            if (shouldShowRequestPermissionRationale(Manifest.permission.RECORD_AUDIO)){
                 viewModel.onAudioCallPermissionsGranted(false)
                 showRequestRecordAudioRationaleDialog()
+            } else if (permissionsResult[Manifest.permission.RECORD_AUDIO] == true
+                && permissionsResult[Manifest.permission.MODIFY_AUDIO_SETTINGS] == true){
+                viewModel.onAudioCallPermissionsGranted(true)
             }
         }
 
@@ -146,7 +155,13 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
                     binding.waitingConsultantVideoFrameLayout.visible()
                     binding.waitingCameraPermissionFrameLayout.visible()
                     binding.cameraOnOffImageView.gone()
-                    requestCameraPermissionAction.launch(arrayOf(Manifest.permission.CAMERA))
+                    requestMicAndCameraPermissionsAction.launch(
+                        arrayOf(
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.RECORD_AUDIO,
+                            Manifest.permission.MODIFY_AUDIO_SETTINGS
+                        )
+                    )
                 }
             }
         }
