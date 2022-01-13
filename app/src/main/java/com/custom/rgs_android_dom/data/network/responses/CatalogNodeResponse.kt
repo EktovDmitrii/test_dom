@@ -12,6 +12,15 @@ data class CatalogNodeResponse(
     @SerializedName("iconLink")
     val iconLink: String?,
 
+    @SerializedName("logoLarge")
+    val logoLarge: String?,
+
+    @SerializedName("logoMiddle")
+    val logoMiddle: String?,
+
+    @SerializedName("logoSmall")
+    val logoSmall: String?,
+
     @SerializedName("name")
     val name: String?,
 

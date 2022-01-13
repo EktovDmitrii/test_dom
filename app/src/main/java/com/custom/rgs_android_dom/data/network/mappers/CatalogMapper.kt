@@ -23,7 +23,7 @@ object CatalogMapper {
                     id = subNode.id,
                     title = subNode.title ?: "",
                     parentCategoryId = categoryNode.id,
-                    icon = "${BuildConfig.BASE_URL}/api/store/${subNode.iconLink}",
+                    icon = "${BuildConfig.BASE_URL}/api/store/${subNode.logoMiddle}",
                     productTags = subNode.productTags ?: listOf(),
                     products = listOf()
                 )
