@@ -20,7 +20,11 @@
         <com.custom.rgs_android_dom.views.MSDImageView
             android:id="@+id/iconImageView"
             android:layout_width="160dp"
-            android:layout_height="160dp" />
+            android:layout_height="160dp"
+            android:scaleType="fitXY"
+            android:outlineProvider="background"
+            android:background="@drawable/background_secondary100_rounded_16dp"
+            />
 
         <com.custom.rgs_android_dom.views.MSDImageView
             android:layout_width="32dp"
@@ -33,7 +37,7 @@
     </FrameLayout>
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
-        android:id="@+id/quantityTextView"
+        android:id="@+id/priceTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
@@ -43,7 +47,7 @@
         android:textSize="10sp"
         app:layout_constraintStart_toStartOf="@id/iconImageLayout"
         app:layout_constraintTop_toBottomOf="@id/iconImageLayout"
-        tools:text="12 услуг" />
+        tools:text="1 500 ₽" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/productNameTextView"
@@ -56,7 +60,7 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@id/iconImageLayout"
         app:layout_constraintStart_toStartOf="@id/iconImageLayout"
-        app:layout_constraintTop_toBottomOf="@id/quantityTextView"
+        app:layout_constraintTop_toBottomOf="@id/priceTextView"
         tools:text="Сезонное мытье окон" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

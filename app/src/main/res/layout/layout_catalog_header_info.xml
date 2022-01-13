@@ -15,7 +15,9 @@
             android:id="@+id/headerImg"
             android:layout_width="128dp"
             android:layout_height="128dp"
-            android:background="@drawable/rectangle_filled_lime_radius_16dp"
+            android:scaleType="fitXY"
+            android:outlineProvider="background"
+            android:background="@drawable/background_secondary100_rounded_16dp"
             />
 
         <com.custom.rgs_android_dom.views.MSDImageView

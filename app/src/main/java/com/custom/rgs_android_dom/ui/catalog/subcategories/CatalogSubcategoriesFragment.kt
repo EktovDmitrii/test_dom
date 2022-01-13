@@ -6,9 +6,13 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentCatalogSubcategoriesBinding
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
+import com.custom.rgs_android_dom.ui.catalog.tabs.catalog.CatalogSubcategoriesWithBigImageAdapter
 import com.custom.rgs_android_dom.utils.args
+import com.custom.rgs_android_dom.utils.recycler_view.GridThreeSpanItemDecoration
+import com.custom.rgs_android_dom.utils.recycler_view.GridTwoSpanItemDecoration
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
+import com.custom.rgs_android_dom.utils.visibleIf
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -27,8 +31,11 @@ class CatalogSubcategoriesFragment : BaseBottomSheetFragment<CatalogSubcategorie
 
     override val TAG: String = "CATALOG_SUBCATEGORIES_FRAGMENT"
 
-    private val adapter: CatalogSubcategoriesDetailsAdapter
-        get() = binding.subcategoriesDetailsRecyclerView.adapter as CatalogSubcategoriesDetailsAdapter
+    private val productsAdapter: CatalogSubcategoryProductsAdapter
+        get() = binding.productsRecyclerView.adapter as CatalogSubcategoryProductsAdapter
+
+    private val subcategoriesAdapter: CatalogGridSubcategoriesWithBigImageAdapter
+        get() = binding.subcategoriesWithBigImageRecyclerView.adapter as CatalogGridSubcategoriesWithBigImageAdapter
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(requireArguments().getSerializable(ARG_CATALOG_CATEGORY) as CatalogCategoryModel)
@@ -37,11 +44,14 @@ class CatalogSubcategoriesFragment : BaseBottomSheetFragment<CatalogSubcategorie
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = CatalogSubcategoriesDetailsAdapter(){
+        binding.productsRecyclerView.adapter = CatalogSubcategoryProductsAdapter{
             viewModel.onProductClick(it)
         }
-
-        binding.subcategoriesDetailsRecyclerView.adapter = adapter
+        binding.subcategoriesWithBigImageRecyclerView.adapter = CatalogGridSubcategoriesWithBigImageAdapter{
+            viewModel.onSubCategoryClick(it)
+        }
+        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.dp_12)
+        binding.subcategoriesWithBigImageRecyclerView.addItemDecoration(GridThreeSpanItemDecoration(spacingInPixels))
 
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
@@ -52,7 +62,11 @@ class CatalogSubcategoriesFragment : BaseBottomSheetFragment<CatalogSubcategorie
         }
 
         subscribe(viewModel.subcategoriesObserver){
-            adapter.setItems(it)
+            subcategoriesAdapter.setItems(it)
+        }
+        subscribe(viewModel.productsObserver){
+            binding.othersTextView.visibleIf(it.isNotEmpty())
+            productsAdapter.setItems(it)
         }
 
     }

@@ -8,7 +8,7 @@ import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.catalog.ProductAdvantagesAdapter
 import com.custom.rgs_android_dom.ui.catalog.MyProductInclusionAdapter
 import com.custom.rgs_android_dom.utils.*
-import com.custom.rgs_android_dom.utils.recycler_view.GridSpaceItemDecoration
+import com.custom.rgs_android_dom.utils.recycler_view.GridTwoSpanItemDecoration
 
 class MyProductFragment :
     BaseBottomSheetFragment<MyProductViewModel, FragmentMyProductBinding>() {
@@ -41,7 +41,7 @@ class MyProductFragment :
                 onOrderClick = { viewModel.onOrderClick() }
             )
             val spacingInPixels = resources.getDimensionPixelSize(R.dimen.material_margin_normal)
-            addItemDecoration(GridSpaceItemDecoration(spacingInPixels))
+            addItemDecoration(GridTwoSpanItemDecoration(spacingInPixels))
         }
         binding.advantagesLayout.advantagesRecycler.adapter = ProductAdvantagesAdapter()
     }

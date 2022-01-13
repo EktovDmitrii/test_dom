@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        tools:background="@drawable/rectangle_filled_lime_radius_16dp"/>
+        android:background="@drawable/rectangle_filled_lime_radius_16dp"/>
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/titleTextView"

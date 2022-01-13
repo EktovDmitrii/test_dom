@@ -5,8 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogSubCategoryModel
+import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogPrimarySubcategoriesFragment
+import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
+import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogPrimaryProductsFragment
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesFragment
 import com.custom.rgs_android_dom.ui.catalog.subcategory.CatalogSubcategoryFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -54,9 +56,12 @@ class TabCatalogViewModel(private val catalogInteractor: CatalogInteractor) : Ba
         ScreenManager.showBottomScreen(catalogSubcategoriesFragment)
     }
 
-    fun onAllPrimaryCategoriesClick(category: CatalogCategoryModel){
-        val primSubcategoriesFragment = CatalogPrimarySubcategoriesFragment.newInstance(category)
+    fun onAllPrimaryProductsClick(category: CatalogCategoryModel){
+        val primSubcategoriesFragment = CatalogPrimaryProductsFragment.newInstance(category)
         ScreenManager.showBottomScreen(primSubcategoriesFragment)
     }
 
+    fun onProductClick(productModel: ProductShortModel) {
+        ScreenManager.showBottomScreen(ProductFragment.newInstance(productModel.id))
+    }
 }

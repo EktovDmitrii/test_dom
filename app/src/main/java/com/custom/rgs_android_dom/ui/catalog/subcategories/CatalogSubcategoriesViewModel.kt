@@ -10,11 +10,7 @@ import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
-import com.custom.rgs_android_dom.utils.logException
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.addTo
-import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
+import com.custom.rgs_android_dom.ui.catalog.subcategory.CatalogSubcategoryFragment
 
 class CatalogSubcategoriesViewModel(
     private val category: CatalogCategoryModel,
@@ -27,9 +23,13 @@ class CatalogSubcategoriesViewModel(
     private val subcategoriesController = MutableLiveData<List<CatalogSubCategoryModel>>()
     val subcategoriesObserver: LiveData<List<CatalogSubCategoryModel>> = subcategoriesController
 
+    private val productsController = MutableLiveData<List<ProductShortModel>>()
+    val productsObserver: LiveData<List<ProductShortModel>> = productsController
+
     init {
         titleController.value = category.title
         subcategoriesController.value = category.subCategories
+        productsController.value = category.products
     }
 
     fun onBackClick() {
@@ -43,6 +43,13 @@ class CatalogSubcategoriesViewModel(
         } else {
             // Open product details screen
             ScreenManager.showBottomScreen(ProductFragment.newInstance(product.id))
+        }
+    }
+
+    fun onSubCategoryClick(subCategory: CatalogSubCategoryModel) {
+        if (subCategory.products.isNotEmpty()){
+            val catalogSubcategoryFragment = CatalogSubcategoryFragment.newInstance(subCategory)
+            ScreenManager.showBottomScreen(catalogSubcategoryFragment)
         }
     }
 
