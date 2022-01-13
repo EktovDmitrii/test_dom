@@ -75,7 +75,7 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
         ScreenManager.onBottomSheetChanged = {fragment->
             bottomSheetMainFragment = fragment
             measureAndShowFragment()
-            updateNavigationScope()
+            updateNavigationView()
         }
 
         ScreenManager.showBottomScreen(MainFragment())
@@ -133,7 +133,7 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
     override fun onVisibleToUser() {
         super.onVisibleToUser()
         measureAndShowFragment()
-        updateNavigationScope()
+        updateNavigationView()
     }
 
     private fun measureAndShowFragment() {
@@ -264,7 +264,7 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
 
     }
 
-    private fun updateNavigationScope(){
+    private fun updateNavigationView(){
         bottomSheetMainFragment?.let { fragment->
             binding.bottomNavigationView.visibleIf(fragment.isNavigationViewVisible())
             fragment.getNavigationScope()?.let { scope->
