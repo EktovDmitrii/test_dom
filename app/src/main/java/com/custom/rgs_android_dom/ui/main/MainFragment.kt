@@ -8,6 +8,7 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentMainBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.utils.*
+import com.custom.rgs_android_dom.views.NavigationScope
 
 class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>() {
 
@@ -69,5 +70,9 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
 
     override fun getThemeResource(): Int {
         return R.style.BottomSheetNoDim
+    }
+
+    override fun getNavigationScope(): NavigationScope? {
+        return NavigationScope.NAV_MAIN
     }
 }
