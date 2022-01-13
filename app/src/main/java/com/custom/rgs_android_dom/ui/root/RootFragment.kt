@@ -6,22 +6,14 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.*
 import android.widget.OverScroller
-import androidx.appcompat.widget.LinearLayoutCompat
-import androidx.core.view.children
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentRootBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
-import com.custom.rgs_android_dom.ui.catalog.product.MyProductFragment
-import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
-import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
-import com.custom.rgs_android_dom.ui.catalog.product.ServiceFragment
-import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.ui.main.MainFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
-import com.custom.rgs_android_dom.ui.property.info.PropertyInfoFragment
 import com.custom.rgs_android_dom.utils.*
+import com.custom.rgs_android_dom.views.NavigationScope
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.*
 
@@ -38,8 +30,6 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
     private var bottomSheetBehavior: BottomSheetBehavior<*>? = null
     private var scroller: OverScroller? = null
     private var peekHeight: Int? = null
-
-    private var selectedMenu: LinearLayoutCompat? = null
 
     private val bottomSheetCallback = object : BottomSheetCallback() {
         override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -80,99 +70,50 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
 
         binding.contentConstraintLayout.background = transitionBackground
 
-        selectedMenu = binding.bottomNavigationLayout.navMainLinearLayout
-        activateMenu(true)
-
         ScreenManager.initBottomSheet(R.id.bottomContainer)
 
-        ScreenManager.onBottomSheetChanged = {
-            bottomSheetMainFragment = it
+        ScreenManager.onBottomSheetChanged = {fragment->
+            bottomSheetMainFragment = fragment
             measureAndShowFragment()
-
-            // TODO Replace this later, when we will have normal navigation
-            binding.bottomNavigationLayout.navigationMenu.visible()
-            when (it::class.java.canonicalName){
-                MainFragment::class.java.canonicalName -> {
-                    binding.bottomNavigationLayout.navigationMenu.visible()
-
-                    activateMenu(false)
-                    selectedMenu = binding.bottomNavigationLayout.navMainLinearLayout
-                    activateMenu(true)
-                }
-                ClientFragment::class.java.canonicalName -> {
-                    binding.bottomNavigationLayout.navigationMenu.visible()
-
-                    activateMenu(false)
-                    selectedMenu = binding.bottomNavigationLayout.navProfileLinearLayout
-                    activateMenu(true)
-                }
-                MainCatalogFragment::class.java.canonicalName -> {
-                    binding.bottomNavigationLayout.navigationMenu.visible()
-                    activateMenu(false)
-                    selectedMenu = binding.bottomNavigationLayout.navCatalogueLinearLayout
-                    activateMenu(true)
-                }
-                PropertyInfoFragment::class.java.canonicalName, ProductFragment::class.java.canonicalName,
-                MyProductFragment::class.java.canonicalName, ServiceFragment::class.java.canonicalName -> {
-                    binding.bottomNavigationLayout.navigationMenu.gone()
-                }
-                SingleProductFragment::class.java.canonicalName -> {
-                    binding.bottomNavigationLayout.navigationMenu.gone()
-                }
-            }
+            updateNavigationView()
         }
-        //ScreenManager.showBottomScreen(ClientFragment())
+
         ScreenManager.showBottomScreen(MainFragment())
 
         binding.toolbarChatIcon.setOnDebouncedClickListener {
             viewModel.onChatClick()
         }
 
+        binding.bottomNavigationView.selectNavigationScope(NavigationScope.NAV_MAIN)
 
-        binding.bottomNavigationLayout.navMainLinearLayout.setOnDebouncedClickListener {
-            activateMenu(false)
-            selectedMenu = binding.bottomNavigationLayout.navMainLinearLayout
-            activateMenu(true)
-
-            viewModel.onMainClick()
+        binding.bottomNavigationView.setNavigationChangedListener { navigationItem->
+            when (navigationItem){
+                NavigationScope.NAV_MAIN -> {
+                    viewModel.onMainClick()
+                }
+                NavigationScope.NAV_CATALOG -> {
+                    viewModel.onCatalogueClick()
+                }
+                NavigationScope.NAV_CHAT -> {
+                    viewModel.onChatClick()
+                }
+                NavigationScope.NAV_LOGIN -> {
+                    viewModel.onLoginClick()
+                }
+                NavigationScope.NAV_PROFILE -> {
+                    viewModel.onProfileClick()
+                }
+            }
         }
 
-        binding.bottomNavigationLayout.navCatalogueLinearLayout.setOnDebouncedClickListener {
-            activateMenu(false)
-            selectedMenu = binding.bottomNavigationLayout.navCatalogueLinearLayout
-            activateMenu(true)
-
-            viewModel.onCatalogueClick()
+        subscribe(viewModel.navScopeVisibilityObserver){
+            binding.bottomNavigationView.setNavigationScopeVisible(it.first, it.second)
         }
 
-        binding.bottomNavigationLayout.navChatLinearLayout.setOnDebouncedClickListener {
-            /*activateMenu(false)
-            selectedMenu = binding.bottomNavigationLayout.navChatLinearLayout
-            activateMenu(true)*/
-
-            viewModel.onChatClick()
+        subscribe(viewModel.navScopeEnabledObserver){
+            binding.bottomNavigationView.setNavigationScopeEnabled(it.first, it.second)
         }
 
-        binding.bottomNavigationLayout.navLoginLinearLayout.setOnDebouncedClickListener {
-            activateMenu(false)
-            selectedMenu = binding.bottomNavigationLayout.navLoginLinearLayout
-            activateMenu(true)
-
-            viewModel.onLoginClick()
-        }
-
-        binding.bottomNavigationLayout.navProfileLinearLayout.setOnDebouncedClickListener {
-            activateMenu(false)
-            selectedMenu = binding.bottomNavigationLayout.navProfileLinearLayout
-            activateMenu(true)
-
-            viewModel.onProfileClick()
-        }
-
-        subscribe(viewModel.isProfileLayoutVisibleObserver){
-            binding.bottomNavigationLayout.navProfileLinearLayout.visibleIf(it)
-            binding.bottomNavigationLayout.navLoginLinearLayout.goneIf(it)
-        }
     }
 
     override fun onStart() {
@@ -192,6 +133,7 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
     override fun onVisibleToUser() {
         super.onVisibleToUser()
         measureAndShowFragment()
+        updateNavigationView()
     }
 
     private fun measureAndShowFragment() {
@@ -322,9 +264,12 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
 
     }
 
-    private fun activateMenu(isActivated: Boolean){
-        selectedMenu?.children?.forEach {
-            it.isActivated = isActivated
+    private fun updateNavigationView(){
+        bottomSheetMainFragment?.let { fragment->
+            binding.bottomNavigationView.visibleIf(fragment.isNavigationViewVisible())
+            fragment.getNavigationScope()?.let { scope->
+                binding.bottomNavigationView.selectNavigationScope(scope)
+            }
         }
     }
 

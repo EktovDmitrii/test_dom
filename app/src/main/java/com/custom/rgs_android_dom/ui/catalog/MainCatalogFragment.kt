@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentMainCatalogBinding
 import com.custom.rgs_android_dom.databinding.TabCatalogBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
+import com.custom.rgs_android_dom.views.NavigationScope
 import com.google.android.material.tabs.TabLayoutMediator
 
 
@@ -50,6 +51,10 @@ class MainCatalogFragment :
 
     override fun getThemeResource(): Int {
         return R.style.BottomSheetNoDim
+    }
+
+    override fun getNavigationScope(): NavigationScope? {
+        return NavigationScope.NAV_CATALOG
     }
 
 }

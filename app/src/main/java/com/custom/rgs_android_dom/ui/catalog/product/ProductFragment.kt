@@ -69,4 +69,8 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
             }
         }
     }
+
+    override fun isNavigationViewVisible(): Boolean {
+        return false
+    }
 }
