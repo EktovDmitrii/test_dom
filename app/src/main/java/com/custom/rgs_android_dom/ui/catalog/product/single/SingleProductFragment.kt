@@ -61,4 +61,8 @@ class SingleProductFragment : BaseBottomSheetFragment<SingleProductViewModel, Fr
     override fun getThemeResource(): Int {
         return R.style.BottomSheetNoDim
     }
+
+    override fun isNavigationViewVisible(): Boolean {
+        return false
+    }
 }

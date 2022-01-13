@@ -98,4 +98,8 @@ class PropertyInfoFragment :
         return R.style.BottomSheetNoDim
     }
 
+    override fun isNavigationViewVisible(): Boolean {
+        return false
+    }
+
 }

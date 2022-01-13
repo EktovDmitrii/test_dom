@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.*
 import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -12,6 +11,8 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.hideSoftwareKeyboard
 import com.custom.rgs_android_dom.utils.subscribe
+import com.custom.rgs_android_dom.views.MSDBottomNavigationView
+import com.custom.rgs_android_dom.views.NavigationScope
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -41,6 +42,7 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB : ViewBinding>: Bo
     override fun getTheme(): Int {
         return getThemeResource()
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -80,6 +82,21 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB : ViewBinding>: Bo
         ScreenManager.closeCurrentBottomFragment()
     }
 
+    fun openSubScreen(fragment: BaseFragment<*, *>) {
+        viewModel.close()
+        ScreenManager.showScreen(fragment)
+    }
+
+    open fun isNavigationViewVisible(): Boolean {
+        return true
+    }
+
+    open fun getNavigationScope(): NavigationScope? {
+        return null
+    }
+
+    abstract fun getThemeResource(): Int
+
     @Suppress("UNCHECKED_CAST")
     protected fun getViewModelKClass(): KClass<VM> {
         val actualClass =
@@ -105,12 +122,5 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB : ViewBinding>: Bo
             }
         }
     }
-
-    fun openSubScreen(fragment: BaseFragment<*, *>) {
-        viewModel.close()
-        ScreenManager.showScreen(fragment)
-    }
-
-    abstract fun getThemeResource(): Int
 
 }

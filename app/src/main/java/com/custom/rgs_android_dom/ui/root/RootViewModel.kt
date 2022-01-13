@@ -16,6 +16,8 @@ import com.custom.rgs_android_dom.ui.registration.agreement.RegistrationAgreemen
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.ui.main.MainFragment
 import com.custom.rgs_android_dom.utils.logException
+import com.custom.rgs_android_dom.views.MSDBottomNavigationView
+import com.custom.rgs_android_dom.views.NavigationScope
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -27,8 +29,11 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                     private val clientInteractor: ClientInteractor
 ) : BaseViewModel() {
 
-    private val isProfileLayoutVisibleController = MutableLiveData<Boolean>()
-    val isProfileLayoutVisibleObserver: LiveData<Boolean> = isProfileLayoutVisibleController
+    private val navScopeVisibilityController = MutableLiveData<Pair<NavigationScope, Boolean>>()
+    val navScopeVisibilityObserver: LiveData<Pair<NavigationScope, Boolean>> = navScopeVisibilityController
+
+    private val navScopeEnabledController = MutableLiveData<Pair<NavigationScope, Boolean>>()
+    val navScopeEnabledObserver: LiveData<Pair<NavigationScope, Boolean>> = navScopeEnabledController
 
     private val authContentProviderManager: AuthContentProviderManager by inject()
     private val logoutCompositeDisposable = CompositeDisposable()
@@ -37,14 +42,19 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
         checkSignedAgreement()
         subscribeAuthStateChanges()
 
-        isProfileLayoutVisibleController.value = registrationInteractor.isAuthorized()
+        navScopeVisibilityController.value = Pair(NavigationScope.NAV_PROFILE, registrationInteractor.isAuthorized())
+        navScopeVisibilityController.value = Pair(NavigationScope.NAV_LOGIN, !registrationInteractor.isAuthorized())
+
+        navScopeEnabledController.value = Pair(NavigationScope.NAV_CHAT, registrationInteractor.isAuthorized())
 
         registrationInteractor.getLoginSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    isProfileLayoutVisibleController.value = true
+                    navScopeVisibilityController.value = Pair(NavigationScope.NAV_PROFILE, true)
+                    navScopeVisibilityController.value = Pair(NavigationScope.NAV_LOGIN, false)
+                    navScopeEnabledController.value = Pair(NavigationScope.NAV_CHAT, true)
                 },
                 onError = {
                     logException(this, it)
@@ -61,7 +71,9 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                 onNext = {
                     /*ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
                     closeController.value = Unit*/
-                    isProfileLayoutVisibleController.value = false
+                    navScopeVisibilityController.value = Pair(NavigationScope.NAV_PROFILE, false)
+                    navScopeVisibilityController.value = Pair(NavigationScope.NAV_LOGIN, true)
+                    navScopeEnabledController.value = Pair(NavigationScope.NAV_CHAT, false)
                 },
                 onError = {
                     logException(this, it)
