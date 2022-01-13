@@ -15,8 +15,14 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
 
     private var isAuthorized = false
 
+    private val popularProductsAdapter: PopularProductsAdapter
+        get() = binding.popularProductsLayout.popularProductsRecyclerView.adapter as PopularProductsAdapter
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.popularProductsLayout.popularProductsRecyclerView.adapter =
+            PopularProductsAdapter { productId -> viewModel.onPopularProductClick(productId) }
 
         binding.loginLinearLayout.setOnDebouncedClickListener {
             viewModel.onLoginClick()
@@ -34,7 +40,7 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             viewModel.onPropertyAvailableClick()
         }
 
-        binding.searchTagsLayout.tagsFlowLayout.children.forEach { view->
+        binding.searchTagsLayout.tagsFlowLayout.children.forEach { view ->
             (view as TextView).let {
                 it.setOnDebouncedClickListener {
                     viewModel.onTagClick(it.text.toString())
@@ -44,6 +50,10 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
 
         binding.searchTagsLayout.searchCatalogCardView.setOnDebouncedClickListener {
             viewModel.onSearchClick()
+        }
+
+        binding.popularProductsLayout.showAllTextView.setOnDebouncedClickListener {
+            viewModel.onShowAllPopularProductsClick()
         }
 
         subscribe(viewModel.registrationObserver) {
@@ -58,7 +68,11 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
 
         subscribe(viewModel.propertyAvailabilityObserver) {
             binding.propertyAvailableLinearLayout.visibleIf(it && isAuthorized)
-            binding.noPropertyLinearLayout.goneIf(it  || !isAuthorized)
+            binding.noPropertyLinearLayout.goneIf(it || !isAuthorized)
+        }
+
+        subscribe(viewModel.popularProductsObserver) {
+            popularProductsAdapter.setItems(it)
         }
 
     }

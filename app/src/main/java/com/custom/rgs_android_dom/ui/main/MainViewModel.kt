@@ -1,12 +1,16 @@
 package com.custom.rgs_android_dom.ui.main
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
+import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
+import com.custom.rgs_android_dom.domain.catalog.models.ProductModel
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
 import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchFragment
+import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
@@ -21,7 +25,8 @@ import io.reactivex.schedulers.Schedulers
 
 class MainViewModel(
     private val registrationInteractor: RegistrationInteractor,
-    private val propertyInteractor: PropertyInteractor
+    private val propertyInteractor: PropertyInteractor,
+    private val catalogInteractor: CatalogInteractor
 ) : BaseViewModel() {
 
     private val registrationController = MutableLiveData(false)
@@ -29,6 +34,11 @@ class MainViewModel(
 
     private val propertyAvailabilityController = MutableLiveData(false)
     val propertyAvailabilityObserver: LiveData<Boolean> = propertyAvailabilityController
+
+    private val popularProductsController = MutableLiveData<List<ProductModel>>()
+    val popularProductsObserver: LiveData<List<ProductModel>> = popularProductsController
+
+    private var allPopularProducts: CatalogCategoryModel? = null
 
     init {
         registrationController.value = registrationInteractor.isAuthorized().let {
@@ -55,6 +65,28 @@ class MainViewModel(
             .subscribeBy(
                 onNext = {
                     registrationController.value = false
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
+        catalogInteractor.getProducts(tags = ""/*todo replace with this when available "ВыводитьНаГлавной"*/)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy (
+                onSuccess = {popularProductsController.value = it},
+                onError = {logException(this, it)}
+            )
+            .addTo(dataCompositeDisposable )
+
+        //todo
+        catalogInteractor.getCatalogCategories()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    allPopularProducts = it[0]
                 },
                 onError = {
                     logException(this, it)
@@ -102,6 +134,16 @@ class MainViewModel(
     fun onSearchClick(){
         val catalogSearchFragment = CatalogSearchFragment.newInstance()
         ScreenManager.showScreen(catalogSearchFragment)
+    }
+
+    fun onShowAllPopularProductsClick() {
+        allPopularProducts?.let {
+            ScreenManager.showBottomScreen(CatalogSubcategoriesFragment.newInstance(it))
+        }
+    }
+
+    fun onPopularProductClick(productId: String) {
+        ScreenManager.showBottomScreen(ProductFragment.newInstance(productId))
     }
 
 }

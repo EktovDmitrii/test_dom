@@ -45,8 +45,8 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
         return catalogRepository.getServices()
     }
 
-    fun getProducts(): Single<List<ProductModel>> {
-        return catalogRepository.getProducts()
+    fun getProducts(tags: String?): Single<List<ProductModel>> {
+        return catalogRepository.getProducts(tags)
     }
 
     fun getProduct(productId: String): Single<ProductModel>{

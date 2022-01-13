@@ -12,7 +12,7 @@ interface CatalogRepository {
 
     fun getServices(): Single<List<ServiceModel>>
 
-    fun getProducts(): Single<List<ProductModel>>
+    fun getProducts(tags: String?): Single<List<ProductModel>>
 
     fun getProductsAvailableForPurchase(tags: List<String>?): Single<List<ProductShortModel>>
 

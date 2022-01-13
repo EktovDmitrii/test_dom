@@ -20,8 +20,12 @@ class CatalogRepositoryImpl(private val api: MSDApi): CatalogRepository {
         }
     }
 
-    override fun getProducts(): Single<List<ProductModel>> {
-        return api.getProducts(100, 0).map {response->
+    override fun getProducts(tags: String?): Single<List<ProductModel>> {
+        return api.getProducts(
+            size = 10,
+            index = 0,
+            tags = tags
+        ).map {response->
             response.items?.map {
                 CatalogMapper.responseToProduct(it)
             }
