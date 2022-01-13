@@ -84,8 +84,8 @@
         android:layout_marginTop="62dp"
         android:background="@drawable/rectangle_filled_white_top_radius_24dp"/>
 
-    <include layout="@layout/layout_bottom_navigation_menu"
-        android:id="@+id/bottomNavigationLayout"
+    <com.custom.rgs_android_dom.views.MSDBottomNavigationView
+        android:id="@+id/bottomNavigationView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"

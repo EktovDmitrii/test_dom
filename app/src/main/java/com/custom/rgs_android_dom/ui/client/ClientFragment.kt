@@ -12,6 +12,7 @@ import com.custom.rgs_android_dom.databinding.FragmentClientBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.utils.recycler_view.HorizontalItemDecoration
+import com.custom.rgs_android_dom.views.NavigationScope
 
 class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClientBinding>() {
 
@@ -134,6 +135,10 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
 
     override fun getThemeResource(): Int {
         return R.style.BottomSheetNoDim
+    }
+
+    override fun getNavigationScope(): NavigationScope? {
+        return NavigationScope.NAV_PROFILE
     }
 
     private fun openMedApp(){

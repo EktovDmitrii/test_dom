@@ -45,4 +45,8 @@ class MyProductFragment :
         }
         binding.advantagesLayout.advantagesRecycler.adapter = ProductAdvantagesAdapter()
     }
+
+    override fun isNavigationViewVisible(): Boolean {
+        return false
+    }
 }

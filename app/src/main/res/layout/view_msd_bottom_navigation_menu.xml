@@ -39,7 +39,7 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/navCatalogueLinearLayout"
+        android:id="@+id/navCatalogLinearLayout"
         android:layout_width="72dp"
         android:layout_height="62dp"
         android:orientation="vertical"
