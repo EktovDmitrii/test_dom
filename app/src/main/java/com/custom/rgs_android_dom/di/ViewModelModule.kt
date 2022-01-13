@@ -48,6 +48,8 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import com.custom.rgs_android_dom.ui.client.personal_data.request_edit.RequestEditPersonalDataViewModel
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsViewModel
+import com.custom.rgs_android_dom.ui.property.document.DocumentViewModel
+import com.custom.rgs_android_dom.ui.property.document.detail_document.DetailDocumentViewModel
 
 val viewModelModule = module {
     viewModel { parameters -> RegistrationCodeViewModel(phone = parameters[0], token = parameters[1], registrationInteractor = get(), clientInteractor = get()) }
@@ -68,6 +70,8 @@ val viewModelModule = module {
     viewModel { parameters-> SelectPropertyTypeViewModel(propertyName = parameters[0], propertyAddress = parameters[1], propertyInteractor = get()) }
     viewModel { parameters-> PropertyDetailsViewModel(propertyName = parameters[0], propertyAddress = parameters[1], propertyType = parameters[2], propertyInteractor = get(), context = get()) }
     viewModel { parameters-> PropertyInfoViewModel(objectId = parameters.get(), propertyInteractor = get()) }
+    viewModel { parameters-> DocumentViewModel(objectId = parameters[0], propertyItemModel = parameters[1], propertyInteractor = get()) }
+    viewModel { parameters-> DetailDocumentViewModel( objectId = parameters[0], documentIndex = parameters[1], propertyItemModel = parameters[2], propertyInteractor = get()) }
     viewModel { ScreenStubViewModel() }
     viewModel { RequestEditAgentViewModel(clientInteractor = get()) }
     viewModel { RequestEditPersonalDataViewModel(clientInteractor = get()) }

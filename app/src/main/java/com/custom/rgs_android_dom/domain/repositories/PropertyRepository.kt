@@ -36,4 +36,5 @@ interface PropertyRepository {
 
     fun postPropertyDocument(file: File): Single<PostPropertyDocument>
 
+    fun updateProperty(objectId: String, propertyItemModel: PropertyItemModel): Single<PropertyItemModel>
 }
