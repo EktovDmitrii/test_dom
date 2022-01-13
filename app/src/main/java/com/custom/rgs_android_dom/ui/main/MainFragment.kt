@@ -8,12 +8,16 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentMainBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.utils.*
+import com.custom.rgs_android_dom.utils.recycler_view.GridThreeSpanItemDecoration
 
 class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>() {
 
     override val TAG: String = "MAIN_FRAGMENT"
 
     private var isAuthorized = false
+
+    private val popularServicesAdapter: GridPopularServicesAdapter
+        get() = binding.popularServicesLayout.popularServicesRecyclerView.adapter as GridPopularServicesAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,6 +50,12 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             viewModel.onSearchClick()
         }
 
+        binding.popularServicesLayout.popularServicesRecyclerView.adapter = GridPopularServicesAdapter()
+        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.dp_12)
+        binding.popularServicesLayout.popularServicesRecyclerView.addItemDecoration(GridThreeSpanItemDecoration(spacingInPixels))
+        binding.popularServicesLayout.allTextView.setOnDebouncedClickListener {
+            viewModel.navigateCatalog()
+        }
         subscribe(viewModel.registrationObserver) {
             isAuthorized = it
             binding.profileLinearLayout.visibleIf(it)
@@ -61,6 +71,10 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             binding.noPropertyLinearLayout.goneIf(it  || !isAuthorized)
         }
 
+        subscribe(viewModel.popularServicesObserver) {
+            popularServicesAdapter.setItems(it)
+
+        }
     }
 
     override fun onClose() {

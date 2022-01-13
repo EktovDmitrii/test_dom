@@ -158,6 +158,11 @@
 
             </HorizontalScrollView>
 
+            <include android:id="@+id/popularServicesLayout"
+                layout="@layout/layout_main_popular_services"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
             <include android:id="@+id/storiesLayout"
                 layout="@layout/layout_main_stories"/>
 

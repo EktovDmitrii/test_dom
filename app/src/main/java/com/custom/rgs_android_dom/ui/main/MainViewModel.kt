@@ -1,11 +1,12 @@
 package com.custom.rgs_android_dom.ui.main
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
 import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
@@ -29,6 +30,9 @@ class MainViewModel(
 
     private val propertyAvailabilityController = MutableLiveData(false)
     val propertyAvailabilityObserver: LiveData<Boolean> = propertyAvailabilityController
+
+    private val popularServicesController = MutableLiveData<List<ProductShortModel>>()
+    val popularServicesObserver: LiveData<List<ProductShortModel>> = popularServicesController
 
     init {
         registrationController.value = registrationInteractor.isAuthorized().let {
@@ -61,6 +65,74 @@ class MainViewModel(
                 }
             ).addTo(dataCompositeDisposable)
 
+        popularServicesController.value = listOf(
+            ProductShortModel(
+                id = "",
+                type = "",
+                title = "Установка раковины",
+                code = "",
+                versionId = "",
+                name = "",
+                price = 150,
+                tags = emptyList(),
+                icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg"
+            ),
+            ProductShortModel(
+                id = "",
+                type = "",
+                title = "Установка раковины",
+                code = "",
+                versionId = "",
+                name = "",
+                price = 150,
+                tags = emptyList(),
+                icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg"
+            ),
+            ProductShortModel(
+                id = "",
+                type = "",
+                title = "Установка раковины",
+                code = "",
+                versionId = "",
+                name = "",
+                price = 150,
+                tags = emptyList(),
+                icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg"
+            ),
+            ProductShortModel(
+                id = "",
+                type = "",
+                title = "Установка раковины",
+                code = "",
+                versionId = "",
+                name = "",
+                price = 150,
+                tags = emptyList(),
+                icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg"
+            ),
+            ProductShortModel(
+                id = "",
+                type = "",
+                title = "Установка раковины",
+                code = "",
+                versionId = "",
+                name = "",
+                price = 150,
+                tags = emptyList(),
+                icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg"
+            ),
+            ProductShortModel(
+                id = "",
+                type = "",
+                title = "Установка раковины",
+                code = "",
+                versionId = "",
+                name = "",
+                price = 150,
+                tags = emptyList(),
+                icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg"
+            )
+        ).take(6)
     }
 
     private fun getPropertyAvailability() {
@@ -94,14 +166,17 @@ class MainViewModel(
         ScreenManager.showBottomScreen(ClientFragment())
     }
 
-    fun onTagClick(tag: String){
+    fun onTagClick(tag: String) {
         val catalogSearchFragment = CatalogSearchFragment.newInstance(tag)
         ScreenManager.showScreen(catalogSearchFragment)
     }
 
-    fun onSearchClick(){
+    fun onSearchClick() {
         val catalogSearchFragment = CatalogSearchFragment.newInstance()
         ScreenManager.showScreen(catalogSearchFragment)
     }
 
+    fun navigateCatalog() {
+        ScreenManager.showBottomScreen(MainCatalogFragment())
+    }
 }
