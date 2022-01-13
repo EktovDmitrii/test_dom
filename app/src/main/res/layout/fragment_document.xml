@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.property.document.DocumentListFragment">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.35" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/emptyDocListGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="emptyListImageView,emptyListTextView,addDocumentTextView" />
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/toolbarAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@color/white"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/backImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:paddingHorizontal="14dp"
+                android:tint="@color/secondary800"
+                app:srcCompat="@drawable/ic_back_24px" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/my_service_medium"
+                android:textColor="@color/secondary900"
+                android:textSize="16sp"
+                app:translationTextKey="Документы" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/editDocumentListImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:paddingHorizontal="24dp"
+                android:tint="@color/secondary800"
+                app:srcCompat="@drawable/ic_menu_24px" />
+
+        </FrameLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/emptyListImageView"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:src="@drawable/ic_stub_empty_doc_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guidelineHorizontal" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/emptyListTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/suisse_regular"
+        android:textColor="@color/secondary500"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/emptyListImageView"
+        app:translationTextKey="У вас пока нет привязанных документов" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/addDocumentTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="26dp"
+        android:background="@drawable/rectangle_filled_white_stroke_secondary_500_1dp_radius_24dp"
+        android:fontFamily="@font/suisse_regular"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="6dp"
+        android:textColor="@color/secondary900"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/emptyListTextView"
+        app:translationTextKey="Добавить документы" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listDocumentsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:overScrollMode="never"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="24dp"
+        android:useDefaultMargins="true"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarAppBar"
+        app:spanCount="2"
+        tools:listitem="@layout/item_property_detail_document" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

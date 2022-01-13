@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentMainCatalogBinding
 import com.custom.rgs_android_dom.databinding.TabCatalogBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
+import com.custom.rgs_android_dom.views.NavigationScope
 import com.google.android.material.tabs.TabLayoutMediator
 
 
@@ -16,7 +17,7 @@ class MainCatalogFragment :
     override val TAG: String = "MAIN_CATALOG_FRAGMENT"
 
     private val tabs = listOf(
-        Pair(R.drawable.ic_tab_catalog, "Каталог"),
+        Pair(R.drawable.ic_tab_catalog, "Все"),
         Pair(R.drawable.ic_tab_products, "Мои продукты"),
         Pair(R.drawable.ic_tab_available_services, "Доступные услуги")
     )
@@ -44,8 +45,16 @@ class MainCatalogFragment :
         mediator.attach()
     }
 
+    fun navigateCatalog() {
+        binding.mainCatalogViewPager.currentItem = 0
+    }
+
     override fun getThemeResource(): Int {
         return R.style.BottomSheetNoDim
+    }
+
+    override fun getNavigationScope(): NavigationScope? {
+        return NavigationScope.NAV_CATALOG
     }
 
 }

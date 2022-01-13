@@ -38,4 +38,8 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
         super.onViewCreated(view, savedInstanceState)
         binding.advantagesLayout.advantagesRecycler.adapter = ProductAdvantagesAdapter()
     }
+
+    override fun isNavigationViewVisible(): Boolean {
+        return false
+    }
 }

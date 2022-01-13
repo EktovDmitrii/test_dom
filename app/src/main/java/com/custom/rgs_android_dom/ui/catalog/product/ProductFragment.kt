@@ -9,7 +9,7 @@ import com.custom.rgs_android_dom.databinding.FragmentProductBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.catalog.ProductAdvantagesAdapter
 import com.custom.rgs_android_dom.utils.*
-import com.custom.rgs_android_dom.utils.recycler_view.GridSpaceItemDecoration
+import com.custom.rgs_android_dom.utils.recycler_view.GridTwoSpanItemDecoration
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -51,21 +51,26 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
                 viewModel.onServiceClick()
             }
             val spacingInPixels = resources.getDimensionPixelSize(R.dimen.material_margin_normal)
-            addItemDecoration(GridSpaceItemDecoration(spacingInPixels))
+            addItemDecoration(GridTwoSpanItemDecoration(spacingInPixels))
         }
         binding.advantagesLayout.advantagesRecycler.adapter = ProductAdvantagesAdapter()
 
         subscribe(viewModel.productObserver) { product ->
             GlideApp.with(requireContext())
                 .load(GlideUrlProvider.makeHeadersGlideUrl(product.iconLink))
-                .error(R.mipmap.temp)
                 .transform(RoundedCorners(20.dp(requireContext())))
                 .into(binding.header.headerImg)
 
             binding.header.headerTitle.text = product.title
             binding.header.headerDescription.text = product.description
-            binding.price.priceValue.text = "${product.price?.amount} ₽"
-            binding.detailButton.btnPrice.text = "${product.price?.amount} ₽"
+            product.price?.amount?.let {
+                binding.price.priceValue.text = DigitsFormatter.priceFormat(it)
+                binding.detailButton.btnPrice.text = DigitsFormatter.priceFormat(it)
+            }
         }
+    }
+
+    override fun isNavigationViewVisible(): Boolean {
+        return false
     }
 }

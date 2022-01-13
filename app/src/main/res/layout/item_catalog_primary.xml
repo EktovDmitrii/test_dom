@@ -45,6 +45,6 @@
         app:horizontalDecorationGap="16dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="13"
-        tools:listitem="@layout/item_catalog_primary_small_subcategory"
+        tools:listitem="@layout/item_catalog_primary_small_product"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

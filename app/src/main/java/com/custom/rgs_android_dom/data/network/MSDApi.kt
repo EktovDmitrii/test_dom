@@ -85,6 +85,10 @@ interface MSDApi {
     @ErrorType(MSDNetworkErrorResponse::class)
     fun addProperty(@Body body: AddPropertyRequest): Completable
 
+    @PUT("property/clients/me/objects/{objectId}")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun updatePropertyItem(@Path("objectId") objectId: String ,@Body body: UpdatePropertyRequest): Single<PropertyItemResponse>
+
     @GET("property/clients/me/objects")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getAllProperty(): Single<AllPropertyResponse>
@@ -159,10 +163,6 @@ interface MSDApi {
     @GET("clients/me/purchase/products/showcase")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getProductsAvailableForPurchase(@Query("tags", encoded = true) tags: String?): Single<ProductsForPurchaseResponse>
-
-    /*@GET("clients/me/purchase/products/showcase")
-    @ErrorType(MSDNetworkErrorResponse::class)
-    fun getProductsAvailableForPurchase(@Query("tags") tags: String?): Single<ProductsForPurchaseResponse>*/
 
     @GET("products/{productId}")
     @ErrorType(MSDNetworkErrorResponse::class)

@@ -28,5 +28,8 @@ data class ProductShortResponse(
     val tags: List<String>?,
 
     @SerializedName("defaultProduct")
-    val defaultProduct: Boolean?
+    val defaultProduct: Boolean?,
+
+    @SerializedName("iconLink")
+    val iconLink: String?
 )
