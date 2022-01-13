@@ -39,7 +39,7 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             viewModel.onPropertyAvailableClick()
         }
 
-        binding.searchTagsLayout.tagsFlowLayout.children.forEach { view->
+        binding.searchTagsLayout.tagsFlowLayout.children.forEach { view ->
             (view as TextView).let {
                 it.setOnDebouncedClickListener {
                     viewModel.onTagClick(it.text.toString())
@@ -51,11 +51,16 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             viewModel.onSearchClick()
         }
 
-        binding.popularServicesLayout.popularServicesRecyclerView.adapter = GridPopularServicesAdapter()
+        binding.popularServicesLayout.popularServicesRecyclerView.adapter =
+            GridPopularServicesAdapter(
+                onServiceClick = { viewModel.onServiceClick(it) }
+            )
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.dp_12)
-        binding.popularServicesLayout.popularServicesRecyclerView.addItemDecoration(GridThreeSpanItemDecoration(spacingInPixels))
+        binding.popularServicesLayout.popularServicesRecyclerView.addItemDecoration(
+            GridThreeSpanItemDecoration(spacingInPixels)
+        )
         binding.popularServicesLayout.allTextView.setOnDebouncedClickListener {
-            viewModel.navigateCatalog()
+            viewModel.onAllCatalogClick()
         }
         subscribe(viewModel.registrationObserver) {
             isAuthorized = it
@@ -65,16 +70,19 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
                 binding.propertyAvailableLinearLayout.gone()
                 binding.noPropertyLinearLayout.gone()
             }
+
+            viewModel.getPopularProducts(it)
         }
 
         subscribe(viewModel.propertyAvailabilityObserver) {
             binding.propertyAvailableLinearLayout.visibleIf(it && isAuthorized)
-            binding.noPropertyLinearLayout.goneIf(it  || !isAuthorized)
+            binding.noPropertyLinearLayout.goneIf(it || !isAuthorized)
         }
 
         subscribe(viewModel.popularServicesObserver) {
-            popularServicesAdapter.setItems(it)
+            binding.popularServicesLayout.root.goneIf(it.isEmpty())
 
+            popularServicesAdapter.setItems(it)
         }
     }
 

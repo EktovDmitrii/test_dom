@@ -16,5 +16,7 @@ interface CatalogRepository {
 
     fun getProductsAvailableForPurchase(tags: List<String>?): Single<List<ProductShortModel>>
 
+    fun getProductsAvailableForPurchaseWithoutAuth(): Single<List<ProductShortModel>>
+
     fun getProduct(productId: String): Single<ProductModel>
 }
