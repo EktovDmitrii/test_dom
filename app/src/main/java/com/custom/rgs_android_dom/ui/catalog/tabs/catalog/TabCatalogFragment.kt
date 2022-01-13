@@ -6,8 +6,6 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentTabCatalogBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesFragment
-import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.dp
 import com.custom.rgs_android_dom.utils.recycler_view.VerticalItemDecoration
 import com.custom.rgs_android_dom.utils.setStatusBarColor
@@ -31,11 +29,14 @@ class TabCatalogFragment : BaseFragment<TabCatalogViewModel, FragmentTabCatalogB
             onSubCategoryClick = {
                 viewModel.onSubCategoryClick(it)
             },
+            onProductClick = {
+                viewModel.onProductClick(it)
+            },
             onAllProductsClick = {
                 viewModel.onAllProductsClick(it)
             },
-            onAllPrimaryCategoriesClick = {
-                viewModel.onAllPrimaryCategoriesClick(it)
+            onAllPrimaryProductsClick = {
+                viewModel.onAllPrimaryProductsClick(it)
             }
         )
 

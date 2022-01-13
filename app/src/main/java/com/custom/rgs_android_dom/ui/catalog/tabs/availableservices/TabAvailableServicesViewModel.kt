@@ -21,9 +21,9 @@ class TabAvailableServicesViewModel : BaseViewModel() {
                 icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
                 parentCategoryId = "",
                 products = listOf(
-                    ProductShortModel(id = "", type = "", title = "Установка раковины", code = "", versionId = "", name = "", price = 150, tags = emptyList()),
-                    ProductShortModel(id = "", type = "", title = "Установка раковины", code = "", versionId = "", name = "", price = 150, tags = emptyList()),
-                    ProductShortModel(id = "", type = "", title = "Установка раковины", code = "", versionId = "", name = "", price = 150, tags = emptyList())
+                    ProductShortModel(id = "", type = "", title = "Установка раковины", code = "", versionId = "", name = "", price = 150, tags = emptyList(), icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg"),
+                    ProductShortModel(id = "", type = "", title = "Установка раковины", code = "", versionId = "", name = "", price = 150, tags = emptyList(), icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg"),
+                    ProductShortModel(id = "", type = "", title = "Установка раковины", code = "", versionId = "", name = "", price = 150, tags = emptyList(), icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg")
             ),
                 productTags = emptyList()
             ),
@@ -33,7 +33,7 @@ class TabAvailableServicesViewModel : BaseViewModel() {
                 icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
                 parentCategoryId = "",
                 products = listOf(
-                    ProductShortModel(id = "", type = "", title = "Установка мойки", code = "", versionId = "", name = "", price = 150, tags = emptyList())
+                    ProductShortModel(id = "", type = "", title = "Установка мойки", code = "", versionId = "", name = "", price = 150, tags = emptyList(), icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg")
                 ),
                 productTags = emptyList()
             ),
@@ -43,8 +43,8 @@ class TabAvailableServicesViewModel : BaseViewModel() {
                 icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
                 parentCategoryId = "",
                 products = listOf(
-                    ProductShortModel(id = "", type = "", title = "Установка ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList()),
-                    ProductShortModel(id = "", type = "", title = "Установка ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList()),
+                    ProductShortModel(id = "", type = "", title = "Установка ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList(), icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg"),
+                    ProductShortModel(id = "", type = "", title = "Установка ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList(), icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg"),
                 ),
                 productTags = emptyList()
             ),
@@ -54,10 +54,10 @@ class TabAvailableServicesViewModel : BaseViewModel() {
                 icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
                 parentCategoryId = "",
                 products = listOf(
-                    ProductShortModel(id = "", type = "", title = "Ремонт ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList()),
-                    ProductShortModel(id = "", type = "", title = "Ремонт ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList()),
-                    ProductShortModel(id = "", type = "", title = "Ремонт ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList()),
-                    ProductShortModel(id = "", type = "", title = "Ремонт ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList()),
+                    ProductShortModel(id = "", type = "", title = "Ремонт ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList(), icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg"),
+                    ProductShortModel(id = "", type = "", title = "Ремонт ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList(), icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg"),
+                    ProductShortModel(id = "", type = "", title = "Ремонт ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList(), icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg"),
+                    ProductShortModel(id = "", type = "", title = "Ремонт ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList(), icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg"),
                 ),
                 productTags = emptyList()
             )

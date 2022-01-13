@@ -7,14 +7,15 @@ import com.custom.rgs_android_dom.databinding.ItemCatalogCategoryBinding
 import com.custom.rgs_android_dom.databinding.ItemCatalogPrimaryBinding
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogSubCategoryModel
-import com.custom.rgs_android_dom.domain.catalog.models.ProductModel
+import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
 import com.custom.rgs_android_dom.ui.base.BaseViewHolder
 import com.custom.rgs_android_dom.utils.*
 
 class CatalogCategoriesAdapter(
     private val onSubCategoryClick: (CatalogSubCategoryModel) -> Unit = {},
+    private val onProductClick: (ProductShortModel) -> Unit = {},
     private val onAllProductsClick: (CatalogCategoryModel) -> Unit = {},
-    private val onAllPrimaryCategoriesClick: (CatalogCategoryModel) -> Unit = {}
+    private val onAllPrimaryProductsClick: (CatalogCategoryModel) -> Unit = {}
 ) : RecyclerView.Adapter<BaseViewHolder<*>>() {
 
     companion object {
@@ -42,7 +43,7 @@ class CatalogCategoriesAdapter(
             }
             TYPE_PRIMARY_ITEM -> {
                 val binding = ItemCatalogPrimaryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                ItemCatalogProductsViewHolder(binding, onSubCategoryClick, onAllPrimaryCategoriesClick)
+                ItemCatalogProductsViewHolder(binding, onProductClick, onAllPrimaryProductsClick)
             }
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -68,19 +69,20 @@ class CatalogCategoriesAdapter(
 
     inner class ItemCatalogProductsViewHolder(
         private val binding: ItemCatalogPrimaryBinding,
-        private val onSubCategoryClick: (CatalogSubCategoryModel) -> Unit = {},
-        private val onAllPrimaryCategoriesClick: (CatalogCategoryModel) -> Unit = {}
+        private val onProductClick: (ProductShortModel) -> Unit = {},
+        private val onAllPrimaryProductsClick: (CatalogCategoryModel) -> Unit = {}
     ) : BaseViewHolder<CatalogCategoryModel>(binding.root) {
 
         override fun bind(item: CatalogCategoryModel) {
             binding.primaryTitle.text = item.title
-            binding.primaryAll.setOnDebouncedClickListener { onAllPrimaryCategoriesClick(item) }
-            val catalogPrimarySubcategoriesAdapter = CatalogPrimarySubcategoriesAdapter(
-                onSubCategoryClick = onSubCategoryClick
+            binding.primaryAll.setOnDebouncedClickListener { onAllPrimaryProductsClick(item) }
+            val catalogPrimaryProductsAdapter = HorizontalPrimaryProductsAdapter(
+                onProductClick = onProductClick,
+                onMoreClick = { onAllPrimaryProductsClick(item) }
             )
 
-            binding.primaryRecycler.adapter = catalogPrimarySubcategoriesAdapter
-            catalogPrimarySubcategoriesAdapter.setItems(item.subCategories)
+            binding.primaryRecycler.adapter = catalogPrimaryProductsAdapter
+            catalogPrimaryProductsAdapter.setItems(item.products.take(13).plus(ProductShortModel.getEmptyProduct()))
         }
     }
 

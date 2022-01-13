@@ -1,24 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingTop="28dp">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/servicesEmptyState"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:paddingBottom="168dp"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/temp_empty" />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/suisse_regular"
+            android:gravity="center"
+            android:textColor="@color/secondary500"
+            android:textSize="14sp"
+            app:translationTextKey="У вас пока нет доступных услуги.\nВы можете купить услуги в составе\nкомплексных продуктов" />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/servicesNavigateCatalog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rectangle_stroke_1dp_secondary_300_radius_24dp"
+            android:elevation="2dp"
+            android:fontFamily="@font/suisse_regular"
+            android:includeFontPadding="false"
+            android:textColor="@color/secondary900"
+            android:textSize="14sp"
+            app:translationTextKey="Перейти в каталог услуг" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <com.custom.rgs_android_dom.views.MSDRecyclerView
         android:id="@+id/servicesRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:orientation="vertical"
         android:overScrollMode="never"
         android:paddingHorizontal="20dp"
         android:paddingBottom="168dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         tools:itemCount="10"
         tools:listitem="@layout/item_catalog_available_service" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

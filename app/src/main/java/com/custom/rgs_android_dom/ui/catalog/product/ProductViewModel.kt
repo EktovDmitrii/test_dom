@@ -64,7 +64,7 @@ class ProductViewModel(
             internalDescription = null,
             name = "",
             objectRequired = null,
-            price = ProductPriceModel(amount = 500, vatType = null),
+            price = ProductPriceModel(amount = 1500, vatType = null),
             status = null,
             tags = emptyList(),
             title = "Поиск утечек тепла, сквозняков.",
@@ -78,7 +78,7 @@ class ProductViewModel(
             versionId = null,
             versionStatus = null
         )
-        val singleProductFragment = SingleProductFragment.newInstance(product.id)
+        val singleProductFragment = ServiceFragment.newInstance(product)
         ScreenManager.showBottomScreen(singleProductFragment)
     }
 }

@@ -8,15 +8,19 @@
 
     <FrameLayout
         android:layout_width="146dp"
-        android:layout_height="146dp"
-        android:background="@drawable/rectangle_filled_lime_radius_16dp">
+        android:layout_height="146dp">
 
         <com.custom.rgs_android_dom.views.MSDImageView
             android:id="@+id/iconImageView"
             android:layout_width="146dp"
-            android:layout_height="146dp" />
+            android:layout_height="146dp"
+            android:scaleType="fitXY"
+            android:outlineProvider="background"
+            android:background="@drawable/background_secondary100_rounded_16dp"
+            />
 
         <com.custom.rgs_android_dom.views.MSDImageView
+            android:id="@+id/iconBadgeImageView"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_gravity="start|top"
@@ -27,7 +31,7 @@
     </FrameLayout>
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
-        android:id="@+id/quantityTextView"
+        android:id="@+id/priceTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
@@ -35,7 +39,7 @@
         android:textColor="@color/secondary600"
         android:textSize="10sp"
         android:includeFontPadding="false"
-        tools:text="12 услуг" />
+        tools:text="1 500 ₽" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/productNameTextView"
