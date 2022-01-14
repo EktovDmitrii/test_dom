@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.chat
 
+import android.graphics.BitmapFactory
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.*
 import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.utils.*
@@ -75,9 +77,10 @@ class ChatOpponentFilesAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: ChatFileModel) {
-            val imageBytes = Base64.decode(model.miniPreview, Base64.DEFAULT)
+            binding.opponentImageView.setImageBitmap(model.miniPreview)
+
             GlideApp.with(binding.opponentImageView.context)
-                .load(imageBytes)
+                .load(GlideUrlProvider.makeHeadersGlideUrl(model.preview))
                 .transform(CenterCrop(), RoundedCorners(16.dp(binding.opponentImageView.context)))
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(binding.opponentImageView)

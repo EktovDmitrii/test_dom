@@ -10,6 +10,7 @@ import com.custom.rgs_android_dom.domain.catalog.models.CatalogSubCategoryModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoryProductsAdapter
 import com.custom.rgs_android_dom.utils.*
+import com.custom.rgs_android_dom.views.NavigationScope
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -68,6 +69,10 @@ class CatalogSubcategoryFragment : BaseBottomSheetFragment<CatalogSubcategoryVie
 
     override fun getThemeResource(): Int {
         return R.style.BottomSheetNoDim
+    }
+
+    override fun getNavigationScope(): NavigationScope? {
+        return NavigationScope.NAV_CATALOG
     }
 
 }
