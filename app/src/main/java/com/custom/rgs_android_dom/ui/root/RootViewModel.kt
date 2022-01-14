@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.root
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
@@ -29,8 +30,8 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                     private val clientInteractor: ClientInteractor
 ) : BaseViewModel() {
 
-    private val navScopeVisibilityController = MutableLiveData<Pair<NavigationScope, Boolean>>()
-    val navScopeVisibilityObserver: LiveData<Pair<NavigationScope, Boolean>> = navScopeVisibilityController
+    private val navScopesVisibilityController = MutableLiveData<List<Pair<NavigationScope, Boolean>>>()
+    val navScopesVisibilityObserver: LiveData<List<Pair<NavigationScope, Boolean>>> = navScopesVisibilityController
 
     private val navScopeEnabledController = MutableLiveData<Pair<NavigationScope, Boolean>>()
     val navScopeEnabledObserver: LiveData<Pair<NavigationScope, Boolean>> = navScopeEnabledController
@@ -42,8 +43,13 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
         checkSignedAgreement()
         subscribeAuthStateChanges()
 
-        navScopeVisibilityController.value = Pair(NavigationScope.NAV_PROFILE, registrationInteractor.isAuthorized())
-        navScopeVisibilityController.value = Pair(NavigationScope.NAV_LOGIN, !registrationInteractor.isAuthorized())
+        Log.d("MyLog", "IS AUTHORIZED " + registrationInteractor.isAuthorized())
+
+        val scopes = listOf(
+            Pair(NavigationScope.NAV_PROFILE, registrationInteractor.isAuthorized()),
+            Pair(NavigationScope.NAV_LOGIN, !registrationInteractor.isAuthorized())
+        )
+        navScopesVisibilityController.value = scopes
 
         navScopeEnabledController.value = Pair(NavigationScope.NAV_CHAT, registrationInteractor.isAuthorized())
 
@@ -52,8 +58,12 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    navScopeVisibilityController.value = Pair(NavigationScope.NAV_PROFILE, true)
-                    navScopeVisibilityController.value = Pair(NavigationScope.NAV_LOGIN, false)
+                    val scopes = listOf(
+                        Pair(NavigationScope.NAV_PROFILE, true),
+                        Pair(NavigationScope.NAV_LOGIN, false)
+                    )
+                    navScopesVisibilityController.value = scopes
+
                     navScopeEnabledController.value = Pair(NavigationScope.NAV_CHAT, true)
                 },
                 onError = {
@@ -71,8 +81,12 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                 onNext = {
                     /*ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
                     closeController.value = Unit*/
-                    navScopeVisibilityController.value = Pair(NavigationScope.NAV_PROFILE, false)
-                    navScopeVisibilityController.value = Pair(NavigationScope.NAV_LOGIN, true)
+                    val scopes = listOf(
+                        Pair(NavigationScope.NAV_PROFILE, false),
+                        Pair(NavigationScope.NAV_LOGIN, true)
+                    )
+                    navScopesVisibilityController.value = scopes
+
                     navScopeEnabledController.value = Pair(NavigationScope.NAV_CHAT, false)
                 },
                 onError = {
