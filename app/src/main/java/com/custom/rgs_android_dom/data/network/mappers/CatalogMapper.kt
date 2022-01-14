@@ -1,10 +1,7 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
 import com.custom.rgs_android_dom.BuildConfig
-import com.custom.rgs_android_dom.data.network.responses.CatalogNodeResponse
-import com.custom.rgs_android_dom.data.network.responses.ProductResponse
-import com.custom.rgs_android_dom.data.network.responses.ProductShortResponse
-import com.custom.rgs_android_dom.data.network.responses.ServiceResponse
+import com.custom.rgs_android_dom.data.network.responses.*
 import com.custom.rgs_android_dom.domain.catalog.models.*
 import com.custom.rgs_android_dom.utils.asEnumOrDefault
 
@@ -179,6 +176,19 @@ object CatalogMapper {
             price = response.price,
             tags = response.tags ?: listOf(),
             defaultProduct = response.defaultProduct ?: false
+        )
+    }
+
+    fun responseToServiceShort(response: ServiceShortResponse): ServiceShortModel {
+        return ServiceShortModel(
+            priceAmount = response.priceAmount,
+            providerId = response.providerId,
+            providerName = response.providerName,
+            quantity = response.quantity,
+            serviceCode = response.serviceCode,
+            serviceId = response.serviceId,
+            serviceName = response.serviceName,
+            serviceVersionId = response.serviceVersionId
         )
     }
 

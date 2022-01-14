@@ -106,8 +106,10 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
             }
         }
 
-        subscribe(viewModel.navScopeVisibilityObserver){
-            binding.bottomNavigationView.setNavigationScopeVisible(it.first, it.second)
+        subscribe(viewModel.navScopesVisibilityObserver){ scopes->
+            scopes.forEach {
+                binding.bottomNavigationView.setNavigationScopeVisible(it.first, it.second)
+            }
         }
 
         subscribe(viewModel.navScopeEnabledObserver){

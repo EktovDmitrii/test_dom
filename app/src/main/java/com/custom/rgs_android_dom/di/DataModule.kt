@@ -21,5 +21,5 @@ val dataModule = module {
     single <PropertyRepository> { PropertyRepositoryImpl(api = get(), clientSharedPreferences = get()) }
     single <AddressRepository> { AddressRepositoryImpl(api = get()) }
     single <FilesRepository> {FilesRepositoryImpl(api = get())}
-    single <CatalogRepository> {CatalogRepositoryImpl(api = get())}
+    single <CatalogRepository> {CatalogRepositoryImpl(api = get(), authContentProviderManager = get())}
 }
