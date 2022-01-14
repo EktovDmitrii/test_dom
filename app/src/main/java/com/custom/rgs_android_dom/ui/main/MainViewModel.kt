@@ -1,11 +1,11 @@
 package com.custom.rgs_android_dom.ui.main
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
 import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
@@ -61,6 +61,18 @@ class MainViewModel(
                 }
             ).addTo(dataCompositeDisposable)
 
+        propertyInteractor.getPropertyAddedSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    getPropertyAvailability()
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
     }
 
     private fun getPropertyAvailability() {
@@ -102,6 +114,31 @@ class MainViewModel(
     fun onSearchClick(){
         val catalogSearchFragment = CatalogSearchFragment.newInstance()
         ScreenManager.showScreen(catalogSearchFragment)
+    }
+
+    fun onSOSClick() {
+        if (registrationController.value == false) {
+            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+        } else {
+        //go to problem solving screen
+        }
+
+    }
+
+    fun onPoliciesClick() {
+        if (registrationController.value == false) {
+            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+        } else {
+            // go to PoliciesScreen
+        }
+    }
+
+    fun onProductsClick() {
+        if (registrationController.value == false) {
+            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+        } else {
+            ScreenManager.showBottomScreen(MainCatalogFragment.newInstance(MainCatalogFragment.CatalogTab.MY_PRODUCTS.name))
+        }
     }
 
 }

@@ -87,7 +87,7 @@ val viewModelModule = module {
     viewModel { parameters -> CallViewModel(callType = parameters[0], consultant = parameters[1], chatInteractor = get()) }
     viewModel { PropertyUploadDocumentsViewModel(propertyInteractor = get()) }
     viewModel { RequestRationaleViewModel() }
-    viewModel { MainCatalogViewModel() }
+    viewModel { parameters -> MainCatalogViewModel(tab = parameters.get()) }
     viewModel { TabCatalogViewModel(catalogInteractor = get()) }
     viewModel { TabProductsViewModel(catalogInteractor = get()) }
     viewModel { TabAvailableServicesViewModel() }
