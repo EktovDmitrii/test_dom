@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui.catalog
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import com.custom.rgs_android_dom.R
@@ -18,16 +19,20 @@ import org.koin.core.parameter.parametersOf
 class MainCatalogFragment :
     BaseBottomSheetFragment<MainCatalogViewModel, FragmentMainCatalogBinding>() {
 
-    enum class CatalogTab {
-        ALL,
-        MY_PRODUCTS
-    }
-
     companion object {
+
+        val tabs = listOf(
+            Pair(R.drawable.ic_tab_catalog, "Все"),
+            Pair(R.drawable.ic_tab_products, "Мои продукты"),
+            Pair(R.drawable.ic_tab_available_services, "Доступные услуги")
+        )
+
+        const val ALL_TAB_INDEX = 0
+        const val MY_PRODUCTS_TAB_INDEX = 1
 
         private const val KEY_TAB = "tab"
 
-        fun newInstance(tab: String = CatalogTab.ALL.toString()): MainCatalogFragment {
+        fun newInstance(tab: String = tabs[ALL_TAB_INDEX].second): MainCatalogFragment {
             return MainCatalogFragment().args {
                 putString(KEY_TAB, tab)
             }
@@ -39,12 +44,6 @@ class MainCatalogFragment :
     }
 
     override val TAG: String = "MAIN_CATALOG_FRAGMENT"
-
-    private val tabs = listOf(
-        Pair(R.drawable.ic_tab_catalog, "Все"),
-        Pair(R.drawable.ic_tab_products, "Мои продукты"),
-        Pair(R.drawable.ic_tab_available_services, "Доступные услуги")
-    )
 
     private val pagerAdapter: MainCatalogPagerAdapter
         get() = binding.mainCatalogViewPager.adapter as MainCatalogPagerAdapter
@@ -69,9 +68,10 @@ class MainCatalogFragment :
         mediator.attach()
 
         subscribe(viewModel.tabObserver) {
+            Log.d("Syrgashev", "tab: $it")
             when(it) {
-                CatalogTab.ALL.name -> tabs.find { tab -> tab.second == "Все" }?.let { tab -> binding.mainCatalogViewPager.currentItem = tabs.indexOf(tab) }
-                CatalogTab.MY_PRODUCTS.name -> tabs.find { tab -> tab.second == "Мои продукты" }?.let { tab -> binding.mainCatalogViewPager.currentItem = tabs.indexOf(tab) }
+                tabs[ALL_TAB_INDEX].second -> binding.mainCatalogViewPager.currentItem = ALL_TAB_INDEX
+                tabs[MY_PRODUCTS_TAB_INDEX].second -> binding.mainCatalogViewPager.currentItem = MY_PRODUCTS_TAB_INDEX
             }
         }
     }

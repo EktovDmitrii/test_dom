@@ -137,7 +137,7 @@ class MainViewModel(
         if (registrationController.value == false) {
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
         } else {
-            ScreenManager.showBottomScreen(MainCatalogFragment.newInstance(MainCatalogFragment.CatalogTab.MY_PRODUCTS.name))
+            ScreenManager.showBottomScreen(MainCatalogFragment.newInstance(MainCatalogFragment.tabs[MainCatalogFragment.MY_PRODUCTS_TAB_INDEX].second))
         }
     }
 
