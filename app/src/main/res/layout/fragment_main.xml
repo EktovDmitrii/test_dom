@@ -161,6 +161,9 @@
             <include android:id="@+id/storiesLayout"
                 layout="@layout/layout_main_stories"/>
 
+            <include android:id="@+id/ratingLayout"
+                layout="@layout/layout_main_rating_masters"
+                />
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
