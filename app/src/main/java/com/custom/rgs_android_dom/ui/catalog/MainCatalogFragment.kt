@@ -1,7 +1,8 @@
 package com.custom.rgs_android_dom.ui.catalog
 
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import com.custom.rgs_android_dom.R
@@ -27,12 +28,12 @@ class MainCatalogFragment :
             Pair(R.drawable.ic_tab_available_services, "Доступные услуги")
         )
 
-        const val ALL_TAB_INDEX = 0
-        const val MY_PRODUCTS_TAB_INDEX = 1
+        const val POSITION_ALL_TAB = 0
+        const val POSITION_MY_PRODUCTS_TAB = 1
 
         private const val KEY_TAB = "tab"
 
-        fun newInstance(tab: String = tabs[ALL_TAB_INDEX].second): MainCatalogFragment {
+        fun newInstance(tab: String = tabs[POSITION_ALL_TAB].second): MainCatalogFragment {
             return MainCatalogFragment().args {
                 putString(KEY_TAB, tab)
             }
@@ -68,16 +69,20 @@ class MainCatalogFragment :
         mediator.attach()
 
         subscribe(viewModel.tabObserver) {
-            Log.d("Syrgashev", "tab: $it")
             when(it) {
-                tabs[ALL_TAB_INDEX].second -> binding.mainCatalogViewPager.currentItem = ALL_TAB_INDEX
-                tabs[MY_PRODUCTS_TAB_INDEX].second -> binding.mainCatalogViewPager.currentItem = MY_PRODUCTS_TAB_INDEX
+                tabs[POSITION_ALL_TAB].second -> { binding.mainCatalogViewPager.currentItem = POSITION_ALL_TAB }
+                tabs[POSITION_MY_PRODUCTS_TAB].second -> {
+                    Handler(Looper.getMainLooper()).post {
+                        binding.mainCatalogViewPager.currentItem = POSITION_MY_PRODUCTS_TAB
+                    }
+                }
             }
         }
+
     }
 
     fun navigateCatalog() {
-        binding.mainCatalogViewPager.currentItem = 0
+        binding.mainCatalogViewPager.currentItem = POSITION_ALL_TAB
     }
 
     override fun getThemeResource(): Int {

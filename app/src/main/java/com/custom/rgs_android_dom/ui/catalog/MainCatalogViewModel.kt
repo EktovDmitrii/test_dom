@@ -8,7 +8,7 @@ class MainCatalogViewModel(
     val tab: String
 ) : BaseViewModel() {
 
-    private val tabController = MutableLiveData(MainCatalogFragment.tabs[MainCatalogFragment.ALL_TAB_INDEX].second)
+    private val tabController = MutableLiveData<String>()
     val tabObserver: LiveData<String> = tabController
 
     init {
