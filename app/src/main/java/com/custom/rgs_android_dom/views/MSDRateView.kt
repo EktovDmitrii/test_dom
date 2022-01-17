@@ -25,9 +25,25 @@ class MSDRateView @JvmOverloads constructor(
     )
 
     private fun setStars() {
-        binding.starImg.setBackgroundResource(
-            if (counts == 5) R.drawable.ic_star_filled
-            else R.drawable.ic_star_partly_filled
+        binding.firstStarImageView.setBackgroundResource(
+            if (counts >= 1) R.drawable.ic_star_filled
+            else R.drawable.ic_star_unfilled
+        )
+        binding.secondStarImageView.setBackgroundResource(
+            if (counts >= 2) R.drawable.ic_star_filled
+            else R.drawable.ic_star_unfilled
+        )
+        binding.thirdStarImageView.setBackgroundResource(
+            if (counts >= 3) R.drawable.ic_star_filled
+            else R.drawable.ic_star_unfilled
+        )
+        binding.fourthStarImageView.setBackgroundResource(
+            if (counts >= 4) R.drawable.ic_star_filled
+            else R.drawable.ic_star_unfilled
+        )
+        binding.fifthStarImageView.setBackgroundResource(
+            if (counts >= 5) R.drawable.ic_star_filled
+            else R.drawable.ic_star_unfilled
         )
     }
 }

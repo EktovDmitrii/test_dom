@@ -39,6 +39,7 @@
         android:ellipsize="end"
         android:fontFamily="@font/suisse_regular"
         android:maxLines="4"
+        android:lines="4"
         android:textColor="@color/secondary600"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="@id/nameTextView"

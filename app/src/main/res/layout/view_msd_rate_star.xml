@@ -7,29 +7,33 @@
     android:orientation="horizontal">
 
     <ImageView
+        android:id="@+id/firstStarImageView"
         android:layout_width="12dp"
         android:layout_height="12dp"
-        android:src="@drawable/ic_star_filled"
+        tools:src="@drawable/ic_star_unfilled"
         />
     <ImageView
+        android:id="@+id/secondStarImageView"
         android:layout_width="12dp"
         android:layout_height="12dp"
-        android:src="@drawable/ic_star_filled"
+        tools:src="@drawable/ic_star_unfilled"
         />
     <ImageView
+        android:id="@+id/thirdStarImageView"
         android:layout_width="12dp"
         android:layout_height="12dp"
-        android:src="@drawable/ic_star_filled"
+        tools:src="@drawable/ic_star_unfilled"
         />
     <ImageView
+        android:id="@+id/fourthStarImageView"
         android:layout_width="12dp"
         android:layout_height="12dp"
-        android:src="@drawable/ic_star_filled"
+        tools:src="@drawable/ic_star_unfilled"
         />
     <ImageView
-        android:id="@+id/starImg"
+        android:id="@+id/fifthStarImageView"
         android:layout_width="12dp"
         android:layout_height="12dp"
-        android:src="@drawable/ic_star_partly_filled"
+        tools:src="@drawable/ic_star_unfilled"
         />
 </merge>
