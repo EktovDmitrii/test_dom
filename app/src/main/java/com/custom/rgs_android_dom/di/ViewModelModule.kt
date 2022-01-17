@@ -88,11 +88,11 @@ val viewModelModule = module {
     viewModel { PropertyUploadDocumentsViewModel(propertyInteractor = get()) }
     viewModel { RequestRationaleViewModel() }
     viewModel { MainCatalogViewModel() }
-    viewModel { TabCatalogViewModel(catalogInteractor = get()) }
+    viewModel { TabCatalogViewModel(catalogInteractor = get(), registrationInteractor = get()) }
     viewModel { TabProductsViewModel(catalogInteractor = get()) }
     viewModel { TabAvailableServicesViewModel() }
-    viewModel { parameters -> CatalogSubcategoriesViewModel(category = parameters.get(), catalogInteractor = get()) }
-    viewModel { parameters -> CatalogSubcategoryViewModel(subCategory = parameters.get(), catalogInteractor = get()) }
+    viewModel { parameters -> CatalogSubcategoriesViewModel(category = parameters.get(), registrationInteractor = get()) }
+    viewModel { parameters -> CatalogSubcategoryViewModel(subCategory = parameters.get(), registrationInteractor = get()) }
     viewModel { parameters -> SingleProductViewModel(productId = parameters.get(), catalogInteractor = get()) }
     viewModel { MoreSingleProductViewModel() }
     viewModel { parameters -> CatalogSearchViewModel(tag = parameters[0], catalogInteractor = get()) }

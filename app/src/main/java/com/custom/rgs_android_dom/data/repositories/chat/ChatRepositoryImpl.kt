@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.ChatMapper
 import com.custom.rgs_android_dom.data.network.requests.SendMessageRequest
+import com.custom.rgs_android_dom.data.network.responses.ChatFilePreviewResponse
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.domain.chat.models.*
@@ -425,6 +426,12 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
         roomInfo?.let {
             roomInfoSubject.onNext(it)
+        }
+    }
+
+    override fun getChatFilePreview(userId: String, fileId: String): Single<String> {
+        return api.getChatFilePreview(userId, fileId).map {
+            it.filename ?: ""
         }
     }
 }

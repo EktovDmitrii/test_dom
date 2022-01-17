@@ -60,7 +60,7 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
     }
 
     private fun isAuthorizationNotRequired(request: Request): Boolean {
-        return request.url.encodedPath in noAuthorizationPaths
+        return request.url.encodedPath in noAuthorizationPaths || request.url.encodedPath.contains("guests")
     }
 
     private fun parseError(errorResponse: String, errorCode: Int): MSDNetworkErrorResponse {

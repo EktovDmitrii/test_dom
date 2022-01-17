@@ -13,6 +13,7 @@ import com.custom.rgs_android_dom.utils.recycler_view.GridTwoSpanItemDecoration
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
 import com.custom.rgs_android_dom.utils.visibleIf
+import com.custom.rgs_android_dom.views.NavigationScope
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -73,6 +74,10 @@ class CatalogSubcategoriesFragment : BaseBottomSheetFragment<CatalogSubcategorie
 
     override fun getThemeResource(): Int {
         return R.style.BottomSheetNoDim
+    }
+
+    override fun getNavigationScope(): NavigationScope? {
+        return NavigationScope.NAV_CATALOG
     }
 
 }
