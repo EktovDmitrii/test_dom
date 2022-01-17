@@ -151,10 +151,6 @@ class MainViewModel(
         ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
     }
 
-    fun onProfileClick() {
-        ScreenManager.showBottomScreen(ClientFragment())
-    }
-
     fun onNoPropertyClick() {
         ScreenManager.showScreenScope(SelectAddressFragment.newInstance(), ADD_PROPERTY)
     }
@@ -177,7 +173,7 @@ class MainViewModel(
         if (registrationController.value == false) {
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
         } else {
-        //go to problem solving screen
+        //todo go to problem solving screen
         }
 
     }
@@ -186,7 +182,7 @@ class MainViewModel(
         if (registrationController.value == false) {
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
         } else {
-            // go to PoliciesScreen
+            //todo go to PoliciesScreen
         }
     }
 
@@ -203,6 +199,6 @@ class MainViewModel(
     }
 
     fun onAllCatalogClick() {
-        ScreenManager.showBottomScreen(MainCatalogFragment())
+        ScreenManager.showBottomScreen(MainCatalogFragment.newInstance())
     }
 }
