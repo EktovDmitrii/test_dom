@@ -16,14 +16,14 @@ class PopularProductsAdapter(private val onProductClick: (productId: String) -> 
     private var products = mutableListOf<ProductModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return PopularProductsViewHolder(
-            binding = ItemMainPopularProductBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            ),
-            onProductClick = { productId -> onProductClick(productId) }
+
+        val binding = ItemMainPopularProductBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
         )
+
+        return PopularProductsViewHolder(binding, onProductClick)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -51,12 +51,10 @@ class PopularProductsAdapter(private val onProductClick: (productId: String) -> 
 
             GlideApp.with(binding.root.context)
                 .load(GlideUrlProvider.makeHeadersGlideUrl(productModel.iconLink))
-                //.error(R.drawable.some_error_image)
                 .into(binding.smallLogoImageView)
 
             GlideApp.with(binding.root.context)
                 .load(GlideUrlProvider.makeHeadersGlideUrl(productModel.iconLink))
-                //.error(R.drawable.some_error_image)
                 .into(binding.largeLogoImageView)
         }
 
