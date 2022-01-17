@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
+import com.custom.rgs_android_dom.ui.about_app.AboutAppFragment
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
@@ -41,6 +42,8 @@ class MainViewModel(
     private val popularServicesController = MutableLiveData<List<ProductShortModel>>()
     val popularServicesObserver: LiveData<List<ProductShortModel>> = popularServicesController
 
+    private var openAboutAppScreenAfterLogin = false
+
     init {
         registrationController.value = registrationInteractor.isAuthorized().let {
             if (it) getPropertyAvailability()
@@ -54,6 +57,11 @@ class MainViewModel(
                 onNext = {
                     registrationController.value = true
                     getPropertyAvailability()
+
+                    if (openAboutAppScreenAfterLogin){
+                        openAboutAppScreenAfterLogin = false
+                        ScreenManager.showScreen(AboutAppFragment())
+                    }
                 },
                 onError = {
                     logException(this, it)
@@ -167,5 +175,14 @@ class MainViewModel(
 
     fun onAllCatalogClick() {
         ScreenManager.showBottomScreen(MainCatalogFragment())
+    }
+
+    fun onAboutServiceClick(){
+        if (registrationInteractor.isAuthorized()){
+            ScreenManager.showScreen(AboutAppFragment())
+        } else {
+            openAboutAppScreenAfterLogin = true
+            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+        }
     }
 }
