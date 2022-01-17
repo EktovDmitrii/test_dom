@@ -5,11 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 
 class MainCatalogViewModel(
-    val tab: String
+    val tab: Int
 ) : BaseViewModel() {
 
-    private val tabController = MutableLiveData<String>()
-    val tabObserver: LiveData<String> = tabController
+    private val tabController = MutableLiveData<Int>()
+    val tabObserver: LiveData<Int> = tabController
 
     init {
         tabController.value = tab

@@ -22,26 +22,27 @@ class MainCatalogFragment :
 
     companion object {
 
-        val tabs = listOf(
-            Pair(R.drawable.ic_tab_catalog, "Все"),
-            Pair(R.drawable.ic_tab_products, "Мои продукты"),
-            Pair(R.drawable.ic_tab_available_services, "Доступные услуги")
-        )
-
-        const val POSITION_ALL_TAB = 0
-        const val POSITION_MY_PRODUCTS_TAB = 1
+        const val TAB_ALL = 0
+        const val TAB_MY_PRODUCTS = 1
 
         private const val KEY_TAB = "tab"
 
-        fun newInstance(tab: String = tabs[POSITION_ALL_TAB].second): MainCatalogFragment {
+        fun newInstance(tab: Int = TAB_ALL): MainCatalogFragment {
             return MainCatalogFragment().args {
-                putString(KEY_TAB, tab)
+                putInt(KEY_TAB, tab)
             }
         }
+
     }
 
+    private val tabs = listOf(
+        Pair(R.drawable.ic_tab_catalog, "Все"),
+        Pair(R.drawable.ic_tab_products, "Мои продукты"),
+        Pair(R.drawable.ic_tab_available_services, "Доступные услуги")
+    )
+
     override fun getParameters(): ParametersDefinition = {
-        parametersOf(requireArguments().getString(KEY_TAB))
+        parametersOf(requireArguments().getInt(KEY_TAB))
     }
 
     override val TAG: String = "MAIN_CATALOG_FRAGMENT"
@@ -70,10 +71,10 @@ class MainCatalogFragment :
 
         subscribe(viewModel.tabObserver) {
             when(it) {
-                tabs[POSITION_ALL_TAB].second -> { binding.mainCatalogViewPager.currentItem = POSITION_ALL_TAB }
-                tabs[POSITION_MY_PRODUCTS_TAB].second -> {
+                TAB_ALL -> { binding.mainCatalogViewPager.currentItem = TAB_ALL }
+                TAB_MY_PRODUCTS -> {
                     Handler(Looper.getMainLooper()).post {
-                        binding.mainCatalogViewPager.currentItem = POSITION_MY_PRODUCTS_TAB
+                        binding.mainCatalogViewPager.currentItem = TAB_MY_PRODUCTS
                     }
                 }
             }
@@ -82,7 +83,7 @@ class MainCatalogFragment :
     }
 
     fun navigateCatalog() {
-        binding.mainCatalogViewPager.currentItem = POSITION_ALL_TAB
+        binding.mainCatalogViewPager.currentItem = TAB_ALL
     }
 
     override fun getThemeResource(): Int {
