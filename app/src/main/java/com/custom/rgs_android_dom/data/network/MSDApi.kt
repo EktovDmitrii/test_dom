@@ -152,6 +152,10 @@ interface MSDApi {
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getCatalogNodes(@Query("rootNodeId") rootNodeId: String?, @Query("rootNodeCode") rootNodeCode: String?): Single<CatalogNodesResponse>
 
+    @GET("guests/purchase/catalog")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getGuestCatalogNodes(@Query("rootNodeId") rootNodeId: String?, @Query("rootNodeCode") rootNodeCode: String?): Single<CatalogNodesResponse>
+
     @GET("services/search/query")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getServices(@Query("size") size: Int, @Query("index") index: Int): Single<ServiceItemsResponse>
@@ -162,7 +166,11 @@ interface MSDApi {
 
     @GET("clients/me/purchase/products/showcase")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getProductsAvailableForPurchase(@Query("tags", encoded = true) tags: String?): Single<ProductsForPurchaseResponse>
+    fun getShowcase(@Query("tags", encoded = true) tags: String?): Single<ProductsForPurchaseResponse>
+
+    @GET("guests/purchase/products/showcase")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getGuestShowcase(@Query("tags", encoded = true) tags: String?): Single<ProductsForPurchaseResponse>
 
     @GET("guests/purchase/products/showcase")
     @ErrorType(MSDNetworkErrorResponse::class)
@@ -176,4 +184,19 @@ interface MSDApi {
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getClientProducts(): Single<ClientProductsResponse>
 
+    @GET("guests/purchase/products/{productId}/services/{serviceId}/details")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getGuestServiceDetails(@Path("productId") productId: String, @Path("serviceId") serviceId: String): Single<ServiceResponse>
+
+    @GET("guests/purchase/products/{productId}/services/{serviceId}/details")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getGuestProductServicesResponse(@Path("productId") productId: String, @Query("size") size: Int, @Query("index") index: Int): Single<ProductServicesResponse>
+
+    @GET("clients/me/purchase/products/{productId}/services")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getProductServicesResponse(@Path("productId") productId: String, @Query("size") size: Int, @Query("index") index: Int): Single<ProductServicesResponse>
+
+    @GET("chat/users/{userId}/files/{fileId}/preview")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getChatFilePreview(@Path ("userId") userId: String, @Path("fileId") fileId: String): Single<ChatFilePreviewResponse>
 }

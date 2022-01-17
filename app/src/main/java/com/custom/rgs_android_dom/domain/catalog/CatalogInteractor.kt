@@ -29,7 +29,7 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
             }
 
             tags = tags.distinct().toMutableList()
-            val availableProducts = catalogRepository.getProductsAvailableForPurchase(tags).blockingGet()
+            val availableProducts = catalogRepository.getShowcase(tags).blockingGet()
 
             for (catalogCategory in catalogCategories){
                 for (subCategory in catalogCategory.subCategories){
@@ -56,11 +56,11 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
 
     fun getProductsAvailableForPurchase(query: String?): Single<List<ProductShortModel>>{
         val tags = if (!query.isNullOrEmpty()) listOf(query) else null
-        return catalogRepository.getProductsAvailableForPurchase(tags)
+        return catalogRepository.getShowcase(tags)
     }
 
     fun getPopularProducts(): Single<List<ProductShortModel>>{
-        return catalogRepository.getProductsAvailableForPurchase(listOf(TAG_POPULAR_PRODUCTS))
+        return catalogRepository.getShowcase(listOf(TAG_POPULAR_PRODUCTS))
     }
 
     fun getPopularServices(): Single<List<ProductShortModel>>{
