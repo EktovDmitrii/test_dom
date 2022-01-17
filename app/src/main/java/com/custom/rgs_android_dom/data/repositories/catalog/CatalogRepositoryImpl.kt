@@ -55,18 +55,6 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
         }
     }
 
-    override fun getProductsAvailableForPurchaseWithoutAuth(): Single<List<ProductShortModel>> {
-        return api.getProductsAvailableForPurchaseWithoutAuth().map { response ->
-            return@map if (response.products != null) {
-                response.products.map {
-                    CatalogMapper.responseToProductShort(it)
-                }
-            } else {
-                emptyList()
-            }
-        }
-    }
-
     override fun getProduct(productId: String): Single<ProductModel> {
         return api.getProduct(productId).map { response->
             CatalogMapper.responseToProduct(response)

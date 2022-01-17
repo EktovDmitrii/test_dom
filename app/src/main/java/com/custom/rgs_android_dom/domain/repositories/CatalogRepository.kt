@@ -13,8 +13,6 @@ interface CatalogRepository {
 
     fun getShowcase(tags: List<String>?): Single<List<ProductShortModel>>
 
-    fun getProductsAvailableForPurchaseWithoutAuth(): Single<List<ProductShortModel>>
-
     fun getProduct(productId: String): Single<ProductModel>
 
     fun getProductServices(productId: String): Single<List<ServiceShortModel>>

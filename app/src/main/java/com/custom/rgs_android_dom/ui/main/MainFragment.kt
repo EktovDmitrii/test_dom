@@ -71,7 +71,7 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
                 binding.noPropertyLinearLayout.gone()
             }
 
-            viewModel.getPopularProducts(it)
+            viewModel.getPopularProducts()
         }
 
         subscribe(viewModel.propertyAvailabilityObserver) {

@@ -85,11 +85,8 @@ class MainViewModel(
             .addTo(dataCompositeDisposable)
     }
 
-    fun getPopularProducts(isAuthorized: Boolean) {
-        val popularServicesRequest = if (isAuthorized) catalogInteractor.getPopularServices()
-        else catalogInteractor.getPopularServicesWithoutAuth()
-
-        popularServicesRequest
+    fun getPopularProducts() {
+        catalogInteractor.getPopularServices()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(

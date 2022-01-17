@@ -64,14 +64,9 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
     }
 
     fun getPopularServices(): Single<List<ProductShortModel>>{
-        return catalogRepository.getProductsAvailableForPurchase(listOf(TAG_POPULAR_PRODUCTS)).map {
+        return catalogRepository.getShowcase(listOf(TAG_POPULAR_PRODUCTS)).map {
             it.filter { it.defaultProduct }.take(CNT_POPULAR_SERVICES_IN_MAIN)
         }
     }
 
-    fun getPopularServicesWithoutAuth(): Single<List<ProductShortModel>>{
-        return catalogRepository.getProductsAvailableForPurchaseWithoutAuth().map {
-            it.filter { it.defaultProduct }.take(CNT_POPULAR_SERVICES_IN_MAIN)
-        }
-    }
 }
