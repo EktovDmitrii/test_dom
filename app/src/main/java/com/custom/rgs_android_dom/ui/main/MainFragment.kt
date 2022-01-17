@@ -10,6 +10,7 @@ import com.custom.rgs_android_dom.databinding.FragmentMainBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.views.NavigationScope
+import com.custom.rgs_android_dom.utils.recycler_view.GridThreeSpanItemDecoration
 
 class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>() {
 
@@ -19,6 +20,9 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
 
     private val ratingCommentsAdapter: RatingCommentsAdapter
         get() = binding.ratingLayout.ratingRecyclerView.adapter as RatingCommentsAdapter
+
+    private val popularServicesAdapter: GridPopularServicesAdapter
+        get() = binding.popularServicesLayout.popularServicesRecyclerView.adapter as GridPopularServicesAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,7 +43,7 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             viewModel.onPropertyAvailableClick()
         }
 
-        binding.searchTagsLayout.tagsFlowLayout.children.forEach { view->
+        binding.searchTagsLayout.tagsFlowLayout.children.forEach { view ->
             (view as TextView).let {
                 it.setOnDebouncedClickListener {
                     viewModel.onTagClick(it.text.toString())
@@ -57,6 +61,17 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             .into(binding.ratingLayout.ratingMasterMale)
         binding.ratingLayout.ratingRecyclerView.adapter = RatingCommentsAdapter()
 
+        binding.popularServicesLayout.popularServicesRecyclerView.adapter =
+            GridPopularServicesAdapter(
+                onServiceClick = { viewModel.onServiceClick(it) }
+            )
+        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.dp_12)
+        binding.popularServicesLayout.popularServicesRecyclerView.addItemDecoration(
+            GridThreeSpanItemDecoration(spacingInPixels)
+        )
+        binding.popularServicesLayout.allTextView.setOnDebouncedClickListener {
+            viewModel.onAllCatalogClick()
+        }
         subscribe(viewModel.registrationObserver) {
             isAuthorized = it
             binding.profileLinearLayout.visibleIf(it)
@@ -65,15 +80,22 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
                 binding.propertyAvailableLinearLayout.gone()
                 binding.noPropertyLinearLayout.gone()
             }
+
+            viewModel.getPopularProducts()
         }
 
         subscribe(viewModel.propertyAvailabilityObserver) {
             binding.propertyAvailableLinearLayout.visibleIf(it && isAuthorized)
-            binding.noPropertyLinearLayout.goneIf(it  || !isAuthorized)
+            binding.noPropertyLinearLayout.goneIf(it || !isAuthorized)
         }
 
         subscribe(viewModel.rateCommentsObserver){
             ratingCommentsAdapter.setItems(it)
+        }
+        subscribe(viewModel.popularServicesObserver) {
+            binding.popularServicesLayout.root.goneIf(it.isEmpty())
+
+            popularServicesAdapter.setItems(it)
         }
     }
 

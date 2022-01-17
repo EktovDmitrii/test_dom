@@ -3,9 +3,13 @@ package com.custom.rgs_android_dom.ui.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.main.CommentModel
+import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
+import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
+import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
 import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
@@ -21,7 +25,8 @@ import io.reactivex.schedulers.Schedulers
 
 class MainViewModel(
     private val registrationInteractor: RegistrationInteractor,
-    private val propertyInteractor: PropertyInteractor
+    private val propertyInteractor: PropertyInteractor,
+    private val catalogInteractor: CatalogInteractor
 ) : BaseViewModel() {
 
     private val registrationController = MutableLiveData(false)
@@ -32,6 +37,9 @@ class MainViewModel(
 
     private val rateCommentsController = MutableLiveData<List<CommentModel>>()
     val rateCommentsObserver: LiveData<List<CommentModel>> = rateCommentsController
+
+    private val popularServicesController = MutableLiveData<List<ProductShortModel>>()
+    val popularServicesObserver: LiveData<List<ProductShortModel>> = popularServicesController
 
     init {
         registrationController.value = registrationInteractor.isAuthorized().let {
@@ -113,6 +121,20 @@ class MainViewModel(
             .addTo(dataCompositeDisposable)
     }
 
+    fun getPopularProducts() {
+        catalogInteractor.getPopularServices()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    popularServicesController.value = it
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+    }
+
     fun onLoginClick() {
         ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
     }
@@ -129,14 +151,21 @@ class MainViewModel(
         ScreenManager.showBottomScreen(ClientFragment())
     }
 
-    fun onTagClick(tag: String){
+    fun onTagClick(tag: String) {
         val catalogSearchFragment = CatalogSearchFragment.newInstance(tag)
         ScreenManager.showScreen(catalogSearchFragment)
     }
 
-    fun onSearchClick(){
+    fun onSearchClick() {
         val catalogSearchFragment = CatalogSearchFragment.newInstance()
         ScreenManager.showScreen(catalogSearchFragment)
     }
 
+    fun onServiceClick(serviceModel: ProductShortModel) {
+        ScreenManager.showBottomScreen(SingleProductFragment.newInstance(serviceModel.id))
+    }
+
+    fun onAllCatalogClick() {
+        ScreenManager.showBottomScreen(MainCatalogFragment())
+    }
 }
