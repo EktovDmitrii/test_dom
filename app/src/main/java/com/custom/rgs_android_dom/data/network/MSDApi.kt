@@ -192,4 +192,7 @@ interface MSDApi {
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getProductServicesResponse(@Path("productId") productId: String, @Query("size") size: Int, @Query("index") index: Int): Single<ProductServicesResponse>
 
+    @GET("chat/users/{userId}/files/{fileId}/preview")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getChatFilePreview(@Path ("userId") userId: String, @Path("fileId") fileId: String): Single<ChatFilePreviewResponse>
 }

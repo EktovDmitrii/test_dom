@@ -57,12 +57,22 @@ class ChatInteractor(
             cachedChannelMembers.clear()
             cachedChannelMembers.addAll(it)
 
-            cachedChatItems.forEach { chatItem->
-                if (chatItem is ChatMessageModel){
+            cachedChatItems.forEach { chatItem ->
+                if (chatItem is ChatMessageModel) {
                     chatItem.member = cachedChannelMembers.find { it.userId == chatItem.userId }
                 }
             }
 
+            /*cachedChatItems.forEach { chatItem->
+                if (chatItem is ChatMessageModel){
+                    chatItem.files?.let { chatFiles->
+                        chatFiles.forEach { chatFile->
+                            val preview = chatRepository.getChatFilePreview(chatItem.userId, chatFile.id).blockingGet()
+                            chatFile.preview = preview
+                        }
+                    }
+                }
+            }*/
             return@map cachedChatItems
         }
     }

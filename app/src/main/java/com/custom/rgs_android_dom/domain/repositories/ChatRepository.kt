@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.domain.repositories
 
+import com.custom.rgs_android_dom.data.network.responses.ChatFilePreviewResponse
 import com.custom.rgs_android_dom.domain.chat.models.*
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -50,5 +51,7 @@ interface ChatRepository {
     suspend fun switchCamera()
 
     suspend fun switchVideoTrack()
+
+    fun getChatFilePreview(userId: String, fileId: String): Single<String>
 
 }

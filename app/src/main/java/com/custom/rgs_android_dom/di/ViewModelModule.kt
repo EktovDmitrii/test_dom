@@ -88,7 +88,7 @@ val viewModelModule = module {
     viewModel { PropertyUploadDocumentsViewModel(propertyInteractor = get()) }
     viewModel { RequestRationaleViewModel() }
     viewModel { parameters -> MainCatalogViewModel(tab = parameters.get()) }
-    viewModel { TabCatalogViewModel(catalogInteractor = get()) }
+    viewModel { TabCatalogViewModel(catalogInteractor = get(), registrationInteractor = get()) }
     viewModel { TabProductsViewModel(catalogInteractor = get()) }
     viewModel { TabAvailableServicesViewModel() }
     viewModel { parameters -> CatalogSubcategoriesViewModel(category = parameters.get(), registrationInteractor = get()) }
