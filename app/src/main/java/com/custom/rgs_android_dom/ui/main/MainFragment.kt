@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.core.view.children
+import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentMainBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
@@ -15,6 +16,9 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
     override val TAG: String = "MAIN_FRAGMENT"
 
     private var isAuthorized = false
+
+    private val ratingCommentsAdapter: RatingCommentsAdapter
+        get() = binding.ratingLayout.ratingRecyclerView.adapter as RatingCommentsAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -47,6 +51,12 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             viewModel.onSearchClick()
         }
 
+        GlideApp.with(requireContext())
+            .load(R.mipmap.master_male_2)
+            .transform(GranularRoundedCorners(0f,0f, 16f.dp(requireContext()), 0f))
+            .into(binding.ratingLayout.ratingMasterMale)
+        binding.ratingLayout.ratingRecyclerView.adapter = RatingCommentsAdapter()
+
         subscribe(viewModel.registrationObserver) {
             isAuthorized = it
             binding.profileLinearLayout.visibleIf(it)
@@ -62,6 +72,9 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             binding.noPropertyLinearLayout.goneIf(it  || !isAuthorized)
         }
 
+        subscribe(viewModel.rateCommentsObserver){
+            ratingCommentsAdapter.setItems(it)
+        }
     }
 
     override fun onClose() {
