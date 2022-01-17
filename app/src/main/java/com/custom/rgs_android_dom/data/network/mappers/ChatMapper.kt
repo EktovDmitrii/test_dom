@@ -1,5 +1,7 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
+import android.graphics.BitmapFactory
+import android.util.Base64
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.responses.CallInfoResponse
 import com.custom.rgs_android_dom.data.network.responses.ChannelMemberResponse
@@ -66,6 +68,7 @@ object ChatMapper{
     }
 
     fun responseToChatFile(fileResponse: ChatFileResponse, senderId: String, createdAt: LocalDateTime): ChatFileModel {
+        val miniPreview = Base64.decode(fileResponse.miniPreview, Base64.DEFAULT)
         return ChatFileModel(
             senderId = senderId,
             extension = fileResponse.extension,
@@ -73,7 +76,8 @@ object ChatMapper{
             height = fileResponse.height,
             id = fileResponse.id,
             mimeType = fileResponse.mimeType,
-            miniPreview = fileResponse.miniPreview,
+            miniPreview = BitmapFactory.decodeByteArray(miniPreview, 0, miniPreview.size),
+            preview = "${BuildConfig.BASE_URL}/api/chat/users/${senderId}/files/${fileResponse.id}/preview",
             name = fileResponse.name,
             size = fileResponse.size,
             width = fileResponse.width,

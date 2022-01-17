@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogSubCategoryModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
+import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogPrimaryProductsFragment
@@ -18,7 +19,10 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
-class TabCatalogViewModel(private val catalogInteractor: CatalogInteractor) : BaseViewModel() {
+class TabCatalogViewModel(
+    private val catalogInteractor: CatalogInteractor,
+    private val registrationInteractor: RegistrationInteractor
+) : BaseViewModel() {
 
 
     private val catalogCategoriesController = MutableLiveData<List<CatalogCategoryModel>>()
@@ -62,6 +66,8 @@ class TabCatalogViewModel(private val catalogInteractor: CatalogInteractor) : Ba
     }
 
     fun onProductClick(productModel: ProductShortModel) {
-        ScreenManager.showBottomScreen(ProductFragment.newInstance(productModel.id))
+        if (registrationInteractor.isAuthorized()){
+            ScreenManager.showBottomScreen(ProductFragment.newInstance(productModel.id))
+        }
     }
 }

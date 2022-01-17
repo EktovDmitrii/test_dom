@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <include
@@ -13,17 +13,18 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never"
+        android:background="@color/secondary100"
         android:fillViewport="true"
-        android:background="@color/secondary100">
+        android:overScrollMode="never">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include android:id="@+id/searchTagsLayout"
-                layout="@layout/layout_main_search_tags"/>
+            <include
+                android:id="@+id/searchTagsLayout"
+                layout="@layout/layout_main_search_tags" />
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
@@ -51,8 +52,8 @@
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             android:layout_gravity="center_horizontal"
-                            app:shapeAppearanceOverlay="@style/RoundedCorners16dpImageViewStyle"
                             android:background="@drawable/rectangle_filled_white_radius_16dp"
+                            app:shapeAppearanceOverlay="@style/RoundedCorners16dpImageViewStyle"
                             app:srcCompat="@drawable/ic_login_240px" />
 
                         <com.custom.rgs_android_dom.views.text.MSDTextView
@@ -79,8 +80,8 @@
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             android:layout_gravity="center_horizontal"
-                            app:shapeAppearanceOverlay="@style/RoundedCorners16dpImageViewStyle"
                             android:background="@drawable/rectangle_filled_white_radius_16dp"
+                            app:shapeAppearanceOverlay="@style/RoundedCorners16dpImageViewStyle"
                             app:srcCompat="@drawable/ic_profile_240px" />
 
                         <com.custom.rgs_android_dom.views.text.MSDTextView
@@ -158,12 +159,18 @@
 
             </HorizontalScrollView>
 
-            <include android:id="@+id/storiesLayout"
-                layout="@layout/layout_main_stories"/>
+            <include
+                android:id="@+id/storiesLayout"
+                layout="@layout/layout_main_stories" />
+
+            <include
+                android:id="@+id/aboutApplicationLayout"
+                layout="@layout/layout_main_about_app" />
 
             <include android:id="@+id/ratingLayout"
                 layout="@layout/layout_main_rating_masters"
                 />
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

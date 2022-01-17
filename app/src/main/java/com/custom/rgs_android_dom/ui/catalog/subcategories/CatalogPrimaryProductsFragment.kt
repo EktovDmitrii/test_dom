@@ -9,6 +9,7 @@ import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
+import com.custom.rgs_android_dom.views.NavigationScope
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -55,6 +56,10 @@ class CatalogPrimaryProductsFragment :
         subscribe(viewModel.titleObserver) {
             binding.titleTextView.text = it
         }
+    }
+
+    override fun getNavigationScope(): NavigationScope? {
+        return NavigationScope.NAV_CATALOG
     }
 
 
