@@ -23,7 +23,7 @@
         android:layout_marginTop="24dp"
         android:fontFamily="@font/suisse_regular"
         android:gravity="center"
-        android:textColor="@color/secondary900"
+        android:textColor="@color/secondary900_alpha64"
         android:textSize="13sp"
         app:translationTextKey="Мой_Сервис Дом — лучший сервис для вашего дома от крупнейшней страховой компании в России" />
 
