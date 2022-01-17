@@ -168,6 +168,10 @@
                 android:id="@+id/storiesLayout"
                 layout="@layout/layout_main_stories" />
 
+            <include android:id="@+id/ratingLayout"
+                layout="@layout/layout_main_rating_masters"
+                />
+
             <include
                 android:id="@+id/aboutApplicationLayout"
                 layout="@layout/layout_main_about_app" />

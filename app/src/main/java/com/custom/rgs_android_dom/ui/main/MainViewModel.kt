@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.ui.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.custom.rgs_android_dom.domain.main.CommentModel
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
@@ -33,6 +34,9 @@ class MainViewModel(
 
     private val propertyAvailabilityController = MutableLiveData(false)
     val propertyAvailabilityObserver: LiveData<Boolean> = propertyAvailabilityController
+
+    private val rateCommentsController = MutableLiveData<List<CommentModel>>()
+    val rateCommentsObserver: LiveData<List<CommentModel>> = rateCommentsController
 
     private val popularServicesController = MutableLiveData<List<ProductShortModel>>()
     val popularServicesObserver: LiveData<List<ProductShortModel>> = popularServicesController
@@ -68,6 +72,38 @@ class MainViewModel(
                 }
             ).addTo(dataCompositeDisposable)
 
+        rateCommentsController.value = listOf(
+            CommentModel(
+                name = "Сергей",
+                rate = 5,
+                comment = "Все очень грамотно, быстро, все объяснили по заявке."
+            ),
+            CommentModel(
+                name = "Ханума",
+                rate = 5,
+                comment = "Все быстро организовали, не пришлось долго ждать, мастер вежливый и культурный"
+            ),
+            CommentModel(
+                name = "Ирина",
+                rate = 5,
+                comment = "Вовремя приехали, быстро все сделали, мастер очень понравился, готова рекомендовать"
+            ),
+            CommentModel(
+                name = "Татьяна",
+                rate = 5,
+                comment = "Очень довольна, все было своевременно, мастер был всегда на связи"
+            ),
+            CommentModel(
+                name = "Серафима",
+                rate = 4,
+                comment = "Мастер - хороший, толковый парень, на все руки мастер"
+            ),
+            CommentModel(
+                name = "Анастасия",
+                rate = 5,
+                comment = "Супер все быстро организовано, качество работ на высоком уровне, все понравилось"
+            )
+        )
     }
 
     private fun getPropertyAvailability() {
