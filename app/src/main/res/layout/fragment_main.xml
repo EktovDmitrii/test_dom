@@ -15,7 +15,15 @@
         layout="@layout/layout_main_loading_shimmer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible" />
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/mainErrorLayout"
+        layout="@layout/layout_main_error_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/mainContentLayout"
