@@ -80,6 +80,18 @@ class MainViewModel(
                 }
             ).addTo(dataCompositeDisposable)
 
+        propertyInteractor.getPropertyAddedSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    getPropertyAvailability()
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
         rateCommentsController.value = listOf(
             CommentModel(
                 name = "Сергей",
