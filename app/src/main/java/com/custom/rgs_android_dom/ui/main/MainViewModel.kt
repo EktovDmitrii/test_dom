@@ -131,14 +131,19 @@ class MainViewModel(
 
     fun getPopularProducts() {
         catalogInteractor.getPopularServices()
+            .doOnSubscribe {
+                loadingStateController.postValue(LoadingState.LOADING)
+            }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
                     popularServicesController.value = it
+                    loadingStateController.value = LoadingState.CONTENT
                 },
                 onError = {
                     logException(this, it)
+                    loadingStateController.value = LoadingState.ERROR
                 }
             ).addTo(dataCompositeDisposable)
     }

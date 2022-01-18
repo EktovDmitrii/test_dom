@@ -22,7 +22,7 @@
         layout="@layout/layout_main_error_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible"
+        android:visibility="gone"
         />
 
     <androidx.core.widget.NestedScrollView
