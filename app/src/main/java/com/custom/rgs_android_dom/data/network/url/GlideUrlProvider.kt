@@ -14,12 +14,15 @@ object GlideUrlProvider : KoinComponent {
     private val registrationRepository: RegistrationRepository by inject()
 
     fun makeHeadersGlideUrl(url: String): GlideUrl{
-        return GlideUrl(
-            url,
-            LazyHeaders.Builder()
-                .addHeader(AUTHORIZATION_HEADER, "$AUTHORIZATION_BEARER ${registrationRepository.getAccessToken()}")
-                .build()
-        )
+        return if (registrationRepository.isAuthorized()){
+            GlideUrl(
+                url,
+                LazyHeaders.Builder()
+                    .addHeader(AUTHORIZATION_HEADER, "$AUTHORIZATION_BEARER ${registrationRepository.getAccessToken()}")
+                    .build()
+            )
+        } else {
+            GlideUrl(url)
+        }
     }
-
 }

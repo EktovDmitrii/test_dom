@@ -74,7 +74,7 @@ class CatalogCategoriesAdapter(
     ) : BaseViewHolder<CatalogCategoryModel>(binding.root) {
 
         override fun bind(item: CatalogCategoryModel) {
-            binding.primaryTitle.text = item.title
+            binding.primaryTitle.text = item.name
             binding.primaryAll.setOnDebouncedClickListener { onAllPrimaryProductsClick(item) }
             val catalogPrimaryProductsAdapter = HorizontalPrimaryProductsAdapter(
                 onProductClick = onProductClick,
@@ -92,7 +92,7 @@ class CatalogCategoriesAdapter(
         private val onAllProductsClick: (CatalogCategoryModel) -> Unit = {}) : BaseViewHolder<CatalogCategoryModel>(binding.root) {
 
         override fun bind(item: CatalogCategoryModel) {
-            binding.categoryTitleTextView.text = item.title
+            binding.categoryTitleTextView.text = item.name
 
             var subCategoriesWithBigImage = listOf<CatalogSubCategoryModel>()
             var subCategoriesWithSmallImage = listOf<CatalogSubCategoryModel>()
