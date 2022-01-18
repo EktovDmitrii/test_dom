@@ -10,9 +10,18 @@
         android:id="@+id/swipeAnchorLayout"
         layout="@layout/layout_bottom_sheet_swipe_anchor" />
 
+    <include
+        android:id="@+id/mainShimmerLayout"
+        layout="@layout/layout_main_loading_shimmer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible" />
+
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/mainContentLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         android:background="@color/secondary100"
         android:fillViewport="true"
         android:overScrollMode="never">

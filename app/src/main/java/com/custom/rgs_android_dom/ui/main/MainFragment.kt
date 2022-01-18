@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui.main
 
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
 import androidx.core.view.children
@@ -78,6 +79,7 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
         binding.popularServicesLayout.allTextView.setOnDebouncedClickListener {
             viewModel.onAllCatalogClick()
         }
+        binding.mainShimmerLayout.horizontalScrollView.setOnTouchListener { _, _ -> true }
 
         subscribe(viewModel.registrationObserver) {
             isAuthorized = it
