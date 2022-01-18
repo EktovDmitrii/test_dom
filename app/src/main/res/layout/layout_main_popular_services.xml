@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rectangle_filled_white_radius_24dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/secondary900"
+        android:textSize="16sp"
+        android:layout_marginTop="20dp"
+        android:paddingHorizontal="20dp"
+        android:fontFamily="@font/my_service_bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:translationTextKey="Популярные услуги"
+        />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/allTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/suisse_regular"
+        android:textSize="16sp"
+        android:paddingEnd="20dp"
+        android:textColor="@color/primary500"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:translationTextKey="Все"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/popularServicesRecyclerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="@dimen/material_margin_normal"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:overScrollMode="never"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="20dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="3"
+        tools:itemCount="6"
+        tools:listitem="@layout/item_catalog_gridlayout_subcategory" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

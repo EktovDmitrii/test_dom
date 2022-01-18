@@ -4,17 +4,25 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.core.view.children
+import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentMainBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.views.NavigationScope
+import com.custom.rgs_android_dom.utils.recycler_view.GridThreeSpanItemDecoration
 
 class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>() {
 
     override val TAG: String = "MAIN_FRAGMENT"
 
     private var isAuthorized = false
+
+    private val ratingCommentsAdapter: RatingCommentsAdapter
+        get() = binding.ratingLayout.ratingRecyclerView.adapter as RatingCommentsAdapter
+
+    private val popularServicesAdapter: GridPopularServicesAdapter
+        get() = binding.popularServicesLayout.popularServicesRecyclerView.adapter as GridPopularServicesAdapter
 
     private val popularProductsAdapter: PopularProductsAdapter
         get() = binding.popularProductsLayout.popularProductsRecyclerView.adapter as PopularProductsAdapter
@@ -49,12 +57,36 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             }
         }
 
+        binding.aboutApplicationLayout.aboutServiceTextView.setOnDebouncedClickListener {
+            viewModel.onAboutServiceClick()
+        }
+
         binding.searchTagsLayout.searchCatalogCardView.setOnDebouncedClickListener {
             viewModel.onSearchClick()
         }
 
         binding.popularProductsLayout.showAllTextView.setOnDebouncedClickListener {
             viewModel.onShowAllPopularProductsClick()
+        }
+
+        GlideApp.with(requireContext())
+            .load(R.mipmap.master_male_2)
+            .transform(GranularRoundedCorners(0f,0f, 16f.dp(requireContext()), 0f))
+            .into(binding.ratingLayout.ratingMasterMale)
+        binding.ratingLayout.ratingRecyclerView.adapter = RatingCommentsAdapter()
+
+        binding.popularServicesLayout.popularServicesRecyclerView.adapter =
+            GridPopularServicesAdapter(
+                onServiceClick = { viewModel.onServiceClick(it) }
+            )
+
+        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.dp_12)
+        binding.popularServicesLayout.popularServicesRecyclerView.addItemDecoration(
+            GridThreeSpanItemDecoration(spacingInPixels)
+        )
+
+        binding.popularServicesLayout.allTextView.setOnDebouncedClickListener {
+            viewModel.onAllCatalogClick()
         }
 
         subscribe(viewModel.registrationObserver) {
@@ -65,11 +97,23 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
                 binding.propertyAvailableLinearLayout.gone()
                 binding.noPropertyLinearLayout.gone()
             }
+
+            viewModel.getPopularProducts()
         }
 
         subscribe(viewModel.propertyAvailabilityObserver) {
             binding.propertyAvailableLinearLayout.visibleIf(it && isAuthorized)
             binding.noPropertyLinearLayout.goneIf(it || !isAuthorized)
+        }
+
+        subscribe(viewModel.rateCommentsObserver){
+            ratingCommentsAdapter.setItems(it)
+        }
+
+        subscribe(viewModel.popularServicesObserver) {
+            binding.popularServicesLayout.root.goneIf(it.isEmpty())
+
+            popularServicesAdapter.setItems(it)
         }
 
         subscribe(viewModel.popularProductsObserver) {

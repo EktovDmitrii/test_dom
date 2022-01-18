@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rectangle_bottom_radius_24dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ratingInfoLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rectangle_filled_white_radius_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/ratingOverallTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="28dp"
+            android:background="@drawable/rectangle_filled_primary_500_radius_8dp"
+            android:drawableEnd="@drawable/ic_catalog_stars"
+            android:drawablePadding="4dp"
+            android:drawableTint="@color/white"
+            android:fontFamily="@font/my_service_medium"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="8dp"
+            android:text="4.9"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/ratingTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/my_service_bold"
+            android:text="Рейтинг мастеров"
+            android:textColor="@color/secondary900"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@id/ratingOverallTextView"
+            app:layout_constraintTop_toBottomOf="@id/ratingOverallTextView" />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/ratingDescriptionTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:fontFamily="@font/suisse_regular"
+            android:text="Всего 345 678 работ, выполненных нашими мастерами"
+            android:textColor="@color/secondary600"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@id/ratingTitleTextView"
+            app:layout_constraintStart_toStartOf="@id/ratingTitleTextView"
+            app:layout_constraintTop_toBottomOf="@id/ratingTitleTextView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/ratingMasterMale"
+        android:layout_width="200dp"
+        android:layout_height="396dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.custom.rgs_android_dom.views.MSDRecyclerView
+        android:id="@+id/ratingRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="24dp"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:overScrollMode="never"
+        android:paddingHorizontal="28dp"
+        app:horizontalDecorationGap="20dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:itemCount="5"
+        tools:listitem="@layout/item_rating_comment" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rectangle_filled_white_stroke_secondary_200_1dp_radius_16dp"
+    android:minWidth="228dp"
+    android:paddingHorizontal="20dp"
+    android:paddingVertical="16dp">
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/nameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/my_service_bold"
+        android:lines="1"
+        android:textColor="@color/secondary900"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Меньшикова Ирина" />
+
+    <com.custom.rgs_android_dom.views.MSDRateView
+        android:id="@+id/starsView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nameTextView" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/commentTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/suisse_regular"
+        android:maxLines="4"
+        android:lines="4"
+        android:textColor="@color/secondary600"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="@id/nameTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/starsView"
+        tools:text="Вовремя приехали, быстро все сделали, мастер очень понравился, готова рекомендовать" />
+</androidx.constraintlayout.widget.ConstraintLayout>

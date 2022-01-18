@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/material_margin_normal"
     android:background="@drawable/rectangle_filled_white_top_radius_24dp"
     android:orientation="vertical"
     android:paddingBottom="141dp">
@@ -22,7 +23,7 @@
         android:layout_marginTop="24dp"
         android:fontFamily="@font/suisse_regular"
         android:gravity="center"
-        android:textColor="@color/secondary900"
+        android:textColor="@color/secondary900_alpha64"
         android:textSize="13sp"
         app:translationTextKey="Мой_Сервис Дом — лучший сервис для вашего дома от крупнейшней страховой компании в России" />
 

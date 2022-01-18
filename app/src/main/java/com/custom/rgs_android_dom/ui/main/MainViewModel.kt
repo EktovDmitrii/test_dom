@@ -2,13 +2,18 @@ package com.custom.rgs_android_dom.ui.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.custom.rgs_android_dom.domain.main.CommentModel
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
+import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductModel
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
+import com.custom.rgs_android_dom.ui.about_app.AboutAppFragment
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
+import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
+import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
 import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchFragment
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
@@ -35,6 +40,14 @@ class MainViewModel(
     private val propertyAvailabilityController = MutableLiveData(false)
     val propertyAvailabilityObserver: LiveData<Boolean> = propertyAvailabilityController
 
+    private val rateCommentsController = MutableLiveData<List<CommentModel>>()
+    val rateCommentsObserver: LiveData<List<CommentModel>> = rateCommentsController
+
+    private val popularServicesController = MutableLiveData<List<ProductShortModel>>()
+    val popularServicesObserver: LiveData<List<ProductShortModel>> = popularServicesController
+
+    private var openAboutAppScreenAfterLogin = false
+
     private val popularProductsController = MutableLiveData<List<ProductModel>>()
     val popularProductsObserver: LiveData<List<ProductModel>> = popularProductsController
 
@@ -53,6 +66,11 @@ class MainViewModel(
                 onNext = {
                     registrationController.value = true
                     getPropertyAvailability()
+
+                    if (openAboutAppScreenAfterLogin){
+                        openAboutAppScreenAfterLogin = false
+                        ScreenManager.showScreen(AboutAppFragment())
+                    }
                 },
                 onError = {
                     logException(this, it)
@@ -93,6 +111,38 @@ class MainViewModel(
                 }
             ).addTo(dataCompositeDisposable)
 
+        rateCommentsController.value = listOf(
+            CommentModel(
+                name = "Сергей",
+                rate = 5,
+                comment = "Все очень грамотно, быстро, все объяснили по заявке."
+            ),
+            CommentModel(
+                name = "Ханума",
+                rate = 5,
+                comment = "Все быстро организовали, не пришлось долго ждать, мастер вежливый и культурный"
+            ),
+            CommentModel(
+                name = "Ирина",
+                rate = 5,
+                comment = "Вовремя приехали, быстро все сделали, мастер очень понравился, готова рекомендовать"
+            ),
+            CommentModel(
+                name = "Татьяна",
+                rate = 5,
+                comment = "Очень довольна, все было своевременно, мастер был всегда на связи"
+            ),
+            CommentModel(
+                name = "Серафима",
+                rate = 4,
+                comment = "Мастер - хороший, толковый парень, на все руки мастер"
+            ),
+            CommentModel(
+                name = "Анастасия",
+                rate = 5,
+                comment = "Супер все быстро организовано, качество работ на высоком уровне, все понравилось"
+            )
+        )
     }
 
     private fun getPropertyAvailability() {
@@ -108,6 +158,20 @@ class MainViewModel(
                 }
             )
             .addTo(dataCompositeDisposable)
+    }
+
+    fun getPopularProducts() {
+        catalogInteractor.getPopularServices()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    popularServicesController.value = it
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
     }
 
     fun onLoginClick() {
@@ -126,16 +190,32 @@ class MainViewModel(
         ScreenManager.showBottomScreen(ClientFragment())
     }
 
-    fun onTagClick(tag: String){
+    fun onTagClick(tag: String) {
         val catalogSearchFragment = CatalogSearchFragment.newInstance(tag)
         ScreenManager.showScreen(catalogSearchFragment)
     }
 
-    fun onSearchClick(){
+    fun onSearchClick() {
         val catalogSearchFragment = CatalogSearchFragment.newInstance()
         ScreenManager.showScreen(catalogSearchFragment)
     }
 
+    fun onServiceClick(serviceModel: ProductShortModel) {
+        ScreenManager.showBottomScreen(SingleProductFragment.newInstance(serviceModel.id))
+    }
+
+    fun onAllCatalogClick() {
+        ScreenManager.showBottomScreen(MainCatalogFragment())
+    }
+
+    fun onAboutServiceClick(){
+        if (registrationInteractor.isAuthorized()){
+            ScreenManager.showScreen(AboutAppFragment())
+        } else {
+            openAboutAppScreenAfterLogin = true
+            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+        }
+    }
     fun onShowAllPopularProductsClick() {
         allPopularProducts?.let {
             ScreenManager.showBottomScreen(CatalogSubcategoriesFragment.newInstance(it))
