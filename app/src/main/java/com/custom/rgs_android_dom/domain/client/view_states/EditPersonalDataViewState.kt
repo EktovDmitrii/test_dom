@@ -15,6 +15,7 @@ data class EditPersonalDataViewState(
     val isGenderSaved: Boolean = false,
     val docNumber: String = "",
     val isDocNumberSaved: Boolean = false,
+    val docId: String = "",
     val docSerial: String = "",
     val isDocSerialSaved: Boolean = false,
     val phone: String = "",
@@ -23,10 +24,11 @@ data class EditPersonalDataViewState(
     val secondPhoneId: String = "",
     val isSecondPhoneSaved: Boolean = false,
     val isSecondPhoneValid: Boolean = false,
-    val email: String = "",
     val wasSecondPhoneEdited: Boolean = false,
+    val email: String = "",
     val emailId: String = "",
     val wasEmailEdited: Boolean = false,
     val agentCode: String? = null,
-    val agentPhone: String? = null
+    val agentPhone: String? = null,
+    val hasProducts:Boolean = false
 )

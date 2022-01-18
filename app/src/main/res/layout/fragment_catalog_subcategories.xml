@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:clickable="true">
+
+    <include
+        android:id="@+id/swipeAnchorLayout"
+        layout="@layout/layout_bottom_sheet_swipe_anchor" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/backImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="5dp"
+            android:tint="@color/secondary800"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_back_24px" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/searchImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="5dp"
+            android:tint="@color/primary500"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_search_24px" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginStart="20dp"
+                android:fontFamily="@font/my_service_bold"
+                android:gravity="center_vertical"
+                android:textColor="@color/secondary900"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/backImageView"
+                tools:text="Сантехника" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/subcategoriesWithBigImageRecyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="3"
+                tools:itemCount="5"
+                tools:listitem="@layout/item_catalog_gridlayout_subcategory" />
+
+            <TextView
+                android:id="@+id/othersTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="32dp"
+                android:fontFamily="@font/my_service_bold"
+                android:gravity="center_vertical"
+                android:text="Прочее"
+                android:textColor="@color/secondary900"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/backImageView" />
+
+            <com.custom.rgs_android_dom.views.MSDRecyclerView
+                android:id="@+id/productsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:paddingHorizontal="20dp"
+                android:paddingBottom="168dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:verticalDecorationGap="20dp"
+                tools:itemCount="4"
+                tools:listitem="@layout/item_catalog_subcategory_details_product" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

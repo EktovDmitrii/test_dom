@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="20dp"
+    android:paddingBottom="20dp"
+    android:orientation="vertical"
+    android:background="@drawable/rectangle_filled_white_bottom_radius_24dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/searchCatalogCardView"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        app:cardBackgroundColor="@color/white"
+        android:layout_marginHorizontal="1dp"
+        android:layout_marginTop="1dp"
+        app:strokeColor="@color/secondary900_alpha8"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="10dp"
+        android:outlineSpotShadowColor="@color/secondary900_alpha20">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:srcCompat="@drawable/ic_search_24px"
+                android:tint="@color/primary500"/>
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:fontFamily="@font/suisse_book"
+                android:textColor="@color/secondary900"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:layout_marginStart="8dp"
+                app:translationTextKey="Поиск по каталогу услуг" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.cardview.widget.CardView>
+    
+    <com.nex3z.flowlayout.FlowLayout
+        android:id="@+id/tagsFlowLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:flChildSpacing="12dp"
+        app:flRowSpacing="8dp"
+        app:flChildSpacingForLastRow="align">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:fontFamily="@font/suisse_regular"
+            android:textColor="@color/secondary900"
+            android:textSize="14sp"
+            android:paddingVertical="6dp"
+            android:paddingHorizontal="16dp"
+            android:includeFontPadding="false"
+            android:gravity="center"
+            android:background="@drawable/rectangle_filled_secondary_900_alpha4_radius_12dp"
+            android:text="Помыть окна" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:fontFamily="@font/suisse_regular"
+            android:textColor="@color/secondary900"
+            android:textSize="14sp"
+            android:paddingVertical="6dp"
+            android:paddingHorizontal="16dp"
+            android:includeFontPadding="false"
+            android:gravity="center"
+            android:background="@drawable/rectangle_filled_secondary_900_alpha4_radius_12dp"
+            android:text="Сантехника" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:fontFamily="@font/suisse_regular"
+            android:textColor="@color/secondary900"
+            android:textSize="14sp"
+            android:paddingVertical="6dp"
+            android:paddingHorizontal="16dp"
+            android:includeFontPadding="false"
+            android:gravity="center"
+            android:background="@drawable/rectangle_filled_secondary_900_alpha4_radius_12dp"
+            android:text="IKEA" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:fontFamily="@font/suisse_regular"
+            android:textColor="@color/secondary900"
+            android:textSize="14sp"
+            android:paddingVertical="6dp"
+            android:paddingHorizontal="16dp"
+            android:includeFontPadding="false"
+            android:gravity="center"
+            android:background="@drawable/rectangle_filled_secondary_900_alpha4_radius_12dp"
+            android:text="Отделочные работы" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:fontFamily="@font/suisse_regular"
+            android:textColor="@color/secondary900"
+            android:textSize="14sp"
+            android:paddingVertical="6dp"
+            android:paddingHorizontal="16dp"
+            android:includeFontPadding="false"
+            android:gravity="center"
+            android:background="@drawable/rectangle_filled_secondary_900_alpha4_radius_12dp"
+            android:text="Ремонт котлов" />
+
+    </com.nex3z.flowlayout.FlowLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

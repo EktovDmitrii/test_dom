@@ -1,20 +1,15 @@
 package com.custom.rgs_android_dom.domain.chat
 
-import android.util.Log
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.domain.repositories.ChatRepository
 import com.custom.rgs_android_dom.domain.chat.models.WsChatMessageModel
 import com.custom.rgs_android_dom.utils.*
-import io.livekit.android.LiveKit
-import io.livekit.android.room.Room
-import io.livekit.android.room.track.VideoTrack
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 import org.joda.time.LocalDateTime
-import org.joda.time.Seconds
 import java.io.File
 
 class ChatInteractor(
@@ -62,12 +57,22 @@ class ChatInteractor(
             cachedChannelMembers.clear()
             cachedChannelMembers.addAll(it)
 
-            cachedChatItems.forEach { chatItem->
-                if (chatItem is ChatMessageModel){
+            cachedChatItems.forEach { chatItem ->
+                if (chatItem is ChatMessageModel) {
                     chatItem.member = cachedChannelMembers.find { it.userId == chatItem.userId }
                 }
             }
 
+            /*cachedChatItems.forEach { chatItem->
+                if (chatItem is ChatMessageModel){
+                    chatItem.files?.let { chatFiles->
+                        chatFiles.forEach { chatFile->
+                            val preview = chatRepository.getChatFilePreview(chatItem.userId, chatFile.id).blockingGet()
+                            chatFile.preview = preview
+                        }
+                    }
+                }
+            }*/
             return@map cachedChatItems
         }
     }
@@ -103,7 +108,6 @@ class ChatInteractor(
                 sendMessage(message = " ", fileIds = chatFiles.map { it.id })
             }
     }
-
 
     fun subscribeToSocketEvents(): Completable {
         return chatRepository.getWsEventsSubject().flatMapCompletable {
@@ -201,6 +205,7 @@ class ChatInteractor(
             chatItems.add(dateDivider)
             chatItems.add(newMessage)
         }
+        cachedChatItems.addAll(chatItems)
         newChatItemsSubject.onNext(chatItems)
     }
 
@@ -211,5 +216,13 @@ class ChatInteractor(
             }
         }
         return null
+    }
+
+    suspend fun switchCamera() {
+        chatRepository.switchCamera()
+    }
+
+    suspend fun switchVideoTrack() {
+        chatRepository.switchVideoTrack()
     }
 }

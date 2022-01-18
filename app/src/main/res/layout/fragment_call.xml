@@ -118,35 +118,56 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginBottom="16dp">
 
-                <io.livekit.android.renderer.TextureViewRenderer
-                    android:id="@+id/primarySurfaceRenderer"
+                <com.custom.rgs_android_dom.views.MSDRoundedFrameLayout
+                    android:id="@+id/consultantSurfaceContainer"
+                    app:cornerRadius="10dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <FrameLayout
-                    android:id="@+id/secondarySurfaceContainer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:visibility="gone"
-                    tools:visibility="visible">
+                    android:layout_height="match_parent">
 
                     <io.livekit.android.renderer.TextureViewRenderer
-                        android:id="@+id/secondarySurfaceRenderer"
-                        android:layout_width="136dp"
-                        android:layout_height="180dp" />
+                        android:id="@+id/consultantSurfaceRenderer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/switchSurfacesImageView"
+                        android:id="@+id/switchSurfacesConsultantImageView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
-                        app:srcCompat="@drawable/ic_arrow_long_left_up_24px"/>
+                        android:layout_gravity="start|top"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        app:srcCompat="@drawable/ic_arrow_long_left_up_24px" />
 
-                </FrameLayout>
+                </com.custom.rgs_android_dom.views.MSDRoundedFrameLayout>
+
+                <com.custom.rgs_android_dom.views.MSDRoundedFrameLayout
+                    android:id="@+id/mySurfaceContainer"
+                    android:layout_width="136dp"
+                    android:layout_height="180dp"
+                    app:cornerRadius="5dp"
+                    android:layout_gravity="bottom|end"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <io.livekit.android.renderer.TextureViewRenderer
+                        android:id="@+id/mySurfaceRenderer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/switchSurfacesMyImageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="start|top"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        app:srcCompat="@drawable/ic_arrow_long_left_up_24px" />
+
+                </com.custom.rgs_android_dom.views.MSDRoundedFrameLayout>
 
             </FrameLayout>
 
@@ -166,62 +187,47 @@
             android:id="@+id/switchCameraImageView"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="17dp"
-            app:isActivated="true"
-            app:tint="@color/button_call_icon_color"
-            android:background="@drawable/button_call_background"
-            app:srcCompat="@drawable/ic_camera_change_24px"/>
+            android:enabled="false"
+            app:srcCompat="@drawable/camera_back_front_selector"/>
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp">
-
-            <com.custom.rgs_android_dom.views.MSDImageView
-                android:id="@+id/cameraOffImageView"
+        <com.custom.rgs_android_dom.views.MSDImageView
+                android:id="@+id/cameraOnOffImageView"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="17dp"
-                app:tint="@color/button_call_icon_color"
-                android:background="@drawable/button_call_background"
-                app:isActivated="true"
-                app:srcCompat="@drawable/ic_camera_off_24px"/>
+                app:isActivated="false"
+                android:layout_marginStart="20dp"
+                app:srcCompat="@drawable/camera_on_off_selector"/>
+
+        <FrameLayout
+            android:id="@+id/waitingCameraPermissionFrameLayout"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/rectangle_filled_white_bottom_radius_28dp"
+            android:visibility="gone">
 
             <ProgressBar
-                android:id="@+id/waitingCameraPermissionProgressBar"
                 style="@style/ProgressBarStyle"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_gravity="center"
-                android:visibility="gone"/>
+                android:layout_gravity="center" />
 
         </FrameLayout>
 
         <com.custom.rgs_android_dom.views.MSDImageView
-            android:id="@+id/micOffImageView"
+            android:id="@+id/micOnOffImageView"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="17dp"
             android:layout_marginStart="20dp"
-            app:isActivated="true"
-            app:tint="@color/button_call_icon_color"
-            android:background="@drawable/button_call_background"
-            app:srcCompat="@drawable/ic_microphone_24px"/>
+            app:isActivated="false"
+            app:srcCompat="@drawable/mic_on_off_selector"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/endCallImageView"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="17dp"
             android:layout_marginStart="20dp"
-            app:tint="@color/white"
-            android:background="@drawable/oval_filled_error_500"
-            app:srcCompat="@drawable/ic_call_24px"/>
-
+            app:srcCompat="@drawable/ic_end_call_56dp"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

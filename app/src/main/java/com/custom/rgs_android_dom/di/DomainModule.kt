@@ -5,6 +5,7 @@ import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.countries.CountriesInteractor
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.address.AddressInteractor
+import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import org.koin.android.ext.koin.androidContext
@@ -25,4 +26,6 @@ val domainModule = module {
     factory { PropertyInteractor(propertyRepository = get(), context = androidContext()) }
 
     factory { AddressInteractor(addressRepository = get()) }
+
+    factory { CatalogInteractor(catalogRepository = get()) }
 }

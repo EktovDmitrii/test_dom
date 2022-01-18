@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:paddingBottom="24dp"
+    android:paddingHorizontal="20dp">
+
+    <FrameLayout
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_gravity="center">
+        <com.custom.rgs_android_dom.views.MSDImageView
+            android:id="@+id/headerImg"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:scaleType="fitXY"
+            android:outlineProvider="background"
+            android:background="@drawable/background_secondary100_rounded_16dp"
+            />
+
+        <com.custom.rgs_android_dom.views.MSDImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="start|top"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/ic_catalog_primary_unit_letter_o_32dp" />
+    </FrameLayout>
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/headerTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/material_margin_normal"
+        android:fontFamily="@font/my_service_bold"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@color/secondary900"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:translationTextKey="Тепловизионная диагностика недвижимости" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/headerDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/material_margin_small"
+        android:fontFamily="@font/suisse_regular"
+        android:gravity="center"
+        android:textColor="@color/secondary900"
+        android:textSize="16sp"
+        app:translationTextKey="Поиск утечек тепла, сквозняков. Проверка теплых полов и радиаторов отопления." />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

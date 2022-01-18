@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.domain.repositories
 
 import android.net.Uri
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
+import com.custom.rgs_android_dom.domain.property.models.PostPropertyDocument
 import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import io.reactivex.Completable
@@ -35,4 +36,5 @@ interface PropertyRepository {
 
     fun postPropertyDocument(file: File): Single<PostPropertyDocument>
 
+    fun updateProperty(objectId: String, propertyItemModel: PropertyItemModel): Single<PropertyItemModel>
 }

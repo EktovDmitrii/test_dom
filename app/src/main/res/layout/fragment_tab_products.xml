@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/myProductsEmptyState"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingBottom="168dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/temp_empty"
+            />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:translationTextKey="У вас пока нет продуктов. Вы можете\nпривязать существующий продукт"
+            android:fontFamily="@font/suisse_regular"
+            android:textColor="@color/secondary500"
+            android:textSize="14sp"
+            android:gravity="center"
+            />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/myProductsNavigatePolis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/suisse_regular"
+            android:textColor="@color/secondary900"
+            android:textSize="14sp"
+            android:elevation="2dp"
+            android:includeFontPadding="false"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/rectangle_stroke_1dp_secondary_300_radius_24dp"
+            app:translationTextKey="Привязать полис"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/myProductsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:spanCount="2"
+        tools:listitem="@layout/item_catalog_my_product"
+        tools:itemCount="13"
+        android:paddingTop="28dp"
+        android:paddingHorizontal="20dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        android:overScrollMode="never"
+        android:paddingBottom="168dp"
+        android:clipToPadding="false"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -6,6 +6,8 @@ import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentAboutAppBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.web_view.WebViewFragment
 import com.custom.rgs_android_dom.utils.*
 
 class AboutAppFragment : BaseFragment<AboutAppViewModel, FragmentAboutAppBinding>(R.layout.fragment_about_app) {
@@ -18,11 +20,11 @@ class AboutAppFragment : BaseFragment<AboutAppViewModel, FragmentAboutAppBinding
         }
 
         binding.licenseAgreementsLinearLayout.setOnDebouncedClickListener {
-            openUrl("https://moi-service.ru/legal/moi-servis-med/polzovatelskoe-soglashenie")
+            ScreenManager.showScreen(WebViewFragment.newInstance("https://moi-service.ru/legal/moi-servis-med/polzovatelskoe-soglashenie"))
         }
 
         binding.privacyPolicyLinearLayout.setOnDebouncedClickListener {
-            openUrl("https://moi-service.ru/legal/policy")
+            ScreenManager.showScreen(WebViewFragment.newInstance("https://moi-service.ru/legal/policy"))
         }
 
 

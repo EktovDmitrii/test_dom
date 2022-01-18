@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.ui.navigation
 
-import android.util.Log
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -71,10 +70,15 @@ object ScreenManager {
 
     fun closeCurrentBottomFragment() {
         val transaction = beginTransaction() ?: return
-        transaction.remove(bottomFragments.last())
-        transaction.commitAllowingStateLoss()
-        bottomFragments.removeLast()
-        onBottomSheetChanged(bottomFragments.last())
+        if (bottomFragments.isNotEmpty()){
+            transaction.remove(bottomFragments.last())
+            transaction.commitAllowingStateLoss()
+            bottomFragments.removeLast()
+            if (bottomFragments.isNotEmpty()){
+                onBottomSheetChanged(bottomFragments.last())
+            }
+        }
+
     }
 
     fun showScreenScope(fragment: BaseFragment<*, *>, scopeId: Int) {
@@ -98,7 +102,9 @@ object ScreenManager {
                 transaction.remove(it.fragment)
                 removed.add(it.fragment)
             }
-            getLastFragmentWithout(removed)?.let { transaction.show(it) }
+            getLastFragmentWithout(removed)?.let {
+                transaction.show(it)
+            }
             transaction.commitNow()
             scopes.removeIf { it.id == scopeId }
         }
@@ -122,7 +128,9 @@ object ScreenManager {
                     removed.add(it.fragment)
                 }
             }
-            getLastFragmentWithout(removed)?.let { transaction.show(it) }
+            getLastFragmentWithout(removed)?.let {
+                transaction.show(it)
+            }
             transaction.commit()
             scopes.removeIf { it.id == scopeId && it.fragment in removed }
         }
@@ -150,7 +158,9 @@ object ScreenManager {
             it.getNavigateId() == idFragment
         }
 
-        getLastFragmentWithout(removed)?.let { transaction.show(it) }
+        getLastFragmentWithout(removed)?.let {
+            transaction.show(it)
+        }
 
         transaction.commitNow()
 
@@ -230,5 +240,4 @@ object ScreenManager {
                 }
         }
     }
-
 }

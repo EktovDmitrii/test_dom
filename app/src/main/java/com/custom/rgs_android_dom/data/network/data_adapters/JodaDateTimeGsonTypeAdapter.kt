@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.data.network.data_adapters
 
+import android.util.Log
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonToken
@@ -25,8 +26,9 @@ class JodaDateTimeGsonTypeAdapter : TypeAdapter<DateTime?>() {
         }
         val str = jsonReader.nextString()
         return try{
-            DateTime.parse(str, DateTimeFormat.forPattern(PATTERN_DATE_TIME))
+            DateTime.parse(str)
         } catch (e: Exception){
+            e.printStackTrace()
             DateTime.parse(str, DateTimeFormat.forPattern(PATTERN_DATE_TIME_MILLIS))
         }
     }

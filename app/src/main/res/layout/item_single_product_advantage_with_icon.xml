@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="12dp"
+    android:background="@drawable/rectangle_filled_white_radius_12dp">
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iconImageView"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        app:srcCompat="@drawable/ic_heart_24px"
+        android:layout_gravity="center_vertical"/>
+
+    <TextView
+        android:id="@+id/descriptionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/suisse_regular"
+        android:textColor="@color/secondary900"
+        android:textSize="14sp"
+        android:layout_marginStart="36dp"
+        android:includeFontPadding="false"
+        android:layout_gravity="center_vertical"
+        android:text="Все работы застрахованы" />
+
+</FrameLayout>

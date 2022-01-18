@@ -157,6 +157,7 @@
         <attr name="unfocusOnDone" format="boolean"/>
         <attr name="boxStrokeWidth" format="dimension"/>
         <attr name="boxStrokeWidthFocused" format="dimension"/>
+        <attr name="enabled" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="MSDGenderSelector">
@@ -179,6 +180,15 @@
         <attr name="android:enabled"/>
         <attr name="inputHeight"/>
         <attr name="icon"/>
+    </declare-styleable>
+
+    <declare-styleable name="MSDRecyclerView">
+        <attr name="horizontalDecorationGap" format="dimension"/>
+        <attr name="verticalDecorationGap" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="MSDRoundedFrameLayout">
+        <attr name="cornerRadius" format="dimension"/>
     </declare-styleable>
 
 </resources>

@@ -103,7 +103,7 @@ class CallViewModel(private val callType: CallType,
         closeController.value = Unit
     }
 
-    fun onRejectClick() {
+    fun onRejectClick(){
         chatInteractor.leaveLiveKitRoom()
         closeController.value = Unit
     }
@@ -114,12 +114,11 @@ class CallViewModel(private val callType: CallType,
     }
 
     fun onVideoCallPermissionsGranted(granted: Boolean){
-        micEnabled = granted
         cameraEnabled = granted
         requestLiveKitToken()
     }
 
-    fun onEnableMicCall(enable: Boolean){
+    fun onEnableMicClick(enable: Boolean){
         viewModelScope.launch {
             chatInteractor.enableMic(enable)
         }
@@ -129,6 +128,10 @@ class CallViewModel(private val callType: CallType,
         viewModelScope.launch {
             chatInteractor.enableCamera(enable)
         }
+    }
+
+    fun onMinimizeClick(){
+        closeController.value = Unit
     }
 
     private fun requestLiveKitToken(){
@@ -149,5 +152,16 @@ class CallViewModel(private val callType: CallType,
         }
     }
 
+    fun onSwitchCameraClick(){
+        viewModelScope.launch {
+            chatInteractor.switchCamera()
+        }
+    }
+
+    fun onVideoTrackSwitchClick(){
+        viewModelScope.launch {
+            chatInteractor.switchVideoTrack()
+        }
+    }
 
 }

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/productLinearLayout"
+    android:layout_width="match_parent"
+    android:layout_gravity="center"
+    android:paddingBottom="24dp"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:id="@+id/iconImageLayout"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:background="@drawable/rectangle_filled_lime_radius_16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.custom.rgs_android_dom.views.MSDImageView
+            android:id="@+id/iconImageView"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:scaleType="fitXY"
+            android:outlineProvider="background"
+            android:background="@drawable/background_secondary100_rounded_16dp"
+            />
+
+        <com.custom.rgs_android_dom.views.MSDImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="start|top"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/ic_catalog_primary_unit_letter_o_32dp" />
+
+    </FrameLayout>
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/priceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/suisse_regular"
+        android:includeFontPadding="false"
+        android:textColor="@color/secondary600"
+        android:textSize="10sp"
+        app:layout_constraintStart_toStartOf="@id/iconImageLayout"
+        app:layout_constraintTop_toBottomOf="@id/iconImageLayout"
+        tools:text="1 500 ₽" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/productNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/suisse_semi_bold"
+        android:includeFontPadding="false"
+        android:textColor="@color/secondary900"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@id/iconImageLayout"
+        app:layout_constraintStart_toStartOf="@id/iconImageLayout"
+        app:layout_constraintTop_toBottomOf="@id/priceTextView"
+        tools:text="Сезонное мытье окон" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

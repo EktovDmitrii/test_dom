@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.ChatMapper
 import com.custom.rgs_android_dom.data.network.requests.SendMessageRequest
+import com.custom.rgs_android_dom.data.network.responses.ChatFilePreviewResponse
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.domain.chat.models.*
@@ -19,9 +20,7 @@ import io.livekit.android.room.Room
 import io.livekit.android.room.RoomListener
 import io.livekit.android.room.participant.Participant
 import io.livekit.android.room.participant.RemoteParticipant
-import io.livekit.android.room.track.Track
-import io.livekit.android.room.track.TrackPublication
-import io.livekit.android.room.track.VideoTrack
+import io.livekit.android.room.track.*
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -32,6 +31,7 @@ import io.reactivex.subjects.PublishSubject
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 import org.joda.time.Duration
 import org.joda.time.LocalDateTime
 import java.io.File
@@ -209,8 +209,12 @@ class ChatRepositoryImpl(private val api: MSDApi,
     override fun getChannelMembers(): Single<List<ChannelMemberModel>> {
         val client = clientSharedPreferences.getClient()
         val channelId = client?.getChatChannelId() ?: ""
-        return api.getChannelMembers(channelId).map {
+        return api.getChannelMembers(channelId).toSingle().map {
             ChatMapper.responseToChannelMembers(it)
+        }.onErrorResumeNext {
+            Single.fromCallable {
+                listOf()
+            }
         }
     }
 
@@ -228,7 +232,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
         val client = clientSharedPreferences.getClient()
         val channelId = client?.getChatChannelId() ?: ""
         return api.postFileInChat(file.toMultipartFormData(), channelId).map {
-            ChatMapper.responseToChatFile(it, client?.id ?: "", LocalDateTime.now())
+            ChatMapper.responseToChatFile(it, client?.id ?: "", LocalDateTime.now(DateTimeZone.getDefault()))
         }
     }
 
@@ -261,38 +265,39 @@ class ChatRepositoryImpl(private val api: MSDApi,
             roomListener
         )
 
-        val localParticipant = room.localParticipant
+        val videoTrack = if (withVideo){
+            val videoTrack = room.localParticipant.createVideoTrack()
+            room.localParticipant.publishVideoTrack(videoTrack)
+            videoTrack.startCapture()
+            videoTrack
+        } else {
+            null
+        }
 
-        localParticipant.setMicrophoneEnabled(micEnabled)
-        localParticipant.setCameraEnabled(withVideo)
-
-        val audioTrack = localParticipant.createAudioTrack()
-        localParticipant.publishAudioTrack(audioTrack)
+        val audioTrack = if (micEnabled){
+            val audioTrack = room.localParticipant.createAudioTrack()
+            audioTrack.enabled = micEnabled
+            room.localParticipant.publishAudioTrack(audioTrack)
+            audioTrack
+        } else {
+            null
+        }
 
         roomInfo = RoomInfoModel(
             callType = callType,
             room = room,
             cameraEnabled = cameraEnabled,
             micEnabled = micEnabled,
-            localAudioTrack = audioTrack
+            myAudioTrack = audioTrack,
+            myVideoTrack = videoTrack
         )
 
-        if (withVideo){
-            val videoTrack = localParticipant.createVideoTrack()
-            localParticipant.publishVideoTrack(videoTrack)
-            videoTrack.startCapture()
-            roomInfo = roomInfo?.copy(
-                myVideoTrack = videoTrack
-            )
-        }
-
         clientSharedPreferences.saveLiveKitRoomCredentials(callJoin)
+        isInCall = true
 
         roomInfo?.let {
             roomInfoSubject.onNext(it)
         }
-
-        isInCall = true
 
     }
 
@@ -331,8 +336,12 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
         if (enable && roomInfo?.myVideoTrack == null){
             val videoTrack = roomInfo?.room?.localParticipant?.createVideoTrack()
-            roomInfo?.room?.localParticipant?.publishVideoTrack(videoTrack!!)
-            videoTrack?.startCapture()
+
+            videoTrack?.let {videoTrack->
+                roomInfo?.room?.localParticipant?.publishVideoTrack(videoTrack)
+                videoTrack.startCapture()
+            }
+
             roomInfo = roomInfo?.copy(
                 myVideoTrack = videoTrack
             )
@@ -346,7 +355,17 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
     override suspend fun enableMic(enable: Boolean) {
         roomInfo = roomInfo?.copy(micEnabled = enable)
-        roomInfo?.localAudioTrack?.enabled = enable
+
+        if (enable && roomInfo?.myAudioTrack == null){
+            val audioTrack =  roomInfo?.room?.localParticipant?.createAudioTrack()
+
+            audioTrack?.let { audioTrack->
+                roomInfo?.room?.localParticipant?.publishAudioTrack(audioTrack)
+            }
+            roomInfo = roomInfo?.copy(myAudioTrack = audioTrack)
+        }
+
+        roomInfo?.myAudioTrack?.enabled = enable
 
         roomInfo?.let {
             roomInfoSubject.onNext(it)
@@ -381,5 +400,38 @@ class ChatRepositoryImpl(private val api: MSDApi,
     private fun stopCallTimer(){
         callTimeDisposable?.dispose()
         callStartTime = null
+    }
+
+    override suspend fun switchCamera() {
+        val room = roomInfo?.room as Room
+        val localVideoTrackOptions = room.videoTrackCaptureDefaults
+        val myVideoTrackOptions = room.localParticipant.videoTrackCaptureDefaults
+        val myVideoTrack = (roomInfo?.myVideoTrack as LocalVideoTrack)
+        if (localVideoTrackOptions.position == CameraPosition.FRONT){
+            roomInfo = roomInfo?.copy(frontCameraEnabled = false)
+            room.localParticipant.videoTrackCaptureDefaults = myVideoTrackOptions.copy(position = CameraPosition.BACK)
+        } else {
+            roomInfo = roomInfo?.copy(frontCameraEnabled = true)
+            room.localParticipant.videoTrackCaptureDefaults = myVideoTrackOptions.copy(position = CameraPosition.FRONT)
+        }
+        myVideoTrack.restartTrack(room.localParticipant.videoTrackCaptureDefaults)
+        roomInfo?.let {
+            roomInfoSubject.onNext(it)
+        }
+    }
+
+    override suspend fun switchVideoTrack() {
+        val newValue = roomInfo?.videoTracksSwitched ?: false
+        roomInfo = roomInfo?.copy(videoTracksSwitched = !newValue)
+
+        roomInfo?.let {
+            roomInfoSubject.onNext(it)
+        }
+    }
+
+    override fun getChatFilePreview(userId: String, fileId: String): Single<String> {
+        return api.getChatFilePreview(userId, fileId).map {
+            it.filename ?: ""
+        }
     }
 }

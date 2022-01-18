@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.domain.property
 
-import android.app.Activity
 import android.content.Context
 import android.net.Uri
 import com.custom.rgs_android_dom.data.network.mappers.PropertyMapper
@@ -24,23 +23,30 @@ import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 import java.io.File
 
-class PropertyInteractor (private val propertyRepository: PropertyRepository,private val context: Context) {
+class PropertyInteractor(
+    private val propertyRepository: PropertyRepository,
+    private val context: Context
+) {
 
-    companion object{
-        const val TOTAL_MAX_SIZE = 250   // Mb
-        const val ONE_FILE_MAX_SIZE = 10 // Mb
+    companion object {
+        private const val TOTAL_MAX_SIZE = 250.0   // Mb
+        private const val ONE_FILE_MAX_SIZE = 10.0 // Mb
+
+        private val supportedFileExtensions =
+            listOf("jpeg", "jpg", "png", "bmp", "pdf", "txt", "doc", "docx", "rtf")
+        private val mediaFilesExtensions = listOf("jpeg", "jpg", "png", "bmp")
     }
 
     val selectAddressViewStateSubject = PublishSubject.create<SelectAddressViewState>()
     val selectPropertyTypeViewStateSubject = PublishSubject.create<SelectPropertyTypeViewState>()
     val propertyDetailsViewStateSubject = PublishSubject.create<PropertyDetailsViewState>()
+    val propertyInfoStateSubject = PublishSubject.create<PropertyItemModel>()
     val propertyDocumentUploadedSubject = propertyRepository.getPropertyDocumentUploadedSubject()
     private lateinit var documentValidationException: PropertyDocumentValidationException
 
     private var selectAddressViewState = SelectAddressViewState(
         isNextTextViewEnabled = false,
         propertyName = "",
-        isMyLocationImageViewVisible = false,
         updatePropertyNameEditText = false,
         propertyAddress = AddressItemModel.createEmpty()
     )
@@ -59,7 +65,7 @@ class PropertyInteractor (private val propertyRepository: PropertyRepository,pri
         entrance = "",
         corpus = "",
         floor = "",
-        flat ="",
+        flat = "",
         isOwn = null,
         isRent = null,
         isTemporary = null,
@@ -75,9 +81,9 @@ class PropertyInteractor (private val propertyRepository: PropertyRepository,pri
      *
      */
 
-    fun initPropertyName(propertyCount: Int){
-        val propertyName = if (propertyCount > 0){
-            "Мой Дом ${(propertyCount+1)}"
+    fun initPropertyName(propertyCount: Int) {
+        val propertyName = if (propertyCount > 0) {
+            "Мой Дом ${(propertyCount + 1)}"
         } else {
             "Мой Дом"
         }
@@ -89,7 +95,7 @@ class PropertyInteractor (private val propertyRepository: PropertyRepository,pri
         selectAddressViewStateSubject.onNext(selectAddressViewState)
     }
 
-    fun onPropertyNameChanged(name: String){
+    fun onPropertyNameChanged(name: String) {
         selectAddressViewState = selectAddressViewState.copy(
             propertyName = name,
             isNextTextViewEnabled = name.isNotEmpty(),
@@ -98,7 +104,7 @@ class PropertyInteractor (private val propertyRepository: PropertyRepository,pri
         selectAddressViewStateSubject.onNext(selectAddressViewState)
     }
 
-    fun onPropertyAddressChanged(address: AddressItemModel){
+    fun onPropertyAddressChanged(address: AddressItemModel) {
         selectAddressViewState = selectAddressViewState.copy(
             propertyAddress = address.copy(),
             isNextTextViewEnabled = address.addressString.isNotEmpty(),
@@ -107,17 +113,15 @@ class PropertyInteractor (private val propertyRepository: PropertyRepository,pri
         selectAddressViewStateSubject.onNext(selectAddressViewState)
     }
 
-    fun onFailedToGetLocation(){
+    fun onFailedToGetLocation() {
         selectAddressViewState = selectAddressViewState.copy(
-            isMyLocationImageViewVisible = false,
             updatePropertyNameEditText = false
         )
         selectAddressViewStateSubject.onNext(selectAddressViewState)
     }
 
-    fun onLocationLoaded(){
+    fun onLocationLoaded() {
         selectAddressViewState = selectAddressViewState.copy(
-            isMyLocationImageViewVisible = true,
             updatePropertyNameEditText = false
         )
         selectAddressViewStateSubject.onNext(selectAddressViewState)
@@ -130,7 +134,7 @@ class PropertyInteractor (private val propertyRepository: PropertyRepository,pri
      *
      */
 
-    fun selectHome(){
+    fun selectHome() {
         selectPropertyTypeViewState = selectPropertyTypeViewState.copy(
             isSelectHomeLinearLayoutSelected = true,
             isSelectAppartmentLinearLayoutSelected = false,
@@ -140,7 +144,7 @@ class PropertyInteractor (private val propertyRepository: PropertyRepository,pri
         selectPropertyTypeViewStateSubject.onNext(selectPropertyTypeViewState)
     }
 
-    fun selectApartment(){
+    fun selectApartment() {
         selectPropertyTypeViewState = selectPropertyTypeViewState.copy(
             isSelectHomeLinearLayoutSelected = false,
             isSelectAppartmentLinearLayoutSelected = true,
@@ -170,7 +174,7 @@ class PropertyInteractor (private val propertyRepository: PropertyRepository,pri
         return propertyDetailsViewState
     }
 
-    fun updatePropertyAddress(newAddress: String){
+    fun updatePropertyAddress(newAddress: String) {
         // TODO Do not forget to make a copy of such data, to avoid data loss while navigation between fragments
         val addressCopy = propertyDetailsViewState.address.copy()
         addressCopy.addressString = newAddress
@@ -178,11 +182,11 @@ class PropertyInteractor (private val propertyRepository: PropertyRepository,pri
         checkIfPropertyDetailsFieldsFilled()
     }
 
-    fun updatePropertyEntrance(entrance: String){
+    fun updatePropertyEntrance(entrance: String) {
         propertyDetailsViewState = propertyDetailsViewState.copy(entrance = entrance)
     }
 
-    fun updatePropertyCorpus(corpus: String){
+    fun updatePropertyCorpus(corpus: String) {
         propertyDetailsViewState = propertyDetailsViewState.copy(corpus = corpus.trim())
     }
 
@@ -190,7 +194,7 @@ class PropertyInteractor (private val propertyRepository: PropertyRepository,pri
         propertyDetailsViewState = propertyDetailsViewState.copy(floor = floor)
     }
 
-    fun updatePropertyFlat(flat: String){
+    fun updatePropertyFlat(flat: String) {
         propertyDetailsViewState = propertyDetailsViewState.copy(flat = flat)
     }
 
@@ -202,15 +206,15 @@ class PropertyInteractor (private val propertyRepository: PropertyRepository,pri
         propertyDetailsViewState = propertyDetailsViewState.copy(isRent = isRent)
     }
 
-    fun updatePropertyIsTemporary(isTemporary: String?){
+    fun updatePropertyIsTemporary(isTemporary: String?) {
         propertyDetailsViewState = propertyDetailsViewState.copy(isTemporary = isTemporary)
     }
 
-    fun updatePropertyTotalArea(totalArea: String){
+    fun updatePropertyTotalArea(totalArea: String) {
         propertyDetailsViewState = propertyDetailsViewState.copy(totalArea = totalArea)
     }
 
-    fun updatePropertyComment(comment: String){
+    fun updatePropertyComment(comment: String) {
         propertyDetailsViewState = propertyDetailsViewState.copy(comment = comment)
     }
 
@@ -244,7 +248,8 @@ class PropertyInteractor (private val propertyRepository: PropertyRepository,pri
 
             propertyDetailsViewState.address.addressString = addressString
 
-            val totalArea = if (propertyDetailsViewState.totalArea.isNotEmpty()) propertyDetailsViewState.totalArea.toFloat() else null
+            val totalArea =
+                if (propertyDetailsViewState.totalArea.isNotEmpty()) propertyDetailsViewState.totalArea.toFloat() else null
             val comment = propertyDetailsViewState.comment.ifEmpty { null }
 
             return postDocumentsSingle(documentsToPost)
@@ -262,21 +267,21 @@ class PropertyInteractor (private val propertyRepository: PropertyRepository,pri
                     )
                 }
         } else {
-            return Completable.error( documentValidationException )
+            return Completable.error(documentValidationException)
         }
     }
 
-    private fun postDocumentsSingle(files: List<File>) : Single<List<PropertyDocument>>{
+    private fun postDocumentsSingle(files: List<File>): Single<List<PropertyDocument>> {
         return Observable.fromArray(files)
-            .flatMapIterable {it}
+            .flatMapIterable { it }
             .flatMapSingle { file ->
                 propertyRepository.postPropertyDocument(file)
-                    .map { PropertyMapper.postPropertyDocumentToPropertyDocument(it,file) }
+                    .map { PropertyMapper.postPropertyDocumentToPropertyDocument(it, file) }
             }
             .toList()
     }
 
-    private fun urisToFiles(uris: List<Uri>): List<File>{
+    private fun urisToFiles(uris: List<Uri>): List<File> {
         val files = mutableListOf<File>()
 
         uris.forEach { uri ->
@@ -303,7 +308,8 @@ class PropertyInteractor (private val propertyRepository: PropertyRepository,pri
     }
 
     private fun checkIfPropertyDetailsFieldsFilled() {
-        propertyDetailsViewState = propertyDetailsViewState.copy(isAddTextViewEnabled = propertyDetailsViewState.address.addressString.isNotEmpty())
+        propertyDetailsViewState =
+            propertyDetailsViewState.copy(isAddTextViewEnabled = propertyDetailsViewState.address.addressString.isNotEmpty())
         propertyDetailsViewStateSubject.onNext(propertyDetailsViewState)
     }
 
@@ -311,51 +317,49 @@ class PropertyInteractor (private val propertyRepository: PropertyRepository,pri
         propertyRepository.onFilesToUploadSelected(files)
     }
 
-    private fun validateFiles( files: List<File> ): Boolean{
+    private fun validateFiles(files: List<File>): Boolean {
 
-        var totalSizeMediaFiles = 0
-        var totalSizeTextFiles = 0
-        val mediaFilesExtensions = listOf("jpeg", "jpg", "png", "bmp")
+        var totalSizeMediaFiles = 0.0
+        var totalSizeTextFiles = 0.0
 
-            files.forEach { file ->
-                if(!validateExtension(file)){
-                    documentValidationException =  UnsupportedFileType(file.extension)
-                    return false
-                }
-
-                if(!validateSize(file)){
-                    documentValidationException =  FileSizeExceeded
-                    return false
-                }
-
-                val fileExtension = file.extension
-
-                if (mediaFilesExtensions.contains(fileExtension)){
-                    totalSizeMediaFiles += file.sizeInMb.toInt()
-                } else {
-                    totalSizeTextFiles += file.sizeInMb.toInt()
-                }
-
-                if(totalSizeMediaFiles  > TOTAL_MAX_SIZE || totalSizeTextFiles > TOTAL_MAX_SIZE){
-                    documentValidationException =  TotalFilesSizeExceeded
-                    return false
-                }
-
+        files.forEach { file ->
+            if (!isExtensionValid(file)) {
+                documentValidationException = UnsupportedFileType(file.extension)
+                return false
             }
+
+            if (!isSizeValid(file)) {
+                documentValidationException = FileSizeExceeded
+                return false
+            }
+
+            val fileExtension = file.extension
+
+            if (mediaFilesExtensions.contains(fileExtension)) {
+                totalSizeMediaFiles += file.sizeInMb
+            } else {
+                totalSizeTextFiles += file.sizeInMb
+            }
+
+            if (totalSizeMediaFiles > TOTAL_MAX_SIZE || totalSizeTextFiles > TOTAL_MAX_SIZE) {
+                documentValidationException = TotalFilesSizeExceeded
+                return false
+            }
+
+        }
 
         return true
     }
 
-    private fun validateExtension(file: File): Boolean {
-        val supportedFileExtensions = listOf("jpeg", "jpg", "png", "bmp", "pdf", "txt", "doc", "rtf")
-        if (!supportedFileExtensions.contains(file.extension)){
+    private fun isExtensionValid(file: File): Boolean {
+        if (!supportedFileExtensions.contains(file.extension)) {
             return false
         }
         return true
     }
 
-    private fun validateSize(file: File): Boolean {
-        if (file.sizeInMb > ONE_FILE_MAX_SIZE){
+    private fun isSizeValid(file: File): Boolean {
+        if (file.sizeInMb > ONE_FILE_MAX_SIZE) {
             return false
         }
         return true
@@ -376,7 +380,29 @@ class PropertyInteractor (private val propertyRepository: PropertyRepository,pri
         propertyDetailsViewStateSubject.onNext(propertyDetailsViewState)
     }
 
+    fun updatePropertyItem(
+        objectId: String,
+        propertyItemModel: PropertyItemModel,
+        filesUri: List<Uri>
+    ): Single<PropertyItemModel> {
+        val documentsToPost = urisToFiles(filesUri)
+        return postDocumentsSingle(documentsToPost)
+            .flatMap { propertyDocuments ->
+                val newDocumentsList = propertyItemModel.documents + propertyDocuments
+                propertyItemModel.documents = newDocumentsList.toMutableList()
+                propertyRepository.updateProperty(
+                    objectId,
+                    propertyItemModel
+                )
+            }
+    }
+
+    fun updateDocument(
+        objectId: String,
+        propertyItemModel: PropertyItemModel
+    ) = propertyRepository.updateProperty(
+        objectId,
+        propertyItemModel
+    )
+
 }
-
-
-

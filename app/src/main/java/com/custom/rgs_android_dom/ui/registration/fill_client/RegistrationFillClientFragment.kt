@@ -9,7 +9,6 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentRegistrationFillClientBinding
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.main.MainFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.*
@@ -69,6 +68,7 @@ class RegistrationFillClientFragment : BaseFragment<RegistrationFillClientViewMo
         }
 
         binding.birthdayEditText.setOnIconClickListener {
+            hideSoftwareKeyboard()
             showDatePicker(
                 maxDate = LocalDateTime.now().minusYears(16).plusDays(-1).toDate(),
                 minDate = LocalDateTime.parse("1900-01-01").toDate()
@@ -151,6 +151,9 @@ class RegistrationFillClientFragment : BaseFragment<RegistrationFillClientViewMo
                 }
             }
         }
+        subscribe(viewModel.networkErrorObserver) {
+            toast(it)
+        }
     }
 
     override fun onStart() {
@@ -178,7 +181,6 @@ class RegistrationFillClientFragment : BaseFragment<RegistrationFillClientViewMo
     override fun onError() {
         super.onError()
         binding.saveTextView.setLoading(false)
-        toast("Произошла ошибка")
     }
 
     override fun onContent() {

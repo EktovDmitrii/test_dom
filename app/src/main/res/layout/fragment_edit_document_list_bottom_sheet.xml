@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.property.document.edit_document_list.EditDocumentListBottomSheetFragment">
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/addDocumentTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingVertical="18dp"
+        android:textColor="@color/secondary900"
+        android:textSize="20sp"
+        app:translationTextKey="Добавить контент" />
+
+    <View
+        android:id="@+id/dividerView"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/secondary200" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/editDocumentListTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingVertical="18dp"
+        android:textColor="@color/secondary900"
+        android:textSize="20sp"
+        app:translationTextKey="Редактировать список" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

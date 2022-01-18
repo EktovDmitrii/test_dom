@@ -36,6 +36,8 @@ fun File.toMultipartFormData(): MultipartBody.Part {
         "xls" -> "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         "xlsx" -> "application/vnd.ms-excel"
         "pdf" -> "application/pdf"
+        "rtf" -> "application/rtf"
+        "bmp" -> "image/bmp"
         else -> ""
     }
 

@@ -7,9 +7,12 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.DownloadManagerRequestProvider
@@ -22,6 +25,10 @@ import com.custom.rgs_android_dom.utils.*
 
 
 class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.fragment_chat) {
+
+    companion object{
+        private const val UP_DIRECTION = 1
+    }
 
     private val chatAdapter: ChatAdapter
         get() = binding.messagesRecyclerView.adapter as ChatAdapter
@@ -55,6 +62,7 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
 
         binding.messagesRecyclerView.adapter = ChatAdapter() {
             viewModel.onFileClick(it)
+            hideSoftwareKeyboard()
         }
 
         binding.backImageView.setOnDebouncedClickListener {
@@ -62,12 +70,13 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
         }
 
         binding.messageEditText.addTextChangedListener {
-            binding.sendMessageImageView.isEnabled = it.toString().isNotEmpty()
+            binding.sendMessageImageView.isEnabled = it.toString().trim().isNotEmpty()
         }
 
         binding.sendMessageImageView.setOnDebouncedClickListener {
             viewModel.onSendMessageClick(binding.messageEditText.text.toString().trim())
             binding.messageEditText.text?.clear()
+            hideSoftwareKeyboard()
         }
 
         binding.attachImageView.setOnDebouncedClickListener {
@@ -83,13 +92,24 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
             viewModel.onVideoCallClick()
         }
 
-        binding.messagesRecyclerView.addOnScrollListener(
-            ChatAnimator(binding.scrollDownImageView)
-        )
-
         binding.scrollDownImageView.setOnDebouncedClickListener {
             binding.messagesRecyclerView.smoothScrollToPosition(chatAdapter.itemCount - 1)
         }
+
+        binding.messagesRecyclerView.addOnScrollListener ( object:OnScrollListener(){
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 5 && ! binding.scrollDownImageView.isActivated) {
+                    binding.scrollDownImageView.isActivated = true
+                } else if (dy < 0 && binding.scrollDownImageView.isActivated) {
+                    binding.scrollDownImageView.isActivated = false
+                } else if (!recyclerView.canScrollVertically(UP_DIRECTION) && binding.scrollDownImageView.isActivated) {
+                    binding.scrollDownImageView.isActivated = false
+                }
+            }
+
+        })
 
         subscribe(viewModel.chatItemsObserver){
             chatAdapter.setItems(it)
@@ -132,6 +152,7 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
         binding.sendMessageBottomAppBar.visible()
     }
 
+
     private fun downloadFile(chatFile: ChatFileModel) {
         val url = "${BuildConfig.BASE_URL}/api/chat/users/${chatFile.senderId}/files/${chatFile.id}"
         val request = DownloadManagerRequestProvider.makeDownloadManagerRequest(
@@ -154,7 +175,6 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
         val intent = Intent(Intent.ACTION_VIEW, uri)
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         requireContext().startActivity(intent)
-
         requireContext().unregisterReceiver(onDownloadCompleteReceiver)
     }
 

@@ -1,8 +1,7 @@
 package com.custom.rgs_android_dom.domain.repositories
 
+import com.custom.rgs_android_dom.data.network.responses.ChatFilePreviewResponse
 import com.custom.rgs_android_dom.domain.chat.models.*
-import io.livekit.android.room.Room
-import io.livekit.android.room.track.VideoTrack
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
@@ -48,5 +47,11 @@ interface ChatRepository {
     suspend fun enableMic(enable: Boolean)
 
     suspend fun enableCamera(enable: Boolean)
+
+    suspend fun switchCamera()
+
+    suspend fun switchVideoTrack()
+
+    fun getChatFilePreview(userId: String, fileId: String): Single<String>
 
 }

@@ -2,8 +2,12 @@ package com.custom.rgs_android_dom.ui.registration.fill_client
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.custom.rgs_android_dom.data.network.data_adapters.NetworkException
+import com.custom.rgs_android_dom.data.network.toMSDErrorModel
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
+import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
+import com.custom.rgs_android_dom.domain.client.exceptions.ValidateFieldModel
 import com.custom.rgs_android_dom.domain.client.models.Gender
 import com.custom.rgs_android_dom.domain.client.view_states.FillClientViewState
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
@@ -82,6 +86,20 @@ class RegistrationFillClientViewModel(
                             loadingStateController.value = LoadingState.CONTENT
                         }
                         else -> {
+                            if (it is NetworkException) {
+                                it.toMSDErrorModel()?.let {
+                                    validateExceptionController.value = when (it.messageKey) {
+                                        CODE_INS_093 -> SpecificValidateClientExceptions(
+                                            listOf(
+                                                ValidateFieldModel(ClientField.AGENTCODE, "")
+                                            )
+                                        )
+                                        else -> return@let
+                                    }
+                                }
+                            } else {
+                                handleNetworkException(it)
+                            }
                             loadingStateController.value = LoadingState.ERROR
                         }
                     }
@@ -114,4 +132,9 @@ class RegistrationFillClientViewModel(
         clientInteractor.onAgentPhoneChanged(agentPhone, isMaskFilled)
     }
 
+    companion object {
+
+        private const val CODE_INS_093 = "errors.app.code.ins.093"
+
+    }
 }

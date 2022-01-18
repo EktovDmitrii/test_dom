@@ -1,11 +1,14 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
+import android.graphics.BitmapFactory
+import android.util.Base64
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.responses.CallInfoResponse
 import com.custom.rgs_android_dom.data.network.responses.ChannelMemberResponse
 import com.custom.rgs_android_dom.data.network.responses.ChatFileResponse
 import com.custom.rgs_android_dom.data.network.responses.ChatMessageResponse
 import com.custom.rgs_android_dom.domain.chat.models.*
+import org.joda.time.DateTimeZone
 import org.joda.time.LocalDateTime
 
 object ChatMapper{
@@ -17,13 +20,13 @@ object ChatMapper{
             ChatMessageModel(
                 channelId = messageResponse.channelId,
                 files = messageResponse.files?.map { fileResponse->
-                    responseToChatFile(fileResponse, messageResponse.userId, messageResponse.createdAt.toLocalDateTime())
+                    responseToChatFile(fileResponse, messageResponse.userId, messageResponse.createdAt.withZone(DateTimeZone.getDefault()).toLocalDateTime())
                 },
                 id = messageResponse.id ?: "",
                 message = messageResponse.message.replace("\\n", "\n"),
                 userId = messageResponse.userId,
                 sender = if (messageResponse.userId == userId) Sender.ME else Sender.OPPONENT,
-                createdAt = messageResponse.createdAt.toLocalDateTime(),
+                createdAt = messageResponse.createdAt.withZone(DateTimeZone.getDefault()).toLocalDateTime(),
                 type = messageResponse.type,
                 member = null
             )
@@ -34,13 +37,13 @@ object ChatMapper{
         return ChatMessageModel(
             channelId = messageResponse.channelId,
             files = messageResponse.files?.map { fileResponse->
-                responseToChatFile(fileResponse, messageResponse.userId, messageResponse.createdAt.toLocalDateTime())
+                responseToChatFile(fileResponse, messageResponse.userId, messageResponse.createdAt.withZone(DateTimeZone.getDefault()).toLocalDateTime())
             },
             id = messageResponse.id ?: "",
             message = messageResponse.message.replace("\\n", "\n"),
             userId = messageResponse.userId,
             sender = if (messageResponse.userId == userId) Sender.ME else Sender.OPPONENT,
-            createdAt = messageResponse.createdAt.toLocalDateTime(),
+            createdAt = messageResponse.createdAt.withZone(DateTimeZone.getDefault()).toLocalDateTime(),
             type = messageResponse.type,
             member = null
         )
@@ -65,6 +68,7 @@ object ChatMapper{
     }
 
     fun responseToChatFile(fileResponse: ChatFileResponse, senderId: String, createdAt: LocalDateTime): ChatFileModel {
+        val miniPreview = Base64.decode(fileResponse.miniPreview, Base64.DEFAULT)
         return ChatFileModel(
             senderId = senderId,
             extension = fileResponse.extension,
@@ -72,7 +76,8 @@ object ChatMapper{
             height = fileResponse.height,
             id = fileResponse.id,
             mimeType = fileResponse.mimeType,
-            miniPreview = fileResponse.miniPreview,
+            miniPreview = BitmapFactory.decodeByteArray(miniPreview, 0, miniPreview.size),
+            preview = "${BuildConfig.BASE_URL}/api/chat/users/${senderId}/files/${fileResponse.id}/preview",
             name = fileResponse.name,
             size = fileResponse.size,
             width = fileResponse.width,

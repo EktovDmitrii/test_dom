@@ -4,10 +4,13 @@ import com.google.gson.annotations.SerializedName
 
 data class UpdateDocumentsRequest(
     @SerializedName("documents")
-    val documents: List<DocumentRequest>
+    val documents: List<UpdateDocumentRequest>
 )
 
-data class DocumentRequest(
+data class UpdateDocumentRequest(
+    @SerializedName("id")
+    val id: String,
+
     @SerializedName("serial")
     val serial: String,
 

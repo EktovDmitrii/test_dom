@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.domain.client.mappers
 
-import android.util.Log
 import com.custom.rgs_android_dom.domain.client.models.ClientModel
 import com.custom.rgs_android_dom.domain.client.view_states.AgentViewState
 import com.custom.rgs_android_dom.utils.PhoneMaskHelper
@@ -15,7 +14,7 @@ object AgentMapper {
             isEditAgentButtonVisible = phone.isEmpty(),
             agentPhone = phone,
             agentCode = client.agent?.code ?: "",
-            isRequestEditContainerVisible = client.agent?.phone?.isNotEmpty() == true,
+            isRequestEditContainerVisible = client.agent?.editAgentWasRequested == true,
             isEditRequested = false
         )
     }

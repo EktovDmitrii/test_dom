@@ -1,16 +1,17 @@
 package com.custom.rgs_android_dom.data.repositories.property
 
 import android.net.Uri
+import android.util.Log
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.PropertyMapper
 import com.custom.rgs_android_dom.data.network.requests.AddPropertyRequest
 import com.custom.rgs_android_dom.data.network.requests.PropertyAddressRequest
-import com.custom.rgs_android_dom.data.network.requests.PropertyDocumentRequest
+import com.custom.rgs_android_dom.data.network.requests.UpdatePropertyRequest
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
-import com.custom.rgs_android_dom.domain.repositories.PostPropertyDocument
+import com.custom.rgs_android_dom.domain.property.models.PostPropertyDocument
 import com.custom.rgs_android_dom.domain.repositories.PropertyRepository
 import com.custom.rgs_android_dom.utils.toMultipartFormData
 import io.reactivex.Completable
@@ -18,9 +19,12 @@ import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 import java.io.File
 
-class PropertyRepositoryImpl(private val api: MSDApi, private val clientSharedPreferences: ClientSharedPreferences) : PropertyRepository {
+class PropertyRepositoryImpl(
+    private val api: MSDApi,
+    private val clientSharedPreferences: ClientSharedPreferences
+) : PropertyRepository {
 
-    companion object{
+    companion object {
         const val STORE_BUCKET = "docs"
         const val STORE_EXTENSION = ""
         const val STORE_METADATA = ""
@@ -65,13 +69,13 @@ class PropertyRepositoryImpl(private val api: MSDApi, private val clientSharedPr
     }
 
     override fun getAllProperty(): Single<List<PropertyItemModel>> {
-        return api.getAllProperty().map { response->
+        return api.getAllProperty().map { response ->
             response.objects?.map { PropertyMapper.responseToProperty(it) } ?: listOf()
         }
     }
 
     override fun getPropertyItem(objectId: String): Single<PropertyItemModel> {
-        return api.getPropertyItem(objectId).map { response->
+        return api.getPropertyItem(objectId).map { response ->
             PropertyMapper.responseToProperty(response)
         }
     }
@@ -88,9 +92,15 @@ class PropertyRepositoryImpl(private val api: MSDApi, private val clientSharedPr
         propertyDocumentsUploadedSubject.onNext(files)
     }
 
-    override fun postPropertyDocument(file: File): Single<PostPropertyDocument>{
+    override fun postPropertyDocument(file: File): Single<PostPropertyDocument> {
         return api.postPropertyDocument(file.toMultipartFormData(), STORE_BUCKET, STORE_EXTENSION, STORE_METADATA)
             .map { PropertyMapper.responseToPostPropertyDocument(it) }
     }
 
+    override fun updateProperty(objectId: String, propertyItemModel: PropertyItemModel): Single<PropertyItemModel> {
+        val updatePropertyRequest = PropertyMapper.propertyToRequest(propertyItemModel)
+        return api.updatePropertyItem(objectId, updatePropertyRequest).map { response ->
+            PropertyMapper.responseToProperty(response)
+        }
+    }
 }

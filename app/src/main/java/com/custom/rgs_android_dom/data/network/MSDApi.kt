@@ -55,7 +55,11 @@ interface MSDApi {
 
     @POST("clients/me/documents")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun postDocuments(@Body body: UpdateDocumentsRequest): Single<ClientResponse>
+    fun postDocuments(@Body body: PostDocumentsRequest): Single<ClientResponse>
+
+    @PUT("clients/me/documents")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun updateDocuments(@Body body: UpdateDocumentsRequest): Single<ClientResponse>
 
     @POST("clients/me/contacts")
     @ErrorType(MSDNetworkErrorResponse::class)
@@ -80,6 +84,10 @@ interface MSDApi {
     @POST("property/clients/me/objects")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun addProperty(@Body body: AddPropertyRequest): Completable
+
+    @PUT("property/clients/me/objects/{objectId}")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun updatePropertyItem(@Path("objectId") objectId: String ,@Body body: UpdatePropertyRequest): Single<PropertyItemResponse>
 
     @GET("property/clients/me/objects")
     @ErrorType(MSDNetworkErrorResponse::class)
@@ -112,7 +120,7 @@ interface MSDApi {
 
     @GET("chat/channels/{channelId}/members")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getChannelMembers(@Path("channelId") channelId: String): Single<List<ChannelMemberResponse>>
+    fun getChannelMembers(@Path("channelId") channelId: String): Maybe<List<ChannelMemberResponse>>
 
     @Multipart
     @POST("chat/users/me/channels/{channelId}/files")
@@ -140,4 +148,51 @@ interface MSDApi {
                              @Query("metadata") metadata: String)
     : Single<PostPropertyDocumentResponse>
 
+    @GET("services/catalog/search/query")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getCatalogNodes(@Query("rootNodeId") rootNodeId: String?, @Query("rootNodeCode") rootNodeCode: String?): Single<CatalogNodesResponse>
+
+    @GET("guests/purchase/catalog")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getGuestCatalogNodes(@Query("rootNodeId") rootNodeId: String?, @Query("rootNodeCode") rootNodeCode: String?): Single<CatalogNodesResponse>
+
+    @GET("services/search/query")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getServices(@Query("size") size: Int, @Query("index") index: Int): Single<ServiceItemsResponse>
+
+    @GET("products/search/query")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getProducts(@Query("size") size: Int, @Query("index") index: Int): Single<ProductItemsResponse>
+
+    @GET("clients/me/purchase/products/showcase")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getShowcase(@Query("tags", encoded = true) tags: String?): Single<ProductsForPurchaseResponse>
+
+    @GET("guests/purchase/products/showcase")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getGuestShowcase(@Query("tags", encoded = true) tags: String?): Single<ProductsForPurchaseResponse>
+
+    @GET("products/{productId}")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getProduct(@Path("productId") productId: String): Single<ProductResponse>
+
+    @GET("clients/me/balance/products")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getClientProducts(): Single<ClientProductsResponse>
+
+    @GET("guests/purchase/products/{productId}/services/{serviceId}/details")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getGuestServiceDetails(@Path("productId") productId: String, @Path("serviceId") serviceId: String): Single<ServiceResponse>
+
+    @GET("guests/purchase/products/{productId}/services/{serviceId}/details")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getGuestProductServicesResponse(@Path("productId") productId: String, @Query("size") size: Int, @Query("index") index: Int): Single<ProductServicesResponse>
+
+    @GET("clients/me/purchase/products/{productId}/services")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getProductServicesResponse(@Path("productId") productId: String, @Query("size") size: Int, @Query("index") index: Int): Single<ProductServicesResponse>
+
+    @GET("chat/users/{userId}/files/{fileId}/preview")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getChatFilePreview(@Path ("userId") userId: String, @Path("fileId") fileId: String): Single<ChatFilePreviewResponse>
 }

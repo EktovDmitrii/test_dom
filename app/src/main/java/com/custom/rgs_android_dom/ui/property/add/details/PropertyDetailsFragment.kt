@@ -3,28 +3,25 @@ package com.custom.rgs_android_dom.ui.property.add.details
 import android.annotation.SuppressLint
 import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.os.Bundle
-import android.util.Log
 import android.util.Size
-import android.view.*
-import android.widget.PopupWindow
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
+import android.widget.PopupWindow
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPropertyDetailsBinding
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.details.view_states.PropertyDetailsViewState
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
-import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
-import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsAdapter
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsFragment
 import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentPropertyDetailsBinding>(R.layout.fragment_property_details),
-    ConfirmBottomSheetFragment.ConfirmListener {
+class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentPropertyDetailsBinding>(R.layout.fragment_property_details){
 
     companion object {
         private const val ARG_PROPERTY_NAME = "ARG_PROPERTY_NAME"
@@ -140,21 +137,10 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
             notification(it)
         }
 
-        subscribe(viewModel.showConfirmCloseObserver){
-            val confirmDialog = ConfirmBottomSheetFragment.newInstance(
-                icon = R.drawable.ic_confirm_cancel,
-                title = "Хотите выйти?",
-                description = "Если вы покинете страницу сейчас, данные об объекте недвижимости не сохранятся",
-                confirmText = "Да, выйти",
-                cancelText = "Нет, остаться"
-            )
-            confirmDialog.show(childFragmentManager, ConfirmBottomSheetFragment.TAG)
+        subscribe(viewModel.internetConnectionObserver){
+            adapter.onInternetConnectionChanged(it)
         }
 
-    }
-
-    override fun onConfirmClick() {
-        ScreenManager.closeScope(ADD_PROPERTY)
     }
 
     private fun showHouseLayout(propertyDetailsViewState: PropertyDetailsViewState) {
@@ -172,7 +158,6 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
         binding.cityNameApartmentTextInputLayout.setText( if ( cityName.isNotEmpty() ) { cityName } else {"Не определено"} )
         binding.corpusApartmentTextInputLayout.setText(propertyDetailsViewState.corpus)
     }
-
 
     @SuppressLint("ClickableViewAccessibility")
     private fun showPopUpWindow(anchorView: View) {

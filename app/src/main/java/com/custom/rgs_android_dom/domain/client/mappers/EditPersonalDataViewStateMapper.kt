@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.domain.client.mappers
 
 import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
 import com.custom.rgs_android_dom.domain.client.models.ClientModel
+import com.custom.rgs_android_dom.domain.client.models.ClientProductsModel
 import com.custom.rgs_android_dom.domain.client.view_states.EditPersonalDataViewState
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_ONLY
 import com.custom.rgs_android_dom.utils.PhoneMaskHelper
@@ -10,7 +11,8 @@ import com.custom.rgs_android_dom.utils.formatTo
 
 object EditPersonalDataViewStateMapper {
 
-    fun from(client: ClientModel): EditPersonalDataViewState {
+    fun from(client: ClientModel, products: ClientProductsModel): EditPersonalDataViewState {
+
         val phoneMask = PhoneMaskHelper.getMaskForPhone(client.phone)
 
         val passport = client.documents?.find { it.type == ClientMapper.DOCTYPE_NATIONAL_PASSPORT }
@@ -23,7 +25,7 @@ object EditPersonalDataViewStateMapper {
             it.type == ClientMapper.CONTACT_TYPE_PHONE && it.contact != client.phone
         }?.id ?: ""
 
-        if (secondPhone.isNotEmpty()){
+        if (secondPhone.isNotEmpty()) {
             val secondPhoneMask = PhoneMaskHelper.getMaskForPhone(secondPhone)
             secondPhone = secondPhone.formatPhoneByMask(secondPhoneMask, "#")
         }
@@ -45,6 +47,7 @@ object EditPersonalDataViewStateMapper {
             isGenderSaved = client.gender != null,
             phone = client.phone.formatPhoneByMask(phoneMask, "#"),
             isPhoneSaved = client.phone.isNotEmpty(),
+            docId = passport?.id ?: "",
             docNumber = passport?.number ?: "",
             isDocNumberSaved = passport?.number?.isNotEmpty() == true,
             docSerial = passport?.serial ?: "",
@@ -55,7 +58,8 @@ object EditPersonalDataViewStateMapper {
             email = client.contacts?.find { it.type == "email" }?.contact ?: "",
             emailId = emailId,
             agentCode = client.agent?.code,
-            agentPhone = client.agent?.phone
+            agentPhone = client.agent?.phone,
+            hasProducts = products.clientProducts?.isNotEmpty() ?: false
         )
     }
 

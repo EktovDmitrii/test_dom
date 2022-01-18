@@ -82,9 +82,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:imeOptions="actionNext"
-                android:inputType="none"
+                android:inputType="textMultiLine"
                 android:maxLength="250"
+                app:enabled="false"
                 android:paddingHorizontal="20dp"
                 app:boxStrokeWidth="0dp"
                 app:boxStrokeWidthFocused="0dp"
@@ -405,7 +405,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/secondary250" />
+                android:background="@color/secondary100" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -456,6 +456,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="116dp"
                         android:orientation="horizontal"
+                        tools:listitem="@layout/item_property_upload_document"
+                        tools:itemCount="1"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>

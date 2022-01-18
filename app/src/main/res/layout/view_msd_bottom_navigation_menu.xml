@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/navigationMenu"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingHorizontal="12dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="4dp"
+    android:orientation="horizontal"
+    android:clickable="true"
+    android:background="@drawable/rectangle_filled_white_stroke_secondary_200_1dp_radius_16dp"
+    android:focusable="true">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/navMainLinearLayout"
+        android:layout_width="72dp"
+        android:layout_height="62dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <com.custom.rgs_android_dom.views.MSDImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="8dp"
+            app:srcCompat="@drawable/bottom_navigation_home_selector"/>
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/my_service_medium"
+            android:gravity="center"
+            android:textColor="@color/bottom_navigation_item_color"
+            android:textSize="12sp"
+            android:layout_marginTop="6dp"
+            app:translationTextKey="Главная" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/navCatalogLinearLayout"
+        android:layout_width="72dp"
+        android:layout_height="62dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="8dp"
+            app:tint="@color/bottom_navigation_item_color"
+            app:srcCompat="@drawable/ic_catalog_24px"/>
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/my_service_medium"
+            android:gravity="center"
+            android:textColor="@color/bottom_navigation_item_color"
+            android:textSize="12sp"
+            android:layout_marginTop="6dp"
+            app:translationTextKey="Каталог" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/navChatLinearLayout"
+        android:layout_width="72dp"
+        android:layout_height="62dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="8dp"
+            app:tint="@color/bottom_navigation_item_color"
+            app:srcCompat="@drawable/ic_chat_24px"/>
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/my_service_medium"
+            android:gravity="center"
+            android:textColor="@color/bottom_navigation_item_color"
+            android:textSize="12sp"
+            android:layout_marginTop="6dp"
+            app:translationTextKey="Чаты" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/navLoginLinearLayout"
+        android:layout_width="72dp"
+        android:layout_height="62dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="8dp"
+            app:tint="@color/bottom_navigation_item_color"
+            app:srcCompat="@drawable/ic_profile_24px"/>
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/my_service_medium"
+            android:gravity="center"
+            android:textColor="@color/bottom_navigation_item_color"
+            android:textSize="12sp"
+            android:layout_marginTop="6dp"
+            app:translationTextKey="Войти" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/navProfileLinearLayout"
+        android:layout_width="72dp"
+        android:layout_height="62dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="8dp"
+            app:tint="@color/bottom_navigation_item_color"
+            app:srcCompat="@drawable/ic_profile_24px"/>
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/my_service_medium"
+            android:gravity="center"
+            android:textColor="@color/bottom_navigation_item_color"
+            android:textSize="12sp"
+            android:layout_marginTop="6dp"
+            app:translationTextKey="Профиль" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

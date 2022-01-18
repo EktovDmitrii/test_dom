@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_activated="true">
+
+        <set android:ordering="together">
+
+            <objectAnimator
+                android:duration="300"
+                android:interpolator="@android:interpolator/decelerate_cubic">
+
+                <propertyValuesHolder
+                    android:propertyName="translationY"
+                    android:valueTo="-44dp"
+                    android:valueType="floatType" />
+
+            </objectAnimator>
+
+            <objectAnimator
+                android:duration="50"
+                android:interpolator="@android:interpolator/linear"
+                android:startOffset="100">
+
+                <propertyValuesHolder
+                    android:propertyName="elevation"
+                    android:valueTo="8dp"
+                    android:valueType="floatType" />
+
+            </objectAnimator>
+
+        </set>
+
+    </item>
+
+    <item>
+
+        <set android:ordering="together">
+
+            <objectAnimator
+                android:duration="300"
+                android:interpolator="@android:interpolator/decelerate_cubic">
+
+                <propertyValuesHolder
+                    android:propertyName="translationY"
+                    android:valueTo="0dp"
+                    android:valueType="floatType" />
+
+            </objectAnimator>
+
+            <objectAnimator
+                android:duration="50"
+                android:interpolator="@android:interpolator/linear">
+
+                <propertyValuesHolder
+                    android:propertyName="elevation"
+                    android:valueTo="0dp"
+                    android:valueType="floatType" />
+
+            </objectAnimator>
+
+        </set>
+
+    </item>
+
+</selector>
