@@ -5,7 +5,10 @@ import java.io.Serializable
 data class CatalogCategoryModel(
     val id: String,
     val title: String,
-    val icon: String,
+    val name: String,
+    val logoSmall: String,
+    val logoMiddle: String,
+    val logoLarge: String,
     val isPrimary: Boolean = false,
     val productTags: List<String>,
     var products: List<ProductShortModel>,
