@@ -52,7 +52,6 @@ class CatalogSearchViewModel(
             .subscribeBy(
                 onSuccess = {
                     popularProductsController.value = it
-
                 },
                 onError = {
                     logException(this, it)

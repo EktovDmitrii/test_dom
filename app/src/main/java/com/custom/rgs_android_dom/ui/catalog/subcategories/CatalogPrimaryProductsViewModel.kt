@@ -19,7 +19,7 @@ class CatalogPrimaryProductsViewModel(private val category: CatalogCategoryModel
 
     init {
         productsController.value = category.products
-        titleController.value = category.title
+        titleController.value = category.name
     }
 
     fun onBackClick() {
