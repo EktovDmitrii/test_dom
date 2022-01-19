@@ -59,6 +59,10 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             }
         }
 
+        binding.aboutApplicationLayout.aboutServiceTextView.setOnDebouncedClickListener {
+            viewModel.onAboutServiceClick()
+        }
+
         binding.searchTagsLayout.searchCatalogCardView.setOnDebouncedClickListener {
             viewModel.onSearchClick()
         }
@@ -73,10 +77,12 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             GridPopularServicesAdapter(
                 onServiceClick = { viewModel.onServiceClick(it) }
             )
+
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.dp_12)
         binding.popularServicesLayout.popularServicesRecyclerView.addItemDecoration(
             GridThreeSpanItemDecoration(spacingInPixels)
         )
+
         binding.popularServicesLayout.allTextView.setOnDebouncedClickListener {
             viewModel.onAllCatalogClick()
         }

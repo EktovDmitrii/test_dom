@@ -28,7 +28,7 @@ class CatalogSubcategoriesViewModel(
     val productsObserver: LiveData<List<ProductShortModel>> = productsController
 
     init {
-        titleController.value = category.title
+        titleController.value = category.name
         subcategoriesController.value = category.subCategories
         productsController.value = category.products
     }

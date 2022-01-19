@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.ui.root
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
@@ -17,7 +16,6 @@ import com.custom.rgs_android_dom.ui.registration.agreement.RegistrationAgreemen
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.ui.main.MainFragment
 import com.custom.rgs_android_dom.utils.logException
-import com.custom.rgs_android_dom.views.MSDBottomNavigationView
 import com.custom.rgs_android_dom.views.NavigationScope
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -42,8 +40,6 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
     init {
         checkSignedAgreement()
         subscribeAuthStateChanges()
-
-        Log.d("MyLog", "IS AUTHORIZED " + registrationInteractor.isAuthorized())
 
         val scopes = listOf(
             Pair(NavigationScope.NAV_PROFILE, registrationInteractor.isAuthorized()),
@@ -79,8 +75,6 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    /*ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
-                    closeController.value = Unit*/
                     val scopes = listOf(
                         Pair(NavigationScope.NAV_PROFILE, false),
                         Pair(NavigationScope.NAV_LOGIN, true)
