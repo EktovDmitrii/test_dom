@@ -49,7 +49,7 @@ class AvailableServicesAdapter(
 
         override fun bind(item: CatalogSubCategoryModel) {
             GlideApp.with(binding.iconImageView.context)
-                .load(item.icon)
+                .load(item.logoMiddle)
                 .transform(
                     CenterCrop(),
                     RoundedCorners(8f.dp(binding.iconImageView.context).toInt())
@@ -58,7 +58,7 @@ class AvailableServicesAdapter(
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(binding.iconImageView)
             binding.serviceLayout.setOnDebouncedClickListener { onServiceClick(item) }
-            binding.nameTextView.text = item.title
+            binding.nameTextView.text = item.name
             binding.quantityTextView.text = item.products.size.toString()
         }
     }

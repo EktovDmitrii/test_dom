@@ -46,11 +46,11 @@ class CatalogSubcategoriesDetailsAdapter(
         private val onProductClick: (ProductShortModel) -> Unit = {}) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: CatalogSubCategoryModel) {
-            binding.titleTextView.text = model.title
+            binding.titleTextView.text = model.name
             binding.subtitleTextView.text = "${model.products.size} видов услуг"
 
             GlideApp.with(binding.root.context)
-                .load(GlideUrlProvider.makeHeadersGlideUrl(model.icon))
+                .load(GlideUrlProvider.makeHeadersGlideUrl(model.logoMiddle))
                 .transform(RoundedCorners(12.dp(binding.root.context)))
                 .error(R.drawable.rectangle_filled_secondary_100_radius_12dp)
                 .into(binding.logoImageView)

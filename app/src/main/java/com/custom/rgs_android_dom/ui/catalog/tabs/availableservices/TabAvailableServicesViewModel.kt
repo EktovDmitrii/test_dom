@@ -18,7 +18,10 @@ class TabAvailableServicesViewModel : BaseViewModel() {
             CatalogSubCategoryModel(
                 id = "0",
                 title = "Установка раковины",
-                icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
+                name = "Установка раковины",
+                logoSmall = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
+                logoMiddle = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
+                logoLarge = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
                 parentCategoryId = "",
                 products = listOf(
                     ProductShortModel(id = "", type = "", title = "Установка раковины", code = "", versionId = "", name = "", price = 150, tags = emptyList(), icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg"),
@@ -30,7 +33,10 @@ class TabAvailableServicesViewModel : BaseViewModel() {
             CatalogSubCategoryModel(
                 id = "1",
                 title = "Установка мойки",
-                icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
+                name = "Установка мойки",
+                logoSmall = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
+                logoMiddle = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
+                logoLarge = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
                 parentCategoryId = "",
                 products = listOf(
                     ProductShortModel(id = "", type = "", title = "Установка мойки", code = "", versionId = "", name = "", price = 150, tags = emptyList(), icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg")
@@ -40,7 +46,10 @@ class TabAvailableServicesViewModel : BaseViewModel() {
             CatalogSubCategoryModel(
                 id = "2",
                 title = "Установка ванны",
-                icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
+                name = "Установка ванны",
+                logoSmall = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
+                logoMiddle = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
+                logoLarge = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
                 parentCategoryId = "",
                 products = listOf(
                     ProductShortModel(id = "", type = "", title = "Установка ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList(), icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg"),
@@ -51,7 +60,10 @@ class TabAvailableServicesViewModel : BaseViewModel() {
             CatalogSubCategoryModel(
                 id = "3",
                 title = "Ремонт ванны",
-                icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
+                name = "Ремонт ванны",
+                logoSmall = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
+                logoMiddle = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
+                logoLarge = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
                 parentCategoryId = "",
                 products = listOf(
                     ProductShortModel(id = "", type = "", title = "Ремонт ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList(), icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg"),

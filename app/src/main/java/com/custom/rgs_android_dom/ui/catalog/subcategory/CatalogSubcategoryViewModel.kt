@@ -31,9 +31,9 @@ class CatalogSubcategoryViewModel(
     val productsObserver: LiveData<List<ProductShortModel>> = productsController
 
     init {
-        titleController.value = subCategory.title
+        titleController.value = subCategory.name
         productsController.value = subCategory.products
-        iconController.value = subCategory.icon
+        iconController.value = subCategory.logoMiddle
     }
 
     fun onBackClick() {
