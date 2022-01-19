@@ -9,8 +9,11 @@ data class CatalogNodeResponse(
     @SerializedName("code")
     val code: String?,
 
-    @SerializedName("iconLink")
-    val iconLink: String?,
+    @SerializedName("name")
+    val name: String?,
+
+    @SerializedName("title")
+    val title: String?,
 
     @SerializedName("logoLarge")
     val logoLarge: String?,
@@ -21,15 +24,9 @@ data class CatalogNodeResponse(
     @SerializedName("logoSmall")
     val logoSmall: String?,
 
-    @SerializedName("name")
-    val name: String?,
-
     @SerializedName("parentNodeId")
     val parentNodeId: String?,
 
     @SerializedName("productTags")
     val productTags: List<String>?,
-
-    @SerializedName("title")
-    val title: String?
 )

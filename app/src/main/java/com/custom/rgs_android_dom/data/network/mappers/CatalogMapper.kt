@@ -20,8 +20,11 @@ object CatalogMapper {
                 val subCategory = CatalogSubCategoryModel(
                     id = subNode.id,
                     title = subNode.title ?: "",
+                    name = subNode.name ?: "",
                     parentCategoryId = categoryNode.id,
-                    icon = "${BuildConfig.BASE_URL}/api/store/${subNode.logoMiddle}",
+                    logoSmall = "${BuildConfig.BASE_URL}/api/store/${subNode.logoSmall}",
+                    logoMiddle = "${BuildConfig.BASE_URL}/api/store/${subNode.logoMiddle}",
+                    logoLarge = "${BuildConfig.BASE_URL}/api/store/${subNode.logoLarge}",
                     productTags = subNode.productTags ?: listOf(),
                     products = listOf()
                 )
@@ -31,14 +34,16 @@ object CatalogMapper {
             val category = CatalogCategoryModel(
                 id = categoryNode.id,
                 title = categoryNode.title ?: "",
-                icon = "${BuildConfig.BASE_URL}/api/store/${categoryNode.iconLink}",
+                name = categoryNode.name ?: "",
+                logoSmall = "${BuildConfig.BASE_URL}/api/store/${categoryNode.logoSmall}",
+                logoMiddle = "${BuildConfig.BASE_URL}/api/store/${categoryNode.logoMiddle}",
+                logoLarge = "${BuildConfig.BASE_URL}/api/store/${categoryNode.logoLarge}",
                 productTags = categoryNode.productTags ?: listOf(),
                 products = listOf(),
                 subCategories = subCategories,
                 isPrimary = categoryNode.id == categoryNodes[0].id
             )
             catalogCategories.add(category)
-
         }
 
         return catalogCategories
