@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.purchase_service.PurchaseServiceFragment">
+
+    <include
+        android:id="@+id/swipeAnchorLayout"
+        layout="@layout/layout_bottom_sheet_swipe_anchor" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/menusLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:layout_below="@id/swipeAnchorLayout">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/backImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="5dp"
+            android:tint="@color/secondary800"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_back_24px" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/yourOrderTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/menusLayout"
+        android:layout_marginStart="18dp"
+        android:fontFamily="@font/suisse_bold"
+        android:textColor="@color/secondary900"
+        android:textSize="20sp"
+        tools:text="Монтаж унитаза" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/yourOrderLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/yourOrderTextView"
+        android:layout_marginTop="8dp"
+        android:paddingBottom="24dp">
+
+        <com.custom.rgs_android_dom.views.MSDImageView
+            android:id="@+id/orderImg"
+            android:layout_width="66dp"
+            android:layout_height="66dp"
+            android:layout_marginStart="18dp"
+            android:background="@drawable/background_secondary100_rounded_16dp"
+            android:outlineProvider="background"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/orderNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:fontFamily="@font/suisse_regular"
+            android:textColor="@color/secondary900"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/orderImg"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Монтаж унитаза" />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/orderTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:fontFamily="@font/suisse_regular"
+            android:textColor="@color/secondary600"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/orderImg"
+            app:layout_constraintTop_toBottomOf="@id/orderNameTextView"
+            tools:text="работа займет 3 часа" />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/orderCostTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:fontFamily="@font/suisse_regular"
+            android:textColor="@color/secondary900"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/orderImg"
+            app:layout_constraintTop_toBottomOf="@id/orderTimeTextView"
+            tools:text="1500 Р" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/yourOrderLayout"
+        android:layout_marginTop="1dp"
+        android:background="@color/secondary50"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/labelImageView"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/liveTypeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:fontFamily="@font/suisse_bold"
+                android:textColor="@color/secondary900"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@id/labelImageView"
+                app:layout_constraintTop_toTopOf="@id/labelImageView"
+                tools:text="Квартира" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/addressTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:fontFamily="@font/suisse_regular"
+                android:maxLines="2"
+                android:textColor="@color/secondary900"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@id/labelImageView"
+                app:layout_constraintTop_toBottomOf="@id/liveTypeTextView"
+                tools:text="Г.Москва " />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/addAddressView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:fontFamily="@font/suisse_regular"
+                android:maxLines="2"
+                android:textColor="@color/secondary900"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@id/labelImageView"
+                app:layout_constraintTop_toBottomOf="@id/addressTextView"
+                app:translationTextKey="Добавить комментарий" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/arrowRightAddressImageView"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_arrow_right_16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="48dp"
+            android:background="@color/secondary200" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/labelChooseDateTimeImageView"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_time_16px"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/chooseDateTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:fontFamily="@font/suisse_regular"
+                android:maxLines="2"
+                android:textColor="@color/secondary900"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@id/labelChooseDateTimeImageView"
+                app:layout_constraintTop_toTopOf="@id/labelChooseDateTimeImageView"
+                tools:text="Выберите дату и время " />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/arrowRightChooseDateTimeImageView"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_arrow_right_16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="48dp"
+            android:background="@color/secondary200" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/labelCardPaymentImageView"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_payment_24px"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/cardPaymentTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:fontFamily="@font/suisse_bold"
+                android:maxLines="2"
+                android:textColor="@color/secondary900"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@id/labelCardPaymentImageView"
+                app:layout_constraintTop_toTopOf="@id/labelCardPaymentImageView"
+                tools:text="Оплата картой" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/cardTypeImageView"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                app:layout_constraintEnd_toStartOf="@id/cardNumberTextView"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/cardNumberTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:fontFamily="@font/suisse_bold"
+                android:maxLines="2"
+                android:textColor="@color/secondary900"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/labelCardPaymentImageView"
+                tools:text="9914" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="46dp"
+            android:background="@color/secondary200" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/labelAddMailImageView"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_mail_24px"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/addMailTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:fontFamily="@font/suisse_regular"
+                android:maxLines="2"
+                android:textColor="@color/secondary900"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@id/labelAddMailImageView"
+                app:layout_constraintTop_toTopOf="@id/labelAddMailImageView"
+                tools:text="Добавить почту для чека" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/arrowRightAddMailImageView"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_arrow_right_16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="46dp"
+            android:background="@color/secondary200" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/labelAgentCodeImageView"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_agent_20px"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/agentCodeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:fontFamily="@font/suisse_regular"
+                android:maxLines="2"
+                android:textColor="@color/secondary900"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@id/labelAgentCodeImageView"
+                app:layout_constraintTop_toTopOf="@id/labelAgentCodeImageView"
+                tools:text="Я знаю код агента" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/arrowRightAgentCodeImageView"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_arrow_right_16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/productMakeOrderBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_filled_primary_background"
+            android:paddingVertical="10dp">
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/btnTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:layout_marginStart="24dp"
+                android:fontFamily="@font/my_service_bold"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:translationTextKey="Заказать" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="12dp"
+                android:background="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btnPrice"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/btnPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:layout_marginEnd="24dp"
+                android:fontFamily="@font/my_service_bold"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:translationTextKey="1500₽" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</RelativeLayout>

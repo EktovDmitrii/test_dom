@@ -50,6 +50,7 @@ import com.custom.rgs_android_dom.ui.client.personal_data.request_edit.RequestEd
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsViewModel
 import com.custom.rgs_android_dom.ui.property.document.DocumentViewModel
 import com.custom.rgs_android_dom.ui.property.document.detail_document.DetailDocumentViewModel
+import com.custom.rgs_android_dom.ui.purchase_service.PurchaseServiceViewModel
 
 val viewModelModule = module {
     viewModel { parameters -> RegistrationCodeViewModel(phone = parameters[0], token = parameters[1], registrationInteractor = get(), clientInteractor = get()) }
@@ -100,4 +101,5 @@ val viewModelModule = module {
     viewModel { parameters -> CatalogPrimaryProductsViewModel(category = parameters.get()) }
     viewModel { MyProductViewModel() }
     viewModel { parameters -> ServiceViewModel(product = parameters.get()) }
+    viewModel { PurchaseServiceViewModel() }
 }
