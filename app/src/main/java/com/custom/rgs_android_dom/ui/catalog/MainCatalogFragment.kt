@@ -73,9 +73,10 @@ class MainCatalogFragment :
             when(it) {
                 TAB_ALL -> { binding.mainCatalogViewPager.currentItem = TAB_ALL }
                 TAB_MY_PRODUCTS -> {
-                    Handler(Looper.getMainLooper()).post {
-                        binding.mainCatalogViewPager.currentItem = TAB_MY_PRODUCTS
-                    }
+                    binding.mainCatalogViewPager.viewTreeObserver
+                        .addOnGlobalLayoutListener {
+                            binding.mainCatalogViewPager.currentItem = TAB_MY_PRODUCTS
+                        }
                 }
             }
         }
