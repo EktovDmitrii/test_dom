@@ -3,11 +3,16 @@ package com.custom.rgs_android_dom.data.repositories.catalog
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.CatalogMapper
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
+import com.custom.rgs_android_dom.domain.catalog.MainPopularProductModel
 import com.custom.rgs_android_dom.domain.catalog.models.*
 import com.custom.rgs_android_dom.domain.repositories.CatalogRepository
 import io.reactivex.Single
 
 class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProviderManager: AuthContentProviderManager): CatalogRepository {
+
+    companion object {
+        private const val TAG_POPULAR_PRODUCTS = "ВыводитьНаГлавной"
+    }
 
     override fun getCatalogCategories(): Single<List<CatalogCategoryModel>> {
         val catalogNodesSingle = if (authContentProviderManager.isAuthorized()){
@@ -18,18 +23,6 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
 
         return catalogNodesSingle.map { response->
             CatalogMapper.responseToCatalogCategories(response.items ?: listOf())
-        }
-    }
-
-    override fun getProducts(tags: String?): Single<List<ProductModel>> {
-        return api.getProducts(
-            size = 10,
-            index = 0,
-            tags = tags
-        ).map {response->
-            response.items?.map {
-                CatalogMapper.responseToProduct(it)
-            }
         }
     }
 
@@ -81,6 +74,34 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
                 listOf()
             }
         }
+    }
+
+    override fun getMainPopularProducts(): Single<List<MainPopularProductModel>> {
+
+        val popularProductsSingle = if (authContentProviderManager.isAuthorized()){
+            api.getCatalogNodes(null, null)
+        } else {
+            api.getGuestCatalogNodes(null, null)
+        }
+
+        return popularProductsSingle
+            .map { response ->
+            response.let {
+                it.items?.let {
+                    if (it.any {!it.productTags.isNullOrEmpty()}){
+                        it.filter {
+                            it.productTags!!.contains(TAG_POPULAR_PRODUCTS)
+                        }.map {
+                            //val productResponse = api.getProduct(it.id).blockingGet()
+                            CatalogMapper.responseToMainPopularProduct(it/*,productResponse*/)
+                        }
+                    } else {
+                        listOf()
+                    }
+                }
+            }
+        }
+
     }
 
 }

@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.main.CommentModel
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
+import com.custom.rgs_android_dom.domain.catalog.MainPopularProductModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
-import com.custom.rgs_android_dom.domain.catalog.models.ProductModel
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.about_app.AboutAppFragment
@@ -48,8 +48,8 @@ class MainViewModel(
 
     private var openAboutAppScreenAfterLogin = false
 
-    private val popularProductsController = MutableLiveData<List<ProductModel>>()
-    val popularProductsObserver: LiveData<List<ProductModel>> = popularProductsController
+    private val popularProductsController = MutableLiveData<List<MainPopularProductModel>>()
+    val popularProductsObserver: LiveData<List<MainPopularProductModel>> = popularProductsController
 
     private var allPopularProducts: CatalogCategoryModel? = null
 
@@ -89,27 +89,16 @@ class MainViewModel(
                 }
             ).addTo(dataCompositeDisposable)
 
-        catalogInteractor.getProducts(tags = ""/*todo replace with this when available "ВыводитьНаГлавной"*/)
+        catalogInteractor.getMainPopularProducts()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy (
-                onSuccess = {popularProductsController.value = it},
-                onError = {logException(this, it)}
+                onSuccess = {
+                    popularProductsController.value = it},
+                onError = {
+                    logException(this, it)}
             )
             .addTo(dataCompositeDisposable )
-
-        //todo
-        catalogInteractor.getCatalogCategories()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onSuccess = {
-                    allPopularProducts = it[0]
-                },
-                onError = {
-                    logException(this, it)
-                }
-            ).addTo(dataCompositeDisposable)
 
         rateCommentsController.value = listOf(
             CommentModel(
@@ -217,9 +206,8 @@ class MainViewModel(
         }
     }
     fun onShowAllPopularProductsClick() {
-        allPopularProducts?.let {
-            ScreenManager.showBottomScreen(CatalogSubcategoriesFragment.newInstance(it))
-        }
+            //todo navigate to MainCatalogFragment tab "Все"
+        //ScreenManager.showBottomScreen(CatalogSubcategoriesFragment.newInstance())
     }
 
     fun onPopularProductClick(productId: String) {

@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.domain.catalog
 
-import android.util.Log
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
@@ -46,10 +45,6 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
         return catalogRepository.getServices()
     }
 
-    fun getProducts(tags: String?): Single<List<ProductModel>> {
-        return catalogRepository.getProducts(tags)
-    }
-
     fun getProduct(productId: String): Single<ProductModel>{
         return catalogRepository.getProduct(productId)
     }
@@ -67,6 +62,10 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
         return catalogRepository.getShowcase(listOf(TAG_POPULAR_PRODUCTS)).map {
             it.filter { it.defaultProduct }.take(CNT_POPULAR_SERVICES_IN_MAIN)
         }
+    }
+
+    fun getMainPopularProducts(): Single<List<MainPopularProductModel>> {
+        return catalogRepository.getMainPopularProducts()
     }
 
 }

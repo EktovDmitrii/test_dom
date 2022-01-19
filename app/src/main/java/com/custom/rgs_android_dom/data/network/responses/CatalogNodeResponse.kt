@@ -3,7 +3,7 @@ package com.custom.rgs_android_dom.data.network.responses
 import com.google.gson.annotations.SerializedName
 
 data class CatalogNodeResponse(
-    @SerializedName("Id")
+    @SerializedName("id")
     val id: String,
 
     @SerializedName("code")

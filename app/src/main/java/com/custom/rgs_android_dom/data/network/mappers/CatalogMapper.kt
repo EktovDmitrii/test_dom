@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.data.network.mappers
 
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.responses.*
+import com.custom.rgs_android_dom.domain.catalog.MainPopularProductModel
 import com.custom.rgs_android_dom.domain.catalog.models.*
 import com.custom.rgs_android_dom.utils.asEnumOrDefault
 
@@ -189,6 +190,26 @@ object CatalogMapper {
             serviceId = response.serviceId,
             serviceName = response.serviceName,
             serviceVersionId = response.serviceVersionId
+        )
+    }
+
+    fun responseToMainPopularProduct(catalogNodeResponse: CatalogNodeResponse/*, productResponse: ProductResponse*/): MainPopularProductModel {
+        return MainPopularProductModel(
+            id = catalogNodeResponse.id,
+            logoLarge = "${BuildConfig.BASE_URL}/api/store/${catalogNodeResponse.logoLarge}",
+            logoSmall = "${BuildConfig.BASE_URL}/api/store/${catalogNodeResponse.logoSmall}",
+            name = catalogNodeResponse.name,
+            productTags = catalogNodeResponse.productTags,
+            price = /*if (productResponse.price != null) {
+                ProductPriceModel(
+                    amount = productResponse.price.amount,
+                    vatType = productResponse.price.vatType
+                )
+            } else { null }*/
+            ProductPriceModel(
+                amount = 12000,
+                vatType = ""
+            )
         )
     }
 
