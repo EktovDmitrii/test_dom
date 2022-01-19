@@ -185,4 +185,12 @@ class MainViewModel(
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
         }
     }
+
+    fun onCategoryClick() {
+        TODO("Not yet implemented")
+    }
+
+    fun onShowAllPopularCategoriesClick() {
+        TODO("Not yet implemented")
+    }
 }

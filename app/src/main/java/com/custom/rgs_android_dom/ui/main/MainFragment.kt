@@ -24,8 +24,14 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
     private val popularServicesAdapter: GridPopularServicesAdapter
         get() = binding.popularServicesLayout.popularServicesRecyclerView.adapter as GridPopularServicesAdapter
 
+    private val popularCategoriesAdapter: PopularCategoriesAdapter
+        get() = binding.popularCategoriesLayout.popularCategoriesRecyclerView.adapter as PopularCategoriesAdapter
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.popularCategoriesLayout.popularCategoriesRecyclerView.adapter =
+            PopularCategoriesAdapter( onCategoryClick = { viewModel.onCategoryClick() } )
 
         binding.loginLinearLayout.setOnDebouncedClickListener {
             viewModel.onLoginClick()
@@ -77,6 +83,10 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
 
         binding.popularServicesLayout.allTextView.setOnDebouncedClickListener {
             viewModel.onAllCatalogClick()
+        }
+
+        binding.popularCategoriesLayout.showAllTextView.setOnDebouncedClickListener {
+            viewModel.onShowAllPopularCategoriesClick()
         }
 
         subscribe(viewModel.registrationObserver) {
