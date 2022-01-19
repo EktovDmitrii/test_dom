@@ -2,7 +2,6 @@ package com.custom.rgs_android_dom.ui.catalog.tabs.catalog
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
@@ -42,11 +41,11 @@ class CatalogSubcategoriesWithSmallImageAdapter(
         private val onSubCategoryClick: (CatalogSubCategoryModel) -> Unit = {}) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: CatalogSubCategoryModel) {
-            binding.titleTextView.text = model.title
+            binding.titleTextView.text = model.name
             binding.subtitleTextView.text = "${model.products.size} видов услуг"
 
             GlideApp.with(binding.root.context)
-                .load(GlideUrlProvider.makeHeadersGlideUrl(model.icon))
+                .load(GlideUrlProvider.makeHeadersGlideUrl(model.logoMiddle))
                 .transform(RoundedCorners(8.dp(binding.root.context)))
                 .error(R.drawable.rectangle_filled_secondary_100_radius_8dp)
                 .into(binding.logoImageView)
