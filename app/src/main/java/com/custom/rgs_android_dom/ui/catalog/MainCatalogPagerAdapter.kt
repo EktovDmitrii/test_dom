@@ -27,7 +27,7 @@ class MainCatalogPagerAdapter(val fragment: Fragment) : FragmentStateAdapter(fra
             TAB_ALL -> TabCatalogFragment()
             TAB_PRODUCTS -> TabProductsFragment()
             TAB_AVAILABLE_SERVICES -> TabAvailableServicesFragment()
-            else -> throw RuntimeException("Wrong fragment position")
+            else -> TabCatalogFragment()
         }
 
         return fragment
