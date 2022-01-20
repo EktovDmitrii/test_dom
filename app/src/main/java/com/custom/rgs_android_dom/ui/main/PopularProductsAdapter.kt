@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.ItemMainPopularProductBinding
-import com.custom.rgs_android_dom.domain.catalog.MainPopularProductModel
+import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
 import com.custom.rgs_android_dom.utils.GlideApp
 import com.custom.rgs_android_dom.utils.formatPrice
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
@@ -13,7 +13,7 @@ import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 class PopularProductsAdapter(private val onProductClick: (productId: String) -> Unit = {}) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var products = mutableListOf<MainPopularProductModel>()
+    private var products = mutableListOf<ProductShortModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
@@ -34,7 +34,7 @@ class PopularProductsAdapter(private val onProductClick: (productId: String) -> 
         return products.size
     }
 
-    fun setItems(products: List<MainPopularProductModel>) {
+    fun setItems(products: List<ProductShortModel>) {
         this.products.addAll(products)
         notifyDataSetChanged()
     }
@@ -44,18 +44,18 @@ class PopularProductsAdapter(private val onProductClick: (productId: String) -> 
         private val onProductClick: (productId: String) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(model: MainPopularProductModel) {
+        fun bind(model: ProductShortModel) {
             binding.root.setOnDebouncedClickListener { onProductClick(model.id) }
             binding.labelTextView.text = model.name
-            binding.priceTextView.text = model.price?.amount?.formatPrice()
+            binding.priceTextView.text = model.price.formatPrice()
 
-            model.logoSmall?.let {
+            model.icon.let {
                 GlideApp.with(binding.root.context)
                     .load(GlideUrlProvider.makeHeadersGlideUrl(it))
                     .into(binding.smallLogoImageView)
             }
 
-            model.logoLarge?.let {
+            model.icon.let {
                 GlideApp.with(binding.root.context)
                     .load(GlideUrlProvider.makeHeadersGlideUrl(it))
                     .into(binding.largeLogoImageView)

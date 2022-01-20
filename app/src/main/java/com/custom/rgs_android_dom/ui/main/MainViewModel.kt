@@ -4,9 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.main.CommentModel
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
-import com.custom.rgs_android_dom.domain.catalog.MainPopularProductModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
-import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.about_app.AboutAppFragment
@@ -15,7 +13,6 @@ import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
 import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
 import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchFragment
-import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
@@ -48,10 +45,8 @@ class MainViewModel(
 
     private var openAboutAppScreenAfterLogin = false
 
-    private val popularProductsController = MutableLiveData<List<MainPopularProductModel>>()
-    val popularProductsObserver: LiveData<List<MainPopularProductModel>> = popularProductsController
-
-    private var allPopularProducts: CatalogCategoryModel? = null
+    private val popularProductsController = MutableLiveData<List<ProductShortModel>>()
+    val popularProductsObserver: LiveData<List<ProductShortModel>> = popularProductsController
 
     init {
         registrationController.value = registrationInteractor.isAuthorized().let {
@@ -101,16 +96,17 @@ class MainViewModel(
                 }
             ).addTo(dataCompositeDisposable)
 
-        catalogInteractor.getMainPopularProducts()
+        catalogInteractor.getPopularProducts()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy (
+            .subscribeBy(
                 onSuccess = {
-                    popularProductsController.value = it},
+                    popularProductsController.value = it
+                },
                 onError = {
-                    logException(this, it)}
-            )
-            .addTo(dataCompositeDisposable )
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
 
         rateCommentsController.value = listOf(
             CommentModel(
@@ -239,8 +235,7 @@ class MainViewModel(
         }
     }
     fun onShowAllPopularProductsClick() {
-            //todo navigate to MainCatalogFragment tab "Все"
-        //ScreenManager.showBottomScreen(CatalogSubcategoriesFragment.newInstance())
+        ScreenManager.showBottomScreen(MainCatalogFragment.newInstance())
     }
 
     fun onPopularProductClick(productId: String) {

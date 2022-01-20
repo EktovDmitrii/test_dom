@@ -162,7 +162,7 @@ interface MSDApi {
 
     @GET("products/search/query")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getProducts(@Query("size") size: Int, @Query("index") index: Int, @Query("tags") tags: String?): Single<ProductItemsResponse>
+    fun getProducts(@Query("size") size: Int, @Query("index") index: Int): Single<ProductItemsResponse>
 
     @GET("clients/me/purchase/products/showcase")
     @ErrorType(MSDNetworkErrorResponse::class)
