@@ -9,10 +9,6 @@ import io.reactivex.Single
 
 class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProviderManager: AuthContentProviderManager): CatalogRepository {
 
-    companion object {
-        private const val TAG_POPULAR_PRODUCTS = "ВыводитьНаГлавной"
-    }
-
     override fun getCatalogCategories(): Single<List<CatalogCategoryModel>> {
         val catalogNodesSingle = if (authContentProviderManager.isAuthorized()){
             api.getCatalogNodes(null, null)
@@ -76,6 +72,24 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
             return@map if (response.items != null) {
                 response.items.map {
                     CatalogMapper.responseToServiceShort(it)
+                }
+            } else {
+                listOf()
+            }
+        }
+    }
+
+    override fun getPopularProducts(tags: List<String>): Single<List<ProductShortModel>> {
+        val showcaseSingle = if (authContentProviderManager.isAuthorized()){
+            api.getShowcase(tags.joinToString(","), 0, 5000)
+        } else {
+            api.getGuestShowcase(tags.joinToString(","), 0, 5000)
+        }
+
+        return showcaseSingle.map { response->
+            return@map if (response.products != null) {
+                response.products.filter { it.defaultProduct == false }.map {
+                    CatalogMapper.responseToProductShort(it)
                 }
             } else {
                 listOf()

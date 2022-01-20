@@ -49,6 +49,7 @@ class PopularProductsAdapter(private val onProductClick: (productId: String) -> 
             binding.labelTextView.text = model.name
             binding.priceTextView.text = model.price.formatPrice()
 
+            // todo change icons when response data is appropriate
             model.icon.let {
                 GlideApp.with(binding.root.context)
                     .load(GlideUrlProvider.makeHeadersGlideUrl(it))

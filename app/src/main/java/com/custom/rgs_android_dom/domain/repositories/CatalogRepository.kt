@@ -17,4 +17,6 @@ interface CatalogRepository {
 
     fun getProductServices(productId: String): Single<List<ServiceShortModel>>
 
+    fun getPopularProducts(tags: List<String>): Single<List<ProductShortModel>>
+
 }
