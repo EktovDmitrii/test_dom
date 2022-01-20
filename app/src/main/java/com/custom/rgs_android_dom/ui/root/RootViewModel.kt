@@ -105,7 +105,7 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
     }
 
     fun onCatalogueClick(){
-        ScreenManager.showBottomScreen(MainCatalogFragment())
+        ScreenManager.showBottomScreen(MainCatalogFragment.newInstance())
     }
 
     fun onProfileClick(){
