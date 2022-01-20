@@ -59,7 +59,10 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
     }
 
     fun getPopularProducts(): Single<List<ProductShortModel>>{
-        return catalogRepository.getPopularProducts(listOf(TAG_POPULAR_PRODUCTS))
+        return catalogRepository.getShowcase(listOf(TAG_POPULAR_PRODUCTS))
+            .map{
+                it.filter { !it.defaultProduct }
+            }
     }
 
     fun getPopularServices(): Single<List<ProductShortModel>>{

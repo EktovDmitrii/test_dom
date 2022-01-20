@@ -79,7 +79,7 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
         }
     }
 
-    override fun getPopularProducts(tags: List<String>): Single<List<ProductShortModel>> {
+    /*override fun getPopularProducts(tags: List<String>): Single<List<ProductShortModel>> {
         val showcaseSingle = if (authContentProviderManager.isAuthorized()){
             api.getShowcase(tags.joinToString(","), 0, 5000)
         } else {
@@ -95,6 +95,6 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
                 listOf()
             }
         }
-    }
+    }*/
 
 }
