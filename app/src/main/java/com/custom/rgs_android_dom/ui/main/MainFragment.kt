@@ -31,16 +31,24 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             viewModel.onLoginClick()
         }
 
-        binding.profileLinearLayout.setOnDebouncedClickListener {
-            viewModel.onProfileClick()
-        }
-
         binding.noPropertyLinearLayout.setOnDebouncedClickListener {
             viewModel.onNoPropertyClick()
         }
 
         binding.propertyAvailableLinearLayout.setOnDebouncedClickListener {
             viewModel.onPropertyAvailableClick()
+        }
+
+        binding.sosLinearLayout.setOnDebouncedClickListener {
+            viewModel.onSOSClick()
+        }
+
+        binding.policiesLinearLayout.setOnDebouncedClickListener {
+            viewModel.onPoliciesClick()
+        }
+
+        binding.productsLinearLayout.setOnDebouncedClickListener {
+            viewModel.onProductsClick()
         }
 
         binding.searchTagsLayout.tagsFlowLayout.children.forEach { view ->
@@ -81,7 +89,6 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
 
         subscribe(viewModel.registrationObserver) {
             isAuthorized = it
-            binding.profileLinearLayout.visibleIf(it)
             binding.loginLinearLayout.goneIf(it)
             if (!it) {
                 binding.propertyAvailableLinearLayout.gone()
@@ -105,6 +112,7 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
 
             popularServicesAdapter.setItems(it)
         }
+
     }
 
     override fun onClose() {

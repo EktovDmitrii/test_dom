@@ -11,7 +11,7 @@ class MainCatalogPagerAdapter(val fragment: Fragment) : FragmentStateAdapter(fra
 
     companion object {
         private const val TABS_COUNT = 3
-        private const val TAB_CATALOG = 0
+        private const val TAB_ALL = 0
         private const val TAB_PRODUCTS = 1
         private const val TAB_AVAILABLE_SERVICES = 2
     }
@@ -23,7 +23,7 @@ class MainCatalogPagerAdapter(val fragment: Fragment) : FragmentStateAdapter(fra
     override fun createFragment(position: Int): Fragment {
 
         val fragment = when (position) {
-            TAB_CATALOG -> TabCatalogFragment()
+            TAB_ALL -> TabCatalogFragment()
             TAB_PRODUCTS -> TabProductsFragment()
             TAB_AVAILABLE_SERVICES -> TabAvailableServicesFragment()
             else -> TabCatalogFragment()

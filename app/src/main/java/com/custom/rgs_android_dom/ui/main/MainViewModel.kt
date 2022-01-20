@@ -159,10 +159,6 @@ class MainViewModel(
         ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
     }
 
-    fun onProfileClick() {
-        ScreenManager.showBottomScreen(ClientFragment())
-    }
-
     fun onNoPropertyClick() {
         ScreenManager.showScreenScope(SelectAddressFragment.newInstance(), ADD_PROPERTY)
     }
@@ -181,12 +177,37 @@ class MainViewModel(
         ScreenManager.showScreen(catalogSearchFragment)
     }
 
+    fun onSOSClick() {
+        if (registrationController.value == false) {
+            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+        } else {
+        //todo go to problem solving screen
+        }
+
+    }
+
+    fun onPoliciesClick() {
+        if (registrationController.value == false) {
+            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+        } else {
+            //todo go to PoliciesScreen
+        }
+    }
+
+    fun onProductsClick() {
+        if (registrationController.value == false) {
+            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+        } else {
+            ScreenManager.showBottomScreen(MainCatalogFragment.newInstance(MainCatalogFragment.TAB_MY_PRODUCTS))
+        }
+    }
+
     fun onServiceClick(serviceModel: ProductShortModel) {
         ScreenManager.showBottomScreen(SingleProductFragment.newInstance(serviceModel.id))
     }
 
     fun onAllCatalogClick() {
-        ScreenManager.showBottomScreen(MainCatalogFragment())
+        ScreenManager.showBottomScreen(MainCatalogFragment.newInstance())
     }
 
     fun onAboutServiceClick(){
