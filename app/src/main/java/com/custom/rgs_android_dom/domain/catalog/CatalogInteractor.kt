@@ -68,4 +68,8 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
         }
     }
 
+    fun getPopularCategories(): Single<List<CatalogCategoryModel>>{
+        return catalogRepository.getPopularCategories()
+    }
+
 }

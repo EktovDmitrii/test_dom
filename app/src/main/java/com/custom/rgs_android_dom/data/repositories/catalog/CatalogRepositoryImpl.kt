@@ -21,6 +21,18 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
         }
     }
 
+    override fun getPopularCategories(): Single<List<CatalogCategoryModel>> {
+        val catalogNodesSingle = if (authContentProviderManager.isAuthorized()){
+            api.getCatalogNodes(null, null)
+        } else {
+            api.getGuestCatalogNodes(null, null)
+        }
+
+        return catalogNodesSingle.map { response->
+            CatalogMapper.responseToCatalogCategories(response.items ?: listOf())
+        }
+    }
+
     override fun getProducts(): Single<List<ProductModel>> {
         return api.getProducts(100, 0).map {response->
             response.items?.map {

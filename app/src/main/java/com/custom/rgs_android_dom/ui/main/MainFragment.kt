@@ -31,7 +31,7 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
         super.onViewCreated(view, savedInstanceState)
 
         binding.popularCategoriesLayout.popularCategoriesRecyclerView.adapter =
-            PopularCategoriesAdapter( onCategoryClick = { viewModel.onCategoryClick() } )
+            PopularCategoriesAdapter { viewModel.onCategoryClick(it) }
 
         binding.loginLinearLayout.setOnDebouncedClickListener {
             viewModel.onLoginClick()
@@ -114,6 +114,10 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             binding.popularServicesLayout.root.goneIf(it.isEmpty())
 
             popularServicesAdapter.setItems(it)
+        }
+
+        subscribe(viewModel.popularCategoriesObserver){
+            popularCategoriesAdapter.setItems(it)
         }
     }
 
