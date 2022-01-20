@@ -1,8 +1,6 @@
 package com.custom.rgs_android_dom.ui.catalog
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import com.custom.rgs_android_dom.R

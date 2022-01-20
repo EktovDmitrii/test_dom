@@ -5,7 +5,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.custom.rgs_android_dom.ui.catalog.tabs.availableservices.TabAvailableServicesFragment
 import com.custom.rgs_android_dom.ui.catalog.tabs.catalog.TabCatalogFragment
 import com.custom.rgs_android_dom.ui.catalog.tabs.products.TabProductsFragment
-import java.lang.RuntimeException
 
 
 class MainCatalogPagerAdapter(val fragment: Fragment) : FragmentStateAdapter(fragment) {
