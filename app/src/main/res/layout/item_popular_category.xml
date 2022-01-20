@@ -27,7 +27,8 @@
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/titleTextView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
+            android:includeFontPadding="false"
             android:gravity="center_vertical"
             android:fontFamily="@font/suisse_regular"
             android:textSize="16sp"
@@ -37,7 +38,8 @@
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/quantityTextView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
+            android:includeFontPadding="false"
             android:fontFamily="@font/suisse_regular"
             android:textSize="12sp"
             android:textColor="@color/secondary900_alpha64"

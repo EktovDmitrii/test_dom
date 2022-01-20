@@ -7,8 +7,6 @@ interface CatalogRepository {
 
     fun getCatalogCategories(): Single<List<CatalogCategoryModel>>
 
-    fun getPopularCategories(): Single<List<CatalogCategoryModel>>
-
     fun getServices(): Single<List<ServiceModel>>
 
     fun getProducts(): Single<List<ProductModel>>
