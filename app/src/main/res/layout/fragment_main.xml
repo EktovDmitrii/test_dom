@@ -221,9 +221,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <include
-                android:id="@+id/storiesLayout"
-                layout="@layout/layout_main_stories" />
+            <include android:id="@+id/popularProductsLayout"
+                layout="@layout/layout_main_popular_products"/>
+
+            <include android:id="@+id/storiesLayout"
+                layout="@layout/layout_main_stories"/>
 
             <include android:id="@+id/ratingLayout"
                 layout="@layout/layout_main_rating_masters"

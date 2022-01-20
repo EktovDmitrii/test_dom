@@ -27,8 +27,14 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
     private val popularCategoriesAdapter: PopularCategoriesAdapter
         get() = binding.popularCategoriesLayout.popularCategoriesRecyclerView.adapter as PopularCategoriesAdapter
 
+    private val popularProductsAdapter: PopularProductsAdapter
+        get() = binding.popularProductsLayout.popularProductsRecyclerView.adapter as PopularProductsAdapter
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.popularProductsLayout.popularProductsRecyclerView.adapter =
+            PopularProductsAdapter { productId -> viewModel.onPopularProductClick(productId) }
 
         binding.popularCategoriesLayout.popularCategoriesRecyclerView.adapter =
             PopularCategoriesAdapter { viewModel.onCategoryClick(it) }
@@ -71,6 +77,10 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
 
         binding.searchTagsLayout.searchCatalogCardView.setOnDebouncedClickListener {
             viewModel.onSearchClick()
+        }
+
+        binding.popularProductsLayout.showAllTextView.setOnDebouncedClickListener {
+            viewModel.onShowAllPopularProductsClick()
         }
 
         GlideApp.with(requireContext())
@@ -121,6 +131,10 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             binding.popularServicesLayout.root.goneIf(it.isEmpty())
 
             popularServicesAdapter.setItems(it)
+        }
+
+        subscribe(viewModel.popularProductsObserver) {
+            popularProductsAdapter.setItems(it)
         }
 
         subscribe(viewModel.popularCategoriesObserver){

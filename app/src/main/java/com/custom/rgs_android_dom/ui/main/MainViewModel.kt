@@ -10,6 +10,7 @@ import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.about_app.AboutAppFragment
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
 import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
 import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchFragment
@@ -49,6 +50,9 @@ class MainViewModel(
     val popularCategoriesObserver: LiveData<List<CatalogCategoryModel>> = popularCategoriesController
 
     private var openAboutAppScreenAfterLogin = false
+
+    private val popularProductsController = MutableLiveData<List<ProductShortModel>>()
+    val popularProductsObserver: LiveData<List<ProductShortModel>> = popularProductsController
 
     init {
         registrationController.value = registrationInteractor.isAuthorized().let {
@@ -92,6 +96,18 @@ class MainViewModel(
             .subscribeBy(
                 onNext = {
                     getPropertyAvailability()
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
+        catalogInteractor.getPopularProducts()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    popularProductsController.value = it
                 },
                 onError = {
                     logException(this, it)
@@ -246,4 +262,12 @@ class MainViewModel(
         val mainCatalogFragment = MainCatalogFragment.newInstance()
         ScreenManager.showBottomScreen(mainCatalogFragment)
     }
+    fun onShowAllPopularProductsClick() {
+        ScreenManager.showBottomScreen(MainCatalogFragment.newInstance())
+    }
+
+    fun onPopularProductClick(productId: String) {
+        ScreenManager.showBottomScreen(ProductFragment.newInstance(productId))
+    }
+
 }

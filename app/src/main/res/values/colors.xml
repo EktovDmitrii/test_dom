@@ -38,6 +38,7 @@
     <color name="white_alpha32">#52FFFFFF</color>
     <color name="white_alpha64">#A3FFFFFF</color>
     <color name="white_alpha80">#CCFFFFFF</color>
+    <color name="white_alpha9">#17FFFFFF</color>
     <!-- TODO This is temorary name -->
     <color name="primary_200">#33F6A636</color>
     <color name="secondary900_alpha8">#1420201F</color>
