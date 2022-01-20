@@ -70,34 +70,6 @@
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <androidx.appcompat.widget.LinearLayoutCompat
-                        android:id="@+id/profileLinearLayout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="visible">
-
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_gravity="center_horizontal"
-                            android:background="@drawable/rectangle_filled_white_radius_16dp"
-                            app:shapeAppearanceOverlay="@style/RoundedCorners16dpImageViewStyle"
-                            app:srcCompat="@drawable/ic_profile_240px" />
-
-                        <com.custom.rgs_android_dom.views.text.MSDTextView
-                            android:layout_width="80dp"
-                            android:layout_height="20dp"
-                            android:layout_marginTop="4dp"
-                            android:fontFamily="@font/suisse_regular"
-                            android:gravity="center"
-                            android:includeFontPadding="false"
-                            android:textColor="@color/gray"
-                            android:textSize="13sp"
-                            app:translationTextKey="Профиль" />
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-
-                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:id="@+id/noPropertyLinearLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -151,7 +123,88 @@
                             android:includeFontPadding="false"
                             android:textColor="@color/gray"
                             android:textSize="13sp"
-                            app:translationTextKey="Дом" />
+                            app:translationTextKey="Мой Дом" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/sosLinearLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center_horizontal"
+                            app:shapeAppearanceOverlay="@style/RoundedCorners16dpImageViewStyle"
+                            android:background="@drawable/rectangle_filled_white_radius_16dp"
+                            app:srcCompat="@drawable/ic_sos_240px" />
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="80dp"
+                            android:layout_height="20dp"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/gray"
+                            android:textSize="13sp"
+                            app:translationTextKey="SOS" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/policiesLinearLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center_horizontal"
+                            app:shapeAppearanceOverlay="@style/RoundedCorners16dpImageViewStyle"
+                            android:background="@drawable/rectangle_filled_white_radius_16dp"
+                            app:srcCompat="@drawable/ic_policies_240px" />
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="80dp"
+                            android:layout_height="20dp"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/gray"
+                            android:textSize="13sp"
+                            app:translationTextKey="Полисы" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/productsLinearLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center_horizontal"
+                            app:shapeAppearanceOverlay="@style/RoundedCorners16dpImageViewStyle"
+                            android:background="@drawable/rectangle_filled_white_radius_16dp"
+                            app:srcCompat="@drawable/ic_products_240px" />
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="80dp"
+                            android:layout_height="20dp"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/gray"
+                            android:textSize="13sp"
+                            app:translationTextKey="Продукты" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 

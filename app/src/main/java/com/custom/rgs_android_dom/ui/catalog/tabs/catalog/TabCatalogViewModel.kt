@@ -14,6 +14,7 @@ import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesF
 import com.custom.rgs_android_dom.ui.catalog.subcategory.CatalogSubcategoryFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.logException
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -29,22 +30,19 @@ class TabCatalogViewModel(
     val catalogCategoriesObserver: LiveData<List<CatalogCategoryModel>> = catalogCategoriesController
 
     init {
-        catalogInteractor.getCatalogCategories()
+        Observable.merge(registrationInteractor.getLoginSubject().hide(), registrationInteractor.getLogoutSubject().hide())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe {
-                loadingStateController.value = LoadingState.LOADING
-            }
             .subscribeBy(
-                onSuccess = {
-                    catalogCategoriesController.value = it
-                    loadingStateController.value = LoadingState.CONTENT
+                onNext = {
+                    loadCatalogCategories()
                 },
                 onError = {
                     logException(this, it)
-                    loadingStateController.value = LoadingState.CONTENT
                 }
             ).addTo(dataCompositeDisposable)
+
+        loadCatalogCategories()
     }
 
 
@@ -69,5 +67,24 @@ class TabCatalogViewModel(
         if (registrationInteractor.isAuthorized()){
             ScreenManager.showBottomScreen(ProductFragment.newInstance(productModel.id))
         }
+    }
+
+    private fun loadCatalogCategories(){
+        catalogInteractor.getCatalogCategories()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                loadingStateController.value = LoadingState.LOADING
+            }
+            .subscribeBy(
+                onSuccess = {
+                    catalogCategoriesController.value = it
+                    loadingStateController.value = LoadingState.CONTENT
+                },
+                onError = {
+                    logException(this, it)
+                    loadingStateController.value = LoadingState.CONTENT
+                }
+            ).addTo(dataCompositeDisposable)
     }
 }
