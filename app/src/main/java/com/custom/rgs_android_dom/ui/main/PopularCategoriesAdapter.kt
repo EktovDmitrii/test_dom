@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.ItemPopularCategoryBinding
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
-import com.custom.rgs_android_dom.domain.main.PopularCategoryModel
 import com.custom.rgs_android_dom.utils.GlideApp
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 

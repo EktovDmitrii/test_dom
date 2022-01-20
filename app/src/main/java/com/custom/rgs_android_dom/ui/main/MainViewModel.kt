@@ -259,9 +259,9 @@ class MainViewModel(
     }
 
     fun onShowAllPopularCategoriesClick() {
-        val mainCatalogFragment = MainCatalogFragment.newInstance()
-        ScreenManager.showBottomScreen(mainCatalogFragment)
+        ScreenManager.showBottomScreen(MainCatalogFragment.newInstance())
     }
+
     fun onShowAllPopularProductsClick() {
         ScreenManager.showBottomScreen(MainCatalogFragment.newInstance())
     }
