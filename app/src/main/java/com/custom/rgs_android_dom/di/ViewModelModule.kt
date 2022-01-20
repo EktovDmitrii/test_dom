@@ -89,7 +89,7 @@ val viewModelModule = module {
     viewModel { PropertyUploadDocumentsViewModel(propertyInteractor = get()) }
     viewModel { MediaOutputChooserViewModel(mediaOutputManager = get()) }
     viewModel { RequestRationaleViewModel() }
-    viewModel { MainCatalogViewModel() }
+    viewModel { parameters -> MainCatalogViewModel(tab = parameters.get()) }
     viewModel { TabCatalogViewModel(catalogInteractor = get(), registrationInteractor = get()) }
     viewModel { TabProductsViewModel(catalogInteractor = get()) }
     viewModel { TabAvailableServicesViewModel() }

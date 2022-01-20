@@ -9,6 +9,7 @@ import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.about_app.AboutAppFragment
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
 import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
 import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchFragment
@@ -44,6 +45,9 @@ class MainViewModel(
 
     private var openAboutAppScreenAfterLogin = false
 
+    private val popularProductsController = MutableLiveData<List<ProductShortModel>>()
+    val popularProductsObserver: LiveData<List<ProductShortModel>> = popularProductsController
+
     init {
         registrationController.value = registrationInteractor.isAuthorized().let {
             if (it) getPropertyAvailability()
@@ -74,6 +78,30 @@ class MainViewModel(
             .subscribeBy(
                 onNext = {
                     registrationController.value = false
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
+        propertyInteractor.getPropertyAddedSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    getPropertyAvailability()
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
+        catalogInteractor.getPopularProducts()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    popularProductsController.value = it
                 },
                 onError = {
                     logException(this, it)
@@ -147,10 +175,6 @@ class MainViewModel(
         ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
     }
 
-    fun onProfileClick() {
-        ScreenManager.showBottomScreen(ClientFragment())
-    }
-
     fun onNoPropertyClick() {
         ScreenManager.showScreenScope(SelectAddressFragment.newInstance(), ADD_PROPERTY)
     }
@@ -169,12 +193,37 @@ class MainViewModel(
         ScreenManager.showScreen(catalogSearchFragment)
     }
 
+    fun onSOSClick() {
+        if (registrationController.value == false) {
+            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+        } else {
+        //todo go to problem solving screen
+        }
+
+    }
+
+    fun onPoliciesClick() {
+        if (registrationController.value == false) {
+            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+        } else {
+            //todo go to PoliciesScreen
+        }
+    }
+
+    fun onProductsClick() {
+        if (registrationController.value == false) {
+            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+        } else {
+            ScreenManager.showBottomScreen(MainCatalogFragment.newInstance(MainCatalogFragment.TAB_MY_PRODUCTS))
+        }
+    }
+
     fun onServiceClick(serviceModel: ProductShortModel) {
         ScreenManager.showBottomScreen(SingleProductFragment.newInstance(serviceModel.id))
     }
 
     fun onAllCatalogClick() {
-        ScreenManager.showBottomScreen(MainCatalogFragment())
+        ScreenManager.showBottomScreen(MainCatalogFragment.newInstance())
     }
 
     fun onAboutServiceClick(){
@@ -185,4 +234,12 @@ class MainViewModel(
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
         }
     }
+    fun onShowAllPopularProductsClick() {
+        ScreenManager.showBottomScreen(MainCatalogFragment.newInstance())
+    }
+
+    fun onPopularProductClick(productId: String) {
+        ScreenManager.showBottomScreen(ProductFragment.newInstance(productId))
+    }
+
 }

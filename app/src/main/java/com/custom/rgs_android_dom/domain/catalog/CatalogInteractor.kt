@@ -37,7 +37,7 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
 
                 catalogCategory.products = availableProducts.filter { it.tags.any { it in catalogCategory.productTags }}
             }
-            return@map catalogCategories.filter { it.subCategories.isNotEmpty() }
+            return@map catalogCategories.filter { it.subCategories.isNotEmpty() || it.isPrimary }.sortedByDescending { it.isPrimary }
         }
     }
 
@@ -60,6 +60,9 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
 
     fun getPopularProducts(): Single<List<ProductShortModel>>{
         return catalogRepository.getShowcase(listOf(TAG_POPULAR_PRODUCTS))
+            .map{
+                it.filter { !it.defaultProduct }
+            }
     }
 
     fun getPopularServices(): Single<List<ProductShortModel>>{

@@ -24,15 +24,17 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
     private val popularServicesAdapter: GridPopularServicesAdapter
         get() = binding.popularServicesLayout.popularServicesRecyclerView.adapter as GridPopularServicesAdapter
 
+    private val popularProductsAdapter: PopularProductsAdapter
+        get() = binding.popularProductsLayout.popularProductsRecyclerView.adapter as PopularProductsAdapter
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.popularProductsLayout.popularProductsRecyclerView.adapter =
+            PopularProductsAdapter { productId -> viewModel.onPopularProductClick(productId) }
+
         binding.loginLinearLayout.setOnDebouncedClickListener {
             viewModel.onLoginClick()
-        }
-
-        binding.profileLinearLayout.setOnDebouncedClickListener {
-            viewModel.onProfileClick()
         }
 
         binding.noPropertyLinearLayout.setOnDebouncedClickListener {
@@ -41,6 +43,18 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
 
         binding.propertyAvailableLinearLayout.setOnDebouncedClickListener {
             viewModel.onPropertyAvailableClick()
+        }
+
+        binding.sosLinearLayout.setOnDebouncedClickListener {
+            viewModel.onSOSClick()
+        }
+
+        binding.policiesLinearLayout.setOnDebouncedClickListener {
+            viewModel.onPoliciesClick()
+        }
+
+        binding.productsLinearLayout.setOnDebouncedClickListener {
+            viewModel.onProductsClick()
         }
 
         binding.searchTagsLayout.tagsFlowLayout.children.forEach { view ->
@@ -57,6 +71,10 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
 
         binding.searchTagsLayout.searchCatalogCardView.setOnDebouncedClickListener {
             viewModel.onSearchClick()
+        }
+
+        binding.popularProductsLayout.showAllTextView.setOnDebouncedClickListener {
+            viewModel.onShowAllPopularProductsClick()
         }
 
         GlideApp.with(requireContext())
@@ -81,7 +99,6 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
 
         subscribe(viewModel.registrationObserver) {
             isAuthorized = it
-            binding.profileLinearLayout.visibleIf(it)
             binding.loginLinearLayout.goneIf(it)
             if (!it) {
                 binding.propertyAvailableLinearLayout.gone()
@@ -105,6 +122,11 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
 
             popularServicesAdapter.setItems(it)
         }
+
+        subscribe(viewModel.popularProductsObserver) {
+            popularProductsAdapter.setItems(it)
+        }
+
     }
 
     override fun onClose() {
