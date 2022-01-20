@@ -5,10 +5,27 @@ import android.bluetooth.BluetoothProfile
 import android.content.Context
 import android.media.AudioDeviceInfo
 import android.media.AudioManager
+import android.util.Log
+import androidx.core.content.edit
+import com.custom.rgs_android_dom.data.preferences.AuthSharedPreferences
 import com.custom.rgs_android_dom.domain.chat.models.MediaOutputModel
 import com.custom.rgs_android_dom.domain.chat.models.MediaOutputType
+import com.custom.rgs_android_dom.utils.getEnum
+import com.custom.rgs_android_dom.utils.getSharedPrefs
+import com.custom.rgs_android_dom.utils.putEnum
+import com.f2prateek.rx.preferences2.RxSharedPreferences
+import io.reactivex.Observable
 
 class MediaOutputManager(private val context: Context) {
+
+    companion object {
+        private const val PREFS_NAME = "MEDIA_OUTPUT_PREFERENCES"
+        private const val KEY_SELECTED_MEDIA_OUTPUT = "KEY_SELECTED_MEDIA_OUTPUT"
+    }
+
+    private val preferences = context.getSharedPrefs(PREFS_NAME)
+    private val rxPreferences = RxSharedPreferences.create(preferences)
+    private val mediaOutputPreference = rxPreferences.getEnum(KEY_SELECTED_MEDIA_OUTPUT, MediaOutputType.PHONE, MediaOutputType::class.java)
 
     private val bluetoothManager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
     private val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
@@ -69,20 +86,12 @@ class MediaOutputManager(private val context: Context) {
     }
 
     fun setMediaOutput(mediaOutput: MediaOutputModel){
-        when (mediaOutput.type){
-            MediaOutputType.PHONE -> {
+        Log.d("MyLog", "Set media output")
+        mediaOutputPreference.set(mediaOutput.type)
+    }
 
-            }
-            MediaOutputType.WIRED_HEADPHONE -> {
-
-            }
-            MediaOutputType.BLUETOOTH -> {
-
-            }
-            MediaOutputType.SPEAKERPHONE -> {
-
-            }
-        }
+    fun getSelectedMediaOutputType(): Observable<MediaOutputType>{
+        return mediaOutputPreference.asObservable()
     }
 
     private fun isHeadsetOn(): Boolean {
@@ -107,6 +116,10 @@ class MediaOutputManager(private val context: Context) {
 
     private fun isPhoneOutputOn(): Boolean {
         return !audioManager.isSpeakerphoneOn && !isBTHeadsetOn() && !isHeadsetOn()
+    }
+
+    private fun getSelectedMediaOutput(): MediaOutputType {
+        return preferences.getEnum(KEY_SELECTED_MEDIA_OUTPUT, MediaOutputType.PHONE)
     }
 
 }

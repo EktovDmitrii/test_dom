@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.utils
 
+import android.content.SharedPreferences
 import kotlin.math.pow
 import kotlin.math.roundToInt
 
@@ -24,3 +25,9 @@ fun Double.roundTo(numFractionDigits: Int): Double {
 
 inline fun <reified T : Enum<T>> String?.asEnumOrDefault(defaultValue: T): T =
     enumValues<T>().firstOrNull { it.name.equals(this, ignoreCase = true) } ?: defaultValue
+
+inline fun <reified T : Enum<T>> SharedPreferences.getEnum(key: String, default: T) =
+    this.getInt(key, -1).let { if (it >= 0) enumValues<T>()[it] else default }
+
+fun <T : Enum<T>> SharedPreferences.Editor.putEnum(key: String, value: T?) : SharedPreferences.Editor =
+    this.putInt(key, value?.ordinal ?: -1)

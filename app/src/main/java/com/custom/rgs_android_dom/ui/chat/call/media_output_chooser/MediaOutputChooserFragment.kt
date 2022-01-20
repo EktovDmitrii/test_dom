@@ -28,9 +28,6 @@ class MediaOutputChooserFragment : BaseBottomSheetModalFragment<MediaOutputChoos
             adapter.setItems(it)
         }
 
-        val intent = Intent("com.android.settings.panel.action.MEDIA_OUTPUT")
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        requireContext().startActivity(intent)
     }
 
 }

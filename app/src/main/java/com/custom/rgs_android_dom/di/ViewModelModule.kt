@@ -85,9 +85,9 @@ val viewModelModule = module {
     viewModel { parameters-> ImageViewerViewModel(chatFile = parameters.get()) }
     viewModel { parameters-> ManageFileViewModel(chatFile = parameters.get()) }
     viewModel { parameters -> VideoPlayerViewModel(chatFile = parameters.get()) }
-    viewModel { parameters -> CallViewModel(callType = parameters[0], consultant = parameters[1], chatInteractor = get()) }
+    viewModel { parameters -> CallViewModel(callType = parameters[0], consultant = parameters[1], chatInteractor = get(), mediaOutputManager = get()) }
     viewModel { PropertyUploadDocumentsViewModel(propertyInteractor = get()) }
-    viewModel { MediaOutputChooserViewModel(context = get()) }
+    viewModel { MediaOutputChooserViewModel(mediaOutputManager = get()) }
     viewModel { RequestRationaleViewModel() }
     viewModel { MainCatalogViewModel() }
     viewModel { TabCatalogViewModel(catalogInteractor = get(), registrationInteractor = get()) }

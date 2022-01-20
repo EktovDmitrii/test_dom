@@ -8,12 +8,11 @@ import com.custom.rgs_android_dom.domain.chat.models.MediaOutputModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.managers.MediaOutputManager
 
-class MediaOutputChooserViewModel(private val context: Context) : BaseViewModel() {
+class MediaOutputChooserViewModel(private val mediaOutputManager: MediaOutputManager) : BaseViewModel() {
 
     private val mediaOutputsController = MutableLiveData<ArrayList<MediaOutputModel>>()
     val mediaOutputsObserver: LiveData<ArrayList<MediaOutputModel>> = mediaOutputsController
 
-    private val mediaOutputManager = MediaOutputManager(context)
 
     init {
         Log.d("MyLog", "INIT ")
@@ -27,7 +26,8 @@ class MediaOutputChooserViewModel(private val context: Context) : BaseViewModel(
     }
 
     fun onMediaOutputSelected(mediaOutput: MediaOutputModel){
-
+        mediaOutputManager.setMediaOutput(mediaOutput)
+        closeController.value = Unit
     }
 
 }

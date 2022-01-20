@@ -15,6 +15,7 @@ import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentCallBinding
 import com.custom.rgs_android_dom.domain.chat.models.CallType
 import com.custom.rgs_android_dom.domain.chat.models.ChannelMemberModel
+import com.custom.rgs_android_dom.domain.chat.models.MediaOutputType
 import com.custom.rgs_android_dom.domain.chat.models.RoomInfoModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.chat.call.media_output_chooser.MediaOutputChooserFragment
@@ -269,6 +270,21 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         subscribe(viewModel.callTimeObserver){
             binding.titleTextView.text = "Мастер онлайн"
             binding.subtitleTextView.text = it
+        }
+
+        subscribe(viewModel.mediaOutputObserver){
+            when (it){
+                MediaOutputType.PHONE,
+                MediaOutputType.WIRED_HEADPHONE -> {
+                    binding.mediaOutputImageView.setImageResource(R.drawable.ic_phone_call_24px)
+                }
+                MediaOutputType.SPEAKERPHONE -> {
+                    binding.mediaOutputImageView.setImageResource(R.drawable.ic_speaker_24px)
+                }
+                MediaOutputType.BLUETOOTH -> {
+                    binding.mediaOutputImageView.setImageResource(R.drawable.ic_bluetooth_24px)
+                }
+            }
         }
 
     }
