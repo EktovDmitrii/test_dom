@@ -243,7 +243,7 @@ class MainViewModel(
     }
 
     fun onShowAllPopularCategoriesClick() {
-        val mainCatalogFragment = MainCatalogFragment()/*.newInstance()*/
+        val mainCatalogFragment = MainCatalogFragment.newInstance()
         ScreenManager.showBottomScreen(mainCatalogFragment)
     }
 }
