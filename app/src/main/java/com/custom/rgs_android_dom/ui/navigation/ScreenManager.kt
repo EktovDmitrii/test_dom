@@ -3,11 +3,13 @@ package com.custom.rgs_android_dom.ui.navigation
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.demo.DemoFragment
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
+import com.custom.rgs_android_dom.utils.activity.hideSoftwareKeyboard
 
 object ScreenManager {
 
@@ -32,6 +34,20 @@ object ScreenManager {
 
     fun initBottomSheet(@IdRes bottomContainerId: Int) {
         this.bottomContainerId = bottomContainerId
+    }
+
+    fun resetStackAndShowScreen(
+        screen: BaseFragment<*,*>
+    ) {
+        activity?.let{
+            it.hideSoftwareKeyboard()
+            it.supportFragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            scopes.clear()
+            fragments.clear()
+            bottomFragments.clear()
+
+            showScreen(screen)
+        }
     }
 
     fun setMenu(menu: NavigationMenu) {
@@ -65,7 +81,6 @@ object ScreenManager {
         transaction.addToBackStack(menuTag.name)
         transaction.commitAllowingStateLoss()
         bottomFragments.add(fragment)
-
     }
 
     fun closeCurrentBottomFragment() {
