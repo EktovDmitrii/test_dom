@@ -162,6 +162,18 @@ class PurchaseServiceFragment :
         )
         binding.layoutPurchaseServiceAgentCode.sampleNameTextView.text = "Я знаю код агента"
         binding.makeOrderButton.btnTitle.text = "Заказать"
+//        binding.cardPaymentTimeTextView.setOnDebouncedClickListener {
+//            val selectCardBottomFragment = SelectCardBottomFragment()
+//            selectCardBottomFragment.show(childFragmentManager, selectCardBottomFragment.TAG)
+//        }
+//        binding.addMailTextView.setOnDebouncedClickListener {
+//            val addEmailBottomFragment = AddEmailBottomFragment()
+//            addEmailBottomFragment.show(childFragmentManager, addEmailBottomFragment.TAG)
+//        }
+//        binding.agentCodeTextView.setOnDebouncedClickListener {
+//            val addAgentBottomFragment = AddAgentBottomFragment()
+//            addAgentBottomFragment.show(childFragmentManager, addAgentBottomFragment.TAG)
+//        }
     }
 
 }
