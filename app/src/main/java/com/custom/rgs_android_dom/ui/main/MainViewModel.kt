@@ -6,7 +6,6 @@ import com.custom.rgs_android_dom.domain.main.CommentModel
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
-import com.custom.rgs_android_dom.domain.main.MainPageContent
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.about_app.AboutAppFragment
@@ -161,10 +160,12 @@ class MainViewModel(
             catalogInteractor.getPopularProducts(),
             catalogInteractor.getPopularCategories()
         ) { services, products, categories ->
-            MainPageContent(services, products, categories)
+            popularServicesController.postValue(services)
+            popularProductsController.postValue(products)
+            popularCategoriesController.postValue(categories)
         }
             .compose(
-                ProgressTransformer<MainPageContent>(
+                ProgressTransformer(
                     onLoading = {
                         loadingStateController.postValue(LoadingState.LOADING)
                     },
@@ -173,10 +174,6 @@ class MainViewModel(
                         loadingStateController.value = LoadingState.ERROR
                     },
                     onLoaded = {
-                        popularServicesController.value = it?.services
-                        popularProductsController.value = it?.products
-                        popularCategoriesController.value = it?.categories
-
                         loadingStateController.value = LoadingState.CONTENT
                     }
                 )
