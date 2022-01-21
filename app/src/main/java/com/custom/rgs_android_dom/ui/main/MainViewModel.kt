@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.main.CommentModel
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
+import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
@@ -13,6 +14,7 @@ import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
 import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
 import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchFragment
+import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
@@ -42,6 +44,9 @@ class MainViewModel(
 
     private val popularServicesController = MutableLiveData<List<ProductShortModel>>()
     val popularServicesObserver: LiveData<List<ProductShortModel>> = popularServicesController
+
+    private val popularCategoriesController = MutableLiveData<List<CatalogCategoryModel>>()
+    val popularCategoriesObserver: LiveData<List<CatalogCategoryModel>> = popularCategoriesController
 
     private var openAboutAppScreenAfterLogin = false
 
@@ -102,6 +107,18 @@ class MainViewModel(
             .subscribeBy(
                 onSuccess = {
                     popularProductsController.value = it
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
+        catalogInteractor.getPopularCategories()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    popularCategoriesController.value = it
                 },
                 onError = {
                     logException(this, it)
@@ -234,6 +251,16 @@ class MainViewModel(
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
         }
     }
+
+    fun onCategoryClick(category: CatalogCategoryModel) {
+        val catalogSubcategoriesFragment = CatalogSubcategoriesFragment.newInstance(category)
+        ScreenManager.showBottomScreen(catalogSubcategoriesFragment)
+    }
+
+    fun onShowAllPopularCategoriesClick() {
+        ScreenManager.showBottomScreen(MainCatalogFragment.newInstance())
+    }
+
     fun onShowAllPopularProductsClick() {
         ScreenManager.showBottomScreen(MainCatalogFragment.newInstance())
     }

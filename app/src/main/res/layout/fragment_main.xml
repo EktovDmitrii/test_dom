@@ -212,6 +212,10 @@
 
             </HorizontalScrollView>
 
+            <include
+                android:id="@+id/popularCategoriesLayout"
+                layout="@layout/layout_main_popular_categories" />
+
             <include android:id="@+id/popularServicesLayout"
                 layout="@layout/layout_main_popular_services"
                 android:layout_width="match_parent"

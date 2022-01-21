@@ -24,6 +24,9 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
     private val popularServicesAdapter: GridPopularServicesAdapter
         get() = binding.popularServicesLayout.popularServicesRecyclerView.adapter as GridPopularServicesAdapter
 
+    private val popularCategoriesAdapter: PopularCategoriesAdapter
+        get() = binding.popularCategoriesLayout.popularCategoriesRecyclerView.adapter as PopularCategoriesAdapter
+
     private val popularProductsAdapter: PopularProductsAdapter
         get() = binding.popularProductsLayout.popularProductsRecyclerView.adapter as PopularProductsAdapter
 
@@ -32,6 +35,9 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
 
         binding.popularProductsLayout.popularProductsRecyclerView.adapter =
             PopularProductsAdapter { productId -> viewModel.onPopularProductClick(productId) }
+
+        binding.popularCategoriesLayout.popularCategoriesRecyclerView.adapter =
+            PopularCategoriesAdapter { viewModel.onCategoryClick(it) }
 
         binding.loginLinearLayout.setOnDebouncedClickListener {
             viewModel.onLoginClick()
@@ -97,6 +103,10 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             viewModel.onAllCatalogClick()
         }
 
+        binding.popularCategoriesLayout.showAllTextView.setOnDebouncedClickListener {
+            viewModel.onShowAllPopularCategoriesClick()
+        }
+
         subscribe(viewModel.registrationObserver) {
             isAuthorized = it
             binding.loginLinearLayout.goneIf(it)
@@ -125,6 +135,10 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
 
         subscribe(viewModel.popularProductsObserver) {
             popularProductsAdapter.setItems(it)
+        }
+
+        subscribe(viewModel.popularCategoriesObserver){
+            popularCategoriesAdapter.setItems(it)
         }
 
     }
