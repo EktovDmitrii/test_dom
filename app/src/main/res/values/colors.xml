@@ -46,6 +46,7 @@
     <color name="secondary450">#B7B9BB</color>
     <color name="lime">#DEDFBA</color>
     <color name="gray">#333333</color>
+    <color name="isabelline">#EDEAE5</color>
 
     <!-- Text color for text input layout bottom line (overriden from default resources) -->
     <color name="mtrl_textinput_default_box_stroke_color">@color/white</color>

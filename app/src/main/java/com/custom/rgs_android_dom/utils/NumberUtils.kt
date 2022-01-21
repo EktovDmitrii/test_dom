@@ -18,3 +18,12 @@ fun Int.formatPrice(): String {
         .append(Html.fromHtml("&#x20bd",0))
         .toString()
 }
+
+fun Int.formatServiceQuantity(): String {
+    return when {
+        this.toString().takeLast(2).toInt() in 11..19 -> "$this видов услуг"
+        this.toString().takeLast(1).toInt() == 1 -> "$this вид услуг"
+        this.toString().takeLast(1).toInt() in 2..4 -> "$this вида услуг"
+        else -> "$this видов услуг"
+    }
+}
