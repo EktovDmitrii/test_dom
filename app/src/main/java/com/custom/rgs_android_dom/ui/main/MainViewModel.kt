@@ -161,10 +161,12 @@ class MainViewModel(
             catalogInteractor.getPopularProducts(),
             catalogInteractor.getPopularCategories()
         ) { services, products, categories ->
-            MainPageContent(services, products, categories)
+            popularServicesController.postValue(services)
+            popularProductsController.postValue(products)
+            popularCategoriesController.postValue(categories)
         }
             .compose(
-                ProgressTransformer<MainPageContent>(
+                ProgressTransformer(
                     onLoading = {
                         loadingStateController.postValue(LoadingState.LOADING)
                     },
@@ -173,10 +175,6 @@ class MainViewModel(
                         loadingStateController.value = LoadingState.ERROR
                     },
                     onLoaded = {
-                        popularServicesController.value = it?.services
-                        popularProductsController.value = it?.products
-                        popularCategoriesController.value = it?.categories
-
                         loadingStateController.value = LoadingState.CONTENT
                     }
                 )
