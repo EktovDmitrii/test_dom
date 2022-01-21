@@ -105,7 +105,9 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             viewModel.onAllCatalogClick()
         }
         binding.mainShimmerLayout.horizontalScrollView.setOnTouchListener { _, _ -> true }
-        binding.mainErrorLayout.errorRepeatBtn.setOnDebouncedClickListener { viewModel.getPopularProducts() }
+        binding.mainErrorLayout.errorRepeatBtn.setOnDebouncedClickListener {
+            viewModel.loadContent()
+        }
 
         binding.popularCategoriesLayout.showAllTextView.setOnDebouncedClickListener {
             viewModel.onShowAllPopularCategoriesClick()
@@ -118,8 +120,6 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
                 binding.propertyAvailableLinearLayout.gone()
                 binding.noPropertyLinearLayout.gone()
             }
-
-            viewModel.getPopularProducts()
         }
 
         subscribe(viewModel.propertyAvailabilityObserver) {

@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.domain.main.CommentModel
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
+import com.custom.rgs_android_dom.domain.main.MainPageContent
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.about_app.AboutAppFragment
@@ -21,7 +22,9 @@ import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressFragment
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
+import com.custom.rgs_android_dom.utils.ProgressTransformer
 import com.custom.rgs_android_dom.utils.logException
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -101,29 +104,7 @@ class MainViewModel(
                 }
             ).addTo(dataCompositeDisposable)
 
-        catalogInteractor.getPopularProducts()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onSuccess = {
-                    popularProductsController.value = it
-                },
-                onError = {
-                    logException(this, it)
-                }
-            ).addTo(dataCompositeDisposable)
-
-        catalogInteractor.getPopularCategories()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onSuccess = {
-                    popularCategoriesController.value = it
-                },
-                onError = {
-                    logException(this, it)
-                }
-            ).addTo(dataCompositeDisposable)
+        loadContent()
 
         rateCommentsController.value = listOf(
             CommentModel(
@@ -174,23 +155,34 @@ class MainViewModel(
             .addTo(dataCompositeDisposable)
     }
 
-    fun getPopularProducts() {
-        catalogInteractor.getPopularServices()
-            .doOnSubscribe {
-                loadingStateController.postValue(LoadingState.LOADING)
-            }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onSuccess = {
-                    popularServicesController.value = it
-                    loadingStateController.value = LoadingState.CONTENT
-                },
-                onError = {
-                    logException(this, it)
-                    loadingStateController.value = LoadingState.ERROR
-                }
-            ).addTo(dataCompositeDisposable)
+    fun loadContent() {
+        Single.zip(
+            catalogInteractor.getPopularServices(),
+            catalogInteractor.getPopularProducts(),
+            catalogInteractor.getPopularCategories()
+        ) { services, products, categories ->
+            MainPageContent(services, products, categories)
+        }
+            .compose(
+                ProgressTransformer<MainPageContent>(
+                    onLoading = {
+                        loadingStateController.postValue(LoadingState.LOADING)
+                    },
+                    onError = {
+                        logException(this, it)
+                        loadingStateController.value = LoadingState.ERROR
+                    },
+                    onLoaded = {
+                        popularServicesController.value = it?.services
+                        popularProductsController.value = it?.products
+                        popularCategoriesController.value = it?.categories
+
+                        loadingStateController.value = LoadingState.CONTENT
+                    }
+                )
+            )
+            .subscribe()
+            .addTo(dataCompositeDisposable)
     }
 
     fun onLoginClick() {
