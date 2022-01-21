@@ -115,7 +115,12 @@ class CallViewModel(private val callType: CallType,
 
     fun onVideoCallPermissionsGranted(granted: Boolean){
         cameraEnabled = granted
-        requestLiveKitToken()
+        val actualRoomInfo = chatInteractor.getActualRoomInfo()
+        if (actualRoomInfo != null) {
+            onEnableCameraClick(true)
+        } else {
+            requestLiveKitToken()
+        }
     }
 
     fun onEnableMicClick(enable: Boolean){

@@ -36,13 +36,13 @@ class MainActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        ScreenManager.init(this, R.id.vgScreensContainer)
         if (savedInstanceState == null){
-            startSplash()
             CacheHelper.init()
             loadTranslation()
             chatInteractor.connectToWebSocket()
         }
+        ScreenManager.init(this, R.id.vgScreensContainer)
+        ScreenManager.resetStackAndShowScreen(SplashFragment())
     }
 
    /* override fun dispatchTouchEvent(event: MotionEvent): Boolean {

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingVertical="12dp"
+    android:paddingHorizontal="20dp"
+    android:layout_marginBottom="16dp"
+    android:background="@drawable/rectangle_filled_white_radius_24dp"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:orientation="horizontal">
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/titleTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/my_service_bold"
+            android:textSize="16sp"
+            android:textColor="@color/secondary900"
+            app:translationTextKey="Популярные категории"/>
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/showAllTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:fontFamily="@font/suisse_regular"
+            android:textSize="16sp"
+            android:textColor="@color/primary500"
+            app:translationTextKey="Все" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/popularCategoriesRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="vertical"
+        tools:listitem="@layout/item_popular_category"
+        tools:itemCount="5"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

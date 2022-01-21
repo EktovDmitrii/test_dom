@@ -68,7 +68,13 @@ object ChatMapper{
     }
 
     fun responseToChatFile(fileResponse: ChatFileResponse, senderId: String, createdAt: LocalDateTime): ChatFileModel {
-        val miniPreview = Base64.decode(fileResponse.miniPreview, Base64.DEFAULT)
+        val miniPreview = if (fileResponse.miniPreview != null) {
+            val miniPreviewString = Base64.decode(fileResponse.miniPreview, Base64.DEFAULT)
+            BitmapFactory.decodeByteArray(miniPreviewString, 0, miniPreviewString.size)
+        } else {
+            null
+        }
+
         return ChatFileModel(
             senderId = senderId,
             extension = fileResponse.extension,
@@ -76,7 +82,7 @@ object ChatMapper{
             height = fileResponse.height,
             id = fileResponse.id,
             mimeType = fileResponse.mimeType,
-            miniPreview = BitmapFactory.decodeByteArray(miniPreview, 0, miniPreview.size),
+            miniPreview = miniPreview,
             preview = "${BuildConfig.BASE_URL}/api/chat/users/${senderId}/files/${fileResponse.id}/preview",
             name = fileResponse.name,
             size = fileResponse.size,

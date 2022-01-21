@@ -19,7 +19,9 @@ class CatalogCategoriesAdapter(
 ) : RecyclerView.Adapter<BaseViewHolder<*>>() {
 
     companion object {
-        private const val MAX_VISIBLE_SUB_CATEGORIES = 7
+        private const val MAX_VISIBLE_SUB_CATEGORIES = 6
+        private const val MIN_VISIBLE_SUBCATEGORIES_WITH_BIG_IMAGE = 3
+        
         private const val TYPE_PRIMARY_ITEM = 0
         private const val TYPE_CATEGORY_ITEM = 1
     }
@@ -30,7 +32,7 @@ class CatalogCategoriesAdapter(
         val element = catalogCategories[position]
         when (holder) {
             is ItemCatalogCategoryViewHolder -> holder.bind(element as CatalogCategoryModel)
-            is ItemCatalogProductsViewHolder -> holder.bind(element as CatalogCategoryModel)
+            is ItemCatalogPrimaryViewHolder -> holder.bind(element as CatalogCategoryModel)
             else -> throw IllegalArgumentException()
         }
     }
@@ -43,7 +45,7 @@ class CatalogCategoriesAdapter(
             }
             TYPE_PRIMARY_ITEM -> {
                 val binding = ItemCatalogPrimaryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                ItemCatalogProductsViewHolder(binding, onProductClick, onAllPrimaryProductsClick)
+                ItemCatalogPrimaryViewHolder(binding, onProductClick, onAllPrimaryProductsClick)
             }
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -67,7 +69,7 @@ class CatalogCategoriesAdapter(
         notifyDataSetChanged()
     }
 
-    inner class ItemCatalogProductsViewHolder(
+    inner class ItemCatalogPrimaryViewHolder(
         private val binding: ItemCatalogPrimaryBinding,
         private val onProductClick: (ProductShortModel) -> Unit = {},
         private val onAllPrimaryProductsClick: (CatalogCategoryModel) -> Unit = {}
@@ -98,9 +100,17 @@ class CatalogCategoriesAdapter(
             var subCategoriesWithSmallImage = listOf<CatalogSubCategoryModel>()
 
 
-            if (item.subCategories.size > 3){
-                subCategoriesWithBigImage = item.subCategories.subList(0, 3)
-                subCategoriesWithSmallImage = item.subCategories.subList(3, item.subCategories.size)
+            if (item.subCategories.size > MIN_VISIBLE_SUBCATEGORIES_WITH_BIG_IMAGE){
+                subCategoriesWithBigImage = item.subCategories.subList(0, MIN_VISIBLE_SUBCATEGORIES_WITH_BIG_IMAGE)
+                
+                val endIndex = if (item.subCategories.size >= MAX_VISIBLE_SUB_CATEGORIES){
+                    MAX_VISIBLE_SUB_CATEGORIES
+                } else {
+                    item.subCategories.size
+                }
+                
+                subCategoriesWithSmallImage = item.subCategories.subList(MIN_VISIBLE_SUBCATEGORIES_WITH_BIG_IMAGE, endIndex)
+                
             } else {
                 subCategoriesWithSmallImage = item.subCategories
             }
