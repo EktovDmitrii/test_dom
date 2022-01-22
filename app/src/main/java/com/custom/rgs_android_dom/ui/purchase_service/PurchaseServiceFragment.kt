@@ -66,13 +66,6 @@ class PurchaseServiceFragment :
         binding.layoutPurchaseServiceDateTime.layout.setOnDebouncedClickListener {
             //Todo добавлю выбор времени
         }
-        binding.layoutPurchaseServiceCardPayment.layout.setOnDebouncedClickListener {
-            //Todo посоветоваться насчет оплаты картой
-        }
-
-        binding.layoutPurchaseServiceAgentCode.layout.setOnDebouncedClickListener {
-            //Todo добавлю подтверждение агента, тоже нужно посоветоватся
-        }
         binding.makeOrderButton.productArrangeBtn.setOnDebouncedClickListener {
             //Todo добавить потом
         }
@@ -162,18 +155,19 @@ class PurchaseServiceFragment :
         )
         binding.layoutPurchaseServiceAgentCode.sampleNameTextView.text = "Я знаю код агента"
         binding.makeOrderButton.btnTitle.text = "Заказать"
-//        binding.cardPaymentTimeTextView.setOnDebouncedClickListener {
-//            val selectCardBottomFragment = SelectCardBottomFragment()
-//            selectCardBottomFragment.show(childFragmentManager, selectCardBottomFragment.TAG)
-//        }
-//        binding.addMailTextView.setOnDebouncedClickListener {
+
+        binding.layoutPurchaseServiceCardPayment.root.setOnDebouncedClickListener {
+            val selectCardBottomFragment = SelectCardBottomFragment()
+            selectCardBottomFragment.show(childFragmentManager, selectCardBottomFragment.TAG)
+        }
+//        binding.layoutPurchaseServiceMail.root.setOnDebouncedClickListener {
 //            val addEmailBottomFragment = AddEmailBottomFragment()
 //            addEmailBottomFragment.show(childFragmentManager, addEmailBottomFragment.TAG)
 //        }
-//        binding.agentCodeTextView.setOnDebouncedClickListener {
-//            val addAgentBottomFragment = AddAgentBottomFragment()
-//            addAgentBottomFragment.show(childFragmentManager, addAgentBottomFragment.TAG)
-//        }
+        binding.layoutPurchaseServiceAgentCode.root.setOnDebouncedClickListener {
+            val addAgentBottomFragment = AddAgentBottomFragment()
+            addAgentBottomFragment.show(childFragmentManager, addAgentBottomFragment.TAG)
+        }
     }
 
 }
