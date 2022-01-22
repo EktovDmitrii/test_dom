@@ -196,7 +196,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
                     room.initVideoRenderer(binding.consultantSurfaceRenderer)
                     room.initVideoRenderer(binding.mySurfaceRenderer)
 
-                    val audioManager = requireContext().getSystemService(AUDIO_SERVICE) as AudioManager
+                    /*val audioManager = requireContext().getSystemService(AUDIO_SERVICE) as AudioManager
                     with(audioManager) {
                         previousSpeakerphoneOn = isSpeakerphoneOn
                         previousMicrophoneMute = isMicrophoneMute
@@ -208,7 +208,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
                         null,
                         AudioManager.STREAM_VOICE_CALL,
                         AudioManager.AUDIOFOCUS_GAIN
-                    )
+                    )*/
 
                     renderersInited = true
 
@@ -368,12 +368,12 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
     override fun onDestroyView() {
         binding.consultantSurfaceRenderer.release()
         binding.mySurfaceRenderer.release()
-        val audioManager = requireContext().getSystemService(AUDIO_SERVICE) as AudioManager
+        /*val audioManager = requireContext().getSystemService(AUDIO_SERVICE) as AudioManager
         with(audioManager) {
             isSpeakerphoneOn = previousSpeakerphoneOn
             isMicrophoneMute = previousMicrophoneMute
             mode = AudioManager.MODE_NORMAL
-        }
+        }*/
         super.onDestroyView()
     }
 

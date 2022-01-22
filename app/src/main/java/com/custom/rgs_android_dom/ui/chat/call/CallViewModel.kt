@@ -98,18 +98,19 @@ class CallViewModel(private val callType: CallType,
                 }
             ).addTo(dataCompositeDisposable)
 
-        mediaOutputManager.getSelectedMediaOutputType()
+        mediaOutputManager.selectedMediaOutputSubject
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    Log.d("MyLog", "On next")
                     mediaOutputController.value = it
                 },
                 onError = {
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
+
+        mediaOutputController.value = mediaOutputManager.getInitialMediaOutput()
 
         callTypeController.value = callType
 

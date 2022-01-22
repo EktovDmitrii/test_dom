@@ -16,17 +16,19 @@ class MediaOutputChooserViewModel(private val mediaOutputManager: MediaOutputMan
 
     init {
         Log.d("MyLog", "INIT ")
-        mediaOutputManager.getAvailableMediaOutputs {
+        /*mediaOutputManager.getAvailableMediaOutputs {
             Log.d("MyLog", "Models size " + it.size)
             for (model in it){
                 Log.d("MyLog", "MODEL NAME " + model.name)
             }
             mediaOutputsController.value = it
-        }
+        }*/
+
+        mediaOutputsController.value = mediaOutputManager.getAvailableMediaOutputs()
     }
 
     fun onMediaOutputSelected(mediaOutput: MediaOutputModel){
-        mediaOutputManager.setMediaOutput(mediaOutput)
+        mediaOutputManager.setMediaOutput(mediaOutput.type, true)
         closeController.value = Unit
     }
 
