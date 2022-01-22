@@ -1,7 +1,5 @@
 package com.custom.rgs_android_dom.ui.chat.call.media_output_chooser
 
-import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.chat.models.MediaOutputModel
@@ -15,15 +13,6 @@ class MediaOutputChooserViewModel(private val mediaOutputManager: MediaOutputMan
 
 
     init {
-        Log.d("MyLog", "INIT ")
-        /*mediaOutputManager.getAvailableMediaOutputs {
-            Log.d("MyLog", "Models size " + it.size)
-            for (model in it){
-                Log.d("MyLog", "MODEL NAME " + model.name)
-            }
-            mediaOutputsController.value = it
-        }*/
-
         mediaOutputsController.value = mediaOutputManager.getAvailableMediaOutputs()
     }
 
