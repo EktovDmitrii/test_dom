@@ -1,8 +1,6 @@
 package com.custom.rgs_android_dom.ui.chat.call
 
 import android.Manifest
-import android.content.Context.AUDIO_SERVICE
-import android.media.AudioManager
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -100,8 +98,6 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
             }
         }
 
-    private var previousSpeakerphoneOn = true
-    private var previousMicrophoneMute = false
     private var renderersInited = false
 
     override fun getParameters(): ParametersDefinition = {
@@ -195,23 +191,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
                 roomInfo.room?.let { room ->
                     room.initVideoRenderer(binding.consultantSurfaceRenderer)
                     room.initVideoRenderer(binding.mySurfaceRenderer)
-
-                    /*val audioManager = requireContext().getSystemService(AUDIO_SERVICE) as AudioManager
-                    with(audioManager) {
-                        previousSpeakerphoneOn = isSpeakerphoneOn
-                        previousMicrophoneMute = isMicrophoneMute
-                        isSpeakerphoneOn = true
-                        isMicrophoneMute = false
-                        mode = AudioManager.MODE_IN_COMMUNICATION
-                    }
-                    val result = audioManager.requestAudioFocus(
-                        null,
-                        AudioManager.STREAM_VOICE_CALL,
-                        AudioManager.AUDIOFOCUS_GAIN
-                    )*/
-
                     renderersInited = true
-
                 }
             }
             binding.switchCameraImageView.isEnabled = roomInfo.cameraEnabled
@@ -368,12 +348,6 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
     override fun onDestroyView() {
         binding.consultantSurfaceRenderer.release()
         binding.mySurfaceRenderer.release()
-        /*val audioManager = requireContext().getSystemService(AUDIO_SERVICE) as AudioManager
-        with(audioManager) {
-            isSpeakerphoneOn = previousSpeakerphoneOn
-            isMicrophoneMute = previousMicrophoneMute
-            mode = AudioManager.MODE_NORMAL
-        }*/
         super.onDestroyView()
     }
 
