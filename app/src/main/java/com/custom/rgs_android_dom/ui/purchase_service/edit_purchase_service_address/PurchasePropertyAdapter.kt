@@ -11,45 +11,45 @@ import com.custom.rgs_android_dom.utils.gone
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.visible
 
-class EditPurchaseServicePropertyAdapter(
+class PurchasePropertyAdapter(
     private val onPropertyClick: (PropertyItemModel) -> Unit,
-) : RecyclerView.Adapter<EditPurchaseServicePropertyAdapter.EditPurchaseServicePropertyViewHolder>() {
+) : RecyclerView.Adapter<PurchasePropertyAdapter.PurchasePropertyViewHolder>() {
 
-    private var propertyItem = mutableListOf<PropertyItemModel>()
+    private var propertyItems = mutableListOf<PropertyItemModel>()
 
     private var currentPropertyItemModel: PropertyItemModel? = null
 
-    override fun onBindViewHolder(holder: EditPurchaseServicePropertyViewHolder, position: Int) {
-        (holder).bind(propertyItem[position])
+    override fun onBindViewHolder(holder: PurchasePropertyViewHolder, position: Int) {
+        (holder).bind(propertyItems[position])
     }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): EditPurchaseServicePropertyViewHolder {
+    ): PurchasePropertyViewHolder {
         val binding = ItemPurchaseServicePropertyBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
-        return EditPurchaseServicePropertyViewHolder(binding, onPropertyClick)
+        return PurchasePropertyViewHolder(binding, onPropertyClick)
     }
 
     override fun getItemCount(): Int {
-        return propertyItem.size
+        return propertyItems.size
     }
 
     fun setItems(
         propertyList: List<PropertyItemModel>,
-        selectedPropertyItemModel: PropertyItemModel
+        selectedProperty: PropertyItemModel
     ) {
-        propertyItem.clear()
-        propertyItem.addAll(propertyList)
-        currentPropertyItemModel = selectedPropertyItemModel
+        propertyItems.clear()
+        propertyItems.addAll(propertyList)
+        currentPropertyItemModel = selectedProperty
         notifyDataSetChanged()
     }
 
-    inner class EditPurchaseServicePropertyViewHolder(
+    inner class PurchasePropertyViewHolder(
         private val binding: ItemPurchaseServicePropertyBinding,
         private val onPropertyClick: (PropertyItemModel) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {

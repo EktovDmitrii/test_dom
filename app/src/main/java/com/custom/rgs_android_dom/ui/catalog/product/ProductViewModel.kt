@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.ui.catalog.product
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
@@ -15,7 +14,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.purchase_service.PurchaseServiceFragment
 
@@ -95,7 +93,7 @@ class ProductViewModel(
             versionId = null,
             versionStatus = null
         )
-        val singleProductFragment = ServiceFragment.newInstance(product)
-        ScreenManager.showBottomScreen(singleProductFragment)
+        val serviceFragment = ServiceFragment.newInstance(product)
+        ScreenManager.showBottomScreen(serviceFragment)
     }
 }

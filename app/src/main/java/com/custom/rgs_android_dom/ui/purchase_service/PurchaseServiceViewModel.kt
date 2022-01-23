@@ -10,7 +10,7 @@ import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressFragment
-import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_service_address.EditPurchaseServiceAddressFragment
+import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_service_address.PurchaseAddressFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -59,15 +59,19 @@ class PurchaseServiceViewModel(
         oldValue?.let { purchaseServiceController.postValue(it) }
     }
 
-    fun updateComment(comment:String){
+    fun updateComment(comment: String) {
         val oldValue = purchaseServiceController.value
         oldValue?.comment = comment
         oldValue?.let { purchaseServiceController.postValue(it) }
     }
 
     fun onAddressClick(childFragmentManager: FragmentManager) {
-        val editDocumentBottomSheetFragment = EditPurchaseServiceAddressFragment.newInstance(purchaseServiceController.value?.propertyItemModel)
-        editDocumentBottomSheetFragment.show(childFragmentManager, EditPurchaseServiceAddressFragment.TAG)
+        val editDocumentBottomSheetFragment =
+            PurchaseAddressFragment.newInstance(purchaseServiceController.value?.propertyItemModel)
+        editDocumentBottomSheetFragment.show(
+            childFragmentManager,
+            editDocumentBottomSheetFragment.TAG
+        )
     }
 
     fun onAddPropertyClick() {

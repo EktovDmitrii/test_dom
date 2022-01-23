@@ -11,9 +11,8 @@ import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.domain.purchase_service.PurchaseServiceModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
-import com.custom.rgs_android_dom.ui.purchase_service.add_purchase_service_comment.EditPurchaseServiceCommentFragment
-import com.custom.rgs_android_dom.ui.purchase_service.add_purchase_service_email.EditPurchaseServiceEmailFragment
-import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_service_address.EditPurchaseServiceAddressFragment
+import com.custom.rgs_android_dom.ui.purchase_service.add_purchase_service_comment.PurchaseCommentFragment
+import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_service_address.PurchaseAddressFragment
 import com.custom.rgs_android_dom.utils.DigitsFormatter
 import com.custom.rgs_android_dom.utils.GlideApp
 import com.custom.rgs_android_dom.utils.args
@@ -25,9 +24,9 @@ import org.koin.core.parameter.parametersOf
 
 class PurchaseServiceFragment :
     BaseBottomSheetFragment<PurchaseServiceViewModel, FragmentPurchaseServiceBinding>(),
-    EditPurchaseServiceAddressFragment.EditPurchaseServiceAddressListener,
-    EditPurchaseServiceEmailFragment.EditPurchaseServiceEmailListener,
-    EditPurchaseServiceCommentFragment.EditPurchaseServiceCommentListener {
+    PurchaseAddressFragment.EditPurchaseServiceAddressListener,
+    PurchaseCommentFragment.EditPurchaseServiceCommentListener {
+
     override val TAG: String = "PURCHASE_SERVICE_FRAGMENT"
 
     companion object {
@@ -56,12 +55,10 @@ class PurchaseServiceFragment :
             viewModel.onAddressClick(childFragmentManager)
         }
         binding.layoutPurchaseServiceMail.layout.setOnDebouncedClickListener {
-            val editPurchaseServiceEmail = EditPurchaseServiceEmailFragment.newInstance()
-            editPurchaseServiceEmail.show(childFragmentManager, EditPurchaseServiceEmailFragment.TAG)
         }
         binding.addCommmentTextView.setOnDebouncedClickListener {
-            val editPurchaseServiceComment = EditPurchaseServiceCommentFragment.newInstance()
-            editPurchaseServiceComment.show(childFragmentManager, EditPurchaseServiceCommentFragment.TAG)
+            val editPurchaseServiceComment = PurchaseCommentFragment.newInstance()
+            editPurchaseServiceComment.show(childFragmentManager, PurchaseCommentFragment.TAG)
         }
         binding.layoutPurchaseServiceDateTime.layout.setOnDebouncedClickListener {
             //Todo добавлю выбор времени
@@ -126,10 +123,6 @@ class PurchaseServiceFragment :
 
     override fun onAddPropertyClick() {
         viewModel.onAddPropertyClick()
-    }
-
-    override fun onSaveMailClick(email: String) {
-        viewModel.updateEmail(email)
     }
 
     override fun onSaveCommentClick(comment: String) {

@@ -7,22 +7,22 @@ import android.view.ViewGroup
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.custom.rgs_android_dom.R
-import com.custom.rgs_android_dom.databinding.FragmentEditPurchaseServiceCommentBinding
+import com.custom.rgs_android_dom.databinding.FragmentPurchaseCommentBinding
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.io.Serializable
 
-class EditPurchaseServiceCommentFragment : BottomSheetDialogFragment() {
+class PurchaseCommentFragment : BottomSheetDialogFragment() {
 
-    private val binding: FragmentEditPurchaseServiceCommentBinding by viewBinding(createMethod = CreateMethod.INFLATE)
+    private val binding: FragmentPurchaseCommentBinding by viewBinding(createMethod = CreateMethod.INFLATE)
 
     private var editPurchaseServiceCommentListener: EditPurchaseServiceCommentListener? = null
 
     companion object {
         const val TAG: String = "EDIT_PURCHASE_SERVICE_COMMENT_FRAGMENT"
 
-        fun newInstance(): EditPurchaseServiceCommentFragment =
-            EditPurchaseServiceCommentFragment()
+        fun newInstance(): PurchaseCommentFragment =
+            PurchaseCommentFragment()
     }
 
     override fun getTheme(): Int {
