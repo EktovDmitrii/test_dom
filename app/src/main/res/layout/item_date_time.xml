@@ -3,11 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_weight="1"
     android:orientation="vertical">
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
-        android:id="@+id/legendDayOfWeekTextView"
+        android:id="@+id/dayOfWeekTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -18,12 +17,12 @@
         tools:text="Пн" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
-        android:id="@+id/legendMondayTextView"
+        android:id="@+id/dayNumberTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_weight="1"
-        android:fontFamily="@font/my_service_regular"
+        android:fontFamily="@font/my_service_bold"
         android:layout_gravity="center_horizontal"
         android:padding="10dp"
         android:textColor="@color/secondary800"

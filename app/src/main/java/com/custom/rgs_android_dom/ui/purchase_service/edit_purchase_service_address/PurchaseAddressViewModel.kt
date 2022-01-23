@@ -18,10 +18,8 @@ class PurchaseAddressViewModel(
 
     var selectedPropertyItemModel: PropertyItemModel? = null
 
-    private val propertyController =
-        MutableLiveData<List<PropertyItemModel>>()
-    val propertyObserver: LiveData<List<PropertyItemModel>> =
-        propertyController
+    private val propertyController = MutableLiveData<List<PropertyItemModel>>()
+    val propertyObserver: LiveData<List<PropertyItemModel>> = propertyController
 
     init {
         selectedPropertyItemModel = selectedPropertyItem

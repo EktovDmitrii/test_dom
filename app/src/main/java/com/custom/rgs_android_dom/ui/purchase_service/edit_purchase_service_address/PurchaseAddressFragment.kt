@@ -17,12 +17,12 @@ import java.io.Serializable
 
 class PurchaseAddressFragment : BaseBottomSheetModalFragment<PurchaseAddressViewModel,FragmentEditPurchaseServiceAddressBinding>() {
 
-    private var editPurchaseServiceAddressListener: EditPurchaseServiceAddressListener? = null
+    private var purchaseAddressListener: PurchaseAddressListener? = null
 
     private val propertyListAdapter: PurchasePropertyAdapter
         get() = binding.propertyRecyclerView.adapter as PurchasePropertyAdapter
 
-    override val TAG: String ="EDIT_PURCHASE_SERVICE_ADDRESS_FRAGMENT"
+    override val TAG: String ="PURCHASE_ADDRESS_FRAGMENT"
 
     companion object {
         private const val ARG_PROPERTY_MODEL = "ARG_PROPERTY_MODEL"
@@ -46,9 +46,9 @@ class PurchaseAddressFragment : BaseBottomSheetModalFragment<PurchaseAddressView
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        if (parentFragment is EditPurchaseServiceAddressListener) {
-            editPurchaseServiceAddressListener =
-                parentFragment as EditPurchaseServiceAddressListener
+        if (parentFragment is PurchaseAddressListener) {
+            purchaseAddressListener =
+                parentFragment as PurchaseAddressListener
         }
         return binding.root
     }
@@ -56,12 +56,12 @@ class PurchaseAddressFragment : BaseBottomSheetModalFragment<PurchaseAddressView
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.propertyRecyclerView.adapter = PurchasePropertyAdapter {
-            editPurchaseServiceAddressListener?.onSelectPropertyClick(it)
+            purchaseAddressListener?.onSelectPropertyClick(it)
             dismissAllowingStateLoss()
         }
         binding.addNewPropertyBtn.setOnDebouncedClickListener {
             viewModel.propertyObserver.value?.size?.let {
-                editPurchaseServiceAddressListener?.onAddPropertyClick()
+                purchaseAddressListener?.onAddPropertyClick()
                 dismissAllowingStateLoss()
             }
         }
@@ -76,7 +76,7 @@ class PurchaseAddressFragment : BaseBottomSheetModalFragment<PurchaseAddressView
         }
     }
 
-    interface EditPurchaseServiceAddressListener : Serializable {
+    interface PurchaseAddressListener : Serializable {
         fun onSelectPropertyClick(propertyItemModel: PropertyItemModel)
         fun onAddPropertyClick()
     }

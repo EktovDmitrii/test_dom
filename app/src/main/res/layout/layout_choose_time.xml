@@ -26,7 +26,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toEndOf="@id/isSelectedBtn"
         app:layout_constraintTop_toTopOf="@id/isSelectedBtn"
-        tools:text="Утро" />
+        app:translationTextKey="Утро" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/timePeriodTextView"
@@ -39,6 +39,6 @@
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@id/isSelectedBtn"
         app:layout_constraintTop_toBottomOf="@id/timeTypeTextView"
-        tools:text="6:00-9:00" />
+        app:translationTextKey="6:00-9:00" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,24 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.purchase_service.edit_purchase_date_time.EditPurchaseDateTImeFragment">
+    tools:context=".ui.purchase_service.edit_purchase_date_time.PurchaseDateTimeFragment">
 
     <include
         android:id="@+id/swipeAnchorLayout"
         layout="@layout/layout_bottom_sheet_swipe_anchor" />
 
     <include
-        android:id="@+id/selectMouth"
+        android:id="@+id/selectedMouth"
         layout="@layout/purchase_mouth_choose" />
 
     <com.custom.rgs_android_dom.views.MSDRecyclerView
+        android:id="@+id/datesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="4dp"
+        android:nestedScrollingEnabled="false"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="7"
-        tools:listitem="@layout/item_date_itme" />
+        tools:listitem="@layout/item_date_time" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,11 +33,51 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/rectangle_filled_white_radius_24dp"
         android:elevation="8dp"
+        android:paddingBottom="16dp"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/morningLayout"
-            layout="@layout/layout_choose_time" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/morning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/morningSelectedBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/morningTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/suisse_bold"
+                android:maxLines="2"
+                android:textColor="@color/secondary900"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@id/morningSelectedBtn"
+                app:layout_constraintTop_toTopOf="@id/morningSelectedBtn"
+                app:translationTextKey="Утро" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/morningTimePeriodTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/suisse_regular"
+                android:maxLines="2"
+                android:textColor="@color/secondary900"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@id/morningSelectedBtn"
+                app:layout_constraintTop_toBottomOf="@id/morningTitleTextView"
+                app:translationTextKey="6:00-9:00" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:layout_width="match_parent"
@@ -43,9 +85,48 @@
             android:layout_marginTop="16dp"
             android:background="@color/secondary200" />
 
-        <include
-            android:id="@+id/DayLayout"
-            layout="@layout/layout_choose_time" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/untilNoon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/untilNoonSelectedBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/untilNoonTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/suisse_bold"
+                android:maxLines="2"
+                android:textColor="@color/secondary900"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@id/untilNoonSelectedBtn"
+                app:layout_constraintTop_toTopOf="@id/untilNoonSelectedBtn"
+                app:translationTextKey="До полудня" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/untilNoonPeriodTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/suisse_regular"
+                android:maxLines="2"
+                android:textColor="@color/secondary900"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@id/untilNoonSelectedBtn"
+                app:layout_constraintTop_toBottomOf="@id/untilNoonTextView"
+                app:translationTextKey="9:00-12:00" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:layout_width="match_parent"
@@ -53,9 +134,48 @@
             android:layout_marginTop="16dp"
             android:background="@color/secondary200" />
 
-        <include
-            android:id="@+id/AfterDayLayout"
-            layout="@layout/layout_choose_time" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/daytime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/daytimeSelectedBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/daytimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/suisse_bold"
+                android:maxLines="2"
+                android:textColor="@color/secondary900"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@id/daytimeSelectedBtn"
+                app:layout_constraintTop_toTopOf="@id/daytimeSelectedBtn"
+                app:translationTextKey="День" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/daytimePeriodTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/suisse_regular"
+                android:maxLines="2"
+                android:textColor="@color/secondary900"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@id/daytimeSelectedBtn"
+                app:layout_constraintTop_toBottomOf="@id/daytimeTextView"
+                app:translationTextKey="12:00-15:00" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:layout_width="match_parent"
@@ -63,10 +183,58 @@
             android:layout_marginTop="16dp"
             android:background="@color/secondary200" />
 
-        <include
-            android:id="@+id/EveningLayout"
-            layout="@layout/layout_choose_time" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/evening"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/eveningSelectedBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/eveningTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/suisse_bold"
+                android:maxLines="2"
+                android:textColor="@color/secondary900"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@id/eveningSelectedBtn"
+                app:layout_constraintTop_toTopOf="@id/eveningSelectedBtn"
+                app:translationTextKey="Вечер" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/eveningPeriodTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/suisse_regular"
+                android:maxLines="2"
+                android:textColor="@color/secondary900"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@id/eveningSelectedBtn"
+                app:layout_constraintTop_toBottomOf="@id/eveningTextView"
+                app:translationTextKey="15:00-18:00" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/selectTextView"
+        style="@style/Button.Filled.Primary"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="24dp"
+        android:enabled="false"
+        app:translationTextKey="Выбрать" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

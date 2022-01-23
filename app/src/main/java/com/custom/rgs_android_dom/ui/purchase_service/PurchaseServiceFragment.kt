@@ -24,7 +24,7 @@ import org.koin.core.parameter.parametersOf
 
 class PurchaseServiceFragment :
     BaseBottomSheetFragment<PurchaseServiceViewModel, FragmentPurchaseServiceBinding>(),
-    PurchaseAddressFragment.EditPurchaseServiceAddressListener,
+    PurchaseAddressFragment.PurchaseAddressListener,
     PurchaseCommentFragment.EditPurchaseServiceCommentListener {
 
     override val TAG: String = "PURCHASE_SERVICE_FRAGMENT"
@@ -61,7 +61,7 @@ class PurchaseServiceFragment :
             editPurchaseServiceComment.show(childFragmentManager, PurchaseCommentFragment.TAG)
         }
         binding.layoutPurchaseServiceDateTime.layout.setOnDebouncedClickListener {
-            //Todo добавлю выбор времени
+            viewModel.onDateTimeClick(childFragmentManager)
         }
         binding.layoutPurchaseServiceCardPayment.layout.setOnDebouncedClickListener {
             //Todo посоветоваться насчет оплаты картой
@@ -74,7 +74,7 @@ class PurchaseServiceFragment :
             //Todo добавить потом
         }
 
-        subscribe(viewModel.purchaseServiceControllerObserver) { purchaseService ->
+        subscribe(viewModel.purchaseServiceObserver) { purchaseService ->
             GlideApp.with(requireContext())
                 .load(GlideUrlProvider.makeHeadersGlideUrl(purchaseService.iconLink))
                 .transform(RoundedCorners(20.dp(requireContext())))

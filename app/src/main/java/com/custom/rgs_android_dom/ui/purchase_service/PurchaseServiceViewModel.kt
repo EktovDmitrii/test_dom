@@ -5,17 +5,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
+import com.custom.rgs_android_dom.domain.purchase_service.PurchaseDateTimeModel
 import com.custom.rgs_android_dom.domain.purchase_service.PurchaseServiceModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressFragment
+import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_date_time.PurchaseDateTimeFragment
 import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_service_address.PurchaseAddressFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import org.joda.time.LocalDateTime
 
 class PurchaseServiceViewModel(
     private val purchaseServiceModel: PurchaseServiceModel,
@@ -25,12 +28,11 @@ class PurchaseServiceViewModel(
     private var propertyListSize: Int? = null
 
     private val purchaseServiceController = MutableLiveData<PurchaseServiceModel>()
-    val purchaseServiceControllerObserver: LiveData<PurchaseServiceModel> =
-        purchaseServiceController
+    val purchaseServiceObserver: LiveData<PurchaseServiceModel> = purchaseServiceController
 
 
     init {
-        purchaseServiceController.postValue(purchaseServiceModel)
+        purchaseServiceController.value = purchaseServiceModel
 
         propertyInteractor.getAllProperty()
             .subscribeOn(Schedulers.io())
@@ -53,12 +55,6 @@ class PurchaseServiceViewModel(
         oldValue?.let { purchaseServiceController.postValue(it) }
     }
 
-    fun updateEmail(email: String) {
-        val oldValue = purchaseServiceController.value
-        oldValue?.email = email
-        oldValue?.let { purchaseServiceController.postValue(it) }
-    }
-
     fun updateComment(comment: String) {
         val oldValue = purchaseServiceController.value
         oldValue?.comment = comment
@@ -66,12 +62,22 @@ class PurchaseServiceViewModel(
     }
 
     fun onAddressClick(childFragmentManager: FragmentManager) {
-        val editDocumentBottomSheetFragment =
+        val purchaseAddressFragment =
             PurchaseAddressFragment.newInstance(purchaseServiceController.value?.propertyItemModel)
-        editDocumentBottomSheetFragment.show(
+        purchaseAddressFragment.show(
             childFragmentManager,
-            editDocumentBottomSheetFragment.TAG
+            purchaseAddressFragment.TAG
         )
+    }
+
+    fun onDateTimeClick(childFragmentManager: FragmentManager) {
+        val purchaseDateTimeFragment = PurchaseDateTimeFragment.newInstance(
+            PurchaseDateTimeModel(
+                LocalDateTime.now(), ""
+            )
+        )
+        purchaseDateTimeFragment.show(childFragmentManager, purchaseDateTimeFragment.TAG)
+
     }
 
     fun onAddPropertyClick() {
