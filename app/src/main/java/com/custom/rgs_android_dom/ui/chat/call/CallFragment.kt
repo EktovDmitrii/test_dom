@@ -343,8 +343,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
         binding.consultantSurfaceRenderer.release()
         binding.mySurfaceRenderer.release()
         val audioManager = requireContext().getSystemService(AUDIO_SERVICE) as AudioManager
@@ -353,6 +352,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
             isMicrophoneMute = previousMicrophoneMute
             mode = AudioManager.MODE_NORMAL
         }
+        super.onDestroyView()
     }
 
     override fun setStatusBarColor() {

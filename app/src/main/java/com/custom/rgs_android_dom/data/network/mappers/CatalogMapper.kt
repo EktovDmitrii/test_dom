@@ -7,6 +7,8 @@ import com.custom.rgs_android_dom.utils.asEnumOrDefault
 
 object CatalogMapper {
 
+    private const val TAG_PRODUCT_VIEW = "ПродуктовоеОтображение"
+
     fun responseToCatalogCategories(response: List<CatalogNodeResponse>): List<CatalogCategoryModel>{
         val catalogCategories = arrayListOf<CatalogCategoryModel>()
 
@@ -40,11 +42,10 @@ object CatalogMapper {
                 productTags = categoryNode.productTags ?: listOf(),
                 products = listOf(),
                 subCategories = subCategories,
-                isPrimary = categoryNode.id == categoryNodes[0].id
+                isPrimary = categoryNode.productTags?.contains(TAG_PRODUCT_VIEW) ?: false
             )
             catalogCategories.add(category)
         }
-
         return catalogCategories
     }
 
