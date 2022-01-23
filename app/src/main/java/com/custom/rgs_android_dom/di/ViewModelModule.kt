@@ -109,5 +109,5 @@ val viewModelModule = module {
     viewModel {parameters -> EditPurchaseServiceAddressViewModel(selectedPropertyItem = parameters.get(), propertyInteractor = get())}
     viewModel { SelectCardViewModel() }
     viewModel { AddEmailViewModel() }
-    viewModel { AddAgentViewModel() }
+    viewModel { AddAgentViewModel(clientInteractor = get()) }
 }

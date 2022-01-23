@@ -25,9 +25,7 @@ class PurchaseServiceViewModel(
     private var propertyListSize: Int? = null
 
     private val purchaseServiceController = MutableLiveData<PurchaseServiceModel>()
-    val purchaseServiceControllerObserver: LiveData<PurchaseServiceModel> =
-        purchaseServiceController
-
+    val purchaseServiceControllerObserver: LiveData<PurchaseServiceModel> = purchaseServiceController
 
     init {
         purchaseServiceController.postValue(purchaseServiceModel)
@@ -56,7 +54,25 @@ class PurchaseServiceViewModel(
     fun updateEmail(email: String) {
         val oldValue = purchaseServiceController.value
         oldValue?.email = email
-        oldValue?.let { purchaseServiceController.postValue(it) }
+        oldValue?.let {
+            purchaseServiceController.value = it
+        }
+    }
+
+    fun updateAgentCode(code: String) {
+        val oldValue = purchaseServiceController.value
+        oldValue?.agentCode = code
+        oldValue?.let {
+            purchaseServiceController.value = it
+        }
+    }
+
+    fun updateCard(card: String) {
+        val oldValue = purchaseServiceController.value
+        oldValue?.card = card
+        oldValue?.let {
+            purchaseServiceController.value = it
+        }
     }
 
     fun updateComment(comment:String){

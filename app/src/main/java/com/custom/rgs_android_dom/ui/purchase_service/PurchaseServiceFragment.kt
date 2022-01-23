@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.ui.purchase_service
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentResultListener
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
@@ -11,6 +12,7 @@ import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.domain.purchase_service.PurchaseServiceModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
+import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
 import com.custom.rgs_android_dom.ui.purchase_service.add_purchase_service_comment.EditPurchaseServiceCommentFragment
 import com.custom.rgs_android_dom.ui.purchase_service.add_purchase_service_email.EditPurchaseServiceEmailFragment
 import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_service_address.EditPurchaseServiceAddressFragment
@@ -27,7 +29,8 @@ class PurchaseServiceFragment :
     BaseBottomSheetFragment<PurchaseServiceViewModel, FragmentPurchaseServiceBinding>(),
     EditPurchaseServiceAddressFragment.EditPurchaseServiceAddressListener,
     EditPurchaseServiceEmailFragment.EditPurchaseServiceEmailListener,
-    EditPurchaseServiceCommentFragment.EditPurchaseServiceCommentListener {
+    EditPurchaseServiceCommentFragment.EditPurchaseServiceCommentListener,
+    FragmentResultListener, ConfirmBottomSheetFragment.ConfirmListener {
     override val TAG: String = "PURCHASE_SERVICE_FRAGMENT"
 
     companion object {
@@ -51,6 +54,10 @@ class PurchaseServiceFragment :
         super.onViewCreated(view, savedInstanceState)
 
         initViews()
+
+        childFragmentManager.setFragmentResultListener("email_request", viewLifecycleOwner, this)
+        childFragmentManager.setFragmentResultListener("agent_code_request", viewLifecycleOwner, this)
+        childFragmentManager.setFragmentResultListener("card_request", viewLifecycleOwner, this)
 
         binding.layoutPurchaseServiceProperty.layout.setOnDebouncedClickListener {
             viewModel.onAddressClick(childFragmentManager)
@@ -86,6 +93,12 @@ class PurchaseServiceFragment :
 
             purchaseService.email?.let { email ->
                 binding.layoutPurchaseServiceMail.sampleNameTextView.text = email
+            }
+            purchaseService.agentCode?.let { code ->
+                binding.layoutPurchaseServiceAgentCode.sampleNameTextView.text = code
+            }
+            purchaseService.card?.let { card ->
+                binding.layoutPurchaseServiceCardPayment.cardNumberTextView.text = card
             }
 
             purchaseService.propertyItemModel?.let {
@@ -160,14 +173,55 @@ class PurchaseServiceFragment :
             val selectCardBottomFragment = SelectCardBottomFragment()
             selectCardBottomFragment.show(childFragmentManager, selectCardBottomFragment.TAG)
         }
-//        binding.layoutPurchaseServiceMail.root.setOnDebouncedClickListener {
-//            val addEmailBottomFragment = AddEmailBottomFragment()
-//            addEmailBottomFragment.show(childFragmentManager, addEmailBottomFragment.TAG)
-//        }
+        binding.layoutPurchaseServiceMail.root.setOnDebouncedClickListener {
+            val addEmailBottomFragment = AddEmailBottomFragment()
+            addEmailBottomFragment.show(childFragmentManager, addEmailBottomFragment.TAG)
+        }
         binding.layoutPurchaseServiceAgentCode.root.setOnDebouncedClickListener {
             val addAgentBottomFragment = AddAgentBottomFragment()
             addAgentBottomFragment.show(childFragmentManager, addAgentBottomFragment.TAG)
         }
     }
+
+    override fun onFragmentResult(requestKey: String, result: Bundle) {
+        when (requestKey) {
+            "email_request" -> {
+                val email = result.getString("email_key")
+                email?.let {
+                    viewModel.updateEmail(it)
+                }
+            }
+            "agent_code_request" -> {
+                val status = result.getString("code_status_key")
+                if (status == "1") {
+                    val agentCode = result.getString("code_key")
+                    agentCode?.let {
+                        viewModel.updateAgentCode(it)
+                    }
+                } else {
+                    val confirmDialog = ConfirmBottomSheetFragment.newInstance(
+                        icon = R.drawable.ic_broken_egg,
+                        title = "Невозможно обработать",
+                        description = "К сожалению, мы не смогли найти и привязать код агента. Пожалуйста, попробуйте еще раз",
+                        confirmText = "Попробовать ещё раз",
+                        cancelText = "Нет, спасибо"
+                    )
+                    confirmDialog.show(childFragmentManager, ConfirmBottomSheetFragment.TAG)
+                }
+            }
+            "card_request" -> {
+                val card = result.getString("card_key")
+                card?.let {
+                    viewModel.updateCard(it)
+                }
+            }
+        }
+    }
+
+    override fun onConfirmClick() {
+        val addAgentBottomFragment = AddAgentBottomFragment()
+        addAgentBottomFragment.show(childFragmentManager, addAgentBottomFragment.TAG)
+    }
+
 
 }

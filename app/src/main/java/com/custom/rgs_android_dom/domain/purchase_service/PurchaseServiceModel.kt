@@ -12,5 +12,7 @@ data class PurchaseServiceModel(
     val price: ProductPriceModel?,
     var propertyItemModel: PropertyItemModel? = null,
     var email: String? = null,
+    var agentCode: String? = null,
+    var card: String? = null,
     var comment: String? = null
 ) : Serializable
