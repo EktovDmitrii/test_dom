@@ -9,6 +9,11 @@
         <item name="cornerSize">16dp</item>
     </style>
 
+    <style name="RoundedCorners24dpImageViewStyle" >
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">24dp</item>
+    </style>
+
     <style name="RoundedCornersTop12dpBottom6dpImageViewStyle" >
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopLeft">12dp</item>
