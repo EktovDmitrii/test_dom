@@ -108,7 +108,7 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             viewModel.onAllCatalogClick()
         }
         binding.mainShimmerLayout.horizontalScrollView.setOnTouchListener { _, _ -> true }
-        binding.mainErrorLayout.errorRepeatBtn.setOnDebouncedClickListener {
+        binding.mainErrorLayout.reloadTextView.setOnDebouncedClickListener {
             viewModel.loadContent()
         }
 

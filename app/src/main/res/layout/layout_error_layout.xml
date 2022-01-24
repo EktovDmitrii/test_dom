@@ -23,7 +23,7 @@
         app:translationTextKey="Не удаётся загрузить данные" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
-        android:id="@+id/errorRepeatBtn"
+        android:id="@+id/reloadTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
