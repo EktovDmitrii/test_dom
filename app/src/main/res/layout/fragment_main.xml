@@ -140,7 +140,7 @@
                             android:includeFontPadding="false"
                             android:textColor="@color/gray"
                             android:textSize="13sp"
-                            app:translationTextKey="Мой Дом" />
+                            app:translationTextKey="Мой дом" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
