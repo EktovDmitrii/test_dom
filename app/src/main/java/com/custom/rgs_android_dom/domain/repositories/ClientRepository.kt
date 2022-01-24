@@ -54,6 +54,4 @@ interface ClientRepository {
 
     fun getClientProducts(): Single<ClientProductsModel>
 
-    fun getClientSavedSubject(): PublishSubject<Unit>
-
 }

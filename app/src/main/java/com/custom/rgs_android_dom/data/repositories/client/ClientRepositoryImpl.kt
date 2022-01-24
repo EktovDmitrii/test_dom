@@ -22,7 +22,6 @@ class ClientRepositoryImpl(
     private val clientSharedPreferences: ClientSharedPreferences
 ) : ClientRepository {
 
-    private val clientSavedSubject = PublishSubject.create<Unit>()
     private val clientUpdatedSubject: PublishSubject<ClientModel> = PublishSubject.create()
     private val editAgentRequestedSubject: PublishSubject<Boolean> = PublishSubject.create()
     private val editPersonalDataRequestedSubject: BehaviorSubject<Boolean> = BehaviorSubject.create()
@@ -84,7 +83,6 @@ class ClientRepositoryImpl(
                 clientSharedPreferences.saveClient(client)
                 clientSharedPreferences.saveAgent(agent)
                 clientUpdatedSubject.onNext(client)
-                clientSavedSubject.onNext(Unit)
             }
 
             return@flatMapCompletable Completable.complete()
@@ -207,10 +205,6 @@ class ClientRepositoryImpl(
         return api.getClientProducts().map {clientProductsResponse ->
             ClientMapper.responseToClientProducts(clientProductsResponse)
         }
-    }
-
-    override fun getClientSavedSubject(): PublishSubject<Unit> {
-        return clientSavedSubject
     }
 
 }

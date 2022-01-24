@@ -10,6 +10,7 @@ import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.chat.call.CallFragment
+import com.custom.rgs_android_dom.ui.navigation.TargetScreen
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
@@ -28,7 +29,7 @@ class SOSViewModel(
 
     private var isAuthorized = false
 
-    private var requestedScreen = RequestedScreen.UNSPECIFIED
+    private var requestedScreen = TargetScreen.UNSPECIFIED
 
     init {
         isAuthorized = registrationInteractor.isAuthorized()
@@ -52,11 +53,9 @@ class SOSViewModel(
                 onNext = {
                     if (isAuthorized) {
                         when (requestedScreen) {
-                            RequestedScreen.PHONE_CALL -> onFreePhoneCallClick()
-                            RequestedScreen.CHAT -> {
-                                ScreenManager.showScreen(ChatFragment())
-                            }
-                            RequestedScreen.AUDIO_CALL -> {
+                            TargetScreen.PHONE_CALL -> onFreePhoneCallClick()
+                            TargetScreen.CHAT -> { ScreenManager.showScreen(ChatFragment()) }
+                            TargetScreen.AUDIO_CALL -> {
                                 ScreenManager.showScreen(
                                     CallFragment.newInstance(
                                         CallType.AUDIO_CALL,
@@ -65,7 +64,7 @@ class SOSViewModel(
                                 )
                             }
 
-                            RequestedScreen.VIDEO_CALL -> {
+                            TargetScreen.VIDEO_CALL -> {
                                 ScreenManager.showScreen(
                                     CallFragment.newInstance(
                                         CallType.VIDEO_CALL,
@@ -73,9 +72,9 @@ class SOSViewModel(
                                     )
                                 )
                             }
-                            RequestedScreen.UNSPECIFIED -> {}
+                            TargetScreen.UNSPECIFIED -> {}
                         }
-                        requestedScreen = RequestedScreen.UNSPECIFIED
+                        requestedScreen = TargetScreen.UNSPECIFIED
                     }
                 },
                 onError = { logException(this, it) }
@@ -84,7 +83,7 @@ class SOSViewModel(
     }
 
     fun onAudioCallClick() {
-        requestedScreen = RequestedScreen.AUDIO_CALL
+        requestedScreen = TargetScreen.AUDIO_CALL
         if (isAuthorized) {
             ScreenManager.showScreen(
                 CallFragment.newInstance(
@@ -98,7 +97,7 @@ class SOSViewModel(
     }
 
     fun onVideoCallClick() {
-        requestedScreen = RequestedScreen.VIDEO_CALL
+        requestedScreen = TargetScreen.VIDEO_CALL
         if (isAuthorized) {
             ScreenManager.showScreen(
                 CallFragment.newInstance(
@@ -112,7 +111,7 @@ class SOSViewModel(
     }
 
     fun onChatClick() {
-        requestedScreen = RequestedScreen.CHAT
+        requestedScreen = TargetScreen.CHAT
         if (isAuthorized) {
             ScreenManager.showScreen(ChatFragment())
         } else {
@@ -131,8 +130,4 @@ class SOSViewModel(
         context.startActivity(phoneCallIntent)
     }
 
-}
-
-private enum class RequestedScreen {
-    PHONE_CALL, CHAT, AUDIO_CALL, VIDEO_CALL, UNSPECIFIED
 }

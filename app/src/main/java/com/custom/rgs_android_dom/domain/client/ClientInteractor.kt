@@ -571,8 +571,9 @@ class ClientInteractor(
         return clientRepository.updatePassport(id, serial, number)
     }
 
-    fun getClientSavedSubject(): PublishSubject<Unit> {
-       return clientRepository.getClientSavedSubject()
+    fun getClientSavedSubject(): Observable<Unit> {
+       return clientRepository.getClientUpdatedSubject()
+           .map { }
     }
 
 }
