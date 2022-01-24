@@ -36,7 +36,7 @@ class SOSFragment : BaseFragment<SOSViewModel, FragmentSosBinding>(R.layout.frag
     }
 
     override fun setStatusBarColor() {
-        setStatusBarColor(R.color.mercury)
+        setStatusBarColor(R.color.isabelline)
     }
 
 }
