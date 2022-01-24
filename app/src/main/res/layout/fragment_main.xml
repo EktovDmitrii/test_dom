@@ -26,17 +26,17 @@
         />
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/mainContentLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/secondary100"
         android:fillViewport="true"
-        android:visibility="gone"
         android:overScrollMode="never">
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/mainContentLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:orientation="vertical">
 
             <include

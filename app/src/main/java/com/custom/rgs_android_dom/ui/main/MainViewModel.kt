@@ -16,6 +16,7 @@ import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragmen
 import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchFragment
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
+import com.custom.rgs_android_dom.ui.managers.ConnectionManager
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -33,7 +34,8 @@ import io.reactivex.schedulers.Schedulers
 class MainViewModel(
     private val registrationInteractor: RegistrationInteractor,
     private val propertyInteractor: PropertyInteractor,
-    private val catalogInteractor: CatalogInteractor
+    private val catalogInteractor: CatalogInteractor,
+    private val connectionManager: ConnectionManager
 ) : BaseViewModel() {
 
     private val registrationController = MutableLiveData(false)
@@ -156,31 +158,35 @@ class MainViewModel(
     }
 
     fun loadContent() {
-        Single.zip(
-            catalogInteractor.getPopularServices(),
-            catalogInteractor.getPopularProducts(),
-            catalogInteractor.getPopularCategories()
-        ) { services, products, categories ->
-            popularServicesController.postValue(services)
-            popularProductsController.postValue(products)
-            popularCategoriesController.postValue(categories)
-        }
-            .compose(
-                ProgressTransformer(
-                    onLoading = {
-                        loadingStateController.postValue(LoadingState.LOADING)
-                    },
-                    onError = {
-                        logException(this, it)
-                        loadingStateController.value = LoadingState.ERROR
-                    },
-                    onLoaded = {
-                        loadingStateController.value = LoadingState.CONTENT
-                    }
+        if (connectionManager.isInternetConnected()) {
+            Single.zip(
+                catalogInteractor.getPopularServices(),
+                catalogInteractor.getPopularProducts(),
+                catalogInteractor.getPopularCategories()
+            ) { services, products, categories ->
+                popularServicesController.postValue(services)
+                popularProductsController.postValue(products)
+                popularCategoriesController.postValue(categories)
+            }
+                .compose(
+                    ProgressTransformer(
+                        onLoading = {
+                            loadingStateController.postValue(LoadingState.LOADING)
+                        },
+                        onError = {
+                            logException(this, it)
+                            loadingStateController.value = LoadingState.ERROR
+                        },
+                        onLoaded = {
+                            loadingStateController.value = LoadingState.CONTENT
+                        }
+                    )
                 )
-            )
-            .subscribe()
-            .addTo(dataCompositeDisposable)
+                .subscribe()
+                .addTo(dataCompositeDisposable)
+        } else {
+            loadingStateController.value = LoadingState.ERROR
+        }
     }
 
     fun onLoginClick() {
