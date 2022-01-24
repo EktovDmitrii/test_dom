@@ -75,7 +75,7 @@ class PropertyItemsAdapter(
                     binding.propertyImageView.setImageResource(R.drawable.ic_type_home)
                 }
                 PropertyType.APARTMENT -> {
-                    binding.propertyImageView.setImageResource(R.drawable.ic_type_apartment)
+                    binding.propertyImageView.setImageResource(R.drawable.ic_type_apartment_124x144px)
                 }
             }
             binding.containerFrameLayout.setOnDebouncedClickListener {
