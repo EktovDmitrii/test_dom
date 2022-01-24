@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.domain.purchase_service
+package com.custom.rgs_android_dom.domain.purchase_service.model
 
 import com.custom.rgs_android_dom.domain.catalog.models.ProductPriceModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
@@ -12,5 +12,6 @@ data class PurchaseServiceModel(
     val price: ProductPriceModel?,
     var propertyItemModel: PropertyItemModel? = null,
     var email: String? = null,
-    var comment: String? = null
+    var comment: String? = null,
+    var purchaseDateTimeModel: PurchaseDateTimeModel
 ) : Serializable

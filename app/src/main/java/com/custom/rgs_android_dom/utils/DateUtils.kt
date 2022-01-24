@@ -2,8 +2,10 @@ package com.custom.rgs_android_dom.utils
 
 import org.joda.time.*
 import org.joda.time.format.DateTimeFormat
+import org.joda.time.format.DateTimeFormatter
 
 const val DATE_PATTERN_DATE_ONLY = "dd.MM.yyyy"
+const val DATE_PATTERN_DAY_OF_WEEK = "EE"
 const val DATE_PATTERN_MONTH_FULL_ONLY = "dd MMM"
 const val DATE_PATTERN_MONTH_FULL_AND_TIME = "dd MMM в HH:mm"
 const val DATE_PATTERN_YEAR_MONTH_FULL_AND_TIME = "dd MMM yyyy в HH:mm"

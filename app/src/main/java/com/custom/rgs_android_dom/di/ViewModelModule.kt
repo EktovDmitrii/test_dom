@@ -50,7 +50,7 @@ import com.custom.rgs_android_dom.ui.client.personal_data.request_edit.RequestEd
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsViewModel
 import com.custom.rgs_android_dom.ui.property.document.DocumentViewModel
 import com.custom.rgs_android_dom.ui.property.document.detail_document.DetailDocumentViewModel
-import com.custom.rgs_android_dom.ui.purchase_service.PurchaseServiceViewModel
+import com.custom.rgs_android_dom.ui.purchase_service.PurchaseViewModel
 import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_date_time.PurchaseDateTimeViewModel
 import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_service_address.PurchaseAddressViewModel
 
@@ -103,7 +103,7 @@ val viewModelModule = module {
     viewModel { parameters -> CatalogPrimaryProductsViewModel(category = parameters.get()) }
     viewModel { MyProductViewModel() }
     viewModel { parameters -> ServiceViewModel(product = parameters.get()) }
-    viewModel { parameters -> PurchaseServiceViewModel(parameters.get(), propertyInteractor = get()) }
+    viewModel { parameters -> PurchaseViewModel(parameters.get(), propertyInteractor = get()) }
     viewModel { parameters -> PurchaseAddressViewModel(selectedPropertyItem = parameters.get(), propertyInteractor = get())}
-    viewModel {parameters -> PurchaseDateTimeViewModel(purchaseDateTimeModel = parameters.get())}
+    viewModel {parameters -> PurchaseDateTimeViewModel(purchaseDateTimeModel = parameters.get(), purchaseInteractor = get())}
 }

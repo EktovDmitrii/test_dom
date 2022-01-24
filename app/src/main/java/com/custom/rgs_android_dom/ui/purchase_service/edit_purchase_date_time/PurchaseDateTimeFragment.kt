@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPurchaseDateTimeBinding
-import com.custom.rgs_android_dom.domain.purchase_service.PurchaseDateTimeModel
+import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseDateTimeModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
@@ -16,13 +16,15 @@ import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 import java.io.Serializable
 
-class PurchaseDateTimeFragment :
-    BaseBottomSheetModalFragment<PurchaseDateTimeViewModel, FragmentPurchaseDateTimeBinding>() {
+class PurchaseDateTimeFragment : BaseBottomSheetModalFragment<PurchaseDateTimeViewModel, FragmentPurchaseDateTimeBinding>() {
 
     private var purchaseDateTimeListener: PurchaseDateTimeListener? = null
 
-    private val propertyListAdapter: PurchaseDateTimeAdapter
-        get() = binding.datesRecyclerView.adapter as PurchaseDateTimeAdapter
+    private val dateListAdapter: PurchaseDatesAdapter
+        get() = binding.datesRecyclerView.adapter as PurchaseDatesAdapter
+
+    private val periodListAdapter: PurchasePeriodAdapter
+        get() = binding.periodRecyclerView.adapter as PurchasePeriodAdapter
 
     override val TAG: String = "PURCHASE_DATE_TIME_FRAGMENT"
 
@@ -57,21 +59,25 @@ class PurchaseDateTimeFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.datesRecyclerView.adapter = PurchaseDateTimeAdapter {
-            viewModel.updateDateWeek(it.date)
+        binding.datesRecyclerView.adapter = PurchaseDatesAdapter {
+            viewModel.selectDay(it.date)
         }
-
+        binding.periodRecyclerView.adapter = PurchasePeriodAdapter {
+            viewModel.selectPeriod(it)
+        }
         binding.selectedMouth.nextMouthImageView.setOnDebouncedClickListener {
             viewModel.plusWeek()
         }
-
         binding.selectedMouth.previousMouthImageView.setOnDebouncedClickListener {
             viewModel.minusWeek()
         }
 
         subscribe(viewModel.dateListObserver) {
-            if (it.dates.isNotEmpty()) {
-                propertyListAdapter.setItems(it.dates)
+            if (it.datesForCalendar.isNotEmpty()) {
+                dateListAdapter.setItems(it.datesForCalendar)
+            }
+            if (it.periodList.isNotEmpty()) {
+                periodListAdapter.setItems(it.periodList)
             }
             binding.selectedMouth.mouthTextView.text = it.selectedMouth
 

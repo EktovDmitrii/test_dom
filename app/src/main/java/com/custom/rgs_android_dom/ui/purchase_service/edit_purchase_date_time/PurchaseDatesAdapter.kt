@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_date_time
 
-import android.content.Context
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,15 +8,15 @@ import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ItemDateTimeBinding
-import com.custom.rgs_android_dom.domain.purchase_service.PurchaseDateContent
+import com.custom.rgs_android_dom.domain.purchase_service.model.DateForCalendarModel
 import com.custom.rgs_android_dom.utils.dpToPx
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 
-class PurchaseDateTimeAdapter(
-    private val onDateClick: (PurchaseDateContent) -> Unit,
-) : RecyclerView.Adapter<PurchaseDateTimeAdapter.PurchaseDateTimeViewHolder>() {
+class PurchaseDatesAdapter(
+    private val onDateClick: (DateForCalendarModel) -> Unit,
+) : RecyclerView.Adapter<PurchaseDatesAdapter.PurchaseDateTimeViewHolder>() {
 
-    private var dateList = mutableListOf<PurchaseDateContent>()
+    private var dateList = mutableListOf<DateForCalendarModel>()
 
     override fun onBindViewHolder(holder: PurchaseDateTimeViewHolder, position: Int) {
         (holder).bind(dateList[position])
@@ -45,26 +44,26 @@ class PurchaseDateTimeAdapter(
         return dateList.size
     }
 
-    fun setItems(purchaseDateList: List<PurchaseDateContent>) {
+    fun setItems(dateForCalendarList: List<DateForCalendarModel>) {
         dateList.clear()
-        dateList.addAll(purchaseDateList)
+        dateList.addAll(dateForCalendarList)
         notifyDataSetChanged()
     }
 
     inner class PurchaseDateTimeViewHolder(
         private val binding: ItemDateTimeBinding,
-        private val onDateClick: (PurchaseDateContent) -> Unit
+        private val onDateClick: (DateForCalendarModel) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(date: PurchaseDateContent) {
-            binding.dayNumberTextView.text = date.dateNumber
-            binding.dayOfWeekTextView.text = date.dayInWeek
-            if (date.isSelected) {
+        fun bind(dateForCalendar: DateForCalendarModel) {
+            binding.dayNumberTextView.text = dateForCalendar.dateNumber
+            binding.dayOfWeekTextView.text = dateForCalendar.dayInWeek
+            if (dateForCalendar.isSelected) {
                 binding.dayNumberTextView.setBackgroundResource(R.drawable.rectangle_filled_secondary_100_radius_12dp)
             } else binding.dayNumberTextView.setBackgroundColor(0)
-            if (date.isEnable) {
+            if (dateForCalendar.isEnable) {
                 binding.root.setOnDebouncedClickListener {
-                    onDateClick(date)
+                    onDateClick(dateForCalendar)
                 }
                 binding.dayOfWeekTextView.setTextColor(
                     ContextCompat.getColor(

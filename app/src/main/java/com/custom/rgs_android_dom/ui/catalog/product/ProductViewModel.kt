@@ -7,7 +7,7 @@ import com.custom.rgs_android_dom.domain.catalog.models.ProductDurationModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductPriceModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductUnitType
-import com.custom.rgs_android_dom.domain.purchase_service.PurchaseServiceModel
+import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseServiceModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,7 +15,7 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
-import com.custom.rgs_android_dom.ui.purchase_service.PurchaseServiceFragment
+import com.custom.rgs_android_dom.ui.purchase_service.PurchaseFragment
 
 class ProductViewModel(
     private val productId: String,
@@ -51,7 +51,7 @@ class ProductViewModel(
                 name = it.name,
                 price = it.price
             )
-            val purchaseServiceFragment = PurchaseServiceFragment.newInstance(purchaseServiceModel)
+            val purchaseServiceFragment = PurchaseFragment.newInstance(purchaseServiceModel)
             ScreenManager.showBottomScreen(purchaseServiceFragment)
         }
 

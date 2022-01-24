@@ -16,7 +16,7 @@ class PurchaseCommentFragment : BottomSheetDialogFragment() {
 
     private val binding: FragmentPurchaseCommentBinding by viewBinding(createMethod = CreateMethod.INFLATE)
 
-    private var editPurchaseServiceCommentListener: EditPurchaseServiceCommentListener? = null
+    private var purchaseCommentListener: PurchaseCommentListener? = null
 
     companion object {
         const val TAG: String = "EDIT_PURCHASE_SERVICE_COMMENT_FRAGMENT"
@@ -34,8 +34,8 @@ class PurchaseCommentFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        if (parentFragment is EditPurchaseServiceCommentListener) {
-            editPurchaseServiceCommentListener = parentFragment as EditPurchaseServiceCommentListener
+        if (parentFragment is PurchaseCommentListener) {
+            purchaseCommentListener = parentFragment as PurchaseCommentListener
         }
         return binding.root
     }
@@ -44,12 +44,12 @@ class PurchaseCommentFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.saveTextView.setOnDebouncedClickListener {
-            editPurchaseServiceCommentListener?.onSaveCommentClick(binding.commentTextInputLayout.getText())
+            purchaseCommentListener?.onSaveCommentClick(binding.commentTextInputLayout.getText())
             dismissAllowingStateLoss()
         }
     }
 
-    interface EditPurchaseServiceCommentListener : Serializable {
+    interface PurchaseCommentListener : Serializable {
         fun onSaveCommentClick(comment: String)
     }
 }
