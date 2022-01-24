@@ -21,7 +21,6 @@ import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.chat.files.upload.UploadFilesFragment
 import com.custom.rgs_android_dom.utils.*
 
-
 class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.fragment_chat) {
 
     companion object{
@@ -126,7 +125,6 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
         subscribe(viewModel.downloadFileObserver) {
             downloadFile(it)
         }
-
     }
 
     override fun onLoading() {

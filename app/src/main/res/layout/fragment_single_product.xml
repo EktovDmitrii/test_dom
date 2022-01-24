@@ -108,26 +108,11 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.core.widget.NestedScrollView>
 
-    <FrameLayout
+    <include
+        android:id="@+id/detailButton"
+        layout="@layout/layout_product_detail_confirm_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white"
-        android:paddingHorizontal="20dp"
-        android:paddingVertical="12dp">
-
-        <com.custom.rgs_android_dom.views.text.MSDTextView
-            android:id="@+id/orderBtn"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@drawable/button_filled_primary_background"
-            android:fontFamily="@font/my_service_bold"
-            android:gravity="center"
-            android:paddingVertical="12dp"
-            android:text="Заказать"
-            android:textColor="@color/white"
-            android:textSize="14sp" />
-
-    </FrameLayout>
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

@@ -124,7 +124,7 @@
                     app:hintAlwaysVisible="true"
                     app:mask="+7 [000] [000]-[00]-[00]"
                     app:translationHintKey="+7 999 999-99-99"
-                    app:translationLabelKey="Ведите номер телефона агента" />
+                    app:translationLabelKey="Введите номер телефона агента" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 

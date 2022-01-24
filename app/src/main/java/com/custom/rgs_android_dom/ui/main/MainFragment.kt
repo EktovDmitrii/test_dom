@@ -75,7 +75,7 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             viewModel.onAboutServiceClick()
         }
 
-        binding.searchTagsLayout.searchCatalogCardView.setOnDebouncedClickListener {
+        binding.searchTagsLayout.searchCatalogCardView.root.setOnDebouncedClickListener {
             viewModel.onSearchClick()
         }
 
