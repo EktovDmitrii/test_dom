@@ -9,6 +9,7 @@ import com.custom.rgs_android_dom.domain.client.models.Gender
 import com.custom.rgs_android_dom.domain.client.mappers.ClientShortViewStateMapper
 import com.custom.rgs_android_dom.domain.client.mappers.EditPersonalDataViewStateMapper
 import com.custom.rgs_android_dom.domain.client.mappers.PersonalDataMapper
+import com.custom.rgs_android_dom.domain.client.models.ClientModel
 import com.custom.rgs_android_dom.domain.client.view_states.*
 import com.custom.rgs_android_dom.domain.repositories.ClientRepository
 import com.custom.rgs_android_dom.domain.repositories.FilesRepository
@@ -569,6 +570,10 @@ class ClientInteractor(
     }
     private fun updatePassport(id:String, serial: String, number: String): Completable {
         return clientRepository.updatePassport(id, serial, number)
+    }
+
+    fun getClientSavedSubject(): Observable<ClientModel> {
+       return clientRepository.getClientUpdatedSubject()
     }
 
 }
