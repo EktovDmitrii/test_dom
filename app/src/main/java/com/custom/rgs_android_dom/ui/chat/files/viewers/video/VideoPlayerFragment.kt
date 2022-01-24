@@ -80,9 +80,9 @@ class VideoPlayerFragment : BaseFragment<VideoPlayerViewModel, FragmentVideoPlay
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         player?.release()
         player = null
+        super.onDestroy()
     }
 
     private fun playVideo(url: String){

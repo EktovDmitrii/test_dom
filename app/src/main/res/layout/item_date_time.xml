@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/dayOfWeekTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fontFamily="@font/suisse_regular"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/secondary600"
+        android:textSize="16sp"
+        tools:text="Пн" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/dayNumberTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/my_service_bold"
+        android:layout_gravity="center_horizontal"
+        android:padding="10dp"
+        android:textColor="@color/secondary800"
+        android:textSize="20sp"
+        tools:text="12" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

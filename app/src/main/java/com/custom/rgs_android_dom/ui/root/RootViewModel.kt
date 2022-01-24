@@ -108,7 +108,7 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
 
     fun onCatalogueClick(){
         // TODO remove later
-//        ScreenManager.showBottomScreen(MainCatalogFragment())
+//        ScreenManager.showBottomScreen(MainCatalogFragment.newInstance())
         ScreenManager.showBottomScreen(PurchaseServiceFragment.newInstance(
             PurchaseServiceModel(
                 id = "",

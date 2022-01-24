@@ -11,17 +11,15 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
-class EditPurchaseServiceAddressViewModel(
+class PurchaseAddressViewModel(
    selectedPropertyItem: PropertyItemModel,
     private val propertyInteractor: PropertyInteractor
 ) : BaseViewModel() {
 
     var selectedPropertyItemModel: PropertyItemModel? = null
 
-    private val propertyController =
-        MutableLiveData<List<PropertyItemModel>>()
-    val propertyControllerObserver: LiveData<List<PropertyItemModel>> =
-        propertyController
+    private val propertyController = MutableLiveData<List<PropertyItemModel>>()
+    val propertyObserver: LiveData<List<PropertyItemModel>> = propertyController
 
     init {
         selectedPropertyItemModel = selectedPropertyItem
@@ -31,7 +29,7 @@ class EditPurchaseServiceAddressViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    propertyController.postValue(it)
+                    propertyController.value = it
                 },
                 onError = {
                     logException(this, it)

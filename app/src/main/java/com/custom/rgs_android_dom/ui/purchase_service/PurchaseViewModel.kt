@@ -5,30 +5,32 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
-import com.custom.rgs_android_dom.domain.purchase_service.PurchaseServiceModel
+import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseDateTimeModel
+import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseServiceModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressFragment
-import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_service_address.EditPurchaseServiceAddressFragment
+import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_date_time.PurchaseDateTimeFragment
+import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_service_address.PurchaseAddressFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
-class PurchaseServiceViewModel(
-    private val purchaseServiceModel: PurchaseServiceModel,
+class PurchaseViewModel(
+    private val serviceModel: PurchaseServiceModel,
     private val propertyInteractor: PropertyInteractor
 ) : BaseViewModel() {
 
     private var propertyListSize: Int? = null
 
     private val purchaseServiceController = MutableLiveData<PurchaseServiceModel>()
-    val purchaseServiceControllerObserver: LiveData<PurchaseServiceModel> = purchaseServiceController
+    val purchaseServiceObserver: LiveData<PurchaseServiceModel> = purchaseServiceController
 
     init {
-        purchaseServiceController.postValue(purchaseServiceModel)
+        purchaseServiceController.value = serviceModel
 
         propertyInteractor.getAllProperty()
             .subscribeOn(Schedulers.io())
@@ -46,15 +48,9 @@ class PurchaseServiceViewModel(
     }
 
     fun updateAddress(propertyItemModel: PropertyItemModel) {
-        val oldValue = purchaseServiceController.value
-        oldValue?.propertyItemModel = propertyItemModel
-        oldValue?.let { purchaseServiceController.postValue(it) }
-    }
-
-    fun updateEmail(email: String) {
-        val oldValue = purchaseServiceController.value
-        oldValue?.email = email
-        oldValue?.let {
+        val newValue = purchaseServiceController.value
+        newValue?.propertyItemModel = propertyItemModel
+        newValue?.let {
             purchaseServiceController.value = it
         }
     }
@@ -75,15 +71,32 @@ class PurchaseServiceViewModel(
         }
     }
 
-    fun updateComment(comment:String){
-        val oldValue = purchaseServiceController.value
-        oldValue?.comment = comment
-        oldValue?.let { purchaseServiceController.postValue(it) }
+    fun updateComment(comment: String) {
+        val newValue = purchaseServiceController.value
+        newValue?.comment = comment
+        newValue?.let { purchaseServiceController.postValue(it) }
+    }
+
+    fun updateDateTime(purchaseDateTimeModel: PurchaseDateTimeModel) {
+        val newValue = purchaseServiceController.value
+        newValue?.purchaseDateTimeModel = purchaseDateTimeModel
+        newValue?.let { purchaseServiceController.postValue(it) }
     }
 
     fun onAddressClick(childFragmentManager: FragmentManager) {
-        val editDocumentBottomSheetFragment = EditPurchaseServiceAddressFragment.newInstance(purchaseServiceController.value?.propertyItemModel)
-        editDocumentBottomSheetFragment.show(childFragmentManager, EditPurchaseServiceAddressFragment.TAG)
+        val purchaseAddressFragment =
+            PurchaseAddressFragment.newInstance(purchaseServiceController.value?.propertyItemModel)
+        purchaseAddressFragment.show(
+            childFragmentManager,
+            purchaseAddressFragment.TAG
+        )
+    }
+
+    fun onDateTimeClick(childFragmentManager: FragmentManager) {
+        val purchaseDateTimeFragment = PurchaseDateTimeFragment.newInstance(
+            purchaseServiceController.value?.purchaseDateTimeModel
+        )
+        purchaseDateTimeFragment.show(childFragmentManager, purchaseDateTimeFragment.TAG)
     }
 
     fun onAddPropertyClick() {

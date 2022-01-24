@@ -4,42 +4,36 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import by.kirich1409.viewbindingdelegate.CreateMethod
-import by.kirich1409.viewbindingdelegate.viewBinding
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentEditPurchaseServiceAddressBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
+import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 import java.io.Serializable
 
-class EditPurchaseServiceAddressFragment : BottomSheetDialogFragment() {
+class PurchaseAddressFragment : BaseBottomSheetModalFragment<PurchaseAddressViewModel,FragmentEditPurchaseServiceAddressBinding>() {
 
-    private val binding: FragmentEditPurchaseServiceAddressBinding by viewBinding(createMethod = CreateMethod.INFLATE)
+    private var purchaseAddressListener: PurchaseAddressListener? = null
 
-    private val viewModel: EditPurchaseServiceAddressViewModel by viewModel(parameters = getParameters())
+    private val propertyListAdapter: PurchasePropertyAdapter
+        get() = binding.propertyRecyclerView.adapter as PurchasePropertyAdapter
 
-    private var editPurchaseServiceAddressListener: EditPurchaseServiceAddressListener? = null
-
-    private val propertyListAdapter: EditPurchaseServicePropertyAdapter
-        get() = binding.propertyRecyclerView.adapter as EditPurchaseServicePropertyAdapter
+    override val TAG: String ="PURCHASE_ADDRESS_FRAGMENT"
 
     companion object {
-        const val TAG: String = "EDIT_PURCHASE_SERVICE_ADDRESS_FRAGMENT"
         private const val ARG_PROPERTY_MODEL = "ARG_PROPERTY_MODEL"
 
-        fun newInstance(propertyItemModel: PropertyItemModel?): EditPurchaseServiceAddressFragment =
-            EditPurchaseServiceAddressFragment().args {
+        fun newInstance(propertyItemModel: PropertyItemModel?): PurchaseAddressFragment =
+            PurchaseAddressFragment().args {
                 putSerializable(ARG_PROPERTY_MODEL, propertyItemModel)
             }
     }
 
-    fun getParameters(): ParametersDefinition = {
+    override fun getParameters(): ParametersDefinition = {
         parametersOf(requireArguments().getSerializable(ARG_PROPERTY_MODEL))
     }
 
@@ -52,26 +46,26 @@ class EditPurchaseServiceAddressFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        if (parentFragment is EditPurchaseServiceAddressListener) {
-            editPurchaseServiceAddressListener =
-                parentFragment as EditPurchaseServiceAddressListener
+        if (parentFragment is PurchaseAddressListener) {
+            purchaseAddressListener =
+                parentFragment as PurchaseAddressListener
         }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.propertyRecyclerView.adapter = EditPurchaseServicePropertyAdapter {
-            editPurchaseServiceAddressListener?.onSelectPropertyClick(it)
+        binding.propertyRecyclerView.adapter = PurchasePropertyAdapter {
+            purchaseAddressListener?.onSelectPropertyClick(it)
             dismissAllowingStateLoss()
         }
         binding.addNewPropertyBtn.setOnDebouncedClickListener {
-            viewModel.propertyControllerObserver.value?.size?.let {
-                editPurchaseServiceAddressListener?.onAddPropertyClick()
+            viewModel.propertyObserver.value?.size?.let {
+                purchaseAddressListener?.onAddPropertyClick()
                 dismissAllowingStateLoss()
             }
         }
-        subscribe(viewModel.propertyControllerObserver) { propertyList ->
+        subscribe(viewModel.propertyObserver) { propertyList ->
             if (propertyList.isNotEmpty())
                 viewModel.selectedPropertyItemModel?.let {
                     propertyListAdapter.setItems(
@@ -82,7 +76,7 @@ class EditPurchaseServiceAddressFragment : BottomSheetDialogFragment() {
         }
     }
 
-    interface EditPurchaseServiceAddressListener : Serializable {
+    interface PurchaseAddressListener : Serializable {
         fun onSelectPropertyClick(propertyItemModel: PropertyItemModel)
         fun onAddPropertyClick()
     }

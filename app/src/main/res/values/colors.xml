@@ -39,6 +39,7 @@
     <color name="white_alpha32">#52FFFFFF</color>
     <color name="white_alpha64">#A3FFFFFF</color>
     <color name="white_alpha80">#CCFFFFFF</color>
+    <color name="white_alpha9">#17FFFFFF</color>
     <color name="secondary250_alpha48">#48DBDBDB</color>
 
     <!-- TODO This is temorary name -->
@@ -48,6 +49,7 @@
     <color name="secondary450">#B7B9BB</color>
     <color name="lime">#DEDFBA</color>
     <color name="gray">#333333</color>
+    <color name="isabelline">#EDEAE5</color>
 
     <!-- Text color for text input layout bottom line (overriden from default resources) -->
     <color name="mtrl_textinput_default_box_stroke_color">@color/white</color>

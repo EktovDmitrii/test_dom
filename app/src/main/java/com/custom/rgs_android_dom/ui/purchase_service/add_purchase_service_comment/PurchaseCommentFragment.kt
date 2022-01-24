@@ -7,22 +7,22 @@ import android.view.ViewGroup
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.custom.rgs_android_dom.R
-import com.custom.rgs_android_dom.databinding.FragmentEditPurchaseServiceCommentBinding
+import com.custom.rgs_android_dom.databinding.FragmentPurchaseCommentBinding
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.io.Serializable
 
-class EditPurchaseServiceCommentFragment : BottomSheetDialogFragment() {
+class PurchaseCommentFragment : BottomSheetDialogFragment() {
 
-    private val binding: FragmentEditPurchaseServiceCommentBinding by viewBinding(createMethod = CreateMethod.INFLATE)
+    private val binding: FragmentPurchaseCommentBinding by viewBinding(createMethod = CreateMethod.INFLATE)
 
-    private var editPurchaseServiceCommentListener: EditPurchaseServiceCommentListener? = null
+    private var purchaseCommentListener: PurchaseCommentListener? = null
 
     companion object {
         const val TAG: String = "EDIT_PURCHASE_SERVICE_COMMENT_FRAGMENT"
 
-        fun newInstance(): EditPurchaseServiceCommentFragment =
-            EditPurchaseServiceCommentFragment()
+        fun newInstance(): PurchaseCommentFragment =
+            PurchaseCommentFragment()
     }
 
     override fun getTheme(): Int {
@@ -34,8 +34,8 @@ class EditPurchaseServiceCommentFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        if (parentFragment is EditPurchaseServiceCommentListener) {
-            editPurchaseServiceCommentListener = parentFragment as EditPurchaseServiceCommentListener
+        if (parentFragment is PurchaseCommentListener) {
+            purchaseCommentListener = parentFragment as PurchaseCommentListener
         }
         return binding.root
     }
@@ -44,12 +44,12 @@ class EditPurchaseServiceCommentFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.saveTextView.setOnDebouncedClickListener {
-            editPurchaseServiceCommentListener?.onSaveCommentClick(binding.commentTextInputLayout.getText())
+            purchaseCommentListener?.onSaveCommentClick(binding.commentTextInputLayout.getText())
             dismissAllowingStateLoss()
         }
     }
 
-    interface EditPurchaseServiceCommentListener : Serializable {
+    interface PurchaseCommentListener : Serializable {
         fun onSaveCommentClick(comment: String)
     }
 }

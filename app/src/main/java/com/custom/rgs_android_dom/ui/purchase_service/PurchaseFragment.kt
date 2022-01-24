@@ -10,12 +10,13 @@ import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentPurchaseServiceBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
-import com.custom.rgs_android_dom.domain.purchase_service.PurchaseServiceModel
+import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseDateTimeModel
+import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseServiceModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
-import com.custom.rgs_android_dom.ui.purchase_service.add_purchase_service_comment.EditPurchaseServiceCommentFragment
-import com.custom.rgs_android_dom.ui.purchase_service.add_purchase_service_email.EditPurchaseServiceEmailFragment
-import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_service_address.EditPurchaseServiceAddressFragment
+import com.custom.rgs_android_dom.ui.purchase_service.add_purchase_service_comment.PurchaseCommentFragment
+import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_date_time.PurchaseDateTimeFragment
+import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_service_address.PurchaseAddressFragment
 import com.custom.rgs_android_dom.utils.DigitsFormatter
 import com.custom.rgs_android_dom.utils.GlideApp
 import com.custom.rgs_android_dom.utils.args
@@ -25,19 +26,20 @@ import com.custom.rgs_android_dom.utils.subscribe
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-class PurchaseServiceFragment :
-    BaseBottomSheetFragment<PurchaseServiceViewModel, FragmentPurchaseServiceBinding>(),
-    EditPurchaseServiceAddressFragment.EditPurchaseServiceAddressListener,
-    EditPurchaseServiceEmailFragment.EditPurchaseServiceEmailListener,
-    EditPurchaseServiceCommentFragment.EditPurchaseServiceCommentListener,
+class PurchaseFragment :
+    BaseBottomSheetFragment<PurchaseViewModel, FragmentPurchaseServiceBinding>(),
+    PurchaseAddressFragment.PurchaseAddressListener,
+    PurchaseCommentFragment.PurchaseCommentListener,
+    PurchaseDateTimeFragment.PurchaseDateTimeListener,
     FragmentResultListener, ConfirmBottomSheetFragment.ConfirmListener {
+
     override val TAG: String = "PURCHASE_SERVICE_FRAGMENT"
 
     companion object {
         private const val ARG_PURCHASE_SERVICE_MODEL = "ARG_PURCHASE_SERVICE_MODEL"
         fun newInstance(
             purchaseServiceModel: PurchaseServiceModel
-        ): PurchaseServiceFragment = PurchaseServiceFragment().args {
+        ): PurchaseFragment = PurchaseFragment().args {
             putSerializable(ARG_PURCHASE_SERVICE_MODEL, purchaseServiceModel)
         }
     }
@@ -53,31 +55,28 @@ class PurchaseServiceFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initViews()
-
         childFragmentManager.setFragmentResultListener("email_request", viewLifecycleOwner, this)
         childFragmentManager.setFragmentResultListener("agent_code_request", viewLifecycleOwner, this)
         childFragmentManager.setFragmentResultListener("card_request", viewLifecycleOwner, this)
 
-        binding.layoutPurchaseServiceProperty.layout.setOnDebouncedClickListener {
+        binding.layoutProperty.root.setOnDebouncedClickListener {
             viewModel.onAddressClick(childFragmentManager)
         }
-        binding.layoutPurchaseServiceMail.layout.setOnDebouncedClickListener {
-            val editPurchaseServiceEmail = EditPurchaseServiceEmailFragment.newInstance()
-            editPurchaseServiceEmail.show(childFragmentManager, EditPurchaseServiceEmailFragment.TAG)
-        }
         binding.addCommmentTextView.setOnDebouncedClickListener {
-            val editPurchaseServiceComment = EditPurchaseServiceCommentFragment.newInstance()
-            editPurchaseServiceComment.show(childFragmentManager, EditPurchaseServiceCommentFragment.TAG)
+            val editPurchaseServiceComment = PurchaseCommentFragment.newInstance()
+            editPurchaseServiceComment.show(childFragmentManager, PurchaseCommentFragment.TAG)
         }
-        binding.layoutPurchaseServiceDateTime.layout.setOnDebouncedClickListener {
-            //Todo добавлю выбор времени
+        binding.layoutDateTime.root.setOnDebouncedClickListener {
+            viewModel.onDateTimeClick(childFragmentManager)
+        }
+        binding.layoutCardPayment.root.setOnDebouncedClickListener {
+            //Todo Нуржик доделает
         }
         binding.makeOrderButton.productArrangeBtn.setOnDebouncedClickListener {
             //Todo добавить потом
         }
 
-        subscribe(viewModel.purchaseServiceControllerObserver) { purchaseService ->
+        subscribe(viewModel.purchaseServiceObserver) { purchaseService ->
             GlideApp.with(requireContext())
                 .load(GlideUrlProvider.makeHeadersGlideUrl(purchaseService.iconLink))
                 .transform(RoundedCorners(20.dp(requireContext())))
@@ -102,17 +101,17 @@ class PurchaseServiceFragment :
             }
 
             purchaseService.propertyItemModel?.let {
-                binding.layoutPurchaseServiceProperty.propertyTypeTextView.text = it.name
-                binding.layoutPurchaseServiceProperty.propertyAddressTextView.text =
+                binding.layoutProperty.propertyTypeTextView.text = it.name
+                binding.layoutProperty.propertyAddressTextView.text =
                     it.address?.address
                 when (it.type) {
                     PropertyType.HOUSE -> {
-                        binding.layoutPurchaseServiceProperty.propertyTypeImageView.setImageResource(
+                        binding.layoutProperty.propertyTypeImageView.setImageResource(
                             R.drawable.ic_type_home
                         )
                     }
                     PropertyType.APARTMENT -> {
-                        binding.layoutPurchaseServiceProperty.propertyTypeImageView.setImageResource(
+                        binding.layoutProperty.propertyTypeImageView.setImageResource(
                             R.drawable.ic_type_apartment
                         )
                     }
@@ -134,12 +133,12 @@ class PurchaseServiceFragment :
         viewModel.onAddPropertyClick()
     }
 
-    override fun onSaveMailClick(email: String) {
-        viewModel.updateEmail(email)
-    }
-
     override fun onSaveCommentClick(comment: String) {
         viewModel.updateComment(comment)
+    }
+
+    override fun onSelectDateTimeClick(purchaseDateTimeModel: PurchaseDateTimeModel) {
+        viewModel.updateDateTime(purchaseDateTimeModel)
     }
 
     //Todo подумал, что это удобно вынести в отдельный метод
@@ -222,6 +221,5 @@ class PurchaseServiceFragment :
         val addAgentBottomFragment = AddAgentBottomFragment()
         addAgentBottomFragment.show(childFragmentManager, addAgentBottomFragment.TAG)
     }
-
-
+    
 }

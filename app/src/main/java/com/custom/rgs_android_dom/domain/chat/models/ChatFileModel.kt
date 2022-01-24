@@ -11,7 +11,7 @@ data class ChatFileModel(
     val height: Int,
     val id: String,
     val mimeType: String,
-    val miniPreview: Bitmap,
+    val miniPreview: Bitmap?,
     var preview: String,
     val name: String,
     val size: Long,

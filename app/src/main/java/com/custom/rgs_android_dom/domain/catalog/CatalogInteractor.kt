@@ -12,6 +12,7 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
     companion object {
         private const val TAG_POPULAR_PRODUCTS = "ВыводитьНаГлавной"
         private const val CNT_POPULAR_SERVICES_IN_MAIN = 6
+        private const val CNT_POPULAR_CATEGORIES_IN_MAIN = 5
     }
 
     fun getCatalogCategories(): Single<List<CatalogCategoryModel>> {
@@ -37,7 +38,7 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
 
                 catalogCategory.products = availableProducts.filter { it.tags.any { it in catalogCategory.productTags }}
             }
-            return@map catalogCategories.filter { it.subCategories.isNotEmpty() }
+            return@map catalogCategories.filter { it.subCategories.isNotEmpty() || it.isPrimary }.sortedByDescending { it.isPrimary }
         }
     }
 
@@ -60,12 +61,25 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
 
     fun getPopularProducts(): Single<List<ProductShortModel>>{
         return catalogRepository.getShowcase(listOf(TAG_POPULAR_PRODUCTS))
+            .map{
+                it.filter { !it.defaultProduct }
+            }
     }
 
     fun getPopularServices(): Single<List<ProductShortModel>>{
         return catalogRepository.getShowcase(listOf(TAG_POPULAR_PRODUCTS)).map {
             it.filter { it.defaultProduct }.take(CNT_POPULAR_SERVICES_IN_MAIN)
         }
+    }
+
+    fun getPopularCategories(): Single<List<CatalogCategoryModel>>{
+        return catalogRepository.getCatalogCategories()
+            .map {
+                it.filter {
+                    // todo when backend data is ready add filter to retieve categories by tag.
+                    it.subCategories.isNotEmpty()
+                }.take(CNT_POPULAR_CATEGORIES_IN_MAIN)
+            }
     }
 
 }
