@@ -21,8 +21,10 @@ import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressFragment
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
+import com.custom.rgs_android_dom.utils.ProgressTransformer
 import com.custom.rgs_android_dom.ui.sos.SOSFragment
 import com.custom.rgs_android_dom.utils.logException
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -102,29 +104,7 @@ class MainViewModel(
                 }
             ).addTo(dataCompositeDisposable)
 
-        catalogInteractor.getPopularProducts()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onSuccess = {
-                    popularProductsController.value = it
-                },
-                onError = {
-                    logException(this, it)
-                }
-            ).addTo(dataCompositeDisposable)
-
-        catalogInteractor.getPopularCategories()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onSuccess = {
-                    popularCategoriesController.value = it
-                },
-                onError = {
-                    logException(this, it)
-                }
-            ).addTo(dataCompositeDisposable)
+        loadContent()
 
         rateCommentsController.value = listOf(
             CommentModel(
@@ -175,18 +155,32 @@ class MainViewModel(
             .addTo(dataCompositeDisposable)
     }
 
-    fun getPopularProducts() {
-        catalogInteractor.getPopularServices()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onSuccess = {
-                    popularServicesController.value = it
-                },
-                onError = {
-                    logException(this, it)
-                }
-            ).addTo(dataCompositeDisposable)
+    fun loadContent() {
+        Single.zip(
+            catalogInteractor.getPopularServices(),
+            catalogInteractor.getPopularProducts(),
+            catalogInteractor.getPopularCategories()
+        ) { services, products, categories ->
+            popularServicesController.postValue(services)
+            popularProductsController.postValue(products)
+            popularCategoriesController.postValue(categories)
+        }
+            .compose(
+                ProgressTransformer(
+                    onLoading = {
+                        loadingStateController.postValue(LoadingState.LOADING)
+                    },
+                    onError = {
+                        logException(this, it)
+                        loadingStateController.value = LoadingState.ERROR
+                    },
+                    onLoaded = {
+                        loadingStateController.value = LoadingState.CONTENT
+                    }
+                )
+            )
+            .subscribe()
+            .addTo(dataCompositeDisposable)
     }
 
     fun onLoginClick() {

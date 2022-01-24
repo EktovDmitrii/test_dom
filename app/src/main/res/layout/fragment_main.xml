@@ -10,11 +10,28 @@
         android:id="@+id/swipeAnchorLayout"
         layout="@layout/layout_bottom_sheet_swipe_anchor" />
 
+    <include
+        android:id="@+id/mainShimmerLayout"
+        layout="@layout/layout_main_loading_shimmer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/mainErrorLayout"
+        layout="@layout/layout_error_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        />
+
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/mainContentLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/secondary100"
         android:fillViewport="true"
+        android:visibility="gone"
         android:overScrollMode="never">
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -217,9 +234,7 @@
                 layout="@layout/layout_main_popular_categories" />
 
             <include android:id="@+id/popularServicesLayout"
-                layout="@layout/layout_main_popular_services"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                layout="@layout/layout_main_popular_services" />
 
             <include android:id="@+id/popularProductsLayout"
                 layout="@layout/layout_main_popular_products"/>
@@ -228,8 +243,7 @@
                 layout="@layout/layout_main_stories"/>
 
             <include android:id="@+id/ratingLayout"
-                layout="@layout/layout_main_rating_masters"
-                />
+                layout="@layout/layout_main_rating_masters" />
 
             <include
                 android:id="@+id/aboutApplicationLayout"
