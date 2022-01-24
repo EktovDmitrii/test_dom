@@ -22,6 +22,7 @@ class ClientRepositoryImpl(
     private val clientSharedPreferences: ClientSharedPreferences
 ) : ClientRepository {
 
+    private val clientSavedSubject = PublishSubject.create<Unit>()
     private val clientUpdatedSubject: PublishSubject<ClientModel> = PublishSubject.create()
     private val editAgentRequestedSubject: PublishSubject<Boolean> = PublishSubject.create()
     private val editPersonalDataRequestedSubject: BehaviorSubject<Boolean> = BehaviorSubject.create()
@@ -50,7 +51,6 @@ class ClientRepositoryImpl(
             .flatMapCompletable { response ->
                 val client = ClientMapper.responseToClient(response)
                 clientSharedPreferences.saveClient(client)
-
                 clientSharedPreferences.getClient()?.let {
                     clientUpdatedSubject.onNext(it)
                 }
@@ -59,19 +59,15 @@ class ClientRepositoryImpl(
     }
 
     override fun getClient(): Single<ClientModel> {
-
         clientSharedPreferences.getClient()?.let {
             return Single.fromCallable { it }
         }
 
         return api.getMyClient().map { response ->
-
             val client = ClientMapper.responseToClient(response)
             clientSharedPreferences.saveClient(client)
-
             val agent = ClientMapper.responseToAgent(api.getAgent().blockingGet())
             clientSharedPreferences.saveAgent(agent)
-
             return@map clientSharedPreferences.getClient()
         }
     }
@@ -88,6 +84,7 @@ class ClientRepositoryImpl(
                 clientSharedPreferences.saveClient(client)
                 clientSharedPreferences.saveAgent(agent)
                 clientUpdatedSubject.onNext(client)
+                clientSavedSubject.onNext(Unit)
             }
 
             return@flatMapCompletable Completable.complete()
@@ -210,6 +207,10 @@ class ClientRepositoryImpl(
         return api.getClientProducts().map {clientProductsResponse ->
             ClientMapper.responseToClientProducts(clientProductsResponse)
         }
+    }
+
+    override fun getClientSavedSubject(): PublishSubject<Unit> {
+        return clientSavedSubject
     }
 
 }

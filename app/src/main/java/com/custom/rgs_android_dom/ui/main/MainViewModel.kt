@@ -21,6 +21,7 @@ import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressFragment
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
+import com.custom.rgs_android_dom.ui.sos.SOSFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -211,12 +212,7 @@ class MainViewModel(
     }
 
     fun onSOSClick() {
-        if (registrationController.value == false) {
-            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
-        } else {
-        //todo go to problem solving screen
-        }
-
+        ScreenManager.showScreen(SOSFragment())
     }
 
     fun onPoliciesClick() {

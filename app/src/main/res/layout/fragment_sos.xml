@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mercury"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/backImageView"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_back_44px" />
+
+    </FrameLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="18dp"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="179dp"
+                android:layout_height="179dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/image_broken_egg" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="27dp" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="335dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="46dp"
+                android:orientation="vertical">
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/my_service_bold"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/secondary900"
+                    android:textSize="24sp"
+                    app:translationTextKey="Что-то случилось?" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp" />
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginHorizontal="8dp"
+                    android:fontFamily="@font/suisse_regular"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:lineHeight="26dp"
+                    android:textColor="@color/secondary800"
+                    android:textSize="16sp"
+                    app:translationTextKey="Свяжитесь с Мастером онлайн
+            для быстрой помощи по любым вопросам." />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="56dp" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/freePhoneCallLinearLayout"
+                        android:layout_width="162dp"
+                        android:layout_height="140dp"
+                        android:background="@drawable/rectangle_filled_white_radius_16dp"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="72dp"
+                            android:layout_height="72dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginVertical="8dp" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="10dp"
+                            android:fontFamily="@font/my_service_bold"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:text="8-800"
+                            android:textColor="@color/secondary900"
+                            android:textSize="13sp" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="4dp" />
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="10dp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/secondary900"
+                            android:textSize="12sp"
+                            app:translationTextKey="Бесплатный звонок" />
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <Space
+                        android:layout_width="12dp"
+                        android:layout_height="match_parent" />
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/chatLinearLayout"
+                        android:layout_width="162dp"
+                        android:layout_height="140dp"
+                        android:background="@drawable/rectangle_filled_white_radius_16dp"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="72dp"
+                            android:layout_height="72dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginVertical="8dp"
+                            android:background="@drawable/ic_chat_72px" />
+
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="10dp"
+                            android:fontFamily="@font/my_service_bold"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/secondary900"
+                            android:textSize="13sp"
+                            app:translationTextKey="Чат" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="4dp" />
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="10dp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/secondary900"
+                            android:textSize="12sp"
+                            app:translationTextKey="Задать вопрос в чате" />
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/audioCallLinearLayout"
+                        android:layout_width="162dp"
+                        android:layout_height="140dp"
+                        android:background="@drawable/rectangle_filled_white_radius_16dp"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="72dp"
+                            android:layout_height="72dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginVertical="8dp" />
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="10dp"
+                            android:fontFamily="@font/my_service_bold"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/secondary900"
+                            android:textSize="13sp"
+                            app:translationTextKey="Звонок" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="4dp" />
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="10dp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/secondary900"
+                            android:textSize="12sp"
+                            app:translationTextKey="Онлайн аудиозвонок" />
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <Space
+                        android:layout_width="12dp"
+                        android:layout_height="match_parent" />
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/videoCallLinearLayout"
+                        android:layout_width="162dp"
+                        android:layout_height="140dp"
+                        android:background="@drawable/rectangle_filled_white_radius_16dp"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="72dp"
+                            android:layout_height="72dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginVertical="8dp" />
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="10dp"
+                            android:fontFamily="@font/my_service_bold"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/secondary900"
+                            android:textSize="13sp"
+                            app:translationTextKey="Видео" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="4dp" />
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="10dp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/secondary900"
+                            android:textSize="12sp"
+                            app:translationTextKey="Видеосвязь онлайн" />
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </ScrollView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
