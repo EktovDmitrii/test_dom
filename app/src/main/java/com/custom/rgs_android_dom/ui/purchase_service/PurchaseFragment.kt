@@ -2,7 +2,6 @@ package com.custom.rgs_android_dom.ui.purchase_service
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentResultListener
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
@@ -90,14 +89,14 @@ class PurchaseFragment :
                 binding.makeOrderButton.btnPrice.text = DigitsFormatter.priceFormat(amount)
             }
 
-            purchaseService.email?.let { email ->
-                binding.layoutPurchaseServiceMail.sampleNameTextView.text = email
-            }
-            purchaseService.agentCode?.let { code ->
-                binding.layoutPurchaseServiceAgentCode.sampleNameTextView.text = code
-            }
+//            purchaseService.email?.let { email ->
+//                binding.layoutEmail.sampleNameTextView.text = email
+//            }
+//            purchaseService.agentCode?.let { code ->
+//                binding.layoutAgentCode.sampleNameTextView.text = code
+//            }
             purchaseService.card?.let { card ->
-                binding.layoutPurchaseServiceCardPayment.cardNumberTextView.text = card
+                binding.layoutCardPayment.cardNumberTextView.text = card
             }
 
             purchaseService.propertyItemModel?.let {
@@ -141,47 +140,6 @@ class PurchaseFragment :
         viewModel.updateDateTime(purchaseDateTimeModel)
     }
 
-    //Todo подумал, что это удобно вынести в отдельный метод
-    private fun initViews() {
-        binding.layoutPurchaseServiceDateTime.sampleImageView.setImageDrawable(
-            ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.ic_clock_black
-            )
-        )
-        binding.layoutPurchaseServiceDateTime.sampleNameTextView.text = "Выберите дату и время"
-
-        binding.layoutPurchaseServiceMail.sampleImageView.setImageDrawable(
-            ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.ic_mail_black
-            )
-        )
-        binding.layoutPurchaseServiceMail.sampleNameTextView.text = "Добавить почту для чека"
-
-        binding.layoutPurchaseServiceAgentCode.sampleImageView.setImageDrawable(
-            ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.ic_agent_black
-            )
-        )
-        binding.layoutPurchaseServiceAgentCode.sampleNameTextView.text = "Я знаю код агента"
-        binding.makeOrderButton.btnTitle.text = "Заказать"
-
-        binding.layoutPurchaseServiceCardPayment.root.setOnDebouncedClickListener {
-            val selectCardBottomFragment = SelectCardBottomFragment()
-            selectCardBottomFragment.show(childFragmentManager, selectCardBottomFragment.TAG)
-        }
-        binding.layoutPurchaseServiceMail.root.setOnDebouncedClickListener {
-            val addEmailBottomFragment = AddEmailBottomFragment()
-            addEmailBottomFragment.show(childFragmentManager, addEmailBottomFragment.TAG)
-        }
-        binding.layoutPurchaseServiceAgentCode.root.setOnDebouncedClickListener {
-            val addAgentBottomFragment = AddAgentBottomFragment()
-            addAgentBottomFragment.show(childFragmentManager, addAgentBottomFragment.TAG)
-        }
-    }
-
     override fun onFragmentResult(requestKey: String, result: Bundle) {
         when (requestKey) {
             "email_request" -> {
@@ -221,5 +179,5 @@ class PurchaseFragment :
         val addAgentBottomFragment = AddAgentBottomFragment()
         addAgentBottomFragment.show(childFragmentManager, addAgentBottomFragment.TAG)
     }
-    
+
 }

@@ -15,5 +15,5 @@ data class PurchaseServiceModel(
     var agentCode: String? = null,
     var card: String? = null,
     var comment: String? = null,
-    var purchaseDateTimeModel: PurchaseDateTimeModel
+    var purchaseDateTimeModel: PurchaseDateTimeModel? = null
 ) : Serializable

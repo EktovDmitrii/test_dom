@@ -55,7 +55,6 @@ import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_date_time.Pu
 import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_service_address.PurchaseAddressViewModel
 import com.custom.rgs_android_dom.ui.purchase_service.AddAgentViewModel
 import com.custom.rgs_android_dom.ui.purchase_service.AddEmailViewModel
-import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_service_address.EditPurchaseServiceAddressViewModel
 import com.custom.rgs_android_dom.ui.purchase_service.SelectCardViewModel
 
 val viewModelModule = module {

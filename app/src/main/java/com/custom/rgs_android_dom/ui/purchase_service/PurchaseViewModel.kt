@@ -38,7 +38,7 @@ class PurchaseViewModel(
             .subscribeBy(
                 onSuccess = {
                     propertyListSize = it.size
-                    updateAddress(it.last())
+                    if (it.isNotEmpty()) updateAddress(it.last())
                 },
                 onError = {
                     logException(this, it)
@@ -54,6 +54,15 @@ class PurchaseViewModel(
             purchaseServiceController.value = it
         }
     }
+
+    fun updateEmail(email: String) {
+        val oldValue = purchaseServiceController.value
+        oldValue?.email = email
+        oldValue?.let {
+            purchaseServiceController.value = it
+        }
+    }
+
 
     fun updateAgentCode(code: String) {
         val oldValue = purchaseServiceController.value

@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthState
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
-import com.custom.rgs_android_dom.domain.purchase_service.PurchaseServiceModel
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
@@ -16,7 +15,6 @@ import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.registration.agreement.RegistrationAgreementFragment
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.ui.main.MainFragment
-import com.custom.rgs_android_dom.ui.purchase_service.PurchaseServiceFragment
 import com.custom.rgs_android_dom.utils.logException
 import com.custom.rgs_android_dom.views.NavigationScope
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -107,19 +105,7 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
     }
 
     fun onCatalogueClick(){
-        // TODO remove later
-//        ScreenManager.showBottomScreen(MainCatalogFragment.newInstance())
-        ScreenManager.showBottomScreen(PurchaseServiceFragment.newInstance(
-            PurchaseServiceModel(
-                id = "",
-                iconLink = "",
-                name = "",
-                price = null,
-                propertyItemModel = null,
-                email = null,
-                comment = null
-            )
-        ))
+        ScreenManager.showBottomScreen(MainCatalogFragment.newInstance())
     }
 
     fun onProfileClick(){
