@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.data.repositories.address.AddressRepositoryImp
 import com.custom.rgs_android_dom.data.repositories.catalog.CatalogRepositoryImpl
 import com.custom.rgs_android_dom.data.repositories.files.FilesRepositoryImpl
 import com.custom.rgs_android_dom.data.repositories.property.PropertyRepositoryImpl
+import com.custom.rgs_android_dom.data.repositories.purchase.PurchaseRepositoryImpl
 import com.custom.rgs_android_dom.data.repositories.registration.RegistrationRepositoryImpl
 import com.custom.rgs_android_dom.data.repositories.translation.TranslationRepositoryImpl
 import com.custom.rgs_android_dom.domain.repositories.*
@@ -22,4 +23,5 @@ val dataModule = module {
     single <AddressRepository> { AddressRepositoryImpl(api = get()) }
     single <FilesRepository> {FilesRepositoryImpl(api = get())}
     single <CatalogRepository> {CatalogRepositoryImpl(api = get(), authContentProviderManager = get())}
+    single <PurchaseRepository> { PurchaseRepositoryImpl(api = get()) }
 }

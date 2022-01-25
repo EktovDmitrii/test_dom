@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ItemPurchaseCardBinding
 import com.custom.rgs_android_dom.databinding.ItemPurchaseNewCardBinding
-import com.custom.rgs_android_dom.domain.purchase_service.SavedCardModel
+import com.custom.rgs_android_dom.domain.purchase_service.model.SavedCardModel
 import com.custom.rgs_android_dom.ui.base.BaseViewHolder
 import com.custom.rgs_android_dom.utils.GlideApp
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
@@ -110,6 +110,8 @@ class SelectCardAdapter(
             binding.cardNumberTextView.text = "•••• ${item.number}"
             binding.root.setOnDebouncedClickListener {
                 toggleSelectedItems(absoluteAdapterPosition)
+
+                onCardClick()
             }
         }
 

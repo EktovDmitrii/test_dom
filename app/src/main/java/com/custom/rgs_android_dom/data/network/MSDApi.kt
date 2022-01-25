@@ -195,4 +195,12 @@ interface MSDApi {
     @GET("chat/users/{userId}/files/{fileId}/preview")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getChatFilePreview(@Path ("userId") userId: String, @Path("fileId") fileId: String): Single<ChatFilePreviewResponse>
+
+    @GET("billing/clients/me/cards")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getSavedCards(): Single<List<SavedCardResponse>>
+
+    @POST("clients/me/purchase/products/{productId}")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun makeProductPurchase(@Path("productId") productId: String, @Body order: PurchaseProductRequest) : Single<PurchaseResponse>
 }

@@ -1,11 +1,13 @@
 package com.custom.rgs_android_dom.ui.purchase_service
 
+import android.util.Log
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseDateTimeModel
+import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseInteractor
 import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseServiceModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
@@ -21,7 +23,8 @@ import io.reactivex.schedulers.Schedulers
 
 class PurchaseViewModel(
     private val serviceModel: PurchaseServiceModel,
-    private val propertyInteractor: PropertyInteractor
+    private val propertyInteractor: PropertyInteractor,
+    private val purchaseInteractor: PurchaseInteractor
 ) : BaseViewModel() {
 
     private var propertyListSize: Int? = null
@@ -108,10 +111,40 @@ class PurchaseViewModel(
         purchaseDateTimeFragment.show(childFragmentManager, purchaseDateTimeFragment.TAG)
     }
 
+    fun onCardClick(childFragmentManager: FragmentManager) {
+        val cardFragment = SelectCardBottomFragment.newInstance()
+        cardFragment.show(childFragmentManager, cardFragment.TAG)
+    }
+
     fun onAddPropertyClick() {
         ScreenManager.showScreenScope(
             SelectAddressFragment.newInstance(propertyListSize ?: 0),
             ADD_PROPERTY
         )
+    }
+
+    fun makeOrder() {
+        purchaseServiceObserver.value?.let {
+            purchaseInteractor.makeProductPurchase(
+                productId = it.id,
+                bindingId = null,
+                email = "pav.develop@yandex.ru",
+                objectId = "19693951-05ea-41c5-86f2-ea1e3f888e4d",
+                saveCard = true,
+                deliveryDate = "2022-02-25T00:00:00+04:00",
+                timeFrom = "10:00",
+                timeTo = "10:00"
+            )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                    onSuccess = {
+                                Log.d("MyLogs", it)
+                    },
+                    onError = {
+                        logException(this, it)
+                    }
+                ).addTo(dataCompositeDisposable)
+        }
     }
 }

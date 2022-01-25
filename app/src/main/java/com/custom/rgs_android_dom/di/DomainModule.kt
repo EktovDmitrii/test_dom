@@ -30,5 +30,5 @@ val domainModule = module {
 
     factory { CatalogInteractor(catalogRepository = get()) }
 
-    factory { PurchaseInteractor() }
+    factory { PurchaseInteractor(purchaseRepository = get()) }
 }

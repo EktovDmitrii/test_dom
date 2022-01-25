@@ -69,10 +69,10 @@ class PurchaseFragment :
             viewModel.onDateTimeClick(childFragmentManager)
         }
         binding.layoutCardPayment.root.setOnDebouncedClickListener {
-            //Todo Нуржик доделает
+            viewModel.onCardClick(childFragmentManager)
         }
         binding.makeOrderButton.productArrangeBtn.setOnDebouncedClickListener {
-            //Todo добавить потом
+            viewModel.makeOrder()
         }
 
         subscribe(viewModel.purchaseServiceObserver) { purchaseService ->
