@@ -63,7 +63,7 @@ class PurchaseDateTimeFragment : BaseBottomSheetModalFragment<PurchaseDateTimeVi
             viewModel.selectDay(it.date)
         }
         binding.periodRecyclerView.adapter = PurchasePeriodAdapter {
-            viewModel.selectPeriod(it)
+          //  viewModel.selectPeriod(it)
         }
         binding.selectedMouth.nextMouthImageView.setOnDebouncedClickListener {
             viewModel.plusWeek()

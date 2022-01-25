@@ -7,7 +7,7 @@ import com.custom.rgs_android_dom.domain.catalog.models.ProductDurationModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductPriceModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductUnitType
-import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseServiceModel
+import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -45,14 +45,14 @@ class ProductViewModel(
 
     fun onCheckoutClick() {
         productController.value?.let {
-            val purchaseServiceModel = PurchaseServiceModel(
+            val purchaseServiceModel = PurchaseModel(
                 id = it.id,
                 iconLink = it.iconLink,
                 name = it.name,
                 price = it.price
             )
-            val purchaseServiceFragment = PurchaseFragment.newInstance(purchaseServiceModel)
-            ScreenManager.showBottomScreen(purchaseServiceFragment)
+            val purchaseFragment = PurchaseFragment.newInstance(purchaseServiceModel)
+            ScreenManager.showBottomScreen(purchaseFragment)
         }
 
     }

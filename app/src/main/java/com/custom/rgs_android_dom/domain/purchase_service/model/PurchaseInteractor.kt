@@ -1,6 +1,8 @@
 package com.custom.rgs_android_dom.domain.purchase_service.model
 
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DAY_OF_WEEK
+import com.custom.rgs_android_dom.utils.DATE_PATTERN_MONTH_FULL_ONLY
+import com.custom.rgs_android_dom.utils.DATE_PATTERN_YEAR_MONTH
 import com.custom.rgs_android_dom.utils.formatTo
 import org.joda.time.LocalDateTime
 import org.joda.time.LocalTime
@@ -37,11 +39,11 @@ class PurchaseInteractor {
             )
             firstDayInWeek = firstDayInWeek.plusDays(1)
         }
-        val currentMouth: String = purchaseDateTimeModel.date.monthOfYear().asString
+        val currentMouth: String = firstDayInWeek.minusDays(1).formatTo(DATE_PATTERN_YEAR_MONTH)
 
         return PurchaseDateModel(
             selectedMouth = currentMouth,
-            isPreviousMouthButtonEnable = checkPreviousButtonEnable(dateForCalendarList[4].date.minusWeeks(1)),
+            isPreviousMouthButtonEnable = checkPreviousButtonEnable(dateForCalendarList[6].date.minusWeeks(1)),
             datesForCalendar = dateForCalendarList,
             isSelectButtonEnable = false,
             periodList = checkPeriodEnable(periodList)

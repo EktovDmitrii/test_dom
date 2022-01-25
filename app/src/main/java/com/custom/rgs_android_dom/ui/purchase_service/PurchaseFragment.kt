@@ -9,7 +9,7 @@ import com.custom.rgs_android_dom.databinding.FragmentPurchaseServiceBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseDateTimeModel
-import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseServiceModel
+import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.purchase_service.add_purchase_service_comment.PurchaseCommentFragment
 import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_date_time.PurchaseDateTimeFragment
@@ -34,15 +34,15 @@ class PurchaseFragment :
     companion object {
         private const val ARG_PURCHASE_SERVICE_MODEL = "ARG_PURCHASE_SERVICE_MODEL"
         fun newInstance(
-            purchaseServiceModel: PurchaseServiceModel
+            purchaseModel: PurchaseModel
         ): PurchaseFragment = PurchaseFragment().args {
-            putSerializable(ARG_PURCHASE_SERVICE_MODEL, purchaseServiceModel)
+            putSerializable(ARG_PURCHASE_SERVICE_MODEL, purchaseModel)
         }
     }
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
-            requireArguments().getSerializable(ARG_PURCHASE_SERVICE_MODEL) as PurchaseServiceModel
+            requireArguments().getSerializable(ARG_PURCHASE_SERVICE_MODEL) as PurchaseModel
         )
     }
 
@@ -68,21 +68,21 @@ class PurchaseFragment :
             //Todo добавить потом
         }
 
-        subscribe(viewModel.purchaseServiceObserver) { purchaseService ->
+        subscribe(viewModel.purchaseObserver) { purchase ->
             GlideApp.with(requireContext())
-                .load(GlideUrlProvider.makeHeadersGlideUrl(purchaseService.iconLink))
+                .load(GlideUrlProvider.makeHeadersGlideUrl(purchase.iconLink))
                 .transform(RoundedCorners(20.dp(requireContext())))
                 .into(binding.layoutPurchaseServiceHeader.orderImageView)
 
-            binding.layoutPurchaseServiceHeader.orderNameTextView.text = purchaseService.name
+            binding.layoutPurchaseServiceHeader.orderNameTextView.text = purchase.name
 
-            purchaseService.price?.amount?.let { amount ->
+            purchase.price?.amount?.let { amount ->
                 binding.layoutPurchaseServiceHeader.orderCostTextView.text =
                     DigitsFormatter.priceFormat(amount)
                 binding.makeOrderButton.btnPrice.text = DigitsFormatter.priceFormat(amount)
             }
 
-            purchaseService.propertyItemModel?.let {
+            purchase.propertyItemModel?.let {
                 binding.layoutProperty.propertyTypeTextView.text = it.name
                 binding.layoutProperty.propertyAddressTextView.text =
                     it.address?.address

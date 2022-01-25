@@ -24,6 +24,7 @@ class PurchaseDateTimeViewModel(
 
     init {
         periodList = purchaseInteractor.createPeriodList()
+        purchaseDateTime = purchaseDateTimeModel
 
         if (purchaseDateTimeModel != null) {
             dateListController.value =
