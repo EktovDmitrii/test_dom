@@ -78,7 +78,7 @@ class PurchaseInteractor {
                     isSelected = false
                 )
             )
-            dateCounter = firstDayInWeek.plusDays(1)
+            dateCounter = dateCounter.plusDays(1)
         }
         return dateForCalendarList
     }
