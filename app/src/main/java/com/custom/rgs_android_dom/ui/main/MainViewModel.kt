@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.main
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.main.CommentModel
@@ -16,7 +17,6 @@ import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragmen
 import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchFragment
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
-import com.custom.rgs_android_dom.ui.managers.ConnectionManager
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -24,6 +24,7 @@ import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressFr
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.utils.ProgressTransformer
 import com.custom.rgs_android_dom.ui.sos.SOSFragment
+import com.custom.rgs_android_dom.utils.isInternetConnected
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -35,7 +36,7 @@ class MainViewModel(
     private val registrationInteractor: RegistrationInteractor,
     private val propertyInteractor: PropertyInteractor,
     private val catalogInteractor: CatalogInteractor,
-    private val connectionManager: ConnectionManager
+    private val context: Context
 ) : BaseViewModel() {
 
     private val registrationController = MutableLiveData(false)
@@ -158,7 +159,7 @@ class MainViewModel(
     }
 
     fun loadContent() {
-        if (connectionManager.isInternetConnected()) {
+        if (context.isInternetConnected()) {
             Single.zip(
                 catalogInteractor.getPopularServices(),
                 catalogInteractor.getPopularProducts(),

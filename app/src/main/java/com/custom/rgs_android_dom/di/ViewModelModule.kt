@@ -79,7 +79,7 @@ val viewModelModule = module {
     viewModel { RequestEditPersonalDataViewModel(clientInteractor = get()) }
     viewModel { parameters -> SelectAddressViewModel( propertyCount = parameters.get(), propertyInteractor = get(), addressInteractor = get(), context = get()) }
     viewModel { AddressSuggestionsViewModel(addressInteractor = get()) }
-    viewModel { MainViewModel(registrationInteractor = get(), propertyInteractor = get(), catalogInteractor = get(), connectionManager = get()) }
+    viewModel { MainViewModel(registrationInteractor = get(), propertyInteractor = get(), catalogInteractor = get(), context = get()) }
     viewModel { WebViewViewModel() }
     viewModel { AddPhotoViewModel(clientInteractor = get()) }
     viewModel { UploadFilesViewModel(chatInteractor = get()) }
