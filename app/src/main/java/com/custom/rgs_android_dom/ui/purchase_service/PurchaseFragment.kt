@@ -10,18 +10,22 @@ import com.custom.rgs_android_dom.databinding.FragmentPurchaseServiceBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseDateTimeModel
-import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseServiceModel
+import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
 import com.custom.rgs_android_dom.ui.purchase_service.add_purchase_service_comment.PurchaseCommentFragment
 import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_date_time.PurchaseDateTimeFragment
 import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_service_address.PurchaseAddressFragment
+import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_FULL_MONTH
 import com.custom.rgs_android_dom.utils.DigitsFormatter
 import com.custom.rgs_android_dom.utils.GlideApp
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.dp
+import com.custom.rgs_android_dom.utils.formatTo
+import com.custom.rgs_android_dom.utils.gone
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
+import com.custom.rgs_android_dom.utils.visible
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -37,15 +41,15 @@ class PurchaseFragment :
     companion object {
         private const val ARG_PURCHASE_SERVICE_MODEL = "ARG_PURCHASE_SERVICE_MODEL"
         fun newInstance(
-            purchaseServiceModel: PurchaseServiceModel
+            purchaseModel: PurchaseModel
         ): PurchaseFragment = PurchaseFragment().args {
-            putSerializable(ARG_PURCHASE_SERVICE_MODEL, purchaseServiceModel)
+            putSerializable(ARG_PURCHASE_SERVICE_MODEL, purchaseModel)
         }
     }
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
-            requireArguments().getSerializable(ARG_PURCHASE_SERVICE_MODEL) as PurchaseServiceModel
+            requireArguments().getSerializable(ARG_PURCHASE_SERVICE_MODEL) as PurchaseModel
         )
     }
 
@@ -75,15 +79,17 @@ class PurchaseFragment :
             viewModel.makeOrder()
         }
 
-        subscribe(viewModel.purchaseServiceObserver) { purchaseService ->
+        subscribe(viewModel.purchaseObserver) { purchase ->
             GlideApp.with(requireContext())
-                .load(GlideUrlProvider.makeHeadersGlideUrl(purchaseService.iconLink))
+                .load(GlideUrlProvider.makeHeadersGlideUrl(purchase.iconLink))
                 .transform(RoundedCorners(20.dp(requireContext())))
                 .into(binding.layoutPurchaseServiceHeader.orderImageView)
 
-            binding.layoutPurchaseServiceHeader.orderNameTextView.text = purchaseService.name
+            binding.layoutPurchaseServiceHeader.orderNameTextView.text = purchase.name
 
-            purchaseService.price?.amount?.let { amount ->
+            binding.makeOrderButton
+
+            purchase.price?.amount?.let { amount ->
                 binding.layoutPurchaseServiceHeader.orderCostTextView.text =
                     DigitsFormatter.priceFormat(amount)
                 binding.makeOrderButton.btnPrice.text = DigitsFormatter.priceFormat(amount)
@@ -95,11 +101,11 @@ class PurchaseFragment :
 //            purchaseService.agentCode?.let { code ->
 //                binding.layoutAgentCode.sampleNameTextView.text = code
 //            }
-            purchaseService.card?.let { card ->
+            purchase.card?.let { card ->
                 binding.layoutCardPayment.cardNumberTextView.text = card
             }
 
-            purchaseService.propertyItemModel?.let {
+            purchase.propertyItemModel?.let {
                 binding.layoutProperty.propertyTypeTextView.text = it.name
                 binding.layoutProperty.propertyAddressTextView.text =
                     it.address?.address
@@ -137,6 +143,10 @@ class PurchaseFragment :
     }
 
     override fun onSelectDateTimeClick(purchaseDateTimeModel: PurchaseDateTimeModel) {
+        binding.layoutDateTime.filledDateTimeGroup.visible()
+        binding.layoutDateTime.chooseDateTimeTextView.gone()
+        binding.layoutDateTime.timesOfDayTextView.text = purchaseDateTimeModel.selectedPeriodModel?.timeInterval
+        binding.layoutDateTime.timeIntervalTextView.text = purchaseDateTimeModel.date.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
         viewModel.updateDateTime(purchaseDateTimeModel)
     }
 

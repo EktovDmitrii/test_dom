@@ -18,7 +18,7 @@ val dataModule = module {
     single <ClientRepository> {ClientRepositoryImpl(api = get(), clientSharedPreferences = get())}
     single <CountriesRepository> { CountriesRepositoryMock() }
     single <TranslationRepository> { TranslationRepositoryImpl(api = get()) }
-    single <ChatRepository> { ChatRepositoryImpl(api = get(), clientSharedPreferences = get(), gson = get(), authContentProviderManager = get(), context = get()) }
+    single <ChatRepository> { ChatRepositoryImpl(api = get(), clientSharedPreferences = get(), gson = get(), authContentProviderManager = get(), context = get(), mediaOutputManager = get()) }
     single <PropertyRepository> { PropertyRepositoryImpl(api = get(), clientSharedPreferences = get()) }
     single <AddressRepository> { AddressRepositoryImpl(api = get()) }
     single <FilesRepository> {FilesRepositoryImpl(api = get())}

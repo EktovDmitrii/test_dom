@@ -16,7 +16,8 @@ import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 import java.io.Serializable
 
-class PurchaseDateTimeFragment : BaseBottomSheetModalFragment<PurchaseDateTimeViewModel, FragmentPurchaseDateTimeBinding>() {
+class PurchaseDateTimeFragment :
+    BaseBottomSheetModalFragment<PurchaseDateTimeViewModel, FragmentPurchaseDateTimeBinding>() {
 
     private var purchaseDateTimeListener: PurchaseDateTimeListener? = null
 
@@ -71,8 +72,14 @@ class PurchaseDateTimeFragment : BaseBottomSheetModalFragment<PurchaseDateTimeVi
         binding.selectedMouth.previousMouthImageView.setOnDebouncedClickListener {
             viewModel.minusWeek()
         }
+        binding.selectTextView.setOnDebouncedClickListener {
+            viewModel.createPurchaseDateTimeModel()
+                ?.let { purchaseDateTimeListener?.onSelectDateTimeClick(it) }
+            dismissAllowingStateLoss()
+        }
 
         subscribe(viewModel.dateListObserver) {
+
             if (it.datesForCalendar.isNotEmpty()) {
                 dateListAdapter.setItems(it.datesForCalendar)
             }
@@ -98,6 +105,7 @@ class PurchaseDateTimeFragment : BaseBottomSheetModalFragment<PurchaseDateTimeVi
                     )
                 )
             }
+            binding.selectTextView.isEnabled = it.isSelectButtonEnable
         }
     }
 

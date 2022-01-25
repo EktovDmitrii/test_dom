@@ -11,6 +11,7 @@ import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.domain.repositories.ChatRepository
+import com.custom.rgs_android_dom.ui.managers.MediaOutputManager
 import com.custom.rgs_android_dom.utils.WsResponseParser
 import com.custom.rgs_android_dom.utils.toMultipartFormData
 import com.google.gson.Gson
@@ -41,7 +42,8 @@ class ChatRepositoryImpl(private val api: MSDApi,
                          private val clientSharedPreferences: ClientSharedPreferences,
                          private val gson: Gson,
                          private val authContentProviderManager: AuthContentProviderManager,
-                         private val context: Context
+                         private val context: Context,
+                         private val mediaOutputManager: MediaOutputManager
 ) : ChatRepository {
 
     companion object {
@@ -253,6 +255,8 @@ class ChatRepositoryImpl(private val api: MSDApi,
     }
 
     override suspend fun connectToLiveKitRoom(callJoin: CallJoinModel, callType: CallType, cameraEnabled: Boolean, micEnabled: Boolean) {
+        mediaOutputManager.onCallStarted()
+
         val withVideo = (callType == CallType.VIDEO_CALL && cameraEnabled)
 
         startCallTimer()
@@ -377,6 +381,9 @@ class ChatRepositoryImpl(private val api: MSDApi,
         isInCall = false
         clientSharedPreferences.clearLiveKitRoomCredentials()
         stopCallTimer()
+
+        mediaOutputManager.onCallEnded()
+
         /*
         myVideoTrack = null
         opponentVideoTrack = null

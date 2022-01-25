@@ -5,7 +5,7 @@ import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import java.io.Serializable
 
 //Todo расширится
-data class PurchaseServiceModel(
+data class PurchaseModel(
     val id: String,
     val iconLink: String,
     val name: String,

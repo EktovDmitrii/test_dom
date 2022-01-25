@@ -80,7 +80,7 @@
 
             <include
                 android:id="@+id/about"
-                layout="@layout/layout_product_about_info"
+                layout="@layout/layout_service_about_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
