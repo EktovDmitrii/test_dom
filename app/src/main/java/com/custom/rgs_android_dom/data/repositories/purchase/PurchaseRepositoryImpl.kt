@@ -12,8 +12,10 @@ import io.reactivex.Single
 class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
 
     override fun getSavedCards(): Single<List<SavedCardModel>> {
-        return api.getSavedCards().map { list ->
-            list.map { cardResponse -> PurchaseMapper.responseToSavedCard(cardResponse) }
+        return api.getSavedCards().toSingle().map { list ->
+            list.map { PurchaseMapper.responseToSavedCard(it) }
+        }.onErrorResumeNext {
+            Single.just(emptyList())
         }
     }
 

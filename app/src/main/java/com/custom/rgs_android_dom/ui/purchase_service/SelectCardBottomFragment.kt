@@ -5,6 +5,8 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import com.custom.rgs_android_dom.databinding.FragmentBottomSelectCardBinding
+import com.custom.rgs_android_dom.domain.purchase_service.model.CardModel
+import com.custom.rgs_android_dom.domain.purchase_service.model.NewCardModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
@@ -25,19 +27,24 @@ class SelectCardBottomFragment : BaseBottomSheetModalFragment<SelectCardViewMode
     private val cardsAdapter: SelectCardAdapter
         get() = binding.cardsRecyclerView.adapter as SelectCardAdapter
 
+    private var cardModel: CardModel? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.cardsRecyclerView.adapter = SelectCardAdapter(
-            onCardSelected = { binding.selectButton.isEnabled = true },
-            onNewSelected = {
+            onCardSelected = {
+                cardModel = it
                 binding.selectButton.isEnabled = true
-                binding.scrollView.smoothScrollTo(binding.selectButton)
+
+                if (it is NewCardModel) {
+                    binding.scrollView.smoothScrollTo(binding.selectButton)
+                }
             }
         )
         binding.selectButton.setOnDebouncedClickListener {
             setFragmentResult(
                 "card_request",
-                bundleOf("card_key" to cardsAdapter.selectedCardName)
+                bundleOf("card_key" to cardModel)
             )
             dismiss()
         }

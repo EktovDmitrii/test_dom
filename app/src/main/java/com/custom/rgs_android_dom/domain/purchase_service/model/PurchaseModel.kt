@@ -11,9 +11,9 @@ data class PurchaseModel(
     val name: String,
     val price: ProductPriceModel?,
     var propertyItemModel: PropertyItemModel? = null,
-    var email: String? = null,
-    var agentCode: String? = null,
-    var card: String? = null,
+    val email: String? = null,
+    val agentCode: String? = "", // TODO set null
+    val card: CardModel? = null,
     var comment: String? = null,
     var purchaseDateTimeModel: PurchaseDateTimeModel? = null
 ) : Serializable

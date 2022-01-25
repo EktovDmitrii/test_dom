@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.ui.purchase_service
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentResultListener
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
@@ -9,23 +10,13 @@ import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentPurchaseServiceBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
-import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseDateTimeModel
-import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseModel
+import com.custom.rgs_android_dom.domain.purchase_service.model.*
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
 import com.custom.rgs_android_dom.ui.purchase_service.add_purchase_service_comment.PurchaseCommentFragment
 import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_date_time.PurchaseDateTimeFragment
 import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_service_address.PurchaseAddressFragment
-import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_FULL_MONTH
-import com.custom.rgs_android_dom.utils.DigitsFormatter
-import com.custom.rgs_android_dom.utils.GlideApp
-import com.custom.rgs_android_dom.utils.args
-import com.custom.rgs_android_dom.utils.dp
-import com.custom.rgs_android_dom.utils.formatTo
-import com.custom.rgs_android_dom.utils.gone
-import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
-import com.custom.rgs_android_dom.utils.subscribe
-import com.custom.rgs_android_dom.utils.visible
+import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -102,15 +93,23 @@ class PurchaseFragment :
                 binding.makeOrderButton.btnPrice.text = DigitsFormatter.priceFormat(amount)
             }
 
-//            purchaseService.email?.let { email ->
-//                binding.layoutEmail.sampleNameTextView.text = email
-//            }
-//            purchaseService.agentCode?.let { code ->
-//                binding.layoutAgentCode.sampleNameTextView.text = code
-//            }
-//            purchase.card?.let { card ->
-//                binding.layoutPayment.pl.text = card
-//            }
+            purchase.email?.let { email ->
+                binding.layoutEmail.emailTextView.text = email
+            }
+            purchase.agentCode?.let { code ->
+                binding.layoutCodeAgent.codeAgentTextView.text = code
+            }
+            purchase.card?.let { card ->
+                if (card is SavedCardModel) {
+                    binding.layoutPayment.paymentCardGroup.visible()
+                    binding.layoutPayment.paymentPlaceholderGroup.invisible()
+                    binding.layoutPayment.paymentCardNumberTextView.text = card.number
+                } else {
+                    binding.layoutPayment.paymentCardGroup.invisible()
+                    binding.layoutPayment.paymentPlaceholderGroup.visible()
+                    binding.layoutPayment.paymentPlaceholderTextView.text = (card as NewCardModel).title
+                }
+            }
 
             purchase.propertyItemModel?.let {
                 binding.layoutProperty.propertyTypeTextView.text = it.name
@@ -130,6 +129,18 @@ class PurchaseFragment :
                 }
             }
 
+        }
+
+        subscribe(viewModel.isEnableButtonObserver) { isEnable ->
+            if (isEnable) {
+                binding.makeOrderButton.btnTitle.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                binding.makeOrderButton.btnPrice.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                binding.makeOrderButton.productArrangeBtn.background = ContextCompat.getDrawable(requireContext(), R.drawable.rectangle_filled_primary_600_radius_12dp)
+            } else {
+                binding.makeOrderButton.btnTitle.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary500))
+                binding.makeOrderButton.btnPrice.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary500))
+                binding.makeOrderButton.productArrangeBtn.background = ContextCompat.getDrawable(requireContext(), R.drawable.rectangle_filled_secondary_100_radius_12dp)
+            }
         }
     }
 
@@ -184,7 +195,7 @@ class PurchaseFragment :
                 }
             }
             "card_request" -> {
-                val card = result.getString("card_key")
+                val card = result.getSerializable("card_key") as? CardModel?
                 card?.let {
                     viewModel.updateCard(it)
                 }

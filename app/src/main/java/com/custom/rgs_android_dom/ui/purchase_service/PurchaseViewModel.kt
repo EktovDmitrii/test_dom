@@ -1,14 +1,11 @@
 package com.custom.rgs_android_dom.ui.purchase_service
 
-import android.util.Log
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
-import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseDateTimeModel
-import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseInteractor
-import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseModel
+import com.custom.rgs_android_dom.domain.purchase_service.model.*
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -20,7 +17,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import org.joda.time.LocalDateTime
 
 class PurchaseViewModel(
     private val model: PurchaseModel,
@@ -32,6 +28,10 @@ class PurchaseViewModel(
 
     private val purchaseController = MutableLiveData<PurchaseModel>()
     val purchaseObserver: LiveData<PurchaseModel> = purchaseController
+
+    private val isEnableButtonController = MutableLiveData(false)
+    val isEnableButtonObserver: LiveData<Boolean> = isEnableButtonController
+
     init {
         purchaseController.value = model
 
@@ -50,6 +50,12 @@ class PurchaseViewModel(
             .addTo(dataCompositeDisposable)
     }
 
+    private fun validateFields() {
+        isEnableButtonController.value = purchaseController.value?.email != null &&
+                purchaseController.value?.agentCode != null &&
+                purchaseController.value?.card != null
+    }
+
     fun updateAddress(propertyItemModel: PropertyItemModel) {
         val newValue = purchaseController.value
         newValue?.propertyItemModel = propertyItemModel
@@ -59,27 +65,24 @@ class PurchaseViewModel(
     }
 
     fun updateEmail(email: String) {
-        val oldValue = purchaseController.value
-        oldValue?.email = email
-        oldValue?.let {
-            purchaseController.value = it
+        purchaseController.value?.let {
+            purchaseController.value = it.copy(email = email)
+            validateFields()
         }
     }
 
 
     fun updateAgentCode(code: String) {
-        val oldValue = purchaseController.value
-        oldValue?.agentCode = code
-        oldValue?.let {
-            purchaseController.value = it
+        purchaseController.value?.let {
+            purchaseController.value = it.copy(agentCode = code)
+            validateFields()
         }
     }
 
-    fun updateCard(card: String) {
-        val oldValue = purchaseController.value
-        oldValue?.card = card
-        oldValue?.let {
-            purchaseController.value = it
+    fun updateCard(card: CardModel) {
+        purchaseController.value?.let {
+            purchaseController.value = it.copy(card = card)
+            validateFields()
         }
     }
 
@@ -148,20 +151,19 @@ class PurchaseViewModel(
         purchaseObserver.value?.let {
             purchaseInteractor.makeProductPurchase(
                 productId = it.id,
-                bindingId = null,
-                email = "pav.develop@yandex.ru",
-                objectId = "19693951-05ea-41c5-86f2-ea1e3f888e4d",
-                saveCard = true,
-                deliveryDate = "2022-02-27T00:00:00+04:00",
-                timeFrom = "10:00",
-                timeTo = "11:00"
+                bindingId = if (it.card is SavedCardModel) { it.card.id }
+                else { null },
+                email = it.email!!,
+                objectId = it.propertyItemModel!!.id,
+                saveCard = false, // TODO change later after server side
+                deliveryDate = "2022-02-28T00:00:00+06:00", // TODO remove mock
+                timeFrom = it.purchaseDateTimeModel?.selectedPeriodModel!!.timeInterval.split("-")[0],
+                timeTo = it.purchaseDateTimeModel?.selectedPeriodModel!!.timeInterval.split("-")[1]
             )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
-                    onSuccess = {
-                                Log.d("MyLogs", it)
-                    },
+                    onSuccess = { it },
                     onError = {
                         logException(this, it)
                     }

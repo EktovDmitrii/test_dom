@@ -198,7 +198,7 @@ interface MSDApi {
 
     @GET("billing/clients/me/cards")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getSavedCards(): Single<List<SavedCardResponse>>
+    fun getSavedCards(): Maybe<List<SavedCardResponse>>
 
     @POST("clients/me/purchase/products/{productId}")
     @ErrorType(MSDNetworkErrorResponse::class)
