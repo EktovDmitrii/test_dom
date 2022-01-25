@@ -35,9 +35,8 @@ class SingleProductFragment : BaseBottomSheetFragment<SingleProductViewModel, Fr
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.detailButton.btnTitle.text = "Оформить"
         subscribe(viewModel.productObserver){product->
-
             GlideApp.with(requireContext())
                 .load(GlideUrlProvider.makeHeadersGlideUrl(product.iconLink))
                 .transform(RoundedCorners(24.dp(requireContext())))
