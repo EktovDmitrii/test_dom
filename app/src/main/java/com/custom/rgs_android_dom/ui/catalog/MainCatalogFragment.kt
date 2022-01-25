@@ -8,6 +8,7 @@ import com.custom.rgs_android_dom.databinding.FragmentMainCatalogBinding
 import com.custom.rgs_android_dom.databinding.TabCatalogBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.utils.args
+import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
 import com.custom.rgs_android_dom.views.NavigationScope
 import com.google.android.material.tabs.TabLayoutMediator
@@ -54,6 +55,9 @@ class MainCatalogFragment :
         binding.mainCatalogViewPager.adapter = MainCatalogPagerAdapter(this)
         binding.mainCatalogViewPager.isUserInputEnabled = false
 
+        binding.searchCatalogCardView.root.setOnDebouncedClickListener {
+            viewModel.onSearchClick()
+        }
         val mediator =
             TabLayoutMediator(binding.tabLayout, binding.mainCatalogViewPager) { tab, position ->
                 val tabCatalogBinding =

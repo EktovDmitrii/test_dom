@@ -50,7 +50,6 @@ class ClientRepositoryImpl(
             .flatMapCompletable { response ->
                 val client = ClientMapper.responseToClient(response)
                 clientSharedPreferences.saveClient(client)
-
                 clientSharedPreferences.getClient()?.let {
                     clientUpdatedSubject.onNext(it)
                 }
@@ -59,19 +58,15 @@ class ClientRepositoryImpl(
     }
 
     override fun getClient(): Single<ClientModel> {
-
         clientSharedPreferences.getClient()?.let {
             return Single.fromCallable { it }
         }
 
         return api.getMyClient().map { response ->
-
             val client = ClientMapper.responseToClient(response)
             clientSharedPreferences.saveClient(client)
-
             val agent = ClientMapper.responseToAgent(api.getAgent().blockingGet())
             clientSharedPreferences.saveAgent(agent)
-
             return@map clientSharedPreferences.getClient()
         }
     }

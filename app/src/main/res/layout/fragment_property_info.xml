@@ -182,7 +182,7 @@
                             android:fontFamily="@font/suisse_bold"
                             android:textColor="@color/secondary900"
                             android:textSize="16sp"
-                            app:translationTextKey="Добавить документы" />
+                            app:translationTextKey="Документы" />
 
                         <com.custom.rgs_android_dom.views.text.MSDTextView
                             android:id="@+id/allDocumentsTextView"

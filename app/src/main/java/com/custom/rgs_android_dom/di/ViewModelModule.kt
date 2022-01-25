@@ -26,6 +26,7 @@ import com.custom.rgs_android_dom.ui.catalog.tabs.availableservices.TabAvailable
 import com.custom.rgs_android_dom.ui.catalog.tabs.catalog.TabCatalogViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.products.TabProductsViewModel
 import com.custom.rgs_android_dom.ui.chat.call.CallViewModel
+import com.custom.rgs_android_dom.ui.chat.call.media_output_chooser.MediaOutputChooserViewModel
 import com.custom.rgs_android_dom.ui.rationale.RequestRationaleViewModel
 import com.custom.rgs_android_dom.ui.chat.files.manage.ManageFileViewModel
 import com.custom.rgs_android_dom.ui.chat.files.upload.UploadFilesViewModel
@@ -50,6 +51,7 @@ import com.custom.rgs_android_dom.ui.client.personal_data.request_edit.RequestEd
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsViewModel
 import com.custom.rgs_android_dom.ui.property.document.DocumentViewModel
 import com.custom.rgs_android_dom.ui.property.document.detail_document.DetailDocumentViewModel
+import com.custom.rgs_android_dom.ui.sos.SOSViewModel
 import com.custom.rgs_android_dom.ui.purchase_service.PurchaseViewModel
 import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_date_time.PurchaseDateTimeViewModel
 import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_service_address.PurchaseAddressViewModel
@@ -87,8 +89,9 @@ val viewModelModule = module {
     viewModel { parameters-> ImageViewerViewModel(chatFile = parameters.get()) }
     viewModel { parameters-> ManageFileViewModel(chatFile = parameters.get()) }
     viewModel { parameters -> VideoPlayerViewModel(chatFile = parameters.get()) }
-    viewModel { parameters -> CallViewModel(callType = parameters[0], consultant = parameters[1], chatInteractor = get()) }
+    viewModel { parameters -> CallViewModel(callType = parameters[0], consultant = parameters[1], chatInteractor = get(), mediaOutputManager = get()) }
     viewModel { PropertyUploadDocumentsViewModel(propertyInteractor = get()) }
+    viewModel { MediaOutputChooserViewModel(mediaOutputManager = get()) }
     viewModel { RequestRationaleViewModel() }
     viewModel { parameters -> MainCatalogViewModel(tab = parameters.get()) }
     viewModel { TabCatalogViewModel(catalogInteractor = get(), registrationInteractor = get()) }
@@ -106,4 +109,5 @@ val viewModelModule = module {
     viewModel { parameters -> PurchaseViewModel(parameters.get(), propertyInteractor = get()) }
     viewModel { parameters -> PurchaseAddressViewModel(selectedPropertyItem = parameters.get(), propertyInteractor = get())}
     viewModel {parameters -> PurchaseDateTimeViewModel(purchaseDateTimeModel = parameters.get(), purchaseInteractor = get())}
+    viewModel { SOSViewModel(chatInteractor = get(), registrationInteractor = get(), clientInteractor = get(), context = get()) }
 }

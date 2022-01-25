@@ -1,0 +1,555 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/secondary100"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_filled_white_bottom_radius_24dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingBottom="20dp">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/searchCatalogCardView"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginHorizontal="1dp"
+            android:layout_marginTop="1dp"
+            android:outlineSpotShadowColor="@color/secondary900_alpha20"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="10dp"
+            app:strokeColor="@color/secondary900_alpha8">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:tint="@color/secondary600"
+                app:srcCompat="@drawable/ic_search_24px" />
+
+            <com.skydoves.androidveil.VeilLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:veilLayout_baseAlpha="0.6"
+                app:veilLayout_defaultChildVisible="true"
+                app:veilLayout_dropOff="0.5"
+                app:veilLayout_highlightAlpha="1.0"
+                android:layout_marginStart="8dp"
+                app:veilLayout_highlightColor="@color/secondary500"
+                app:veilLayout_radius="16dp"
+                android:layout_gravity="center"
+                app:veilLayout_shimmerEnable="true"
+                app:veilLayout_veiled="true" >
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="138dp"
+                    android:layout_height="6dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/rectangle_filled_secondary_200_radius_6dp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </com.skydoves.androidveil.VeilLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+        <com.skydoves.androidveil.VeilLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:veilLayout_baseAlpha="0.6"
+            app:veilLayout_defaultChildVisible="true"
+            app:veilLayout_dropOff="0.5"
+            app:veilLayout_highlightAlpha="1.0"
+            app:veilLayout_highlightColor="@color/secondary500"
+            app:veilLayout_radius="6dp"
+            app:veilLayout_shimmerEnable="true"
+            app:veilLayout_veiled="true">
+
+            <com.nex3z.flowlayout.FlowLayout
+                android:id="@+id/tagsFlowLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:flChildSpacing="12dp"
+                app:flChildSpacingForLastRow="align"
+                app:flRowSpacing="8dp">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:background="@drawable/rectangle_filled_secondary_900_alpha4_radius_12dp">
+
+                    <View
+                        android:layout_width="98dp"
+                        android:layout_height="4dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/material_margin_normal"
+                        android:background="@drawable/rectangle_filled_secondary_300_radius_8dp" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:background="@drawable/rectangle_filled_secondary_900_alpha4_radius_12dp">
+
+                    <View
+                        android:layout_width="74dp"
+                        android:layout_height="4dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/material_margin_normal"
+                        android:background="@drawable/rectangle_filled_secondary_300_radius_8dp" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:background="@drawable/rectangle_filled_secondary_900_alpha4_radius_12dp">
+
+                    <View
+                        android:layout_width="33dp"
+                        android:layout_height="4dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/material_margin_normal"
+                        android:background="@drawable/rectangle_filled_secondary_300_radius_8dp" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:background="@drawable/rectangle_filled_secondary_900_alpha4_radius_12dp">
+
+                    <View
+                        android:layout_width="82dp"
+                        android:layout_height="4dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/material_margin_normal"
+                        android:background="@drawable/rectangle_filled_secondary_300_radius_8dp" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:background="@drawable/rectangle_filled_secondary_900_alpha4_radius_12dp">
+
+                    <View
+                        android:layout_width="58dp"
+                        android:layout_height="4dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/material_margin_normal"
+                        android:background="@drawable/rectangle_filled_secondary_300_radius_8dp" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:background="@drawable/rectangle_filled_secondary_900_alpha4_radius_12dp">
+
+                    <View
+                        android:layout_width="82dp"
+                        android:layout_height="4dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/material_margin_normal"
+                        android:background="@drawable/rectangle_filled_secondary_300_radius_8dp" />
+
+                </FrameLayout>
+
+            </com.nex3z.flowlayout.FlowLayout>
+
+        </com.skydoves.androidveil.VeilLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.skydoves.androidveil.VeilLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:veilLayout_baseAlpha="0.6"
+        app:veilLayout_defaultChildVisible="true"
+        app:veilLayout_dropOff="0.5"
+        app:veilLayout_highlightAlpha="1.0"
+        app:veilLayout_highlightColor="@color/secondary500"
+        app:veilLayout_radius="16dp"
+        app:veilLayout_shimmerEnable="true"
+        app:veilLayout_veiled="true">
+
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:paddingHorizontal="18dp"
+            android:paddingTop="24dp"
+            android:paddingBottom="24dp"
+            android:scrollbars="none">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/rectangle_filled_white_radius_16dp" />
+
+                    <View
+                        android:layout_width="46dp"
+                        android:layout_height="4dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/rectangle_filled_secondary_250_radius_6dp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/rectangle_filled_white_radius_16dp" />
+
+                    <View
+                        android:layout_width="46dp"
+                        android:layout_height="4dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/rectangle_filled_secondary_250_radius_6dp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/rectangle_filled_white_radius_16dp" />
+
+                    <View
+                        android:layout_width="46dp"
+                        android:layout_height="4dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/rectangle_filled_secondary_250_radius_6dp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/rectangle_filled_white_radius_16dp" />
+
+                    <View
+                        android:layout_width="46dp"
+                        android:layout_height="4dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/rectangle_filled_secondary_250_radius_6dp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/rectangle_filled_white_radius_16dp" />
+
+                    <View
+                        android:layout_width="46dp"
+                        android:layout_height="4dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/rectangle_filled_secondary_250_radius_6dp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </HorizontalScrollView>
+
+    </com.skydoves.androidveil.VeilLayout>
+
+    <com.skydoves.androidveil.VeilLayout
+        android:id="@+id/veilLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:veilLayout_baseAlpha="0.6"
+        app:veilLayout_defaultChildVisible="true"
+        app:veilLayout_dropOff="0.5"
+        app:veilLayout_highlightAlpha="1.0"
+        app:veilLayout_highlightColor="@color/secondary500"
+        app:veilLayout_radius="16dp"
+        app:veilLayout_shimmerEnable="true"
+        app:veilLayout_veiled="true">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle_filled_white_top_radius_24dp"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="25dp"
+            android:paddingBottom="20dp">
+
+            <View
+                android:layout_width="213dp"
+                android:layout_height="6dp"
+                android:background="@drawable/rectangle_filled_secondary_300_radius_8dp" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="23dp"
+                android:scrollbars="none">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <View
+                            android:id="@+id/square"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/rectangle_filled_secondary_100_radius_16dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <View
+                            android:id="@+id/title"
+                            android:layout_width="117dp"
+                            android:layout_height="4dp"
+                            android:layout_marginStart="@dimen/material_margin_normal"
+                            android:background="@drawable/rectangle_filled_secondary_300_radius_8dp"
+                            app:layout_constraintBottom_toTopOf="@id/descr"
+                            app:layout_constraintStart_toEndOf="@id/square"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_chainStyle="spread" />
+
+                        <View
+                            android:id="@+id/descr"
+                            android:layout_width="94dp"
+                            android:layout_height="4dp"
+                            android:layout_marginStart="@dimen/material_margin_normal"
+                            android:background="@drawable/rectangle_filled_secondary_250_radius_6dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/square"
+                            app:layout_constraintTop_toBottomOf="@id/title" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+
+                        <View
+                            android:id="@+id/square1"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/rectangle_filled_secondary_100_radius_16dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <View
+                            android:id="@+id/title1"
+                            android:layout_width="117dp"
+                            android:layout_height="4dp"
+                            android:layout_marginStart="@dimen/material_margin_normal"
+                            android:background="@drawable/rectangle_filled_secondary_300_radius_8dp"
+                            app:layout_constraintBottom_toTopOf="@id/descr1"
+                            app:layout_constraintStart_toEndOf="@id/square1"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_chainStyle="spread" />
+
+                        <View
+                            android:id="@+id/descr1"
+                            android:layout_width="94dp"
+                            android:layout_height="4dp"
+                            android:layout_marginStart="@dimen/material_margin_normal"
+                            android:background="@drawable/rectangle_filled_secondary_250_radius_6dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/square1"
+                            app:layout_constraintTop_toBottomOf="@id/title1" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+
+                        <View
+                            android:id="@+id/square2"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/rectangle_filled_secondary_100_radius_16dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <View
+                            android:id="@+id/title2"
+                            android:layout_width="117dp"
+                            android:layout_height="4dp"
+                            android:layout_marginStart="@dimen/material_margin_normal"
+                            android:background="@drawable/rectangle_filled_secondary_300_radius_8dp"
+                            app:layout_constraintBottom_toTopOf="@id/descr2"
+                            app:layout_constraintStart_toEndOf="@id/square2"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_chainStyle="spread" />
+
+                        <View
+                            android:id="@+id/descr2"
+                            android:layout_width="94dp"
+                            android:layout_height="4dp"
+                            android:layout_marginStart="@dimen/material_margin_normal"
+                            android:background="@drawable/rectangle_filled_secondary_250_radius_6dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/square2"
+                            app:layout_constraintTop_toBottomOf="@id/title2" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+
+                        <View
+                            android:id="@+id/square3"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/rectangle_filled_secondary_100_radius_16dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <View
+                            android:id="@+id/title3"
+                            android:layout_width="117dp"
+                            android:layout_height="4dp"
+                            android:layout_marginStart="@dimen/material_margin_normal"
+                            android:background="@drawable/rectangle_filled_secondary_300_radius_8dp"
+                            app:layout_constraintBottom_toTopOf="@id/descr3"
+                            app:layout_constraintStart_toEndOf="@id/square3"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_chainStyle="spread" />
+
+                        <View
+                            android:id="@+id/descr3"
+                            android:layout_width="94dp"
+                            android:layout_height="4dp"
+                            android:layout_marginStart="@dimen/material_margin_normal"
+                            android:background="@drawable/rectangle_filled_secondary_250_radius_6dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/square3"
+                            app:layout_constraintTop_toBottomOf="@id/title3" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+
+                        <View
+                            android:id="@+id/square4"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/rectangle_filled_secondary_100_radius_16dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <View
+                            android:id="@+id/title4"
+                            android:layout_width="117dp"
+                            android:layout_height="4dp"
+                            android:layout_marginStart="@dimen/material_margin_normal"
+                            android:background="@drawable/rectangle_filled_secondary_300_radius_8dp"
+                            app:layout_constraintBottom_toTopOf="@id/descr4"
+                            app:layout_constraintStart_toEndOf="@id/square4"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_chainStyle="spread" />
+
+                        <View
+                            android:id="@+id/descr4"
+                            android:layout_width="94dp"
+                            android:layout_height="4dp"
+                            android:layout_marginStart="@dimen/material_margin_normal"
+                            android:background="@drawable/rectangle_filled_secondary_250_radius_6dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/square4"
+                            app:layout_constraintTop_toBottomOf="@id/title4" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </ScrollView>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </com.skydoves.androidveil.VeilLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

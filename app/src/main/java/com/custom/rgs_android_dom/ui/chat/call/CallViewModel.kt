@@ -1,13 +1,16 @@
 package com.custom.rgs_android_dom.ui.chat.call
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.chat.models.CallType
 import com.custom.rgs_android_dom.domain.chat.models.ChannelMemberModel
+import com.custom.rgs_android_dom.domain.chat.models.MediaOutputType
 import com.custom.rgs_android_dom.domain.chat.models.RoomInfoModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.managers.MediaOutputManager
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -17,7 +20,8 @@ import kotlinx.coroutines.launch
 
 class CallViewModel(private val callType: CallType,
                     private val consultant: ChannelMemberModel?,
-                    private val chatInteractor: ChatInteractor
+                    private val chatInteractor: ChatInteractor,
+                    private val mediaOutputManager: MediaOutputManager
 ) : BaseViewModel() {
 
     private val callTypeController = MutableLiveData<CallType>()
@@ -31,6 +35,9 @@ class CallViewModel(private val callType: CallType,
 
     private val callTimeController = MutableLiveData<String>()
     val callTimeObserver: LiveData<String> = callTimeController
+
+    private val mediaOutputController = MutableLiveData<MediaOutputType>()
+    val mediaOutputObserver: LiveData<MediaOutputType> = mediaOutputController
 
     private var micEnabled = false
     private var cameraEnabled = false
@@ -90,6 +97,20 @@ class CallViewModel(private val callType: CallType,
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
+
+        mediaOutputManager.selectedMediaOutputSubject
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    mediaOutputController.value = it
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
+        mediaOutputController.value = mediaOutputManager.getInitialMediaOutput()
 
         callTypeController.value = callType
 

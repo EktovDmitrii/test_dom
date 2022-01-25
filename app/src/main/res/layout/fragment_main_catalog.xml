@@ -8,26 +8,21 @@
     android:background="@color/white"
     android:clickable="true">
 
-    <FrameLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/toolbarFrameLayout"
         android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
         android:layout_height="@dimen/toolbar_height_catalog">
 
         <include
             android:id="@+id/swipeAnchorLayout"
             layout="@layout/layout_bottom_sheet_swipe_anchor"/>
 
-        <com.custom.rgs_android_dom.views.text.MSDTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_gravity="center_vertical"
-            android:fontFamily="@font/my_service_bold"
-            android:textColor="@color/secondary900"
-            android:textSize="20sp"
-            app:translationTextKey="Каталог" />
+        <include layout="@layout/layout_search_catalog"
+            android:id="@+id/searchCatalogCardView" />
 
-    </FrameLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <FrameLayout
         android:layout_width="match_parent"

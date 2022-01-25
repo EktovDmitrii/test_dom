@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingBottom="168dp"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="224dp"
+        android:layout_height="161dp"
+        android:src="@mipmap/error_img" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/suisse_regular"
+        android:gravity="center"
+        android:textColor="@color/secondary500"
+        android:textSize="14sp"
+        app:translationTextKey="Не удаётся загрузить данные" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/reloadTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rectangle_filled_white_stroke_secondary_500_1dp_radius_24dp"
+        android:elevation="2dp"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="6dp"
+        android:fontFamily="@font/suisse_regular"
+        android:textColor="@color/secondary900"
+        android:textSize="14sp"
+        app:translationTextKey="Повторить попытку" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>
