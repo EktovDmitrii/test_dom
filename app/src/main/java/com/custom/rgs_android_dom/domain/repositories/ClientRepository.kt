@@ -1,9 +1,6 @@
 package com.custom.rgs_android_dom.domain.repositories
 
-import com.custom.rgs_android_dom.domain.client.models.ClientModel
-import com.custom.rgs_android_dom.domain.client.models.ClientProductsModel
-import com.custom.rgs_android_dom.domain.client.models.Gender
-import com.custom.rgs_android_dom.domain.client.models.UserDetailsModel
+import com.custom.rgs_android_dom.domain.client.models.*
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -51,7 +48,5 @@ interface ClientRepository {
     fun requestEditPersonalData(): Completable
 
     fun getEditPersonalDataRequestedSubject(): BehaviorSubject<Boolean>
-
-    fun getClientProducts(): Single<ClientProductsModel>
 
 }

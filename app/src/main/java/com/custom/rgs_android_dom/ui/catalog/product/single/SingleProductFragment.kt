@@ -6,7 +6,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentSingleProductBinding
-import com.custom.rgs_android_dom.domain.catalog.models.ProductModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.catalog.ProductAdvantagesAdapter
 import com.custom.rgs_android_dom.utils.*
@@ -46,6 +45,7 @@ class SingleProductFragment : BaseBottomSheetFragment<SingleProductViewModel, Fr
             binding.header.headerTitle.text = product.name
             binding.header.headerDescription.text = product.title
             binding.about.aboutValue.text = product.description
+
             product.price?.amount?.let {
                 binding.price.priceValue.text = DigitsFormatter.priceFormat(it)
                 binding.detailButton.btnPrice.text = DigitsFormatter.priceFormat(it)
