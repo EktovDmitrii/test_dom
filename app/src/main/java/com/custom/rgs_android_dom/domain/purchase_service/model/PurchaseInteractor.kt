@@ -23,22 +23,11 @@ class PurchaseInteractor {
         purchaseDateTimeModel: PurchaseDateTimeModel,
         periodList: List<PurchasePeriodModel>
     ): PurchaseDateModel {
-        var firstDayInWeek =
-            purchaseDateTimeModel.date.minusDays(purchaseDateTimeModel.date.dayOfWeek - 1)
-        val dateForCalendarList: MutableList<DateForCalendarModel> = mutableListOf()
-        for (counter in 0..6) {
-            dateForCalendarList.add(
-                DateForCalendarModel(
-                    dayInWeek = firstDayInWeek.formatTo(DATE_PATTERN_DAY_OF_WEEK),
-                    dateNumber = firstDayInWeek.dayOfMonth.toString(),
-                    date = firstDayInWeek,
-                    isEnable = firstDayInWeek.dayOfYear >= LocalDateTime.now().dayOfYear,
-                    isSelected = firstDayInWeek.dayOfYear == purchaseDateTimeModel.date.dayOfYear
-                )
-            )
-            firstDayInWeek = firstDayInWeek.plusDays(1)
-        }
-        val currentMouth: String = firstDayInWeek.minusDays(1).formatTo(DATE_PATTERN_YEAR_MONTH)
+        var firstDayInWeek = purchaseDateTimeModel.date.minusDays(purchaseDateTimeModel.date.dayOfWeek - 1)
+
+        val dateForCalendarList = createDateList(firstDayInWeek)
+        val currentMouth: String =
+            firstDayInWeek.minusDays(1).formatTo(DATE_PATTERN_YEAR_MONTH).capitalize()
 
         return PurchaseDateModel(
             selectedMouth = currentMouth,
@@ -56,22 +45,10 @@ class PurchaseInteractor {
     fun updateDateWeek(
         purchaseDateModel: PurchaseDateModel
     ): PurchaseDateModel {
-        var firstDayInWeek =
-            purchaseDateModel.date.minusDays(purchaseDateModel.date.dayOfWeek - 1)
-        val dateForCalendarList: MutableList<DateForCalendarModel> = mutableListOf()
-        for (counter in 0..6) {
-            dateForCalendarList.add(
-                DateForCalendarModel(
-                    dayInWeek = firstDayInWeek.formatTo(DATE_PATTERN_DAY_OF_WEEK),
-                    dateNumber = firstDayInWeek.dayOfMonth.toString(),
-                    date = firstDayInWeek,
-                    isEnable = firstDayInWeek.dayOfYear >= LocalDateTime.now().dayOfYear,
-                    isSelected = false
-                )
-            )
-            firstDayInWeek = firstDayInWeek.plusDays(1)
-        }
-        val currentMouth = firstDayInWeek.minusDays(1).formatTo(DATE_PATTERN_YEAR_MONTH)
+        val firstDayInWeek = purchaseDateModel.date.minusDays(purchaseDateModel.date.dayOfWeek - 1)
+        val dateForCalendarList = createDateList(firstDayInWeek)
+        val currentMouth =
+            firstDayInWeek.minusDays(1).formatTo(DATE_PATTERN_YEAR_MONTH).capitalize()
         val updatedDateListForCalendar = checkSelectedDate(dateForCalendarList)
 
         val currentDate = updatedDateListForCalendar.find { it.isSelected }?.date!!
@@ -86,6 +63,24 @@ class PurchaseInteractor {
             datesForCalendar = updatedDateListForCalendar,
             periodList = checkPeriodEnable(purchaseDateModel.periodList, selectedDate = currentDate)
         )
+    }
+
+    private fun createDateList(firstDayInWeek: LocalDateTime): MutableList<DateForCalendarModel> {
+        var dateCounter = firstDayInWeek
+        val dateForCalendarList: MutableList<DateForCalendarModel> = mutableListOf()
+        for (counter in 0..6) {
+            dateForCalendarList.add(
+                DateForCalendarModel(
+                    dayInWeek = dateCounter.formatTo(DATE_PATTERN_DAY_OF_WEEK).capitalize(),
+                    dateNumber = dateCounter.dayOfMonth.toString(),
+                    date = dateCounter,
+                    isEnable = dateCounter.dayOfYear >= LocalDateTime.now().dayOfYear,
+                    isSelected = false
+                )
+            )
+            dateCounter = firstDayInWeek.plusDays(1)
+        }
+        return dateForCalendarList
     }
 
     private fun checkSelectedDate(datesForCalendar: List<DateForCalendarModel>): List<DateForCalendarModel> {
