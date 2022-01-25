@@ -19,7 +19,8 @@
         <com.custom.rgs_android_dom.views.MSDImageView
             android:id="@+id/logoBigImageView"
             android:layout_width="160dp"
-            android:layout_height="160dp" />
+            android:layout_height="160dp"
+            android:background="@drawable/rectangle_filled_secondary_100_radius_16dp" />
 
         <com.custom.rgs_android_dom.views.MSDImageView
             android:id="@+id/logoSmallImageView"
