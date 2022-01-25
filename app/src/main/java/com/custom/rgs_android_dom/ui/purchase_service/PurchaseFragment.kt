@@ -18,8 +18,10 @@ import com.custom.rgs_android_dom.utils.DigitsFormatter
 import com.custom.rgs_android_dom.utils.GlideApp
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.dp
+import com.custom.rgs_android_dom.utils.gone
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
+import com.custom.rgs_android_dom.utils.visible
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -122,6 +124,10 @@ class PurchaseFragment :
     }
 
     override fun onSelectDateTimeClick(purchaseDateTimeModel: PurchaseDateTimeModel) {
+        binding.layoutDateTime.filledDateTimeGroup.visible()
+        binding.layoutDateTime.chooseDateTimeTextView.gone()
+        binding.layoutDateTime.timesOfDayTextView.text = purchaseDateTimeModel.selectedPeriodModel?.timesOfDay
+        binding.layoutDateTime.timeIntervalTextView.text = purchaseDateTimeModel.selectedPeriodModel?.timeInterval
         viewModel.updateDateTime(purchaseDateTimeModel)
     }
 }
