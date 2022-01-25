@@ -2,7 +2,6 @@ package com.custom.rgs_android_dom.utils
 
 import org.joda.time.*
 import org.joda.time.format.DateTimeFormat
-import org.joda.time.format.DateTimeFormatter
 
 const val DATE_PATTERN_DATE_ONLY = "dd.MM.yyyy"
 const val DATE_PATTERN_DATE_FULL_MONTH = "dd MMMM yyyy"
