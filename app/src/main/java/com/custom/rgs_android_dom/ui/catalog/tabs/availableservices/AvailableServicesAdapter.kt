@@ -54,7 +54,7 @@ class AvailableServicesAdapter(
                     CenterCrop(),
                     RoundedCorners(8f.dp(binding.iconImageView.context).toInt())
                 )
-                .error(R.mipmap.temp2)
+                .error(R.drawable.rectangle_filled_secondary_100_radius_8dp)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(binding.iconImageView)
             binding.serviceLayout.setOnDebouncedClickListener { onServiceClick(item) }
