@@ -1,9 +1,6 @@
 package com.custom.rgs_android_dom.domain.catalog
 
-import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
-import com.custom.rgs_android_dom.domain.catalog.models.ProductModel
-import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
-import com.custom.rgs_android_dom.domain.catalog.models.ServiceModel
+import com.custom.rgs_android_dom.domain.catalog.models.*
 import com.custom.rgs_android_dom.domain.main.CommentModel
 import com.custom.rgs_android_dom.domain.repositories.CatalogRepository
 import io.reactivex.Single
@@ -80,6 +77,14 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
                     it.subCategories.isNotEmpty()
                 }.take(CNT_POPULAR_CATEGORIES_IN_MAIN)
             }
+    }
+
+    fun getAvailableServices(): Single<List<AvailableServiceModel>>{
+        return catalogRepository.getAvailableServices()
+    }
+
+    fun getClientProducts(): Single<List<ClientProductModel>>{
+        return catalogRepository.getClientProducts()
     }
 
     fun getComments(): Single<List<CommentModel>> {

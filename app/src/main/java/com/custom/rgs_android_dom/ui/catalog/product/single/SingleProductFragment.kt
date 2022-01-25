@@ -6,7 +6,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentSingleProductBinding
-import com.custom.rgs_android_dom.domain.catalog.models.ProductModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.catalog.ProductAdvantagesAdapter
 import com.custom.rgs_android_dom.utils.*
@@ -36,9 +35,8 @@ class SingleProductFragment : BaseBottomSheetFragment<SingleProductViewModel, Fr
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.detailButton.btnTitle.text = "Оформить"
         subscribe(viewModel.productObserver){product->
-
             GlideApp.with(requireContext())
                 .load(GlideUrlProvider.makeHeadersGlideUrl(product.iconLink))
                 .transform(RoundedCorners(24.dp(requireContext())))
@@ -47,7 +45,11 @@ class SingleProductFragment : BaseBottomSheetFragment<SingleProductViewModel, Fr
             binding.header.headerTitle.text = product.name
             binding.header.headerDescription.text = product.title
             binding.about.aboutValue.text = product.description
-            binding.price.priceValue.text = "${product.price?.amount} ₽"
+
+            product.price?.amount?.let {
+                binding.price.priceValue.text = DigitsFormatter.priceFormat(it)
+                binding.detailButton.btnPrice.text = DigitsFormatter.priceFormat(it)
+            }
 
             binding.validity.validityValue.text = "${product.duration?.units} ${product.duration?.unitType?.description}"
         }

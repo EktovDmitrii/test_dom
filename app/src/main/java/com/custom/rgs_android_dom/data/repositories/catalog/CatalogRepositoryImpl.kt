@@ -4,6 +4,7 @@ import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.CatalogMapper
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.domain.catalog.models.*
+import com.custom.rgs_android_dom.domain.catalog.models.ClientProductModel
 import com.custom.rgs_android_dom.domain.repositories.CatalogRepository
 import io.reactivex.Single
 
@@ -76,6 +77,20 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
             } else {
                 listOf()
             }
+        }
+    }
+
+    override fun getAvailableServices(): Single<List<AvailableServiceModel>> {
+        return api.getAvailableServices(5000, 0, true).map { response->
+            CatalogMapper.responseToBalanceServices(response)
+        }
+    }
+
+    override fun getClientProducts(): Single<List<ClientProductModel>> {
+        return api.getClientProducts(5000, 0).map {response ->
+            return@map if (response.clientProducts != null){
+                response.clientProducts.map { CatalogMapper.responseToClientProduct(it) }
+            } else listOf()
         }
     }
 
