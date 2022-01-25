@@ -76,6 +76,8 @@ class PurchaseFragment :
 
             binding.layoutPurchaseServiceHeader.orderNameTextView.text = purchase.name
 
+            binding.makeOrderButton
+
             purchase.price?.amount?.let { amount ->
                 binding.layoutPurchaseServiceHeader.orderCostTextView.text =
                     DigitsFormatter.priceFormat(amount)

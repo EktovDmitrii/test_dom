@@ -28,42 +28,42 @@ class PurchaseDateTimeViewModel(
 
         if (purchaseDateTimeModel != null) {
             dateListController.value =
-                purchaseInteractor.updateDateWeek(purchaseDateTimeModel, periodList)
+                purchaseInteractor.createDateWeek(purchaseDateTimeModel, periodList)
         } else {
-            dateListController.value = purchaseInteractor.updateDateWeek(PurchaseDateTimeModel(), periodList)
+            dateListController.value =
+                purchaseInteractor.createDateWeek(PurchaseDateTimeModel(), periodList)
         }
     }
 
     fun plusWeek() {
-        val dayList = dateListController.value?.datesForCalendar?.first()?.date?.plusWeeks(1)
-        dayList?.let { date ->
-            purchaseDateTime?.date = date
-            purchaseDateTime?.let { it ->
-                dateListController.value = purchaseInteractor.updateDateWeek(it, periodList)
-            }
+        val date = dateListController.value?.datesForCalendar?.first()?.date?.plusWeeks(1)
+        val newDateListController = date?.let {
+            dateListController.value?.copy(
+                date = it
+            )
+        }
+        newDateListController?.let {
+            dateListController.value = purchaseInteractor.updateDateWeek(it)
         }
     }
 
     fun minusWeek() {
-        val dayList = dateListController.value?.datesForCalendar?.first()?.date?.minusWeeks(1)
-        dayList?.let { date ->
-            purchaseDateTime?.date = date
-            purchaseDateTime?.let { it ->
-                dateListController.value = purchaseInteractor.updateDateWeek(it, periodList)
-            }
+        val date = dateListController.value?.datesForCalendar?.first()?.date?.minusWeeks(1)
+        val newDateListController = date?.let {
+            dateListController.value?.copy(
+                date = it
+            )
+        }
+        newDateListController?.let {
+            dateListController.value = purchaseInteractor.updateDateWeek(it)
         }
     }
 
     fun selectDay(date: LocalDateTime) {
-        val datesForCalendar = dateListController.value?.datesForCalendar
-        datesForCalendar?.forEach {
-            it.isSelected = date.dayOfYear == it.date.dayOfYear
-        }
-        dateListController.value = datesForCalendar?.let {
-            dateListController.value?.copy(
-                datesForCalendar = it
-            )
-        }
+        dateListController.value =
+            dateListController.value?.let { purchaseInteractor.selectDay(it, date) }
+        checkIsSelectButtonEnable()
+
     }
 
     fun selectPeriod(purchasePeriodModel: PurchasePeriodModel) {
@@ -73,8 +73,32 @@ class PurchaseDateTimeViewModel(
         }
         dateListController.value = periodList?.let {
             dateListController.value?.copy(
-                periodList = it
+                periodList = it,
+                selectedPeriod = purchasePeriodModel
             )
         }
+        checkIsSelectButtonEnable()
     }
+
+    fun createPurchaseDateTimeModel(): PurchaseDateTimeModel? {
+        val selectedDate = dateListController.value?.date
+        val selectedPeriod = dateListController.value?.selectedPeriod
+        return if (selectedDate != null && selectedPeriod != null)
+            PurchaseDateTimeModel(
+                selectedDate,
+                selectedPeriod
+            )
+        else purchaseDateTime
+    }
+
+    private fun checkIsSelectButtonEnable() {
+        val selectedDate = dateListController.value?.date
+        val selectedPeriod = dateListController.value?.selectedPeriod
+        val isSelectButtonEnable = selectedDate != null && selectedPeriod != null
+        dateListController.value =
+            dateListController.value?.copy(
+                isSelectButtonEnable = isSelectButtonEnable
+            )
+    }
+
 }

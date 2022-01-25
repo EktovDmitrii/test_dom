@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.LayoutPurchasePeriodBinding
 import com.custom.rgs_android_dom.domain.purchase_service.model.PurchasePeriodModel
+import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 
 class PurchasePeriodAdapter(
     private val onPeriodClick: (PurchasePeriodModel) -> Unit,
@@ -35,7 +36,8 @@ class PurchasePeriodAdapter(
     }
 
     fun setItems(purchasePeriodList: List<PurchasePeriodModel>) {
-        periodList = purchasePeriodList.toMutableList()
+        periodList.clear()
+        periodList.addAll(purchasePeriodList)
         notifyDataSetChanged()
     }
 
@@ -47,6 +49,7 @@ class PurchasePeriodAdapter(
         fun bind(period: PurchasePeriodModel) {
             binding.timesOfDayTextView.text = period.timesOfDay
             binding.timeIntervalTextView.text = period.timeInterval
+
             binding.selectPeriodBtn.isChecked = period.isSelected
 
             if (period.isClickable) {
@@ -62,7 +65,9 @@ class PurchasePeriodAdapter(
                         R.color.secondary900
                     )
                 )
-                onPeriodClick(period)
+               binding.root.setOnDebouncedClickListener {
+                   onPeriodClick(period)
+               }
             } else {
                 binding.timesOfDayTextView.setTextColor(
                     ContextCompat.getColor(
