@@ -59,27 +59,27 @@ class PurchaseViewModel(
     }
 
     fun updateEmail(email: String) {
-        val oldValue = purchaseServiceController.value
+        val oldValue = purchaseController.value
         oldValue?.email = email
         oldValue?.let {
-            purchaseServiceController.value = it
+            purchaseController.value = it
         }
     }
 
 
     fun updateAgentCode(code: String) {
-        val oldValue = purchaseServiceController.value
+        val oldValue = purchaseController.value
         oldValue?.agentCode = code
         oldValue?.let {
-            purchaseServiceController.value = it
+            purchaseController.value = it
         }
     }
 
     fun updateCard(card: String) {
-        val oldValue = purchaseServiceController.value
+        val oldValue = purchaseController.value
         oldValue?.card = card
         oldValue?.let {
-            purchaseServiceController.value = it
+            purchaseController.value = it
         }
     }
 
@@ -135,7 +135,7 @@ class PurchaseViewModel(
     }
 
     fun makeOrder() {
-        purchaseServiceObserver.value?.let {
+        purchaseObserver.value?.let {
             purchaseInteractor.makeProductPurchase(
                 productId = it.id,
                 bindingId = null,
