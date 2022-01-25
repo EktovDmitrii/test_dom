@@ -32,6 +32,7 @@ class PropertyRepositoryImpl(
 
     private val propertyAddedSubject = PublishSubject.create<Unit>()
     private val propertyDocumentsUploadedSubject = PublishSubject.create<List<Uri>>()
+    private val propertyDocumentsDeletedSubject = PublishSubject.create<PropertyItemModel>()
 
 
     override fun addProperty(
@@ -88,16 +89,32 @@ class PropertyRepositoryImpl(
         return propertyDocumentsUploadedSubject
     }
 
+    override fun getPropertyDocumentDeletedSubject(): PublishSubject<PropertyItemModel> {
+        return propertyDocumentsDeletedSubject
+    }
+
+    override fun onFileToDeleteSelected(propertyItemModel: PropertyItemModel) {
+        propertyDocumentsDeletedSubject.onNext(propertyItemModel)
+    }
+
     override fun onFilesToUploadSelected(files: List<Uri>) {
         propertyDocumentsUploadedSubject.onNext(files)
     }
 
     override fun postPropertyDocument(file: File): Single<PostPropertyDocument> {
-        return api.postPropertyDocument(file.toMultipartFormData(), STORE_BUCKET, STORE_EXTENSION, STORE_METADATA)
+        return api.postPropertyDocument(
+            file.toMultipartFormData(),
+            STORE_BUCKET,
+            STORE_EXTENSION,
+            STORE_METADATA
+        )
             .map { PropertyMapper.responseToPostPropertyDocument(it) }
     }
 
-    override fun updateProperty(objectId: String, propertyItemModel: PropertyItemModel): Single<PropertyItemModel> {
+    override fun updateProperty(
+        objectId: String,
+        propertyItemModel: PropertyItemModel
+    ): Single<PropertyItemModel> {
         val updatePropertyRequest = PropertyMapper.propertyToRequest(propertyItemModel)
         return api.updatePropertyItem(objectId, updatePropertyRequest).map { response ->
             PropertyMapper.responseToProperty(response)

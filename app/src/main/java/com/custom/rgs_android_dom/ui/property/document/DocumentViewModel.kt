@@ -55,6 +55,20 @@ class DocumentViewModel(
                 }
             )
             .addTo(dataCompositeDisposable)
+
+        propertyInteractor.propertyDocumentDeletedSubject
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = { documentList ->
+                    propertyItemController.value = documentList
+                },
+                onError = {
+                    logException(this, it)
+                }
+            )
+            .addTo(dataCompositeDisposable)
+
     }
 
     private fun updateDocuments(uri: List<Uri>) {
@@ -115,6 +129,7 @@ class DocumentViewModel(
         }
 
         if (newPropertyItemModel != null) {
+            propertyInteractor.onFilesToDeleteSelected(newPropertyItemModel)
             propertyInteractor.updateDocument(objectId, newPropertyItemModel)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

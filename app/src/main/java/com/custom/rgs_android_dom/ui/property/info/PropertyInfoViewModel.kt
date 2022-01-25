@@ -61,6 +61,19 @@ class PropertyInfoViewModel(
                 }
             )
             .addTo(dataCompositeDisposable)
+
+        propertyInteractor.propertyDocumentDeletedSubject
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = { documentList ->
+                    propertyItemController.value = documentList
+                },
+                onError = {
+                    logException(this, it)
+                }
+            )
+            .addTo(dataCompositeDisposable)
     }
 
     private fun updateDocuments(uri: List<Uri>) {

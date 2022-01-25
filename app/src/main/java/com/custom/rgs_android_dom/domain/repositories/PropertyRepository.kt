@@ -32,9 +32,16 @@ interface PropertyRepository {
 
     fun getPropertyDocumentUploadedSubject(): PublishSubject<List<Uri>>
 
+    fun getPropertyDocumentDeletedSubject(): PublishSubject<PropertyItemModel>
+
+    fun onFileToDeleteSelected(documentList: PropertyItemModel)
+
     fun onFilesToUploadSelected(files: List<Uri>)
 
     fun postPropertyDocument(file: File): Single<PostPropertyDocument>
 
-    fun updateProperty(objectId: String, propertyItemModel: PropertyItemModel): Single<PropertyItemModel>
+    fun updateProperty(
+        objectId: String,
+        propertyItemModel: PropertyItemModel
+    ): Single<PropertyItemModel>
 }
