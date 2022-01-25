@@ -127,6 +127,16 @@ class PurchaseViewModel(
         cardFragment.show(childFragmentManager, cardFragment.TAG)
     }
 
+    fun onEmailClick(childFragmentManager: FragmentManager) {
+        val emailBottomFragment = AddEmailBottomFragment()
+        emailBottomFragment.show(childFragmentManager, emailBottomFragment.TAG)
+    }
+
+    fun onCodeAgentClick(childFragmentManager: FragmentManager) {
+        val codeAgentBottomFragment = AddAgentBottomFragment()
+        codeAgentBottomFragment.show(childFragmentManager, codeAgentBottomFragment.TAG)
+    }
+
     fun onAddPropertyClick() {
         ScreenManager.showScreenScope(
             SelectAddressFragment.newInstance(propertyListSize ?: 0),
@@ -142,9 +152,9 @@ class PurchaseViewModel(
                 email = "pav.develop@yandex.ru",
                 objectId = "19693951-05ea-41c5-86f2-ea1e3f888e4d",
                 saveCard = true,
-                deliveryDate = "2022-02-25T00:00:00+04:00",
+                deliveryDate = "2022-02-27T00:00:00+04:00",
                 timeFrom = "10:00",
-                timeTo = "10:00"
+                timeTo = "11:00"
             )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

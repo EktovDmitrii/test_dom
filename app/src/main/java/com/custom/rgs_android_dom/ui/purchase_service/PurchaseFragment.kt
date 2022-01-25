@@ -72,12 +72,19 @@ class PurchaseFragment :
         binding.layoutDateTime.root.setOnDebouncedClickListener {
             viewModel.onDateTimeClick(childFragmentManager)
         }
-        binding.layoutCardPayment.root.setOnDebouncedClickListener {
+        binding.layoutPayment.root.setOnDebouncedClickListener {
             viewModel.onCardClick(childFragmentManager)
+        }
+        binding.layoutEmail.root.setOnDebouncedClickListener {
+            viewModel.onEmailClick(childFragmentManager)
+        }
+        binding.layoutCodeAgent.root.setOnDebouncedClickListener {
+            viewModel.onCodeAgentClick(childFragmentManager)
         }
         binding.makeOrderButton.productArrangeBtn.setOnDebouncedClickListener {
             viewModel.makeOrder()
         }
+        binding.makeOrderButton.btnTitle.text = "Заказать"
 
         subscribe(viewModel.purchaseObserver) { purchase ->
             GlideApp.with(requireContext())
@@ -101,9 +108,9 @@ class PurchaseFragment :
 //            purchaseService.agentCode?.let { code ->
 //                binding.layoutAgentCode.sampleNameTextView.text = code
 //            }
-            purchase.card?.let { card ->
-                binding.layoutCardPayment.cardNumberTextView.text = card
-            }
+//            purchase.card?.let { card ->
+//                binding.layoutPayment.pl.text = card
+//            }
 
             purchase.propertyItemModel?.let {
                 binding.layoutProperty.propertyTypeTextView.text = it.name

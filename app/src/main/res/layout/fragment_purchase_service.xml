@@ -63,8 +63,16 @@
                 android:background="@color/secondary200" />
 
             <include
-                android:id="@+id/layoutCardPayment"
-                layout="@layout/layout_purchase_card_payment" />
+                android:id="@+id/layoutPayment"
+                layout="@layout/layout_purchase_payment" />
+
+            <include
+                android:id="@+id/layoutEmail"
+                layout="@layout/layout_purchase_email" />
+
+            <include
+                android:id="@+id/layoutCodeAgent"
+                layout="@layout/layout_purchase_code_code" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
