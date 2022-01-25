@@ -12,7 +12,7 @@
         android:paddingVertical="18dp"
         android:textSize="20sp"
         android:textColor="@color/secondary900"
-        app:translationTextKey="Фото или Видео"
+        app:translationTextKey="Фото"
         android:gravity="center"/>
 
     <View
