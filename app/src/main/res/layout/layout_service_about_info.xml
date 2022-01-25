@@ -16,7 +16,7 @@
         android:textAllCaps="true"
         android:textColor="@color/secondary600"
         android:textSize="10sp"
-        tools:text="подробнее об услуге" />
+        app:translationTextKey="подробнее об услуге" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/aboutValue"
