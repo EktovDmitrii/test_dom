@@ -60,7 +60,7 @@ class PropertyInfoFragment :
                     binding.typeTextView.setValue("Дом")
                 }
                 PropertyType.APARTMENT -> {
-                    binding.propertyImageView.setImageResource(R.drawable.ic_type_apartment)
+                    binding.propertyImageView.setImageResource(R.drawable.ic_type_apartment_334px)
                     binding.typeTextView.setValue("Квартира")
                 }
             }

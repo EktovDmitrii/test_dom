@@ -17,7 +17,7 @@
         android:paddingVertical="18dp"
         android:textColor="@color/secondary900"
         android:textSize="20sp"
-        app:translationTextKey="Фото или Видео" />
+        app:translationTextKey="Фото" />
 
     <View
         android:id="@+id/dividerView"

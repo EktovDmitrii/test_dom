@@ -43,13 +43,13 @@ class SingleProductFragment : BaseBottomSheetFragment<SingleProductViewModel, Fr
                 .transform(RoundedCorners(24.dp(requireContext())))
                 .into(binding.header.headerImg)
 
-            binding.header.headerTitle.text = product.title
-            binding.header.headerDescription.text = product.description
+            binding.header.headerTitle.text = product.name
+            binding.header.headerDescription.text = product.title
+            binding.about.aboutValue.text = product.description
 
             product.price?.amount?.let {
                 binding.price.priceValue.text = DigitsFormatter.priceFormat(it)
                 binding.detailButton.btnPrice.text = DigitsFormatter.priceFormat(it)
-                binding.detailButton.btnTitle.text = "Оформить"
             }
 
             binding.validity.validityValue.text = "${product.duration?.units} ${product.duration?.unitType?.description}"
