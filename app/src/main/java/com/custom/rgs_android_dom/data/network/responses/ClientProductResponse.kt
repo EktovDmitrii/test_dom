@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.data.network.responses
 
 import com.google.gson.annotations.SerializedName
+import org.joda.time.DateTime
 
 data class ClientProductResponse(
 
@@ -50,8 +51,8 @@ data class ClientProductResponse(
     val status: String?,
 
     @SerializedName("validityFrom")
-    val validityFrom: String?,
+    val validityFrom: DateTime?,
 
     @SerializedName("validityTo")
-    val validityTo: String?
+    val validityTo: DateTime?
 )

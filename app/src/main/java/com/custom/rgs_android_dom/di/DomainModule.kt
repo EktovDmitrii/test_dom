@@ -17,7 +17,7 @@ val domainModule = module {
 
     factory { RegistrationInteractor(registrationRepository = get()) }
 
-    factory { ClientInteractor(clientRepository = get(), registrationRepository = get(), filesRepository = get()) }
+    factory { ClientInteractor(clientRepository = get(), registrationRepository = get(), catalogRepository = get(), filesRepository = get()) }
 
     factory { TranslationInteractor(translationRepository = get()) }
 
