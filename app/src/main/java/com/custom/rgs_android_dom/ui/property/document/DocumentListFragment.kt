@@ -88,6 +88,7 @@ class DocumentListFragment :
         }
 
         binding.addDocumentTextView.setOnDebouncedClickListener {
+            viewModel.isDeleteButtonVisible = false
             openPropertyUploadDocumentsScreen()
         }
 
@@ -110,7 +111,8 @@ class DocumentListFragment :
             )
 
         binding.editDocumentListImageView.setOnDebouncedClickListener {
-            val editDocumentListBottomSheetFragment = EditDocumentListBottomSheetFragment.newInstance()
+            val editDocumentListBottomSheetFragment =
+                EditDocumentListBottomSheetFragment.newInstance()
             editDocumentListBottomSheetFragment.show(
                 childFragmentManager,
                 EditDocumentListBottomSheetFragment.TAG
@@ -118,6 +120,9 @@ class DocumentListFragment :
         }
         binding.listDocumentsRecyclerView.apply {
             adapter = documentListAdapter
+        }
+        binding.root.setOnDebouncedClickListener {
+            documentListAdapter.showDeleteButton(false)
         }
         subscribe(viewModel.propertyDocumentsObserver) { propertyItem ->
 
@@ -128,8 +133,9 @@ class DocumentListFragment :
             if (propertyItem.documents.isNotEmpty()) {
                 documentListAdapter.setItems(
                     propertyItem.documents,
-                    false
+                    isDeleteButtonVisible = viewModel.isDeleteButtonVisible
                 )
+
             }
         }
         subscribe(viewModel.downloadFileObserver) {
@@ -174,7 +180,7 @@ class DocumentListFragment :
         requireContext().unregisterReceiver(onDownloadCompleteReceiver)
     }
 
-    private fun openPropertyUploadDocumentsScreen(){
+    private fun openPropertyUploadDocumentsScreen() {
         val propertyUploadFilesFragment = PropertyUploadDocumentsFragment()
         propertyUploadFilesFragment.show(childFragmentManager, propertyUploadFilesFragment.TAG)
     }
