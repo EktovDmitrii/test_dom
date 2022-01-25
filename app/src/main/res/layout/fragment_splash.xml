@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/secondary100"
     android:orientation="vertical"
     android:paddingHorizontal="28dp"
-    android:paddingBottom="50dp"
-    android:paddingTop="32dp">
+    android:paddingTop="32dp"
+    android:paddingBottom="64dp">
 
     <ImageView
         android:id="@+id/splash_title"
@@ -17,14 +18,25 @@
         android:layout_alignParentTop="true"
         android:src="@drawable/ic_my_service_dom_splash_title" />
 
-    <ImageView
-        android:id="@+id/splash_subtitle"
-        android:layout_width="320dp"
-        android:layout_height="120dp"
-        android:layout_alignParentBottom="true"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="52dp"
+        android:layout_above="@id/splashText"
         android:layout_alignParentStart="true"
-        android:src="@drawable/ic_splash_subtitle" />
+        app:srcCompat="@drawable/ic_rosgrostrah_splash" />
 
-
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/splashText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/suisse_regular"
+        android:textColor="@color/secondary900_alpha64"
+        android:textSize="13sp"
+        app:translationTextKey="Мой_Сервис Дом — имущественный сервис от флагмана отечественного страхования" />
 </RelativeLayout>
 
