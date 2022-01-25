@@ -7,11 +7,12 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="12dp">
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/propertyImageView"
         android:layout_width="124dp"
         android:layout_height="144dp"
         android:scaleType="fitXY"
+        app:shapeAppearance="@style/RoundedCorners24dpImageViewStyle"
         tools:src="@drawable/ic_type_home"/>
 
     <TextView
