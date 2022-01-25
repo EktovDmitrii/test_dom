@@ -200,11 +200,4 @@ class ClientRepositoryImpl(
     override fun getEditPersonalDataRequestedSubject(): BehaviorSubject<Boolean> {
         return editPersonalDataRequestedSubject
     }
-
-    override fun getClientProducts(): Single<ClientProductsModel> {
-        return api.getClientProducts().map {clientProductsResponse ->
-            ClientMapper.responseToClientProducts(clientProductsResponse)
-        }
-    }
-
 }

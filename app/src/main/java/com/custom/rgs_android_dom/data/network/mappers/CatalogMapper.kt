@@ -1,9 +1,12 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
+import android.util.Log
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.responses.*
 import com.custom.rgs_android_dom.domain.catalog.models.*
+import com.custom.rgs_android_dom.domain.catalog.models.ClientProductModel
 import com.custom.rgs_android_dom.utils.asEnumOrDefault
+import com.custom.rgs_android_dom.utils.safeLet
 
 object CatalogMapper {
 
@@ -195,6 +198,57 @@ object CatalogMapper {
             serviceId = response.serviceId,
             serviceName = response.serviceName,
             serviceVersionId = response.serviceVersionId
+        )
+    }
+
+    fun responseToBalanceServices(response: BalanceServicesResponse): List<AvailableServiceModel> {
+        val balanceServices = arrayListOf<AvailableServiceModel>()
+
+        safeLet(response.balance, response.services){balance, services->
+            val filteredServices = services.filter {serviceDetails->
+                balance.find { it.serviceId ==  serviceDetails.serviceId}  != null
+            }
+
+            filteredServices.forEach { serviceDetails->
+                val serviceBalance = balance.find { it.serviceId ==  serviceDetails.serviceId}
+
+                balanceServices.add(
+                    AvailableServiceModel(
+                        id = serviceDetails.id,
+                        serviceId = serviceDetails.serviceId,
+                        productId = serviceDetails.productId,
+                        serviceName = serviceDetails.serviceName,
+                        productIcon = "${BuildConfig.BASE_URL}/api/store/${serviceDetails.productIcon}",
+                        available = serviceBalance?.available ?: 0,
+                        total = serviceBalance?.total ?: 0
+                    )
+                )
+            }
+
+        }
+
+        return balanceServices
+    }
+
+    fun responseToClientProduct(response: ClientProductResponse): ClientProductModel {
+        return ClientProductModel(
+            productDescriptionFormat = response.productDescriptionFormat ?: "",
+            clientId = response.clientId ?: "",
+            contractId = response.contractId ?: "",
+            id = response.id ?: "",
+            objectIds = response.objectIds ?: arrayListOf(),
+            productCode = response.productCode ?: "",
+            productDescription = response.productDescription ?: "",
+            productDescriptionRef = response.productDescriptionRef ?: "",
+            productIcon = "${BuildConfig.BASE_URL}/api/store/${response.productIcon}",
+            productId = response.productId ?: "",
+            productName = response.productName ?: "",
+            productTitle = response.productTitle ?: "",
+            productType = response.productType ?: "",
+            productVersionId = response.productVersionId ?: "",
+            status = response.status ?: "",
+            validityFrom = response.validityFrom,
+            validityTo = response.validityTo
         )
     }
 

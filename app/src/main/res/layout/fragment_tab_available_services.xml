@@ -8,13 +8,14 @@
     android:paddingTop="28dp">
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/servicesEmptyState"
+        android:id="@+id/noServicesLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:paddingBottom="168dp"
         android:visibility="gone"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:visibility="visible">
 
         <ImageView
             android:layout_width="match_parent"
@@ -29,18 +30,19 @@
             android:gravity="center"
             android:textColor="@color/secondary500"
             android:textSize="14sp"
-            app:translationTextKey="У вас пока нет доступных услуги.\nВы можете купить услуги в составе\nкомплексных продуктов" />
+            app:translationTextKey="У вас пока нет доступных услуг.\nВы можете купить услуги в составе\nкомплексных продуктов" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
-            android:id="@+id/servicesNavigateCatalog"
+            android:id="@+id/openCatalogTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
-            android:background="@drawable/rectangle_stroke_1dp_secondary_300_radius_24dp"
+            android:background="@drawable/rectangle_filled_white_stroke_secondary_500_1dp_radius_24dp"
             android:elevation="2dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
             android:fontFamily="@font/suisse_regular"
-            android:includeFontPadding="false"
             android:textColor="@color/secondary900"
             android:textSize="14sp"
             app:translationTextKey="Перейти в каталог услуг" />
@@ -57,6 +59,7 @@
         android:paddingHorizontal="20dp"
         android:paddingBottom="168dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:verticalDecorationGap="8dp"
         tools:itemCount="10"
         tools:listitem="@layout/item_catalog_available_service" />
 
