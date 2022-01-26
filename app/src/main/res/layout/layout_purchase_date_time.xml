@@ -19,6 +19,7 @@
         android:id="@+id/dateTimeImageView"
         android:layout_width="18dp"
         android:layout_height="18dp"
+        android:tint="@color/secondary900"
         android:src="@drawable/ic_time_16px"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

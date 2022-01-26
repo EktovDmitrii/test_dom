@@ -5,35 +5,24 @@ import android.view.View
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
-import com.custom.rgs_android_dom.databinding.FragmentPurchaseServiceBinding
+import com.custom.rgs_android_dom.databinding.FragmentPurchaseBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseDateTimeModel
 import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseModel
-import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
+import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.purchase_service.add_purchase_service_comment.PurchaseCommentFragment
 import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_date_time.PurchaseDateTimeFragment
 import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_service_address.PurchaseAddressFragment
-import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_FULL_MONTH
-import com.custom.rgs_android_dom.utils.DigitsFormatter
-import com.custom.rgs_android_dom.utils.GlideApp
-import com.custom.rgs_android_dom.utils.args
-import com.custom.rgs_android_dom.utils.dp
-import com.custom.rgs_android_dom.utils.formatTo
-import com.custom.rgs_android_dom.utils.gone
-import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
-import com.custom.rgs_android_dom.utils.subscribe
-import com.custom.rgs_android_dom.utils.visible
+import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
 class PurchaseFragment :
-    BaseBottomSheetFragment<PurchaseViewModel, FragmentPurchaseServiceBinding>(),
+    BaseFragment<PurchaseViewModel, FragmentPurchaseBinding>(R.layout.fragment_purchase),
     PurchaseAddressFragment.PurchaseAddressListener,
     PurchaseCommentFragment.PurchaseCommentListener,
     PurchaseDateTimeFragment.PurchaseDateTimeListener {
-
-    override val TAG: String = "PURCHASE_SERVICE_FRAGMENT"
 
     companion object {
         private const val ARG_PURCHASE_SERVICE_MODEL = "ARG_PURCHASE_SERVICE_MODEL"
@@ -44,21 +33,25 @@ class PurchaseFragment :
         }
     }
 
+    override fun setStatusBarColor() {
+        setStatusBarColor(R.color.primary500)
+    }
+
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
             requireArguments().getSerializable(ARG_PURCHASE_SERVICE_MODEL) as PurchaseModel
         )
     }
 
-    override fun getThemeResource(): Int = R.style.BottomSheetNoDim
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.backImageView.setOnDebouncedClickListener {
+            viewModel.onBackClick()
+        }
         binding.layoutProperty.root.setOnDebouncedClickListener {
             viewModel.onAddressClick(childFragmentManager)
         }
-        binding.addCommmentTextView.setOnDebouncedClickListener {
+        binding.layoutProperty.addCommentTextView.setOnDebouncedClickListener {
             val editPurchaseServiceComment = PurchaseCommentFragment.newInstance()
             editPurchaseServiceComment.show(childFragmentManager, PurchaseCommentFragment.TAG)
         }
@@ -100,17 +93,13 @@ class PurchaseFragment :
                     }
                     PropertyType.APARTMENT -> {
                         binding.layoutProperty.propertyTypeImageView.setImageResource(
-                            R.drawable.ic_type_apartment
+                            R.drawable.ic_type_apartment_334px
                         )
                     }
                 }
             }
 
         }
-    }
-
-    override fun isNavigationViewVisible(): Boolean {
-        return false
     }
 
     override fun onSelectPropertyClick(propertyItemModel: PropertyItemModel) {

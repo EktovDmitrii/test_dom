@@ -7,32 +7,16 @@
     android:paddingBottom="24dp"
     android:background="@drawable/rectangle_filled_white_radius_24dp">
 
-    <include
-        android:id="@+id/swipeAnchorLayout"
-        layout="@layout/layout_bottom_sheet_swipe_anchor"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/backImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:tint="@color/secondary800"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/swipeAnchorLayout"
-        app:srcCompat="@drawable/ic_back_24px" />
-
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/yourOrderTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="29dp"
         android:fontFamily="@font/suisse_bold"
         android:textColor="@color/secondary900"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/backImageView"
+        app:layout_constraintTop_toTopOf="parent"
         app:translationTextKey="Ваш заказ" />
 
     <com.custom.rgs_android_dom.views.MSDImageView

@@ -48,6 +48,10 @@ class PurchaseViewModel(
             .addTo(dataCompositeDisposable)
     }
 
+    fun onBackClick(){
+        closeController.value = Unit
+    }
+
     fun updateAddress(propertyItemModel: PropertyItemModel) {
         val newValue = purchaseController.value
         newValue?.propertyItemModel = propertyItemModel
