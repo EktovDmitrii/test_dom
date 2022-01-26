@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui.catalog.product
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
@@ -45,6 +46,7 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
         }
+        binding.menusLayout.setOnDebouncedClickListener {  }
 
         binding.includes.includesRecycler.apply {
             adapter = ProductInclusionAdapter {
