@@ -121,9 +121,7 @@ class DocumentListFragment :
         binding.listDocumentsRecyclerView.apply {
             adapter = documentListAdapter
         }
-        binding.root.setOnDebouncedClickListener {
-            documentListAdapter.showDeleteButton(false)
-        }
+
         subscribe(viewModel.propertyDocumentsObserver) { propertyItem ->
 
             binding.editDocumentListImageView.visibleIf(propertyItem.documents.isNotEmpty())
