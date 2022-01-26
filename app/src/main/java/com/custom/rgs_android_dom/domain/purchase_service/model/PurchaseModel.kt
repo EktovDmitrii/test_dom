@@ -12,7 +12,7 @@ data class PurchaseModel(
     val price: ProductPriceModel?,
     var propertyItemModel: PropertyItemModel? = null,
     val email: String? = null,
-    val agentCode: String? = "", // TODO set null
+    val agentCode: String? = null,
     val card: CardModel? = null,
     var comment: String? = null,
     var purchaseDateTimeModel: PurchaseDateTimeModel? = null

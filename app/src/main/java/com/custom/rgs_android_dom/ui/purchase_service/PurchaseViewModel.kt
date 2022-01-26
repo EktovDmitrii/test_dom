@@ -3,11 +3,13 @@ package com.custom.rgs_android_dom.ui.purchase_service
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.purchase_service.model.*
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
+import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressFragment
 import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_date_time.PurchaseDateTimeFragment
@@ -21,6 +23,7 @@ import io.reactivex.schedulers.Schedulers
 class PurchaseViewModel(
     private val model: PurchaseModel,
     private val propertyInteractor: PropertyInteractor,
+    private val clientInteractor: ClientInteractor,
     private val purchaseInteractor: PurchaseInteractor
 ) : BaseViewModel() {
 
@@ -32,8 +35,23 @@ class PurchaseViewModel(
     private val isEnableButtonController = MutableLiveData(false)
     val isEnableButtonObserver: LiveData<Boolean> = isEnableButtonController
 
+    private val hasCodeAgentController = MutableLiveData<Boolean>()
+    val hasCodeAgentObserver: LiveData<Boolean> = hasCodeAgentController
+
     init {
         purchaseController.value = model
+
+        clientInteractor.getClient()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    hasCodeAgentController.value = it.hasAgentInfo
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
 
         propertyInteractor.getAllProperty()
             .subscribeOn(Schedulers.io())
@@ -52,7 +70,6 @@ class PurchaseViewModel(
 
     private fun validateFields() {
         isEnableButtonController.value = purchaseController.value?.email != null &&
-                purchaseController.value?.agentCode != null &&
                 purchaseController.value?.card != null
     }
 
@@ -163,7 +180,9 @@ class PurchaseViewModel(
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
-                    onSuccess = { it },
+                    onSuccess = {
+                        ScreenManager.showScreenScope(PaymentWebViewFragment.newInstance(it), PAYMENT)
+                    },
                     onError = {
                         logException(this, it)
                     }

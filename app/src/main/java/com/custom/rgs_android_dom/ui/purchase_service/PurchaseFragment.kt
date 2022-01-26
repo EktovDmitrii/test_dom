@@ -131,6 +131,10 @@ class PurchaseFragment :
 
         }
 
+        subscribe(viewModel.hasCodeAgentObserver) {
+            binding.layoutCodeAgent.root.goneIf(it)
+        }
+
         subscribe(viewModel.isEnableButtonObserver) { isEnable ->
             if (isEnable) {
                 binding.makeOrderButton.btnTitle.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))

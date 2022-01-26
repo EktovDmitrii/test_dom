@@ -35,6 +35,7 @@
     <color name="secondary_default">#7D7E7E</color>
     <color name="primary500_alpha12">#1FEEA641</color>
     <color name="primary500_alpha48">#48EEA641</color>
+    <color name="primary500_black_alpha40">#87582B</color>
     <color name="white_alpha24">#3DFFFFFF</color>
     <color name="white_alpha32">#52FFFFFF</color>
     <color name="white_alpha48">#48FFFFFF</color>
