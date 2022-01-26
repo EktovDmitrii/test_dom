@@ -14,11 +14,14 @@ import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressFragment
 import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_date_time.PurchaseDateTimeFragment
 import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_service_address.PurchaseAddressFragment
+import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_AND_TIME_FOR_PURCHASE
+import com.custom.rgs_android_dom.utils.formatTo
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 
 class PurchaseViewModel(
     private val model: PurchaseModel,
@@ -68,7 +71,7 @@ class PurchaseViewModel(
             .addTo(dataCompositeDisposable)
     }
 
-    fun onBackClick(){
+    fun onBackClick() {
         closeController.value = Unit
     }
 
@@ -183,7 +186,9 @@ class PurchaseViewModel(
                 } else {
                     true
                 },
-                deliveryDate = "2022-02-28T00:00:00+06:00", // TODO remove mock
+                deliveryDate = purchase.purchaseDateTimeModel?.date?.formatTo(
+                    DATE_PATTERN_DATE_AND_TIME_FOR_PURCHASE
+                ) + TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT).removePrefix("GMT"),
                 timeFrom = purchase.purchaseDateTimeModel?.selectedPeriodModel!!.timeInterval.split(
                     "-"
                 )[0],

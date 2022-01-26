@@ -15,6 +15,7 @@ const val DATE_PATTERN_YEAR_MONTH = "MMMM yyyy"
 const val DATE_PATTERN_DATE_AND_TIME = "dd.MM.yyyy HH:mm:ss"
 const val DATE_PATTERN_TIME_ONLY_WITHOUT_SEC = "HH:mm"
 const val DATE_PATTERN_DATE_AND_TIME_AND_TIME_ZONE = "yyyy-MM-dd'T'HH:mm:ssZZ"
+const val DATE_PATTERN_DATE_AND_TIME_FOR_PURCHASE = "yyyy-MM-dd'T'HH:mm:ss"
 const val PATTERN_DATE_TIME_MILLIS = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
 
 fun LocalDate.formatTo(pattern: String = DATE_PATTERN_DATE_ONLY): String {

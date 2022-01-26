@@ -27,7 +27,10 @@ class PurchaseFragment :
     PurchaseAddressFragment.PurchaseAddressListener,
     PurchaseCommentFragment.PurchaseCommentListener,
     PurchaseDateTimeFragment.PurchaseDateTimeListener,
-    FragmentResultListener, ConfirmBottomSheetFragment.ConfirmListener {
+    AddEmailBottomFragment.PurchaseEmailListener,
+    SelectCardBottomFragment.PurchaseCardListener,
+    AddAgentBottomFragment.PurchaseAgentCodeListener,
+    ConfirmBottomSheetFragment.ConfirmListener {
 
     companion object {
         private const val ARG_PURCHASE_SERVICE_MODEL = "ARG_PURCHASE_SERVICE_MODEL"
@@ -50,10 +53,6 @@ class PurchaseFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        childFragmentManager.setFragmentResultListener("email_request", viewLifecycleOwner, this)
-        childFragmentManager.setFragmentResultListener("agent_code_request", viewLifecycleOwner, this)
-        childFragmentManager.setFragmentResultListener("card_request", viewLifecycleOwner, this)
 
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
@@ -171,44 +170,32 @@ class PurchaseFragment :
         viewModel.updateDateTime(purchaseDateTimeModel)
     }
 
-    override fun onFragmentResult(requestKey: String, result: Bundle) {
-        when (requestKey) {
-            "email_request" -> {
-                val email = result.getString("email_key")
-                email?.let {
-                    viewModel.updateEmail(it)
-                }
-            }
-            "agent_code_request" -> {
-                val status = result.getString("code_status_key")
-                if (status == "1") {
-                    val agentCode = result.getString("code_key")
-                    agentCode?.let {
-                        viewModel.updateAgentCode(it)
-                    }
-                } else {
-                    val confirmDialog = ConfirmBottomSheetFragment.newInstance(
-                        icon = R.drawable.ic_broken_egg,
-                        title = "Невозможно обработать",
-                        description = "К сожалению, мы не смогли найти и привязать код агента. Пожалуйста, попробуйте еще раз",
-                        confirmText = "Попробовать ещё раз",
-                        cancelText = "Нет, спасибо"
-                    )
-                    confirmDialog.show(childFragmentManager, ConfirmBottomSheetFragment.TAG)
-                }
-            }
-            "card_request" -> {
-                val card = result.getSerializable("card_key") as? CardModel?
-                card?.let {
-                    viewModel.updateCard(it)
-                }
-            }
-        }
-    }
-
     override fun onConfirmClick() {
         val addAgentBottomFragment = AddAgentBottomFragment()
         addAgentBottomFragment.show(childFragmentManager, addAgentBottomFragment.TAG)
+    }
+
+    override fun onSaveEmailClick(email: String) {
+        viewModel.updateEmail(email)
+    }
+
+    override fun onSaveCardClick(card: CardModel) {
+        viewModel.updateCard(card)
+    }
+
+    override fun onSaveCodeError() {
+        val confirmDialog = ConfirmBottomSheetFragment.newInstance(
+            icon = R.drawable.ic_broken_egg,
+            title = "Невозможно обработать",
+            description = "К сожалению, мы не смогли найти и привязать код агента. Пожалуйста, попробуйте еще раз",
+            confirmText = "Попробовать ещё раз",
+            cancelText = "Нет, спасибо"
+        )
+        confirmDialog.show(childFragmentManager, ConfirmBottomSheetFragment.TAG)
+    }
+
+    override fun onSaveCodeSuccess(code: String) {
+        viewModel.updateAgentCode(code)
     }
 
 }
