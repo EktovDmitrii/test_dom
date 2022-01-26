@@ -125,7 +125,7 @@ class SOSViewModel(
 
     fun onFreePhoneCallClick() {
         val phoneCallIntent = Intent(Intent.ACTION_DIAL)
-        phoneCallIntent.data = Uri.parse("tel:8800")
+        phoneCallIntent.data = Uri.parse("tel:88006004358")
         phoneCallIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         context.startActivity(phoneCallIntent)
     }
