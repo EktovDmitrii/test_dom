@@ -114,6 +114,6 @@ val viewModelModule = module {
     viewModel { AddAgentViewModel(clientInteractor = get()) }
     viewModel { SOSViewModel(chatInteractor = get(), registrationInteractor = get(), clientInteractor = get(), context = get()) }
     viewModel { parameters -> PaymentWebViewViewModel(url = parameters.get()) }
-    viewModel { PaymentErrorViewModel() }
+    viewModel { parameters -> PaymentErrorViewModel(firstFragmentId = parameters[0]) }
     viewModel { parameters -> PaymentSuccessViewModel(productId = parameters[0], email = parameters[1]) }
 }

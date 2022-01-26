@@ -27,6 +27,4 @@ class PaymentSuccessViewModel(
         closeController.value = Unit
     }
 
-    fun navigateProduct() {
-    }
 }

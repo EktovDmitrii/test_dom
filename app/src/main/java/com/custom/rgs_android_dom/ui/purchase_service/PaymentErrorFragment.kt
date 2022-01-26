@@ -19,14 +19,19 @@ class PaymentErrorFragment :
 
     companion object {
         private const val ARG_PRICE = "ARG_PRICE"
+        private const val ARG_PURCHASE_PAGE_ID = "ARG_PURCHASE_PAGE_ID"
 
-        fun newInstance(price: String) = PaymentErrorFragment().args {
-            bundleOf(ARG_PRICE to price)
+        fun newInstance( fragmentId: Int, price: String) = PaymentErrorFragment().args {
+            putInt(ARG_PURCHASE_PAGE_ID, fragmentId)
+            putString(ARG_PRICE, price)
         }
     }
 
     override fun getParameters(): ParametersDefinition = {
-        parametersOf(requireArguments().getString(ARG_PRICE))
+        parametersOf(
+            requireArguments().getInt(ARG_PURCHASE_PAGE_ID),
+            requireArguments().getString(ARG_PRICE)
+        )
     }
 
     override fun setStatusBarColor() {
@@ -36,19 +41,21 @@ class PaymentErrorFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.orderBtn.btnTitle.text = "Заказать"
-        binding.orderBtn.btnPrice.text = requireArguments().getString(ARG_PRICE)
+        binding.orderBtn.btnPrice.text = "${requireArguments().getString(ARG_PRICE)} ₽"
 
         binding.closeImageView.setOnDebouncedClickListener {
-            ScreenManager.closeScope(PAYMENT)
+            viewModel.onCloseScope()
         }
         binding.orderBtn.root.setOnDebouncedClickListener {
-
+            viewModel.navigatePurchase()
         }
         binding.cancelPaymentTextView.setOnDebouncedClickListener {
-            ScreenManager.closeScope(PAYMENT)
+            viewModel.onCloseScope()
         }
     }
 
-    override fun onClose() { }
+    override fun onClose() {
+        ScreenManager.closeScope(PAYMENT)
+    }
 
 }

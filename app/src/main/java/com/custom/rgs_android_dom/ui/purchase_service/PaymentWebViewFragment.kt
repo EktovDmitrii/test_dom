@@ -23,18 +23,21 @@ class PaymentWebViewFragment :
         private const val ARG_PRODUCT_ID = "ARG_PRODUCT_ID"
         private const val ARG_EMAIL = "ARG_EMAIL"
         private const val ARG_PRICE = "ARG_PRICE"
+        private const val ARG_PURCHASE_PAGE_ID = "ARG_PURCHASE_PAGE_ID"
 
         fun newInstance(
             url: String,
             productId: String,
             email: String,
-            price: String
+            price: String,
+            fragmentId: Int
         ): PaymentWebViewFragment {
             return PaymentWebViewFragment().args {
                 putString(ARG_PAYMENT_URL, url)
                 putString(ARG_PRODUCT_ID, productId)
                 putString(ARG_EMAIL, email)
                 putString(ARG_PRICE, price)
+                putInt(ARG_PURCHASE_PAGE_ID, fragmentId)
             }
         }
     }
@@ -51,9 +54,10 @@ class PaymentWebViewFragment :
         super.onViewCreated(view, savedInstanceState)
         binding.paymentWebView.webChromeClient = WebChromeClient()
 
-        val email = arguments?.getString(ARG_EMAIL) ?: ""
-        val productId = arguments?.getString(ARG_PRODUCT_ID) ?: ""
-        val price = arguments?.getString(ARG_PRICE) ?: ""
+        val email = requireArguments().getString(ARG_EMAIL) ?: ""
+        val productId = requireArguments().getString(ARG_PRODUCT_ID) ?: ""
+        val price = requireArguments().getString(ARG_PRICE) ?: ""
+        val fragmentId = requireArguments().getInt(ARG_PURCHASE_PAGE_ID)
 
         val webClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(
@@ -63,7 +67,7 @@ class PaymentWebViewFragment :
                 return when {
                     request?.url.toString().contains("/billing/fail") -> {
                         ScreenManager.showScreenScope(
-                            PaymentErrorFragment.newInstance(price),
+                            PaymentErrorFragment.newInstance(fragmentId, price),
                             PAYMENT
                         )
                         true

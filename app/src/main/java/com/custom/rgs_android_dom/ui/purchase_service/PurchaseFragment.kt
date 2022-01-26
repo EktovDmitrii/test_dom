@@ -78,7 +78,7 @@ class PurchaseFragment :
             viewModel.onCodeAgentClick(childFragmentManager)
         }
         binding.makeOrderButton.productArrangeBtn.setOnDebouncedClickListener {
-            viewModel.makeOrder()
+            viewModel.makeOrder(getNavigateId())
         }
         binding.makeOrderButton.btnTitle.text = "Заказать"
 
@@ -89,8 +89,6 @@ class PurchaseFragment :
                 .into(binding.layoutPurchaseServiceHeader.orderImageView)
 
             binding.layoutPurchaseServiceHeader.orderNameTextView.text = purchase.name
-
-            binding.makeOrderButton
 
             purchase.price?.amount?.let { amount ->
                 binding.layoutPurchaseServiceHeader.orderCostTextView.text =
@@ -108,7 +106,7 @@ class PurchaseFragment :
                 if (card is SavedCardModel) {
                     binding.layoutPayment.paymentCardGroup.visible()
                     binding.layoutPayment.paymentPlaceholderGroup.invisible()
-                    binding.layoutPayment.paymentCardNumberTextView.text = card.number
+                    binding.layoutPayment.paymentCardNumberTextView.text = card.number.takeLast(4)
                 } else {
                     binding.layoutPayment.paymentCardGroup.invisible()
                     binding.layoutPayment.paymentPlaceholderGroup.visible()

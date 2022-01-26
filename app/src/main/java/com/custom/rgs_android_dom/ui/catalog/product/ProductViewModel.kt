@@ -9,6 +9,7 @@ import com.custom.rgs_android_dom.domain.catalog.models.ProductPriceModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductUnitType
 import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -52,9 +53,8 @@ class ProductViewModel(
                 price = it.price
             )
             val purchaseFragment = PurchaseFragment.newInstance(purchaseServiceModel)
-            ScreenManager.showScreen(purchaseFragment)
+            ScreenManager.showScreenScope(purchaseFragment, PAYMENT)
         }
-
     }
 
     fun onServiceClick() {

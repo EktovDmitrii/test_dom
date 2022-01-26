@@ -55,7 +55,7 @@
         android:layout_width="34dp"
         android:layout_height="20dp"
         android:layout_marginEnd="2dp"
-        tools:srcCompat="@mipmap/mastercard"
+        app:srcCompat="@mipmap/visa"
         app:layout_constraintEnd_toStartOf="@id/paymentCardNumberTextView"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/paymentPlaceholderTextView"/>

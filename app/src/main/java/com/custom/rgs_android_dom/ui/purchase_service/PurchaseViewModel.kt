@@ -167,7 +167,7 @@ class PurchaseViewModel(
         )
     }
 
-    fun makeOrder() {
+    fun makeOrder(navigateId: Int) {
         purchaseObserver.value?.let { purchase ->
             purchaseInteractor.makeProductPurchase(
                 productId = purchase.id,
@@ -200,7 +200,8 @@ class PurchaseViewModel(
                                 url = it,
                                 productId = purchase.id,
                                 email = purchase.email,
-                                price = purchase.price?.amount.toString()
+                                price = purchase.price?.amount.toString(),
+                                fragmentId = navigateId
                             ), PAYMENT
                         )
                     },
