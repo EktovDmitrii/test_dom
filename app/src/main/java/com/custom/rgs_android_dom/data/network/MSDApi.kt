@@ -178,7 +178,7 @@ interface MSDApi {
 
     @GET("clients/me/balance/products")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getClientProducts(): Single<ClientProductsResponse>
+    fun getClientProducts(@Query("size") size: Int, @Query("index") index: Int): Single<ClientProductsResponse>
 
     @GET("guests/purchase/products/{productId}/services/{serviceId}/details")
     @ErrorType(MSDNetworkErrorResponse::class)
@@ -195,4 +195,8 @@ interface MSDApi {
     @GET("chat/users/{userId}/files/{fileId}/preview")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getChatFilePreview(@Path ("userId") userId: String, @Path("fileId") fileId: String): Single<ChatFilePreviewResponse>
+
+    @GET("clients/me/balance/services")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getAvailableServices(@Query("size") size: Int, @Query("index") index: Int, @Query("withBalance") withBalance: Boolean): Single<BalanceServicesResponse>
 }

@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.main
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.main.CommentModel
@@ -24,6 +25,7 @@ import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressFr
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.utils.ProgressTransformer
 import com.custom.rgs_android_dom.ui.sos.SOSFragment
+import com.custom.rgs_android_dom.utils.isInternetConnected
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -34,7 +36,8 @@ import io.reactivex.schedulers.Schedulers
 class MainViewModel(
     private val registrationInteractor: RegistrationInteractor,
     private val propertyInteractor: PropertyInteractor,
-    private val catalogInteractor: CatalogInteractor
+    private val catalogInteractor: CatalogInteractor,
+    private val context: Context
 ) : BaseViewModel() {
 
     private val registrationController = MutableLiveData(false)
@@ -106,39 +109,6 @@ class MainViewModel(
             ).addTo(dataCompositeDisposable)
 
         loadContent()
-
-        rateCommentsController.value = listOf(
-            CommentModel(
-                name = "Сергей",
-                rate = 5,
-                comment = "Все очень грамотно, быстро, все объяснили по заявке."
-            ),
-            CommentModel(
-                name = "Ханума",
-                rate = 5,
-                comment = "Все быстро организовали, не пришлось долго ждать, мастер вежливый и культурный"
-            ),
-            CommentModel(
-                name = "Ирина",
-                rate = 5,
-                comment = "Вовремя приехали, быстро все сделали, мастер очень понравился, готова рекомендовать"
-            ),
-            CommentModel(
-                name = "Татьяна",
-                rate = 5,
-                comment = "Очень довольна, все было своевременно, мастер был всегда на связи"
-            ),
-            CommentModel(
-                name = "Серафима",
-                rate = 4,
-                comment = "Мастер - хороший, толковый парень, на все руки мастер"
-            ),
-            CommentModel(
-                name = "Анастасия",
-                rate = 5,
-                comment = "Супер все быстро организовано, качество работ на высоком уровне, все понравилось"
-            )
-        )
     }
 
     private fun getPropertyAvailability() {
@@ -157,31 +127,37 @@ class MainViewModel(
     }
 
     fun loadContent() {
-        Single.zip(
-            catalogInteractor.getPopularServices(),
-            catalogInteractor.getPopularProducts(),
-            catalogInteractor.getPopularCategories()
-        ) { services, products, categories ->
-            popularServicesController.postValue(services)
-            popularProductsController.postValue(products)
-            popularCategoriesController.postValue(categories)
-        }
-            .compose(
-                ProgressTransformer(
-                    onLoading = {
-                        loadingStateController.postValue(LoadingState.LOADING)
-                    },
-                    onError = {
-                        logException(this, it)
-                        loadingStateController.value = LoadingState.ERROR
-                    },
-                    onLoaded = {
-                        loadingStateController.value = LoadingState.CONTENT
-                    }
+        if (context.isInternetConnected()) {
+            Single.zip(
+                catalogInteractor.getPopularServices(),
+                catalogInteractor.getPopularProducts(),
+                catalogInteractor.getPopularCategories(),
+                catalogInteractor.getComments()
+            ) { services, products, categories, comments ->
+                popularServicesController.postValue(services)
+                popularProductsController.postValue(products)
+                popularCategoriesController.postValue(categories)
+                rateCommentsController.postValue(comments)
+            }
+                .compose(
+                    ProgressTransformer(
+                        onLoading = {
+                            loadingStateController.postValue(LoadingState.LOADING)
+                        },
+                        onError = {
+                            logException(this, it)
+                            loadingStateController.value = LoadingState.ERROR
+                        },
+                        onLoaded = {
+                            loadingStateController.value = LoadingState.CONTENT
+                        }
+                    )
                 )
-            )
-            .subscribe()
-            .addTo(dataCompositeDisposable)
+                .subscribe()
+                .addTo(dataCompositeDisposable)
+        } else {
+            loadingStateController.value = LoadingState.ERROR
+        }
     }
 
     fun onLoginClick() {

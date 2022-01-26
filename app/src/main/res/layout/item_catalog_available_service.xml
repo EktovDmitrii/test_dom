@@ -13,7 +13,8 @@
         android:layout_marginTop="6dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/temp2" />
+        android:background="@drawable/rectangle_filled_secondary_100_radius_8dp"
+        tools:srcCompat="@mipmap/temp2" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/nameTextView"

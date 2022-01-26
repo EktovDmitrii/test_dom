@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.custom.rgs_android_dom.ui.catalog.tabs.availableservices.TabAvailableServicesFragment
 import com.custom.rgs_android_dom.ui.catalog.tabs.catalog.TabCatalogFragment
-import com.custom.rgs_android_dom.ui.catalog.tabs.products.TabProductsFragment
+import com.custom.rgs_android_dom.ui.catalog.tabs.products.TabMyProductsFragment
 
 
 class MainCatalogPagerAdapter(val fragment: Fragment) : FragmentStateAdapter(fragment) {
@@ -24,7 +24,7 @@ class MainCatalogPagerAdapter(val fragment: Fragment) : FragmentStateAdapter(fra
 
         val fragment = when (position) {
             TAB_ALL -> TabCatalogFragment()
-            TAB_PRODUCTS -> TabProductsFragment()
+            TAB_PRODUCTS -> TabMyProductsFragment()
             TAB_AVAILABLE_SERVICES -> TabAvailableServicesFragment()
             else -> TabCatalogFragment()
         }

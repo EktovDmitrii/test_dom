@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.utils
 import android.app.DownloadManager
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
@@ -32,3 +33,15 @@ fun Context.getSharedPrefs(name: String): SharedPreferences =
 
 fun Context.getDownloadManager() =
     getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+
+fun Context.isInternetConnected(): Boolean {
+    var status = false
+    val cm = this.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager?
+    if (cm != null) {
+        if (cm.activeNetwork != null && cm.getNetworkCapabilities(cm.activeNetwork) != null) {
+            status = true
+        }
+    }
+
+    return status
+}
