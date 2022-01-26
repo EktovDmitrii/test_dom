@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:background="@drawable/rectangle_filled_submarine_radius_16dp"
+    android:paddingVertical="12dp"
+    android:paddingStart="16dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iconImageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/rectangle_filled_white_radius_10dp" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_policy_success"
+        android:layout_width="229dp"
+        android:layout_height="254dp" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/titleTextView"
+            app:translationTextKey="Защита вашего дома"
+            tools:text="Защита вашего дома"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:gravity="center_vertical"
+            android:fontFamily="@font/my_service_bold"
+            android:includeFontPadding="false"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/durationTextView"
+            app:translationTextKey="Действует с 02.05.2021 по 02.05.2022"
+            tools:text="Действует с 02.05.2021 по 02.05.2022"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:gravity="center_vertical"
+            android:fontFamily="@font/suisse_regular"
+            android:includeFontPadding="false"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

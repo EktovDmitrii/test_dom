@@ -48,6 +48,11 @@ import com.custom.rgs_android_dom.ui.web_view.WebViewViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import com.custom.rgs_android_dom.ui.client.personal_data.request_edit.RequestEditPersonalDataViewModel
+import com.custom.rgs_android_dom.ui.policies.PoliciesViewModel
+import com.custom.rgs_android_dom.ui.policies.add.AddPolicyViewModel
+import com.custom.rgs_android_dom.ui.policies.add.info.InfoPolicyViewModel
+import com.custom.rgs_android_dom.ui.policies.insurant.InsurantViewModel
+import com.custom.rgs_android_dom.ui.policies.insurant.dialogs.PolicyDialogsViewModel
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsViewModel
 import com.custom.rgs_android_dom.ui.property.document.DocumentViewModel
 import com.custom.rgs_android_dom.ui.property.document.detail_document.DetailDocumentViewModel
@@ -104,4 +109,10 @@ val viewModelModule = module {
     viewModel { MyProductViewModel() }
     viewModel { parameters -> ServiceViewModel(product = parameters.get()) }
     viewModel { SOSViewModel(chatInteractor = get(), registrationInteractor = get(), clientInteractor = get(), context = get()) }
+    viewModel { PoliciesViewModel(policyInteractor = get()) }
+    viewModel { AddPolicyViewModel() }
+    viewModel { InfoPolicyViewModel() }
+    viewModel { InsurantViewModel() }
+    viewModel { PolicyDialogsViewModel() }
+
 }

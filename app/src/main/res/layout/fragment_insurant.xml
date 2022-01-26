@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/backImageView"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_gravity="start"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_back_44px" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/suisse_regular"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/secondary900_alpha64"
+                    android:textSize="12sp"
+                    app:translationTextKey="Шаг 2 из 2" />
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/my_service_bold"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/secondary900"
+                    android:textSize="16sp"
+                    app:translationTextKey="Данные полиса" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </FrameLayout>
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/suisse_regular"
+            android:gravity="start"
+            android:includeFontPadding="false"
+            android:textColor="@color/secondary900"
+            android:textSize="16sp"
+            app:translationTextKey="Заполните данные, указанные в полисе, чтобы подтвердить его принадлежность" />
+
+
+        <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
+            android:id="@+id/lastNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="24dp"
+            android:digits="@string/acceptable_name_chars"
+            android:inputType="textPersonName|textCapSentences"
+            android:maxLength="50"
+            app:translationHintKey="Иванов"
+            app:translationLabelKey="Фамилия страхователя" />
+
+        <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
+            android:id="@+id/firstNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="16dp"
+            android:digits="@string/acceptable_name_chars"
+            android:inputType="textPersonName|textCapSentences"
+            android:maxLength="25"
+            app:translationHintKey="Иван"
+            app:translationLabelKey="Имя страхователя" />
+
+        <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
+            android:id="@+id/middleNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="16dp"
+            android:digits="@string/acceptable_name_chars"
+            android:inputType="textPersonName|textCapSentences"
+            android:maxLength="25"
+            app:translationHintKey="Иванович"
+            app:translationLabelKey="Отчество страхователя" />
+
+        <com.custom.rgs_android_dom.views.edit_text.MSDLabelIconEditText
+            android:id="@+id/birthdayEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="16dp"
+            android:imeOptions="actionDone"
+            android:inputType="date"
+            app:icon="@drawable/ic_calendar_24px"
+            app:mask="[00]{.}[00]{.}[0000]"
+            app:translationHintKey="24.04.1990"
+            app:translationLabelKey="Дата рождения" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:fadingEdgeLength="16dp"
+        app:cardElevation="16dp">
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/nextTextView"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="22dp"
+            android:background="@drawable/rectangle_filled_secondary_100_radius_12dp"
+            android:fontFamily="@font/my_service_bold"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:textColor="@color/secondary400"
+            android:textSize="14sp"
+            app:translationTextKey="Далее" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+</FrameLayout>

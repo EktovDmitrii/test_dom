@@ -14,6 +14,7 @@ import com.custom.rgs_android_dom.ui.client.agent.AgentFragment
 import com.custom.rgs_android_dom.ui.client.personal_data.PersonalDataFragment
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.policies.PoliciesFragment
 import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressFragment
 import com.custom.rgs_android_dom.ui.property.add.select_type.SelectPropertyTypeFragment
 import com.custom.rgs_android_dom.ui.property.info.PropertyInfoFragment
@@ -136,6 +137,10 @@ class ClientViewModel(
     fun onOpenMedAppClick() {
         registrationInteractor.forceSaveAuthCredentials()
         navigateToMedAppController.value = Unit
+    }
+
+    fun onPoliciesClick() {
+        ScreenManager.showScreen(PoliciesFragment())
     }
 
     fun onRefresh(){

@@ -22,7 +22,7 @@
             android:layout_width="303dp"
             android:layout_height="160dp"
             android:layout_marginTop="54dp"
-            app:srcCompat="@drawable/ic_confirm_question"/>
+            app:srcCompat="@drawable/ic_question"/>
         
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/titleTextView"

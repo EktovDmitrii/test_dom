@@ -3,6 +3,7 @@
     <attr name="translationTextKey" format="string" />
     <attr name="translationLabelKey" format="string" />
     <attr name="translationHintKey" format="string" />
+    <attr name="translationInfoKey" format="string" />
     <attr name="isFocused" format="boolean"/>
     <attr name="icon" format="reference"/>
     <attr name="translationSecondaryTextKey" format="string"/>
@@ -92,6 +93,20 @@
     <declare-styleable name="MSDLabelEditText">
         <attr name="translationHintKey"/>
         <attr name="translationLabelKey"/>
+        <attr name="translationSecondaryTextKey"/>
+        <attr name="android:imeOptions"/>
+        <attr name="android:inputType" />
+        <attr name="android:textAllCaps" />
+        <attr name="android:lines"/>
+        <attr name="isFocused"/>
+        <attr name="android:maxLength"/>
+        <attr name="android:digits"/>
+    </declare-styleable>
+
+    <declare-styleable name="MSDPolicyInput">
+        <attr name="translationHintKey"/>
+        <attr name="translationLabelKey"/>
+        <attr name="translationInfoKey"/>
         <attr name="translationSecondaryTextKey"/>
         <attr name="android:imeOptions"/>
         <attr name="android:inputType" />
