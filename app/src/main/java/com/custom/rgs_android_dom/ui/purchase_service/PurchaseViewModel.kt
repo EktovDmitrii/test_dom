@@ -68,6 +68,10 @@ class PurchaseViewModel(
             .addTo(dataCompositeDisposable)
     }
 
+    fun onBackClick(){
+        closeController.value = Unit
+    }
+
     private fun validateFields() {
         isEnableButtonController.value = purchaseController.value?.email != null &&
                 purchaseController.value?.card != null

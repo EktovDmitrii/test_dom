@@ -7,11 +7,13 @@ import androidx.fragment.app.FragmentResultListener
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
-import com.custom.rgs_android_dom.databinding.FragmentPurchaseServiceBinding
+import com.custom.rgs_android_dom.databinding.FragmentPurchaseBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
+import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseDateTimeModel
+import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseModel
+import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.domain.purchase_service.model.*
-import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
 import com.custom.rgs_android_dom.ui.purchase_service.add_purchase_service_comment.PurchaseCommentFragment
 import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_date_time.PurchaseDateTimeFragment
@@ -21,13 +23,11 @@ import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
 class PurchaseFragment :
-    BaseBottomSheetFragment<PurchaseViewModel, FragmentPurchaseServiceBinding>(),
+    BaseFragment<PurchaseViewModel, FragmentPurchaseBinding>(R.layout.fragment_purchase),
     PurchaseAddressFragment.PurchaseAddressListener,
     PurchaseCommentFragment.PurchaseCommentListener,
     PurchaseDateTimeFragment.PurchaseDateTimeListener,
     FragmentResultListener, ConfirmBottomSheetFragment.ConfirmListener {
-
-    override val TAG: String = "PURCHASE_SERVICE_FRAGMENT"
 
     companion object {
         private const val ARG_PURCHASE_SERVICE_MODEL = "ARG_PURCHASE_SERVICE_MODEL"
@@ -38,13 +38,15 @@ class PurchaseFragment :
         }
     }
 
+    override fun setStatusBarColor() {
+        setStatusBarColor(R.color.primary500)
+    }
+
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
             requireArguments().getSerializable(ARG_PURCHASE_SERVICE_MODEL) as PurchaseModel
         )
     }
-
-    override fun getThemeResource(): Int = R.style.BottomSheetNoDim
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,10 +55,13 @@ class PurchaseFragment :
         childFragmentManager.setFragmentResultListener("agent_code_request", viewLifecycleOwner, this)
         childFragmentManager.setFragmentResultListener("card_request", viewLifecycleOwner, this)
 
+        binding.backImageView.setOnDebouncedClickListener {
+            viewModel.onBackClick()
+        }
         binding.layoutProperty.root.setOnDebouncedClickListener {
             viewModel.onAddressClick(childFragmentManager)
         }
-        binding.addCommmentTextView.setOnDebouncedClickListener {
+        binding.layoutProperty.addCommentTextView.setOnDebouncedClickListener {
             val editPurchaseServiceComment = PurchaseCommentFragment.newInstance()
             editPurchaseServiceComment.show(childFragmentManager, PurchaseCommentFragment.TAG)
         }
@@ -146,10 +151,6 @@ class PurchaseFragment :
                 binding.makeOrderButton.productArrangeBtn.background = ContextCompat.getDrawable(requireContext(), R.drawable.rectangle_filled_secondary_100_radius_12dp)
             }
         }
-    }
-
-    override fun isNavigationViewVisible(): Boolean {
-        return false
     }
 
     override fun onSelectPropertyClick(propertyItemModel: PropertyItemModel) {
