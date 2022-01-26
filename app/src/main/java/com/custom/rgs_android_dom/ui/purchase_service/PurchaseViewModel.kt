@@ -32,7 +32,7 @@ class PurchaseViewModel(
 
     private var propertyListSize: Int? = null
 
-    private val purchaseController = MutableLiveData<PurchaseModel>()
+    private val purchaseController = MutableLiveData(model)
     val purchaseObserver: LiveData<PurchaseModel> = purchaseController
 
     private val isEnableButtonController = MutableLiveData(false)
@@ -42,8 +42,6 @@ class PurchaseViewModel(
     val hasCodeAgentObserver: LiveData<Boolean> = hasCodeAgentController
 
     init {
-        purchaseController.value = model
-
         clientInteractor.getClient()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -76,8 +74,10 @@ class PurchaseViewModel(
     }
 
     private fun validateFields() {
-        isEnableButtonController.value = purchaseController.value?.email != null &&
-                purchaseController.value?.card != null
+        isEnableButtonController.value = purchaseObserver.value?.email != null &&
+                purchaseObserver.value?.card != null &&
+                purchaseObserver.value?.purchaseDateTimeModel != null &&
+                purchaseObserver.value?.propertyItemModel != null
     }
 
     fun updateAddress(propertyItemModel: PropertyItemModel) {
@@ -94,7 +94,6 @@ class PurchaseViewModel(
             validateFields()
         }
     }
-
 
     fun updateAgentCode(code: String) {
         purchaseController.value?.let {
