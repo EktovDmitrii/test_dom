@@ -98,7 +98,7 @@ val viewModelModule = module {
     viewModel { parameters -> CatalogSubcategoryViewModel(subCategory = parameters.get(), registrationInteractor = get()) }
     viewModel { parameters -> SingleProductViewModel(productId = parameters.get(), catalogInteractor = get()) }
     viewModel { MoreSingleProductViewModel() }
-    viewModel { parameters -> CatalogSearchViewModel(tag = parameters[0], catalogInteractor = get()) }
+    viewModel { parameters -> CatalogSearchViewModel(tag = parameters[0], catalogInteractor = get(), registrationInteractor = get(), clientInteractor = get()) }
     viewModel { parameters -> ProductViewModel(productId = parameters.get(), catalogInteractor = get()) }
     viewModel { parameters -> CatalogPrimaryProductsViewModel(category = parameters.get()) }
     viewModel { MyProductViewModel() }

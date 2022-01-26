@@ -166,7 +166,7 @@ interface MSDApi {
 
     @GET("clients/me/purchase/products/showcase")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getShowcase(@Query("tags", encoded = true) tags: String?, @Query("index") index: Int, @Query("size") size: Long): Single<ProductsForPurchaseResponse>
+    fun getShowcase(@Query("tags", encoded = true) tags: String?, @Query("fullText") fullText: String?, @Query("index") index: Int, @Query("size") size: Long): Single<ProductsForPurchaseResponse>
 
     @GET("guests/purchase/products/showcase")
     @ErrorType(MSDNetworkErrorResponse::class)

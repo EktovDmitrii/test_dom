@@ -15,7 +15,7 @@ class CatalogSearchFragment : BaseFragment<CatalogSearchViewModel, FragmentCatal
 ) {
 
     companion object {
-        private const val ARG_TAG = "TAG"
+        private const val ARG_TAG = "ARG_TAG"
 
         fun newInstance(tag: String? = null): CatalogSearchFragment {
             return CatalogSearchFragment().args { 
@@ -56,13 +56,20 @@ class CatalogSearchFragment : BaseFragment<CatalogSearchViewModel, FragmentCatal
             viewModel.onClearClick()
         }
 
+        binding.cancelTextView.setOnDebouncedClickListener {
+            viewModel.onCancelClick()
+        }
+
+        binding.openChatTextView.setOnDebouncedClickListener {
+            hideSoftwareKeyboard()
+            viewModel.onOpenChatClick()
+        }
+
         subscribe(viewModel.popularProductsObserver){
             popularProductsAdapter.setItems(it)
         }
 
         subscribe(viewModel.searchResultsObserver){
-            binding.popularProductsTextView.gone()
-            binding.popularProductsRecyclerView.gone()
             searchResultsAdapter.setItems(it)
         }
 
@@ -70,16 +77,16 @@ class CatalogSearchFragment : BaseFragment<CatalogSearchViewModel, FragmentCatal
             binding.searchInput.setText(it)
         }
 
-        subscribe(viewModel.arePopularProductsVisibleObserver){
-            // TODO Temporary solution
-            /*binding.popularProductsTextView.visibleIf(it)
-            binding.popularProductsRecyclerView.visibleIf(it)*/
-            binding.popularProductsTextView.gone()
-            binding.popularProductsRecyclerView.gone()
+        subscribe(viewModel.popularProductsVisibleObserver){
+            binding.popularProductsLinearLayout.visibleIf(it)
         }
 
-        subscribe(viewModel.areSearchResultsVisibleObserver){
+        subscribe(viewModel.searchResultsVisibleObserver){
             binding.searchResultsRecyclerView.visibleIf(it)
+        }
+
+        subscribe(viewModel.noSearchResultsVisibleObserver){
+            binding.noSearchResultsLinearLayout.visibleIf(it)
         }
     }
 
