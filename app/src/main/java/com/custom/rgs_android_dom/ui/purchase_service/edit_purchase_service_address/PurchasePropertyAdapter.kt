@@ -65,7 +65,7 @@ class PurchasePropertyAdapter(
                     binding.propertyTypeTextView.text = "Дом"
                 }
                 PropertyType.APARTMENT -> {
-                    binding.propertyTypeImageView.setImageResource(R.drawable.ic_type_apartment)
+                    binding.propertyTypeImageView.setImageResource(R.drawable.ic_type_apartment_334px)
                     binding.propertyTypeTextView.text = "Квартира"
                 }
             }

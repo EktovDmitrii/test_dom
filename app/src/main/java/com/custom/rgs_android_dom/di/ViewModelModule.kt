@@ -115,5 +115,5 @@ val viewModelModule = module {
     viewModel { SOSViewModel(chatInteractor = get(), registrationInteractor = get(), clientInteractor = get(), context = get()) }
     viewModel { parameters -> PaymentWebViewViewModel(url = parameters.get()) }
     viewModel { PaymentErrorViewModel() }
-    viewModel { PaymentSuccessViewModel() }
+    viewModel { parameters -> PaymentSuccessViewModel(productId = parameters[0], email = parameters[1]) }
 }

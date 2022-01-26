@@ -127,13 +127,12 @@ class PurchaseViewModel(
     fun onDateTimeClick(childFragmentManager: FragmentManager) {
         val currentPurchaseDateTimeModel = purchaseController.value?.purchaseDateTimeModel
 
-        if (currentPurchaseDateTimeModel != null){
+        if (currentPurchaseDateTimeModel != null) {
             val purchaseDateTimeFragment = PurchaseDateTimeFragment.newInstance(
                 currentPurchaseDateTimeModel
             )
             purchaseDateTimeFragment.show(childFragmentManager, purchaseDateTimeFragment.TAG)
-        }
-        else{
+        } else {
             val purchaseDateTimeFragment = PurchaseDateTimeFragment.newInstance(
                 PurchaseDateTimeModel()
             )
@@ -165,26 +164,45 @@ class PurchaseViewModel(
     }
 
     fun makeOrder() {
-        purchaseObserver.value?.let {
+        purchaseObserver.value?.let { purchase ->
             purchaseInteractor.makeProductPurchase(
-                productId = it.id,
-                bindingId = if (it.card is SavedCardModel) { it.card.id }
-                else { null },
-                email = it.email!!,
-                objectId = it.propertyItemModel!!.id,
-                saveCard = false, // TODO change later after server side
+                productId = purchase.id,
+                bindingId = if (purchase.card is SavedCardModel) {
+                    purchase.card.id
+                } else {
+                    null
+                },
+                email = purchase.email!!,
+                objectId = purchase.propertyItemModel!!.id,
+                saveCard = if (purchase.card is NewCardModel) {
+                    purchase.card.doSave
+                } else {
+                    true
+                },
                 deliveryDate = "2022-02-28T00:00:00+06:00", // TODO remove mock
-                timeFrom = it.purchaseDateTimeModel?.selectedPeriodModel!!.timeInterval.split("-")[0],
-                timeTo = it.purchaseDateTimeModel?.selectedPeriodModel!!.timeInterval.split("-")[1]
+                timeFrom = purchase.purchaseDateTimeModel?.selectedPeriodModel!!.timeInterval.split(
+                    "-"
+                )[0],
+                timeTo = purchase.purchaseDateTimeModel?.selectedPeriodModel!!.timeInterval.split("-")[1]
             )
+                .doOnSubscribe { isEnableButtonController.postValue(false) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doFinally { isEnableButtonController.value = true }
                 .subscribeBy(
                     onSuccess = {
-                        ScreenManager.showScreenScope(PaymentWebViewFragment.newInstance(it), PAYMENT)
+                        ScreenManager.showScreenScope(
+                            PaymentWebViewFragment.newInstance(
+                                url = it,
+                                productId = purchase.id,
+                                email = purchase.email,
+                                price = purchase.price?.amount.toString()
+                            ), PAYMENT
+                        )
                     },
                     onError = {
                         logException(this, it)
+                        handleNetworkException(it)
                     }
                 ).addTo(dataCompositeDisposable)
         }

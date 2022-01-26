@@ -123,7 +123,7 @@ class PurchaseFragment :
                     }
                     PropertyType.APARTMENT -> {
                         binding.layoutProperty.propertyTypeImageView.setImageResource(
-                            R.drawable.ic_type_apartment
+                            R.drawable.ic_type_apartment_334px
                         )
                     }
                 }

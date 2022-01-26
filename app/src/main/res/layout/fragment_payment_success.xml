@@ -67,8 +67,7 @@
                 android:lineSpacingExtra="24dp"
                 android:lineSpacingMultiplier="0"
                 android:textColor="@color/secondary600"
-                android:textSize="16sp"
-                app:translationTextKey="Чек об оплате отправлен на вашу почту ivalerapevnev@gmail.com" />
+                android:textSize="16sp" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

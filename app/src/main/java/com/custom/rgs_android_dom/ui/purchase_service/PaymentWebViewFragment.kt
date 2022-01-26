@@ -1,9 +1,9 @@
 package com.custom.rgs_android_dom.ui.purchase_service
 
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
 import android.webkit.*
+import androidx.core.content.ContextCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPaymentWebviewBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
@@ -19,11 +19,22 @@ class PaymentWebViewFragment :
     BaseFragment<PaymentWebViewViewModel, FragmentPaymentWebviewBinding>(R.layout.fragment_payment_webview) {
 
     companion object {
-        private const val ARG_PAYMENT_URL = "ARG_PRODUCT_ID"
+        private const val ARG_PAYMENT_URL = "ARG_PAYMENT_URL"
+        private const val ARG_PRODUCT_ID = "ARG_PRODUCT_ID"
+        private const val ARG_EMAIL = "ARG_EMAIL"
+        private const val ARG_PRICE = "ARG_PRICE"
 
-        fun newInstance(url: String): PaymentWebViewFragment {
+        fun newInstance(
+            url: String,
+            productId: String,
+            email: String,
+            price: String
+        ): PaymentWebViewFragment {
             return PaymentWebViewFragment().args {
                 putString(ARG_PAYMENT_URL, url)
+                putString(ARG_PRODUCT_ID, productId)
+                putString(ARG_EMAIL, email)
+                putString(ARG_PRICE, price)
             }
         }
     }
@@ -40,33 +51,51 @@ class PaymentWebViewFragment :
         super.onViewCreated(view, savedInstanceState)
         binding.paymentWebView.webChromeClient = WebChromeClient()
 
+        val email = arguments?.getString(ARG_EMAIL) ?: ""
+        val productId = arguments?.getString(ARG_PRODUCT_ID) ?: ""
+        val price = arguments?.getString(ARG_PRICE) ?: ""
+
         val webClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(
                 view: WebView?,
                 request: WebResourceRequest?
             ): Boolean {
-                return if (request?.url.toString().startsWith("https://dom.moi-service.ru/api/billing/success")) {
-                    ScreenManager.showScreenScope(PaymentErrorFragment.newInstance(), PAYMENT)
-                    true
-                } else {
-                    super.shouldOverrideUrlLoading(view, request)
+                return when {
+                    request?.url.toString().contains("/billing/fail") -> {
+                        ScreenManager.showScreenScope(
+                            PaymentErrorFragment.newInstance(price),
+                            PAYMENT
+                        )
+                        true
+                    }
+                    request?.url.toString().contains("/billing/success") -> {
+                        ScreenManager.showScreenScope(
+                            PaymentSuccessFragment.newInstance(
+                                productId,
+                                email
+                            ), PAYMENT
+                        )
+                        true
+                    }
+                    else -> {
+                        super.shouldOverrideUrlLoading(view, request)
+                    }
                 }
             }
 
-            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                super.onPageStarted(view, url, favicon)
-            }
-
             override fun onPageFinished(view: WebView?, url: String?) {
+                binding.layout.background = if (url?.contains("3dsec.sberbank.ru") == true) {
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.rectangle_filled_grey_top_radius_24dp
+                    )
+                } else {
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.rectangle_filled_white_top_radius_24dp
+                    )
+                }
                 super.onPageFinished(view, url)
-            }
-
-            override fun onReceivedError(
-                view: WebView?,
-                request: WebResourceRequest?,
-                error: WebResourceError?
-            ) {
-                super.onReceivedError(view, request, error)
             }
         }
 
@@ -82,7 +111,7 @@ class PaymentWebViewFragment :
     }
 
     override fun onClose() {
-        if (binding.paymentWebView.canGoBack()){
+        if (binding.paymentWebView.canGoBack()) {
             binding.paymentWebView.goBack()
         } else {
             super.onClose()
