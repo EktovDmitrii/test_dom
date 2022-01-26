@@ -20,8 +20,10 @@ import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDo
 import com.custom.rgs_android_dom.ui.property.document.edit_document_list.EditDocumentListBottomSheetFragment
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.getDownloadManager
+import com.custom.rgs_android_dom.utils.gone
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
+import com.custom.rgs_android_dom.utils.visible
 import com.custom.rgs_android_dom.utils.visibleIf
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
@@ -92,6 +94,12 @@ class DocumentListFragment :
             openPropertyUploadDocumentsScreen()
         }
 
+        binding.saveDocumentListImageView.setOnDebouncedClickListener {
+            binding.editDocumentListImageView.visible()
+            binding.saveDocumentListImageView.gone()
+            documentListAdapter.showDeleteButton(false)
+        }
+
         binding.listDocumentsRecyclerView.adapter =
             DocumentListAdapter(onDeleteClick = { propertyDocument ->
                 propertyDocumentForDelete = propertyDocument
@@ -142,6 +150,8 @@ class DocumentListFragment :
     }
 
     override fun changeDeleteButtonVisibility(isDeleteButtonVisible: Boolean) {
+        binding.editDocumentListImageView.gone()
+        binding.saveDocumentListImageView.visible()
         documentListAdapter.showDeleteButton(isDeleteButtonVisible)
     }
 
