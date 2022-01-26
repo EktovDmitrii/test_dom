@@ -24,7 +24,7 @@ import com.custom.rgs_android_dom.ui.catalog.product.ServiceViewModel
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogPrimaryProductsViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.availableservices.TabAvailableServicesViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.catalog.TabCatalogViewModel
-import com.custom.rgs_android_dom.ui.catalog.tabs.products.TabProductsViewModel
+import com.custom.rgs_android_dom.ui.catalog.tabs.products.TabMyProductsViewModel
 import com.custom.rgs_android_dom.ui.chat.call.CallViewModel
 import com.custom.rgs_android_dom.ui.chat.call.media_output_chooser.MediaOutputChooserViewModel
 import com.custom.rgs_android_dom.ui.rationale.RequestRationaleViewModel
@@ -82,7 +82,7 @@ val viewModelModule = module {
     viewModel { RequestEditPersonalDataViewModel(clientInteractor = get()) }
     viewModel { parameters -> SelectAddressViewModel( propertyCount = parameters.get(), propertyInteractor = get(), addressInteractor = get(), context = get()) }
     viewModel { AddressSuggestionsViewModel(addressInteractor = get()) }
-    viewModel { MainViewModel(registrationInteractor = get(), propertyInteractor = get(), catalogInteractor = get()) }
+    viewModel { MainViewModel(registrationInteractor = get(), propertyInteractor = get(), catalogInteractor = get(), context = get()) }
     viewModel { WebViewViewModel() }
     viewModel { AddPhotoViewModel(clientInteractor = get()) }
     viewModel { UploadFilesViewModel(chatInteractor = get()) }
@@ -95,8 +95,8 @@ val viewModelModule = module {
     viewModel { RequestRationaleViewModel() }
     viewModel { parameters -> MainCatalogViewModel(tab = parameters.get()) }
     viewModel { TabCatalogViewModel(catalogInteractor = get(), registrationInteractor = get()) }
-    viewModel { TabProductsViewModel(catalogInteractor = get()) }
-    viewModel { TabAvailableServicesViewModel() }
+    viewModel { TabMyProductsViewModel(catalogInteractor = get(), registrationInteractor = get()) }
+    viewModel { TabAvailableServicesViewModel(catalogInteractor = get(), registrationInteractor = get()) }
     viewModel { parameters -> CatalogSubcategoriesViewModel(category = parameters.get(), registrationInteractor = get()) }
     viewModel { parameters -> CatalogSubcategoryViewModel(subCategory = parameters.get(), registrationInteractor = get()) }
     viewModel { parameters -> SingleProductViewModel(productId = parameters.get(), catalogInteractor = get()) }

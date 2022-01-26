@@ -12,23 +12,23 @@
         android:id="@+id/iconImageLayout"
         android:layout_width="160dp"
         android:layout_height="160dp"
-        android:background="@drawable/rectangle_filled_lime_radius_16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.custom.rgs_android_dom.views.MSDImageView
-            android:id="@+id/iconImageView"
+            android:id="@+id/logoBigImageView"
             android:layout_width="160dp"
-            android:layout_height="160dp" />
+            android:layout_height="160dp"
+            android:background="@drawable/rectangle_filled_secondary_100_radius_16dp" />
 
         <com.custom.rgs_android_dom.views.MSDImageView
+            android:id="@+id/logoSmallImageView"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_gravity="start|top"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:src="@drawable/ic_catalog_primary_unit_letter_o_32dp" />
+            android:layout_marginTop="12dp" />
 
     </FrameLayout>
 
@@ -44,7 +44,7 @@
         android:textAllCaps="true"
         app:layout_constraintStart_toStartOf="@id/iconImageLayout"
         app:layout_constraintTop_toBottomOf="@id/iconImageLayout"
-        android:text="Действует до 02.05.2022" />
+        tools:text="Действует до 02.05.2022" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/productNameTextView"

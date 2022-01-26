@@ -11,6 +11,7 @@ import com.custom.rgs_android_dom.domain.client.mappers.EditPersonalDataViewStat
 import com.custom.rgs_android_dom.domain.client.mappers.PersonalDataMapper
 import com.custom.rgs_android_dom.domain.client.models.ClientModel
 import com.custom.rgs_android_dom.domain.client.view_states.*
+import com.custom.rgs_android_dom.domain.repositories.CatalogRepository
 import com.custom.rgs_android_dom.domain.repositories.ClientRepository
 import com.custom.rgs_android_dom.domain.repositories.FilesRepository
 import com.custom.rgs_android_dom.domain.repositories.RegistrationRepository
@@ -27,6 +28,7 @@ import java.io.File
 class ClientInteractor(
     private val clientRepository: ClientRepository,
     private val registrationRepository: RegistrationRepository,
+    private val catalogRepository: CatalogRepository,
     private val filesRepository: FilesRepository
 ) {
 
@@ -189,8 +191,8 @@ class ClientInteractor(
     }
 
     fun getEditPersonalDataViewState(): Single<EditPersonalDataViewState>{
-        return Single.zip(clientRepository.getClient(),clientRepository.getClientProducts()){ clientModel, productsModel ->
-            editPersonalDataViewState = EditPersonalDataViewStateMapper.from(clientModel,productsModel)
+        return Single.zip(clientRepository.getClient(), catalogRepository.getClientProducts()){ clientModel, clientProducts ->
+            editPersonalDataViewState = EditPersonalDataViewStateMapper.from(clientModel, clientProducts)
             return@zip editPersonalDataViewState
         }.doOnSuccess {
             CacheHelper.loadAndSaveClient()

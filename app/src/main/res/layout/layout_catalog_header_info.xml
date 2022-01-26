@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:paddingBottom="24dp"
     android:paddingHorizontal="20dp">
@@ -40,7 +41,7 @@
         android:textColor="@color/secondary900"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:translationTextKey="Тепловизионная диагностика недвижимости" />
+        tools:text="Тепловизионная диагностика недвижимости" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/headerDescription"
@@ -51,6 +52,6 @@
         android:gravity="center"
         android:textColor="@color/secondary900"
         android:textSize="16sp"
-        app:translationTextKey="Поиск утечек тепла, сквозняков. Проверка теплых полов и радиаторов отопления." />
+        tools:text="Поиск утечек тепла, сквозняков. Проверка теплых полов и радиаторов отопления." />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

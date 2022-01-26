@@ -95,11 +95,12 @@
             android:orientation="vertical"
             android:padding="5dp">
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="match_parent"
                 android:layout_height="153dp"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_type_apartment" />
+                app:shapeAppearance="@style/RoundedCornersTop12dpBottom6dpImageViewStyle"
+                app:srcCompat="@drawable/ic_type_apartment_334px" />
 
             <com.custom.rgs_android_dom.views.text.MSDTextView
                 android:layout_width="wrap_content"

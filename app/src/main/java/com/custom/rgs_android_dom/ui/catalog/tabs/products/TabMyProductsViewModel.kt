@@ -1,39 +1,41 @@
-package com.custom.rgs_android_dom.ui.catalog.tabs.availableservices
+package com.custom.rgs_android_dom.ui.catalog.tabs.products
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
-import com.custom.rgs_android_dom.domain.catalog.models.AvailableServiceModel
+import com.custom.rgs_android_dom.domain.catalog.models.ClientProductModel
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
+import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
+import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
-class TabAvailableServicesViewModel(
+class TabMyProductsViewModel(
     private val catalogInteractor: CatalogInteractor,
     private val registrationInteractor: RegistrationInteractor
 ) : BaseViewModel() {
 
-    private val availableServicesController = MutableLiveData<List<AvailableServiceModel>>()
-    val availableServicesObserver: LiveData<List<AvailableServiceModel>> = availableServicesController
+    private val myProductsController = MutableLiveData<List<ClientProductModel>>()
+    val myProductsObserver: LiveData<List<ClientProductModel>> = myProductsController
 
-    private val isNoServicesLayoutVisibleController = MutableLiveData<Unit>()
-    val isNoServicesLayoutVisibleObserver: LiveData<Unit> = isNoServicesLayoutVisibleController
+    private val isNoProductsLayoutVisibleController = MutableLiveData<Unit>()
+    val isNoProductsLayoutVisibleObserver: LiveData<Unit> = isNoProductsLayoutVisibleController
 
     init {
-        loadAvailableServices()
+        loadClientProducts()
 
         registrationInteractor.getLoginSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    loadAvailableServices()
+                    loadClientProducts()
                 },
                 onError = {
                     logException(this, it)
@@ -45,7 +47,7 @@ class TabAvailableServicesViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    loadAvailableServices()
+                    loadClientProducts()
                 },
                 onError = {
                     logException(this, it)
@@ -53,26 +55,34 @@ class TabAvailableServicesViewModel(
             ).addTo(dataCompositeDisposable)
     }
 
-    fun onServiceClick(service: AvailableServiceModel) {
-        val singleProductFragment = SingleProductFragment.newInstance(service.productId)
-        ScreenManager.showBottomScreen(singleProductFragment)
+    fun onProductClick(product: ClientProductModel) {
+        ScreenManager.showBottomScreen(ProductFragment.newInstance(product.productId))
     }
 
-    private fun loadAvailableServices(){
+    fun onAddPolicyClick(){
         if (registrationInteractor.isAuthorized()){
-            catalogInteractor.getAvailableServices()
+            // TODO Navigate to policy screen
+        } else {
+            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+        }
+    }
+
+    private fun loadClientProducts(){
+        if (registrationInteractor.isAuthorized()){
+            catalogInteractor.getClientProducts()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                     onSuccess = {
-                        availableServicesController.value = it
+                        myProductsController.value = it
                     },
                     onError = {
                         logException(this, it)
                     }
                 ).addTo(dataCompositeDisposable)
         } else {
-            isNoServicesLayoutVisibleController.value = Unit
+            isNoProductsLayoutVisibleController.value = Unit
         }
+
     }
 }
