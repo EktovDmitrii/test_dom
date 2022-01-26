@@ -73,8 +73,7 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
         return catalogRepository.getCatalogCategories()
             .map {
                 it.filter {
-                    // todo when backend data is ready add filter to retieve categories by tag.
-                    it.subCategories.isNotEmpty()
+                    it.subCategories.isNotEmpty() && it.productTags.contains(TAG_POPULAR_PRODUCTS)
                 }.take(CNT_POPULAR_CATEGORIES_IN_MAIN)
             }
     }
