@@ -4,7 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
+import com.custom.rgs_android_dom.domain.client.ClientInteractor
+import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
+import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
+import com.custom.rgs_android_dom.ui.chat.ChatFragment
+import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
+import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.navigation.TargetScreen
+import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.utils.logException
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -14,22 +23,27 @@ import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
 class CatalogSearchViewModel(
-    private val tag: String?,
-    private val catalogInteractor: CatalogInteractor
+    tag: String?,
+    private val catalogInteractor: CatalogInteractor,
+    private val registrationInteractor: RegistrationInteractor,
+    private val clientInteractor: ClientInteractor
 ) : BaseViewModel() {
 
     companion object {
-        private const val SEARCH_DELAY = 500L
+        private const val SEARCH_DELAY = 700L
     }
 
     private val tagController = MutableLiveData<String>()
     val tagObserver: LiveData<String> = tagController
 
-    private val arePopularProductVisibleController = MutableLiveData<Boolean>()
-    val arePopularProductsVisibleObserver: LiveData<Boolean> = arePopularProductVisibleController
+    private val popularProductVisibleController = MutableLiveData<Boolean>()
+    val popularProductsVisibleObserver: LiveData<Boolean> = popularProductVisibleController
 
-    private val areSearchResultsVisibleController = MutableLiveData<Boolean>()
-    val areSearchResultsVisibleObserver: LiveData<Boolean> = areSearchResultsVisibleController
+    private val searchResultsVisibleController = MutableLiveData<Boolean>()
+    val searchResultsVisibleObserver: LiveData<Boolean> = searchResultsVisibleController
+
+    private val noSearchResultsVisibleController = MutableLiveData<Boolean>()
+    val noSearchResultsVisibleObserver: LiveData<Boolean> = noSearchResultsVisibleController
 
     private val popularProductsController = MutableLiveData<List<ProductShortModel>>()
     val popularProductsObserver: LiveData<List<ProductShortModel>> = popularProductsController
@@ -38,20 +52,41 @@ class CatalogSearchViewModel(
     val searchResultsObserver: LiveData<List<ProductShortModel>> = searchResultsController
 
     private val searchSubject = PublishRelay.create<String>()
+    private var popularProducts = listOf<ProductShortModel>()
+    private var screenToOpenOnLogin = TargetScreen.UNSPECIFIED
 
     init {
         tag?.let { tag->
             tagController.value = tag
         }
 
-        arePopularProductVisibleController.value = (tag == null)
-
-        catalogInteractor.getPopularProducts()
+        catalogInteractor.getPopularSearchProducts()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    popularProductsController.value = it
+                    popularProducts = it
+                    popularProductsController.value = popularProducts
+
+                    if (tag == null){
+                        popularProductVisibleController.value = popularProducts.isNotEmpty()
+                    }
+
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
+        clientInteractor.getClientSavedSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy (
+                onNext = {
+                    when (screenToOpenOnLogin) {
+                        TargetScreen.CHAT -> { ScreenManager.showScreen(ChatFragment()) }
+                    }
+                    screenToOpenOnLogin = TargetScreen.UNSPECIFIED
                 },
                 onError = {
                     logException(this, it)
@@ -63,22 +98,37 @@ class CatalogSearchViewModel(
 
 
     fun onSearchQueryChanged(query: String){
-        if (query.isNotEmpty()){
-            arePopularProductVisibleController.value = false
-            searchSubject.accept(query)
-        } else {
-            arePopularProductVisibleController.value = true
-            areSearchResultsVisibleController.value = false
-        }
+        noSearchResultsVisibleController.value = false
+        searchSubject.accept(query)
     }
 
     fun onClearClick(){
-        arePopularProductVisibleController.value = true
-        areSearchResultsVisibleController.value = false
+        noSearchResultsVisibleController.value = false
+
+        popularProductVisibleController.value = popularProducts.isNotEmpty()
+        searchResultsVisibleController.value = false
     }
 
     fun onProductClick(product: ProductShortModel){
+        if (product.defaultProduct){
+            ScreenManager.showBottomScreen(SingleProductFragment.newInstance(product.id))
+        } else {
+            ScreenManager.showBottomScreen(ProductFragment.newInstance(product.id))
+        }
+        closeController.value = Unit
+    }
 
+    fun onCancelClick(){
+        closeController.value = Unit
+    }
+
+    fun onOpenChatClick(){
+        if (registrationInteractor.isAuthorized()){
+            ScreenManager.showScreen(ChatFragment())
+        } else {
+            screenToOpenOnLogin = TargetScreen.CHAT
+            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+        }
     }
 
     private fun subscribeSearchSubject() {
@@ -86,17 +136,36 @@ class CatalogSearchViewModel(
             .debounce(SEARCH_DELAY, TimeUnit.MILLISECONDS)
             .distinctUntilChanged()
             .observeOn(AndroidSchedulers.mainThread())
-            .flatMapSingle {
-                catalogInteractor.getProductsAvailableForPurchase(it)
-            }
+            .subscribeBy(
+                onNext = {query->
+                    if (query.isNotEmpty()){
+                        popularProductVisibleController.value = false
+                        findProducts(query)
+                    } else {
+                        popularProductVisibleController.value = popularProducts.isNotEmpty()
+                        searchResultsVisibleController.value = false
+                    }
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+    }
+
+    private fun findProducts(query: String){
+        catalogInteractor.findProducts(query)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onNext = {
+            .subscribeBy (
+                onSuccess = {
                     if (it.isNotEmpty()){
                         searchResultsController.value = it
+                        searchResultsVisibleController.value = true
+                        noSearchResultsVisibleController.value = false
+                    } else {
+                        searchResultsVisibleController.value = false
+                        noSearchResultsVisibleController.value = true
                     }
-                    areSearchResultsVisibleController.value = it.isNotEmpty()
                 },
                 onError = {
                     logException(this, it)
