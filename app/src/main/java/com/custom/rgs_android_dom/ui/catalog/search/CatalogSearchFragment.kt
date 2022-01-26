@@ -36,7 +36,8 @@ class CatalogSearchFragment : BaseFragment<CatalogSearchViewModel, FragmentCatal
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        hideSoftwareKeyboard()
+
+        binding.searchInput.focus()
 
         binding.searchResultsRecyclerView.adapter = CatalogSearchResultsAdapter {
             viewModel.onProductClick(it)

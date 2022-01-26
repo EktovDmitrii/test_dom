@@ -64,7 +64,7 @@
                     android:textColor="@color/secondary900"
                     android:layout_marginTop="28dp"
                     android:gravity="center_horizontal"
-                    app:translationTextKey="Удобный сервис для домашних дел от флагмана отечественного рынка страхования"/>
+                    app:translationTextKey="Мой_Сервис Дом — имущественный сервис от флагмана отечественного страхования" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"

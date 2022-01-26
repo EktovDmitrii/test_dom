@@ -133,38 +133,6 @@ object ClientMapper {
         } else {
             null
         }
-
-    }
-
-    fun responseToClientProducts(response: ClientProductsResponse) : ClientProductsModel {
-        return ClientProductsModel(
-            clientProducts = response.clientProducts?.map { clientProductResponse ->
-                responseToClientProduct(clientProductResponse)
-            }
-        )
-
-    }
-
-    private fun responseToClientProduct(response: ClientProductResponse): ClientProductModel {
-        return ClientProductModel(
-            productDescriptionFormat = response.productDescriptionFormat ?: "",
-            clientId = response.clientId ?: "",
-            contractId = response.contractId ?: "",
-            id = response.id ?: "",
-            objectIds = response.objectIds ?: arrayListOf(),
-            productCode = response.productCode ?: "",
-            productDescription = response.productDescription ?: "",
-            productDescriptionRef = response.productDescriptionRef ?: "",
-            productIcon = response.productIcon ?: "",
-            productId = response.productId ?: "",
-            productName = response.productName ?: "",
-            productTitle = response.productTitle ?: "",
-            productType = response.productType ?: "",
-            productVersionId = response.productVersionId ?: "",
-            status = response.status ?: "",
-            validityFrom = response.validityFrom ?: "",
-            validityTo = response.validityTo ?: ""
-        )
     }
 
 }

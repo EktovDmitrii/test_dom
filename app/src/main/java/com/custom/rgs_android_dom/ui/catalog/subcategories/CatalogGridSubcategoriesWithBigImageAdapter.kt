@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.ItemCatalogGridlayoutSubcategoryBinding
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogSubCategoryModel
@@ -45,6 +46,7 @@ class CatalogGridSubcategoriesWithBigImageAdapter(
             GlideApp.with(binding.root.context)
                 .load(GlideUrlProvider.makeHeadersGlideUrl(model.logoMiddle))
                 .transform(RoundedCorners(16.dp(binding.root.context)))
+                .error(R.drawable.rectangle_filled_secondary_100_radius_16dp)
                 .into(binding.logoImageView)
 
             binding.root.setOnDebouncedClickListener {
