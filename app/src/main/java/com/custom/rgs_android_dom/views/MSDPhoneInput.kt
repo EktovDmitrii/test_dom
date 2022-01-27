@@ -22,7 +22,8 @@ class MSDPhoneInput @JvmOverloads constructor(
         private const val DEFAULT_DIGIT = 9
     }
 
-    private val binding: ViewMsdPhoneInputBinding = ViewMsdPhoneInputBinding.inflate(LayoutInflater.from(context), this, true)
+    private val binding: ViewMsdPhoneInputBinding =
+        ViewMsdPhoneInputBinding.inflate(LayoutInflater.from(context), this, true)
 
     private var onCountryClickListener: (String) -> Unit = {}
     private var onPhoneChangedListener: (String, Boolean) -> Unit = { _, _ -> }
@@ -44,7 +45,7 @@ class MSDPhoneInput @JvmOverloads constructor(
             formattedValue: String
         ) {
             newHintBuilder.clear()
-            for (i in hint.indices){
+            for (i in hint.indices) {
                 var newChar = if (formattedValue.isNotEmpty() && i < formattedValue.length) {
                     formattedValue[i]
                 } else {
@@ -53,7 +54,7 @@ class MSDPhoneInput @JvmOverloads constructor(
                 newHintBuilder.append(newChar)
             }
             binding.hintEditText.hint = newHintBuilder.toString()
-            if (isFromUser){
+            if (isFromUser) {
                 onPhoneChangedListener("$countryCode$formattedValue", maskFilled)
             }
         }
@@ -61,16 +62,19 @@ class MSDPhoneInput @JvmOverloads constructor(
 
     init {
 
-        val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDPhoneInput, 0, 0)
-        attrs.getString(R.styleable.MSDPhoneInput_phoneMask)?.let { phoneMask->
+        val attrs =
+            context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDPhoneInput, 0, 0)
+        attrs.getString(R.styleable.MSDPhoneInput_phoneMask)?.let { phoneMask ->
             setMask(phoneMask)
         }
-        attrs.getDrawable(R.styleable.MSDPhoneInput_countryImage)?.let { countryImage->
+        attrs.getDrawable(R.styleable.MSDPhoneInput_countryImage)?.let { countryImage ->
             setCountryImage(countryImage)
         }
-        attrs.getString(R.styleable.MSDPhoneInput_errorTranslationTextKey)?.let { translationErrorKey->
-            binding.errorTextView.text = TranslationInteractor.getTranslation(translationErrorKey)
-        }
+        attrs.getString(R.styleable.MSDPhoneInput_errorTranslationTextKey)
+            ?.let { translationErrorKey ->
+                binding.errorTextView.text =
+                    TranslationInteractor.getTranslation(translationErrorKey)
+            }
 
         binding.phoneEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -85,7 +89,7 @@ class MSDPhoneInput @JvmOverloads constructor(
         }
     }
 
-    fun setOnCountryClickListener(onCountryClickListener: (String) -> Unit){
+    fun setOnCountryClickListener(onCountryClickListener: (String) -> Unit) {
         this.onCountryClickListener = onCountryClickListener
     }
 
@@ -93,38 +97,39 @@ class MSDPhoneInput @JvmOverloads constructor(
         this.onDoneClickListener = onDoneClickListener
     }
 
-    fun setCountryImage(image: Int){
+    fun setCountryImage(image: Int) {
         binding.countryImageView.setImageResource(image)
     }
 
-    fun setCountryImage(image: Drawable){
+    fun setCountryImage(image: Drawable) {
         binding.countryImageView.setImageDrawable(image)
     }
 
-    fun setCountryImage(image: String){
+    fun setCountryImage(image: String) {
         GlideApp.with(context)
             .load(image)
             .into(binding.countryImageView)
     }
 
-    fun setLetterCode(letterCode: String){
+    fun setLetterCode(letterCode: String) {
         this.letterCode = letterCode
     }
 
-    fun setMask(phoneMask: String, onPhoneChangedListener:(String, Boolean) -> Unit){
+    fun setMask(phoneMask: String, onPhoneChangedListener: (String, Boolean) -> Unit) {
         countryCode = extractCountryCode(phoneMask)
         val mask = phoneMask.replace(countryCode, "")
 
         binding.phoneEditText.removeTextChangedListener(maskedTextChangedListener)
         this.onPhoneChangedListener = onPhoneChangedListener
-        maskedTextChangedListener = MaskedTextChangedListener(mask, binding.phoneEditText, maskedValueChangedListener)
+        maskedTextChangedListener =
+            MaskedTextChangedListener(mask, binding.phoneEditText, maskedValueChangedListener)
 
         binding.phoneEditText.addTextChangedListener(maskedTextChangedListener)
 
         val hint = makeHint(mask)
 
         if (binding.phoneEditText.text.isNullOrBlank())
-        binding.hintEditText.hint = hint
+            binding.hintEditText.hint = hint
 
         this.hint = hint
 
@@ -134,16 +139,17 @@ class MSDPhoneInput @JvmOverloads constructor(
 
     }
 
-    fun setOnPhoneChangedListener(onPhoneChangedListener:(String, Boolean) -> Unit){
+    fun setOnPhoneChangedListener(onPhoneChangedListener: (String, Boolean) -> Unit) {
         this.onPhoneChangedListener = onPhoneChangedListener
     }
 
-    fun setMask(phoneMask: String){
+    fun setMask(phoneMask: String) {
         countryCode = extractCountryCode(phoneMask)
         val mask = phoneMask.replace(countryCode, "")
 
         binding.phoneEditText.removeTextChangedListener(maskedTextChangedListener)
-        maskedTextChangedListener = MaskedTextChangedListener(mask, binding.phoneEditText, maskedValueChangedListener)
+        maskedTextChangedListener =
+            MaskedTextChangedListener(mask, binding.phoneEditText, maskedValueChangedListener)
 
         binding.phoneEditText.addTextChangedListener(maskedTextChangedListener)
 
@@ -162,14 +168,14 @@ class MSDPhoneInput @JvmOverloads constructor(
         isFromUser = true
     }
 
-    fun setErrorText(error: String){
+    fun setErrorText(error: String) {
         binding.errorTextView.text = error
     }
 
-    fun setState(state: State, error: String = ""){
-        when (state){
+    fun setState(state: State, error: String = "") {
+        when (state) {
             State.ERROR -> {
-                if (error.isNotEmpty()){
+                if (error.isNotEmpty()) {
                     binding.errorTextView.text = error
                 }
                 binding.phoneContainerConstraintLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_error_500_radius_8dp)
@@ -186,7 +192,7 @@ class MSDPhoneInput @JvmOverloads constructor(
         }
     }
 
-    private fun extractCountryCode(phoneMask: String): String{
+    private fun extractCountryCode(phoneMask: String): String {
         return phoneMask.substring(0, phoneMask.indexOf("["))
     }
 
@@ -195,5 +201,5 @@ class MSDPhoneInput @JvmOverloads constructor(
             .replace("[\\[\\]]".toRegex(), "")
     }
 
-    enum class State {NORMAL, ERROR}
+    enum class State { NORMAL, ERROR }
 }
