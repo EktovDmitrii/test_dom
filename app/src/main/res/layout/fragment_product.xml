@@ -12,6 +12,8 @@
         android:id="@+id/menusLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
+        android:clickable="true"
+        android:focusable="true"
         android:layout_below="@id/swipeAnchorLayout">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -30,12 +32,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingHorizontal="14dp"
-            android:tint="@color/secondary600"
             android:paddingVertical="5dp"
-            app:srcCompat="@drawable/ic_share_24px"
+            android:tint="@color/secondary600"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_share_24px" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
