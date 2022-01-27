@@ -41,7 +41,7 @@ class GridVerticalPrimaryProductsAdapter(
         private val onProductClick: (ProductShortModel) -> Unit = {}) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: ProductShortModel) {
-            binding.productNameTextView.text = model.title
+            binding.productNameTextView.text = model.name
             binding.priceTextView.text = DigitsFormatter.priceFormat(model.price)
 
             GlideApp.with(binding.root.context)
