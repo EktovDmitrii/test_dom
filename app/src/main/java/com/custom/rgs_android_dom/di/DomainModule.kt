@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.address.AddressInteractor
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
+import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -28,4 +29,6 @@ val domainModule = module {
     factory { AddressInteractor(addressRepository = get()) }
 
     factory { CatalogInteractor(catalogRepository = get()) }
+
+    factory { PurchaseInteractor(purchaseRepository = get()) }
 }

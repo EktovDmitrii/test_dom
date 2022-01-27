@@ -5,7 +5,7 @@ import android.graphics.Rect
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
-import androidx.annotation.Px
+import androidx.core.widget.NestedScrollView
 
 fun View.gone() {
     visibility = View.GONE
@@ -70,4 +70,15 @@ fun View.setMargins(
         }
         requestLayout()
     }
+}
+
+fun NestedScrollView.smoothScrollTo(view: View) {
+    var distance = view.top
+    var viewParent = view.parent
+    for (i in 0..9) {
+        if ((viewParent as View) === this) break
+        distance += (viewParent as View).top
+        viewParent = viewParent.getParent()
+    }
+    smoothScrollTo(0, distance)
 }
