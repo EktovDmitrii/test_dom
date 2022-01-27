@@ -96,6 +96,7 @@
         app:translationTextKey="Мы добавили полис к вашим страховым продуктам. Срок действия полиса страхования с 02.05.2021 по 02.05.2022"/>
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/understandTextView"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginTop="36dp"

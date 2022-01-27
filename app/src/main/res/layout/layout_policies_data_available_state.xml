@@ -4,17 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginHorizontal="20dp"
-     >
+    android:layout_marginHorizontal="20dp">
 
     <com.custom.rgs_android_dom.views.MSDRecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="24dp"
         android:clipToPadding="false"
-        android:overScrollMode="never"
         android:orientation="vertical"
+        android:overScrollMode="never"
+        android:paddingTop="24dp"
         android:paddingBottom="22dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:verticalDecorationGap="16dp"

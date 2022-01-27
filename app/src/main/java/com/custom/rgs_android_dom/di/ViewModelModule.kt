@@ -109,10 +109,9 @@ val viewModelModule = module {
     viewModel { MyProductViewModel() }
     viewModel { parameters -> ServiceViewModel(product = parameters.get()) }
     viewModel { SOSViewModel(chatInteractor = get(), registrationInteractor = get(), clientInteractor = get(), context = get()) }
-    viewModel { PoliciesViewModel(policyInteractor = get()) }
-    viewModel { AddPolicyViewModel() }
+    viewModel { PoliciesViewModel(policiesInteractor = get()) }
+    viewModel { AddPolicyViewModel(policiesInteractor = get()) }
     viewModel { InfoPolicyViewModel() }
-    viewModel { InsurantViewModel() }
-    viewModel { PolicyDialogsViewModel() }
-
+    viewModel { InsurantViewModel(policiesInteractor = get()) }
+    viewModel { parameters -> PolicyDialogsViewModel(model = parameters.get()) }
 }

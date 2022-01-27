@@ -15,22 +15,18 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
-class PoliciesViewModel(policyInteractor: PoliciesInteractor) : BaseViewModel() {
+class PoliciesViewModel(policiesInteractor: PoliciesInteractor) : BaseViewModel() {
 
     private val policiesController = MutableLiveData<List<PolicyModel>>()
     val policiesObserver: LiveData<List<PolicyModel>> = policiesController
 
     init {
-        policyInteractor.getPolicies()
+        policiesInteractor.getPolicies()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
-                onSuccess = {
-                    policiesController.value = it
-                },
-                onError = {
-                    logException(this, it)
-                }
+                onSuccess = {policiesController.value = it},
+                onError = {logException(this, it)}
             )
             .addTo(compositeDisposable)
 

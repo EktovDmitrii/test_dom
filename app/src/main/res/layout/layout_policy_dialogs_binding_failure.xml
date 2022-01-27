@@ -36,6 +36,7 @@
         android:includeFontPadding="false"/>
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/chatTextView"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginTop="36dp"
@@ -48,6 +49,7 @@
         android:background="@drawable/rectangle_filled_primary_500_radius_12dp" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/changeDataTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"

@@ -42,7 +42,7 @@
         app:translationTextKey="Данные полиса страхования будут \nсохранены в вашем профиле" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullwidth
-        android:id="@+id/confirmTextView"
+        android:id="@+id/saveTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"

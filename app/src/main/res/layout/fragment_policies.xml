@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -14,34 +14,34 @@
             android:id="@+id/backImageView"
             android:layout_width="44dp"
             android:layout_height="44dp"
-            android:layout_marginStart="8dp"
             android:layout_gravity="start"
+            android:layout_marginStart="8dp"
             android:src="@drawable/ic_back_44px" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:fontFamily="@font/my_service_medium"
             android:includeFontPadding="false"
-            app:translationTextKey="Полисы"
             android:textColor="@color/secondary900"
             android:textSize="16sp"
-            android:fontFamily="@font/my_service_medium"/>
+            app:translationTextKey="Полисы" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/addImageView"
             android:layout_width="44dp"
             android:layout_height="44dp"
-            android:layout_marginEnd="8dp"
             android:layout_gravity="end"
+            android:layout_marginEnd="8dp"
             android:src="@drawable/ic_add_44dp" />
 
     </FrameLayout>
 
     <include
         android:id="@+id/emptyStateLayout"
-        android:visibility="gone"
-        layout="@layout/layout_policies_empty_state" />
+        layout="@layout/layout_policies_empty_state"
+        android:visibility="gone" />
 
     <include
         android:id="@+id/dataAvailableStateLayout"

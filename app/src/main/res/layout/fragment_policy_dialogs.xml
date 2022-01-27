@@ -17,7 +17,7 @@
     <include
         android:id="@+id/bindingPolicySuccessLayout"
         layout="@layout/layout_policy_dialogs_success"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <include
         android:id="@+id/bindingPolicyFailureLayout"
@@ -25,13 +25,13 @@
         android:visibility="gone" />
 
     <include
-        android:id="@+id/retrievingPolicyFailureLayout"
-        layout="@layout/layout_policy_dialogs_retrieving_failure"
+        android:id="@+id/findPolicyFailureLayout"
+        layout="@layout/layout_policy_dialogs_find_failure"
         android:visibility="gone" />
 
     <include
-        android:id="@+id/save_policyLayout"
+        android:id="@+id/savePolicyLayout"
         layout="@layout/layout_save_policy"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

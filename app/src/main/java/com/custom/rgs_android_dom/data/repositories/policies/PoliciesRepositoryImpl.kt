@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.data.repositories.policies
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
 import com.custom.rgs_android_dom.domain.repositories.PoliciesRepository
+import com.custom.rgs_android_dom.ui.policies.add.PolicyDialogModel
 import io.reactivex.Single
 
 class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
@@ -48,6 +49,11 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
             )
             it.onSuccess(list)
         }
+    }
+
+    override fun findPolicySingle(policy: String): Single<PolicyDialogModel> {
+        //api.getPolicy(policy)
+        return Single.create{}
     }
 
 }
