@@ -37,6 +37,7 @@
         android:layout_width="16dp"
         android:layout_height="16dp"
         app:srcCompat="@drawable/ic_close_bg_16px"
+        android:tint="@color/secondary400"
         android:visibility="gone"
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"

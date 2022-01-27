@@ -8,7 +8,10 @@ import io.reactivex.Single
 class CatalogInteractor(private val catalogRepository: CatalogRepository) {
 
     companion object {
+        private const val TAG_POPULAR_SEARCH_PRODUCTS = "ВыводитьВПоиске"
         private const val TAG_POPULAR_PRODUCTS = "ВыводитьНаГлавной"
+        private const val TAG_POPULAR_CATEGORIES = "ВыводитьНаГлавной"
+        private const val TAG_POPULAR_SERVICES = "ВыводитьНаГлавной"
         private const val CNT_POPULAR_SERVICES_IN_MAIN = 9
         private const val CNT_POPULAR_CATEGORIES_IN_MAIN = 5
     }
@@ -27,7 +30,7 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
             }
 
             tags = tags.distinct().toMutableList()
-            val availableProducts = catalogRepository.getShowcase(tags).blockingGet()
+            val availableProducts = catalogRepository.getShowcase(tags, null).blockingGet()
 
             for (catalogCategory in catalogCategories){
                 for (subCategory in catalogCategory.subCategories){
@@ -52,19 +55,23 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
         return catalogRepository.getProduct(productId)
     }
 
-    fun getProductsAvailableForPurchase(query: String?): Single<List<ProductShortModel>>{
-        val tags = if (!query.isNullOrEmpty()) listOf(query) else null
-        return catalogRepository.getShowcase(tags)
+    fun findProducts(query: String): Single<List<ProductShortModel>>{
+        return catalogRepository.getShowcase(null, query)
+    }
+
+    fun getPopularSearchProducts(): Single<List<ProductShortModel>>{
+        return catalogRepository.getShowcase(listOf(TAG_POPULAR_SEARCH_PRODUCTS), null)
     }
 
     fun getPopularProducts(): Single<List<ProductShortModel>>{
-        return catalogRepository.getShowcase(listOf(TAG_POPULAR_PRODUCTS)).map{
+        return catalogRepository.getShowcase(listOf(TAG_POPULAR_PRODUCTS), null).map{
             it.filter { !it.defaultProduct }
         }
     }
 
+
     fun getPopularServices(): Single<List<ProductShortModel>>{
-        return catalogRepository.getShowcase(listOf(TAG_POPULAR_PRODUCTS)).map {
+        return catalogRepository.getShowcase(listOf(TAG_POPULAR_SERVICES), null).map {
             it.filter { it.defaultProduct }.take(CNT_POPULAR_SERVICES_IN_MAIN)
         }
     }
@@ -73,7 +80,7 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
         return catalogRepository.getCatalogCategories()
             .map {
                 it.filter {
-                    it.subCategories.isNotEmpty() && it.productTags.contains(TAG_POPULAR_PRODUCTS)
+                    it.subCategories.isNotEmpty() && it.productTags.contains(TAG_POPULAR_CATEGORIES)
                 }.take(CNT_POPULAR_CATEGORIES_IN_MAIN)
             }
     }
