@@ -7,14 +7,16 @@ import com.custom.rgs_android_dom.domain.catalog.models.ProductDurationModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductPriceModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductUnitType
+import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.purchase_service.PurchaseFragment
 
 class ProductViewModel(
     private val productId: String,
@@ -29,7 +31,7 @@ class ProductViewModel(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
-                onSuccess = {product->
+                onSuccess = { product ->
                     productController.value = product
                 },
                 onError = {
@@ -38,8 +40,21 @@ class ProductViewModel(
             ).addTo(dataCompositeDisposable)
     }
 
-    fun onBackClick(){
+    fun onBackClick() {
         closeController.value = Unit
+    }
+
+    fun onCheckoutClick() {
+        productController.value?.let {
+            val purchaseServiceModel = PurchaseModel(
+                id = it.id,
+                iconLink = it.iconLink,
+                name = it.name,
+                price = it.price
+            )
+            val purchaseFragment = PurchaseFragment.newInstance(purchaseServiceModel)
+            ScreenManager.showScreenScope(purchaseFragment, PAYMENT)
+        }
     }
 
     fun onServiceClick() {
@@ -78,7 +93,7 @@ class ProductViewModel(
             versionId = null,
             versionStatus = null
         )
-        val singleProductFragment = ServiceFragment.newInstance(product)
-        ScreenManager.showBottomScreen(singleProductFragment)
+        val serviceFragment = ServiceFragment.newInstance(product)
+        ScreenManager.showBottomScreen(serviceFragment)
     }
 }

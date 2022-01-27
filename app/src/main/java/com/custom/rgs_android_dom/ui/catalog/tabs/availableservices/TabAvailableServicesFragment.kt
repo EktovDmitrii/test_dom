@@ -12,26 +12,33 @@ import com.custom.rgs_android_dom.utils.recycler_view.VerticalItemDecoration
 class TabAvailableServicesFragment :
     BaseFragment<TabAvailableServicesViewModel, FragmentTabAvailableServicesBinding>(R.layout.fragment_tab_available_services) {
 
-    private val servicesAdapter: AvailableServicesAdapter
+    private val availableServicesAdapter: AvailableServicesAdapter
         get() = binding.servicesRecyclerView.adapter as AvailableServicesAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.servicesRecyclerView.adapter = AvailableServicesAdapter {
             viewModel.onServiceClick(it)
         }
-        binding.servicesRecyclerView.addItemDecoration(
+
+        /*binding.servicesRecyclerView.addItemDecoration(
             VerticalItemDecoration(gap = 8.dp(binding.root.context))
-        )
-        binding.servicesNavigateCatalog.setOnDebouncedClickListener {
+        )*/
+        binding.openCatalogTextView.setOnDebouncedClickListener {
             (this.parentFragment as? MainCatalogFragment?)?.navigateCatalog()
         }
 
-        subscribe(viewModel.servicesObserver) {
+        subscribe(viewModel.availableServicesObserver) {
             binding.servicesRecyclerView.visibleIf(it.isNotEmpty())
-            binding.servicesEmptyState.visibleIf(it.isEmpty())
+            binding.noServicesLayout.visibleIf(it.isEmpty())
 
-            servicesAdapter.setItems(it)
+            availableServicesAdapter.setItems(it)
+        }
+
+        subscribe(viewModel.isNoServicesLayoutVisibleObserver){
+            binding.servicesRecyclerView.gone()
+            binding.noServicesLayout.visible()
         }
     }
 

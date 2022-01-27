@@ -2,82 +2,77 @@ package com.custom.rgs_android_dom.ui.catalog.tabs.availableservices
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.custom.rgs_android_dom.domain.catalog.models.CatalogSubCategoryModel
-import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
+import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
+import com.custom.rgs_android_dom.domain.catalog.models.AvailableServiceModel
+import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.ui.catalog.subcategory.CatalogSubcategoryFragment
+import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.utils.logException
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 
-class TabAvailableServicesViewModel : BaseViewModel() {
+class TabAvailableServicesViewModel(
+    private val catalogInteractor: CatalogInteractor,
+    private val registrationInteractor: RegistrationInteractor
+) : BaseViewModel() {
 
-    private val servicesController = MutableLiveData<List<CatalogSubCategoryModel>>()
-    val servicesObserver: LiveData<List<CatalogSubCategoryModel>> = servicesController
+    private val availableServicesController = MutableLiveData<List<AvailableServiceModel>>()
+    val availableServicesObserver: LiveData<List<AvailableServiceModel>> = availableServicesController
+
+    private val isNoServicesLayoutVisibleController = MutableLiveData<Unit>()
+    val isNoServicesLayoutVisibleObserver: LiveData<Unit> = isNoServicesLayoutVisibleController
 
     init {
-        servicesController.value = listOf(
-            CatalogSubCategoryModel(
-                id = "0",
-                title = "Установка раковины",
-                name = "Установка раковины",
-                logoSmall = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
-                logoMiddle = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
-                logoLarge = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
-                parentCategoryId = "",
-                products = listOf(
-                    ProductShortModel(id = "", type = "", title = "Установка раковины", code = "", versionId = "", name = "", price = 150, tags = emptyList(), icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg"),
-                    ProductShortModel(id = "", type = "", title = "Установка раковины", code = "", versionId = "", name = "", price = 150, tags = emptyList(), icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg"),
-                    ProductShortModel(id = "", type = "", title = "Установка раковины", code = "", versionId = "", name = "", price = 150, tags = emptyList(), icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg")
-            ),
-                productTags = emptyList()
-            ),
-            CatalogSubCategoryModel(
-                id = "1",
-                title = "Установка мойки",
-                name = "Установка мойки",
-                logoSmall = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
-                logoMiddle = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
-                logoLarge = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
-                parentCategoryId = "",
-                products = listOf(
-                    ProductShortModel(id = "", type = "", title = "Установка мойки", code = "", versionId = "", name = "", price = 150, tags = emptyList(), icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg")
-                ),
-                productTags = emptyList()
-            ),
-            CatalogSubCategoryModel(
-                id = "2",
-                title = "Установка ванны",
-                name = "Установка ванны",
-                logoSmall = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
-                logoMiddle = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
-                logoLarge = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
-                parentCategoryId = "",
-                products = listOf(
-                    ProductShortModel(id = "", type = "", title = "Установка ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList(), icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg"),
-                    ProductShortModel(id = "", type = "", title = "Установка ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList(), icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg"),
-                ),
-                productTags = emptyList()
-            ),
-            CatalogSubCategoryModel(
-                id = "3",
-                title = "Ремонт ванны",
-                name = "Ремонт ванны",
-                logoSmall = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
-                logoMiddle = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
-                logoLarge = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg",
-                parentCategoryId = "",
-                products = listOf(
-                    ProductShortModel(id = "", type = "", title = "Ремонт ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList(), icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg"),
-                    ProductShortModel(id = "", type = "", title = "Ремонт ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList(), icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg"),
-                    ProductShortModel(id = "", type = "", title = "Ремонт ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList(), icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg"),
-                    ProductShortModel(id = "", type = "", title = "Ремонт ванны", code = "", versionId = "", name = "", price = 150, tags = emptyList(), icon = "https://ddom.moi-service.ru/api/store/node:okr8bdicefdg78r1z8euw7dwny.jpeg"),
-                ),
-                productTags = emptyList()
-            )
-        )
+        loadAvailableServices()
+
+        registrationInteractor.getLoginSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    loadAvailableServices()
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
+        registrationInteractor.getLogoutSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    loadAvailableServices()
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
     }
 
-    fun onServiceClick(catalogSubCategoryModel: CatalogSubCategoryModel) {
-        val catalogSubcategoryFragment = CatalogSubcategoryFragment.newInstance(catalogSubCategoryModel)
-        ScreenManager.showBottomScreen(catalogSubcategoryFragment)
+    fun onServiceClick(service: AvailableServiceModel) {
+        val singleProductFragment = SingleProductFragment.newInstance(service.productId)
+        ScreenManager.showBottomScreen(singleProductFragment)
+    }
+
+    private fun loadAvailableServices(){
+        if (registrationInteractor.isAuthorized()){
+            catalogInteractor.getAvailableServices()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                    onSuccess = {
+                        availableServicesController.value = it
+                    },
+                    onError = {
+                        logException(this, it)
+                    }
+                ).addTo(dataCompositeDisposable)
+        } else {
+            isNoServicesLayoutVisibleController.value = Unit
+        }
     }
 }

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/swipeAnchorLayout"
+        layout="@layout/layout_bottom_sheet_swipe_anchor" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:translationTextKey="Введите код агента"
+        android:paddingHorizontal="20dp"
+        android:textSize="16sp"
+        android:textColor="@color/secondary900"
+        android:fontFamily="@font/my_service_bold"
+        />
+
+    <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
+        android:id="@+id/agentCodeEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        app:labelColor="@color/secondary500"
+        android:layout_marginTop="20dp"
+        android:digits="@string/acceptable_agent_code_chars"
+        app:translationHintKey="999999"
+        app:translationLabelKey="Код агента" />
+
+    <com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
+        android:id="@+id/agentPhoneEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:paddingHorizontal="20dp"
+        app:titleTextColor="@color/secondary500"
+        android:imeOptions="actionDone"
+        android:inputType="phone"
+        app:hintAlwaysVisible="true"
+        app:mask="+7 [000] [000]-[00]-[00]"
+        app:translationHintKey="+7 999 999-99-99"
+        app:translationLabelKey="Номер телефона агента" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:paddingHorizontal="20dp"
+        android:layout_marginTop="24dp"
+        android:elevation="2dp"
+        android:background="@color/white"
+        android:paddingVertical="12dp">
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/saveButton"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/button_filled_primary_background"
+            android:fontFamily="@font/my_service_bold"
+            android:gravity="center"
+            android:enabled="false"
+            android:paddingVertical="12dp"
+            android:text="Сохранить"
+            android:textColor="@color/button_color_white_secondary_400"
+            android:textSize="14sp" />
+
+    </FrameLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

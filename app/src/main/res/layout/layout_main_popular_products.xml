@@ -36,23 +36,18 @@
 
     </FrameLayout>
 
-    <FrameLayout
+    <com.custom.rgs_android_dom.views.MSDRecyclerView
+        android:id="@+id/popularProductsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="20dp">
-
-        <com.custom.rgs_android_dom.views.MSDRecyclerView
-            android:id="@+id/popularProductsRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:orientation="horizontal"
-            android:overScrollMode="never"
-            app:horizontalDecorationGap="16dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="5"
-            tools:listitem="@layout/item_main_popular_product" />
-
-    </FrameLayout>
+        android:layout_marginTop="12dp"
+        android:paddingHorizontal="20dp"
+        android:orientation="horizontal"
+        android:overScrollMode="never"
+        android:clipToPadding="false"
+        app:horizontalDecorationGap="16dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="5"
+        tools:listitem="@layout/item_main_popular_product" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

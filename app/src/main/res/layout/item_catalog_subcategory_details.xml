@@ -16,7 +16,7 @@
             android:layout_height="60dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:background="@drawable/rectangle_filled_lime_radius_16dp"/>
+            tools:background="@drawable/rectangle_filled_secondary_100_radius_16dp"/>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/infoLinearLayoutCompat"

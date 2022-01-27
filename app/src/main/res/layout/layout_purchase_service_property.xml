@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="20dp"
+    android:layout_marginTop="30dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/propertyTypeImageView"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/ic_type_home"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/propertyTypeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:includeFontPadding="false"
+        android:fontFamily="@font/suisse_bold"
+        android:textColor="@color/secondary900"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/propertyTypeImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Квартира" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/propertyAddressTextView"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:fontFamily="@font/suisse_regular"
+        android:maxLines="2"
+        android:textColor="@color/secondary900"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/propertyTypeImageView"
+        app:layout_constraintTop_toBottomOf="@id/propertyTypeTextView"
+        tools:text="г. Москва " />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/arrowRightAddressImageView"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="28dp"
+        android:scaleType="center"
+        app:srcCompat="@drawable/ic_arrow_right_16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/addCommentTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/rectangle_stroke_1dp_secondary_800_radius_4dp"
+        android:drawableStart="@drawable/ic_pen_16"
+        android:fontFamily="@font/suisse_regular"
+        android:paddingHorizontal="10dp"
+        android:textColor="@color/secondary900"
+        android:textSize="12sp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/propertyAddressTextView"
+        app:layout_constraintTop_toBottomOf="@id/propertyAddressTextView"
+        app:translationTextKey="Добавить комментарий" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/propertyAddressTextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/secondary200" />
+</androidx.constraintlayout.widget.ConstraintLayout>

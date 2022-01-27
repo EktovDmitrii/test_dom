@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.domain.repositories
 
 import com.custom.rgs_android_dom.domain.catalog.models.*
+import com.custom.rgs_android_dom.domain.catalog.models.ClientProductModel
 import io.reactivex.Single
 
 interface CatalogRepository {
@@ -11,10 +12,14 @@ interface CatalogRepository {
 
     fun getProducts(): Single<List<ProductModel>>
 
-    fun getShowcase(tags: List<String>?): Single<List<ProductShortModel>>
+    fun getShowcase(tags: List<String>?, fullText: String?): Single<List<ProductShortModel>>
 
     fun getProduct(productId: String): Single<ProductModel>
 
     fun getProductServices(productId: String): Single<List<ServiceShortModel>>
+
+    fun getAvailableServices(): Single<List<AvailableServiceModel>>
+
+    fun getClientProducts(): Single<List<ClientProductModel>>
 
 }

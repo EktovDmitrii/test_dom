@@ -166,7 +166,7 @@ interface MSDApi {
 
     @GET("clients/me/purchase/products/showcase")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getShowcase(@Query("tags", encoded = true) tags: String?, @Query("index") index: Int, @Query("size") size: Long): Single<ProductsForPurchaseResponse>
+    fun getShowcase(@Query("tags", encoded = true) tags: String?, @Query("fullText") fullText: String?, @Query("index") index: Int, @Query("size") size: Long): Single<ProductsForPurchaseResponse>
 
     @GET("guests/purchase/products/showcase")
     @ErrorType(MSDNetworkErrorResponse::class)
@@ -178,7 +178,7 @@ interface MSDApi {
 
     @GET("clients/me/balance/products")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getClientProducts(): Single<ClientProductsResponse>
+    fun getClientProducts(@Query("size") size: Int, @Query("index") index: Int): Single<ClientProductsResponse>
 
     @GET("guests/purchase/products/{productId}/services/{serviceId}/details")
     @ErrorType(MSDNetworkErrorResponse::class)
@@ -195,4 +195,16 @@ interface MSDApi {
     @GET("chat/users/{userId}/files/{fileId}/preview")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getChatFilePreview(@Path ("userId") userId: String, @Path("fileId") fileId: String): Single<ChatFilePreviewResponse>
+
+    @GET("clients/me/balance/services")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getAvailableServices(@Query("size") size: Int, @Query("index") index: Int, @Query("withBalance") withBalance: Boolean): Single<BalanceServicesResponse>
+
+    @GET("billing/clients/me/cards")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getSavedCards(): Maybe<List<SavedCardResponse>>
+
+    @POST("clients/me/purchase/products/{productId}")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun makeProductPurchase(@Path("productId") productId: String, @Body order: PurchaseProductRequest) : Single<PurchaseResponse>
 }

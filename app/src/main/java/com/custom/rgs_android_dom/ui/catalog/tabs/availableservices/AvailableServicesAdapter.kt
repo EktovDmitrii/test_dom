@@ -8,17 +8,17 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ItemCatalogAvailableServiceBinding
-import com.custom.rgs_android_dom.domain.catalog.models.CatalogSubCategoryModel
+import com.custom.rgs_android_dom.domain.catalog.models.AvailableServiceModel
 import com.custom.rgs_android_dom.ui.base.BaseViewHolder
 import com.custom.rgs_android_dom.utils.GlideApp
 import com.custom.rgs_android_dom.utils.dp
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 
 class AvailableServicesAdapter(
-    private val onServiceClick: (CatalogSubCategoryModel) -> Unit = {}
+    private val onServiceClick: (AvailableServiceModel) -> Unit = {}
 ) : RecyclerView.Adapter<AvailableServicesAdapter.ViewHolder>() {
 
-    private var services: List<CatalogSubCategoryModel> = emptyList()
+    private var services: List<AvailableServiceModel> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemCatalogAvailableServiceBinding.inflate(
@@ -37,29 +37,31 @@ class AvailableServicesAdapter(
         return services.size
     }
 
-    fun setItems(items: List<CatalogSubCategoryModel>) {
+    fun setItems(items: List<AvailableServiceModel>) {
         this.services = items
         notifyDataSetChanged()
     }
 
     inner class ViewHolder(
         private val binding: ItemCatalogAvailableServiceBinding,
-        private val onServiceClick: (CatalogSubCategoryModel) -> Unit = {}
-    ) : BaseViewHolder<CatalogSubCategoryModel>(binding.root) {
+        private val onServiceClick: (AvailableServiceModel) -> Unit = {}
+    ) : BaseViewHolder<AvailableServiceModel>(binding.root) {
 
-        override fun bind(item: CatalogSubCategoryModel) {
+        override fun bind(item: AvailableServiceModel) {
             GlideApp.with(binding.iconImageView.context)
-                .load(item.logoMiddle)
+                .load(item.productIcon)
                 .transform(
                     CenterCrop(),
                     RoundedCorners(8f.dp(binding.iconImageView.context).toInt())
                 )
-                .error(R.mipmap.temp2)
+                .error(R.drawable.rectangle_filled_secondary_100_radius_8dp)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(binding.iconImageView)
+
+            binding.nameTextView.text = item.serviceName
+            binding.quantityTextView.text = item.available.toString()
+
             binding.serviceLayout.setOnDebouncedClickListener { onServiceClick(item) }
-            binding.nameTextView.text = item.name
-            binding.quantityTextView.text = item.products.size.toString()
         }
     }
 }
