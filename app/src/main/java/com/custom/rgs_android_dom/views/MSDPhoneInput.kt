@@ -122,8 +122,10 @@ class MSDPhoneInput @JvmOverloads constructor(
         binding.phoneEditText.addTextChangedListener(maskedTextChangedListener)
 
         val hint = makeHint(mask)
+
         if (binding.phoneEditText.text.isNullOrBlank())
         binding.hintEditText.hint = hint
+
         this.hint = hint
 
         binding.countryCodeTextView.text = countryCode
