@@ -9,7 +9,6 @@ import com.custom.rgs_android_dom.databinding.ItemCatalogPrimaryMoreProductsBind
 import com.custom.rgs_android_dom.databinding.ItemCatalogPrimarySmallProductBinding
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
 import com.custom.rgs_android_dom.ui.base.BaseViewHolder
-import com.custom.rgs_android_dom.utils.DigitsFormatter
 import com.custom.rgs_android_dom.utils.GlideApp
 import com.custom.rgs_android_dom.utils.dp
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
@@ -75,7 +74,7 @@ class HorizontalPrimaryProductsAdapter(
 
         override fun bind(model: ProductShortModel) {
             binding.productNameTextView.text = model.title
-            binding.priceTextView.text = DigitsFormatter.priceFormat(model.price)
+            binding.priceTextView.text = "${model.price} ₽"
 
             GlideApp.with(binding.root.context)
                 .load(GlideUrlProvider.makeHeadersGlideUrl(model.icon))

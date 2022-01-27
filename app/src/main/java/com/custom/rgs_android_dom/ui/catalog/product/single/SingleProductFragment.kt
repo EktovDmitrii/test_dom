@@ -46,9 +46,9 @@ class SingleProductFragment : BaseBottomSheetFragment<SingleProductViewModel, Fr
             binding.header.headerDescription.text = product.title
             binding.about.aboutValue.text = product.description
 
-            product.price?.amount?.let {
-                binding.price.priceValue.text = DigitsFormatter.priceFormat(it)
-                binding.detailButton.btnPrice.text = DigitsFormatter.priceFormat(it)
+            product.price?.amount?.let { price ->
+                binding.price.priceValue.text = "$price ₽"
+                binding.detailButton.btnPrice.text = "$price ₽"
             }
 
             binding.validity.validityValue.text = "${product.duration?.units} ${product.duration?.unitType?.description}"
