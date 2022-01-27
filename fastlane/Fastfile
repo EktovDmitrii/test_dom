@@ -1,0 +1,32 @@
+default_platform(:android)
+platform :android do
+  lane :build do
+        Dir.chdir("../") do 
+                sh"./gradlew assembleDebug"
+                sh"cp app/build/outputs/apk/dev/debug/*.apk ./"
+                sh"mv *.apk my-service-dom-devDebug.apk"
+end
+  end
+
+  lane :deploy_s3 do
+        aws_s3(
+        access_key: ENV['S3_ACCESS_KEY'],
+        secret_access_key: ENV['S3_SECRET_ACCESS_KEY'],
+        bucket: ENV['S3_BUCKET'],
+        region: ENV['S3_REGION'],
+        endpoint: ENV['S3_ENDPOINT'],
+        apk: 'my-service-dom-devDebug.apk',
+        upload_metadata: true,
+        version_file_name: 'app_version.json',
+        version_template_path: 'path/to/erb'
+        )
+
+        mattermost(
+                url: ENV['MM_URL_WEBHOOK'],
+                text: "android build latest: https://615504.selcdn.ru/rgs-msd/M1JWwzEJJL/android_build/index.html",
+              )
+
+  end
+end
+
+
