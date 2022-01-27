@@ -1,0 +1,12 @@
+stages:
+  - build
+
+android_S3:
+  stage: build
+  script:
+    - fastlane build
+    - fastlane deploy_s3
+  tags:
+    - mac_rgsmsd_android
+  only:
+    - dev
