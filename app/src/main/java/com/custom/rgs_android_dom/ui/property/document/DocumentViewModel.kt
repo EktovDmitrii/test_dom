@@ -1,6 +1,8 @@
 package com.custom.rgs_android_dom.ui.property.document
 
+import android.content.Context
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
@@ -77,19 +79,18 @@ class DocumentViewModel(
         }
     }
 
-    fun onFileClick(propertyDocument: PropertyDocument) {
+    fun onFileClick(propertyDocument: PropertyDocument,applicationContext: Context) {
         val documentType = propertyDocument.link.substringAfterLast(".", "missing")
         var documentIndex = 0
         propertyItemController.value?.documents?.forEachIndexed { index, propertyDoc ->
             if (propertyDoc == propertyDocument)
                 documentIndex = index
         }
+        Log.d("TAG",propertyDocument.link)
         when (documentType) {
-            "jpg" -> showDetailDocumentScreen(documentIndex)
-            "jpeg" -> showDetailDocumentScreen(documentIndex)
-            "png" -> showDetailDocumentScreen(documentIndex)
-            "bmp" -> showDetailDocumentScreen(documentIndex)
+            "jpg", "jpeg", "png", "bmp" -> showDetailDocumentScreen(documentIndex)
             else -> {
+                //if (applicationContext.filesDir."documentType")
                 downloadFileController.value = propertyDocument
             }
         }

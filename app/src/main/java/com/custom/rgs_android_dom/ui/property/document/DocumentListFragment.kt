@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.R
@@ -105,7 +106,7 @@ class DocumentListFragment :
                 confirmDialog.show(childFragmentManager, ConfirmBottomSheetFragment.TAG)
             },
                 onDocumentClick = { documentUrl ->
-                    viewModel.onFileClick(documentUrl)
+                   // viewModel.onFileClick(documentUrl, applicationContext = requireContext())
                 }
             )
 
