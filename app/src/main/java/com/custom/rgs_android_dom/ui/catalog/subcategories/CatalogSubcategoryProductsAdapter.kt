@@ -37,7 +37,7 @@ class CatalogSubcategoryProductsAdapter(
 
         fun bind(model: ProductShortModel) {
             binding.titleTextView.text = model.title
-            binding.priceTextView.text = "от ${model.price} ₽/шт"
+            binding.priceTextView.text = "${model.price} ₽"
 
             binding.root.setOnDebouncedClickListener {
                 onProductClick(model)

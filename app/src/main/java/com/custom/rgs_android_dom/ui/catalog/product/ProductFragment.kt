@@ -45,7 +45,7 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
         }
-        binding.detailButton.btnTitle.setOnDebouncedClickListener {
+        binding.detailButton.root.setOnDebouncedClickListener {
             viewModel.onCheckoutClick()
         }
 

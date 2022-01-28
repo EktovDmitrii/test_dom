@@ -37,7 +37,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/moreImageView"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:text="от 1500 ₽/шт" />
+            tools:text="1500 ₽" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/moreImageView"
