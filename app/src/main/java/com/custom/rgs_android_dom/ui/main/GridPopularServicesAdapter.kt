@@ -42,7 +42,7 @@ class GridPopularServicesAdapter(
     ) : BaseViewHolder<ProductShortModel>(binding.root) {
 
         override fun bind(model: ProductShortModel) {
-            binding.titleTextView.text = model.title
+            binding.titleTextView.text = model.name
 
             GlideApp.with(binding.root.context)
                 .load(GlideUrlProvider.makeHeadersGlideUrl(model.icon))
