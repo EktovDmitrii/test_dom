@@ -148,7 +148,7 @@ interface MSDApi {
                              @Query("metadata") metadata: String)
     : Single<PostPropertyDocumentResponse>
 
-    @GET("services/catalog/search/query")
+    @GET("clients/me/purchase/catalog")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getCatalogNodes(@Query("rootNodeId") rootNodeId: String?, @Query("rootNodeCode") rootNodeCode: String?): Single<CatalogNodesResponse>
 
@@ -172,7 +172,7 @@ interface MSDApi {
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getGuestShowcase(@Query("tags", encoded = true) tags: String?, @Query("index") index: Int, @Query("size") size: Long): Single<ProductsForPurchaseResponse>
 
-    @GET("products/{productId}")
+    @GET("clients/me/purchase/products/{productId}/details")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getProduct(@Path("productId") productId: String): Single<ProductResponse>
 
