@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.google.android.material.radiobutton.MaterialRadioButton
+        android:id="@+id/isSelectedBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="20dp"/>
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/timeTypeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/suisse_bold"
+        android:maxLines="2"
+        android:textColor="@color/secondary900"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@id/isSelectedBtn"
+        app:layout_constraintTop_toTopOf="@id/isSelectedBtn"
+        app:translationTextKey="Утро" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/timePeriodTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/suisse_regular"
+        android:maxLines="2"
+        android:textColor="@color/secondary900"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/isSelectedBtn"
+        app:layout_constraintTop_toBottomOf="@id/timeTypeTextView"
+        app:translationTextKey="6:00-9:00" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

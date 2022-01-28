@@ -12,6 +12,7 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdLabelEditTextBinding
 import com.custom.rgs_android_dom.utils.gone
 import android.text.InputFilter.LengthFilter
+import androidx.core.content.ContextCompat
 import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.utils.toEditable
 import com.custom.rgs_android_dom.utils.visibleIf
@@ -49,6 +50,9 @@ class MSDLabelEditText @JvmOverloads constructor(
 
         val inputType = attrs.getInt(R.styleable.MSDLabelEditText_android_inputType, InputType.TYPE_CLASS_TEXT)
         binding.valueEditText.inputType = inputType
+
+        val titleTextColor = attrs.getColor(R.styleable.MSDLabelEditText_labelColor, ContextCompat.getColor(context, R.color.secondary600))
+        binding.labelTextView.setTextColor(titleTextColor)
 
         val lines = attrs.getInt(R.styleable.MSDLabelEditText_android_lines, 1)
         binding.valueEditText.maxLines = lines

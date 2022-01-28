@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
 import android.widget.RelativeLayout
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdMaskedLabelEditTextBinding
@@ -90,6 +91,9 @@ class MSDMaskedLabelEditText @JvmOverloads constructor(
 
         val textAllCaps = attrs.getBoolean(R.styleable.MSDMaskedLabelEditText_android_textAllCaps, false)
         binding.valueEditText.isAllCaps = textAllCaps
+
+        val titleTextColor = attrs.getColor(R.styleable.MSDMaskedLabelEditText_titleTextColor, ContextCompat.getColor(context, R.color.secondary600))
+        binding.labelTextView.setTextColor(titleTextColor)
 
         val isFocused = attrs.getBoolean(R.styleable.MSDMaskedLabelEditText_isFocused, false)
         if (isFocused) {

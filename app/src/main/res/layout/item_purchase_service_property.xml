@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/propertyTypeImageView"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/ic_type_home"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/propertyTypeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:fontFamily="@font/suisse_regular"
+        android:textColor="@color/secondary900"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@id/propertyTypeImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Квартира" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/propertyAddressTextView"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:fontFamily="@font/suisse_regular"
+        android:gravity="start"
+        android:maxLines="2"
+        android:paddingEnd="20dp"
+        android:textColor="@color/secondary600"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/propertyTypeImageView"
+        app:layout_constraintTop_toBottomOf="@id/propertyTypeTextView"
+        tools:text="Г.Москва " />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/checkImageView"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/ic_added"
+        app:layout_constraintBottom_toBottomOf="@id/propertyTypeImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/propertyTypeImageView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

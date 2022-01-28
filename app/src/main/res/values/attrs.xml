@@ -95,6 +95,7 @@
         <attr name="translationSecondaryTextKey"/>
         <attr name="android:imeOptions"/>
         <attr name="android:inputType" />
+        <attr name="labelColor" format="color" />
         <attr name="android:textAllCaps" />
         <attr name="android:lines"/>
         <attr name="isFocused"/>
@@ -140,6 +141,7 @@
         <attr name="isFocused"/>
         <attr name="android:maxLength"/>
         <attr name="hintAlwaysVisible" format="boolean"/>
+        <attr name="titleTextColor" format="color" />
     </declare-styleable>
 
     <declare-styleable name="MSDTextInputLayout">

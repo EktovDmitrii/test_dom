@@ -1,12 +1,10 @@
 package com.custom.rgs_android_dom.data.repositories.property
 
 import android.net.Uri
-import android.util.Log
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.PropertyMapper
 import com.custom.rgs_android_dom.data.network.requests.AddPropertyRequest
 import com.custom.rgs_android_dom.data.network.requests.PropertyAddressRequest
-import com.custom.rgs_android_dom.data.network.requests.UpdatePropertyRequest
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
