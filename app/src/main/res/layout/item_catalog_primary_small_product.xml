@@ -16,7 +16,7 @@
             android:layout_height="146dp"
             android:scaleType="fitXY"
             android:outlineProvider="background"
-            android:background="@drawable/background_secondary100_rounded_16dp"
+            android:background="@drawable/bg_secondary100_rounded_16dp"
             />
 
         <com.custom.rgs_android_dom.views.MSDImageView

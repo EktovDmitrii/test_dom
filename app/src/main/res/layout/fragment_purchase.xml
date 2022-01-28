@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary500"
+    tools:context=".ui.purchase_service.PurchaseFragment">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rectangle_filled_white_radius_24dp"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/swipeAnchorLayout"
+            layout="@layout/layout_bottom_sheet_swipe_anchor" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:layout_below="@id/swipeAnchorLayout">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/backImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="5dp"
+                android:tint="@color/secondary800"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_back_24px" />
+
+        </FrameLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_gradient_gray_white"
+            android:fillViewport="true"
+            android:overScrollMode="never"
+            app:layout_constraintBottom_toTopOf="@id/makeOrderButton"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="170dp">
+
+                <include
+                    android:id="@+id/layoutPurchaseServiceHeader"
+                    layout="@layout/layout_purchase_service_header" />
+
+                <include
+                    android:id="@+id/layoutProperty"
+                    layout="@layout/layout_purchase_service_property" />
+
+                <include
+                    android:id="@+id/layoutDateTime"
+                    layout="@layout/layout_purchase_date_time" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="64dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/secondary200" />
+
+                <include
+                    android:id="@+id/layoutPayment"
+                    layout="@layout/layout_purchase_payment" />
+
+                <include
+                    android:id="@+id/layoutEmail"
+                    layout="@layout/layout_purchase_email" />
+
+                <include
+                    android:id="@+id/layoutCodeAgent"
+                    layout="@layout/layout_purchase_code_code" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <include
+        android:id="@+id/makeOrderButton"
+        layout="@layout/layout_product_detail_confirm_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

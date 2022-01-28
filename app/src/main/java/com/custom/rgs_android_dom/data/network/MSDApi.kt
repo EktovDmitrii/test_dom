@@ -199,4 +199,12 @@ interface MSDApi {
     @GET("clients/me/balance/services")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getAvailableServices(@Query("size") size: Int, @Query("index") index: Int, @Query("withBalance") withBalance: Boolean): Single<BalanceServicesResponse>
+
+    @GET("billing/clients/me/cards")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getSavedCards(): Maybe<List<SavedCardResponse>>
+
+    @POST("clients/me/purchase/products/{productId}")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun makeProductPurchase(@Path("productId") productId: String, @Body order: PurchaseProductRequest) : Single<PurchaseResponse>
 }

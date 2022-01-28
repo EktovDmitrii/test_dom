@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary500_black_alpha40">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rectangle_filled_white_top_radius_24dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include
+            android:id="@+id/swipeAnchorLayout"
+            layout="@layout/layout_bottom_sheet_swipe_anchor"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/closeImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="18dp"
+            android:paddingTop="24dp"
+            android:paddingEnd="18dp"
+            android:paddingBottom="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_close_24px" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iconImageView"
+                android:layout_width="303dp"
+                android:layout_height="160dp"
+                app:srcCompat="@drawable/ic_broken_egg" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/titleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/my_service_bold"
+                android:includeFontPadding="false"
+                android:textColor="@color/secondary900"
+                android:textSize="20sp"
+                app:translationTextKey="Оплата не удалась" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/descriptionTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/suisse_regular"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:lineSpacingExtra="24dp"
+                android:lineSpacingMultiplier="0"
+                android:textColor="@color/secondary600"
+                android:textSize="16sp"
+                app:translationTextKey="Повторите попытку" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <include
+            android:id="@+id/orderBtn"
+            layout="@layout/layout_product_detail_confirm_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginHorizontal="4dp"
+            app:layout_constraintBottom_toTopOf="@id/cancelPaymentTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/cancelPaymentTextView"
+            style="@style/Button.WithoutBg.Primary"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:translationTextKey="Отменить оплату" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
