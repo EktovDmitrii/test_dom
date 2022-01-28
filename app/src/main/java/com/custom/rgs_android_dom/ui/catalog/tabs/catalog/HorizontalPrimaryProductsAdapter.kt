@@ -74,7 +74,7 @@ class HorizontalPrimaryProductsAdapter(
     ) : BaseViewHolder<ProductShortModel>(binding.root) {
 
         override fun bind(model: ProductShortModel) {
-            binding.productNameTextView.text = model.title
+            binding.productNameTextView.text = model.name
             binding.priceTextView.text = DigitsFormatter.priceFormat(model.price)
 
             GlideApp.with(binding.root.context)
