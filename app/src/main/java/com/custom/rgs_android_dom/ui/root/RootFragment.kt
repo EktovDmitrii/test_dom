@@ -68,8 +68,6 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
             )
         )
 
-        binding.contentConstraintLayout.background = transitionBackground
-
         ScreenManager.initBottomSheet(R.id.bottomContainer)
 
         ScreenManager.onBottomSheetChanged = {fragment->
@@ -79,10 +77,6 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
         }
 
         ScreenManager.showBottomScreen(MainFragment())
-
-        binding.toolbarChatIcon.setOnDebouncedClickListener {
-            viewModel.onChatClick()
-        }
 
         binding.bottomNavigationView.selectNavigationScope(NavigationScope.NAV_MAIN)
 
@@ -167,7 +161,7 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
                 }*/
 
             peekHeight =
-                binding.root.getLocationOnScreen().y - binding.callContainerLinearLayout.getLocationOnScreen().y +
+                binding.root.getLocationOnScreen().y - binding.actionsLinearLayout.getLocationOnScreen().y +
                         8.dp(requireContext()) + bottomSheetTopPadding
 
             binding.bottomContainer.setPadding(0, bottomSheetTopPadding, 0, 0)
@@ -188,7 +182,7 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
     }
 
     private fun initAnimations() {
-        var fadeOut = AlphaAnimation(1f, 0f).apply {
+        /*var fadeOut = AlphaAnimation(1f, 0f).apply {
             duration = 300
             interpolator = LinearInterpolator()
             fillAfter = true
@@ -217,11 +211,11 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
             override fun onAnimationRepeat(p0: Animation?) {
             }
 
-        })
+        })*/
     }
 
     private fun onSlideStateChanged(newState: SlideState) {
-        when (newState) {
+        /*when (newState) {
             SlideState.TOP -> {
                 if (canTransitReverse) {
                     transitionBackground.reverseTransition(100)
@@ -241,20 +235,20 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
             SlideState.BOTTOM -> {
                 canTransitReverse = true
             }
-        }
+        }*/
     }
 
     private fun beforeBottomSheetInit() {
-        binding.bottomContainer.invisible()
+        /*binding.bottomContainer.invisible()
         binding.fakeBottomContainer.visible()
         bottomSheetInited = false
         binding.callContainerLinearLayout.gone()
         binding.swipeMoreTextView.gone()
-        bottomSheetBehavior?.peekHeight = binding.root.getLocationOnScreen().y
+        bottomSheetBehavior?.peekHeight = binding.root.getLocationOnScreen().y*/
     }
 
     private fun afterBottomSheetInit() {
-        binding.bottomContainer.visible()
+       /* binding.bottomContainer.visible()
         binding.fakeBottomContainer.gone()
         bottomSheetInited = true
         binding.callContainerLinearLayout.visible()
@@ -262,7 +256,7 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
 
         peekHeight?.let {
             bottomSheetBehavior?.peekHeight = it
-        }
+        }*/
 
     }
 

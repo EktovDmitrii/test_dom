@@ -154,7 +154,7 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             binding.mainContentLayout.visibleIf(it == BaseViewModel.LoadingState.CONTENT)
 
             requireActivity().findViewById<VeilLayout>(R.id.rootShimmerLayout)?.visibleIf(it == BaseViewModel.LoadingState.LOADING)
-            requireActivity().findViewById<ImageView>(R.id.toolbarChatIcon)?.visibleIf(it != BaseViewModel.LoadingState.LOADING)
+            //requireActivity().findViewById<ImageView>(R.id.toolbarChatIcon)?.visibleIf(it != BaseViewModel.LoadingState.LOADING)
         }
     }
 
