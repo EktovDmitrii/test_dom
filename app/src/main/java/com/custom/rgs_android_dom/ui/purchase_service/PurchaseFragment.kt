@@ -90,9 +90,8 @@ class PurchaseFragment :
             binding.layoutPurchaseServiceHeader.orderNameTextView.text = purchase.name
 
             purchase.price?.amount?.let { amount ->
-                binding.layoutPurchaseServiceHeader.orderCostTextView.text =
-                    DigitsFormatter.priceFormat(amount)
-                binding.makeOrderButton.btnPrice.text = DigitsFormatter.priceFormat(amount)
+                binding.layoutPurchaseServiceHeader.orderCostTextView.text = "$amount ₽"
+                binding.makeOrderButton.btnPrice.text = "$amount ₽"
             }
 
             purchase.email?.let { email ->
