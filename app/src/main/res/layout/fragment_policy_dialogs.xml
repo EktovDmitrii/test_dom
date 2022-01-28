@@ -17,7 +17,7 @@
     <include
         android:id="@+id/bindingPolicySuccessLayout"
         layout="@layout/layout_policy_dialogs_success"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <include
         android:id="@+id/bindingPolicyFailureLayout"

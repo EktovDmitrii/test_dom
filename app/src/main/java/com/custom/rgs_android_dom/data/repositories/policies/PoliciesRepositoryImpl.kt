@@ -1,12 +1,18 @@
 package com.custom.rgs_android_dom.data.repositories.policies
 
+import android.util.Log
 import com.custom.rgs_android_dom.data.network.MSDApi
+import com.custom.rgs_android_dom.domain.policies.models.Failure
 import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
 import com.custom.rgs_android_dom.domain.repositories.PoliciesRepository
-import com.custom.rgs_android_dom.ui.policies.add.PolicyDialogModel
+import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
 import io.reactivex.Single
+import io.reactivex.subjects.PublishSubject
+import java.util.concurrent.TimeUnit
 
 class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
+
+    private val bindPolicySubject = PublishSubject.create<PolicyDialogModel>()
 
     override fun getPolicies(): Single<List<PolicyModel>> {
         return /*api.getPolicies()*/ Single.create {
@@ -53,7 +59,26 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
 
     override fun findPolicySingle(policy: String): Single<PolicyDialogModel> {
         //api.getPolicy(policy)
-        return Single.create{}
+        //todo map api response to an enum
+        return Single.just(PolicyDialogModel(/*Failure.YET_NOT_DUE*/))
+        /*
+        * NOT_FOUND
+        * BOUND_TO_YOUR_PROFILE
+        * BOUND_TO_ANOTHER_PROFILE
+        * DATA_NOT_MATCH
+        * EXPIRED
+        * YET_NOT_DUE
+        * */
+    }
+
+    override fun bindPolicy() {
+        //api.bindPolicy()
+        Log.d("Syrgashev", "repo bindPolicy called: ")
+        bindPolicySubject.onNext(PolicyDialogModel(bound = true))
+    }
+
+    override fun getBindPolicySubject(): PublishSubject<PolicyDialogModel> {
+        return bindPolicySubject
     }
 
 }

@@ -17,13 +17,14 @@
         android:layout_height="32dp"
         android:layout_marginTop="3dp"
         android:gravity="center"
-        app:translationTextKey="Не удалась привязать полис"
+        app:translationTextKey="Не удалось привязать полис"
         android:fontFamily="@font/my_service_bold"
         android:textSize="20sp"
         android:textColor="@color/secondary900"
         android:includeFontPadding="false"/>
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/errorMessageTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

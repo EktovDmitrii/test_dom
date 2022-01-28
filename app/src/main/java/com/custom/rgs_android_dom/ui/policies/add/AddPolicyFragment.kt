@@ -6,7 +6,7 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentAddPolicyBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.policies.add.info.InfoPolicyFragment
-import com.custom.rgs_android_dom.ui.policies.insurant.InsurantFragment
+import com.custom.rgs_android_dom.ui.policies.insurant.dialogs.PolicyDialogsFragment
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
 
@@ -37,16 +37,17 @@ class AddPolicyFragment :
             binding.nextTextView.isEnabled = it.isNotEmpty()
         }
 
-        /*subscribe(viewModel.policyObserver) {
-            when (it) {
-                is PolicyDialogModel.FindPolicySuccess -> {
-                    InsurantFragment()
+        subscribe(viewModel.policyDialogObserver) {
+            when (it.failureMessage) {
+                null -> {
+                    viewModel.nextStep()
                 }
-                is PolicyDialogModel.FindPolicyFailure -> {
-
+                else -> {
+                    val dialog = PolicyDialogsFragment.newInstance(it)
+                    dialog.show(childFragmentManager, dialog.TAG)
                 }
             }
-        }*/
+        }
 
     }
 

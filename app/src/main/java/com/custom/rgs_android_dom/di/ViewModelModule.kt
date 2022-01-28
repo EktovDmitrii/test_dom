@@ -113,5 +113,5 @@ val viewModelModule = module {
     viewModel { AddPolicyViewModel(policiesInteractor = get()) }
     viewModel { InfoPolicyViewModel() }
     viewModel { InsurantViewModel(policiesInteractor = get()) }
-    viewModel { parameters -> PolicyDialogsViewModel(model = parameters.get()) }
+    viewModel { parameters -> PolicyDialogsViewModel(policisInteractor = get(), model = parameters.get()) }
 }

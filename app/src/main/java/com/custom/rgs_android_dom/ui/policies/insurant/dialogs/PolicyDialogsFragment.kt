@@ -1,15 +1,13 @@
 package com.custom.rgs_android_dom.ui.policies.insurant.dialogs
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import by.kirich1409.viewbindingdelegate.internal.getRootView
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPolicyDialogsBinding
-import com.custom.rgs_android_dom.domain.catalog.models.CatalogSubCategoryModel
+import com.custom.rgs_android_dom.domain.policies.models.Failure
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
-import com.custom.rgs_android_dom.ui.catalog.subcategory.CatalogSubcategoryFragment
-import com.custom.rgs_android_dom.ui.policies.add.PolicyDialogModel
-import com.custom.rgs_android_dom.ui.policies.insurant.InsurantFragment
+import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
 import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
@@ -21,29 +19,33 @@ class PolicyDialogsFragment :
 
     companion object {
 
-        const val KEY_POLICY_DIALOG = "KEY_POLICY_DIALOG_MESSAGE"
+        const val MESSAGE_NOT_FOUND =
+            "К сожалению, мы не смогли найти указанный полис. Пожалуйста, обратитесь к Мастеру онлайн"
+        const val MESSAGE_BOUND_TO_YOUR_PROFILE =
+            "Данный полис уже привязан к вашему профилю. Пожалуйста, обратитесь к Мастеру онлайн"
+        const val MESSAGE_BOUND_TO_ANOTHER_PROFILE =
+            "Данный полис уже привязан к другому профилю. Пожалуйста, обратитесь к Мастеру онлайн"
+        const val MESSAGE_DATA_NOT_MATCH =
+            "Введенные данные страхователя не соответствуют полису. Пожалуйста, обратитесь к Мастеру онлайн"
+        const val MESSAGE_EXPIRED = "У данного полиса закончился срок действия. Пожалуйста, обратитесь к Мастеру онлайн"
+        const val MESSAGE_YET_NOT_DUE =
+            "У данного полиса еще не наступил срок действия. Пожалуйста, обратитесь к Мастеру онлайн"
+
+        const val KEY_POLICY_DIALOG_MODEL = "KEY_POLICY_DIALOG_MODEL"
 
         fun newInstance(model: PolicyDialogModel): PolicyDialogsFragment {
             return PolicyDialogsFragment().args {
-                putSerializable(KEY_POLICY_DIALOG, model)
+                putSerializable(KEY_POLICY_DIALOG_MODEL, model)
             }
         }
     }
 
     override fun getParameters(): ParametersDefinition = {
-        parametersOf(requireArguments().getString(KEY_POLICY_DIALOG))
+        parametersOf(requireArguments().getSerializable(KEY_POLICY_DIALOG_MODEL) as PolicyDialogModel)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val layouts = listOf<Any>(
-            binding.bindingPolicyFailureLayout,
-            binding.bindingPolicySuccessLayout,
-            binding.savePolicyLayout,
-            binding.findPolicyFailureLayout,
-            binding.loadingLayout
-        )
 
         binding.loadingLayout.closeImageView.setOnDebouncedClickListener {
             viewModel.onCloseClick()
@@ -78,21 +80,31 @@ class PolicyDialogsFragment :
         }
 
         subscribe(viewModel.dialogModelObserver) {
-            when (it) {
-                is PolicyDialogModel.FindPolicySuccess -> InsurantFragment()
-                is PolicyDialogModel.Loading -> {
+            Log.d("Syrgashev", "PolicyDialogModel: $it")
+            when {
+                it.showLoader -> {
                     binding.loadingLayout.root.visible()
-                    layouts.filter { it != binding.loadingLayout }.forEach{ (it as FragmentPolicyDialogsBinding).root.gone() }
                 }
-                is  PolicyDialogModel.FindPolicyFailure -> {
-                    binding.findPolicyFailureLayout.root.visible()
-                    layouts.filter { it != binding.findPolicyFailureLayout }.forEach{ (it as FragmentPolicyDialogsBinding).root.gone() }
+                it.failureMessage != null -> {
+                    binding.bindingPolicyFailureLayout.root.visible()
+                    binding.bindingPolicyFailureLayout.errorMessageTextView.text =
+                        when (it.failureMessage) {
+                            Failure.NOT_FOUND -> MESSAGE_NOT_FOUND
+                            Failure.BOUND_TO_YOUR_PROFILE -> MESSAGE_BOUND_TO_YOUR_PROFILE
+                            Failure.BOUND_TO_ANOTHER_PROFILE -> MESSAGE_BOUND_TO_ANOTHER_PROFILE
+                            Failure.DATA_NOT_MATCH -> MESSAGE_DATA_NOT_MATCH
+                            Failure.EXPIRED -> MESSAGE_EXPIRED
+                            Failure.YET_NOT_DUE -> MESSAGE_YET_NOT_DUE
+                        }
+                }
+                it.bound == true -> {
+                    binding.bindingPolicySuccessLayout.root.visible()
                 }
             }
+
         }
 
     }
-
 
     override fun onClose() {
         dismissAllowingStateLoss()

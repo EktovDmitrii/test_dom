@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentInsurantBinding
+import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.policies.insurant.dialogs.PolicyDialogsFragment
 import com.custom.rgs_android_dom.utils.*
@@ -21,8 +22,9 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
         }
 
         binding.nextTextView.setOnDebouncedClickListener {
-            val dialog = PolicyDialogsFragment()
+            val dialog = PolicyDialogsFragment.newInstance(PolicyDialogModel(showLoader = true))
             dialog.show(childFragmentManager, dialog.TAG)
+            viewModel.onNextClick()
         }
 
         binding.firstNameEditText.addTextWatcher {

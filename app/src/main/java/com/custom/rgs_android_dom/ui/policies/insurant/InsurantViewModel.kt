@@ -46,4 +46,8 @@ class InsurantViewModel(private val policiesInteractor: PoliciesInteractor) : Ba
         policiesInteractor.birthdayChanged(birthday)
     }
 
+    fun onNextClick() {
+        policiesInteractor.bindPolicy()
+    }
+
 }
