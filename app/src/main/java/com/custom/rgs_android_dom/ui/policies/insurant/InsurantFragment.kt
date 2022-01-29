@@ -56,7 +56,6 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
         }
 
         subscribe(viewModel.insurantViewStateObserver) {
-            Log.d("Syrgashev", ": ")
             binding.nextTextView.isEnabled = it.isNextEnabled
         }
 

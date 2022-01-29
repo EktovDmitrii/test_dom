@@ -14,7 +14,7 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
-class PolicyDialogsViewModel(val policisInteractor: PoliciesInteractor, model: PolicyDialogModel) : BaseViewModel() {
+class PolicyDialogsViewModel(val policiesInteractor: PoliciesInteractor, model: PolicyDialogModel) : BaseViewModel() {
 
     private val dialogModelController = MutableLiveData<PolicyDialogModel>()
     val dialogModelObserver: LiveData<PolicyDialogModel> = dialogModelController
@@ -22,9 +22,10 @@ class PolicyDialogsViewModel(val policisInteractor: PoliciesInteractor, model: P
     init {
         dialogModelController.value = model
 
-        policisInteractor.getBindPolicySubject()
+        policiesInteractor.getBindPolicySubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { Log.d("Syrgashev", "$this policiesInteractor.getBindPolicySubject() is called: ") }
             .subscribeBy(
                 onNext = {
                     Log.d("Syrgashev", "model: $it")

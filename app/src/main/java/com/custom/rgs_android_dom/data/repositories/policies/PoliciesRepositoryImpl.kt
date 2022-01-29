@@ -78,6 +78,7 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
     }
 
     override fun getBindPolicySubject(): PublishSubject<PolicyDialogModel> {
+        Log.d("Syrgashev", "$this getBindPolicySubject called: ")
         return bindPolicySubject
     }
 

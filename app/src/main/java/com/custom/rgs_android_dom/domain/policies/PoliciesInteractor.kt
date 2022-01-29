@@ -63,7 +63,7 @@ class PoliciesInteractor(val policiesRepository: PoliciesRepository) {
 
     fun bindPolicy() {
         //todo request model based on insurantViewState
-        return policiesRepository.bindPolicy()
+        policiesRepository.bindPolicy()
     }
 
     fun getBindPolicySubject(): PublishSubject<PolicyDialogModel> {
