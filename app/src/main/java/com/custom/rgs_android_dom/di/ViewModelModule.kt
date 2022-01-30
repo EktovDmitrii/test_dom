@@ -13,7 +13,6 @@ import com.custom.rgs_android_dom.ui.client.personal_data.edit.EditPersonalDataV
 import com.custom.rgs_android_dom.ui.client.personal_data.PersonalDataViewModel
 import com.custom.rgs_android_dom.ui.address.suggestions.AddressSuggestionsViewModel
 import com.custom.rgs_android_dom.ui.catalog.MainCatalogViewModel
-import com.custom.rgs_android_dom.ui.catalog.product.MyProductViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.single.more.MoreSingleProductViewModel
 import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchViewModel
@@ -99,12 +98,11 @@ val viewModelModule = module {
     viewModel { TabAvailableServicesViewModel(catalogInteractor = get(), registrationInteractor = get()) }
     viewModel { parameters -> CatalogSubcategoriesViewModel(category = parameters.get(), registrationInteractor = get()) }
     viewModel { parameters -> CatalogSubcategoryViewModel(subCategory = parameters.get(), registrationInteractor = get()) }
-    viewModel { parameters -> SingleProductViewModel(productId = parameters.get(), catalogInteractor = get()) }
+    viewModel { parameters -> SingleProductViewModel(productId = parameters[0], catalogInteractor = get()) }
     viewModel { MoreSingleProductViewModel() }
     viewModel { parameters -> CatalogSearchViewModel(tag = parameters[0], catalogInteractor = get(), registrationInteractor = get(), clientInteractor = get()) }
     viewModel { parameters -> ProductViewModel(productId = parameters.get(), catalogInteractor = get()) }
     viewModel { parameters -> CatalogPrimaryProductsViewModel(category = parameters.get()) }
-    viewModel { MyProductViewModel() }
     viewModel { parameters -> ServiceViewModel(product = parameters.get()) }
     viewModel { parameters -> PurchaseViewModel(parameters.get(), propertyInteractor = get(), clientInteractor = get(), purchaseInteractor = get()) }
     viewModel { parameters -> PurchaseAddressViewModel(selectedPropertyItem = parameters.get(), propertyInteractor = get())}
