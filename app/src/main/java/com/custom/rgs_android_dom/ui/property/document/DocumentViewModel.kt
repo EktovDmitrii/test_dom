@@ -2,7 +2,6 @@ package com.custom.rgs_android_dom.ui.property.document
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
@@ -16,6 +15,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import java.io.File
 
 class DocumentViewModel(
     private val objectId: String,
@@ -86,12 +86,12 @@ class DocumentViewModel(
             if (propertyDoc == propertyDocument)
                 documentIndex = index
         }
-        Log.d("TAG",propertyDocument.link)
         when (documentType) {
             "jpg", "jpeg", "png", "bmp" -> showDetailDocumentScreen(documentIndex)
             else -> {
-                //if (applicationContext.filesDir."documentType")
+                val file = File(applicationContext.filesDir, propertyDocument.name).exists()
                 downloadFileController.value = propertyDocument
+
             }
         }
     }
