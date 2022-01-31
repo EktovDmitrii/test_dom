@@ -5,4 +5,4 @@ import java.io.Serializable
 data class PropertyDocument(
     val link: String,
     var name: String
-) : IPropertyDocument, Serializable
+) : Serializable

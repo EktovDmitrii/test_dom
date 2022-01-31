@@ -6,13 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.custom.rgs_android_dom.databinding.ItemAddPropertyBinding
 import com.custom.rgs_android_dom.databinding.ItemPropertyDownloadedDocumentBinding
 import com.custom.rgs_android_dom.domain.property.models.AddDocument
-import com.custom.rgs_android_dom.domain.property.models.IPropertyDocument
 import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 
 class PropertyDocumentsAdapter(private val onAddClick: () -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var propertyUploadDocumentsItems = mutableListOf<IPropertyDocument>()
+    private var propertyUploadDocumentsItems = mutableListOf<Any>()
 
     companion object {
         private const val ITEM_TYPE_PROPERTY_DOCUMENT = 1
@@ -62,7 +61,7 @@ class PropertyDocumentsAdapter(private val onAddClick: () -> Unit) : RecyclerVie
         return propertyUploadDocumentsItems.size
     }
 
-    fun setItems(files: List<PropertyDocument>) {
+    fun setItems(files: List<Any>) {
         propertyUploadDocumentsItems.clear()
         propertyUploadDocumentsItems.addAll(files.take(COUNT_ITEMS_TO_SHOW))
         propertyUploadDocumentsItems.add(AddDocument)
@@ -70,7 +69,7 @@ class PropertyDocumentsAdapter(private val onAddClick: () -> Unit) : RecyclerVie
     }
 
     inner class PropertyDocumentsViewHolder(
-        private val binding: ItemPropertyDownloadedDocumentBinding
+        binding: ItemPropertyDownloadedDocumentBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind() {}
@@ -82,7 +81,7 @@ class PropertyDocumentsAdapter(private val onAddClick: () -> Unit) : RecyclerVie
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind() {
-            binding.root.setOnDebouncedClickListener { onAddClick() }
+            binding.root.setOnDebouncedClickListener (onAddClick)
         }
     }
 }
