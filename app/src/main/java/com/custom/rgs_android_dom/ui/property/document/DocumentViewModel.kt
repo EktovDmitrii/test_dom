@@ -1,7 +1,7 @@
 package com.custom.rgs_android_dom.ui.property.document
 
-import android.content.Context
 import android.net.Uri
+import android.os.Environment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
@@ -28,6 +28,9 @@ class DocumentViewModel(
 
     private val downloadFileController = MutableLiveData<PropertyDocument>()
     val downloadFileObserver: LiveData<PropertyDocument> = downloadFileController
+
+    private val openFileController = MutableLiveData<Uri>()
+    val openFileObserver: LiveData<Uri> = openFileController
 
     init {
         propertyItemController.postValue(propertyItemModel)
@@ -79,7 +82,7 @@ class DocumentViewModel(
         }
     }
 
-    fun onFileClick(propertyDocument: PropertyDocument,applicationContext: Context) {
+    fun onFileClick(propertyDocument: PropertyDocument) {
         val documentType = propertyDocument.link.substringAfterLast(".", "missing")
         var documentIndex = 0
         propertyItemController.value?.documents?.forEachIndexed { index, propertyDoc ->
@@ -89,8 +92,15 @@ class DocumentViewModel(
         when (documentType) {
             "jpg", "jpeg", "png", "bmp" -> showDetailDocumentScreen(documentIndex)
             else -> {
-                val file = File(applicationContext.filesDir, propertyDocument.name).exists()
-                downloadFileController.value = propertyDocument
+                val file = File(
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                        .absoluteFile.path + File.separator + propertyDocument.name
+                )
+                if (file.exists()) {
+                    openFileController.value = Uri.fromFile(file)
+                } else {
+                    downloadFileController.value = propertyDocument
+                }
 
             }
         }
