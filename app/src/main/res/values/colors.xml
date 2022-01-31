@@ -43,6 +43,8 @@
     <color name="white_alpha80">#CCFFFFFF</color>
     <color name="white_alpha9">#17FFFFFF</color>
     <color name="secondary250_alpha48">#48DBDBDB</color>
+    <color name="dot_background">#CECBC7</color>
+    <color name="onboarding_background">#EBE7E2</color>
 
     <!-- TODO This is temorary name -->
     <color name="primary_200">#33F6A636</color>

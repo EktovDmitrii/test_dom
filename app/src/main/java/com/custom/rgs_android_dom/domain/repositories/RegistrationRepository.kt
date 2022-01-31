@@ -39,4 +39,6 @@ interface RegistrationRepository {
     fun forceSaveAuthCredentials()
 
     fun getLoginSubject(): PublishSubject<Unit>
+
+    fun isFirstRun(): Boolean
 }

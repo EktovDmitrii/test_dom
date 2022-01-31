@@ -12,7 +12,9 @@
         android:id="@+id/menusLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
-        android:layout_below="@id/swipeAnchorLayout">
+        android:layout_below="@id/swipeAnchorLayout"
+        android:clickable="true"
+        android:focusable="true">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/backImageView"
@@ -57,11 +59,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <include
-                android:id="@+id/price"
-                layout="@layout/layout_product_detail_price_info"
+            <com.custom.rgs_android_dom.views.MSDProductPriceView
+                android:id="@+id/priceView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingHorizontal="20dp"
                 android:layout_marginBottom="24dp" />
 
             <include

@@ -11,6 +11,7 @@ import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
+import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchFragment
 import com.custom.rgs_android_dom.ui.catalog.subcategory.CatalogSubcategoryFragment
 
 class CatalogSubcategoriesViewModel(
@@ -35,6 +36,11 @@ class CatalogSubcategoriesViewModel(
 
     fun onBackClick() {
         closeController.value = Unit
+    }
+
+    fun onSearchClick() {
+        val catalogSearchFragment = CatalogSearchFragment.newInstance()
+        ScreenManager.showScreen(catalogSearchFragment)
     }
 
     fun onProductClick(product: ProductShortModel){
