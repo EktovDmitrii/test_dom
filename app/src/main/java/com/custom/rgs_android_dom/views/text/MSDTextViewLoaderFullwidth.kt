@@ -62,11 +62,13 @@ class MSDTextViewLoaderFullwidth @JvmOverloads constructor(
         }
     }
 
-    fun setText(text: String){
+    fun setText(text: String, remeasureWidth: Boolean = true) {
         originalText = text
         binding.actionTextView.text = text
-        binding.actionTextView.measure(0, 0)
-        textWidth = binding.actionTextView.measuredWidth
+        if (remeasureWidth) {
+            binding.actionTextView.measure(0, 0)
+            textWidth = binding.actionTextView.measuredWidth
+        }
     }
 
 }
