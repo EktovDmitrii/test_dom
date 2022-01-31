@@ -6,6 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import androidx.core.widget.NestedScrollView
+import androidx.transition.Fade
+import androidx.transition.Transition
+import androidx.transition.TransitionManager
 
 fun View.gone() {
     visibility = View.GONE
@@ -81,4 +84,12 @@ fun NestedScrollView.smoothScrollTo(view: View) {
         viewParent = viewParent.getParent()
     }
     smoothScrollTo(0, distance)
+}
+
+fun View.fadeVisibility(visibility: Int, duration: Long = 400) {
+    val transition: Transition = Fade()
+    transition.duration = duration
+    transition.addTarget(this)
+    TransitionManager.beginDelayedTransition(this as ViewGroup, transition)
+    this.visibility = visibility
 }
