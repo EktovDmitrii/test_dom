@@ -39,7 +39,7 @@ class OnboardingFragment :
         TabLayoutMediator(
             binding.onboardingTabLayout,
             binding.onboardingViewPager
-        ) { _, _ -> }.attach()
+        ) { tab, _ -> tab.view.isClickable = false }.attach()
 
         binding.nextTextView.setOnDebouncedClickListener {
             val curr = binding.onboardingViewPager.currentItem
