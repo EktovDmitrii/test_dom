@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/isabelline"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:paddingVertical="20dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="16dp">
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:fontFamily="@font/suisse_regular"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:textColor="@color/secondary900"
+            android:textSize="16sp"
+            app:translationTextKey="Преимущества сервиса" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/backImageView"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="end|center_vertical"
+            app:srcCompat="@drawable/ic_arrow_down_filled_gray_24px" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="16dp" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:overScrollMode="never"/>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

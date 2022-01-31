@@ -116,6 +116,18 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             viewModel.onShowAllPopularCategoriesClick()
         }
 
+        binding.storiesLayout.newServiceLinearLayout.setOnDebouncedClickListener {
+            viewModel.onStoriesNewServiceClick()
+        }
+
+        binding.storiesLayout.guaranteeLinearLayout.setOnDebouncedClickListener {
+            viewModel.onStoriesGuaranteeClick()
+        }
+
+        binding.storiesLayout.supportLinearLayout.setOnDebouncedClickListener {
+            viewModel.onStoriesSupportClick()
+        }
+
         subscribe(viewModel.registrationObserver) {
             isAuthorized = it
             binding.loginLinearLayout.goneIf(it)

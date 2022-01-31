@@ -55,6 +55,10 @@ import com.custom.rgs_android_dom.ui.purchase_service.*
 import com.custom.rgs_android_dom.ui.sos.SOSViewModel
 import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_date_time.PurchaseDateTimeViewModel
 import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_service_address.PurchaseAddressViewModel
+import com.custom.rgs_android_dom.ui.stories.StoriesViewModel
+import com.custom.rgs_android_dom.ui.stories.tabs.TabGuaranteeViewModel
+import com.custom.rgs_android_dom.ui.stories.tabs.TabNewServiceViewModel
+import com.custom.rgs_android_dom.ui.stories.tabs.TabSupportViewModel
 
 val viewModelModule = module {
     viewModel { parameters -> RegistrationCodeViewModel(phone = parameters[0], token = parameters[1], registrationInteractor = get(), clientInteractor = get()) }
@@ -116,4 +120,8 @@ val viewModelModule = module {
     viewModel { parameters -> PaymentWebViewViewModel(url = parameters.get()) }
     viewModel { parameters -> PaymentErrorViewModel(firstFragmentId = parameters[0]) }
     viewModel { parameters -> PaymentSuccessViewModel(productId = parameters[0], email = parameters[1]) }
+    viewModel { parameters -> StoriesViewModel(tab = parameters.get()) }
+    viewModel { TabNewServiceViewModel() }
+    viewModel { TabGuaranteeViewModel() }
+    viewModel { TabSupportViewModel() }
 }
