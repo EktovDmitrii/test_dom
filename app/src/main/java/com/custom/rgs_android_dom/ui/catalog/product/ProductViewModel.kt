@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.*
 import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseModel
+import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
 import com.custom.rgs_android_dom.ui.navigation.PAYMENT
@@ -18,6 +19,7 @@ import com.custom.rgs_android_dom.ui.purchase_service.PurchaseFragment
 
 class ProductViewModel(
     private val productId: String,
+    private val registrationInteractor: RegistrationInteractor,
     private val catalogInteractor: CatalogInteractor
 ) : BaseViewModel() {
 
@@ -58,15 +60,17 @@ class ProductViewModel(
     }
 
     fun onCheckoutClick() {
-        productController.value?.let {
-            val purchaseServiceModel = PurchaseModel(
-                id = it.id,
-                iconLink = it.iconLink,
-                name = it.name,
-                price = it.price
-            )
-            val purchaseFragment = PurchaseFragment.newInstance(purchaseServiceModel)
-            ScreenManager.showScreenScope(purchaseFragment, PAYMENT)
+        if (registrationInteractor.isAuthorized()) {
+            productController.value?.let {
+                val purchaseServiceModel = PurchaseModel(
+                    id = it.id,
+                    iconLink = it.iconLink,
+                    name = it.name,
+                    price = it.price
+                )
+                val purchaseFragment = PurchaseFragment.newInstance(purchaseServiceModel)
+                ScreenManager.showScreenScope(purchaseFragment, PAYMENT)
+            }
         }
     }
 

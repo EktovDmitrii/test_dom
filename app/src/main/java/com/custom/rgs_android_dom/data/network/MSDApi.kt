@@ -176,6 +176,10 @@ interface MSDApi {
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getProduct(@Path("productId") productId: String): Single<ProductResponse>
 
+    @GET("guests/purchase/products/{productId}/details")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getGuestProduct(@Path("productId") productId: String): Single<ProductResponse>
+
     @GET("clients/me/balance/products")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getClientProducts(@Query("size") size: Int, @Query("index") index: Int): Single<ClientProductsResponse>
