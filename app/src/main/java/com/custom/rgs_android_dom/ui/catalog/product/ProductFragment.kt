@@ -51,7 +51,7 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
 
         binding.includes.includesRecycler.apply {
             adapter = ProductInclusionAdapter {
-                viewModel.onServiceClick()
+                viewModel.onServiceClick(it)
             }
             val spacingInPixels = resources.getDimensionPixelSize(R.dimen.material_margin_normal)
             addItemDecoration(GridTwoSpanItemDecoration(spacingInPixels))
@@ -68,9 +68,15 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
             binding.header.headerDescription.text = product.title
             binding.about.aboutValue.text = product.description
             product.price?.amount?.let { price ->
-                binding.price.priceValue.text = "$price ₽"
+                binding.priceView.setPrice(price)
                 binding.detailButton.btnPrice.text = "$price ₽"
             }
+        }
+
+        subscribe(viewModel.productServicesObserver) {
+            inclusionAdapter.setItems(it)
+
+            binding.includes.root.visibleIf(it.isNotEmpty())
         }
     }
 
