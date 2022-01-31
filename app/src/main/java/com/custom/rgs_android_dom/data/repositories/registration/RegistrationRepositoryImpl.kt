@@ -122,4 +122,12 @@ class RegistrationRepositoryImpl(
     override fun getLoginSubject(): PublishSubject<Unit> {
         return loginSubject
     }
+
+    override fun isFirstRun(): Boolean {
+        val result = clientSharedPreferences.isFirstRun()
+        if (result) {
+            clientSharedPreferences.onFirstRun()
+        }
+        return result
+    }
 }

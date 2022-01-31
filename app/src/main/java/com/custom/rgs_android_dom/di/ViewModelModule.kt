@@ -47,6 +47,8 @@ import com.custom.rgs_android_dom.ui.web_view.WebViewViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import com.custom.rgs_android_dom.ui.client.personal_data.request_edit.RequestEditPersonalDataViewModel
+import com.custom.rgs_android_dom.ui.onboarding.OnboardingViewModel
+import com.custom.rgs_android_dom.ui.onboarding.TabOnboardingViewModel
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsViewModel
 import com.custom.rgs_android_dom.ui.property.document.DocumentViewModel
 import com.custom.rgs_android_dom.ui.property.document.detail_document.DetailDocumentViewModel
@@ -59,6 +61,8 @@ val viewModelModule = module {
     viewModel { parameters -> RegistrationCodeViewModel(phone = parameters[0], token = parameters[1], registrationInteractor = get(), clientInteractor = get()) }
     viewModel { RegistrationPhoneViewModel(countriesInteractor = get(), registrationInteractor = get()) }
     viewModel { SplashViewModel(registrationInteractor = get(), clientInteractor = get()) }
+    viewModel { OnboardingViewModel() }
+    viewModel { TabOnboardingViewModel() }
     viewModel { DemoViewModel() }
     viewModel { parameters-> RegistrationAgreementViewModel(phone = parameters[0], closeAfterAccept = parameters[1], registrationInteractor = get()) }
     viewModel { parameters-> RegistrationFillClientViewModel(phone = parameters.get(), clientInteractor= get()) }
