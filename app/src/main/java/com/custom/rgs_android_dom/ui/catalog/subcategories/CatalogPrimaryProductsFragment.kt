@@ -49,6 +49,9 @@ class CatalogPrimaryProductsFragment :
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
         }
+        binding.searchImageView.setOnDebouncedClickListener {
+            viewModel.onSearchClick()
+        }
 
         subscribe(viewModel.productsObserver) {
             primaryProductsAdapter.setItems(it)
