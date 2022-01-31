@@ -2,17 +2,18 @@ package com.custom.rgs_android_dom.ui.stories
 
 import android.os.Bundle
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.LinearInterpolator
+import android.view.animation.TranslateAnimation
 import androidx.viewpager2.widget.ViewPager2
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentStoriesBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.utils.args
-import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
-import com.custom.rgs_android_dom.utils.setStatusBarColor
-import com.custom.rgs_android_dom.utils.subscribe
+import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 import java.util.*
+
 
 class StoriesFragment : BaseFragment<StoriesViewModel, FragmentStoriesBinding>(R.layout.fragment_stories) {
 
@@ -22,6 +23,8 @@ class StoriesFragment : BaseFragment<StoriesViewModel, FragmentStoriesBinding>(R
         const val TAB_GUARANTEE = 1
         const val TAB_SUPPORT = 2
 
+        const val DURATION = 10000L
+
         private const val KEY_TAB = "tab"
 
         fun newInstance(tab: Int = TAB_NEW_SERVICE): StoriesFragment {
@@ -30,6 +33,9 @@ class StoriesFragment : BaseFragment<StoriesViewModel, FragmentStoriesBinding>(R
             }
         }
     }
+
+    private val animNewService = prepareAnimation()
+    private val animGuarantee = prepareAnimation()
 
     private val pagerAdapter: StoriesPagerAdapter
         get() = binding.viewPager.adapter as StoriesPagerAdapter
@@ -43,21 +49,66 @@ class StoriesFragment : BaseFragment<StoriesViewModel, FragmentStoriesBinding>(R
             { binding.viewPager.setCurrentItem(binding.viewPager.currentItem - 1, true) },
             { viewModel.onUnderstandClick() })
 
+        animNewService.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {
+                if (animGuarantee.hasStarted()) animGuarantee.cancel()
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {}
+
+            override fun onAnimationRepeat(animation: Animation?) {}
+
+        })
+
+        animGuarantee.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {
+                if (animNewService.hasStarted()) animNewService.cancel()
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {}
+
+            override fun onAnimationRepeat(animation: Animation?) {}
+        })
 
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 when (position) {
-                    TAB_SUPPORT -> cancelTimer()
-                    else -> {
+                    TAB_NEW_SERVICE -> {
                         cancelTimer()
                         runTimer()
+                        requireActivity().runOnUiThread {
+                            binding.newServiceProgress.visible()
+                            binding.guaranteeProgress.gone()
+                            binding.supportProgress.gone()
+                            binding.newServiceProgress.startAnimation(animNewService)
+                        }
+                    }
+                    TAB_GUARANTEE -> {
+                        cancelTimer()
+                        runTimer()
+                        requireActivity().runOnUiThread {
+                            binding.newServiceProgress.visible()
+                            binding.guaranteeProgress.visible()
+                            binding.supportProgress.gone()
+                            binding.guaranteeProgress.startAnimation(animGuarantee)
+                        }
+                    }
+                    TAB_SUPPORT -> {
+                        cancelTimer()
+                        requireActivity().runOnUiThread {
+                            if (animGuarantee.hasStarted()) animGuarantee.cancel()
+                            binding.newServiceProgress.visible()
+                            binding.guaranteeProgress.visible()
+                            binding.supportProgress.visible()
+                        }
                     }
                 }
             }
         })
 
         binding.backImageView.setOnDebouncedClickListener {
+            cancelTimer()
             viewModel.onBackClick()
         }
 
@@ -75,6 +126,21 @@ class StoriesFragment : BaseFragment<StoriesViewModel, FragmentStoriesBinding>(R
             }
         }
 
+    }
+
+    private fun prepareAnimation(
+        fromXValue: Float = -1f,
+        toXValue: Float = 0f,
+        fromYValue: Float = 0f,
+        toYValue: Float = 0f
+    ): Animation {
+        val anim = TranslateAnimation(
+            Animation.RELATIVE_TO_PARENT, fromXValue, Animation.RELATIVE_TO_PARENT, toXValue,
+            Animation.RELATIVE_TO_PARENT, fromYValue, Animation.RELATIVE_TO_PARENT, toYValue
+        )
+        anim.duration = DURATION
+        anim.interpolator = LinearInterpolator()
+        return anim
     }
 
     override fun getParameters(): ParametersDefinition = {
@@ -95,7 +161,7 @@ class StoriesFragment : BaseFragment<StoriesViewModel, FragmentStoriesBinding>(R
             override fun run() {
                 binding.viewPager.setCurrentItem(binding.viewPager.currentItem + 1, true)
             }
-        }, 10000, 10000)
+        }, DURATION, DURATION)
     }
 
     private fun cancelTimer() {

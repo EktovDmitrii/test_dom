@@ -5,7 +5,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.custom.rgs_android_dom.ui.stories.tabs.TabGuaranteeFragment
 import com.custom.rgs_android_dom.ui.stories.tabs.TabNewServiceFragment
 import com.custom.rgs_android_dom.ui.stories.tabs.TabSupportFragment
-import java.lang.RuntimeException
 
 class StoriesPagerAdapter(
     val fragment: Fragment,
@@ -31,7 +30,7 @@ class StoriesPagerAdapter(
             TAB_NEW_SERVICE -> TabNewServiceFragment(onRightClick)
             TAB_GUARANTEE -> TabGuaranteeFragment(onRightClick, onLeftClick)
             TAB_SUPPORT -> TabSupportFragment(onLeftClick, onUnderstandClick)
-            else -> throw RuntimeException("Wrong position")
+            else -> throw IllegalArgumentException("Invalid position $position")
         }
     }
 }

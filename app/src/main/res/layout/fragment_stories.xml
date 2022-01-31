@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/isabelline"
@@ -33,16 +34,86 @@
 
     </FrameLayout>
 
-    <FrameLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="16dp" />
+        android:layout_height="16dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_weight="1">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rectangle_filled_secondary_900_alpha30_radius_8dp" />
+
+            <View
+                android:id="@+id/newServiceProgress"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rectangle_filled_secondary_900_radius_8dp"
+                tools:layout_width="30dp" />
+
+        </FrameLayout>
+
+
+        <Space
+            android:layout_width="8dp"
+            android:layout_height="match_parent" />
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_weight="1">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rectangle_filled_secondary_900_alpha30_radius_8dp" />
+
+            <View
+                android:id="@+id/guaranteeProgress"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:background="@drawable/rectangle_filled_secondary_900_radius_8dp"
+                tools:layout_width="30dp" />
+
+        </FrameLayout>
+
+        <Space
+            android:layout_width="8dp"
+            android:layout_height="match_parent" />
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_weight="1">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rectangle_filled_secondary_900_alpha30_radius_8dp" />
+
+            <View
+                android:id="@+id/supportProgress"
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:background="@drawable/rectangle_filled_secondary_900_radius_8dp" />
+
+        </FrameLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:overScrollMode="never"/>
-
+        android:overScrollMode="never" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
