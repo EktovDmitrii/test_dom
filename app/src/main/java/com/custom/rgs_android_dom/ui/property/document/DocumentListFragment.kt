@@ -8,7 +8,6 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
 import android.os.StrictMode
-import android.util.Log
 import android.view.View
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.R
