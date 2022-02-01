@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.domain.repositories.PoliciesRepository
 import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
 import com.custom.rgs_android_dom.ui.policies.insurant.InsurantViewState
 import io.reactivex.Single
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 
 class PoliciesInteractor(val policiesRepository: PoliciesRepository) {
@@ -66,7 +67,7 @@ class PoliciesInteractor(val policiesRepository: PoliciesRepository) {
         policiesRepository.bindPolicy()
     }
 
-    fun getBindPolicySubject(): PublishSubject<PolicyDialogModel> {
+    fun getBindPolicySubject(): BehaviorSubject<PolicyDialogModel> {
         return policiesRepository.getBindPolicySubject()
     }
 

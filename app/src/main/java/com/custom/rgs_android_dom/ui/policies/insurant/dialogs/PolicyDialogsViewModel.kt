@@ -28,7 +28,7 @@ class PolicyDialogsViewModel(val policiesInteractor: PoliciesInteractor, model: 
             .doOnSubscribe { Log.d("Syrgashev", "$this policiesInteractor.getBindPolicySubject() is called: ") }
             .subscribeBy(
                 onNext = {
-                    Log.d("Syrgashev", "model: $it")
+                    Log.d("Syrgashev", "model in PolicyDialogsViewModel: $it")
                     dialogModelController.value = it },
                 onError = { logException(this, it) })
             .addTo(dataCompositeDisposable)

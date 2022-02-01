@@ -15,12 +15,12 @@
         android:visibility="gone" />
 
     <include
-        android:id="@+id/bindingPolicySuccessLayout"
+        android:id="@+id/bindPolicySuccessLayout"
         layout="@layout/layout_policy_dialogs_success"
         android:visibility="gone" />
 
     <include
-        android:id="@+id/bindingPolicyFailureLayout"
+        android:id="@+id/bindPolicyFailureLayout"
         layout="@layout/layout_policy_dialogs_binding_failure"
         android:visibility="gone" />
 

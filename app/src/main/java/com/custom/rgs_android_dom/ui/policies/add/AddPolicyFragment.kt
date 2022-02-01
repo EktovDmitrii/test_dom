@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.databinding.FragmentAddPolicyBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.policies.add.info.InfoPolicyFragment
 import com.custom.rgs_android_dom.ui.policies.insurant.dialogs.PolicyDialogsFragment
+import com.custom.rgs_android_dom.utils.hideSoftwareKeyboard
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
 
@@ -22,6 +23,7 @@ class AddPolicyFragment :
 
         binding.nextTextView.setOnDebouncedClickListener {
             viewModel.onNextClick()
+            hideSoftwareKeyboard()
         }
 
         binding.policyInput.onInfoClick = {

@@ -59,15 +59,15 @@ class PolicyDialogsFragment :
             viewModel.onCancelClick()
         }
 
-        binding.bindingPolicySuccessLayout.understandTextView.setOnDebouncedClickListener {
+        binding.bindPolicySuccessLayout.understandTextView.setOnDebouncedClickListener {
             viewModel.onUnderstandClick()
         }
 
-        binding.bindingPolicyFailureLayout.chatTextView.setOnDebouncedClickListener {
+        binding.bindPolicyFailureLayout.chatTextView.setOnDebouncedClickListener {
             viewModel.onChatClick()
         }
 
-        binding.bindingPolicyFailureLayout.changeDataTextView.setOnDebouncedClickListener {
+        binding.bindPolicyFailureLayout.changeDataTextView.setOnDebouncedClickListener {
             viewModel.onChangeDataClick()
         }
 
@@ -80,14 +80,12 @@ class PolicyDialogsFragment :
         }
 
         subscribe(viewModel.dialogModelObserver) {
-            Log.d("Syrgashev", "PolicyDialogModel: $it")
+            binding.loadingLayout.root.visibleIf(it.showLoader)
+            binding.bindPolicyFailureLayout.root.visibleIf(it.failureMessage != null)
+            binding.bindPolicySuccessLayout.root.visibleIf(it.bound == true)
             when {
-                it.showLoader -> {
-                    binding.loadingLayout.root.visible()
-                }
                 it.failureMessage != null -> {
-                    binding.bindingPolicyFailureLayout.root.visible()
-                    binding.bindingPolicyFailureLayout.errorMessageTextView.text =
+                    binding.bindPolicyFailureLayout.errorMessageTextView.text =
                         when (it.failureMessage) {
                             Failure.NOT_FOUND -> MESSAGE_NOT_FOUND
                             Failure.BOUND_TO_YOUR_PROFILE -> MESSAGE_BOUND_TO_YOUR_PROFILE
@@ -97,11 +95,7 @@ class PolicyDialogsFragment :
                             Failure.YET_NOT_DUE -> MESSAGE_YET_NOT_DUE
                         }
                 }
-                it.bound == true -> {
-                    binding.bindingPolicySuccessLayout.root.visible()
-                }
             }
-
         }
 
     }

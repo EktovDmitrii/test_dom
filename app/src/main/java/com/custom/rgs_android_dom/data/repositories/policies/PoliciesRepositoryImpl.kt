@@ -7,12 +7,13 @@ import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
 import com.custom.rgs_android_dom.domain.repositories.PoliciesRepository
 import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
 import io.reactivex.Single
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
 class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
 
-    private val bindPolicySubject = PublishSubject.create<PolicyDialogModel>()
+    private val bindPolicySubject = BehaviorSubject.create<PolicyDialogModel>()
 
     override fun getPolicies(): Single<List<PolicyModel>> {
         return /*api.getPolicies()*/ Single.create {
@@ -74,10 +75,10 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
     override fun bindPolicy() {
         //api.bindPolicy()
         Log.d("Syrgashev", "repo bindPolicy called: ")
-        bindPolicySubject.onNext(PolicyDialogModel(bound = true))
+        bindPolicySubject.onNext(PolicyDialogModel(failureMessage = Failure.YET_NOT_DUE))
     }
 
-    override fun getBindPolicySubject(): PublishSubject<PolicyDialogModel> {
+    override fun getBindPolicySubject(): BehaviorSubject<PolicyDialogModel> {
         Log.d("Syrgashev", "$this getBindPolicySubject called: ")
         return bindPolicySubject
     }

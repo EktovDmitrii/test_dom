@@ -148,7 +148,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="22dp"
             style="@style/Button.Filled.Primary"
-            android:enabled="true"
+            android:enabled="false"
             app:translationTextKey="Далее" />
 
         <!--<com.custom.rgs_android_dom.views.text.MSDTextView
