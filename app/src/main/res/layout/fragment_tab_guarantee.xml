@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/guaranteeImageView"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_guarantee_240px" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/guaranteeTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/my_service_bold"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:textColor="@color/secondary900"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guaranteeImageView"
+        app:lineHeight="28sp"
+        app:translationTextKey="Гарантия" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/guarateeDescTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/suisse_regular"
+        android:gravity="center"
+        android:textColor="@color/secondary900"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guaranteeTitleTextView"
+        app:lineHeight="28sp"
+        app:translationTextKey="Мы гарантируем качество оказываемых услуг. Все наши специалисты обучены и проверены для решения самых разных бытовых проблем." />
+
+    <View
+        android:id="@+id/guaranteeLeftFrameLayout"
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/guaranteeRightFrameLayout"
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
