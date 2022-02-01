@@ -11,6 +11,7 @@ import com.custom.rgs_android_dom.databinding.ItemDateTimeBinding
 import com.custom.rgs_android_dom.domain.purchase_service.model.DateForCalendarModel
 import com.custom.rgs_android_dom.utils.dpToPx
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
+import java.util.*
 
 class PurchaseDatesAdapter(
     private val onDateClick: (DateForCalendarModel) -> Unit,
@@ -57,7 +58,8 @@ class PurchaseDatesAdapter(
 
         fun bind(dateForCalendar: DateForCalendarModel) {
             binding.dayNumberTextView.text = dateForCalendar.dateNumber
-            binding.dayOfWeekTextView.text = dateForCalendar.dayInWeek
+
+            binding.dayOfWeekTextView.text = dateForCalendar.dayInWeek.capitalize(Locale.getDefault())
             if (dateForCalendar.isSelected) {
                 binding.dayNumberTextView.setBackgroundResource(R.drawable.rectangle_filled_secondary_100_radius_12dp)
             } else binding.dayNumberTextView.setBackgroundColor(0)

@@ -16,11 +16,11 @@
         android:id="@+id/mouthTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:fontFamily="@font/suisse_bold"
+        android:layout_gravity="center"
+        android:fontFamily="@font/my_service_bold"
         android:textColor="@color/secondary900"
         android:textSize="16sp"
-        tools:text="Январь" />
+        tools:text="Январь 2022" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/nextMouthImageView"
