@@ -4,8 +4,8 @@ import org.joda.time.LocalDateTime
 
 data class PurchaseDateModel(
     val date: LocalDateTime = LocalDateTime.now(),
-    val selectedMouth: String,
-    var isPreviousMouthButtonEnable: Boolean,
+    val selectedMonth: String,
+    var isPreviousMonthButtonEnable: Boolean,
     val datesForCalendar: List<DateForCalendarModel>,
     var isSelectButtonEnable: Boolean,
     var periodList: List<PurchasePeriodModel>,
