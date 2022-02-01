@@ -166,15 +166,19 @@ interface MSDApi {
 
     @GET("clients/me/purchase/products/showcase")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getShowcase(@Query("tags", encoded = true) tags: String?, @Query("fullText") fullText: String?, @Query("index") index: Int, @Query("size") size: Long): Single<ProductsForPurchaseResponse>
+    fun getShowcase(@Query("tags", encoded = true) tags: String?, @Query("name") name: String?, @Query("index") index: Int, @Query("size") size: Long): Single<ProductsForPurchaseResponse>
 
     @GET("guests/purchase/products/showcase")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getGuestShowcase(@Query("tags", encoded = true) tags: String?, @Query("index") index: Int, @Query("size") size: Long): Single<ProductsForPurchaseResponse>
+    fun getGuestShowcase(@Query("tags", encoded = true) tags: String?, @Query("name") name: String?, @Query("index") index: Int, @Query("size") size: Long): Single<ProductsForPurchaseResponse>
 
     @GET("clients/me/purchase/products/{productId}/details")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getProduct(@Path("productId") productId: String): Single<ProductResponse>
+
+    @GET("guests/purchase/products/{productId}/details")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getGuestProduct(@Path("productId") productId: String): Single<ProductResponse>
 
     @GET("clients/me/balance/products")
     @ErrorType(MSDNetworkErrorResponse::class)
