@@ -7,10 +7,7 @@ import com.custom.rgs_android_dom.ui.stories.tabs.TabNewServiceFragment
 import com.custom.rgs_android_dom.ui.stories.tabs.TabSupportFragment
 
 class StoriesPagerAdapter(
-    val fragment: Fragment,
-    private val onRightClick: () -> Unit,
-    private val onLeftClick: () -> Unit,
-    private val onUnderstandClick: () -> Unit
+    val fragment: Fragment
 ) : FragmentStateAdapter(fragment) {
 
     companion object {
@@ -27,9 +24,9 @@ class StoriesPagerAdapter(
     override fun createFragment(position: Int): Fragment {
 
         return when (position) {
-            TAB_NEW_SERVICE -> TabNewServiceFragment(onRightClick)
-            TAB_GUARANTEE -> TabGuaranteeFragment(onRightClick, onLeftClick)
-            TAB_SUPPORT -> TabSupportFragment(onLeftClick, onUnderstandClick)
+            TAB_NEW_SERVICE -> TabNewServiceFragment()
+            TAB_GUARANTEE -> TabGuaranteeFragment()
+            TAB_SUPPORT -> TabSupportFragment()
             else -> throw IllegalArgumentException("Invalid position $position")
         }
     }
