@@ -4,17 +4,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthState
+import com.custom.rgs_android_dom.domain.chat.ChatInteractor
+import com.custom.rgs_android_dom.domain.chat.models.CallType
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
 import com.custom.rgs_android_dom.ui.chat.ChatFragment
+import com.custom.rgs_android_dom.ui.chat.call.CallFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.registration.agreement.RegistrationAgreementFragment
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.ui.main.MainFragment
+import com.custom.rgs_android_dom.ui.navigation.TargetScreen
 import com.custom.rgs_android_dom.utils.logException
 import com.custom.rgs_android_dom.views.NavigationScope
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -25,7 +29,8 @@ import io.reactivex.schedulers.Schedulers
 import org.koin.core.component.inject
 
 class RootViewModel(private val registrationInteractor: RegistrationInteractor,
-                    private val clientInteractor: ClientInteractor
+                    private val clientInteractor: ClientInteractor,
+                    private val chatInteractor: ChatInteractor
 ) : BaseViewModel() {
 
     private val navScopesVisibilityController = MutableLiveData<List<Pair<NavigationScope, Boolean>>>()
@@ -34,12 +39,18 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
     private val navScopeEnabledController = MutableLiveData<Pair<NavigationScope, Boolean>>()
     val navScopeEnabledObserver: LiveData<Pair<NavigationScope, Boolean>> = navScopeEnabledController
 
+    private val isUserAuthorizedController = MutableLiveData<Boolean>()
+    val isUserAuthorizedObserver: LiveData<Boolean> = isUserAuthorizedController
+
     private val authContentProviderManager: AuthContentProviderManager by inject()
     private val logoutCompositeDisposable = CompositeDisposable()
+    private var requestedScreen = TargetScreen.UNSPECIFIED
 
     init {
         checkSignedAgreement()
         subscribeAuthStateChanges()
+
+        isUserAuthorizedController.value = registrationInteractor.isAuthorized()
 
         val scopes = listOf(
             Pair(NavigationScope.NAV_PROFILE, registrationInteractor.isAuthorized()),
@@ -59,14 +70,45 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                         Pair(NavigationScope.NAV_LOGIN, false)
                     )
                     navScopesVisibilityController.value = scopes
-
                     navScopeEnabledController.value = Pair(NavigationScope.NAV_CHAT, true)
+
+                    isUserAuthorizedController.value = true
                 },
                 onError = {
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
 
+        clientInteractor.getClientSavedSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy (
+                onNext = {
+                    when (requestedScreen) {
+                        TargetScreen.CHAT -> {
+                            ScreenManager.showScreen(ChatFragment())
+                        }
+                        TargetScreen.AUDIO_CALL -> {
+                            ScreenManager.showScreen(
+                                CallFragment.newInstance(
+                                    CallType.AUDIO_CALL,
+                                    chatInteractor.getCurrentConsultant()
+                                )
+                            )
+                        }
+                        TargetScreen.VIDEO_CALL -> {
+                            ScreenManager.showScreen(
+                                CallFragment.newInstance(
+                                    CallType.VIDEO_CALL,
+                                    chatInteractor.getCurrentConsultant()
+                                )
+                            )
+                        }
+                    }
+                    requestedScreen = TargetScreen.UNSPECIFIED
+                },
+                onError = { logException(this, it) }
+            ).addTo(dataCompositeDisposable)
     }
 
     fun subscribeLogout() {
@@ -80,8 +122,10 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                         Pair(NavigationScope.NAV_LOGIN, true)
                     )
                     navScopesVisibilityController.value = scopes
-
                     navScopeEnabledController.value = Pair(NavigationScope.NAV_CHAT, false)
+
+                    isUserAuthorizedController.value = false
+
                 },
                 onError = {
                     logException(this, it)
@@ -95,8 +139,11 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
     }
 
     fun onChatClick() {
-        if (registrationInteractor.isAuthorized()){
+        if (registrationInteractor.isAuthorized()) {
             ScreenManager.showScreen(ChatFragment())
+        } else {
+            requestedScreen = TargetScreen.CHAT
+            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
         }
     }
 
@@ -114,6 +161,34 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
 
     fun onLoginClick(){
         ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+    }
+
+    fun onChatCallClick(){
+        if (registrationInteractor.isAuthorized()) {
+            ScreenManager.showScreen(
+                CallFragment.newInstance(
+                    CallType.AUDIO_CALL,
+                    chatInteractor.getCurrentConsultant()
+                )
+            )
+        } else {
+            requestedScreen = TargetScreen.AUDIO_CALL
+            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+        }
+    }
+
+    fun onChatVideoCallClick(){
+        if (registrationInteractor.isAuthorized()) {
+            ScreenManager.showScreen(
+                CallFragment.newInstance(
+                    CallType.VIDEO_CALL,
+                    chatInteractor.getCurrentConsultant()
+                )
+            )
+        } else {
+            requestedScreen = TargetScreen.VIDEO_CALL
+            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+        }
     }
 
     private fun checkSignedAgreement(){

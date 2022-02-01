@@ -208,4 +208,12 @@
         <attr name="cornerRadius" format="dimension"/>
     </declare-styleable>
 
+    <declare-styleable name="MSDProductPriceView">
+        <attr name="priceType" format="enum">
+            <enum name="fixed" value="0"/>
+            <enum name="unfixed" value="1"/>
+            <enum name="purchased" value="2"/>
+            <enum name="included" value="3"/>
+        </attr>
+    </declare-styleable>
 </resources>

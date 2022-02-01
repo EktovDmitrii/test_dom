@@ -5,6 +5,7 @@ import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.root.RootFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.onboarding.OnboardingFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -25,13 +26,25 @@ class SplashViewModel(private val registrationInteractor: RegistrationInteractor
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
             .subscribe({
-                checkAuth()
+                if (registrationInteractor.isFirstRun()) {
+                    showOnboarding()
+                } else {
+                    checkAuth()
+                }
             }, {
-                checkAuth()
+                if (registrationInteractor.isFirstRun()) {
+                    showOnboarding()
+                } else {
+                    checkAuth()
+                }
             })
             .addTo(dataCompositeDisposable)
     }
 
+    private fun showOnboarding() {
+        ScreenManager.showScreen(OnboardingFragment())
+        closeController.value = Unit
+    }
 
     private fun checkAuth(){
         if (registrationInteractor.isAuthorized()){

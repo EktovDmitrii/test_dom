@@ -49,6 +49,10 @@ class CatalogSubcategoryFragment : BaseBottomSheetFragment<CatalogSubcategoryVie
             viewModel.onBackClick()
         }
 
+        binding.searchImageView.setOnDebouncedClickListener {
+            viewModel.onSearchClick()
+        }
+
         subscribe(viewModel.titleObserver){
             binding.titleTextView.text = it
         }
