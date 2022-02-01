@@ -11,7 +11,7 @@ import com.custom.rgs_android_dom.databinding.ItemPopularCategoryBinding
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
 import com.custom.rgs_android_dom.utils.GlideApp
 import com.custom.rgs_android_dom.utils.dp
-import com.custom.rgs_android_dom.utils.formatServiceQuantity
+import com.custom.rgs_android_dom.utils.formatQuantity
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 
 class PopularCategoriesAdapter(private val onCategoryClick: (CatalogCategoryModel) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -49,7 +49,7 @@ class PopularCategoriesAdapter(private val onCategoryClick: (CatalogCategoryMode
         fun bind(model: CatalogCategoryModel) {
 
             binding.titleTextView.text = model.name
-            binding.quantityTextView.text = model.subCategories.size.formatServiceQuantity()
+            binding.quantityTextView.text = model.subCategories.size.formatQuantity()
 
             val requestOptions = RequestOptions().transform( CenterCrop(), RoundedCorners(ROUNDING_RADIUS.dp(binding.root.context)))
 
