@@ -9,6 +9,7 @@ import com.custom.rgs_android_dom.databinding.ItemCatalogPrimaryBigProductBindin
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
 import com.custom.rgs_android_dom.utils.GlideApp
 import com.custom.rgs_android_dom.utils.dp
+import com.custom.rgs_android_dom.utils.formatPrice
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 
 class GridVerticalPrimaryProductsAdapter(
@@ -41,7 +42,7 @@ class GridVerticalPrimaryProductsAdapter(
 
         fun bind(model: ProductShortModel) {
             binding.productNameTextView.text = model.name
-            binding.priceTextView.text = "${model.price} ₽"
+            binding.priceTextView.text = model.price.formatPrice()
 
             GlideApp.with(binding.root.context)
                 .load(GlideUrlProvider.makeHeadersGlideUrl(model.icon))
