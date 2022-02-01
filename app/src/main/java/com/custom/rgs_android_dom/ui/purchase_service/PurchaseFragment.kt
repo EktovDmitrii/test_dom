@@ -3,7 +3,7 @@ package com.custom.rgs_android_dom.ui.purchase_service
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentResultListener
+import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
@@ -96,19 +96,24 @@ class PurchaseFragment :
 
             purchase.email?.let { email ->
                 binding.layoutEmail.emailTextView.text = email
+                binding.layoutEmail.emailTextView.typeface = ResourcesCompat.getFont(requireContext(), R.font.suisse_semi_bold)
             }
             purchase.agentCode?.let { code ->
                 binding.layoutCodeAgent.codeAgentTextView.text = code
+                binding.layoutCodeAgent.codeAgentTextView.typeface = ResourcesCompat.getFont(requireContext(), R.font.suisse_semi_bold)
             }
             purchase.card?.let { card ->
                 if (card is SavedCardModel) {
                     binding.layoutPayment.paymentCardGroup.visible()
-                    binding.layoutPayment.paymentPlaceholderGroup.invisible()
+                    binding.layoutPayment.paymentNewCardImageView.invisible()
                     binding.layoutPayment.paymentCardNumberTextView.text = card.number.takeLast(4)
+                    binding.layoutPayment.paymentCardTextView.text = "Оплата картой"
+                    binding.layoutPayment.paymentCardTextView.typeface = ResourcesCompat.getFont(requireContext(), R.font.suisse_semi_bold)
                 } else {
                     binding.layoutPayment.paymentCardGroup.invisible()
-                    binding.layoutPayment.paymentPlaceholderGroup.visible()
-                    binding.layoutPayment.paymentPlaceholderTextView.text = (card as NewCardModel).title
+                    binding.layoutPayment.paymentNewCardImageView.visible()
+                    binding.layoutPayment.paymentCardTextView.text = (card as NewCardModel).title
+                    binding.layoutPayment.paymentCardTextView.typeface = ResourcesCompat.getFont(requireContext(), R.font.suisse_semi_bold)
                 }
             }
 
