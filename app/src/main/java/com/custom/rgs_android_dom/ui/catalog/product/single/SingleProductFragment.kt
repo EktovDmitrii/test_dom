@@ -47,8 +47,8 @@ class SingleProductFragment : BaseBottomSheetFragment<SingleProductViewModel, Fr
         subscribe(viewModel.productObserver){product->
             GlideApp.with(requireContext())
                 .load(GlideUrlProvider.makeHeadersGlideUrl(product.iconLink))
-                .transform(RoundedCorners(24.dp(requireContext())))
-                .into(binding.header.headerImg)
+                .transform(RoundedCorners(6.dp(requireContext())))
+                .into(binding.header.iconImageView)
 
             binding.header.headerTitle.text = product.name
             binding.header.headerDescription.text = product.title

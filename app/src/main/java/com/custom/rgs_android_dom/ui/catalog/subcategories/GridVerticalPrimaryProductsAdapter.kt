@@ -45,7 +45,7 @@ class GridVerticalPrimaryProductsAdapter(
 
             GlideApp.with(binding.root.context)
                 .load(GlideUrlProvider.makeHeadersGlideUrl(model.icon))
-                .transform(RoundedCorners(16f.dp(binding.root.context).toInt()))
+                .transform(RoundedCorners(6.dp(binding.root.context)))
                 .into(binding.iconImageView)
 
             binding.root.setOnDebouncedClickListener {
