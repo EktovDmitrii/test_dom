@@ -69,7 +69,7 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
             binding.about.aboutValue.text = product.description
             product.price?.amount?.let { price ->
                 binding.priceView.setPrice(price)
-                binding.detailButton.btnPrice.text = "$price ₽"
+                binding.detailButton.btnPrice.text = price.formatPrice()
             }
         }
 

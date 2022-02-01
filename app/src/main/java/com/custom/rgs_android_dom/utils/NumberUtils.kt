@@ -10,8 +10,12 @@ fun Int.formatPrice(): String {
     val formatter: DecimalFormat = NumberFormat.getInstance(Locale.getDefault()) as DecimalFormat
     val symbols: DecimalFormatSymbols = formatter.decimalFormatSymbols
     symbols.groupingSeparator = ' '
-    val f = DecimalFormat("###,###", symbols)
-    val formatted = f.format(this)
+
+    val f = DecimalFormat("###,###.00", symbols)
+    var formatted = f.format(this.toFloat() / 100f).replace(",", ".").replace(".00", "")
+    if (formatted.contains(".") && formatted.endsWith("0")){
+        formatted = formatted.replaceRange(formatted.lastIndexOf("0"), formatted.length, "")
+    }
     return StringBuilder()
         .append(formatted)
         .append(' ')

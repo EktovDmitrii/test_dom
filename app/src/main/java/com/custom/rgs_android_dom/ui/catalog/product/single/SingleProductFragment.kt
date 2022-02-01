@@ -56,7 +56,7 @@ class SingleProductFragment : BaseBottomSheetFragment<SingleProductViewModel, Fr
 
             product.price?.amount?.let { price ->
                 binding.priceView.setPrice(price)
-                binding.detailButton.btnPrice.text = "$price ₽"
+                binding.detailButton.btnPrice.text = price.formatPrice()
             }
 
             binding.validity.validityValue.text = "${product.duration?.units} ${product.duration?.unitType?.description}"
