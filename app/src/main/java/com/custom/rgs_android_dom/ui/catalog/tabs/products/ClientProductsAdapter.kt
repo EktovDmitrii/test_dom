@@ -50,9 +50,9 @@ class ClientProductsAdapter(
 
             GlideApp.with(binding.root.context)
                 .load(model.productIcon)
-                .transform(RoundedCorners(16.dp(binding.root.context)))
+                .transform(RoundedCorners(6.dp(binding.root.context)))
                 .error(R.drawable.rectangle_filled_lime_radius_16dp)
-                .into(binding.logoBigImageView)
+                .into(binding.logoSmallImageView)
 
             binding.root.setOnDebouncedClickListener {
                 onProductClick(model)
