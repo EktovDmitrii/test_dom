@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.purchase
 
+import android.util.Log
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -181,9 +182,9 @@ class PurchaseViewModel(
                     DATE_PATTERN_DATE_AND_TIME_FOR_PURCHASE
                 ) + TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT).removePrefix("GMT"),
                 timeFrom = purchase.purchaseDateTimeModel?.selectedPeriodModel!!.timeInterval.split(
-                    "-"
+                    "–"
                 )[0],
-                timeTo = purchase.purchaseDateTimeModel?.selectedPeriodModel!!.timeInterval.split("-")[1]
+                timeTo = purchase.purchaseDateTimeModel?.selectedPeriodModel!!.timeInterval.split("–")[1]
             )
                 .doOnSubscribe { isEnableButtonController.postValue(false) }
                 .subscribeOn(Schedulers.io())
