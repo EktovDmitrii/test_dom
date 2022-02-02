@@ -64,9 +64,7 @@ class TabCatalogViewModel(
     }
 
     fun onProductClick(productModel: ProductShortModel) {
-        if (registrationInteractor.isAuthorized()){
-            ScreenManager.showBottomScreen(ProductFragment.newInstance(productModel.id))
-        }
+        ScreenManager.showBottomScreen(ProductFragment.newInstance(productModel.id))
     }
 
     private fun loadCatalogCategories(){
