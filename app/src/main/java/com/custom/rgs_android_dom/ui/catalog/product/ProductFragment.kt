@@ -10,6 +10,7 @@ import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.catalog.ProductAdvantagesAdapter
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.utils.recycler_view.GridTwoSpanItemDecoration
+import com.custom.rgs_android_dom.views.MSDProductPriceView
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -67,13 +68,20 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
                 .load(GlideUrlProvider.makeHeadersGlideUrl(product.iconLink))
                 .transform(RoundedCorners(6.dp(requireContext())))
                 .into(binding.header.iconImageView)
+            GlideApp.with(requireContext())
+                .load(GlideUrlProvider.makeHeadersGlideUrl(product.logoMiddle))
+                .transform(RoundedCorners(16.dp(requireContext())))
+                .into(binding.header.logoImageView)
 
             binding.header.headerTitle.text = product.name
             binding.header.headerDescription.text = product.title
             binding.about.aboutValue.text = product.description
+            binding.priceView.type =
+                if (product.price?.fix == true) MSDProductPriceView.PriceType.Fixed
+                else MSDProductPriceView.PriceType.Unfixed
             product.price?.amount?.let { price ->
                 binding.priceView.setPrice(price)
-                binding.detailButton.btnPrice.text = price.formatPrice()
+                binding.detailButton.btnPrice.text = price.formatPrice(isFixed = product.price.fix)
             }
         }
 

@@ -6,7 +6,7 @@ import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import java.util.*
 
-fun Int.formatPrice(): String {
+fun Int.formatPrice(isFixed: Boolean = true): String {
     val formatter: DecimalFormat = NumberFormat.getInstance(Locale.getDefault()) as DecimalFormat
     val symbols: DecimalFormatSymbols = formatter.decimalFormatSymbols
     symbols.groupingSeparator = ' '
@@ -16,7 +16,11 @@ fun Int.formatPrice(): String {
     if (formatted.contains(".") && formatted.endsWith("0")){
         formatted = formatted.replaceRange(formatted.lastIndexOf("0"), formatted.length, "")
     }
-    return StringBuilder()
+    if (formatted.startsWith(".")) formatted = "0".plus(formatted)
+    return StringBuilder(
+        if (isFixed) ""
+        else "от "
+    )
         .append(formatted)
         .append(' ')
         .append(Html.fromHtml("&#x20bd",0))

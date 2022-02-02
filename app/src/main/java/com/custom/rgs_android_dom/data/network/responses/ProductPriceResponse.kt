@@ -8,6 +8,9 @@ data class ProductPriceResponse(
     val amount: Int?,
 
     @SerializedName("vatType")
-    val vatType: String?
+    val vatType: String?,
+
+    @SerializedName("fix")
+    val fix: Boolean
 
 )

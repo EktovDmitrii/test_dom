@@ -49,14 +49,20 @@ class SingleProductFragment : BaseBottomSheetFragment<SingleProductViewModel, Fr
                 .load(GlideUrlProvider.makeHeadersGlideUrl(product.iconLink))
                 .transform(RoundedCorners(6.dp(requireContext())))
                 .into(binding.header.iconImageView)
+            GlideApp.with(requireContext())
+                .load(GlideUrlProvider.makeHeadersGlideUrl(product.logoMiddle))
+                .transform(RoundedCorners(16.dp(requireContext())))
+                .into(binding.header.logoImageView)
 
             binding.header.headerTitle.text = product.name
             binding.header.headerDescription.text = product.title
             binding.about.aboutValue.text = product.description
-
+            binding.priceView.type =
+                if (product.price?.fix == true) MSDProductPriceView.PriceType.Fixed
+                else MSDProductPriceView.PriceType.Unfixed
             product.price?.amount?.let { price ->
                 binding.priceView.setPrice(price)
-                binding.detailButton.btnPrice.text = price.formatPrice()
+                binding.detailButton.btnPrice.text = price.formatPrice(isFixed = product.price.fix)
             }
 
             binding.validity.validityValue.text = "${product.duration?.units} ${product.duration?.unitType?.description}"

@@ -17,23 +17,27 @@
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/btnTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="28dp"
-            android:layout_marginStart="24dp"
+            android:paddingStart="24dp"
             android:fontFamily="@font/my_service_bold"
-            android:gravity="center"
+            android:gravity="start|center_vertical"
             app:translationTextKey="Оформить продукт"
+            android:lines="1"
             android:textColor="@color/white"
             android:textSize="14sp"
+            android:paddingEnd="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/separator"
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
+            android:id="@+id/separator"
             android:layout_width="1dp"
             android:layout_height="20dp"
-            android:layout_marginEnd="12dp"
             android:background="@color/white"
+            app:layout_constraintStart_toEndOf="@id/btnTitle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btnPrice"
             app:layout_constraintTop_toTopOf="parent" />
@@ -42,12 +46,14 @@
             android:id="@+id/btnPrice"
             android:layout_width="wrap_content"
             android:layout_height="28dp"
-            android:layout_marginEnd="24dp"
+            android:paddingEnd="24dp"
+            android:paddingStart="12dp"
             android:fontFamily="@font/my_service_bold"
             android:gravity="center"
-            tools:text="1500 ₽"
+            tools:text="от 230 000 ₽"
             android:textColor="@color/white"
             android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/separator"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
