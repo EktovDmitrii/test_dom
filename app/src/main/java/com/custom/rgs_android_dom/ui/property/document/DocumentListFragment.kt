@@ -90,7 +90,7 @@ class DocumentListFragment :
         }
 
         binding.addDocumentTextView.setOnDebouncedClickListener {
-            viewModel.isDeleteButtonVisible = false
+            viewModel.changeDeleteButtonsVisibility(false)
             openPropertyUploadDocumentsScreen()
         }
 
@@ -138,20 +138,23 @@ class DocumentListFragment :
 
             if (propertyItem.documents.isNotEmpty()) {
                 documentListAdapter.setItems(
-                    propertyItem.documents,
-                    isDeleteButtonVisible = viewModel.isDeleteButtonVisible
+                    propertyItem.documents
                 )
-
+            } else {
+                viewModel.changeDeleteButtonsVisibility(false)
             }
         }
         subscribe(viewModel.downloadFileObserver) {
             downloadFile(it)
         }
+        subscribe(viewModel.isDeleteButtonVisibleObserver) {
+            changeDeleteButtonVisibility(it)
+        }
     }
 
     override fun changeDeleteButtonVisibility(isDeleteButtonVisible: Boolean) {
-        binding.editDocumentListImageView.gone()
-        binding.saveDocumentListImageView.visible()
+        binding.editDocumentListImageView.visibleIf(!isDeleteButtonVisible)
+        binding.saveDocumentListImageView.visibleIf(isDeleteButtonVisible)
         documentListAdapter.showDeleteButton(isDeleteButtonVisible)
     }
 

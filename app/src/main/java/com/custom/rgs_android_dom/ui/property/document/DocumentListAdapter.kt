@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
@@ -42,8 +41,7 @@ class DocumentListAdapter(
         return documents.size
     }
 
-    fun setItems(files: List<PropertyDocument>, isDeleteButtonVisible: Boolean) {
-        this.isDeleteButtonVisible = isDeleteButtonVisible
+    fun setItems(files: List<PropertyDocument>) {
         documents.clear()
         documents.addAll(files)
         notifyDataSetChanged()

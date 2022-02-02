@@ -21,7 +21,8 @@ class DocumentViewModel(
     private val propertyInteractor: PropertyInteractor
 ) : BaseViewModel() {
 
-    var isDeleteButtonVisible = false
+    private val isDeleteButtonVisibleController = MutableLiveData<Boolean>()
+    val isDeleteButtonVisibleObserver: LiveData<Boolean> = isDeleteButtonVisibleController
 
     private val propertyItemController = MutableLiveData<PropertyItemModel>()
     val propertyDocumentsObserver: LiveData<PropertyItemModel> = propertyItemController
@@ -30,6 +31,8 @@ class DocumentViewModel(
     val downloadFileObserver: LiveData<PropertyDocument> = downloadFileController
 
     init {
+        isDeleteButtonVisibleController.value = false
+
         propertyItemController.postValue(propertyItemModel)
 
         propertyInteractor.propertyInfoStateSubject
@@ -95,7 +98,7 @@ class DocumentViewModel(
     }
 
     fun onFileClick(propertyDocument: PropertyDocument) {
-        isDeleteButtonVisible = false
+        changeDeleteButtonsVisibility(false)
         val documentType = propertyDocument.link.substringAfterLast(".", "missing")
         var documentIndex = 0
         propertyItemController.value?.documents?.forEachIndexed { index, propertyDoc ->
@@ -123,8 +126,12 @@ class DocumentViewModel(
         )
     }
 
+    fun changeDeleteButtonsVisibility(isDeleteButtonVisible: Boolean){
+        isDeleteButtonVisibleController.value = isDeleteButtonVisible
+    }
+
     fun deleteDocument(propertyDocument: PropertyDocument) {
-        isDeleteButtonVisible = true
+        changeDeleteButtonsVisibility(true)
         val documentsList = propertyItemController.value?.documents
         documentsList?.remove(propertyDocument)
         val newPropertyItemModel = documentsList?.let {
