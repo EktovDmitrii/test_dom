@@ -13,6 +13,9 @@ data class ProductResponse(
     @SerializedName("archivedAt")
     val archivedAt: DateTime?,
 
+    @SerializedName("advantages")
+    val advantages: List<String>?,
+
     @SerializedName("coolOff")
     val coolOff: ProductCoolOffResponse?,
 

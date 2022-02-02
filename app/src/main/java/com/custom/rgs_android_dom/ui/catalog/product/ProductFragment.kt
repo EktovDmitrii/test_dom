@@ -68,12 +68,17 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
                 .transform(RoundedCorners(6.dp(requireContext())))
                 .into(binding.header.iconImageView)
 
+            binding.validity.validityValue.text = "${product.duration?.units} ${product.duration?.unitType?.description}"
             binding.header.headerTitle.text = product.name
             binding.header.headerDescription.text = product.title
             binding.about.aboutValue.text = product.description
             product.price?.amount?.let { price ->
                 binding.priceView.setPrice(price)
                 binding.detailButton.btnPrice.text = price.formatPrice()
+            }
+            product.advantages?.let {
+                advantagesAdapter.setItems(it)
+                binding.advantagesLayout.root.visibleIf(it.isNotEmpty())
             }
         }
 
