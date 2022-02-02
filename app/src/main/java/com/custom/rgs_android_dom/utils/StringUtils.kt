@@ -66,3 +66,7 @@ fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(
 fun String.isValidEmail(): Boolean {
     return EMAIL_ADDRESS_PATTERN.matcher(this).matches()
 }
+
+fun String.extensionFromLink(): String {
+    return this.substringAfterLast(".", "missing")
+}
