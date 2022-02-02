@@ -6,14 +6,14 @@
     android:paddingHorizontal="28dp">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/previousMouthImageView"
+        android:id="@+id/previousMonthImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:src="@drawable/ic__arrow_left_24px" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
-        android:id="@+id/mouthTextView"
+        android:id="@+id/monthTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -23,7 +23,7 @@
         tools:text="Январь" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/nextMouthImageView"
+        android:id="@+id/nextMonthImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"

@@ -12,8 +12,8 @@
         layout="@layout/layout_bottom_sheet_swipe_anchor" />
 
     <include
-        android:id="@+id/selectedMouth"
-        layout="@layout/purchase_mouth_choose" />
+        android:id="@+id/selectedMonth"
+        layout="@layout/purchase_month_choose" />
 
     <com.custom.rgs_android_dom.views.MSDRecyclerView
         android:id="@+id/datesRecyclerView"
