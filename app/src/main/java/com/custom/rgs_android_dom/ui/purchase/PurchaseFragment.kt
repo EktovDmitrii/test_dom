@@ -157,6 +157,7 @@ class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding
         }
 
         subscribe(viewModel.isEnableButtonObserver) { isEnable ->
+            binding.makeOrderButton.productArrangeBtn.isEnabled = isEnable
             if (isEnable) {
                 binding.makeOrderButton.btnTitle.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
                 binding.makeOrderButton.btnPrice.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
