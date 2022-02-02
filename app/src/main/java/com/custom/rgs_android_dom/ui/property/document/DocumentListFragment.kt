@@ -95,9 +95,7 @@ class DocumentListFragment :
         }
 
         binding.saveDocumentListImageView.setOnDebouncedClickListener {
-            binding.editDocumentListImageView.visible()
-            binding.saveDocumentListImageView.gone()
-            documentListAdapter.showDeleteButton(false)
+            viewModel.changeDeleteButtonsVisibility(false)
         }
 
         binding.listDocumentsRecyclerView.adapter =
