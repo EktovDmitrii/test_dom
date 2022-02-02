@@ -2,10 +2,10 @@ package com.custom.rgs_android_dom.ui.purchase.edit_purchase_date_time
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseDateModel
-import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseDateTimeModel
-import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseInteractor
-import com.custom.rgs_android_dom.domain.purchase_service.model.PurchasePeriodModel
+import com.custom.rgs_android_dom.domain.purchase.model.PurchaseDateModel
+import com.custom.rgs_android_dom.domain.purchase.model.PurchaseDateTimeModel
+import com.custom.rgs_android_dom.domain.purchase.PurchaseInteractor
+import com.custom.rgs_android_dom.domain.purchase.model.PurchaseTimePeriodModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import org.joda.time.LocalDateTime
 
@@ -16,14 +16,14 @@ class PurchaseDateTimeViewModel(
 
     private var purchaseDateTime: PurchaseDateTimeModel? = null
 
-    var periodList: MutableList<PurchasePeriodModel> = mutableListOf()
+    var periodList: MutableList<PurchaseTimePeriodModel> = mutableListOf()
 
     private val dateListController = MutableLiveData<PurchaseDateModel>()
     val dateListObserver: LiveData<PurchaseDateModel> = dateListController
 
 
     init {
-        periodList = purchaseInteractor.createPeriodList()
+        periodList = purchaseInteractor.timePeriods
         purchaseDateTime = purchaseDateTimeModel
 
         if (purchaseDateTimeModel != null) {
@@ -66,7 +66,7 @@ class PurchaseDateTimeViewModel(
 
     }
 
-    fun selectPeriod(purchasePeriodModel: PurchasePeriodModel) {
+    fun selectPeriod(purchasePeriodModel: PurchaseTimePeriodModel) {
         val periodList = dateListController.value?.periodList
         periodList?.forEach {
             it.isSelected = purchasePeriodModel.id == it.id

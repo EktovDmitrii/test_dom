@@ -1,6 +1,6 @@
 package com.custom.rgs_android_dom.domain.repositories
 
-import com.custom.rgs_android_dom.domain.purchase_service.model.SavedCardModel
+import com.custom.rgs_android_dom.domain.purchase.model.SavedCardModel
 import io.reactivex.Single
 
 interface PurchaseRepository {

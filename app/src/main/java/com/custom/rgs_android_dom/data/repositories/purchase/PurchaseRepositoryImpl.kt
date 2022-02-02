@@ -5,7 +5,7 @@ import com.custom.rgs_android_dom.data.network.mappers.PurchaseMapper
 import com.custom.rgs_android_dom.data.network.requests.OrderRequest
 import com.custom.rgs_android_dom.data.network.requests.OrderTimeRequest
 import com.custom.rgs_android_dom.data.network.requests.PurchaseProductRequest
-import com.custom.rgs_android_dom.domain.purchase_service.model.SavedCardModel
+import com.custom.rgs_android_dom.domain.purchase.model.SavedCardModel
 import com.custom.rgs_android_dom.domain.repositories.PurchaseRepository
 import io.reactivex.Single
 

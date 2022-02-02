@@ -1,15 +1,14 @@
 package com.custom.rgs_android_dom.ui.purchase
 
-import android.util.Log
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
-import com.custom.rgs_android_dom.domain.purchase_service.model.*
+import com.custom.rgs_android_dom.domain.purchase.PurchaseInteractor
+import com.custom.rgs_android_dom.domain.purchase.model.*
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.purchase.edit_purchase_date_time.PurchaseDateTimeFragment
@@ -181,10 +180,8 @@ class PurchaseViewModel(
                 deliveryDate = purchase.purchaseDateTimeModel?.date?.formatTo(
                     DATE_PATTERN_DATE_AND_TIME_FOR_PURCHASE
                 ) + TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT).removePrefix("GMT"),
-                timeFrom = purchase.purchaseDateTimeModel?.selectedPeriodModel!!.timeInterval.split(
-                    "–"
-                )[0],
-                timeTo = purchase.purchaseDateTimeModel?.selectedPeriodModel!!.timeInterval.split("–")[1]
+                timeFrom = purchase.purchaseDateTimeModel?.selectedPeriodModel!!.timeFrom,
+                timeTo = purchase.purchaseDateTimeModel?.selectedPeriodModel!!.timeTo
             )
                 .doOnSubscribe { isEnableButtonController.postValue(false) }
                 .subscribeOn(Schedulers.io())

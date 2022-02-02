@@ -10,10 +10,10 @@ import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentPurchaseBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
-import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseDateTimeModel
-import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseModel
+import com.custom.rgs_android_dom.domain.purchase.model.PurchaseDateTimeModel
+import com.custom.rgs_android_dom.domain.purchase.model.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.domain.purchase_service.model.*
+import com.custom.rgs_android_dom.domain.purchase.model.*
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
 import com.custom.rgs_android_dom.ui.purchase.add_purchase_service_comment.PurchaseCommentFragment
 import com.custom.rgs_android_dom.ui.purchase.edit_purchase_date_time.PurchaseDateTimeFragment
@@ -180,7 +180,7 @@ class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding
     override fun onSelectDateTimeClick(purchaseDateTimeModel: PurchaseDateTimeModel) {
         binding.layoutDateTime.filledDateTimeGroup.visible()
         binding.layoutDateTime.chooseDateTimeTextView.gone()
-        binding.layoutDateTime.timesOfDayTextView.text = purchaseDateTimeModel.selectedPeriodModel?.timeInterval
+        binding.layoutDateTime.timesOfDayTextView.text = purchaseDateTimeModel.selectedPeriodModel?.displayTime
         binding.layoutDateTime.timeIntervalTextView.text = purchaseDateTimeModel.date.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
         viewModel.updateDateTime(purchaseDateTimeModel)
     }

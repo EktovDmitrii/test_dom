@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.custom.rgs_android_dom.databinding.FragmentBottomSelectCardBinding
-import com.custom.rgs_android_dom.domain.purchase_service.model.CardModel
-import com.custom.rgs_android_dom.domain.purchase_service.model.NewCardModel
+import com.custom.rgs_android_dom.domain.purchase.model.CardModel
+import com.custom.rgs_android_dom.domain.purchase.model.NewCardModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener

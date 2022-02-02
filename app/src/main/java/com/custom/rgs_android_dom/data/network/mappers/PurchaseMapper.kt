@@ -2,8 +2,8 @@ package com.custom.rgs_android_dom.data.network.mappers
 
 import com.custom.rgs_android_dom.data.network.responses.PurchaseResponse
 import com.custom.rgs_android_dom.data.network.responses.SavedCardResponse
-import com.custom.rgs_android_dom.domain.purchase_service.model.CardType
-import com.custom.rgs_android_dom.domain.purchase_service.model.SavedCardModel
+import com.custom.rgs_android_dom.domain.purchase.model.CardType
+import com.custom.rgs_android_dom.domain.purchase.model.SavedCardModel
 
 object PurchaseMapper {
 

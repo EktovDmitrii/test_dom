@@ -8,7 +8,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ItemDateTimeBinding
-import com.custom.rgs_android_dom.domain.purchase_service.model.DateForCalendarModel
+import com.custom.rgs_android_dom.domain.purchase.model.DateForCalendarModel
 import com.custom.rgs_android_dom.utils.dpToPx
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import java.util.*

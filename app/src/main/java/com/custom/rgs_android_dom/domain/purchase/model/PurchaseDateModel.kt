@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.domain.purchase_service.model
+package com.custom.rgs_android_dom.domain.purchase.model
 
 import org.joda.time.LocalDateTime
 
@@ -8,6 +8,6 @@ data class PurchaseDateModel(
     var isPreviousMonthButtonEnable: Boolean,
     val datesForCalendar: List<DateForCalendarModel>,
     var isSelectButtonEnable: Boolean,
-    var periodList: List<PurchasePeriodModel>,
-    var selectedPeriod: PurchasePeriodModel? = null
+    var periodList: List<PurchaseTimePeriodModel>,
+    var selectedPeriod: PurchaseTimePeriodModel? = null
 )

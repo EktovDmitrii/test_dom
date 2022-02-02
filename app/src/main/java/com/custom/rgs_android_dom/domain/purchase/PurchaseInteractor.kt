@@ -1,6 +1,7 @@
-package com.custom.rgs_android_dom.domain.purchase_service.model
+package com.custom.rgs_android_dom.domain.purchase
 
 import android.icu.text.SimpleDateFormat
+import com.custom.rgs_android_dom.domain.purchase.model.*
 import com.custom.rgs_android_dom.domain.repositories.PurchaseRepository
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DAY_OF_WEEK
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_YEAR_MONTH
@@ -12,20 +13,16 @@ import java.util.*
 
 class PurchaseInteractor(private val purchaseRepository: PurchaseRepository) {
 
-    fun createPeriodList(): MutableList<PurchasePeriodModel> {
-        val periodList: MutableList<PurchasePeriodModel> = mutableListOf()
-        periodList.apply {
-            add(PurchasePeriodModel(0, "Утро", "6:00 – 9:00", isSelected = false))
-            add(PurchasePeriodModel(1, "До полудня", "9:00 – 12:00", isSelected = false))
-            add(PurchasePeriodModel(2, "День", "12:00 – 15:00", isSelected = false))
-            add(PurchasePeriodModel(3, "Вечер", "15:00 – 18:00", isSelected = false))
-        }
-        return periodList
+    val timePeriods = mutableListOf<PurchaseTimePeriodModel>().apply {
+        add(PurchaseTimePeriodModel(0, timeOfDay = "Утро", displayTime = "6:00 – 9:00", timeFrom = "6:00", timeTo = "9:00", isSelected = false))
+        add(PurchaseTimePeriodModel(1, timeOfDay = "До полудня", displayTime = "9:00 – 12:00", timeFrom = "9:00", timeTo = "12:00", isSelected = false))
+        add(PurchaseTimePeriodModel(2, timeOfDay = "День", displayTime = "12:00 – 15:00", timeFrom = "12:00", timeTo = "15:00", isSelected = false))
+        add(PurchaseTimePeriodModel(3, timeOfDay = "Вечер", displayTime = "15:00 – 18:00", timeFrom = "15:00", timeTo = "18:00", isSelected = false))
     }
 
     fun createDateWeek(
         purchaseDateTimeModel: PurchaseDateTimeModel,
-        periodList: List<PurchasePeriodModel>
+        periodList: List<PurchaseTimePeriodModel>
     ): PurchaseDateModel {
         var firstDayInWeek =
             purchaseDateTimeModel.date.minusDays(purchaseDateTimeModel.date.dayOfWeek - 1)
@@ -115,7 +112,7 @@ class PurchaseInteractor(private val purchaseRepository: PurchaseRepository) {
         val periodList = checkPeriodEnable(purchaseDateModel.periodList, selectedDate)
         var isSelectedPeriodChanged = false
         periodList.forEach {
-            if (!it.isClickable && it.isSelected) {
+            if (!it.isSelectable && it.isSelected) {
                 it.isSelected = false
                 isSelectedPeriodChanged = true
             }
@@ -134,32 +131,33 @@ class PurchaseInteractor(private val purchaseRepository: PurchaseRepository) {
     }
 
     private fun checkPeriodEnable(
-        periodList: List<PurchasePeriodModel>,
+        periodList: List<PurchaseTimePeriodModel>,
         selectedDate: LocalDateTime
-    ): List<PurchasePeriodModel> {
+    ): List<PurchaseTimePeriodModel> {
         val currentDate = LocalDateTime.now()
         if (selectedDate.dayOfYear == currentDate.dayOfYear) {
             val currentTime = LocalTime.now()
             periodList.forEach {
-                when (it.timeInterval) {
-                    "6:00-9:00" -> {
-                        it.isClickable = LocalTime("9:00") >= currentTime
+                when (it.timeFrom) {
+                    "6:00" -> {
+                        it.isSelectable = LocalTime("9:00") >= currentTime
                     }
-                    "9:00-12:00" -> {
-                        it.isClickable = LocalTime("12:00") >= currentTime
+                    "9:00" -> {
+                        it.isSelectable = LocalTime("12:00") >= currentTime
                     }
-                    "12:00-15:00" -> {
-                        it.isClickable = LocalTime("15:00") >= currentTime
+                    "12:00" -> {
+                        it.isSelectable = LocalTime("15:00") >= currentTime
                     }
-                    "15:00-18:00" -> {
-                        it.isClickable = LocalTime("18:00") >= currentTime
+                    "15:00" -> {
+                        it.isSelectable = LocalTime("18:00") >= currentTime
                     }
-
                 }
+                it.isSelected = false
             }
         } else {
             periodList.forEach {
-                it.isClickable = true
+                it.isSelectable = true
+                it.isSelected = false
             }
         }
         return periodList
