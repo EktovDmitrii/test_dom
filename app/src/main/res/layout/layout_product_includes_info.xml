@@ -4,15 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingStart="20dp"
-    android:paddingEnd="20dp"
-    android:paddingBottom="24dp">
+    android:orientation="vertical" >
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/includesTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
         android:fontFamily="@font/suisse_regular"
         android:textAllCaps="true"
         android:textColor="@color/secondary600"
@@ -24,11 +22,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:layout_marginBottom="4dp"
-        android:clipChildren="false"
-        android:clipToPadding="false"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="28dp"
         android:overScrollMode="never"
-        android:paddingHorizontal="5dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"
         tools:itemCount="4"

@@ -20,6 +20,9 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
 
         private const val ARG_PRODUCT_ID = "ARG_PRODUCT_ID"
 
+        private const val GRID_HORIZONTAL_GAP = 16
+        private const val GRID_VERTICAL_GAP = 12
+
         fun newInstance(productId: String): ProductFragment {
             return ProductFragment().args {
                 putString(ARG_PRODUCT_ID, productId)
@@ -54,8 +57,9 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
             adapter = ProductInclusionAdapter {
                 viewModel.onServiceClick(it)
             }
-            val spacingInPixels = resources.getDimensionPixelSize(R.dimen.material_margin_normal)
-            addItemDecoration(GridTwoSpanItemDecoration(spacingInPixels))
+            val horizontalGapInPixels = GRID_HORIZONTAL_GAP.dp(requireActivity())
+            val verticalGapInPixels = GRID_VERTICAL_GAP.dp(requireActivity())
+            addItemDecoration(GridTwoSpanItemDecoration(horizontalGapInPixels, verticalGapInPixels))
         }
         binding.advantagesLayout.advantagesRecycler.adapter = ProductAdvantagesAdapter()
 

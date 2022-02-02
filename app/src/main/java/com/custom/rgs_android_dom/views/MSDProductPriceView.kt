@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdProductPriceBinding
+import com.custom.rgs_android_dom.utils.formatPrice
 import com.custom.rgs_android_dom.utils.visibleIf
 
 class MSDProductPriceView @JvmOverloads constructor(
@@ -39,7 +40,7 @@ class MSDProductPriceView @JvmOverloads constructor(
     }
 
     fun setPrice(price: Int) {
-        val priceStr = "$price ₽"
+        val priceStr = price.formatPrice()
         when (type) {
             PriceType.Fixed  -> binding.priceValue.text = priceStr
             PriceType.Unfixed -> binding.priceUnfixedValue.text = "от $priceStr"

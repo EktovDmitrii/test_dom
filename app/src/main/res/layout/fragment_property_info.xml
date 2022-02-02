@@ -165,13 +165,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:background="@drawable/rectangle_filled_white_radius_16dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingBottom="20dp">
 
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:layout_marginHorizontal="20dp"
+                        android:paddingHorizontal="20dp"
                         android:orientation="horizontal">
 
                         <com.custom.rgs_android_dom.views.text.MSDTextView
@@ -189,47 +190,26 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
-                            android:gravity="end"
                             android:fontFamily="@font/suisse_regular"
+                            android:gravity="end"
                             android:textColor="@color/secondary600"
                             android:textSize="14sp"
                             app:translationTextKey="Все" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
+                    <com.custom.rgs_android_dom.views.MSDRecyclerView
+                        android:id="@+id/listDocumentsRecyclerView"
                         android:layout_width="match_parent"
-                        android:layout_height="204dp"
+                        android:layout_height="116dp"
                         android:layout_marginTop="8dp"
-                        android:layout_marginHorizontal="20dp"
-                        android:orientation="horizontal">
-
-                        <FrameLayout
-                            android:id="@+id/uploadDocumentFrameLayout"
-                            android:layout_width="84dp"
-                            android:layout_height="116dp"
-                            android:layout_marginEnd="12dp"
-                            android:background="@drawable/rectangle_stroke_1dp_dashed_secondary_300_radius_8dp">
-
-                            <com.custom.rgs_android_dom.views.MSDImageView
-                                android:id="@+id/upload_document_image_view"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:foregroundGravity="center"
-                                android:src="@drawable/ic_plus_romb_30dp" />
-
-                        </FrameLayout>
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/listDocumentsRecyclerView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="116dp"
-                            android:orientation="horizontal"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            tools:itemCount="1"
-                            tools:listitem="@layout/item_property_upload_document" />
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+                        android:clipToPadding="false"
+                        android:paddingHorizontal="20dp"
+                        android:orientation="horizontal"
+                        android:overScrollMode="never"
+                        app:horizontalDecorationGap="12dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="1"
+                        tools:listitem="@layout/item_property_upload_document" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
