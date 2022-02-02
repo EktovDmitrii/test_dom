@@ -145,9 +145,6 @@ class DocumentListFragment :
         subscribe(viewModel.downloadFileObserver) {
             downloadFile(it)
         }
-        subscribe(viewModel.openFileObserver) {
-            openExistingFile(it)
-        }
     }
 
     override fun changeDeleteButtonVisibility(isDeleteButtonVisible: Boolean) {
@@ -185,12 +182,6 @@ class DocumentListFragment :
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         requireContext().startActivity(intent)
         requireContext().unregisterReceiver(onDownloadCompleteReceiver)
-    }
-
-    private fun openExistingFile(uri: Uri) {
-        val intent = Intent(Intent.ACTION_VIEW, uri)
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        startActivity(intent)
     }
 
     private fun openPropertyUploadDocumentsScreen() {

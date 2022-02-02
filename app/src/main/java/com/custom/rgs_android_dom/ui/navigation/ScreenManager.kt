@@ -1,7 +1,10 @@
 package com.custom.rgs_android_dom.ui.navigation
 
+import android.content.Intent
+import android.net.Uri
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -37,11 +40,14 @@ object ScreenManager {
     }
 
     fun resetStackAndShowScreen(
-        screen: BaseFragment<*,*>
+        screen: BaseFragment<*, *>
     ) {
-        activity?.let{
+        activity?.let {
             it.hideSoftwareKeyboard()
-            it.supportFragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            it.supportFragmentManager.popBackStackImmediate(
+                null,
+                FragmentManager.POP_BACK_STACK_INCLUSIVE
+            )
             scopes.clear()
             fragments.clear()
             bottomFragments.clear()
@@ -85,11 +91,11 @@ object ScreenManager {
 
     fun closeCurrentBottomFragment() {
         val transaction = beginTransaction() ?: return
-        if (bottomFragments.isNotEmpty()){
+        if (bottomFragments.isNotEmpty()) {
             transaction.remove(bottomFragments.last())
             transaction.commitAllowingStateLoss()
             bottomFragments.removeLast()
-            if (bottomFragments.isNotEmpty()){
+            if (bottomFragments.isNotEmpty()) {
                 onBottomSheetChanged(bottomFragments.last())
             }
         }
@@ -181,6 +187,12 @@ object ScreenManager {
 
         reInit()
         notifyCurrentVisibleFragment()
+    }
+
+    fun openDocument(uri: Uri) {
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        activity?.startActivity(intent)
     }
 
     private fun addFragmentInMap(fragment: BaseFragment<*, *>) {

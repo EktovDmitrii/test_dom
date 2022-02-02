@@ -29,9 +29,6 @@ class DocumentViewModel(
     private val downloadFileController = MutableLiveData<PropertyDocument>()
     val downloadFileObserver: LiveData<PropertyDocument> = downloadFileController
 
-    private val openFileController = MutableLiveData<Uri>()
-    val openFileObserver: LiveData<Uri> = openFileController
-
     init {
         propertyItemController.postValue(propertyItemModel)
 
@@ -97,7 +94,7 @@ class DocumentViewModel(
                         .absoluteFile.path + File.separator + propertyDocument.name
                 )
                 if (file.exists()) {
-                    openFileController.value = Uri.fromFile(file)
+                    ScreenManager.openDocument(Uri.fromFile(file))
                 } else {
                     downloadFileController.value = propertyDocument
                 }
