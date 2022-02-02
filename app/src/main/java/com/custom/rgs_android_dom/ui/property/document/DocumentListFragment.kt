@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
+import android.os.StrictMode
 import android.view.View
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.R
@@ -78,6 +79,14 @@ class DocumentListFragment :
         )
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val builder: StrictMode.VmPolicy.Builder = StrictMode.VmPolicy.Builder()
+
+        StrictMode.setVmPolicy(builder.build())
+        builder.detectFileUriExposure()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -110,7 +119,8 @@ class DocumentListFragment :
             )
 
         binding.editDocumentListImageView.setOnDebouncedClickListener {
-            val editDocumentListBottomSheetFragment = EditDocumentListBottomSheetFragment.newInstance()
+            val editDocumentListBottomSheetFragment =
+                EditDocumentListBottomSheetFragment.newInstance()
             editDocumentListBottomSheetFragment.show(
                 childFragmentManager,
                 EditDocumentListBottomSheetFragment.TAG
@@ -134,6 +144,9 @@ class DocumentListFragment :
         }
         subscribe(viewModel.downloadFileObserver) {
             downloadFile(it)
+        }
+        subscribe(viewModel.openFileObserver) {
+            openExistingFile(it)
         }
     }
 
@@ -174,7 +187,13 @@ class DocumentListFragment :
         requireContext().unregisterReceiver(onDownloadCompleteReceiver)
     }
 
-    private fun openPropertyUploadDocumentsScreen(){
+    private fun openExistingFile(uri: Uri) {
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        startActivity(intent)
+    }
+
+    private fun openPropertyUploadDocumentsScreen() {
         val propertyUploadFilesFragment = PropertyUploadDocumentsFragment()
         propertyUploadFilesFragment.show(childFragmentManager, propertyUploadFilesFragment.TAG)
     }

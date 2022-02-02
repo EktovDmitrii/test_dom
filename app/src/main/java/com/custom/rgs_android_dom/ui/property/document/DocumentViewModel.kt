@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui.property.document
 
 import android.net.Uri
+import android.os.Environment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
@@ -14,6 +15,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import java.io.File
 
 class DocumentViewModel(
     private val objectId: String,
@@ -26,6 +28,9 @@ class DocumentViewModel(
 
     private val downloadFileController = MutableLiveData<PropertyDocument>()
     val downloadFileObserver: LiveData<PropertyDocument> = downloadFileController
+
+    private val openFileController = MutableLiveData<Uri>()
+    val openFileObserver: LiveData<Uri> = openFileController
 
     init {
         propertyItemController.postValue(propertyItemModel)
@@ -85,12 +90,18 @@ class DocumentViewModel(
                 documentIndex = index
         }
         when (documentType) {
-            "jpg" -> showDetailDocumentScreen(documentIndex)
-            "jpeg" -> showDetailDocumentScreen(documentIndex)
-            "png" -> showDetailDocumentScreen(documentIndex)
-            "bmp" -> showDetailDocumentScreen(documentIndex)
+            "jpg", "jpeg", "png", "bmp" -> showDetailDocumentScreen(documentIndex)
             else -> {
-                downloadFileController.value = propertyDocument
+                val file = File(
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                        .absoluteFile.path + File.separator + propertyDocument.name
+                )
+                if (file.exists()) {
+                    openFileController.value = Uri.fromFile(file)
+                } else {
+                    downloadFileController.value = propertyDocument
+                }
+
             }
         }
     }
