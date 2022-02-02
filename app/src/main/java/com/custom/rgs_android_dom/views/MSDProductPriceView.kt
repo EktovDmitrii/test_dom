@@ -42,7 +42,7 @@ class MSDProductPriceView @JvmOverloads constructor(
         val priceStr = "$price ₽"
         when (type) {
             PriceType.Fixed  -> binding.priceValue.text = priceStr
-            PriceType.Unfixed -> binding.priceUnfixedValue.text = priceStr
+            PriceType.Unfixed -> binding.priceUnfixedValue.text = "от $priceStr"
             PriceType.Purchased -> binding.pricePurchasedValue.text = priceStr
             else -> throw IllegalArgumentException("Invalid price type: $type")
         }

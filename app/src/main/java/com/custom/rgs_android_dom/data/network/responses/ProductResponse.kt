@@ -40,6 +40,15 @@ data class ProductResponse(
     @SerializedName("iconLink")
     val iconLink: String?,
 
+    @SerializedName("logoSmall")
+    val logoSmall: String?,
+
+    @SerializedName("logoMiddle")
+    val logoMiddle: String?,
+
+    @SerializedName("logoLarge")
+    val logoLarge: String?,
+
     @SerializedName("id")
     val id: String,
 

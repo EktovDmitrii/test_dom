@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
-import android.util.Log
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.responses.*
 import com.custom.rgs_android_dom.domain.catalog.models.*
@@ -80,6 +79,9 @@ object CatalogMapper {
                 null
             },
             iconLink = "${BuildConfig.BASE_URL}/api/store/${response.iconLink}",
+            logoSmall = "${BuildConfig.BASE_URL}/api/store/${response.logoSmall}",
+            logoMiddle = "${BuildConfig.BASE_URL}/api/store/${response.logoMiddle}",
+            logoLarge = "${BuildConfig.BASE_URL}/api/store/${response.logoLarge}",
             id = response.id,
             insuranceProducts = response.insuranceProducts?.map {
                 InsuranceProductModel(
@@ -93,7 +95,8 @@ object CatalogMapper {
             price = if (response.price != null){
                 ProductPriceModel(
                     amount = response.price.amount,
-                    vatType = response.price.vatType
+                    vatType = response.price.vatType,
+                    fix = response.price.fix
                 )
             } else{
                 null
