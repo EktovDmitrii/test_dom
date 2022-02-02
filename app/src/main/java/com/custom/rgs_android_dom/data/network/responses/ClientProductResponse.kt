@@ -32,6 +32,15 @@ data class ClientProductResponse(
     @SerializedName("productIcon")
     val productIcon: String?,
 
+    @SerializedName("logoSmall")
+    val logoSmall: String?,
+
+    @SerializedName("logoMiddle")
+    val logoMiddle: String?,
+
+    @SerializedName("logoLarge")
+    val logoLarge: String?,
+
     @SerializedName("productId")
     val productId: String?,
 
