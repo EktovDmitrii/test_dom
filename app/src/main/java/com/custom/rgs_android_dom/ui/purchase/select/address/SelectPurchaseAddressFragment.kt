@@ -11,6 +11,7 @@ import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
+import com.custom.rgs_android_dom.utils.visibleIf
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 import java.io.Serializable
@@ -70,6 +71,9 @@ class SelectPurchaseAddressFragment : BaseBottomSheetModalFragment<SelectPurchas
         }
 
         subscribe(viewModel.propertyObserver) { property->
+            binding.contentLinearLayout.visibleIf(property.second.isNotEmpty())
+            binding.noPropertyLinearLayout.visibleIf(property.second.isEmpty())
+
             propertyListAdapter.setItems(property.first, property.second)
         }
     }

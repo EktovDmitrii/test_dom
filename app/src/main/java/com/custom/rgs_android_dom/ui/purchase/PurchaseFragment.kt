@@ -60,6 +60,10 @@ class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding
             viewModel.onAddressClick(childFragmentManager)
         }
 
+        binding.layoutNoProperty.root.setOnDebouncedClickListener {
+            viewModel.onAddressClick(childFragmentManager)
+        }
+
         binding.layoutProperty.addCommentTextView.setOnDebouncedClickListener {
             val editPurchaseServiceComment = PurchaseCommentFragment.newInstance()
             editPurchaseServiceComment.show(childFragmentManager, PurchaseCommentFragment.TAG)

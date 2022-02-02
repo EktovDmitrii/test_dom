@@ -125,12 +125,8 @@ class PurchaseViewModel(
     }
 
     fun onAddressClick(childFragmentManager: FragmentManager) {
-        val purchaseAddressFragment =
-            SelectPurchaseAddressFragment.newInstance(purchaseController.value?.propertyItemModel)
-        purchaseAddressFragment.show(
-            childFragmentManager,
-            purchaseAddressFragment.TAG
-        )
+        val purchaseAddressFragment = SelectPurchaseAddressFragment.newInstance(purchaseController.value?.propertyItemModel)
+        purchaseAddressFragment.show(childFragmentManager,purchaseAddressFragment.TAG)
     }
 
     fun onDateTimeClick(childFragmentManager: FragmentManager) {
