@@ -1,9 +1,8 @@
-package com.custom.rgs_android_dom.ui.purchase_service
+package com.custom.rgs_android_dom.ui.purchase
 
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentResultListener
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
@@ -15,16 +14,17 @@ import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.domain.purchase_service.model.*
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
-import com.custom.rgs_android_dom.ui.purchase_service.add_purchase_service_comment.PurchaseCommentFragment
-import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_date_time.PurchaseDateTimeFragment
-import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_service_address.PurchaseAddressFragment
+import com.custom.rgs_android_dom.ui.purchase.add_purchase_service_comment.PurchaseCommentFragment
+import com.custom.rgs_android_dom.ui.purchase.edit_purchase_date_time.PurchaseDateTimeFragment
+import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressFragment
+import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressListener
 import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
 class PurchaseFragment :
     BaseFragment<PurchaseViewModel, FragmentPurchaseBinding>(R.layout.fragment_purchase),
-    PurchaseAddressFragment.PurchaseAddressListener,
+    SelectPurchaseAddressListener,
     PurchaseCommentFragment.PurchaseCommentListener,
     PurchaseDateTimeFragment.PurchaseDateTimeListener,
     AddEmailBottomFragment.PurchaseEmailListener,
@@ -149,12 +149,8 @@ class PurchaseFragment :
         }
     }
 
-    override fun onSelectPropertyClick(propertyItemModel: PropertyItemModel) {
+    override fun onPropertySelected(propertyItemModel: PropertyItemModel) {
         viewModel.updateAddress(propertyItemModel)
-    }
-
-    override fun onAddPropertyClick() {
-        viewModel.onAddPropertyClick()
     }
 
     override fun onSaveCommentClick(comment: String) {

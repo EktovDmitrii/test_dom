@@ -15,7 +15,7 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
-import com.custom.rgs_android_dom.ui.purchase_service.PurchaseFragment
+import com.custom.rgs_android_dom.ui.purchase.PurchaseFragment
 
 class ProductViewModel(
     private val productId: String,

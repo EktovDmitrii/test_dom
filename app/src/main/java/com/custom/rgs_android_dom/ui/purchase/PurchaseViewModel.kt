@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.ui.purchase_service
+package com.custom.rgs_android_dom.ui.purchase
 
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
@@ -11,9 +11,8 @@ import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
-import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressFragment
-import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_date_time.PurchaseDateTimeFragment
-import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_service_address.PurchaseAddressFragment
+import com.custom.rgs_android_dom.ui.purchase.edit_purchase_date_time.PurchaseDateTimeFragment
+import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressFragment
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_AND_TIME_FOR_PURCHASE
 import com.custom.rgs_android_dom.utils.formatTo
 import com.custom.rgs_android_dom.utils.logException
@@ -123,7 +122,7 @@ class PurchaseViewModel(
 
     fun onAddressClick(childFragmentManager: FragmentManager) {
         val purchaseAddressFragment =
-            PurchaseAddressFragment.newInstance(purchaseController.value?.propertyItemModel)
+            SelectPurchaseAddressFragment.newInstance(purchaseController.value?.propertyItemModel)
         purchaseAddressFragment.show(
             childFragmentManager,
             purchaseAddressFragment.TAG
@@ -160,13 +159,6 @@ class PurchaseViewModel(
     fun onCodeAgentClick(childFragmentManager: FragmentManager) {
         val codeAgentBottomFragment = AddAgentBottomFragment()
         codeAgentBottomFragment.show(childFragmentManager, codeAgentBottomFragment.TAG)
-    }
-
-    fun onAddPropertyClick() {
-        ScreenManager.showScreenScope(
-            SelectAddressFragment.newInstance(propertyListSize ?: 0),
-            ADD_PROPERTY
-        )
     }
 
     fun makeOrder(navigateId: Int) {

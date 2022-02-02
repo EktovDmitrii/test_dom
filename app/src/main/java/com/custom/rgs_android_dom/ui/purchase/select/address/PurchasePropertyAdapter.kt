@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_service_address
+package com.custom.rgs_android_dom.ui.purchase.select.address
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,17 +7,15 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ItemPurchaseServicePropertyBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
-import com.custom.rgs_android_dom.utils.gone
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
-import com.custom.rgs_android_dom.utils.visible
+import com.custom.rgs_android_dom.utils.visibleIf
 
 class PurchasePropertyAdapter(
     private val onPropertyClick: (PropertyItemModel) -> Unit,
 ) : RecyclerView.Adapter<PurchasePropertyAdapter.PurchasePropertyViewHolder>() {
 
     private var propertyItems = mutableListOf<PropertyItemModel>()
-
-    private var currentPropertyItemModel: PropertyItemModel? = null
+    private var currentPropertyItem: PropertyItemModel? = null
 
     override fun onBindViewHolder(holder: PurchasePropertyViewHolder, position: Int) {
         (holder).bind(propertyItems[position])
@@ -39,13 +37,10 @@ class PurchasePropertyAdapter(
         return propertyItems.size
     }
 
-    fun setItems(
-        propertyList: List<PropertyItemModel>,
-        selectedProperty: PropertyItemModel
-    ) {
+    fun setItems(selectedProperty: PropertyItemModel?, propertyList: List<PropertyItemModel>) {
         propertyItems.clear()
         propertyItems.addAll(propertyList)
-        currentPropertyItemModel = selectedProperty
+        currentPropertyItem = selectedProperty
         notifyDataSetChanged()
     }
 
@@ -56,9 +51,6 @@ class PurchasePropertyAdapter(
 
         fun bind(property: PropertyItemModel) {
             binding.propertyAddressTextView.text = property.address?.address
-            binding.root.setOnDebouncedClickListener {
-                onPropertyClick(property)
-            }
             when (property.type) {
                 PropertyType.HOUSE -> {
                     binding.propertyTypeImageView.setImageResource(R.drawable.ic_type_home)
@@ -69,10 +61,11 @@ class PurchasePropertyAdapter(
                     binding.propertyTypeTextView.text = "Квартира"
                 }
             }
-            if (property == currentPropertyItemModel)
-                binding.checkImageView.visible()
-            else
-                binding.checkImageView.gone()
+            binding.checkImageView.visibleIf(property == currentPropertyItem)
+
+            binding.root.setOnDebouncedClickListener {
+                onPropertyClick(property)
+            }
         }
 
     }

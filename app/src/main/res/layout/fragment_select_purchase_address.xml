@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingHorizontal="20dp"
-    tools:context=".ui.purchase_service.edit_purchase_service_address.PurchaseAddressFragment">
+    tools:context=".ui.purchase.select.address.SelectPurchaseAddressFragment">
 
     <include
         android:id="@+id/swipeAnchorLayout"
