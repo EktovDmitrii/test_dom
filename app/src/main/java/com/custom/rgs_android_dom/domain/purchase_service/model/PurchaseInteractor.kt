@@ -15,10 +15,10 @@ class PurchaseInteractor(private val purchaseRepository: PurchaseRepository) {
     fun createPeriodList(): MutableList<PurchasePeriodModel> {
         val periodList: MutableList<PurchasePeriodModel> = mutableListOf()
         periodList.apply {
-            add(PurchasePeriodModel(0, "Утро", "6:00-9:00", isSelected = false))
-            add(PurchasePeriodModel(1, "До полудня", "9:00-12:00", isSelected = false))
-            add(PurchasePeriodModel(2, "День", "12:00-15:00", isSelected = false))
-            add(PurchasePeriodModel(3, "Вечер", "15:00-18:00", isSelected = false))
+            add(PurchasePeriodModel(0, "Утро", "6:00 – 9:00", isSelected = false))
+            add(PurchasePeriodModel(1, "До полудня", "9:00 – 12:00", isSelected = false))
+            add(PurchasePeriodModel(2, "День", "12:00 – 15:00", isSelected = false))
+            add(PurchasePeriodModel(3, "Вечер", "15:00 – 18:00", isSelected = false))
         }
         return periodList
     }
