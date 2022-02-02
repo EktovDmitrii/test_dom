@@ -127,7 +127,6 @@ class DocumentListFragment :
         }
         subscribe(viewModel.propertyDocumentsObserver) { propertyItem ->
 
-            binding.editDocumentListImageView.visibleIf(propertyItem.documents.isNotEmpty())
             binding.emptyDocListGroup.visibleIf(propertyItem.documents.isEmpty())
             binding.listDocumentsRecyclerView.visibleIf(propertyItem.documents.isNotEmpty())
 

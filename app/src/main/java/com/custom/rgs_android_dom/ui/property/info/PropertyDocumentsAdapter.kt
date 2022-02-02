@@ -4,7 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.custom.rgs_android_dom.databinding.ItemAddPropertyBinding
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.custom.rgs_android_dom.utils.GlideApp
+import com.custom.rgs_android_dom.utils.dp
+import com.custom.rgs_android_dom.utils.gone
+import com.custom.rgs_android_dom.utils.visible
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
@@ -14,10 +17,7 @@ import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 
 class PropertyDocumentsAdapter(private val onAddClick: () -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-import com.custom.rgs_android_dom.utils.GlideApp
-import com.custom.rgs_android_dom.utils.dp
-import com.custom.rgs_android_dom.utils.gone
-import com.custom.rgs_android_dom.utils.visible
+
 
     private var propertyUploadDocumentsItems = mutableListOf<Any>()
 
@@ -31,7 +31,7 @@ import com.custom.rgs_android_dom.utils.visible
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is PropertyDocumentsViewHolder -> {
-                holder.bind()
+                holder.bind(propertyUploadDocumentsItems[position] as PropertyDocument)
             }
             is AddPropertyViewHolder -> {
                 holder.bind()
@@ -77,10 +77,9 @@ import com.custom.rgs_android_dom.utils.visible
     }
 
     inner class PropertyDocumentsViewHolder(
-        binding: ItemPropertyDownloadedDocumentBinding
+        private val binding: ItemPropertyDownloadedDocumentBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind() {}
         fun bind(propertyDocument: PropertyDocument) {
             when (propertyDocument.link.substringAfterLast(".", "missing")) {
                 "jpg", "jpeg", "png", "bmp" -> {
