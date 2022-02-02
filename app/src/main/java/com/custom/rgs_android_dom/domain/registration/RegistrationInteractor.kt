@@ -44,4 +44,7 @@ class RegistrationInteractor(private val registrationRepository: RegistrationRep
         return registrationRepository.getLoginSubject()
     }
 
+    fun isFirstRun(): Boolean {
+        return registrationRepository.isFirstRun()
+    }
 }

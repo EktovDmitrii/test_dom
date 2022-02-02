@@ -3,22 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".ui.purchase_service.edit_purchase_date_time.PurchaseDateTimeFragment">
+    tools:context=".ui.purchase.edit_purchase_date_time.PurchaseDateTimeFragment">
 
     <include
         android:id="@+id/swipeAnchorLayout"
         layout="@layout/layout_bottom_sheet_swipe_anchor" />
 
     <include
-        android:id="@+id/selectedMouth"
-        layout="@layout/purchase_mouth_choose" />
+        android:id="@+id/selectedMonth"
+        layout="@layout/purchase_month_choose" />
 
     <com.custom.rgs_android_dom.views.MSDRecyclerView
         android:id="@+id/datesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:layout_marginHorizontal="4dp"
         android:nestedScrollingEnabled="false"
         android:orientation="horizontal"
@@ -40,6 +41,7 @@
             android:id="@+id/periodRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:overScrollMode="never"
             android:nestedScrollingEnabled="false"
             android:orientation="vertical"
             tools:itemCount="4"
@@ -54,7 +56,7 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="24dp"
         android:enabled="false"
-
+        android:layout_marginBottom="12dp"
         app:translationTextKey="Выбрать" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -125,7 +125,6 @@ class DocumentListFragment :
         binding.listDocumentsRecyclerView.apply {
             adapter = documentListAdapter
         }
-
         subscribe(viewModel.propertyDocumentsObserver) { propertyItem ->
 
             binding.editDocumentListImageView.visibleIf(propertyItem.documents.isNotEmpty())

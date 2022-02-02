@@ -38,7 +38,10 @@ class PropertyInfoFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.listDocumentsRecyclerView.adapter = PropertyDocumentsAdapter()
+        binding.listDocumentsRecyclerView.adapter = PropertyDocumentsAdapter {
+            val propertyUploadFilesFragment = PropertyUploadDocumentsFragment()
+            propertyUploadFilesFragment.show(childFragmentManager, propertyUploadFilesFragment.TAG)
+        }
 
         binding.backImageView.setOnDebouncedClickListener {
             onClose()
@@ -46,11 +49,6 @@ class PropertyInfoFragment :
 
         binding.moreImageView.setOnDebouncedClickListener {
 
-        }
-
-        binding.uploadDocumentFrameLayout.setOnDebouncedClickListener {
-            val propertyUploadFilesFragment = PropertyUploadDocumentsFragment()
-            propertyUploadFilesFragment.show(childFragmentManager, propertyUploadFilesFragment.TAG)
         }
 
         subscribe(viewModel.propertyItemObserver) { propertyItem ->
@@ -84,9 +82,8 @@ class PropertyInfoFragment :
             if (propertyItem.comment.isNotEmpty()) {
                 binding.commentTextView.setValue(propertyItem.comment)
             }
-            if (propertyItem.documents.isNotEmpty()) {
-                adapter.setItems(propertyItem.documents)
-            }
+
+            adapter.setItems(propertyItem.documents)
 
             binding.allDocumentsTextView.setOnDebouncedClickListener {
                 viewModel.onShowAllDocumentsClick()

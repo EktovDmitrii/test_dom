@@ -19,6 +19,9 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
 
         private const val ARG_PRODUCT_ID = "ARG_PRODUCT_ID"
 
+        private const val GRID_HORIZONTAL_GAP = 16
+        private const val GRID_VERTICAL_GAP = 12
+
         fun newInstance(productId: String): ProductFragment {
             return ProductFragment().args {
                 putString(ARG_PRODUCT_ID, productId)
@@ -45,32 +48,39 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
         }
-        binding.detailButton.btnTitle.setOnDebouncedClickListener {
+        binding.detailButton.root.setOnDebouncedClickListener {
             viewModel.onCheckoutClick()
         }
 
         binding.includes.includesRecycler.apply {
             adapter = ProductInclusionAdapter {
-                viewModel.onServiceClick()
+                viewModel.onServiceClick(it)
             }
-            val spacingInPixels = resources.getDimensionPixelSize(R.dimen.material_margin_normal)
-            addItemDecoration(GridTwoSpanItemDecoration(spacingInPixels))
+            val horizontalGapInPixels = GRID_HORIZONTAL_GAP.dp(requireActivity())
+            val verticalGapInPixels = GRID_VERTICAL_GAP.dp(requireActivity())
+            addItemDecoration(GridTwoSpanItemDecoration(horizontalGapInPixels, verticalGapInPixels))
         }
         binding.advantagesLayout.advantagesRecycler.adapter = ProductAdvantagesAdapter()
 
         subscribe(viewModel.productObserver) { product ->
             GlideApp.with(requireContext())
                 .load(GlideUrlProvider.makeHeadersGlideUrl(product.iconLink))
-                .transform(RoundedCorners(20.dp(requireContext())))
-                .into(binding.header.headerImg)
+                .transform(RoundedCorners(6.dp(requireContext())))
+                .into(binding.header.iconImageView)
 
             binding.header.headerTitle.text = product.name
             binding.header.headerDescription.text = product.title
             binding.about.aboutValue.text = product.description
-            product.price?.amount?.let {
-                binding.price.priceValue.text = DigitsFormatter.priceFormat(it)
-                binding.detailButton.btnPrice.text = DigitsFormatter.priceFormat(it)
+            product.price?.amount?.let { price ->
+                binding.priceView.setPrice(price)
+                binding.detailButton.btnPrice.text = price.formatPrice()
             }
+        }
+
+        subscribe(viewModel.productServicesObserver) {
+            inclusionAdapter.setItems(it)
+
+            binding.includes.root.visibleIf(it.isNotEmpty())
         }
     }
 

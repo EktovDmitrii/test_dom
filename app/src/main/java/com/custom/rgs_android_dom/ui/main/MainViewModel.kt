@@ -24,6 +24,7 @@ import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressFr
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.utils.ProgressTransformer
 import com.custom.rgs_android_dom.ui.sos.SOSFragment
+import com.custom.rgs_android_dom.ui.stories.StoriesFragment
 import com.custom.rgs_android_dom.utils.isInternetConnected
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.Single
@@ -233,6 +234,18 @@ class MainViewModel(
 
     fun onPopularProductClick(productId: String) {
         ScreenManager.showBottomScreen(ProductFragment.newInstance(productId))
+    }
+
+    fun onStoriesNewServiceClick() {
+        ScreenManager.showScreen(StoriesFragment.newInstance(StoriesFragment.TAB_NEW_SERVICE))
+    }
+
+    fun onStoriesGuaranteeClick() {
+        ScreenManager.showScreen(StoriesFragment.newInstance(StoriesFragment.TAB_GUARANTEE))
+    }
+
+    fun onStoriesSupportClick() {
+        ScreenManager.showScreen(StoriesFragment.newInstance(StoriesFragment.TAB_SUPPORT))
     }
 
 }

@@ -29,6 +29,7 @@
     <color name="secondary900_alpha80">#8F20201F</color>
     <color name="secondary900_alpha64">#A320201F</color>
     <color name="secondary900_alpha4">#0A20201F</color>
+    <color name="secondary900_alpha30">#4D20201F</color>
     <color name="secondary900_alpha48">#7A20201F</color>
     <color name="secondary900_alpha6">#0F20201F</color>
     <color name="error600_alpha12">#1FD45054</color>
@@ -43,6 +44,8 @@
     <color name="white_alpha80">#CCFFFFFF</color>
     <color name="white_alpha9">#17FFFFFF</color>
     <color name="secondary250_alpha48">#48DBDBDB</color>
+    <color name="dot_background">#CECBC7</color>
+    <color name="onboarding_background">#EBE7E2</color>
 
     <!-- TODO This is temorary name -->
     <color name="primary_200">#33F6A636</color>

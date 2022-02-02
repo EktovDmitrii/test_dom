@@ -176,9 +176,6 @@ dependencies {
     // View Binding
     implementation 'com.github.kirich1409:viewbindingpropertydelegate:1.4.7'
 
-    //Scrolling pager indicator
-    implementation "ru.tinkoff.scrollingpagerindicator:scrollingpagerindicator:1.0.6"
-
     // data binding
     annotationProcessor "com.android.databinding:compiler:3.1.4"
 

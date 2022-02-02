@@ -38,11 +38,11 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
         }
     }
 
-    override fun getShowcase(tags: List<String>?, fullText: String?): Single<List<ProductShortModel>> {
+    override fun getShowcase(tags: List<String>?, name: String?): Single<List<ProductShortModel>> {
         val showcaseSingle = if (authContentProviderManager.isAuthorized()){
-            api.getShowcase(tags?.joinToString(","), fullText, 0, 5000)
+            api.getShowcase(tags?.joinToString(","), name, 0, 5000)
         } else {
-            api.getGuestShowcase(tags?.joinToString(","), 0, 5000)
+            api.getGuestShowcase(tags?.joinToString(","), name, 0, 5000)
         }
 
         return showcaseSingle.map { response->
@@ -57,7 +57,9 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
     }
 
     override fun getProduct(productId: String): Single<ProductModel> {
-        return api.getProduct(productId).map { response->
+        val request = if (authContentProviderManager.isAuthorized()) api.getProduct(productId)
+            else api.getGuestProduct(productId)
+        return request.map { response->
             CatalogMapper.responseToProduct(response)
         }
     }

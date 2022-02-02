@@ -1,10 +1,9 @@
 package com.custom.rgs_android_dom.ui.root
 
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.TransitionDrawable
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.view.animation.*
 import android.widget.OverScroller
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentRootBinding
@@ -19,17 +18,15 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior.*
 
 class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.fragment_root) {
 
-    private lateinit var transitionBackground: TransitionDrawable
-
-    private val animationSet = AnimationSet(true)
-    private var canTransit = true
-    private var canTransitReverse = false
     private var bottomSheetInited = false
 
     private var bottomSheetMainFragment: BaseBottomSheetFragment<*, *>? = null
     private var bottomSheetBehavior: BottomSheetBehavior<*>? = null
     private var scroller: OverScroller? = null
     private var peekHeight: Int? = null
+
+    private var canTransit = true
+    private var canTransitReverse = false
 
     private val bottomSheetCallback = object : BottomSheetCallback() {
         override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -50,7 +47,9 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
         }
 
         override fun onSlide(bottomSheet: View, slideOffset: Float) {
-            if (slideOffset < 0.49f && slideOffset > 0.0f) {
+            if (slideOffset >= 0.71f){
+                onSlideStateChanged(SlideState.MOVING_TOP)
+            } else if (slideOffset < 0.60f && slideOffset > 0.0f) {
                 onSlideStateChanged(SlideState.MOVING_BOTTOM)
             } else if (slideOffset == 0.0f) {
                 onSlideStateChanged(SlideState.BOTTOM)
@@ -61,28 +60,15 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        transitionBackground = TransitionDrawable(
-            arrayOf(
-                ColorDrawable(requireContext().getColor(R.color.primary400)),
-                ColorDrawable(requireContext().getColor(R.color.primary700))
-            )
-        )
-
-        binding.contentConstraintLayout.background = transitionBackground
-
         ScreenManager.initBottomSheet(R.id.bottomContainer)
 
         ScreenManager.onBottomSheetChanged = {fragment->
             bottomSheetMainFragment = fragment
             measureAndShowFragment()
             updateNavigationView()
-        }
+       }
 
         ScreenManager.showBottomScreen(MainFragment())
-
-        binding.toolbarChatIcon.setOnDebouncedClickListener {
-            viewModel.onChatClick()
-        }
 
         binding.bottomNavigationView.selectNavigationScope(NavigationScope.NAV_MAIN)
 
@@ -106,6 +92,30 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
             }
         }
 
+        binding.actionsChatLinearLayout.setOnDebouncedClickListener {
+            //TODO Add navigation to MyChatScreen
+        }
+
+        binding.phoneCallLinearLayout.setOnDebouncedClickListener {
+            makePhoneCall()
+        }
+
+        binding.guestPhoneCallLinearLayout.setOnDebouncedClickListener {
+            makePhoneCall()
+        }
+
+        binding.chatLinearLayout.setOnDebouncedClickListener {
+            viewModel.onChatClick()
+        }
+
+        binding.chatCallLinearLayout.setOnDebouncedClickListener {
+            viewModel.onChatCallClick()
+        }
+
+        binding.chatVideoCallLinearLayout.setOnDebouncedClickListener {
+            viewModel.onChatVideoCallClick()
+        }
+
         subscribe(viewModel.navScopesVisibilityObserver){ scopes->
             scopes.forEach {
                 binding.bottomNavigationView.setNavigationScopeVisible(it.first, it.second)
@@ -114,6 +124,17 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
 
         subscribe(viewModel.navScopeEnabledObserver){
             binding.bottomNavigationView.setNavigationScopeEnabled(it.first, it.second)
+        }
+
+        subscribe(viewModel.isUserAuthorizedObserver){
+            binding.actionsChatsTextView.text = if (it) {
+                "Перейти ко всем чатам"
+            }
+            else {
+                "Войдите, чтобы видеть свои чаты"
+            }
+            binding.guestPhoneCallLinearLayout.goneIf(it)
+            binding.phoneCallLinearLayout.visibleIf(it)
         }
 
     }
@@ -134,14 +155,21 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
 
     override fun onVisibleToUser() {
         super.onVisibleToUser()
+        updateToolbarState()
         measureAndShowFragment()
         updateNavigationView()
+    }
+
+    private fun makePhoneCall(){
+        val phoneCallIntent = Intent(Intent.ACTION_DIAL)
+        phoneCallIntent.data = Uri.parse("tel:88006004358")
+        phoneCallIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        requireContext().startActivity(phoneCallIntent)
     }
 
     private fun measureAndShowFragment() {
 
         binding.root.afterMeasured {
-            initAnimations()
             bottomSheetBehavior = from<View>(binding.bottomContainer)
             scroller = bottomSheetBehavior?.getViewDragHelper()?.getScroller()
 
@@ -149,27 +177,7 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
 
             val bottomSheetTopPadding = binding.toolbarLinearLayout.height
 
-            // TODO Improve this later
-                /*when (bottomSheetMainFragment) {
-                    is ClientFragment -> {
-                        binding.toolbarLinearLayout.height
-                    }
-                    is MainStubFragment -> {
-                        binding.toolbarLinearLayout.height
-                    }
-                    is MainCatalogFragment -> {
-                        binding.toolbarLinearLayout.height
-                    }
-                    is CatalogSubcategoriesFragment -> {
-                        binding.toolbarLinearLayout.height
-                    }
-                    else -> 0.dp(requireContext())
-                }*/
-
-            peekHeight =
-                binding.root.getLocationOnScreen().y - binding.callContainerLinearLayout.getLocationOnScreen().y +
-                        8.dp(requireContext()) + bottomSheetTopPadding
-
+            peekHeight = binding.root.getLocationOnScreen().y - binding.actionsLinearLayout.getLocationOnScreen().y + bottomSheetTopPadding
             binding.bottomContainer.setPadding(0, bottomSheetTopPadding, 0, 0)
 
             beforeBottomSheetInit()
@@ -187,53 +195,23 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
         }
     }
 
-    private fun initAnimations() {
-        var fadeOut = AlphaAnimation(1f, 0f).apply {
-            duration = 300
-            interpolator = LinearInterpolator()
-            fillAfter = true
-        }
-
-        val slideUp = TranslateAnimation(
-            0f, 0f,
-            0f, -binding.swipeMoreTextView.height.toFloat()
-        ).apply {
-            duration = 300
-            interpolator = LinearInterpolator()
-            fillAfter = true
-        }
-
-        animationSet.addAnimation(fadeOut)
-        animationSet.addAnimation(slideUp)
-
-        animationSet.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(p0: Animation?) {
-            }
-
-            override fun onAnimationEnd(p0: Animation?) {
-                binding.swipeMoreTextView.invisible()
-            }
-
-            override fun onAnimationRepeat(p0: Animation?) {
-            }
-
-        })
-    }
-
     private fun onSlideStateChanged(newState: SlideState) {
         when (newState) {
             SlideState.TOP -> {
+                updateToolbarState()
+            }
+            SlideState.MOVING_TOP -> {
                 if (canTransitReverse) {
-                    transitionBackground.reverseTransition(100)
                     canTransitReverse = false
+                    binding.toolbarLinearLayout.fadeVisibility(View.VISIBLE, 300)
+                    binding.actionsLinearLayout.fadeVisibility(View.INVISIBLE, 300)
                 }
-                binding.swipeMoreTextView.visible()
                 canTransit = true
             }
             SlideState.MOVING_BOTTOM -> {
                 if (canTransit) {
-                    binding.swipeMoreTextView.startAnimation(animationSet)
-                    transitionBackground.startTransition(100)
+                    binding.toolbarLinearLayout.fadeVisibility(View.GONE, 500)
+                    binding.actionsLinearLayout.fadeVisibility(View.VISIBLE, 500)
                     canTransit = false
                     canTransitReverse = true
                 }
@@ -248,8 +226,6 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
         binding.bottomContainer.invisible()
         binding.fakeBottomContainer.visible()
         bottomSheetInited = false
-        binding.callContainerLinearLayout.gone()
-        binding.swipeMoreTextView.gone()
         bottomSheetBehavior?.peekHeight = binding.root.getLocationOnScreen().y
     }
 
@@ -257,9 +233,6 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
         binding.bottomContainer.visible()
         binding.fakeBottomContainer.gone()
         bottomSheetInited = true
-        binding.callContainerLinearLayout.visible()
-        binding.swipeMoreTextView.visible()
-
         peekHeight?.let {
             bottomSheetBehavior?.peekHeight = it
         }
@@ -275,6 +248,12 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
         }
     }
 
-    enum class SlideState { TOP, MOVING_BOTTOM, BOTTOM }
+    private fun updateToolbarState(){
+        if (canTransitReverse){
+            binding.actionsLinearLayout.invisible()
+            binding.toolbarLinearLayout.visible()
+        }
+    }
 
+    enum class SlideState { MOVING_TOP, TOP, MOVING_BOTTOM, BOTTOM }
 }

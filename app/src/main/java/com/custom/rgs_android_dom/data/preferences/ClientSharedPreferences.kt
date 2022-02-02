@@ -20,10 +20,24 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
         private const val PREF_KEY_LIVEKIT_CALL_ID = "PREF_KEY_LIVEKIT_ROOM_TOKEN"
         private const val PREF_KEY_AGENT = "PREF_KEY_AGENT"
         private const val PREF_EDIT_AGENT_WAS_REQUESTED = "PREF_TEXT_AGENT"
+
+        private const val PREFS_ONBOARDING = "OnboardingSharedPreference"
+        private const val PREF_IS_FIRST_RUN = "PREF_IS_FIRST_RUN"
     }
 
     private val preferences = context.getSharedPrefs(PREFS_NAME)
+    private val onboardingPreferences = context.getSharedPrefs(PREFS_ONBOARDING)
     private val rxPreferences = RxSharedPreferences.create(preferences)
+
+    fun isFirstRun(): Boolean {
+        return onboardingPreferences.getBoolean(PREF_IS_FIRST_RUN, true)
+    }
+
+    fun onFirstRun() {
+        onboardingPreferences.edit {
+            putBoolean(PREF_IS_FIRST_RUN, false)
+        }
+    }
 
     fun savePhone(phone: String){
         preferences.edit{

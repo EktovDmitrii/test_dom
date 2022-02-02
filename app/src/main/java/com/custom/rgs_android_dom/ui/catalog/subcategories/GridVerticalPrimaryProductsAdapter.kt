@@ -7,9 +7,9 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.ItemCatalogPrimaryBigProductBinding
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
-import com.custom.rgs_android_dom.utils.DigitsFormatter
 import com.custom.rgs_android_dom.utils.GlideApp
 import com.custom.rgs_android_dom.utils.dp
+import com.custom.rgs_android_dom.utils.formatPrice
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 
 class GridVerticalPrimaryProductsAdapter(
@@ -41,12 +41,12 @@ class GridVerticalPrimaryProductsAdapter(
         private val onProductClick: (ProductShortModel) -> Unit = {}) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: ProductShortModel) {
-            binding.productNameTextView.text = model.title
-            binding.priceTextView.text = DigitsFormatter.priceFormat(model.price)
+            binding.productNameTextView.text = model.name
+            binding.priceTextView.text = model.price.formatPrice()
 
             GlideApp.with(binding.root.context)
                 .load(GlideUrlProvider.makeHeadersGlideUrl(model.icon))
-                .transform(RoundedCorners(16f.dp(binding.root.context).toInt()))
+                .transform(RoundedCorners(6.dp(binding.root.context)))
                 .into(binding.iconImageView)
 
             binding.root.setOnDebouncedClickListener {

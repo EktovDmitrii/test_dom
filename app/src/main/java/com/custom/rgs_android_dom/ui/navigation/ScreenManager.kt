@@ -9,6 +9,7 @@ import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.demo.DemoFragment
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
+import com.custom.rgs_android_dom.ui.root.RootFragment
 import com.custom.rgs_android_dom.utils.activity.hideSoftwareKeyboard
 
 object ScreenManager {
@@ -196,7 +197,7 @@ object ScreenManager {
 
     private fun reInit() {
         if (fragments[menuTag].isNullOrEmpty() && scopes.isEmpty()) {
-            showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+            showScreen(RootFragment())
             //todo на время дэмо
             //showScreen(getFirstScreenForMenuItem(menuTag))
         }

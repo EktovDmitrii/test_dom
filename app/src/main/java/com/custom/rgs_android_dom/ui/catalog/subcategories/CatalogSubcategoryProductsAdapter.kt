@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.custom.rgs_android_dom.databinding.ItemCatalogSubcategoryDetailsProductBinding
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
+import com.custom.rgs_android_dom.utils.formatPrice
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 
 class CatalogSubcategoryProductsAdapter(
@@ -37,7 +38,7 @@ class CatalogSubcategoryProductsAdapter(
 
         fun bind(model: ProductShortModel) {
             binding.titleTextView.text = model.title
-            binding.priceTextView.text = "от ${model.price} ₽/шт"
+            binding.priceTextView.text = model.price.formatPrice()
 
             binding.root.setOnDebouncedClickListener {
                 onProductClick(model)

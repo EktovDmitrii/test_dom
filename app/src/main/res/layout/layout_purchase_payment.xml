@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="20dp">
+    android:paddingTop="16dp">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/paymentImageView"
@@ -13,11 +13,11 @@
         android:layout_marginStart="20dp"
         android:src="@drawable/ic_payment_24px"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/paymentPlaceholderTextView"
-        app:layout_constraintBottom_toBottomOf="@id/paymentPlaceholderTextView"/>
+        app:layout_constraintTop_toTopOf="@id/paymentCardTextView"
+        app:layout_constraintBottom_toBottomOf="@id/paymentCardTextView"/>
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
-        android:id="@+id/paymentPlaceholderTextView"
+        android:id="@+id/paymentCardTextView"
         android:layout_width="wrap_content"
         android:layout_height="24dp"
         android:layout_marginStart="18dp"
@@ -27,28 +27,11 @@
         android:gravity="center_vertical"
         android:textColor="@color/secondary800"
         android:textSize="16sp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/paymentImageView"
         app:layout_constraintTop_toTopOf="parent"
         app:translationTextKey="Выберите способ оплаты" />
-
-    <com.custom.rgs_android_dom.views.text.MSDTextView
-        android:id="@+id/paymentCardTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="24dp"
-        android:layout_marginStart="18dp"
-        android:includeFontPadding="false"
-        android:fontFamily="@font/suisse_semi_bold"
-        android:maxLines="2"
-        android:gravity="center_vertical"
-        android:textColor="@color/secondary800"
-        android:textSize="16sp"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/paymentImageView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:translationTextKey="Оплата картой" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/paymentCardTypeImageView"
@@ -58,7 +41,7 @@
         app:srcCompat="@mipmap/visa"
         app:layout_constraintEnd_toStartOf="@id/paymentCardNumberTextView"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/paymentPlaceholderTextView"/>
+        app:layout_constraintBottom_toBottomOf="@id/paymentCardTextView"/>
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/paymentCardNumberTextView"
@@ -71,7 +54,7 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/paymentPlaceholderTextView"
+        app:layout_constraintBottom_toBottomOf="@id/paymentCardTextView"
         tools:text="9914" />
 
     <androidx.constraintlayout.widget.Group
@@ -79,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="invisible"
-        app:constraint_referenced_ids="paymentCardTextView, paymentCardTypeImageView, paymentCardNumberTextView"
+        app:constraint_referenced_ids="paymentCardTypeImageView, paymentCardNumberTextView"
         />
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -90,14 +73,7 @@
         android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/paymentPlaceholderTextView"
-        />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/paymentPlaceholderGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="paymentPlaceholderTextView, paymentNewCardImageView"
+        app:layout_constraintBottom_toBottomOf="@id/paymentCardTextView"
         />
 
     <View
