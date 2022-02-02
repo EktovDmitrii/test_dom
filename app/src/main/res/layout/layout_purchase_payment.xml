@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="20dp">
+    android:paddingTop="16dp">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/paymentImageView"
@@ -27,7 +27,7 @@
         android:gravity="center_vertical"
         android:textColor="@color/secondary800"
         android:textSize="16sp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/paymentImageView"
         app:layout_constraintTop_toTopOf="parent"

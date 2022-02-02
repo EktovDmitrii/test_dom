@@ -1,76 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_marginTop="16dp"
-    android:paddingStart="20dp"
-    android:paddingEnd="28dp">
+    android:paddingStart="20dp">
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/filledDateTimeGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="timesOfDayTextView,timeIntervalTextView" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/filledDateTimeGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="timesOfDayTextView,timeIntervalTextView" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/dateTimeImageView"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:tint="@color/secondary900"
-        android:src="@drawable/ic_time_16px"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/dateTimeImageView"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:tint="@color/secondary800"
+            android:src="@drawable/ic_time_24px"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/chooseDateTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/suisse_regular"
+            android:maxLines="2"
+            android:textColor="@color/secondary900"
+            android:textSize="16sp"
+            android:includeFontPadding="false"
+            app:layout_constraintStart_toEndOf="@id/dateTimeImageView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/dateTimeImageView"
+            app:translationTextKey="Выберите дату и время " />
 
-    <com.custom.rgs_android_dom.views.text.MSDTextView
-        android:id="@+id/chooseDateTimeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:fontFamily="@font/suisse_regular"
-        android:maxLines="2"
-        android:textColor="@color/secondary900"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@id/dateTimeImageView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:translationTextKey="Выберите дату и время " />
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/timesOfDayTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:fontFamily="@font/my_service_bold"
+            android:maxLines="2"
+            android:textColor="@color/secondary800"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/dateTimeImageView"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="9:00 – 12:00"/>
 
-    <com.custom.rgs_android_dom.views.text.MSDTextView
-        android:id="@+id/timesOfDayTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/suisse_bold"
-        android:maxLines="2"
-        android:textColor="@color/secondary900"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@id/dateTimeImageView"
-        app:layout_constraintTop_toTopOf="parent" />
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/timeIntervalTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:fontFamily="@font/suisse_regular"
+            android:maxLines="2"
+            android:textColor="@color/secondary900"
+            android:textSize="14sp"
+            android:includeFontPadding="false"
+            app:layout_constraintStart_toEndOf="@id/dateTimeImageView"
+            app:layout_constraintTop_toBottomOf="@id/timesOfDayTextView"
+            tools:text="13 января 2022"/>
 
-    <com.custom.rgs_android_dom.views.text.MSDTextView
-        android:id="@+id/timeIntervalTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:fontFamily="@font/suisse_regular"
-        android:maxLines="2"
-        android:textColor="@color/secondary900"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@id/dateTimeImageView"
-        app:layout_constraintTop_toBottomOf="@id/timesOfDayTextView" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/arrowRightImageView"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_arrow_right_16dp"
+            android:tint="@color/secondary400"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/arrowRightImageView"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:src="@drawable/ic_arrow_right_16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/secondary200" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>
+
