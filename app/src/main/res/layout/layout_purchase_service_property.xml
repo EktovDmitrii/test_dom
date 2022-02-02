@@ -5,56 +5,60 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingStart="20dp"
-    android:layout_marginTop="30dp">
+    android:layout_marginTop="28dp">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/propertyTypeImageView"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:src="@drawable/ic_type_home"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/propertyTypeTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
+        android:layout_marginStart="20dp"
         android:includeFontPadding="false"
-        android:fontFamily="@font/suisse_bold"
+        android:fontFamily="@font/my_service_bold"
         android:textColor="@color/secondary900"
         android:textSize="14sp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintStart_toEndOf="@id/propertyTypeImageView"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/arrowRightAddressImageView"
         tools:text="Квартира" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/propertyAddressTextView"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
+        android:layout_marginStart="20dp"
         android:fontFamily="@font/suisse_regular"
         android:maxLines="2"
         android:textColor="@color/secondary900"
         android:textSize="14sp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintStart_toEndOf="@id/propertyTypeImageView"
         app:layout_constraintTop_toBottomOf="@id/propertyTypeTextView"
-        tools:text="г. Москва " />
+        app:layout_constraintEnd_toStartOf="@+id/arrowRightAddressImageView"
+        tools:text="г. Москва" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/arrowRightAddressImageView"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginEnd="28dp"
-        android:scaleType="center"
+        android:tint="@color/secondary400"
         app:srcCompat="@drawable/ic_arrow_right_16dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/addCommentTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="24dp"
         android:layout_marginTop="12dp"
         android:background="@drawable/rectangle_stroke_1dp_secondary_800_radius_4dp"
         android:drawableStart="@drawable/ic_pen_16"
@@ -62,6 +66,9 @@
         android:paddingHorizontal="10dp"
         android:textColor="@color/secondary900"
         android:textSize="12sp"
+        android:drawablePadding="7dp"
+        android:includeFontPadding="false"
+        android:gravity="center_vertical"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@id/propertyAddressTextView"
@@ -75,4 +82,5 @@
         app:layout_constraintStart_toStartOf="@id/propertyAddressTextView"
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@color/secondary200" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

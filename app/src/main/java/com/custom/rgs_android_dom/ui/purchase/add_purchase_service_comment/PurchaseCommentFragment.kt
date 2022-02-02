@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.ui.purchase_service.add_purchase_service_comment
+package com.custom.rgs_android_dom.ui.purchase.add_purchase_service_comment
 
 import android.os.Bundle
 import android.view.LayoutInflater

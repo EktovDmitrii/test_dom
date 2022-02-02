@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="20dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:paddingTop="16dp">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/emailImageView"
@@ -12,23 +12,26 @@
         android:layout_marginStart="20dp"
         android:scaleType="center"
         android:src="@drawable/ic_mail_black"
+        app:layout_constraintBottom_toBottomOf="@id/emailTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/emailTextView"
-        app:layout_constraintBottom_toBottomOf="@id/emailTextView"/>
+        app:layout_constraintTop_toTopOf="@id/emailTextView" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/emailTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="24dp"
         android:layout_marginStart="18dp"
-        android:includeFontPadding="false"
+        android:layout_marginBottom="16dp"
+        android:ellipsize="end"
         android:fontFamily="@font/suisse_regular"
-        android:maxLines="2"
         android:gravity="center_vertical"
+        android:includeFontPadding="false"
+        android:lines="1"
+        android:maxLines="1"
         android:textColor="@color/secondary800"
         android:textSize="16sp"
-        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/arrowRightImageView"
         app:layout_constraintStart_toEndOf="@id/emailImageView"
         app:layout_constraintTop_toTopOf="parent"
         app:translationTextKey="Добавить почту для чека" />
@@ -39,6 +42,7 @@
         android:layout_height="24dp"
         android:layout_marginEnd="20dp"
         android:src="@drawable/ic_arrow_right_16dp"
+        android:tint="@color/secondary400"
         app:layout_constraintBottom_toBottomOf="@id/emailTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -47,9 +51,9 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="64dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/secondary200"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@color/secondary200" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
-package com.custom.rgs_android_dom.ui.purchase_service
+package com.custom.rgs_android_dom.ui.purchase
 
+import android.util.Log
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,9 +12,8 @@ import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
-import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressFragment
-import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_date_time.PurchaseDateTimeFragment
-import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_service_address.PurchaseAddressFragment
+import com.custom.rgs_android_dom.ui.purchase.edit_purchase_date_time.PurchaseDateTimeFragment
+import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressFragment
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_AND_TIME_FOR_PURCHASE
 import com.custom.rgs_android_dom.utils.formatTo
 import com.custom.rgs_android_dom.utils.logException
@@ -60,7 +60,9 @@ class PurchaseViewModel(
             .subscribeBy(
                 onSuccess = {
                     propertyListSize = it.size
-                    if (it.isNotEmpty()) updateAddress(it.last())
+                    if (it.isNotEmpty()){
+                        updateAddress(it.last())
+                    }
                 },
                 onError = {
                     logException(this, it)
@@ -85,6 +87,7 @@ class PurchaseViewModel(
         newValue?.propertyItemModel = propertyItemModel
         newValue?.let {
             purchaseController.value = it
+            validateFields()
         }
     }
 
@@ -116,18 +119,15 @@ class PurchaseViewModel(
     }
 
     fun updateDateTime(purchaseDateTimeModel: PurchaseDateTimeModel) {
-        val newValue = purchaseController.value
-        newValue?.purchaseDateTimeModel = purchaseDateTimeModel
-        newValue?.let { purchaseController.postValue(it) }
+        purchaseController.value?.let {
+            purchaseController.value = it.copy(purchaseDateTimeModel = purchaseDateTimeModel)
+            validateFields()
+        }
     }
 
     fun onAddressClick(childFragmentManager: FragmentManager) {
-        val purchaseAddressFragment =
-            PurchaseAddressFragment.newInstance(purchaseController.value?.propertyItemModel)
-        purchaseAddressFragment.show(
-            childFragmentManager,
-            purchaseAddressFragment.TAG
-        )
+        val purchaseAddressFragment = SelectPurchaseAddressFragment.newInstance(purchaseController.value?.propertyItemModel)
+        purchaseAddressFragment.show(childFragmentManager,purchaseAddressFragment.TAG)
     }
 
     fun onDateTimeClick(childFragmentManager: FragmentManager) {
@@ -162,13 +162,6 @@ class PurchaseViewModel(
         codeAgentBottomFragment.show(childFragmentManager, codeAgentBottomFragment.TAG)
     }
 
-    fun onAddPropertyClick() {
-        ScreenManager.showScreenScope(
-            SelectAddressFragment.newInstance(propertyListSize ?: 0),
-            ADD_PROPERTY
-        )
-    }
-
     fun makeOrder(navigateId: Int) {
         purchaseObserver.value?.let { purchase ->
             purchaseInteractor.makeProductPurchase(
@@ -189,9 +182,9 @@ class PurchaseViewModel(
                     DATE_PATTERN_DATE_AND_TIME_FOR_PURCHASE
                 ) + TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT).removePrefix("GMT"),
                 timeFrom = purchase.purchaseDateTimeModel?.selectedPeriodModel!!.timeInterval.split(
-                    "-"
+                    "–"
                 )[0],
-                timeTo = purchase.purchaseDateTimeModel?.selectedPeriodModel!!.timeInterval.split("-")[1]
+                timeTo = purchase.purchaseDateTimeModel?.selectedPeriodModel!!.timeInterval.split("–")[1]
             )
                 .doOnSubscribe { isEnableButtonController.postValue(false) }
                 .subscribeOn(Schedulers.io())

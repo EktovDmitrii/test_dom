@@ -1,9 +1,9 @@
-package com.custom.rgs_android_dom.ui.purchase_service
+package com.custom.rgs_android_dom.ui.purchase
 
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentResultListener
+import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
@@ -15,16 +15,15 @@ import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.domain.purchase_service.model.*
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
-import com.custom.rgs_android_dom.ui.purchase_service.add_purchase_service_comment.PurchaseCommentFragment
-import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_date_time.PurchaseDateTimeFragment
-import com.custom.rgs_android_dom.ui.purchase_service.edit_purchase_service_address.PurchaseAddressFragment
+import com.custom.rgs_android_dom.ui.purchase.add_purchase_service_comment.PurchaseCommentFragment
+import com.custom.rgs_android_dom.ui.purchase.edit_purchase_date_time.PurchaseDateTimeFragment
+import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressListener
 import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-class PurchaseFragment :
-    BaseFragment<PurchaseViewModel, FragmentPurchaseBinding>(R.layout.fragment_purchase),
-    PurchaseAddressFragment.PurchaseAddressListener,
+class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding>(R.layout.fragment_purchase),
+    SelectPurchaseAddressListener,
     PurchaseCommentFragment.PurchaseCommentListener,
     PurchaseDateTimeFragment.PurchaseDateTimeListener,
     AddEmailBottomFragment.PurchaseEmailListener,
@@ -34,10 +33,11 @@ class PurchaseFragment :
 
     companion object {
         private const val ARG_PURCHASE_SERVICE_MODEL = "ARG_PURCHASE_SERVICE_MODEL"
-        fun newInstance(
-            purchaseModel: PurchaseModel
-        ): PurchaseFragment = PurchaseFragment().args {
-            putSerializable(ARG_PURCHASE_SERVICE_MODEL, purchaseModel)
+
+        fun newInstance(purchaseModel: PurchaseModel): PurchaseFragment {
+            return PurchaseFragment().args {
+                putSerializable(ARG_PURCHASE_SERVICE_MODEL, purchaseModel)
+            }
         }
     }
 
@@ -46,9 +46,7 @@ class PurchaseFragment :
     }
 
     override fun getParameters(): ParametersDefinition = {
-        parametersOf(
-            requireArguments().getSerializable(ARG_PURCHASE_SERVICE_MODEL) as PurchaseModel
-        )
+        parametersOf(requireArguments().getSerializable(ARG_PURCHASE_SERVICE_MODEL) as PurchaseModel)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,28 +55,40 @@ class PurchaseFragment :
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
         }
+
         binding.layoutProperty.root.setOnDebouncedClickListener {
             viewModel.onAddressClick(childFragmentManager)
         }
+
+        binding.layoutNoProperty.root.setOnDebouncedClickListener {
+            viewModel.onAddressClick(childFragmentManager)
+        }
+
         binding.layoutProperty.addCommentTextView.setOnDebouncedClickListener {
             val editPurchaseServiceComment = PurchaseCommentFragment.newInstance()
             editPurchaseServiceComment.show(childFragmentManager, PurchaseCommentFragment.TAG)
         }
+
         binding.layoutDateTime.root.setOnDebouncedClickListener {
             viewModel.onDateTimeClick(childFragmentManager)
         }
+
         binding.layoutPayment.root.setOnDebouncedClickListener {
             viewModel.onCardClick(childFragmentManager)
         }
+
         binding.layoutEmail.root.setOnDebouncedClickListener {
             viewModel.onEmailClick(childFragmentManager)
         }
+
         binding.layoutCodeAgent.root.setOnDebouncedClickListener {
             viewModel.onCodeAgentClick(childFragmentManager)
         }
+
         binding.makeOrderButton.productArrangeBtn.setOnDebouncedClickListener {
             viewModel.makeOrder(getNavigateId())
         }
+
         binding.makeOrderButton.btnTitle.text = "Заказать"
 
         subscribe(viewModel.purchaseObserver) { purchase ->
@@ -96,21 +106,31 @@ class PurchaseFragment :
 
             purchase.email?.let { email ->
                 binding.layoutEmail.emailTextView.text = email
+                binding.layoutEmail.emailTextView.typeface = ResourcesCompat.getFont(requireContext(), R.font.suisse_semi_bold)
             }
+
             purchase.agentCode?.let { code ->
                 binding.layoutCodeAgent.codeAgentTextView.text = code
+                binding.layoutCodeAgent.codeAgentTextView.typeface = ResourcesCompat.getFont(requireContext(), R.font.suisse_semi_bold)
             }
+
             purchase.card?.let { card ->
                 if (card is SavedCardModel) {
                     binding.layoutPayment.paymentCardGroup.visible()
-                    binding.layoutPayment.paymentPlaceholderGroup.invisible()
+                    binding.layoutPayment.paymentNewCardImageView.invisible()
                     binding.layoutPayment.paymentCardNumberTextView.text = card.number.takeLast(4)
+                    binding.layoutPayment.paymentCardTextView.text = "Оплата картой"
+                    binding.layoutPayment.paymentCardTextView.typeface = ResourcesCompat.getFont(requireContext(), R.font.suisse_semi_bold)
                 } else {
                     binding.layoutPayment.paymentCardGroup.invisible()
-                    binding.layoutPayment.paymentPlaceholderGroup.visible()
-                    binding.layoutPayment.paymentPlaceholderTextView.text = (card as NewCardModel).title
+                    binding.layoutPayment.paymentNewCardImageView.visible()
+                    binding.layoutPayment.paymentCardTextView.text = (card as NewCardModel).title
+                    binding.layoutPayment.paymentCardTextView.typeface = ResourcesCompat.getFont(requireContext(), R.font.suisse_semi_bold)
                 }
             }
+
+            binding.layoutProperty.root.visibleIf(purchase.propertyItemModel != null)
+            binding.layoutNoProperty.root.visibleIf(purchase.propertyItemModel == null)
 
             purchase.propertyItemModel?.let {
                 binding.layoutProperty.propertyTypeTextView.text = it.name
@@ -149,12 +169,8 @@ class PurchaseFragment :
         }
     }
 
-    override fun onSelectPropertyClick(propertyItemModel: PropertyItemModel) {
+    override fun onPropertySelected(propertyItemModel: PropertyItemModel) {
         viewModel.updateAddress(propertyItemModel)
-    }
-
-    override fun onAddPropertyClick() {
-        viewModel.onAddPropertyClick()
     }
 
     override fun onSaveCommentClick(comment: String) {
