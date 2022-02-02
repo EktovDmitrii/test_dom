@@ -85,6 +85,7 @@ class PurchaseViewModel(
         newValue?.propertyItemModel = propertyItemModel
         newValue?.let {
             purchaseController.value = it
+            validateFields()
         }
     }
 
@@ -116,9 +117,10 @@ class PurchaseViewModel(
     }
 
     fun updateDateTime(purchaseDateTimeModel: PurchaseDateTimeModel) {
-        val newValue = purchaseController.value
-        newValue?.purchaseDateTimeModel = purchaseDateTimeModel
-        newValue?.let { purchaseController.postValue(it) }
+        purchaseController.value?.let {
+            purchaseController.value = it.copy(purchaseDateTimeModel = purchaseDateTimeModel)
+            validateFields()
+        }
     }
 
     fun onAddressClick(childFragmentManager: FragmentManager) {

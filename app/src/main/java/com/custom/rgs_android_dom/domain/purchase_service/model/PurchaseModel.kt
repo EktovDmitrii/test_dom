@@ -15,5 +15,5 @@ data class PurchaseModel(
     val agentCode: String? = null,
     val card: CardModel? = null,
     var comment: String? = null,
-    var purchaseDateTimeModel: PurchaseDateTimeModel? = null
+    val purchaseDateTimeModel: PurchaseDateTimeModel? = null
 ) : Serializable
