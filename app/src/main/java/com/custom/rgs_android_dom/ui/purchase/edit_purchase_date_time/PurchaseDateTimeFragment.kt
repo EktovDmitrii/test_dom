@@ -66,10 +66,10 @@ class PurchaseDateTimeFragment :
         binding.periodRecyclerView.adapter = PurchasePeriodAdapter {
             viewModel.selectPeriod(it)
         }
-        binding.selectedMouth.nextMouthImageView.setOnDebouncedClickListener {
+        binding.selectedMonth.nextMonthImageView.setOnDebouncedClickListener {
             viewModel.plusWeek()
         }
-        binding.selectedMouth.previousMouthImageView.setOnDebouncedClickListener {
+        binding.selectedMonth.previousMonthImageView.setOnDebouncedClickListener {
             viewModel.minusWeek()
         }
         binding.selectTextView.setOnDebouncedClickListener {
@@ -86,19 +86,19 @@ class PurchaseDateTimeFragment :
             if (it.periodList.isNotEmpty()) {
                 periodListAdapter.setItems(it.periodList)
             }
-            binding.selectedMouth.mouthTextView.text = it.selectedMouth
+            binding.selectedMonth.monthTextView.text = it.selectedMonth
 
-            if (it.isPreviousMouthButtonEnable) {
-                binding.selectedMouth.previousMouthImageView.isEnabled = true
-                binding.selectedMouth.previousMouthImageView.setImageDrawable(
+            if (it.isPreviousMonthButtonEnable) {
+                binding.selectedMonth.previousMonthImageView.isEnabled = true
+                binding.selectedMonth.previousMonthImageView.setImageDrawable(
                     ContextCompat.getDrawable(
                         requireContext(),
                         R.drawable.ic__arrow_left_24px
                     )
                 )
             } else {
-                binding.selectedMouth.previousMouthImageView.isEnabled = false
-                binding.selectedMouth.previousMouthImageView.setImageDrawable(
+                binding.selectedMonth.previousMonthImageView.isEnabled = false
+                binding.selectedMonth.previousMonthImageView.setImageDrawable(
                     ContextCompat.getDrawable(
                         requireContext(),
                         R.drawable.ic__arrow_left_24px_secondary300

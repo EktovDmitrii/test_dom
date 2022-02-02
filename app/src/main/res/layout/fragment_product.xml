@@ -63,8 +63,8 @@
                 android:id="@+id/priceView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="20dp"
-                android:layout_marginBottom="24dp" />
+                android:layout_marginBottom="24dp"
+                android:paddingHorizontal="20dp" />
 
             <include
                 android:id="@+id/about"
@@ -75,9 +75,7 @@
 
             <include
                 android:id="@+id/includes"
-                layout="@layout/layout_product_includes_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                layout="@layout/layout_product_includes_info" />
 
             <include
                 android:id="@+id/advantagesLayout"
