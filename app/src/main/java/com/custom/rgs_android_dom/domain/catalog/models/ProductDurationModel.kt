@@ -5,4 +5,38 @@ import java.io.Serializable
 data class ProductDurationModel(
     val unitType: ProductUnitType,
     val units: Int
-): Serializable
+): Serializable {
+
+    override fun toString(): String {
+        when (unitType){
+            ProductUnitType.DAYS -> {
+                return when{
+                    units.toString().takeLast(2).toInt() in 11..19 -> "$units дней"
+                    units.toString().takeLast(1).toInt() == 1 -> "$units день"
+                    units.toString().takeLast(1).toInt() in 2..4 -> "$units дня"
+                    else -> "$this дней"
+                }
+             }
+            ProductUnitType.MONTHS -> {
+                return when{
+                    units.toString().takeLast(2).toInt() in 11..19 -> "$units месяцев"
+                    units.toString().takeLast(1).toInt() == 1 -> "$units месяц"
+                    units.toString().takeLast(1).toInt() in 2..4 -> "$units месяца"
+                    else -> "$this месяцев"
+                }
+            }
+            ProductUnitType.YEARS -> {
+                return when{
+                    units.toString().takeLast(2).toInt() in 11..19 -> "$units лет"
+                    units.toString().takeLast(1).toInt() == 1 -> "$units год"
+                    units.toString().takeLast(1).toInt() in 2..4 -> "$units года"
+                    else -> "$this лет"
+                }
+            }
+            else -> {
+                return "Unknown"
+            }
+        }
+    }
+
+}

@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.ui.purchase.edit_purchase_date_time
+package com.custom.rgs_android_dom.ui.purchase.select.date_time
 
 import android.util.DisplayMetrics
 import android.view.LayoutInflater

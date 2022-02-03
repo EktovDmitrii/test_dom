@@ -11,8 +11,11 @@ import com.custom.rgs_android_dom.domain.purchase.model.*
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
-import com.custom.rgs_android_dom.ui.purchase.edit_purchase_date_time.PurchaseDateTimeFragment
+import com.custom.rgs_android_dom.ui.purchase.add.agent.AddAgentBottomFragment
+import com.custom.rgs_android_dom.ui.purchase.select.date_time.PurchaseDateTimeFragment
 import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressFragment
+import com.custom.rgs_android_dom.ui.purchase.select.card.SelectCardFragment
+import com.custom.rgs_android_dom.ui.purchase.add.email.AddEmailFragment
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_AND_TIME_FOR_PURCHASE
 import com.custom.rgs_android_dom.utils.formatTo
 import com.custom.rgs_android_dom.utils.logException
@@ -147,12 +150,12 @@ class PurchaseViewModel(
     }
 
     fun onCardClick(childFragmentManager: FragmentManager) {
-        val cardFragment = SelectCardBottomFragment.newInstance()
+        val cardFragment = SelectCardFragment.newInstance(purchaseController.value?.card)
         cardFragment.show(childFragmentManager, cardFragment.TAG)
     }
 
     fun onEmailClick(childFragmentManager: FragmentManager) {
-        val emailBottomFragment = AddEmailBottomFragment()
+        val emailBottomFragment = AddEmailFragment()
         emailBottomFragment.show(childFragmentManager, emailBottomFragment.TAG)
     }
 

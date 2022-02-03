@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.ui.purchase
+package com.custom.rgs_android_dom.ui.purchase.select.card
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -15,7 +15,7 @@ import com.custom.rgs_android_dom.utils.GlideApp
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.visibleIf
 
-class SelectCardAdapter(
+class CardsAdapter(
     private val onCardSelected: (CardModel) -> Unit = {}
 ) : RecyclerView.Adapter<BaseViewHolder<CardModel>>() {
 
@@ -25,16 +25,13 @@ class SelectCardAdapter(
     }
 
     private var cards: List<CardModel> = listOf(NewCardModel())
-    private var selectedPosition: Int? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<CardModel> {
         return if (viewType == TYPE_SAVED_CARD_ITEM) {
-            val binding =
-                ItemPurchaseCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            val binding = ItemPurchaseCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             SavedCardItemViewHolder(binding, onCardSelected)
         } else {
-            val binding =
-                ItemPurchaseNewCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            val binding = ItemPurchaseNewCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             NewCardItemViewHolder(binding, onCardSelected)
         }
     }
@@ -53,20 +50,20 @@ class SelectCardAdapter(
     }
 
     fun setItems(cards: List<CardModel>){
-        this.cards = cards.plus(NewCardModel())
+        this.cards = cards
         notifyDataSetChanged()
     }
 
-    private fun toggleSelectedItems(currPosition: Int) {
-        if (currPosition != selectedPosition) {
-            selectedPosition?.let { lastPosition ->
-                cards[lastPosition].isSelected = false
-                notifyItemChanged(lastPosition)
-            }
-            cards[currPosition].isSelected = true
-            notifyItemChanged(currPosition)
-            selectedPosition = currPosition
+    private fun toggleSelection(selectedCard: CardModel) {
+        var currentSelectedCardPosition = cards.indexOf(cards.find { it.isSelected })
+        if (currentSelectedCardPosition != -1){
+            cards[currentSelectedCardPosition].isSelected = false
+            notifyItemChanged(currentSelectedCardPosition)
         }
+
+        selectedCard.isSelected = true
+        val newSelectedCardPosition = cards.indexOf(selectedCard)
+        notifyItemChanged(newSelectedCardPosition)
     }
 
     inner class NewCardItemViewHolder(
@@ -84,8 +81,7 @@ class SelectCardAdapter(
                 onCardSelect(newCard)
             }
             binding.root.setOnDebouncedClickListener {
-                toggleSelectedItems(absoluteAdapterPosition)
-
+                toggleSelection(newCard)
                 onCardSelect(newCard)
             }
         }
@@ -112,8 +108,7 @@ class SelectCardAdapter(
             binding.cardNumberTextView.text = savedCard.number
 
             binding.root.setOnDebouncedClickListener {
-                toggleSelectedItems(absoluteAdapterPosition)
-
+                toggleSelection(savedCard)
                 onCardSelect(savedCard)
             }
         }

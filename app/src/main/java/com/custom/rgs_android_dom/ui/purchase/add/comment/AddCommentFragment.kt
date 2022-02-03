@@ -1,39 +1,27 @@
-package com.custom.rgs_android_dom.ui.purchase.add_purchase_service_comment
+package com.custom.rgs_android_dom.ui.purchase.add.comment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import by.kirich1409.viewbindingdelegate.CreateMethod
-import by.kirich1409.viewbindingdelegate.viewBinding
 import com.custom.rgs_android_dom.R
-import com.custom.rgs_android_dom.databinding.FragmentPurchaseCommentBinding
+import com.custom.rgs_android_dom.databinding.FragmentAddCommentBinding
+import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
+import com.custom.rgs_android_dom.ui.purchase.add.email.AddEmailViewModel
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.io.Serializable
 
-class PurchaseCommentFragment : BottomSheetDialogFragment() {
-
-    private val binding: FragmentPurchaseCommentBinding by viewBinding(createMethod = CreateMethod.INFLATE)
+class AddCommentFragment : BaseBottomSheetModalFragment<AddEmailViewModel, FragmentAddCommentBinding>() {
 
     private var purchaseCommentListener: PurchaseCommentListener? = null
 
-    companion object {
-        const val TAG: String = "EDIT_PURCHASE_SERVICE_COMMENT_FRAGMENT"
-
-        fun newInstance(): PurchaseCommentFragment =
-            PurchaseCommentFragment()
-    }
+    override val TAG = "ADD_COMMENT_FRAGMENT"
 
     override fun getTheme(): Int {
         return R.style.BottomSheet
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         if (parentFragment is PurchaseCommentListener) {
             purchaseCommentListener = parentFragment as PurchaseCommentListener
         }
@@ -42,6 +30,10 @@ class PurchaseCommentFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.commentTextInputLayout.addTextWatcher {
+            binding.saveTextView.isEnabled = it.isNotEmpty()
+        }
 
         binding.saveTextView.setOnDebouncedClickListener {
             purchaseCommentListener?.onSaveCommentClick(binding.commentTextInputLayout.getText())

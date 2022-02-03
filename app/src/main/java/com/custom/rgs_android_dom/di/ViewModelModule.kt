@@ -52,8 +52,12 @@ import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressVi
 import com.custom.rgs_android_dom.ui.property.document.DocumentViewModel
 import com.custom.rgs_android_dom.ui.property.document.detail_document.DetailDocumentViewModel
 import com.custom.rgs_android_dom.ui.purchase.*
+import com.custom.rgs_android_dom.ui.purchase.add.agent.AddAgentViewModel
 import com.custom.rgs_android_dom.ui.sos.SOSViewModel
-import com.custom.rgs_android_dom.ui.purchase.edit_purchase_date_time.PurchaseDateTimeViewModel
+import com.custom.rgs_android_dom.ui.purchase.select.date_time.PurchaseDateTimeViewModel
+import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressViewModel
+import com.custom.rgs_android_dom.ui.purchase.select.card.SelectCardViewModel
+import com.custom.rgs_android_dom.ui.purchase.add.email.AddEmailViewModel
 import com.custom.rgs_android_dom.ui.stories.StoriesViewModel
 import com.custom.rgs_android_dom.ui.stories.tabs.TabGuaranteeViewModel
 import com.custom.rgs_android_dom.ui.stories.tabs.TabNewServiceViewModel
@@ -110,14 +114,9 @@ val viewModelModule = module {
     viewModel { parameters -> ProductViewModel(product = parameters.get(), registrationInteractor = get(), catalogInteractor = get(), propertyInteractor = get()) }
     viewModel { parameters -> CatalogPrimaryProductsViewModel(category = parameters.get()) }
     viewModel { parameters -> PurchaseViewModel(parameters.get(), propertyInteractor = get(), clientInteractor = get(), purchaseInteractor = get()) }
-    viewModel { parameters ->
-        com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressViewModel(
-            selectedPropertyItem = parameters[0],
-            propertyInteractor = get()
-        )
-    }
-    viewModel { parameters -> PurchaseDateTimeViewModel(purchaseDateTimeModel = parameters.get(), purchaseInteractor = get())}
-    viewModel { SelectCardViewModel(purchaseInteractor = get()) }
+    viewModel { parameters -> SelectPurchaseAddressViewModel(selectedPropertyItem = parameters[0], propertyInteractor = get())}
+    viewModel { parameters -> PurchaseDateTimeViewModel(purchaseDateTimeModel = parameters.get(), purchaseInteractor = get()) }
+    viewModel { parameters -> SelectCardViewModel(selectedCard = parameters[0], purchaseInteractor = get()) }
     viewModel { AddEmailViewModel() }
     viewModel { AddAgentViewModel(clientInteractor = get()) }
     viewModel { SOSViewModel(chatInteractor = get(), registrationInteractor = get(), clientInteractor = get(), context = get()) }

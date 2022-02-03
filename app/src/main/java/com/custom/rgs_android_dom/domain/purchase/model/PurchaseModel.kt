@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.domain.purchase.model
 
+import com.custom.rgs_android_dom.domain.catalog.models.ProductDurationModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductPriceModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import java.io.Serializable
@@ -7,6 +8,8 @@ import java.io.Serializable
 //Todo расширится
 data class PurchaseModel(
     val id: String,
+    val defaultProduct: Boolean,
+    val duration: ProductDurationModel?,
     val iconLink: String,
     val name: String,
     val price: ProductPriceModel?,

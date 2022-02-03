@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.ui.purchase
+package com.custom.rgs_android_dom.ui.purchase.add.agent
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

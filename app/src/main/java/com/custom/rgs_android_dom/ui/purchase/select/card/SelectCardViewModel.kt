@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.ui.purchase
+package com.custom.rgs_android_dom.ui.purchase.select.card
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,6 +12,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
 class SelectCardViewModel(
+    private var selectedCard: CardModel?,
     purchaseInteractor: PurchaseInteractor
 ) : BaseViewModel() {
 
@@ -22,6 +23,10 @@ class SelectCardViewModel(
         purchaseInteractor.getSavedCards()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .map {savedCards->
+                savedCards.find { it.id == selectedCard?.id }?.isSelected = true
+                return@map savedCards
+            }
             .subscribeBy(
                 onSuccess = {
                     savedCardsController.value = it
