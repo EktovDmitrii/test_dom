@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.domain.catalog.models.AvailableServiceModel
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
+import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductLauncher
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -54,7 +55,14 @@ class TabAvailableServicesViewModel(
     }
 
     fun onServiceClick(service: AvailableServiceModel) {
-        val singleProductFragment = SingleProductFragment.newInstance(service.productId)
+        val singleProductFragment = SingleProductFragment.newInstance(
+            SingleProductLauncher(
+                productId = service.serviceId,
+                isPurchased = true,
+                paidDate = service.validityFrom,
+                purchaseObjectId = service.objectId
+            )
+        )
         ScreenManager.showBottomScreen(singleProductFragment)
     }
 

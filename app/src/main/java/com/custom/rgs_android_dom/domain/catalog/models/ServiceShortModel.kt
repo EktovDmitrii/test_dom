@@ -8,5 +8,6 @@ data class ServiceShortModel(
     val serviceCode: String?,
     val serviceId: String?,
     val serviceName: String?,
-    val serviceVersionId: String?
+    val serviceVersionId: String?,
+    val isPurchased: Boolean = false
 )

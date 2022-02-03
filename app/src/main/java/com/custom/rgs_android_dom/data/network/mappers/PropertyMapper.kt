@@ -14,7 +14,7 @@ import java.io.File
 
 object PropertyMapper {
 
-    const val STORE_PATH = "$BASE_URL/store/"
+    const val STORE_PATH = "$BASE_URL/api/store/"
 
     fun responseToProperty(response: PropertyItemResponse): PropertyItemModel {
         val isOwn = if (response.isOwn == "yes") true else if (response.isOwn == "no") false else null

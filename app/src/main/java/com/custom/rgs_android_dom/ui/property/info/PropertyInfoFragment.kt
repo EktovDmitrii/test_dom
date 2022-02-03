@@ -19,7 +19,7 @@ class PropertyInfoFragment :
     override val TAG: String = "PROPERTY_INFO_FRAGMENT"
 
     private val adapter: PropertyDocumentsAdapter
-        get() = binding.listDocumentsRecyclerView.adapter as PropertyDocumentsAdapter
+        get() = binding.documentsRecyclerView.adapter as PropertyDocumentsAdapter
 
     companion object {
         private const val ARG_OBJECT_ID = "ARG_OBJECT_ID"
@@ -38,7 +38,7 @@ class PropertyInfoFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.listDocumentsRecyclerView.adapter = PropertyDocumentsAdapter {
+        binding.documentsRecyclerView.adapter = PropertyDocumentsAdapter {
             val propertyUploadFilesFragment = PropertyUploadDocumentsFragment()
             propertyUploadFilesFragment.show(childFragmentManager, propertyUploadFilesFragment.TAG)
         }
@@ -88,6 +88,10 @@ class PropertyInfoFragment :
             binding.allDocumentsTextView.setOnDebouncedClickListener {
                 viewModel.onShowAllDocumentsClick()
             }
+        }
+
+        subscribe(viewModel.internetConnectionObserver) {
+            adapter.onInternetConnectionChanged(it)
         }
     }
 

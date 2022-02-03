@@ -19,7 +19,6 @@ import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchViewModel
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesViewModel
 import com.custom.rgs_android_dom.ui.catalog.subcategory.CatalogSubcategoryViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.ProductViewModel
-import com.custom.rgs_android_dom.ui.catalog.product.ServiceViewModel
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogPrimaryProductsViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.availableservices.TabAvailableServicesViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.catalog.TabCatalogViewModel
@@ -79,8 +78,8 @@ val viewModelModule = module {
     viewModel { AboutAppViewModel() }
     viewModel { ChatViewModel(chatInteractor = get()) }
     viewModel { parameters-> SelectPropertyTypeViewModel(propertyName = parameters[0], propertyAddress = parameters[1], propertyInteractor = get()) }
-    viewModel { parameters-> PropertyDetailsViewModel(propertyName = parameters[0], propertyAddress = parameters[1], propertyType = parameters[2], propertyInteractor = get(), context = get()) }
-    viewModel { parameters-> PropertyInfoViewModel(objectId = parameters.get(), propertyInteractor = get()) }
+    viewModel { parameters-> PropertyDetailsViewModel(propertyName = parameters[0], propertyAddress = parameters[1], propertyType = parameters[2], propertyInteractor = get(), connectivityManager = get()) }
+    viewModel { parameters-> PropertyInfoViewModel(objectId = parameters.get(), propertyInteractor = get(), connectivityManager = get()) }
     viewModel { parameters-> DocumentViewModel(objectId = parameters[0], propertyItemModel = parameters[1], propertyInteractor = get()) }
     viewModel { parameters-> DetailDocumentViewModel( objectId = parameters[0], documentIndex = parameters[1], propertyItemModel = parameters[2], propertyInteractor = get()) }
     viewModel { ScreenStubViewModel() }
@@ -105,12 +104,11 @@ val viewModelModule = module {
     viewModel { TabAvailableServicesViewModel(catalogInteractor = get(), registrationInteractor = get()) }
     viewModel { parameters -> CatalogSubcategoriesViewModel(category = parameters.get(), registrationInteractor = get()) }
     viewModel { parameters -> CatalogSubcategoryViewModel(subCategory = parameters.get(), registrationInteractor = get()) }
-    viewModel { parameters -> SingleProductViewModel(productId = parameters[0], catalogInteractor = get()) }
+    viewModel { parameters -> SingleProductViewModel(product = parameters.get(), catalogInteractor = get(), propertyInteractor = get()) }
     viewModel { MoreSingleProductViewModel() }
     viewModel { parameters -> CatalogSearchViewModel(tag = parameters[0], catalogInteractor = get(), registrationInteractor = get(), clientInteractor = get()) }
-    viewModel { parameters -> ProductViewModel(productId = parameters.get(), registrationInteractor = get(), catalogInteractor = get()) }
+    viewModel { parameters -> ProductViewModel(product = parameters.get(), registrationInteractor = get(), catalogInteractor = get(), propertyInteractor = get()) }
     viewModel { parameters -> CatalogPrimaryProductsViewModel(category = parameters.get()) }
-    viewModel { parameters -> ServiceViewModel(product = parameters.get()) }
     viewModel { parameters -> PurchaseViewModel(parameters.get(), propertyInteractor = get(), clientInteractor = get(), purchaseInteractor = get()) }
     viewModel { parameters ->
         com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressViewModel(

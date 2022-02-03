@@ -13,7 +13,9 @@ import com.custom.rgs_android_dom.ui.about_app.AboutAppFragment
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
 import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
+import com.custom.rgs_android_dom.ui.catalog.product.ProductLauncher
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
+import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductLauncher
 import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchFragment
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
@@ -203,7 +205,7 @@ class MainViewModel(
     }
 
     fun onServiceClick(serviceModel: ProductShortModel) {
-        ScreenManager.showBottomScreen(SingleProductFragment.newInstance(serviceModel.id))
+        ScreenManager.showBottomScreen(SingleProductFragment.newInstance(SingleProductLauncher(serviceModel.id)))
     }
 
     fun onAllCatalogClick() {
@@ -233,7 +235,7 @@ class MainViewModel(
     }
 
     fun onPopularProductClick(productId: String) {
-        ScreenManager.showBottomScreen(ProductFragment.newInstance(productId))
+        ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(productId)))
     }
 
     fun onStoriesNewServiceClick() {
