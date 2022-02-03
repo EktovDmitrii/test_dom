@@ -13,7 +13,8 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
         private const val TAG_POPULAR_CATEGORIES = "ВыводитьНаГлавной"
         private const val TAG_POPULAR_SERVICES = "ВыводитьНаГлавной"
         private const val CNT_POPULAR_SERVICES_IN_MAIN = 9
-        private const val CNT_POPULAR_CATEGORIES_IN_MAIN = 5
+        private const val CNT_POPULAR_CATEGORIES_IN_MAIN = 6
+        private const val CNT_POPULAR_PRODUCTS_IN_MAIN = 13
     }
 
     fun getCatalogCategories(): Single<List<CatalogCategoryModel>> {
@@ -69,7 +70,7 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
 
     fun getPopularProducts(): Single<List<ProductShortModel>>{
         return catalogRepository.getShowcase(listOf(TAG_POPULAR_PRODUCTS), null).map{
-            it.filter { !it.defaultProduct }
+            it.filter { !it.defaultProduct }.take(CNT_POPULAR_PRODUCTS_IN_MAIN)
         }
     }
 
