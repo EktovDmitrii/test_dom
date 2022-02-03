@@ -40,7 +40,7 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
 
                 catalogCategory.products = availableProducts.filter { it.tags.any { it in catalogCategory.productTags }}
             }
-            return@map catalogCategories.filter { it.subCategories.isNotEmpty() || it.isPrimary }.sortedByDescending { it.isPrimary }
+            return@map catalogCategories.filter { it.subCategories.isNotEmpty() || it.isPrimary }.sortedBy { it.sortOrder }
         }
     }
 

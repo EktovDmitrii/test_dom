@@ -44,6 +44,7 @@ object CatalogMapper {
                 productTags = categoryNode.productTags ?: listOf(),
                 products = listOf(),
                 subCategories = subCategories,
+                sortOrder = categoryNode.sortOrder ?: 0,
                 isPrimary = categoryNode.productTags?.contains(TAG_PRODUCT_VIEW) ?: false
             )
             catalogCategories.add(category)
