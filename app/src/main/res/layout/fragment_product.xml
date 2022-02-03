@@ -71,16 +71,16 @@
                 layout="@layout/layout_catalog_validity_till_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_marginBottom="24dp" />
+                android:layout_marginBottom="24dp"
+                android:visibility="gone" />
 
             <include
                 android:id="@+id/address"
                 layout="@layout/layout_catalog_address_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_marginBottom="24dp" />
+                android:layout_marginBottom="24dp"
+                android:visibility="gone" />
 
             <include
                 android:id="@+id/about"
@@ -98,18 +98,12 @@
                 layout="@layout/layout_product_advantages"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp" />
+                android:layout_marginBottom="24dp"
+                android:visibility="gone" />
 
             <include
                 android:id="@+id/validity"
                 layout="@layout/layout_product_detail_validity_date_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp" />
-
-            <include
-                android:id="@+id/territory"
-                layout="@layout/layout_product_detail_territory_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp" />

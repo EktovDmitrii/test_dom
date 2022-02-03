@@ -75,6 +75,7 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
                 .transform(RoundedCorners(16.dp(requireContext())))
                 .into(binding.header.logoImageView)
 
+            binding.validity.validityValue.text = "${product.duration?.units} ${product.duration?.unitType?.description}"
             binding.header.headerTitle.text = product.name
             binding.header.headerDescription.text = product.title
             binding.about.aboutValue.text = product.description
@@ -87,6 +88,10 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
             product.price?.amount?.let { price ->
                 binding.priceView.setPrice(price)
                 binding.detailButton.btnPrice.text = price.formatPrice(isFixed = product.price.fix)
+            }
+            product.advantages?.let {
+                advantagesAdapter.setItems(it)
+                binding.advantagesLayout.root.visibleIf(it.isNotEmpty())
             }
             if (product.isPurchased) {
                 binding.detailButton.btnTitle.text = "Заказать"
