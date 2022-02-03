@@ -104,10 +104,10 @@ val viewModelModule = module {
     viewModel { TabAvailableServicesViewModel(catalogInteractor = get(), registrationInteractor = get()) }
     viewModel { parameters -> CatalogSubcategoriesViewModel(category = parameters.get(), registrationInteractor = get()) }
     viewModel { parameters -> CatalogSubcategoryViewModel(subCategory = parameters.get(), registrationInteractor = get()) }
-    viewModel { parameters -> SingleProductViewModel(productId = parameters[0], catalogInteractor = get()) }
+    viewModel { parameters -> SingleProductViewModel(product = parameters.get(), catalogInteractor = get(), propertyInteractor = get()) }
     viewModel { MoreSingleProductViewModel() }
     viewModel { parameters -> CatalogSearchViewModel(tag = parameters[0], catalogInteractor = get(), registrationInteractor = get(), clientInteractor = get()) }
-    viewModel { parameters -> ProductViewModel(productId = parameters.get(), registrationInteractor = get(), catalogInteractor = get()) }
+    viewModel { parameters -> ProductViewModel(product = parameters.get(), registrationInteractor = get(), catalogInteractor = get(), propertyInteractor = get()) }
     viewModel { parameters -> CatalogPrimaryProductsViewModel(category = parameters.get()) }
     viewModel { parameters -> PurchaseViewModel(parameters.get(), propertyInteractor = get(), clientInteractor = get(), purchaseInteractor = get()) }
     viewModel { parameters ->

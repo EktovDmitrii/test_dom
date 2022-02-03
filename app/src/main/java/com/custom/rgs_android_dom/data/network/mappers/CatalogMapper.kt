@@ -224,7 +224,10 @@ object CatalogMapper {
                         serviceName = serviceDetails.serviceName,
                         productIcon = "${BuildConfig.BASE_URL}/api/store/${serviceDetails.productIcon}",
                         available = serviceBalance?.available ?: 0,
-                        total = serviceBalance?.total ?: 0
+                        total = serviceBalance?.total ?: 0,
+                        validityFrom = serviceDetails.validityFrom,
+                        validityTo = serviceDetails.validityTo,
+                        objectId = serviceDetails.objectId
                     )
                 )
             }
@@ -240,7 +243,7 @@ object CatalogMapper {
             clientId = response.clientId ?: "",
             contractId = response.contractId ?: "",
             id = response.id ?: "",
-            objectIds = response.objectIds ?: arrayListOf(),
+            objectId = response.objectId,
             productCode = response.productCode ?: "",
             productDescription = response.productDescription ?: "",
             productDescriptionRef = response.productDescriptionRef ?: "",

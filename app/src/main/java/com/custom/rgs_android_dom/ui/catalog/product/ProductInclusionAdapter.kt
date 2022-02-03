@@ -8,9 +8,11 @@ import com.custom.rgs_android_dom.databinding.ItemGridCatalogInfoBinding
 import com.custom.rgs_android_dom.domain.catalog.models.ServiceShortModel
 import com.custom.rgs_android_dom.ui.base.BaseViewHolder
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
+import com.custom.rgs_android_dom.utils.visibleIf
 
 class ProductInclusionAdapter(
-    private val onServiceClick: (ServiceShortModel) -> Unit = {}
+    private val onServiceClick: (ServiceShortModel) -> Unit = {},
+    private val onOrderClick: (ServiceShortModel) -> Unit = {}
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -39,7 +41,8 @@ class ProductInclusionAdapter(
 
     inner class ProductFeatureViewHolder(
         private val binding: ItemGridCatalogInfoBinding,
-        private val onServiceClick: (ServiceShortModel) -> Unit = {}
+        private val onServiceClick: (ServiceShortModel) -> Unit = {},
+        private val onOrderClick: (ServiceShortModel) -> Unit = {}
     ) : BaseViewHolder<ServiceShortModel>(binding.root) {
 
         override fun bind(item: ServiceShortModel) {
@@ -50,6 +53,10 @@ class ProductInclusionAdapter(
                 )
             } else {
                 binding.numberTextView.text = "${item.quantity}"
+            }
+            binding.orderTextView.visibleIf(item.isPurchased)
+            binding.orderTextView.setOnDebouncedClickListener {
+                onOrderClick(item)
             }
 
             binding.layout.setOnDebouncedClickListener {

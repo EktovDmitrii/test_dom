@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui.catalog.product
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
@@ -18,14 +19,14 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
 
     companion object {
 
-        private const val ARG_PRODUCT_ID = "ARG_PRODUCT_ID"
+        private const val ARG_PRODUCT = "ARG_PRODUCT"
 
         private const val GRID_HORIZONTAL_GAP = 16
         private const val GRID_VERTICAL_GAP = 12
 
-        fun newInstance(productId: String): ProductFragment {
+        fun newInstance(productLauncher: ProductLauncher): ProductFragment {
             return ProductFragment().args {
-                putString(ARG_PRODUCT_ID, productId)
+                putSerializable(ARG_PRODUCT, productLauncher)
             }
         }
     }
@@ -35,7 +36,7 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
     override fun getThemeResource(): Int = R.style.BottomSheetNoDim
 
     override fun getParameters(): ParametersDefinition = {
-        parametersOf(requireArguments().getString(ARG_PRODUCT_ID))
+        parametersOf(requireArguments().getSerializable(ARG_PRODUCT) as ProductLauncher)
     }
 
     private val inclusionAdapter: ProductInclusionAdapter
@@ -54,9 +55,10 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
         }
 
         binding.includes.includesRecycler.apply {
-            adapter = ProductInclusionAdapter {
-                viewModel.onServiceClick(it)
-            }
+            adapter = ProductInclusionAdapter(
+                onServiceClick = { viewModel.onServiceClick(it) },
+                onOrderClick = { viewModel.onServiceClick(it) } // TODO добавить после заказа услуги
+            )
             val horizontalGapInPixels = GRID_HORIZONTAL_GAP.dp(requireActivity())
             val verticalGapInPixels = GRID_VERTICAL_GAP.dp(requireActivity())
             addItemDecoration(GridTwoSpanItemDecoration(horizontalGapInPixels, verticalGapInPixels))
@@ -77,9 +79,12 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
             binding.header.headerTitle.text = product.name
             binding.header.headerDescription.text = product.title
             binding.about.aboutValue.text = product.description
-            binding.priceView.type =
-                if (product.price?.fix == true) MSDProductPriceView.PriceType.Fixed
-                else MSDProductPriceView.PriceType.Unfixed
+
+            binding.priceView.type = when {
+                product.isPurchased -> MSDProductPriceView.PriceType.Purchased
+                product.price?.fix == true -> MSDProductPriceView.PriceType.Fixed
+                else -> MSDProductPriceView.PriceType.Unfixed
+            }
             product.price?.amount?.let { price ->
                 binding.priceView.setPrice(price)
                 binding.detailButton.btnPrice.text = price.formatPrice(isFixed = product.price.fix)
@@ -88,12 +93,38 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
                 advantagesAdapter.setItems(it)
                 binding.advantagesLayout.root.visibleIf(it.isNotEmpty())
             }
+            if (product.isPurchased) {
+                binding.detailButton.btnTitle.text = "Заказать"
+                binding.detailButton.btnTitle.gravity = Gravity.CENTER
+                binding.detailButton.btnPriceGroup.gone()
+            } else {
+                binding.detailButton.btnTitle.text = "Оформить продукт"
+                binding.detailButton.btnTitle.gravity = Gravity.CENTER_VERTICAL or Gravity.START
+                binding.detailButton.btnPriceGroup.visible()
+            }
         }
 
         subscribe(viewModel.productServicesObserver) {
             inclusionAdapter.setItems(it)
 
             binding.includes.root.visibleIf(it.isNotEmpty())
+        }
+        subscribe(viewModel.productAddressObserver) { address ->
+            address?.let {
+                binding.address.addressValue.text = it
+                binding.address.root.visible()
+            }
+        }
+        subscribe(viewModel.productValidToObserver) { validTo ->
+            validTo?.let {
+                binding.validityUntill.validityTillValue.text = it
+                binding.validityUntill.root.visible()
+            }
+        }
+        subscribe(viewModel.productPaidDateObserver) { paidDate ->
+            paidDate?.let {
+                binding.priceView.setPurchasedDate(it)
+            }
         }
     }
 

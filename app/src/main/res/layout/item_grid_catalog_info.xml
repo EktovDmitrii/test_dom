@@ -3,22 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="128dp"
+    android:layout_height="wrap_content"
+    android:minHeight="128dp"
     android:minWidth="160dp"
     android:id="@+id/layout">
 
-    <FrameLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="wrap_content"
+        android:minHeight="120dp"
         android:layout_margin="4dp"
         android:padding="12dp"
         android:translationZ="3dp"
+        android:orientation="vertical"
         android:background="@drawable/rectangle_filled_white_radius_20dp">
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/titleTextView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:ellipsize="end"
             android:fontFamily="@font/suisse_regular"
             android:includeFontPadding="false"
@@ -28,7 +31,20 @@
             app:lineHeight="20dp"
             tools:text="Поиск утечек тепла, сквозняков. Поиск утечек тепла, сквозняков. Поиск утечек тепла, сквозняков. Поиск утечек тепла, сквозняков. Поиск утечек тепла, сквозняков." />
 
-    </FrameLayout>
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/orderTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="4dp"
+            android:paddingEnd="16dp"
+            android:visibility="gone"
+            android:fontFamily="@font/my_service_bold"
+            android:includeFontPadding="false"
+            android:textColor="@color/primary500"
+            android:textSize="14sp"
+            app:translationTextKey="Заказать" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <TextView
         android:id="@+id/numberTextView"
