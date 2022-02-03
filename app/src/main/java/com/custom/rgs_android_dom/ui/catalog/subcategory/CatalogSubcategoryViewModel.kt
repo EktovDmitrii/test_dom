@@ -10,6 +10,8 @@ import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
+import com.custom.rgs_android_dom.ui.catalog.product.ProductLauncher
+import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductLauncher
 import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -51,10 +53,14 @@ class CatalogSubcategoryViewModel(
         if (registrationInteractor.isAuthorized()){
             if (product.defaultProduct){
                 // Open service (single product) details screen
-                ScreenManager.showBottomScreen(SingleProductFragment.newInstance(product.id))
+                ScreenManager.showBottomScreen(
+                    SingleProductFragment.newInstance(
+                        SingleProductLauncher(product.id)
+                    )
+                )
             } else {
                 // Open product details screen
-                ScreenManager.showBottomScreen(ProductFragment.newInstance(product.id))
+                ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(product.id)))
             }
         }
     }

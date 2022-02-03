@@ -67,6 +67,22 @@
                 android:paddingHorizontal="20dp" />
 
             <include
+                android:id="@+id/validityUntill"
+                layout="@layout/layout_catalog_validity_till_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginBottom="24dp" />
+
+            <include
+                android:id="@+id/address"
+                layout="@layout/layout_catalog_address_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginBottom="24dp" />
+
+            <include
                 android:id="@+id/about"
                 layout="@layout/layout_product_about_info"
                 android:layout_width="match_parent"

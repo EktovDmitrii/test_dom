@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:paddingStart="20dp"
     android:paddingEnd="22dp"
     android:orientation="vertical">
@@ -25,7 +26,7 @@
         android:textSize="16sp"
         android:textColor="@color/secondary900"
         android:fontFamily="@font/suisse_semi_bold"
-        app:translationTextKey="Дом (пр-т Победителей 147)"
+        tools:text="Дом (пр-т Победителей 147)"
         android:layout_marginTop="@dimen/material_margin_super_small"
         />
 

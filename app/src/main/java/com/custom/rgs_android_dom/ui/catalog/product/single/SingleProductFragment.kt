@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui.catalog.product.single
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
@@ -16,13 +17,11 @@ import org.koin.core.parameter.parametersOf
 class SingleProductFragment : BaseBottomSheetFragment<SingleProductViewModel, FragmentSingleProductBinding>() {
 
     companion object {
-        private const val ARG_PRODUCT_ID = "ARG_PRODUCT_ID"
-        private const val ARG_IS_PRODUCT_INCLUDED = "ARG_IS_PRODUCT_INCLUDED"
+        private const val ARG_PRODUCT = "ARG_PRODUCT"
 
-        fun newInstance(productId: String, isIncluded: Boolean = false): SingleProductFragment {
+        fun newInstance(product: SingleProductLauncher): SingleProductFragment {
             return SingleProductFragment().args {
-                putString(ARG_PRODUCT_ID, productId)
-                putBoolean(ARG_IS_PRODUCT_INCLUDED, isIncluded)
+                putSerializable(ARG_PRODUCT, product)
             }
         }
     }
@@ -31,8 +30,7 @@ class SingleProductFragment : BaseBottomSheetFragment<SingleProductViewModel, Fr
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
-            requireArguments().getString(ARG_PRODUCT_ID),
-            requireArguments().getBoolean(ARG_IS_PRODUCT_INCLUDED)
+            requireArguments().getSerializable(ARG_PRODUCT) as SingleProductLauncher,
         )
     }
 
@@ -41,10 +39,15 @@ class SingleProductFragment : BaseBottomSheetFragment<SingleProductViewModel, Fr
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.detailButton.btnTitle.text = "Оформить"
-        if (requireArguments().getBoolean(ARG_IS_PRODUCT_INCLUDED, false))
-            binding.priceView.type = MSDProductPriceView.PriceType.Included
-        subscribe(viewModel.productObserver){product->
+
+        binding.advantagesLayout.advantagesRecycler.adapter = ProductAdvantagesAdapter()
+
+        binding.backImageView.setOnDebouncedClickListener {
+            viewModel.onBackClick()
+        }
+//        if (requireArguments().getBoolean(ARG_IS_PRODUCT_INCLUDED, false))
+//            binding.priceView.type = MSDProductPriceView.PriceType.Included
+        subscribe(viewModel.productObserver){ product->
             GlideApp.with(requireContext())
                 .load(GlideUrlProvider.makeHeadersGlideUrl(product.iconLink))
                 .transform(RoundedCorners(6.dp(requireContext())))
@@ -57,22 +60,44 @@ class SingleProductFragment : BaseBottomSheetFragment<SingleProductViewModel, Fr
             binding.header.headerTitle.text = product.name
             binding.header.headerDescription.text = product.title
             binding.about.aboutValue.text = product.description
-            binding.priceView.type =
-                if (product.price?.fix == true) MSDProductPriceView.PriceType.Fixed
-                else MSDProductPriceView.PriceType.Unfixed
+            binding.priceView.type = when {
+                product.isPurchased -> MSDProductPriceView.PriceType.Purchased
+                product.isIncluded -> MSDProductPriceView.PriceType.Included
+                product.price?.fix == true -> MSDProductPriceView.PriceType.Fixed
+                else -> MSDProductPriceView.PriceType.Unfixed
+            }
             product.price?.amount?.let { price ->
                 binding.priceView.setPrice(price)
                 binding.detailButton.btnPrice.text = price.formatPrice(isFixed = product.price.fix)
             }
-
+            if (product.isPurchased) {
+                binding.detailButton.btnTitle.text = "Заказать"
+                binding.detailButton.btnTitle.gravity = Gravity.CENTER
+                binding.detailButton.btnPriceGroup.gone()
+            } else {
+                binding.detailButton.btnTitle.text = "Оформить"
+                binding.detailButton.btnTitle.gravity = Gravity.CENTER_VERTICAL or Gravity.START
+                binding.detailButton.btnPriceGroup.visible()
+            }
             binding.validity.validityValue.text = "${product.duration?.units} ${product.duration?.unitType?.description}"
         }
-        binding.advantagesLayout.advantagesRecycler.adapter = ProductAdvantagesAdapter()
-
-        binding.backImageView.setOnDebouncedClickListener {
-            viewModel.onBackClick()
+        subscribe(viewModel.productAddressObserver) { address ->
+            address?.let {
+                binding.address.addressValue.text = it
+                binding.address.root.visible()
+            }
         }
-
+        subscribe(viewModel.productValidToObserver) { validTo ->
+            validTo?.let {
+                binding.validityUntill.validityTillValue.text = it
+                binding.validityUntill.root.visible()
+            }
+        }
+        subscribe(viewModel.productPaidDateObserver) { paidDate ->
+            paidDate?.let {
+                binding.priceView.setPurchasedDate(it)
+            }
+        }
     }
 
     override fun getThemeResource(): Int {

@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.data.network.responses
 
 import com.google.gson.annotations.SerializedName
+import org.joda.time.DateTime
 
 data class BalanceServiceDetailsResponse(
     @SerializedName("id")
@@ -16,5 +17,14 @@ data class BalanceServiceDetailsResponse(
     val serviceName: String,
 
     @SerializedName("productIcon")
-    val productIcon: String?
+    val productIcon: String?,
+
+    @SerializedName("validityFrom")
+    val validityFrom: DateTime?,
+
+    @SerializedName("validityTo")
+    val validityTo: DateTime?,
+
+    @SerializedName("objectIds")
+    val objectIds: List<String>?,
 )
