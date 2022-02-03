@@ -46,8 +46,6 @@ class SingleProductFragment :
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
         }
-//        if (requireArguments().getBoolean(ARG_IS_PRODUCT_INCLUDED, false))
-//            binding.priceView.type = MSDProductPriceView.PriceType.Included
         subscribe(viewModel.productObserver) { product ->
             GlideApp.with(requireContext())
                 .load(GlideUrlProvider.makeHeadersGlideUrl(product.iconLink))
@@ -65,7 +63,6 @@ class SingleProductFragment :
             binding.about.aboutValue.text = product.description
             binding.priceView.type = when {
                 product.isPurchased -> MSDProductPriceView.PriceType.Purchased
-                product.isIncluded -> MSDProductPriceView.PriceType.Included
                 product.price?.fix == true -> MSDProductPriceView.PriceType.Fixed
                 else -> MSDProductPriceView.PriceType.Unfixed
             }
@@ -83,6 +80,43 @@ class SingleProductFragment :
             binding.features.featuresValue1.text = "Поддержка 24/7"
 
             if (product.isPurchased) {
+                binding.detailButton.btnTitle.text = "Заказать"
+                binding.detailButton.btnTitle.gravity = Gravity.CENTER
+                binding.detailButton.btnPriceGroup.gone()
+            } else {
+                binding.detailButton.btnTitle.text = "Оформить"
+                binding.detailButton.btnTitle.gravity = Gravity.CENTER_VERTICAL or Gravity.START
+                binding.detailButton.btnPriceGroup.visible()
+            }
+        }
+        subscribe(viewModel.serviceObserver) { service ->
+            GlideApp.with(requireContext())
+                .load(GlideUrlProvider.makeHeadersGlideUrl(service.iconLink))
+                .transform(RoundedCorners(6.dp(requireContext())))
+                .into(binding.header.iconImageView)
+
+            binding.header.headerTitle.text = service.name
+            binding.header.headerDescription.text = service.title
+            binding.about.aboutValue.text = service.description
+            binding.priceView.type = when {
+                service.isPurchased -> MSDProductPriceView.PriceType.Purchased
+                service.isIncluded -> MSDProductPriceView.PriceType.Included
+                service.price?.fix == true -> MSDProductPriceView.PriceType.Fixed
+                else -> MSDProductPriceView.PriceType.Unfixed
+            }
+            service.price?.amount?.let { price ->
+                if (!service.isIncluded) {
+                    binding.priceView.setPrice(price)
+                    binding.detailButton.btnPrice.text =
+                        price.formatPrice(isFixed = service.price.fix)
+                }
+            }
+            service.deliveryTime?.let {
+                binding.longness.longnessValue.text = "$it"
+            }
+            binding.features.featuresValue1.text = "Поддержка 24/7"
+
+            if (service.isPurchased || service.isIncluded) {
                 binding.detailButton.btnTitle.text = "Заказать"
                 binding.detailButton.btnTitle.gravity = Gravity.CENTER
                 binding.detailButton.btnPriceGroup.gone()

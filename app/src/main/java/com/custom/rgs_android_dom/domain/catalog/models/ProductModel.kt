@@ -38,6 +38,5 @@ data class ProductModel(
     val versionCreatedAt: DateTime?,
     val versionId: String?,
     val versionStatus: String?,
-    val isIncluded: Boolean = false,
     val isPurchased: Boolean = false
 ): Serializable

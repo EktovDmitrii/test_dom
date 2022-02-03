@@ -107,9 +107,14 @@ class ProductViewModel(
     }
 
     fun onServiceClick(serviceShortModel: ServiceShortModel) {
-        serviceShortModel.serviceId?.let { id ->
-            val serviceFragment = SingleProductFragment.newInstance(SingleProductLauncher(productId = id, isIncluded = true, isPurchased = true))
-            ScreenManager.showBottomScreen(serviceFragment)
-        }
+        val serviceFragment = SingleProductFragment.newInstance(
+            SingleProductLauncher(
+                productId = product.productId,
+                serviceId = serviceShortModel.serviceId,
+                isIncluded = true,
+                isPurchased = product.isPurchased
+            )
+        )
+        ScreenManager.showBottomScreen(serviceFragment)
     }
 }

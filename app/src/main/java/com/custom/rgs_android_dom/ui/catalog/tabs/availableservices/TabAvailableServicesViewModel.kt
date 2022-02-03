@@ -57,8 +57,10 @@ class TabAvailableServicesViewModel(
     fun onServiceClick(service: AvailableServiceModel) {
         val singleProductFragment = SingleProductFragment.newInstance(
             SingleProductLauncher(
-                productId = service.serviceId,
+                productId = service.productId,
+                serviceId = service.serviceId,
                 isPurchased = true,
+                isIncluded = true,
                 paidDate = service.validityFrom,
                 purchaseObjectId = service.objectId
             )

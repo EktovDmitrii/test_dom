@@ -148,7 +148,8 @@ object CatalogMapper {
             price = if (response.price != null){
                 ServicePriceModel(
                     amount = response.price.amount,
-                    vatType = response.price.vatType
+                    vatType = response.price.vatType,
+                    fix = response.price.fix
                 )
             } else {
                 null

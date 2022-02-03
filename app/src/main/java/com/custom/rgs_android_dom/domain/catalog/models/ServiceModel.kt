@@ -13,7 +13,7 @@ data class ServiceModel(
     val description: String?,
     val descriptionFormat: String?,
     val descriptionRef: String?,
-    val iconLink: String?,
+    val iconLink: String,
     val id: String,
     val internalDescription: String?,
     val name: String?,
@@ -31,5 +31,7 @@ data class ServiceModel(
     val versionCode: String?,
     val versionCreatedAt: DateTime?,
     val versionId: String?,
-    val versionStatus: String?
+    val versionStatus: String?,
+    val isIncluded: Boolean = false,
+    val isPurchased: Boolean = false
 )

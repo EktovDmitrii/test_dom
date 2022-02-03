@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.ProductModel
+import com.custom.rgs_android_dom.domain.catalog.models.ServiceModel
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_FULL_MONTH
@@ -24,6 +25,9 @@ class SingleProductViewModel(
     private val productController = MutableLiveData<ProductModel>()
     val productObserver: LiveData<ProductModel> = productController
 
+    private val serviceController = MutableLiveData<ServiceModel>()
+    val serviceObserver: LiveData<ServiceModel> = serviceController
+
     private val productAddressController = MutableLiveData<String?>()
     val productAddressObserver: LiveData<String?> = productAddressController
 
@@ -39,20 +43,36 @@ class SingleProductViewModel(
         )
         productPaidDateController.value = product.paidDate?.formatTo(DATE_PATTERN_DATE_ONLY)
 
-        catalogInteractor.getProduct(product.productId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onSuccess = { product->
-                    productController.value = product.copy(
-                        isIncluded = this.product.isIncluded,
-                        isPurchased = this.product.isPurchased
-                    )
-                },
-                onError = {
-                    logException(this, it)
-                }
-            ).addTo(dataCompositeDisposable)
+        if (product.isIncluded && product.serviceId != null) {
+            catalogInteractor.getProductServiceDetails(product.productId, product.serviceId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                    onSuccess = { service ->
+                        serviceController.value = service.copy(
+                            isIncluded = this.product.isIncluded,
+                            isPurchased = this.product.isPurchased
+                        )
+                    },
+                    onError = {
+                        logException(this, it)
+                    }
+                ).addTo(dataCompositeDisposable)
+        } else {
+            catalogInteractor.getProduct(product.productId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                    onSuccess = { product ->
+                        productController.value = product.copy(
+                            isPurchased = this.product.isPurchased
+                        )
+                    },
+                    onError = {
+                        logException(this, it)
+                    }
+                ).addTo(dataCompositeDisposable)
+        }
         product.purchaseObjectId?.let { objectId ->
             propertyInteractor.getPropertyItem(objectId)
                 .subscribeOn(Schedulers.io())
