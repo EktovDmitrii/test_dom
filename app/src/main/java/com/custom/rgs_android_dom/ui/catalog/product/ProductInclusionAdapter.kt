@@ -54,7 +54,6 @@ class ProductInclusionAdapter(
             } else {
                 binding.numberTextView.text = "${item.quantity}"
             }
-            binding.numberTextView.text = "${item.quantity}"
             binding.orderTextView.visibleIf(item.isPurchased)
             binding.orderTextView.setOnDebouncedClickListener {
                 onOrderClick(item)

@@ -17,8 +17,8 @@ data class ClientProductResponse(
     @SerializedName("id")
     val id: String?,
 
-    @SerializedName("objectIds")
-    val objectIds: List<String>?,
+    @SerializedName("objectId")
+    val objectId: String?,
 
     @SerializedName("productCode")
     val productCode: String?,

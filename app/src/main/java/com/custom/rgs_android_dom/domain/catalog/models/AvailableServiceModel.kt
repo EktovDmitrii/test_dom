@@ -9,7 +9,7 @@ data class AvailableServiceModel(
     val serviceName: String,
     val productIcon: String,
     val available: Int,
-    val objectIds: List<String>?,
+    val objectId: String?,
     val validityFrom: DateTime?,
     val validityTo: DateTime?,
     val total: Int

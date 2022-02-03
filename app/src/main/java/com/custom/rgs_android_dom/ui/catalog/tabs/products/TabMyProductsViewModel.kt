@@ -64,7 +64,7 @@ class TabMyProductsViewModel(
                     isPurchased = true,
                     paidDate = product.validityFrom,
                     purchaseValidTo = product.validityTo,
-                    purchaseObjectId = product.objectIds?.get(0)
+                    purchaseObjectId = product.objectId
                 )
             )
         )

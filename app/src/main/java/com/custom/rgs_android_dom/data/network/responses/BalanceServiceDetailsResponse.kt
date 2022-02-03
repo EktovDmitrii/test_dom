@@ -25,6 +25,6 @@ data class BalanceServiceDetailsResponse(
     @SerializedName("validityTo")
     val validityTo: DateTime?,
 
-    @SerializedName("objectIds")
-    val objectIds: List<String>?,
+    @SerializedName("objectId")
+    val objectId: String?,
 )

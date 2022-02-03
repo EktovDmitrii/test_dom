@@ -227,7 +227,7 @@ object CatalogMapper {
                         total = serviceBalance?.total ?: 0,
                         validityFrom = serviceDetails.validityFrom,
                         validityTo = serviceDetails.validityTo,
-                        objectIds = serviceDetails.objectIds
+                        objectId = serviceDetails.objectId
                     )
                 )
             }
@@ -243,7 +243,7 @@ object CatalogMapper {
             clientId = response.clientId ?: "",
             contractId = response.contractId ?: "",
             id = response.id ?: "",
-            objectIds = response.objectIds ?: arrayListOf(),
+            objectId = response.objectId,
             productCode = response.productCode ?: "",
             productDescription = response.productDescription ?: "",
             productDescriptionRef = response.productDescriptionRef ?: "",
