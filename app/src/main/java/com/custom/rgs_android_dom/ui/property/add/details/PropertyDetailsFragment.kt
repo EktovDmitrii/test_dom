@@ -38,7 +38,7 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
     }
 
     private val adapter: PropertyUploadDocumentsAdapter
-        get() = binding.listDocumentsRecyclerView.adapter as PropertyUploadDocumentsAdapter
+        get() = binding.documentsRecyclerView.adapter as PropertyUploadDocumentsAdapter
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
@@ -100,7 +100,7 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
             viewModel.onIsTemporarySelected(it)
         }
 
-        binding.listDocumentsRecyclerView.adapter = PropertyUploadDocumentsAdapter { uri -> viewModel.onRemoveDocumentClick(uri) }
+        binding.documentsRecyclerView.adapter = PropertyUploadDocumentsAdapter { uri -> viewModel.onRemoveDocumentClick(uri) }
 
         binding.uploadDocumentFrameLayout.setOnDebouncedClickListener {
             val propertyUploadFilesFragment = PropertyUploadDocumentsFragment()

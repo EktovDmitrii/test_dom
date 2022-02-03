@@ -452,7 +452,7 @@
                     </FrameLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/listDocumentsRecyclerView"
+                        android:id="@+id/documentsRecyclerView"
                         android:layout_width="wrap_content"
                         android:layout_height="116dp"
                         android:orientation="horizontal"
