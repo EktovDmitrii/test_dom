@@ -17,7 +17,7 @@ import com.custom.rgs_android_dom.ui.catalog.subcategory.CatalogSubcategoryFragm
 class CatalogSubcategoriesViewModel(
     private val category: CatalogCategoryModel,
     private val registrationInteractor: RegistrationInteractor
-) : BaseViewModel(){
+) : BaseViewModel() {
 
     private val titleController = MutableLiveData<String>()
     val titleObserver: LiveData<String> = titleController
@@ -43,21 +43,18 @@ class CatalogSubcategoriesViewModel(
         ScreenManager.showScreen(catalogSearchFragment)
     }
 
-    fun onProductClick(product: ProductShortModel){
-        // TODO Replace this, when we will have guest endpoint for product details
-        if (registrationInteractor.isAuthorized()){
-            if (product.defaultProduct){
-                // Open service (single product) details screen
-                ScreenManager.showBottomScreen(SingleProductFragment.newInstance(product.id))
-            } else {
-                // Open product details screen
-                ScreenManager.showBottomScreen(ProductFragment.newInstance(product.id))
-            }
+    fun onProductClick(product: ProductShortModel) {
+        if (product.defaultProduct) {
+            // Open service (single product) details screen
+            ScreenManager.showBottomScreen(SingleProductFragment.newInstance(product.id))
+        } else {
+            // Open product details screen
+            ScreenManager.showBottomScreen(ProductFragment.newInstance(product.id))
         }
     }
 
     fun onSubCategoryClick(subCategory: CatalogSubCategoryModel) {
-        if (subCategory.products.isNotEmpty()){
+        if (subCategory.products.isNotEmpty()) {
             val catalogSubcategoryFragment = CatalogSubcategoryFragment.newInstance(subCategory)
             ScreenManager.showBottomScreen(catalogSubcategoryFragment)
         }

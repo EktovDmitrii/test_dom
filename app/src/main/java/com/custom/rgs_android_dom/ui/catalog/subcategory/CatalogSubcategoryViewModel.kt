@@ -2,7 +2,6 @@ package com.custom.rgs_android_dom.ui.catalog.subcategory
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogSubCategoryModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
@@ -11,16 +10,11 @@ import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragmen
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
 import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchFragment
-import com.custom.rgs_android_dom.utils.logException
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.addTo
-import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 
 class CatalogSubcategoryViewModel(
     private val subCategory: CatalogSubCategoryModel,
     private val registrationInteractor: RegistrationInteractor
-) : BaseViewModel(){
+) : BaseViewModel() {
 
     private val titleController = MutableLiveData<String>()
     val titleObserver: LiveData<String> = titleController
@@ -46,16 +40,13 @@ class CatalogSubcategoryViewModel(
         ScreenManager.showScreen(catalogSearchFragment)
     }
 
-    fun onProductClick(product: ProductShortModel){
-        // TODO Replace this, when we will have guest endpoint for product details
-        if (registrationInteractor.isAuthorized()){
-            if (product.defaultProduct){
-                // Open service (single product) details screen
-                ScreenManager.showBottomScreen(SingleProductFragment.newInstance(product.id))
-            } else {
-                // Open product details screen
-                ScreenManager.showBottomScreen(ProductFragment.newInstance(product.id))
-            }
+    fun onProductClick(product: ProductShortModel) {
+        if (product.defaultProduct) {
+            // Open service (single product) details screen
+            ScreenManager.showBottomScreen(SingleProductFragment.newInstance(product.id))
+        } else {
+            // Open product details screen
+            ScreenManager.showBottomScreen(ProductFragment.newInstance(product.id))
         }
     }
 
