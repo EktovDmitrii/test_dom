@@ -56,6 +56,7 @@ object CatalogMapper {
             code = response.code,
             activatedAt = response.activatedAt,
             archivedAt = response.archivedAt,
+            advantages = response.advantages,
             coolOff = if (response.coolOff != null) {
                 ProductCoolOffModel(
                     unitType = response.coolOff.unitType.asEnumOrDefault(ProductUnitType.UNKNOWN),

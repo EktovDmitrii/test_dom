@@ -13,7 +13,8 @@ import com.custom.rgs_android_dom.views.MSDProductPriceView
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-class SingleProductFragment : BaseBottomSheetFragment<SingleProductViewModel, FragmentSingleProductBinding>() {
+class SingleProductFragment :
+    BaseBottomSheetFragment<SingleProductViewModel, FragmentSingleProductBinding>() {
 
     companion object {
         private const val ARG_PRODUCT_ID = "ARG_PRODUCT_ID"
@@ -44,7 +45,7 @@ class SingleProductFragment : BaseBottomSheetFragment<SingleProductViewModel, Fr
         binding.detailButton.btnTitle.text = "Оформить"
         if (requireArguments().getBoolean(ARG_IS_PRODUCT_INCLUDED, false))
             binding.priceView.type = MSDProductPriceView.PriceType.Included
-        subscribe(viewModel.productObserver){product->
+        subscribe(viewModel.productObserver) { product ->
             GlideApp.with(requireContext())
                 .load(GlideUrlProvider.makeHeadersGlideUrl(product.iconLink))
                 .transform(RoundedCorners(6.dp(requireContext())))
@@ -54,6 +55,8 @@ class SingleProductFragment : BaseBottomSheetFragment<SingleProductViewModel, Fr
                 .transform(RoundedCorners(16.dp(requireContext())))
                 .into(binding.header.logoImageView)
 
+            binding.validity.validityValue.text =
+                "${product.duration?.units} ${product.duration?.unitType?.description}"
             binding.header.headerTitle.text = product.name
             binding.header.headerDescription.text = product.title
             binding.about.aboutValue.text = product.description
@@ -64,8 +67,15 @@ class SingleProductFragment : BaseBottomSheetFragment<SingleProductViewModel, Fr
                 binding.priceView.setPrice(price)
                 binding.detailButton.btnPrice.text = price.formatPrice(isFixed = product.price.fix)
             }
+            product.advantages?.let {
+                advantagesAdapter.setItems(it)
+                binding.advantagesLayout.root.visibleIf(it.isNotEmpty())
+            }
+            product.deliveryTime?.let {
+                binding.longness.longnessValue.text = "$it"
+            }
+            binding.features.featuresValue1.text = "Поддержка 24/7"
 
-            binding.validity.validityValue.text = "${product.duration?.units} ${product.duration?.unitType?.description}"
         }
         binding.advantagesLayout.advantagesRecycler.adapter = ProductAdvantagesAdapter()
 

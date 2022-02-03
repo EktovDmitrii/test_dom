@@ -27,6 +27,7 @@ data class ProductModel(
     val price: ProductPriceModel?,
     val status: String?,
     val tags: List<String>?,
+    val advantages: List<String>?,
     val title: String?,
     val type: String?,
     val validityFrom: DateTime?,

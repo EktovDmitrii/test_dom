@@ -19,7 +19,6 @@ import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchViewModel
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesViewModel
 import com.custom.rgs_android_dom.ui.catalog.subcategory.CatalogSubcategoryViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.ProductViewModel
-import com.custom.rgs_android_dom.ui.catalog.product.ServiceViewModel
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogPrimaryProductsViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.availableservices.TabAvailableServicesViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.catalog.TabCatalogViewModel
@@ -110,7 +109,6 @@ val viewModelModule = module {
     viewModel { parameters -> CatalogSearchViewModel(tag = parameters[0], catalogInteractor = get(), registrationInteractor = get(), clientInteractor = get()) }
     viewModel { parameters -> ProductViewModel(productId = parameters.get(), registrationInteractor = get(), catalogInteractor = get()) }
     viewModel { parameters -> CatalogPrimaryProductsViewModel(category = parameters.get()) }
-    viewModel { parameters -> ServiceViewModel(product = parameters.get()) }
     viewModel { parameters -> PurchaseViewModel(parameters.get(), propertyInteractor = get(), clientInteractor = get(), purchaseInteractor = get()) }
     viewModel { parameters ->
         com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressViewModel(
