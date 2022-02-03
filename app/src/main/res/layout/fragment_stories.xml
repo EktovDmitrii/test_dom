@@ -100,7 +100,7 @@
 
             <View
                 android:id="@+id/supportProgress"
-                android:layout_width="10dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone"
                 android:background="@drawable/rectangle_filled_secondary_900_radius_8dp" />
