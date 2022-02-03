@@ -168,7 +168,7 @@ class PurchaseInteractor(private val purchaseRepository: PurchaseRepository) {
         return date.dayOfYear <= lastDateOfPreviousWeek.dayOfYear
     }
 
-    fun getSavedCards(): Single<List<SavedCardModel>> {
+    fun getSavedCards(): Single<List<CardModel>> {
         return purchaseRepository.getSavedCards()
     }
 

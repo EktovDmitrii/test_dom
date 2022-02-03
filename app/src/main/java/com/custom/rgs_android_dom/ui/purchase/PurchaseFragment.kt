@@ -15,19 +15,22 @@ import com.custom.rgs_android_dom.domain.purchase.model.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.domain.purchase.model.*
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
-import com.custom.rgs_android_dom.ui.purchase.add_purchase_service_comment.PurchaseCommentFragment
-import com.custom.rgs_android_dom.ui.purchase.edit_purchase_date_time.PurchaseDateTimeFragment
+import com.custom.rgs_android_dom.ui.purchase.add.agent.AddAgentBottomFragment
+import com.custom.rgs_android_dom.ui.purchase.add.comment.AddCommentFragment
+import com.custom.rgs_android_dom.ui.purchase.select.date_time.PurchaseDateTimeFragment
 import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressListener
+import com.custom.rgs_android_dom.ui.purchase.select.card.SelectCardFragment
+import com.custom.rgs_android_dom.ui.purchase.add.email.AddEmailFragment
 import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
 class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding>(R.layout.fragment_purchase),
     SelectPurchaseAddressListener,
-    PurchaseCommentFragment.PurchaseCommentListener,
+    AddCommentFragment.PurchaseCommentListener,
     PurchaseDateTimeFragment.PurchaseDateTimeListener,
-    AddEmailBottomFragment.PurchaseEmailListener,
-    SelectCardBottomFragment.PurchaseCardListener,
+    AddEmailFragment.PurchaseEmailListener,
+    SelectCardFragment.PurchaseCardListener,
     AddAgentBottomFragment.PurchaseAgentCodeListener,
     ConfirmBottomSheetFragment.ConfirmListener {
 
@@ -65,8 +68,8 @@ class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding
         }
 
         binding.layoutProperty.addCommentTextView.setOnDebouncedClickListener {
-            val editPurchaseServiceComment = PurchaseCommentFragment.newInstance()
-            editPurchaseServiceComment.show(childFragmentManager, PurchaseCommentFragment.TAG)
+            val editPurchaseServiceComment = AddCommentFragment()
+            editPurchaseServiceComment.show(childFragmentManager, editPurchaseServiceComment.TAG)
         }
 
         binding.layoutDateTime.root.setOnDebouncedClickListener {
@@ -95,12 +98,25 @@ class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding
             GlideApp.with(requireContext())
                 .load(GlideUrlProvider.makeHeadersGlideUrl(purchase.iconLink))
                 .transform(RoundedCorners(20.dp(requireContext())))
-                .into(binding.layoutPurchaseServiceHeader.orderImageView)
+                .into(binding.layoutPurchaseServiceHeader.logoImageView)
 
-            binding.layoutPurchaseServiceHeader.orderNameTextView.text = purchase.name
+            binding.layoutPurchaseServiceHeader.nameTextView.text = purchase.name
+
+            binding.layoutPurchaseServiceHeader.orderTitleTextView.text = if (purchase.defaultProduct){
+                "Ваш заказ"
+            } else {
+                "Оформление продукта"
+            }
+
+            binding.layoutDateTime.root.visibleIf(purchase.defaultProduct)
+            binding.layoutPurchaseServiceHeader.durationTextView.visibleIf(purchase.duration != null)
+
+            if (purchase.duration != null){
+                binding.layoutPurchaseServiceHeader.durationTextView.text = "Действует ${purchase.duration}"
+            }
 
             purchase.price?.amount?.let { amount ->
-                binding.layoutPurchaseServiceHeader.orderCostTextView.text = amount.formatPrice()
+                binding.layoutPurchaseServiceHeader.priceTextView.text = amount.formatPrice()
                 binding.makeOrderButton.btnPrice.text = amount.formatPrice()
             }
 

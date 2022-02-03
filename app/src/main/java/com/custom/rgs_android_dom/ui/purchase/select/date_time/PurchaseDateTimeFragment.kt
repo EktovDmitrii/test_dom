@@ -1,7 +1,6 @@
-package com.custom.rgs_android_dom.ui.purchase.edit_purchase_date_time
+package com.custom.rgs_android_dom.ui.purchase.select.date_time
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

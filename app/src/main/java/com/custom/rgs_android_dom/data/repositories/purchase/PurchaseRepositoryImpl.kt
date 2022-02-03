@@ -5,17 +5,19 @@ import com.custom.rgs_android_dom.data.network.mappers.PurchaseMapper
 import com.custom.rgs_android_dom.data.network.requests.OrderRequest
 import com.custom.rgs_android_dom.data.network.requests.OrderTimeRequest
 import com.custom.rgs_android_dom.data.network.requests.PurchaseProductRequest
+import com.custom.rgs_android_dom.domain.purchase.model.CardModel
+import com.custom.rgs_android_dom.domain.purchase.model.NewCardModel
 import com.custom.rgs_android_dom.domain.purchase.model.SavedCardModel
 import com.custom.rgs_android_dom.domain.repositories.PurchaseRepository
 import io.reactivex.Single
 
 class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
 
-    override fun getSavedCards(): Single<List<SavedCardModel>> {
+    override fun getSavedCards(): Single<List<CardModel>> {
         return api.getSavedCards().toSingle().map { list ->
-            list.map { PurchaseMapper.responseToSavedCard(it) }
+            list.map { PurchaseMapper.responseToSavedCard(it) }.plus(NewCardModel())
         }.onErrorResumeNext {
-            Single.just(emptyList())
+            Single.just(listOf(NewCardModel()))
         }
     }
 

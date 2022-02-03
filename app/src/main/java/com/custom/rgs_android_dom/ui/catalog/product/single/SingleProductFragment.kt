@@ -58,8 +58,7 @@ class SingleProductFragment :
                 .transform(RoundedCorners(16.dp(requireContext())))
                 .into(binding.header.logoImageView)
 
-            binding.validity.validityValue.text =
-                "${product.duration?.units} ${product.duration?.unitType?.description}"
+            binding.validity.validityValue.text = product.duration.toString()
             binding.header.headerTitle.text = product.name
             binding.header.headerDescription.text = product.title
             binding.about.aboutValue.text = product.description

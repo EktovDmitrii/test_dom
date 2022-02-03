@@ -39,7 +39,7 @@ class SelectPurchaseAddressFragment : BaseBottomSheetModalFragment<SelectPurchas
         get() = binding.propertyRecyclerView.adapter as PurchasePropertyAdapter
 
     override fun getParameters(): ParametersDefinition = {
-       parametersOf(requireArguments().getSerializable(ARG_PROPERTY_MODEL), null)
+       parametersOf(requireArguments().getSerializable(ARG_PROPERTY_MODEL))
     }
 
     override fun getTheme(): Int {

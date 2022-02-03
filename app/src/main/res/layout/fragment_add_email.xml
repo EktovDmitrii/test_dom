@@ -19,8 +19,9 @@
         android:imeOptions="actionDone"
         app:isFocused="true"
         app:unfocusOnDone="true"
-        app:focusedTranslationHintKey="Введите почту для чека"
-        app:translationHintKey="Введите почту для чека" />
+        app:placeholderText="ivan.ivanov@mail.ru"
+        app:focusedTranslationHintKey="Введите почту для получения чека"
+        app:translationHintKey="Введите почту для получения чека" />
 
     <FrameLayout
         android:layout_width="match_parent"

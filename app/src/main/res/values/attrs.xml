@@ -160,6 +160,7 @@
         <attr name="boxStrokeWidth" format="dimension"/>
         <attr name="boxStrokeWidthFocused" format="dimension"/>
         <attr name="enabled" format="boolean"/>
+        <attr name="placeholderText"/>
     </declare-styleable>
 
     <declare-styleable name="MSDGenderSelector">

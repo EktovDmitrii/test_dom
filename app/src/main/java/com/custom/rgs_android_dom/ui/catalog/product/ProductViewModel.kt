@@ -96,6 +96,8 @@ class ProductViewModel(
             productController.value?.let {
                 val purchaseServiceModel = PurchaseModel(
                     id = it.id,
+                    defaultProduct = it.defaultProduct,
+                    duration = it.duration,
                     iconLink = it.iconLink,
                     name = it.name,
                     price = it.price
