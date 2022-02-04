@@ -31,5 +31,14 @@ data class ProductShortResponse(
     val defaultProduct: Boolean?,
 
     @SerializedName("iconLink")
-    val iconLink: String?
+    val iconLink: String?,
+
+    @SerializedName("logoLarge")
+    val logoLarge: String?,
+
+    @SerializedName("logoMiddle")
+    val logoMiddle: String?,
+
+    @SerializedName("logoSmall")
+    val logoSmall: String?,
 )
