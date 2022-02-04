@@ -10,7 +10,7 @@ data class PurchaseModel(
     val id: String,
     val defaultProduct: Boolean,
     val duration: ProductDurationModel?,
-    val iconLink: String,
+    val logo: String,
     val name: String,
     val price: ProductPriceModel?,
     var propertyItemModel: PropertyItemModel? = null,
