@@ -21,4 +21,8 @@ class StoriesViewModel(tab: Int) : BaseViewModel() {
         close()
     }
 
+    fun setTab(tab: Int) {
+        tabController.value = tab
+    }
+
 }
