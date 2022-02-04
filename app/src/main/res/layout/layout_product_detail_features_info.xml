@@ -22,7 +22,7 @@
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/featuresValue1"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginTop="@dimen/material_margin_super_small"
         android:background="@drawable/rectangle_stroke_filled_white_radius_12dp"
@@ -35,7 +35,7 @@
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/featuresValue2"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginTop="@dimen/material_margin_small"
         android:background="@drawable/rectangle_stroke_filled_white_radius_12dp"
