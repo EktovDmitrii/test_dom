@@ -40,7 +40,7 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
 
                 catalogCategory.products = availableProducts.filter { it.tags.any { it in catalogCategory.productTags }}
             }
-            return@map catalogCategories.filter { it.subCategories.isNotEmpty() || it.isPrimary }.sortedByDescending { it.isPrimary }
+            return@map catalogCategories.filter { it.subCategories.isNotEmpty() || it.isPrimary }.sortedBy { it.sortOrder }
         }
     }
 
@@ -58,6 +58,10 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
 
     fun getProductServices(productId: String): Single<List<ServiceShortModel>> {
         return catalogRepository.getProductServices(productId)
+    }
+
+    fun getProductServiceDetails(productId: String, serviceId: String): Single<ServiceModel> {
+        return catalogRepository.getProductServiceDetails(productId, serviceId)
     }
 
     fun findProducts(query: String): Single<List<ProductShortModel>>{

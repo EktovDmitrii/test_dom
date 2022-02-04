@@ -93,15 +93,7 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
                 advantagesAdapter.setItems(it)
                 binding.advantagesLayout.root.visibleIf(it.isNotEmpty())
             }
-            if (product.isPurchased) {
-                binding.detailButton.btnTitle.text = "Заказать"
-                binding.detailButton.btnTitle.gravity = Gravity.CENTER
-                binding.detailButton.btnPriceGroup.gone()
-            } else {
-                binding.detailButton.btnTitle.text = "Оформить продукт"
-                binding.detailButton.btnTitle.gravity = Gravity.CENTER_VERTICAL or Gravity.START
-                binding.detailButton.btnPriceGroup.visible()
-            }
+            binding.detailButton.root.goneIf(product.isPurchased)
         }
 
         subscribe(viewModel.productServicesObserver) {
