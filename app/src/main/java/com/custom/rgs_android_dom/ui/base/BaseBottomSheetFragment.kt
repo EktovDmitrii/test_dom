@@ -75,6 +75,7 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB : ViewBinding>: Bo
     open fun onLoading() {}
     open fun onContent() {}
     open fun onError() {}
+    open fun onEmpty() {}
 
     open fun onClose() {
         hideSoftwareKeyboard()
@@ -118,6 +119,9 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB : ViewBinding>: Bo
             }
             BaseViewModel.LoadingState.ERROR -> {
                 onError()
+            }
+            BaseViewModel.LoadingState.EMPTY -> {
+                onEmpty()
             }
         }
     }

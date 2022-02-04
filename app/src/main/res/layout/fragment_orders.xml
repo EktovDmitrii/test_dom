@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/actionBar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:elevation="4dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/backImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:paddingHorizontal="14dp"
+            android:tint="@color/secondary800"
+            app:srcCompat="@drawable/ic_back_24px"/>
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:fontFamily="@font/my_service_medium"
+            android:textColor="@color/secondary900"
+            android:textSize="16sp"
+            android:paddingEnd="56dp"
+            android:paddingStart="0dp"
+            app:translationTextKey="История заказов" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/actionBar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:listitem="@layout/item_order"
+        tools:itemCount="2"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/noOrdersLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingBottom="168dp"
+        android:background="@color/white"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/actionBar"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/orders_history_empty" />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:translationTextKey="У вас пока нет истории заказов"
+            android:fontFamily="@font/suisse_regular"
+            android:textColor="@color/secondary500"
+            android:textSize="14sp"
+            android:gravity="center" />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/showCatalogTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/suisse_regular"
+            android:textColor="@color/secondary900"
+            android:textSize="14sp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/rectangle_filled_white_stroke_secondary_500_1dp_radius_24dp"
+            android:elevation="2dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            app:translationTextKey="Перейти в каталог услуг"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <ProgressBar
+        android:id="@+id/loadingProgressBar"
+        style="@style/ProgressBarStyle"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

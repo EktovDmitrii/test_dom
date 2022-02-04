@@ -65,6 +65,7 @@ open class BaseViewModel : ViewModel(), KoinComponent {
     enum class LoadingState{
         LOADING,
         CONTENT,
+        EMPTY,
         ERROR
     }
 }

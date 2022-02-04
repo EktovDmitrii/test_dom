@@ -5,11 +5,10 @@ import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
 import com.custom.rgs_android_dom.domain.client.exceptions.ValidateFieldModel
 import com.custom.rgs_android_dom.domain.client.mappers.AgentMapper
-import com.custom.rgs_android_dom.domain.client.models.Gender
 import com.custom.rgs_android_dom.domain.client.mappers.ClientShortViewStateMapper
 import com.custom.rgs_android_dom.domain.client.mappers.EditPersonalDataViewStateMapper
 import com.custom.rgs_android_dom.domain.client.mappers.PersonalDataMapper
-import com.custom.rgs_android_dom.domain.client.models.ClientModel
+import com.custom.rgs_android_dom.domain.client.models.*
 import com.custom.rgs_android_dom.domain.client.view_states.*
 import com.custom.rgs_android_dom.domain.repositories.CatalogRepository
 import com.custom.rgs_android_dom.domain.repositories.ClientRepository
@@ -24,6 +23,7 @@ import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import org.joda.time.LocalDateTime
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 class ClientInteractor(
     private val clientRepository: ClientRepository,
@@ -50,6 +50,10 @@ class ClientInteractor(
     private var fillClientViewState: FillClientViewState = FillClientViewState(registrationRepository.getCurrentPhone())
     private var editPersonalDataViewState = EditPersonalDataViewState()
     private var editAgentViewState = EditAgentViewState()
+
+    fun getOrdersHistory(): Single<List<OrderItemModel>> {
+        return Single.just(getOrdersHistoryMock()).delay(2, TimeUnit.SECONDS)
+    }
 
     //todo
     fun saveText(text: Boolean) {
@@ -577,5 +581,92 @@ class ClientInteractor(
     fun getClientSavedSubject(): Observable<ClientModel> {
        return clientRepository.getClientUpdatedSubject()
     }
+
+    private fun getOrdersHistoryMock() =
+        listOf(
+            OrderItemModel(
+                id = 0,
+                title = "Монтаж люстры",
+                status = "Подтверждён",
+                price = "2 250 ₽",
+                date = "11.11.21",
+                icon = "",
+                description = "<font color=\"${"#EEA641"}\">Подтверждён</font>  ∙  2 250 ₽  ∙  11.11.21",
+                bills = listOf(
+                    Bill(
+                        id = 0,
+                        type = BillType.MAIN,
+                        description = ""
+                    ),
+                    Bill(
+                        id = 0,
+                        type = BillType.ADDITIONAL,
+                        description = "Дополнительный счёт ∙ 2 250 ₽"
+                    ),
+                    Bill(
+                        id = 1,
+                        type = BillType.ADDITIONAL,
+                        description = "Дополнительный счёт ∙ 2 250 ₽"
+                    )
+                )
+            ),
+            OrderItemModel(
+                id = 0,
+                title = "Монтаж люстры",
+                status = "Подтверждён",
+                price = "2 250 ₽",
+                date = "11.11.21",
+                icon = "",
+                description = "<font color=\"${"#EEA641"}\">Подтверждён</font>  ∙  2 250 ₽  ∙  11.11.21",
+                bills = listOf(
+                    Bill(
+                        id = 0,
+                        type = BillType.MAIN,
+                        description = ""
+                    )
+                )
+            ),
+            OrderItemModel(
+                id = 1,
+                title = "Установка стиральной машины\n" +
+                        "с большим названием в 3 строчки но не больше чем это кjytxyjsafsdfasfsdfsdasdf",
+                status = "Активный",
+                price = "2 250 ₽",
+                date = "11.11.21",
+                icon = "",
+                description = "<font color=\"${"#EEA641"}\">Активный</font>  ∙  2 250 ₽  ∙  10.01.22",
+                bills = emptyList()
+            ),
+            OrderItemModel(
+                id = 2,
+                title = "Монтаж люстры",
+                status = "Подтверждён",
+                price = "2 250 ₽",
+                date = "11.11.21",
+                icon = "",
+                description = "<font color=\"${"#EEA641"}\">Подтверждён</font>  ∙  2 250 ₽  ∙  11.11.21",
+                bills = emptyList()
+            ),
+            OrderItemModel(
+                id = 3,
+                title = "Устранение засоров",
+                status = "Отменен",
+                price = "2 250 ₽",
+                date = "11.11.21",
+                icon = "",
+                description = "Отменен  ∙  2 250 ₽  ∙  10.01.22",
+                bills = emptyList()
+            ),
+            OrderItemModel(
+                id = 4,
+                title = "Монтаж карниза",
+                status = "Завершён",
+                price = "2 250 ₽",
+                date = "11.11.21",
+                icon = "",
+                description = "Завершён  ∙  2 250 ₽  ∙  11.11.21",
+                bills = emptyList()
+            )
+        )
 
 }

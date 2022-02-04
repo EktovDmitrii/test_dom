@@ -84,6 +84,7 @@ abstract class BaseBottomSheetModalFragment<VM : BaseViewModel, VB : ViewBinding
     open fun onLoading() {}
     open fun onContent() {}
     open fun onError() {}
+    open fun onEmpty() {}
 
     open fun isFullScreen(): Boolean {
         return false
@@ -135,6 +136,9 @@ abstract class BaseBottomSheetModalFragment<VM : BaseViewModel, VB : ViewBinding
             }
             BaseViewModel.LoadingState.ERROR -> {
                 onError()
+            }
+            BaseViewModel.LoadingState.EMPTY -> {
+                onEmpty()
             }
         }
     }
