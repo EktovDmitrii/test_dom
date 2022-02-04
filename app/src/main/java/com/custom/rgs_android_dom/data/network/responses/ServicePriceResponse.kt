@@ -10,4 +10,6 @@ data class ServicePriceResponse(
     @SerializedName("vatType")
     val vatType: String,
 
+    @SerializedName("fix")
+    val fix: Boolean
 )

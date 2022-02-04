@@ -60,6 +60,10 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
         return catalogRepository.getProductServices(productId)
     }
 
+    fun getProductServiceDetails(productId: String, serviceId: String): Single<ServiceModel> {
+        return catalogRepository.getProductServiceDetails(productId, serviceId)
+    }
+
     fun findProducts(query: String): Single<List<ProductShortModel>>{
         return catalogRepository.getShowcase(null, query)
     }

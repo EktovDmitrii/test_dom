@@ -82,6 +82,17 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
         }
     }
 
+    override fun getProductServiceDetails(productId: String, serviceId: String): Single<ServiceModel> {
+        val serviceModelSingle = if (authContentProviderManager.isAuthorized()) {
+            api.getProductServiceDetails(productId, serviceId)
+        } else {
+            api.getGuestProductServiceDetails(productId, serviceId)
+        }
+        return serviceModelSingle.map { response ->
+            CatalogMapper.responseToService(response)
+        }
+    }
+
     override fun getAvailableServices(): Single<List<AvailableServiceModel>> {
         return api.getAvailableServices(5000, 0, true).map { response->
             CatalogMapper.responseToBalanceServices(response)

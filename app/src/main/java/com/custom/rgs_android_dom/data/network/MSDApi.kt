@@ -186,7 +186,11 @@ interface MSDApi {
 
     @GET("guests/purchase/products/{productId}/services/{serviceId}/details")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getGuestServiceDetails(@Path("productId") productId: String, @Path("serviceId") serviceId: String): Single<ServiceResponse>
+    fun getGuestProductServiceDetails(@Path("productId") productId: String, @Path("serviceId") serviceId: String): Single<ServiceResponse>
+
+    @GET("clients/me/purchase/products/{productId}/services/{serviceId}/details")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getProductServiceDetails(@Path("productId") productId: String, @Path("serviceId") serviceId: String): Single<ServiceResponse>
 
     @GET("guests/purchase/products/{productId}/services")
     @ErrorType(MSDNetworkErrorResponse::class)

@@ -8,8 +8,8 @@ import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.purchase.model.PurchaseModel
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
-import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductLauncher
+import com.custom.rgs_android_dom.ui.catalog.product.service.ServiceFragment
+import com.custom.rgs_android_dom.ui.catalog.product.service.ServiceLauncher
 import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.utils.logException
@@ -113,8 +113,14 @@ class ProductViewModel(
     }
 
     fun onServiceClick(serviceShortModel: ServiceShortModel) {
-        serviceShortModel.serviceId?.let { id ->
-            val serviceFragment = SingleProductFragment.newInstance(SingleProductLauncher(productId = id, isIncluded = true, isPurchased = true))
+        serviceShortModel.serviceId?.let {
+            val serviceFragment = ServiceFragment.newInstance(
+                ServiceLauncher(
+                    productId = product.productId,
+                    serviceId = serviceShortModel.serviceId,
+                    isPurchased = product.isPurchased
+                )
+            )
             ScreenManager.showBottomScreen(serviceFragment)
         }
     }

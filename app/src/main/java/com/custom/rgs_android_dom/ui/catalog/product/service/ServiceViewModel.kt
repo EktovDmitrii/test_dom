@@ -1,9 +1,8 @@
-package com.custom.rgs_android_dom.ui.catalog.product.single
+package com.custom.rgs_android_dom.ui.catalog.product.service
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
-import com.custom.rgs_android_dom.domain.catalog.models.ProductModel
 import com.custom.rgs_android_dom.domain.catalog.models.ServiceModel
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
@@ -16,14 +15,14 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
-class SingleProductViewModel(
-    private val product: SingleProductLauncher,
+class ServiceViewModel(
+    private val service: ServiceLauncher,
     private val catalogInteractor: CatalogInteractor,
     private val propertyInteractor: PropertyInteractor
-    ) : BaseViewModel() {
+) : BaseViewModel() {
 
-    private val productController = MutableLiveData<ProductModel>()
-    val productObserver: LiveData<ProductModel> = productController
+    private val serviceController = MutableLiveData<ServiceModel>()
+    val serviceObserver: LiveData<ServiceModel> = serviceController
 
     private val productAddressController = MutableLiveData<String?>()
     val productAddressObserver: LiveData<String?> = productAddressController
@@ -35,18 +34,18 @@ class SingleProductViewModel(
     val productPaidDateObserver: LiveData<String?> = productPaidDateController
 
     init {
-        productValidToController.value = product.purchaseValidTo?.formatTo(
+        productValidToController.value = service.purchaseValidTo?.formatTo(
             DATE_PATTERN_DATE_FULL_MONTH
         )
-        productPaidDateController.value = product.paidDate?.formatTo(DATE_PATTERN_DATE_ONLY)
+        productPaidDateController.value = service.paidDate?.formatTo(DATE_PATTERN_DATE_ONLY)
 
-        catalogInteractor.getProduct(product.productId)
+        catalogInteractor.getProductServiceDetails(service.productId, service.serviceId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
-                onSuccess = { product ->
-                    productController.value = product.copy(
-                        isPurchased = this.product.isPurchased
+                onSuccess = { service ->
+                    serviceController.value = service.copy(
+                        isPurchased = this.service.isPurchased
                     )
                 },
                 onError = {
@@ -54,7 +53,7 @@ class SingleProductViewModel(
                 }
             ).addTo(dataCompositeDisposable)
 
-        product.purchaseObjectId?.let { objectId ->
+        service.purchaseObjectId?.let { objectId ->
             propertyInteractor.getPropertyItem(objectId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -72,5 +71,4 @@ class SingleProductViewModel(
     fun onBackClick(){
         closeController.value = Unit
     }
-
 }
