@@ -1,7 +1,6 @@
 package com.custom.rgs_android_dom.domain.catalog.models
 
 import org.joda.time.DateTime
-import java.io.Serializable
 
 data class ProductModel(
     val code: String?,
@@ -39,4 +38,4 @@ data class ProductModel(
     val versionId: String?,
     val versionStatus: String?,
     val isPurchased: Boolean = false
-): Serializable
+)

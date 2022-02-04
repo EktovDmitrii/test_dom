@@ -8,8 +8,8 @@ import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.purchase.model.PurchaseModel
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
-import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductLauncher
+import com.custom.rgs_android_dom.ui.catalog.product.service.ServiceFragment
+import com.custom.rgs_android_dom.ui.catalog.product.service.ServiceLauncher
 import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -107,14 +107,15 @@ class ProductViewModel(
     }
 
     fun onServiceClick(serviceShortModel: ServiceShortModel) {
-        val serviceFragment = SingleProductFragment.newInstance(
-            SingleProductLauncher(
-                productId = product.productId,
-                serviceId = serviceShortModel.serviceId,
-                isIncluded = true,
-                isPurchased = product.isPurchased
+        serviceShortModel.serviceId?.let {
+            val serviceFragment = ServiceFragment.newInstance(
+                ServiceLauncher(
+                    productId = product.productId,
+                    serviceId = serviceShortModel.serviceId,
+                    isPurchased = product.isPurchased
+                )
             )
-        )
-        ScreenManager.showBottomScreen(serviceFragment)
+            ScreenManager.showBottomScreen(serviceFragment)
+        }
     }
 }

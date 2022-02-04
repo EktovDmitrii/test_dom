@@ -19,6 +19,7 @@ import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchViewModel
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesViewModel
 import com.custom.rgs_android_dom.ui.catalog.subcategory.CatalogSubcategoryViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.ProductViewModel
+import com.custom.rgs_android_dom.ui.catalog.product.service.ServiceViewModel
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogPrimaryProductsViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.availableservices.TabAvailableServicesViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.catalog.TabCatalogViewModel
@@ -105,6 +106,7 @@ val viewModelModule = module {
     viewModel { parameters -> CatalogSubcategoriesViewModel(category = parameters.get(), registrationInteractor = get()) }
     viewModel { parameters -> CatalogSubcategoryViewModel(subCategory = parameters.get(), registrationInteractor = get()) }
     viewModel { parameters -> SingleProductViewModel(product = parameters.get(), catalogInteractor = get(), propertyInteractor = get()) }
+    viewModel { parameters -> ServiceViewModel(service = parameters.get(), catalogInteractor = get(), propertyInteractor = get()) }
     viewModel { MoreSingleProductViewModel() }
     viewModel { parameters -> CatalogSearchViewModel(tag = parameters[0], catalogInteractor = get(), registrationInteractor = get(), clientInteractor = get()) }
     viewModel { parameters -> ProductViewModel(product = parameters.get(), registrationInteractor = get(), catalogInteractor = get(), propertyInteractor = get()) }

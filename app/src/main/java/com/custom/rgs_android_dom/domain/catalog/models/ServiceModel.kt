@@ -13,6 +13,9 @@ data class ServiceModel(
     val description: String?,
     val descriptionFormat: String?,
     val descriptionRef: String?,
+    val logoSmall: String,
+    val logoMiddle: String,
+    val logoLarge: String,
     val iconLink: String,
     val id: String,
     val internalDescription: String?,
@@ -24,6 +27,7 @@ data class ServiceModel(
     val title: String?,
     val type: String?,
     val unitType: String?,
+    val duration: ServiceDurationModel?,
     val validityFrom: DateTime?,
     val validityTo: DateTime?,
     val versionActivatedAt: DateTime?,
@@ -32,6 +36,5 @@ data class ServiceModel(
     val versionCreatedAt: DateTime?,
     val versionId: String?,
     val versionStatus: String?,
-    val isIncluded: Boolean = false,
     val isPurchased: Boolean = false
 )
