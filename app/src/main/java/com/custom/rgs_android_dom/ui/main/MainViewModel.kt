@@ -13,7 +13,9 @@ import com.custom.rgs_android_dom.ui.about_app.AboutAppFragment
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
 import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
+import com.custom.rgs_android_dom.ui.catalog.product.ProductLauncher
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
+import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductLauncher
 import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchFragment
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
@@ -25,6 +27,7 @@ import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressFr
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.utils.ProgressTransformer
 import com.custom.rgs_android_dom.ui.sos.SOSFragment
+import com.custom.rgs_android_dom.ui.stories.StoriesFragment
 import com.custom.rgs_android_dom.utils.isInternetConnected
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.Single
@@ -203,7 +206,7 @@ class MainViewModel(
     }
 
     fun onServiceClick(serviceModel: ProductShortModel) {
-        ScreenManager.showBottomScreen(SingleProductFragment.newInstance(serviceModel.id))
+        ScreenManager.showBottomScreen(SingleProductFragment.newInstance(SingleProductLauncher(serviceModel.id)))
     }
 
     fun onAllCatalogClick() {
@@ -233,7 +236,19 @@ class MainViewModel(
     }
 
     fun onPopularProductClick(productId: String) {
-        ScreenManager.showBottomScreen(ProductFragment.newInstance(productId))
+        ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(productId)))
+    }
+
+    fun onStoriesNewServiceClick() {
+        ScreenManager.showScreen(StoriesFragment.newInstance(StoriesFragment.TAB_NEW_SERVICE))
+    }
+
+    fun onStoriesGuaranteeClick() {
+        ScreenManager.showScreen(StoriesFragment.newInstance(StoriesFragment.TAB_GUARANTEE))
+    }
+
+    fun onStoriesSupportClick() {
+        ScreenManager.showScreen(StoriesFragment.newInstance(StoriesFragment.TAB_SUPPORT))
     }
 
 }

@@ -8,7 +8,9 @@ import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
+import com.custom.rgs_android_dom.ui.catalog.product.ProductLauncher
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
+import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductLauncher
 import com.custom.rgs_android_dom.ui.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -111,9 +113,9 @@ class CatalogSearchViewModel(
 
     fun onProductClick(product: ProductShortModel){
         if (product.defaultProduct){
-            ScreenManager.showBottomScreen(SingleProductFragment.newInstance(product.id))
+            ScreenManager.showBottomScreen(SingleProductFragment.newInstance(SingleProductLauncher( product.id)))
         } else {
-            ScreenManager.showBottomScreen(ProductFragment.newInstance(product.id))
+            ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(product.id)))
         }
         closeController.value = Unit
     }

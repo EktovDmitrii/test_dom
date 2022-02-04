@@ -19,10 +19,10 @@ class PropertyUploadDocumentsAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var isConnected = false
-    private var propertyUploadDocumentsItems = mutableListOf<Uri>()
+    private var documents = mutableListOf<Uri>()
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val model = propertyUploadDocumentsItems[position]
+        val model = documents[position]
         (holder as PropertyUploadDocumentsViewHolder).bind(model)
     }
 
@@ -36,12 +36,12 @@ class PropertyUploadDocumentsAdapter(
     }
 
     override fun getItemCount(): Int {
-        return propertyUploadDocumentsItems.size
+        return documents.size
     }
 
     fun setItems(files: List<Uri>) {
-        propertyUploadDocumentsItems.clear()
-        propertyUploadDocumentsItems.addAll(files)
+        documents.clear()
+        documents.addAll(files)
         notifyDataSetChanged()
     }
 
@@ -116,11 +116,7 @@ class PropertyUploadDocumentsAdapter(
                     .apply(requestOptions)
                     .into(binding.previewImageView)
             }
-            if(isConnected){
-                binding.progressBarContainerFrameLayout.gone()
-            } else {
-                binding.progressBarContainerFrameLayout.visible()
-            }
+            binding.progressBarContainerFrameLayout.goneIf(isConnected)
         }
     }
 }

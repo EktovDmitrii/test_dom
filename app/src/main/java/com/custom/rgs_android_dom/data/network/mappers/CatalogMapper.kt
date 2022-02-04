@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
-import android.util.Log
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.responses.*
 import com.custom.rgs_android_dom.domain.catalog.models.*
@@ -57,6 +56,7 @@ object CatalogMapper {
             code = response.code,
             activatedAt = response.activatedAt,
             archivedAt = response.archivedAt,
+            advantages = response.advantages,
             coolOff = if (response.coolOff != null) {
                 ProductCoolOffModel(
                     unitType = response.coolOff.unitType.asEnumOrDefault(ProductUnitType.UNKNOWN),
@@ -80,6 +80,9 @@ object CatalogMapper {
                 null
             },
             iconLink = "${BuildConfig.BASE_URL}/api/store/${response.iconLink}",
+            logoSmall = "${BuildConfig.BASE_URL}/api/store/${response.logoSmall}",
+            logoMiddle = "${BuildConfig.BASE_URL}/api/store/${response.logoMiddle}",
+            logoLarge = "${BuildConfig.BASE_URL}/api/store/${response.logoLarge}",
             id = response.id,
             insuranceProducts = response.insuranceProducts?.map {
                 InsuranceProductModel(
@@ -93,7 +96,8 @@ object CatalogMapper {
             price = if (response.price != null){
                 ProductPriceModel(
                     amount = response.price.amount,
-                    vatType = response.price.vatType
+                    vatType = response.price.vatType,
+                    fix = response.price.fix
                 )
             } else{
                 null
@@ -220,7 +224,10 @@ object CatalogMapper {
                         serviceName = serviceDetails.serviceName,
                         productIcon = "${BuildConfig.BASE_URL}/api/store/${serviceDetails.productIcon}",
                         available = serviceBalance?.available ?: 0,
-                        total = serviceBalance?.total ?: 0
+                        total = serviceBalance?.total ?: 0,
+                        validityFrom = serviceDetails.validityFrom,
+                        validityTo = serviceDetails.validityTo,
+                        objectId = serviceDetails.objectId
                     )
                 )
             }
@@ -236,11 +243,14 @@ object CatalogMapper {
             clientId = response.clientId ?: "",
             contractId = response.contractId ?: "",
             id = response.id ?: "",
-            objectIds = response.objectIds ?: arrayListOf(),
+            objectId = response.objectId,
             productCode = response.productCode ?: "",
             productDescription = response.productDescription ?: "",
             productDescriptionRef = response.productDescriptionRef ?: "",
             productIcon = "${BuildConfig.BASE_URL}/api/store/${response.productIcon}",
+            logoSmall = "${BuildConfig.BASE_URL}/api/store/${response.logoSmall}",
+            logoMiddle = "${BuildConfig.BASE_URL}/api/store/${response.logoMiddle}",
+            logoLarge = "${BuildConfig.BASE_URL}/api/store/${response.logoLarge}",
             productId = response.productId ?: "",
             productName = response.productName ?: "",
             productTitle = response.productTitle ?: "",

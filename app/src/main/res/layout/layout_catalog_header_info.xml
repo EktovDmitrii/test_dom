@@ -13,7 +13,7 @@
         android:layout_height="128dp"
         android:layout_gravity="center">
         <com.custom.rgs_android_dom.views.MSDImageView
-            android:id="@+id/headerImg"
+            android:id="@+id/logoImageView"
             android:layout_width="128dp"
             android:layout_height="128dp"
             android:scaleType="fitXY"
@@ -22,12 +22,12 @@
             />
 
         <com.custom.rgs_android_dom.views.MSDImageView
+            android:id="@+id/iconImageView"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_gravity="start|top"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:src="@drawable/ic_catalog_primary_unit_letter_o_32dp" />
+            android:layout_marginTop="12dp" />
     </FrameLayout>
 
     <com.custom.rgs_android_dom.views.text.MSDTextView

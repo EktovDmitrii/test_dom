@@ -19,7 +19,7 @@ class PropertyInfoFragment :
     override val TAG: String = "PROPERTY_INFO_FRAGMENT"
 
     private val adapter: PropertyDocumentsAdapter
-        get() = binding.listDocumentsRecyclerView.adapter as PropertyDocumentsAdapter
+        get() = binding.documentsRecyclerView.adapter as PropertyDocumentsAdapter
 
     companion object {
         private const val ARG_OBJECT_ID = "ARG_OBJECT_ID"
@@ -38,7 +38,10 @@ class PropertyInfoFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.listDocumentsRecyclerView.adapter = PropertyDocumentsAdapter()
+        binding.documentsRecyclerView.adapter = PropertyDocumentsAdapter {
+            val propertyUploadFilesFragment = PropertyUploadDocumentsFragment()
+            propertyUploadFilesFragment.show(childFragmentManager, propertyUploadFilesFragment.TAG)
+        }
 
         binding.backImageView.setOnDebouncedClickListener {
             onClose()
@@ -46,11 +49,6 @@ class PropertyInfoFragment :
 
         binding.moreImageView.setOnDebouncedClickListener {
 
-        }
-
-        binding.uploadDocumentFrameLayout.setOnDebouncedClickListener {
-            val propertyUploadFilesFragment = PropertyUploadDocumentsFragment()
-            propertyUploadFilesFragment.show(childFragmentManager, propertyUploadFilesFragment.TAG)
         }
 
         subscribe(viewModel.propertyItemObserver) { propertyItem ->
@@ -84,13 +82,16 @@ class PropertyInfoFragment :
             if (propertyItem.comment.isNotEmpty()) {
                 binding.commentTextView.setValue(propertyItem.comment)
             }
-            if (propertyItem.documents.isNotEmpty()) {
-                adapter.setItems(propertyItem.documents)
-            }
+
+            adapter.setItems(propertyItem.documents)
 
             binding.allDocumentsTextView.setOnDebouncedClickListener {
                 viewModel.onShowAllDocumentsClick()
             }
+        }
+
+        subscribe(viewModel.internetConnectionObserver) {
+            adapter.onInternetConnectionChanged(it)
         }
     }
 

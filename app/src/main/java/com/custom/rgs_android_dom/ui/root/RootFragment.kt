@@ -3,7 +3,6 @@ package com.custom.rgs_android_dom.ui.root
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.OverScroller
 import com.custom.rgs_android_dom.R
@@ -156,6 +155,7 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
 
     override fun onVisibleToUser() {
         super.onVisibleToUser()
+        updateToolbarState()
         measureAndShowFragment()
         updateNavigationView()
     }
@@ -197,17 +197,18 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
 
     private fun onSlideStateChanged(newState: SlideState) {
         when (newState) {
+            SlideState.TOP -> {
+                updateToolbarState()
+            }
             SlideState.MOVING_TOP -> {
-                Log.d("MyLog", "NEW STATE MOVING TOP")
                 if (canTransitReverse) {
+                    canTransitReverse = false
                     binding.toolbarLinearLayout.fadeVisibility(View.VISIBLE, 300)
                     binding.actionsLinearLayout.fadeVisibility(View.INVISIBLE, 300)
-                    canTransitReverse = false
                 }
                 canTransit = true
             }
             SlideState.MOVING_BOTTOM -> {
-                Log.d("MyLog", "NEw state moving bottom")
                 if (canTransit) {
                     binding.toolbarLinearLayout.fadeVisibility(View.GONE, 500)
                     binding.actionsLinearLayout.fadeVisibility(View.VISIBLE, 500)
@@ -244,6 +245,13 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
             fragment.getNavigationScope()?.let { scope->
                 binding.bottomNavigationView.selectNavigationScope(scope)
             }
+        }
+    }
+
+    private fun updateToolbarState(){
+        if (canTransitReverse){
+            binding.actionsLinearLayout.invisible()
+            binding.toolbarLinearLayout.visible()
         }
     }
 

@@ -1,11 +1,11 @@
 package com.custom.rgs_android_dom.domain.repositories
 
-import com.custom.rgs_android_dom.domain.purchase_service.model.SavedCardModel
+import com.custom.rgs_android_dom.domain.purchase.model.CardModel
 import io.reactivex.Single
 
 interface PurchaseRepository {
 
-    fun getSavedCards(): Single<List<SavedCardModel>>
+    fun getSavedCards(): Single<List<CardModel>>
 
     fun makeProductPurchase(
         productId: String,

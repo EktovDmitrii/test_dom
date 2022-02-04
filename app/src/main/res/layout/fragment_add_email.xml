@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/swipeAnchorLayout"
+        layout="@layout/layout_bottom_sheet_swipe_anchor" />
+
+    <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
+        android:id="@+id/emailTextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:layout_marginTop="16dp"
+        android:imeOptions="actionDone"
+        app:isFocused="true"
+        app:unfocusOnDone="true"
+        app:placeholderText="ivan.ivanov@mail.ru"
+        app:focusedTranslationHintKey="Введите почту для получения чека"
+        app:translationHintKey="Введите почту для получения чека" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="32dp"
+        android:elevation="1dp"
+        android:background="@color/white"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="12dp">
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/saveButton"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/button_filled_primary_background"
+            android:fontFamily="@font/my_service_bold"
+            android:gravity="center"
+            android:paddingVertical="12dp"
+            android:enabled="false"
+            android:text="Сохранить"
+            android:textColor="@color/button_color_white_secondary_400"
+            android:textSize="14sp" />
+
+    </FrameLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
