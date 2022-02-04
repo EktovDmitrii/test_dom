@@ -14,7 +14,7 @@ data class ProductDurationModel(
                     units.toString().takeLast(2).toInt() in 11..19 -> "$units дней"
                     units.toString().takeLast(1).toInt() == 1 -> "$units день"
                     units.toString().takeLast(1).toInt() in 2..4 -> "$units дня"
-                    else -> "$this дней"
+                    else -> "$units дней"
                 }
              }
             ProductUnitType.MONTHS -> {
@@ -22,7 +22,7 @@ data class ProductDurationModel(
                     units.toString().takeLast(2).toInt() in 11..19 -> "$units месяцев"
                     units.toString().takeLast(1).toInt() == 1 -> "$units месяц"
                     units.toString().takeLast(1).toInt() in 2..4 -> "$units месяца"
-                    else -> "$this месяцев"
+                    else -> "$units месяцев"
                 }
             }
             ProductUnitType.YEARS -> {
@@ -30,7 +30,7 @@ data class ProductDurationModel(
                     units.toString().takeLast(2).toInt() in 11..19 -> "$units лет"
                     units.toString().takeLast(1).toInt() == 1 -> "$units год"
                     units.toString().takeLast(1).toInt() in 2..4 -> "$units года"
-                    else -> "$this лет"
+                    else -> "$units лет"
                 }
             }
             else -> {
