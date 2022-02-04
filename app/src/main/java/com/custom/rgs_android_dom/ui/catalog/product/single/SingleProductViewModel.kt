@@ -4,9 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.ProductModel
-import com.custom.rgs_android_dom.domain.catalog.models.ServiceModel
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
+import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
+import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_FULL_MONTH
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_ONLY
 import com.custom.rgs_android_dom.utils.formatTo
@@ -18,6 +21,7 @@ import io.reactivex.schedulers.Schedulers
 
 class SingleProductViewModel(
     private val product: SingleProductLauncher,
+    private val registrationInteractor: RegistrationInteractor,
     private val catalogInteractor: CatalogInteractor,
     private val propertyInteractor: PropertyInteractor
     ) : BaseViewModel() {
@@ -66,6 +70,18 @@ class SingleProductViewModel(
                         logException(this, it)
                     }
                 ).addTo(dataCompositeDisposable)
+        }
+    }
+
+    fun onOrderClick() {
+        if (registrationInteractor.isAuthorized()) {
+            if (product.isPurchased) {
+                // TODO checkout service
+            } else {
+                // TODO order default product
+            }
+        } else {
+            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
         }
     }
 
