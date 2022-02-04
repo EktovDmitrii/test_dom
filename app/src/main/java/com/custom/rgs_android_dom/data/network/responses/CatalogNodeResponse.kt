@@ -29,4 +29,7 @@ data class CatalogNodeResponse(
 
     @SerializedName("productTags")
     val productTags: List<String>?,
+
+    @SerializedName("sortOrder")
+    val sortOrder: Int?,
 )
