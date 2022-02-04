@@ -65,6 +65,8 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
             binding.header.headerTitle.text = service.name
             binding.header.headerDescription.text = service.title
             binding.about.aboutValue.text = service.description
+
+            binding.priceView.setIcon(service.iconLink)
             binding.priceView.type = MSDProductPriceView.PriceType.Included
             service.deliveryTime?.let {
                 binding.longness.longnessValue.text = "$it"
