@@ -1,7 +1,9 @@
 package com.custom.rgs_android_dom.data.repositories.client
 
 import com.custom.rgs_android_dom.data.network.MSDApi
+import com.custom.rgs_android_dom.data.network.mappers.ChatMapper
 import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
+import com.custom.rgs_android_dom.data.network.mappers.ClientOrdersMapper
 import com.custom.rgs_android_dom.data.network.requests.DeleteContactsRequest
 import com.custom.rgs_android_dom.data.network.requests.UpdateClientRequest
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
@@ -199,5 +201,11 @@ class ClientRepositoryImpl(
 
     override fun getEditPersonalDataRequestedSubject(): BehaviorSubject<Boolean> {
         return editPersonalDataRequestedSubject
+    }
+
+    override fun getOrders(size: Long, index: Long): Single<List<OrderItemModel>> {
+        val client = clientSharedPreferences.getClient()
+        return api.getOrders(client?.userId ?: "", size, index)
+            .flatMap { Single.just(ClientOrdersMapper.responseToOrderItem(it)) }
     }
 }

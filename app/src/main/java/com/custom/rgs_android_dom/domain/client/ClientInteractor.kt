@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.domain.client
 
+import com.custom.rgs_android_dom.data.network.responses.OrderStatus
 import com.custom.rgs_android_dom.data.repositories.files.FilesRepositoryImpl.Companion.STORE_AVATARS
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
@@ -21,8 +22,11 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
+import org.joda.time.format.DateTimeFormat
 import java.io.File
+import java.lang.Exception
 import java.util.concurrent.TimeUnit
 
 class ClientInteractor(
@@ -52,7 +56,19 @@ class ClientInteractor(
     private var editAgentViewState = EditAgentViewState()
 
     fun getOrdersHistory(): Single<List<OrderItemModel>> {
-        return Single.just(getOrdersHistoryMock()).delay(2, TimeUnit.SECONDS)
+        return Single.just(sortOrderHistory(getOrdersHistoryMock())).delay(2, TimeUnit.SECONDS)
+    }
+
+    private fun sortOrderHistory(orders: List<OrderItemModel>): List<OrderItemModel> {
+        val activeOrders = mutableListOf<OrderItemModel>()
+        val otherOrders = mutableListOf<OrderItemModel>()
+        orders.forEach {
+            if (it.status == OrderStatus.ACTIVE) activeOrders.add(it) else otherOrders.add(it)
+        }
+        return mutableListOf<OrderItemModel>().apply {
+            addAll(activeOrders.sortedByDescending { it.date })
+            addAll(otherOrders.sortedByDescending { it.date })
+        }
     }
 
     //todo
@@ -585,13 +601,13 @@ class ClientInteractor(
     private fun getOrdersHistoryMock() =
         listOf(
             OrderItemModel(
-                id = 0,
+                id = "",
                 title = "Монтаж люстры",
-                status = "Подтверждён",
-                price = "2 250 ₽",
-                date = "11.11.21",
+                status = OrderStatus.CONFIRMED,
+                price = 2250,
+                date = LocalDate.parse("2022-01-23", DateTimeFormat.forPattern("yyyy-MM-dd")),
                 icon = "",
-                description = "<font color=\"${"#EEA641"}\">Подтверждён</font>  ∙  2 250 ₽  ∙  11.11.21",
+                description = "<font color=\"${"#EEA641"}\">Подтверждён</font>  ∙  2 250 ₽  ∙  23.01.2022",
                 bills = listOf(
                     Bill(
                         id = 0,
@@ -611,13 +627,13 @@ class ClientInteractor(
                 )
             ),
             OrderItemModel(
-                id = 0,
+                id = "",
                 title = "Монтаж люстры",
-                status = "Подтверждён",
-                price = "2 250 ₽",
-                date = "11.11.21",
+                status = OrderStatus.CONFIRMED,
+                price = 2250,
+                date = LocalDate.parse("2022-02-02", DateTimeFormat.forPattern("yyyy-MM-dd")),
                 icon = "",
-                description = "<font color=\"${"#EEA641"}\">Подтверждён</font>  ∙  2 250 ₽  ∙  11.11.21",
+                description = "<font color=\"${"#EEA641"}\">Подтверждён</font>  ∙  2 250 ₽  ∙  02.02.2022",
                 bills = listOf(
                     Bill(
                         id = 0,
@@ -627,44 +643,44 @@ class ClientInteractor(
                 )
             ),
             OrderItemModel(
-                id = 1,
+                id = "",
                 title = "Установка стиральной машины\n" +
                         "с большим названием в 3 строчки но не больше чем это кjytxyjsafsdfasfsdfsdasdf",
-                status = "Активный",
-                price = "2 250 ₽",
-                date = "11.11.21",
+                status = OrderStatus.ACTIVE,
+                price = 2250,
+                date = LocalDate.parse("2022-02-01", DateTimeFormat.forPattern("yyyy-MM-dd")),
                 icon = "",
-                description = "<font color=\"${"#EEA641"}\">Активный</font>  ∙  2 250 ₽  ∙  10.01.22",
+                description = "<font color=\"${"#EEA641"}\">Активный</font>  ∙  2 250 ₽  ∙  01.02.2022",
                 bills = emptyList()
             ),
             OrderItemModel(
-                id = 2,
+                id = "",
                 title = "Монтаж люстры",
-                status = "Подтверждён",
-                price = "2 250 ₽",
-                date = "11.11.21",
+                status = OrderStatus.CONFIRMED,
+                price = 2250,
+                date = LocalDate.parse("2022-02-05", DateTimeFormat.forPattern("yyyy-MM-dd")),
                 icon = "",
-                description = "<font color=\"${"#EEA641"}\">Подтверждён</font>  ∙  2 250 ₽  ∙  11.11.21",
+                description = "<font color=\"${"#EEA641"}\">Подтверждён</font>  ∙  2 250 ₽  ∙  05.02.2022",
                 bills = emptyList()
             ),
             OrderItemModel(
-                id = 3,
+                id = "",
                 title = "Устранение засоров",
-                status = "Отменен",
-                price = "2 250 ₽",
-                date = "11.11.21",
+                status = OrderStatus.CANCELLED,
+                price = 2250,
+                date = LocalDate.parse("2022-02-06", DateTimeFormat.forPattern("yyyy-MM-dd")),
                 icon = "",
-                description = "Отменен  ∙  2 250 ₽  ∙  10.01.22",
+                description = "Отменен  ∙  2 250 ₽  ∙  06.02.2022",
                 bills = emptyList()
             ),
             OrderItemModel(
-                id = 4,
+                id = "",
                 title = "Монтаж карниза",
-                status = "Завершён",
-                price = "2 250 ₽",
-                date = "11.11.21",
+                status = OrderStatus.RESOLVED,
+                price = 2250,
+                date = LocalDate.parse("2022-02-07", DateTimeFormat.forPattern("yyyy-MM-dd")),
                 icon = "",
-                description = "Завершён  ∙  2 250 ₽  ∙  11.11.21",
+                description = "Завершён  ∙  2 250 ₽  ∙  07.02.2022",
                 bills = emptyList()
             )
         )

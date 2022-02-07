@@ -211,4 +211,7 @@ interface MSDApi {
     @POST("clients/me/purchase/products/{productId}")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun makeProductPurchase(@Path("productId") productId: String, @Body order: PurchaseProductRequest) : Single<PurchaseResponse>
+
+    @GET("clients/{clientId}/orders")
+    fun getOrders(@Path("clientId") clientId: String, @Query("size") size: Long, @Query("index") index: Long): Single<OrdersResponse>
 }

@@ -26,6 +26,7 @@ class OrdersFragment : BaseFragment<OrdersViewModel, FragmentOrdersBinding>(R.la
             }
 
             showCatalogTextView.setOnDebouncedClickListener { viewModel.onShowCatalogClick() }
+            mainErrorLayout.reloadTextView.setOnDebouncedClickListener { viewModel.onReloadClick() }
             subscribe(viewModel.ordersObserver) {
                 if (it.isEmpty()) {
                     initState(empty = true)
@@ -58,7 +59,7 @@ class OrdersFragment : BaseFragment<OrdersViewModel, FragmentOrdersBinding>(R.la
         empty: Boolean = false
     ) {
         with(binding) {
-            noOrdersLayout.visibility = if (error) VISIBLE else GONE
+            mainErrorLayout.root.visibility = if (error) VISIBLE else GONE
             recyclerView.visibility = if (content) VISIBLE else GONE
             loadingProgressBar.visibility = if (loading) VISIBLE else GONE
             noOrdersLayout.visibility = if (empty) VISIBLE else GONE

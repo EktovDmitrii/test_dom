@@ -93,6 +93,13 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
+    <include
+        android:id="@+id/mainErrorLayout"
+        layout="@layout/layout_error_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
     <ProgressBar
         android:id="@+id/loadingProgressBar"
         style="@style/ProgressBarStyle"
