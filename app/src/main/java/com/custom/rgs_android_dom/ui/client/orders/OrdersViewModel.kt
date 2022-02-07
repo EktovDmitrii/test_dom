@@ -25,7 +25,7 @@ class OrdersViewModel(
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
             .subscribeBy(
                 onSuccess = {
-                    loadingStateController.value = if (it.isEmpty()) LoadingState.EMPTY else LoadingState.CONTENT
+                    loadingStateController.value = LoadingState.CONTENT
                     ordersController.value = it
                 },
                 onError = {

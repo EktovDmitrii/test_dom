@@ -48,7 +48,6 @@ abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(layout: Int) : 
     open fun onLoading(){}
     open fun onContent(){}
     open fun onError(){}
-    open fun onEmpty() {}
 
     open fun onClose(){
         hideSoftwareKeyboard()
@@ -85,9 +84,6 @@ abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(layout: Int) : 
             }
             BaseViewModel.LoadingState.ERROR -> {
                 onError()
-            }
-            BaseViewModel.LoadingState.EMPTY -> {
-                onEmpty()
             }
         }
     }

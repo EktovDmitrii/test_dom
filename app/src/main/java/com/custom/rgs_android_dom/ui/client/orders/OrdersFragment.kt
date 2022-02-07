@@ -26,7 +26,13 @@ class OrdersFragment : BaseFragment<OrdersViewModel, FragmentOrdersBinding>(R.la
             }
 
             showCatalogTextView.setOnDebouncedClickListener { viewModel.onShowCatalogClick() }
-            subscribe(viewModel.ordersObserver) { ordersAdapter.setItems(it) }
+            subscribe(viewModel.ordersObserver) {
+                if (it.isEmpty()) {
+                    initState(empty = true)
+                } else {
+                    ordersAdapter.setItems(it)
+                }
+            }
         }
     }
 
@@ -43,11 +49,6 @@ class OrdersFragment : BaseFragment<OrdersViewModel, FragmentOrdersBinding>(R.la
     override fun onError() {
         super.onError()
         initState(error = true)
-    }
-
-    override fun onEmpty() {
-        super.onEmpty()
-        initState(empty = true)
     }
 
     private fun initState(
