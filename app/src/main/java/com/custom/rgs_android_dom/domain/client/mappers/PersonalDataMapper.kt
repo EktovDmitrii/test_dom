@@ -39,7 +39,12 @@ object PersonalDataMapper{
             passport = passportString,
             phone = client.phone.formatPhoneByMask(phoneMask, "#"),
             additionalPhone = secondPhone,
-            email = client.contacts?.find { it.type == "email" }?.contact ?: ""
+            email = client.contacts?.find { it.type == "email" }?.contact ?: "",
+            checkoutEmail = if (client.checkoutEmail != null){
+                client.checkoutEmail
+            } else {
+                client.contacts?.find { it.type == "email" }?.contact
+            }
         )
     }
 

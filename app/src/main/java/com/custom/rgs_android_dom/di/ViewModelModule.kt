@@ -54,6 +54,7 @@ import com.custom.rgs_android_dom.ui.property.document.DocumentViewModel
 import com.custom.rgs_android_dom.ui.property.document.detail_document.DetailDocumentViewModel
 import com.custom.rgs_android_dom.ui.purchase.*
 import com.custom.rgs_android_dom.ui.purchase.add.agent.AddAgentViewModel
+import com.custom.rgs_android_dom.ui.purchase.add.comment.AddCommentViewModel
 import com.custom.rgs_android_dom.ui.sos.SOSViewModel
 import com.custom.rgs_android_dom.ui.purchase.select.date_time.PurchaseDateTimeViewModel
 import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressViewModel
@@ -119,7 +120,8 @@ val viewModelModule = module {
     viewModel { parameters -> SelectPurchaseAddressViewModel(selectedPropertyItem = parameters[0], propertyInteractor = get())}
     viewModel { parameters -> PurchaseDateTimeViewModel(purchaseDateTimeModel = parameters.get(), purchaseInteractor = get()) }
     viewModel { parameters -> SelectCardViewModel(selectedCard = parameters[0], purchaseInteractor = get()) }
-    viewModel { AddEmailViewModel() }
+    viewModel { parameters -> AddCommentViewModel(comment = parameters[0]) }
+    viewModel { parameters -> AddEmailViewModel(parameters[0]) }
     viewModel { AddAgentViewModel(clientInteractor = get()) }
     viewModel { SOSViewModel(chatInteractor = get(), registrationInteractor = get(), clientInteractor = get(), context = get()) }
     viewModel { parameters -> PaymentWebViewViewModel(url = parameters.get()) }

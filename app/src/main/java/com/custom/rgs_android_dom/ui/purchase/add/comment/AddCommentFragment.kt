@@ -4,22 +4,36 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentAddCommentBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
-import com.custom.rgs_android_dom.ui.purchase.add.email.AddEmailViewModel
+import com.custom.rgs_android_dom.utils.args
+import com.custom.rgs_android_dom.utils.expand
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
+import com.custom.rgs_android_dom.utils.subscribe
+import org.koin.core.parameter.ParametersDefinition
+import org.koin.core.parameter.parametersOf
 import java.io.Serializable
 
-class AddCommentFragment : BaseBottomSheetModalFragment<AddEmailViewModel, FragmentAddCommentBinding>() {
+class AddCommentFragment : BaseBottomSheetModalFragment<AddCommentViewModel, FragmentAddCommentBinding>() {
 
-    private var purchaseCommentListener: PurchaseCommentListener? = null
+    companion object {
+        private const val ARG_COMMENT = "ARG_COMMENT"
+
+        fun newInstance(comment: String?): AddCommentFragment {
+            return AddCommentFragment().args {
+                putString(ARG_COMMENT, comment)
+            }
+        }
+    }
 
     override val TAG = "ADD_COMMENT_FRAGMENT"
 
-    override fun getTheme(): Int {
-        return R.style.BottomSheet
+    private var purchaseCommentListener: PurchaseCommentListener? = null
+
+    override fun getParameters(): ParametersDefinition = {
+        parametersOf(requireArguments().getString(ARG_COMMENT))
     }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         if (parentFragment is PurchaseCommentListener) {
@@ -31,18 +45,26 @@ class AddCommentFragment : BaseBottomSheetModalFragment<AddEmailViewModel, Fragm
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.commentTextInputLayout.addTextWatcher {
-            binding.saveTextView.isEnabled = it.isNotEmpty()
-        }
+        expand()
 
         binding.saveTextView.setOnDebouncedClickListener {
             purchaseCommentListener?.onSaveCommentClick(binding.commentTextInputLayout.getText())
-            dismissAllowingStateLoss()
+            onClose()
         }
-    }
 
-    interface PurchaseCommentListener : Serializable {
-        fun onSaveCommentClick(comment: String)
+        subscribe(viewModel.commentObserver){
+            binding.commentTextInputLayout.setText(it)
+
+            binding.commentTextInputLayout.setSelection(it.length)
+
+            binding.commentTextInputLayout.addTextWatcher {
+                binding.saveTextView.isEnabled = true
+            }
+        }
+
     }
 }
 
+interface PurchaseCommentListener : Serializable {
+    fun onSaveCommentClick(comment: String)
+}

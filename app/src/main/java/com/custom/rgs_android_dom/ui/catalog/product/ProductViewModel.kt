@@ -100,7 +100,8 @@ class ProductViewModel(
                     id = it.id,
                     defaultProduct = it.defaultProduct,
                     duration = it.duration,
-                    logo = it.logoSmall,
+                    deliveryTime = it.deliveryTime,
+                    logoSmall = it.logoSmall,
                     name = it.name,
                     price = it.price
                 )

@@ -30,6 +30,7 @@
         android:layout_marginTop="20dp"
         android:digits="@string/acceptable_agent_code_chars"
         app:translationHintKey="999999"
+        app:isFocused="true"
         app:translationLabelKey="Код агента" />
 
     <com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText

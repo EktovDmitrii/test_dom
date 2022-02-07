@@ -10,13 +10,14 @@ data class PurchaseModel(
     val id: String,
     val defaultProduct: Boolean,
     val duration: ProductDurationModel?,
-    val logo: String,
+    val deliveryTime: String?,
+    val logoSmall: String,
     val name: String,
     val price: ProductPriceModel?,
     var propertyItemModel: PropertyItemModel? = null,
     val email: String? = null,
-    val agentCode: String? = null,
     val card: CardModel? = null,
     var comment: String? = null,
-    val purchaseDateTimeModel: PurchaseDateTimeModel? = null
+    val purchaseDateTimeModel: PurchaseDateTimeModel? = null,
+    val agentCode: String? = null
 ) : Serializable

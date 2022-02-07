@@ -121,7 +121,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <include
-        android:id="@+id/detailButton"
+        android:id="@+id/checkoutButton"
         layout="@layout/layout_product_detail_confirm_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

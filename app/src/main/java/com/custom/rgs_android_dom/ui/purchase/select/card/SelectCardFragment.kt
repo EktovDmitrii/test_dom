@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.custom.rgs_android_dom.databinding.FragmentSelectCardBinding
 import com.custom.rgs_android_dom.domain.purchase.model.CardModel
 import com.custom.rgs_android_dom.domain.purchase.model.NewCardModel
+import com.custom.rgs_android_dom.domain.purchase.model.SavedCardModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
@@ -72,6 +73,9 @@ class SelectCardFragment : BaseBottomSheetModalFragment<SelectCardViewModel, Fra
 
         subscribe(viewModel.savedCardsObserver){
             cardsAdapter.setItems(it)
+            it.find { it.isSelected }?.let {
+                binding.selectCardTextView.isEnabled = true
+            }
         }
     }
 

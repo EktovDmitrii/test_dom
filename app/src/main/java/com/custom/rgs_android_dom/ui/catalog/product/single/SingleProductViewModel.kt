@@ -5,10 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.ProductModel
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
+import com.custom.rgs_android_dom.domain.purchase.model.PurchaseModel
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.purchase.PurchaseFragment
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_FULL_MONTH
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_ONLY
@@ -23,7 +26,7 @@ class SingleProductViewModel(
     private val product: SingleProductLauncher,
     private val registrationInteractor: RegistrationInteractor,
     private val catalogInteractor: CatalogInteractor,
-    private val propertyInteractor: PropertyInteractor
+    private val propertyInteractor: PropertyInteractor,
     ) : BaseViewModel() {
 
     private val productController = MutableLiveData<ProductModel>()
@@ -73,20 +76,33 @@ class SingleProductViewModel(
         }
     }
 
-    fun onOrderClick() {
-        if (registrationInteractor.isAuthorized()) {
-            if (product.isPurchased) {
-                // TODO checkout service
-            } else {
-                // TODO order default product
-            }
-        } else {
-            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
-        }
-    }
-
     fun onBackClick(){
         closeController.value = Unit
+    }
+
+    fun onCheckoutClick(){
+        productController.value?.let { product->
+            if (product.isPurchased){
+
+            } else {
+                if (registrationInteractor.isAuthorized()) {
+                    val purchaseServiceModel = PurchaseModel(
+                        id = product.id,
+                        defaultProduct = product.defaultProduct,
+                        duration = product.duration,
+                        deliveryTime = product.deliveryTime,
+                        logoSmall = product.logoSmall,
+                        name = product.name,
+                        price = product.price
+                    )
+                    val purchaseFragment = PurchaseFragment.newInstance(purchaseServiceModel)
+                    ScreenManager.showScreenScope(purchaseFragment, PAYMENT)
+
+                } else {
+                    ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+                }
+            }
+        }
     }
 
 }

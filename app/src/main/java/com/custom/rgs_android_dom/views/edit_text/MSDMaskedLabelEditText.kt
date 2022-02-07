@@ -4,6 +4,7 @@ import android.content.Context
 import android.text.InputFilter
 import android.text.InputType
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
 import android.widget.RelativeLayout
