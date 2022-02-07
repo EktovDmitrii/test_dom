@@ -108,7 +108,7 @@ class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding
                 "Оформление продукта"
             }
 
-            binding.layoutDateTime.root.visibleIf(purchase.defaultProduct)
+//            binding.layoutDateTime.root.visibleIf(purchase.defaultProduct)
             binding.layoutPurchaseServiceHeader.durationTextView.visibleIf(purchase.duration != null)
 
             if (purchase.duration != null){
@@ -197,8 +197,12 @@ class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding
     override fun onSelectDateTimeClick(purchaseDateTimeModel: PurchaseDateTimeModel) {
         binding.layoutDateTime.filledDateTimeGroup.visible()
         binding.layoutDateTime.chooseDateTimeTextView.gone()
-        binding.layoutDateTime.timesOfDayTextView.text = purchaseDateTimeModel.selectedPeriodModel?.displayTime
-        binding.layoutDateTime.timeIntervalTextView.text = purchaseDateTimeModel.date.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
+
+        purchaseDateTimeModel.selectedPeriodModel?.let {
+            binding.layoutDateTime.timesOfDayTextView.text = "${it.timeFrom} – ${it.timeTo}"
+        }
+        binding.layoutDateTime.timeIntervalTextView.text = purchaseDateTimeModel.selectedDate.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
+
         viewModel.updateDateTime(purchaseDateTimeModel)
     }
 

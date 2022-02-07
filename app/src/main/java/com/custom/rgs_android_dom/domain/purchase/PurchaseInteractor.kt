@@ -9,23 +9,22 @@ import com.custom.rgs_android_dom.utils.formatTo
 import io.reactivex.Single
 import org.joda.time.LocalDateTime
 import org.joda.time.LocalTime
+import java.lang.IllegalArgumentException
 import java.util.*
 
 class PurchaseInteractor(private val purchaseRepository: PurchaseRepository) {
 
-    val timePeriods = mutableListOf<PurchaseTimePeriodModel>().apply {
-        add(PurchaseTimePeriodModel(0, timeOfDay = "Утро", displayTime = "6:00 – 9:00", timeFrom = "6:00", timeTo = "9:00", isSelected = false))
-        add(PurchaseTimePeriodModel(1, timeOfDay = "До полудня", displayTime = "9:00 – 12:00", timeFrom = "9:00", timeTo = "12:00", isSelected = false))
-        add(PurchaseTimePeriodModel(2, timeOfDay = "День", displayTime = "12:00 – 15:00", timeFrom = "12:00", timeTo = "15:00", isSelected = false))
-        add(PurchaseTimePeriodModel(3, timeOfDay = "Вечер", displayTime = "15:00 – 18:00", timeFrom = "15:00", timeTo = "18:00", isSelected = false))
-    }
+    private val periodsList = listOf(
+        PurchaseTimePeriodModel(0, timeOfDay = "Утро", timeFrom = "6:00", timeTo = "9:00"),
+        PurchaseTimePeriodModel(1, timeOfDay = "До полудня", timeFrom = "9:00", timeTo = "12:00"),
+        PurchaseTimePeriodModel(2, timeOfDay = "День", timeFrom = "12:00", timeTo = "15:00"),
+        PurchaseTimePeriodModel(3, timeOfDay = "Вечер", timeFrom = "15:00", timeTo = "18:00")
+    )
 
-    fun createDateWeek(
-        purchaseDateTimeModel: PurchaseDateTimeModel,
-        periodList: List<PurchaseTimePeriodModel>
-    ): PurchaseDateModel {
+    fun createDateWeek(): PurchaseDateModel {
+        val purchaseDateTimeModel = PurchaseDateTimeModel()
         var firstDayInWeek =
-            purchaseDateTimeModel.date.minusDays(purchaseDateTimeModel.date.dayOfWeek - 1)
+            purchaseDateTimeModel.selectedDate.minusDays(purchaseDateTimeModel.selectedDate.dayOfWeek - 1)
         val dateForCalendarList: MutableList<DateForCalendarModel> = mutableListOf()
         for (counter in 0..6) {
             dateForCalendarList.add(
@@ -34,7 +33,7 @@ class PurchaseInteractor(private val purchaseRepository: PurchaseRepository) {
                     dateNumber = firstDayInWeek.dayOfMonth.toString(),
                     date = firstDayInWeek,
                     isEnable = firstDayInWeek.dayOfYear >= LocalDateTime.now().dayOfYear,
-                    isSelected = firstDayInWeek.dayOfYear == purchaseDateTimeModel.date.dayOfYear
+                    isSelected = firstDayInWeek.dayOfYear == purchaseDateTimeModel.selectedDate.dayOfYear
                 )
             )
             firstDayInWeek = firstDayInWeek.plusDays(1)
@@ -42,19 +41,13 @@ class PurchaseInteractor(private val purchaseRepository: PurchaseRepository) {
 
         val currentMonth = SimpleDateFormat(DATE_PATTERN_YEAR_MONTH, Locale.getDefault()).format(firstDayInWeek.minusDays(1).toDate()).capitalize(Locale.getDefault())
 
-        val periodicList = checkPeriodEnable(periodList, selectedDate = purchaseDateTimeModel.date)
-        periodList.find { it.id == purchaseDateTimeModel.selectedPeriodModel?.id }?.isSelected = true
-
         return PurchaseDateModel(
             selectedMonth = currentMonth,
             isPreviousMonthButtonEnable = checkPreviousButtonEnable(
-                dateForCalendarList[6].date.minusWeeks(
-                    1
-                )
+                dateForCalendarList[6].date.minusWeeks(1)
             ),
             datesForCalendar = dateForCalendarList,
-            isSelectButtonEnable = false,
-            periodList = periodicList,
+            periodList = periodsList,
             selectedPeriod = purchaseDateTimeModel.selectedPeriodModel
         )
     }
@@ -134,23 +127,15 @@ class PurchaseInteractor(private val purchaseRepository: PurchaseRepository) {
         periodList: List<PurchaseTimePeriodModel>,
         selectedDate: LocalDateTime
     ): List<PurchaseTimePeriodModel> {
-        val currentDate = LocalDateTime.now()
-        if (selectedDate.dayOfYear == currentDate.dayOfYear) {
-            val currentTime = LocalTime.now()
+        val currentDateTime = LocalDateTime.now()
+        if (selectedDate.dayOfYear == currentDateTime.dayOfYear) {
             periodList.forEach {
-                when (it.timeFrom) {
-                    "6:00" -> {
-                        it.isSelectable = LocalTime("9:00") >= currentTime
-                    }
-                    "9:00" -> {
-                        it.isSelectable = LocalTime("12:00") >= currentTime
-                    }
-                    "12:00" -> {
-                        it.isSelectable = LocalTime("15:00") >= currentTime
-                    }
-                    "15:00" -> {
-                        it.isSelectable = LocalTime("18:00") >= currentTime
-                    }
+                it.isSelectable = when (it.timeFrom) {
+                    "6:00" -> LocalTime("9:00") >= currentDateTime.toLocalTime()
+                    "9:00" -> LocalTime("12:00") >= currentDateTime.toLocalTime()
+                    "12:00" -> LocalTime("15:00") >= currentDateTime.toLocalTime()
+                    "15:00" -> LocalTime("18:00") >= currentDateTime.toLocalTime()
+                    else -> throw IllegalArgumentException("Wrong argument: ${it.timeFrom}")
                 }
                 it.isSelected = false
             }
@@ -164,8 +149,7 @@ class PurchaseInteractor(private val purchaseRepository: PurchaseRepository) {
     }
 
     private fun checkPreviousButtonEnable(lastDateOfPreviousWeek: LocalDateTime): Boolean {
-        val date = LocalDateTime.now()
-        return date.dayOfYear <= lastDateOfPreviousWeek.dayOfYear
+        return LocalDateTime.now().dayOfYear <= lastDateOfPreviousWeek.dayOfYear
     }
 
     fun getSavedCards(): Single<List<CardModel>> {

@@ -7,7 +7,6 @@ data class PurchaseDateModel(
     val selectedMonth: String,
     var isPreviousMonthButtonEnable: Boolean,
     val datesForCalendar: List<DateForCalendarModel>,
-    var isSelectButtonEnable: Boolean,
     var periodList: List<PurchaseTimePeriodModel>,
     var selectedPeriod: PurchaseTimePeriodModel? = null
 )
