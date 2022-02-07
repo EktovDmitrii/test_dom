@@ -46,6 +46,9 @@ class SingleProductFragment :
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
         }
+        binding.detailButton.root.setOnDebouncedClickListener {
+            viewModel.onOrderClick()
+        }
         binding.features.featuresValue1.text = "Поддержка 24/7"
 
         subscribe(viewModel.productObserver) { product ->
