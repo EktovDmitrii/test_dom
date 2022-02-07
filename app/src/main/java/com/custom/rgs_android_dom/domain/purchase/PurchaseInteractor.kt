@@ -178,9 +178,10 @@ class PurchaseInteractor(private val purchaseRepository: PurchaseRepository) {
         email: String,
         saveCard: Boolean,
         objectId: String,
-        deliveryDate: String,
-        timeFrom: String,
-        timeTo: String,
+        comment: String?,
+        deliveryDate: String?,
+        timeFrom: String?,
+        timeTo: String?,
     ): Single<String> {
         return purchaseRepository.makeProductPurchase(
             productId = productId,
@@ -188,6 +189,7 @@ class PurchaseInteractor(private val purchaseRepository: PurchaseRepository) {
             email = email,
             saveCard = saveCard,
             objectId = objectId,
+            comment = comment,
             deliveryDate = deliveryDate,
             timeFrom = timeFrom,
             timeTo = timeTo

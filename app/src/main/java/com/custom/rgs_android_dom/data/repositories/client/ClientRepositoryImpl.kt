@@ -200,4 +200,8 @@ class ClientRepositoryImpl(
     override fun getEditPersonalDataRequestedSubject(): BehaviorSubject<Boolean> {
         return editPersonalDataRequestedSubject
     }
+
+    override fun saveCheckoutEmail(email: String) {
+        clientSharedPreferences.saveCheckoutEmail(email)
+    }
 }
