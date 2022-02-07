@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.ProductModel
-import com.custom.rgs_android_dom.domain.catalog.models.ServiceModel
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.purchase.model.PurchaseModel
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
@@ -25,9 +24,9 @@ import io.reactivex.schedulers.Schedulers
 
 class SingleProductViewModel(
     private val product: SingleProductLauncher,
+    private val registrationInteractor: RegistrationInteractor,
     private val catalogInteractor: CatalogInteractor,
     private val propertyInteractor: PropertyInteractor,
-    private val registrationInteractor: RegistrationInteractor
     ) : BaseViewModel() {
 
     private val productController = MutableLiveData<ProductModel>()

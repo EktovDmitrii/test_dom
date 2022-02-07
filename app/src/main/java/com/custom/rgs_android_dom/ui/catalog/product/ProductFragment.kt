@@ -75,7 +75,7 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
                 .transform(RoundedCorners(16.dp(requireContext())))
                 .into(binding.header.logoImageView)
 
-            binding.validity.validityValue.text = "${product.duration} после покупки"
+            binding.validity.validityValue.text = product.duration.toString() + " после покупки"
             binding.header.headerTitle.text = product.name
             binding.header.headerDescription.text = product.title
             binding.about.aboutValue.text = product.description

@@ -52,6 +52,8 @@ class SingleProductFragment :
             viewModel.onCheckoutClick()
         }
 
+        binding.features.featuresValue1.text = "Поддержка 24/7"
+
         subscribe(viewModel.productObserver) { product ->
             GlideApp.with(requireContext())
                 .load(GlideUrlProvider.makeHeadersGlideUrl(product.iconLink))
@@ -62,7 +64,7 @@ class SingleProductFragment :
                 .transform(RoundedCorners(16.dp(requireContext())))
                 .into(binding.header.logoImageView)
 
-            binding.validity.validityValue.text = product.duration.toString()
+            binding.validity.validityValue.text = product.duration.toString() + " после покупки"
             binding.header.headerTitle.text = product.name
             binding.header.headerDescription.text = product.title
             binding.about.aboutValue.text = product.description

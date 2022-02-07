@@ -55,7 +55,7 @@ class ClientProductsAdapter(
                 .into(binding.logoSmallImageView)
 
             GlideApp.with(binding.root.context)
-                .load(model.logoLarge)
+                .load(model.logoMiddle)
                 .transform(RoundedCorners(16.dp(binding.root.context)))
                 .error(R.drawable.rectangle_filled_secondary_100_radius_16dp)
                 .into(binding.logoBigImageView)

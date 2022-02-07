@@ -45,7 +45,7 @@ class CatalogSubcategoriesWithSmallImageAdapter(
             binding.subtitleTextView.text = "${model.products.size} видов услуг"
 
             GlideApp.with(binding.root.context)
-                .load(GlideUrlProvider.makeHeadersGlideUrl(model.logoMiddle))
+                .load(GlideUrlProvider.makeHeadersGlideUrl(model.logoSmall))
                 .transform(RoundedCorners(8.dp(binding.root.context)))
                 .error(R.drawable.rectangle_filled_secondary_100_radius_8dp)
                 .into(binding.logoImageView)
