@@ -96,7 +96,7 @@ class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding
 
         subscribe(viewModel.purchaseObserver) { purchase ->
             GlideApp.with(requireContext())
-                .load(GlideUrlProvider.makeHeadersGlideUrl(purchase.iconLink))
+                .load(GlideUrlProvider.makeHeadersGlideUrl(purchase.logo))
                 .transform(RoundedCorners(20.dp(requireContext())))
                 .into(binding.layoutPurchaseServiceHeader.logoImageView)
 

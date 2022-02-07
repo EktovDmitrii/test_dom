@@ -100,7 +100,7 @@ class ProductViewModel(
                     id = it.id,
                     defaultProduct = it.defaultProduct,
                     duration = it.duration,
-                    iconLink = it.iconLink,
+                    logo = it.logoSmall,
                     name = it.name,
                     price = it.price
                 )
