@@ -15,7 +15,7 @@ data class ProductDurationModel(
                     units.toString().takeLast(1).toInt() == 1 -> "$units день"
                     units.toString().takeLast(1).toInt() in 2..4 -> "$units дня"
                     else -> "$units дней"
-                }
+                } + " после покупки"
              }
             ProductUnitType.MONTHS -> {
                 return when{
@@ -23,7 +23,7 @@ data class ProductDurationModel(
                     units.toString().takeLast(1).toInt() == 1 -> "$units месяц"
                     units.toString().takeLast(1).toInt() in 2..4 -> "$units месяца"
                     else -> "$units месяцев"
-                }
+                } + " после покупки"
             }
             ProductUnitType.YEARS -> {
                 return when{
@@ -31,7 +31,7 @@ data class ProductDurationModel(
                     units.toString().takeLast(1).toInt() == 1 -> "$units год"
                     units.toString().takeLast(1).toInt() in 2..4 -> "$units года"
                     else -> "$units лет"
-                }
+                } + " после покупки"
             }
             else -> {
                 return "Unknown"
