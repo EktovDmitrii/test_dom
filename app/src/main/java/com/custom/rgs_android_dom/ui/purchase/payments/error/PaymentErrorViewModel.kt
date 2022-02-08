@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.ui.purchase
+package com.custom.rgs_android_dom.ui.purchase.payments.error
 
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.PAYMENT

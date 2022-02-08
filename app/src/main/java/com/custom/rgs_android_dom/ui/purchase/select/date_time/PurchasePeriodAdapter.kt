@@ -1,13 +1,12 @@
 package com.custom.rgs_android_dom.ui.purchase.select.date_time
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.LayoutPurchasePeriodBinding
-import com.custom.rgs_android_dom.domain.purchase.model.PurchaseTimePeriodModel
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseTimePeriodModel
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 
 class PurchasePeriodAdapter(
@@ -49,8 +48,6 @@ class PurchasePeriodAdapter(
             binding.timeIntervalTextView.text = period.displayTime
 
             binding.selectPeriodBtn.isChecked = period.isSelected
-
-            Log.d("MyLog", "PERIOD " + period.displayTime + " IS SELECTAVBLER " + period.isSelectable)
 
             if (period.isSelectable) {
                 binding.timeOfDayTextView.setTextColor(

@@ -35,6 +35,5 @@ data class ServiceModel(
     val versionCode: String?,
     val versionCreatedAt: DateTime?,
     val versionId: String?,
-    val versionStatus: String?,
-    val isPurchased: Boolean = false
+    val versionStatus: String?
 )

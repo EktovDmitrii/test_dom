@@ -1,11 +1,13 @@
 package com.custom.rgs_android_dom.ui.catalog.product
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.*
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
-import com.custom.rgs_android_dom.domain.purchase.model.PurchaseModel
+import com.custom.rgs_android_dom.domain.purchase.PurchaseInteractor
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.service.ServiceFragment
@@ -19,6 +21,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.purchase.PurchaseFragment
+import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderFragment
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_FULL_MONTH
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_ONLY
@@ -29,6 +32,7 @@ class ProductViewModel(
     private val registrationInteractor: RegistrationInteractor,
     private val catalogInteractor: CatalogInteractor,
     private val propertyInteractor: PropertyInteractor,
+    private val purchaseInteractor: PurchaseInteractor
 ) : BaseViewModel() {
 
     private val productController = MutableLiveData<ProductModel>()
@@ -62,18 +66,6 @@ class ProductViewModel(
                 }
             ).addTo(dataCompositeDisposable)
 
-        catalogInteractor.getProductServices(product.productId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onSuccess = {
-                    productServicesController.value = it.map { it.copy(isPurchased = product.isPurchased) }
-                },
-                onError = {
-                    logException(this, it)
-                }
-            ).addTo(dataCompositeDisposable)
-
         product.purchaseObjectId?.let { objectId ->
             propertyInteractor.getPropertyItem(objectId)
                 .subscribeOn(Schedulers.io())
@@ -87,6 +79,20 @@ class ProductViewModel(
                     }
                 ).addTo(dataCompositeDisposable)
         }
+
+        purchaseInteractor.getServiceOrderedSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    getIncludedServices()
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
+        getIncludedServices()
     }
 
     fun onBackClick() {
@@ -114,15 +120,33 @@ class ProductViewModel(
     }
 
     fun onServiceClick(serviceShortModel: ServiceShortModel) {
-        serviceShortModel.serviceId?.let {
-            val serviceFragment = ServiceFragment.newInstance(
-                ServiceLauncher(
-                    productId = product.productId,
-                    serviceId = serviceShortModel.serviceId,
-                    isPurchased = product.isPurchased
-                )
+        val serviceFragment = ServiceFragment.newInstance(
+            ServiceLauncher(
+                productId = product.productId,
+                serviceId = serviceShortModel.serviceId,
+                isPurchased = product.isPurchased,
+                quantity = serviceShortModel.quantity
             )
-            ScreenManager.showBottomScreen(serviceFragment)
-        }
+        )
+        ScreenManager.showBottomScreen(serviceFragment)
+    }
+
+    fun onServiceOrderClick(serviceShortModel: ServiceShortModel){
+        val serviceOrderFragment = ServiceOrderFragment.newInstance(serviceShortModel.serviceId, product.productId)
+        ScreenManager.showScreen(serviceOrderFragment)
+    }
+
+    private fun getIncludedServices(){
+        catalogInteractor.getProductServices(product.productId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    productServicesController.value = it.map { it.copy(isPurchased = product.isPurchased) }
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
     }
 }

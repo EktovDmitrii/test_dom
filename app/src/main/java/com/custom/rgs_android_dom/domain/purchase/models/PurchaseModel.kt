@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.domain.purchase.model
+package com.custom.rgs_android_dom.domain.purchase.models
 
 import com.custom.rgs_android_dom.domain.catalog.models.ProductDurationModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductPriceModel

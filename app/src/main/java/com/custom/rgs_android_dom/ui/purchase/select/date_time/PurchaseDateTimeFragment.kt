@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPurchaseDateTimeBinding
-import com.custom.rgs_android_dom.domain.purchase.model.PurchaseDateTimeModel
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseDateTimeModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener

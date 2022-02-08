@@ -2,11 +2,16 @@ package com.custom.rgs_android_dom.ui.purchase.select.address
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
+import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.ItemPurchaseServicePropertyBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
+import com.custom.rgs_android_dom.utils.GlideApp
+import com.custom.rgs_android_dom.utils.dp
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.visibleIf
 
@@ -51,14 +56,20 @@ class PurchasePropertyAdapter(
 
         fun bind(property: PropertyItemModel) {
             binding.propertyAddressTextView.text = property.address?.address
+            binding.propertyNameTextView.text = property.name
+
             when (property.type) {
                 PropertyType.HOUSE -> {
-                    binding.propertyTypeImageView.setImageResource(R.drawable.ic_type_home)
-                    binding.propertyTypeTextView.text = "Дом"
+                    GlideApp.with(binding.propertyTypeImageView.context)
+                        .load(R.drawable.ic_type_home)
+                        .transform(RoundedCorners(16.dp(binding.propertyTypeImageView.context)))
+                        .into(binding.propertyTypeImageView)
                 }
                 PropertyType.APARTMENT -> {
-                    binding.propertyTypeImageView.setImageResource(R.drawable.ic_type_apartment_334px)
-                    binding.propertyTypeTextView.text = "Квартира"
+                    GlideApp.with(binding.propertyTypeImageView.context)
+                        .load(R.drawable.ic_type_apartment_334px)
+                        .transform(RoundedCorners(16.dp(binding.propertyTypeImageView.context)))
+                        .into(binding.propertyTypeImageView)
                 }
             }
             binding.checkImageView.visibleIf(property == currentPropertyItem)

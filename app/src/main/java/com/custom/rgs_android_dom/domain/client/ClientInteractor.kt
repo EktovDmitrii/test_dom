@@ -503,10 +503,6 @@ ClientInteractor(
         }
     }
 
-    fun saveCheckoutEmail(email: String){
-        clientRepository.saveCheckoutEmail(email)
-    }
-
     private fun isBirthdayValid(birthday: LocalDateTime): Boolean {
         return !(birthday.isAfter(MIN_DATE) || birthday.isBefore(
             MAX_DATE

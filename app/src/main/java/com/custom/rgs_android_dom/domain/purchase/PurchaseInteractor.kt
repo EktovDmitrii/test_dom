@@ -1,17 +1,24 @@
 package com.custom.rgs_android_dom.domain.purchase
 
 import android.icu.text.SimpleDateFormat
-import com.custom.rgs_android_dom.domain.purchase.model.*
+import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
+import com.custom.rgs_android_dom.domain.purchase.models.*
+import com.custom.rgs_android_dom.domain.purchase.view_states.ServiceOrderViewState
+import com.custom.rgs_android_dom.domain.repositories.CatalogRepository
 import com.custom.rgs_android_dom.domain.repositories.PurchaseRepository
-import com.custom.rgs_android_dom.utils.DATE_PATTERN_DAY_OF_WEEK
-import com.custom.rgs_android_dom.utils.DATE_PATTERN_YEAR_MONTH
-import com.custom.rgs_android_dom.utils.formatTo
+import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderViewModel
+import com.custom.rgs_android_dom.utils.*
+import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.subjects.PublishSubject
 import org.joda.time.LocalDateTime
 import org.joda.time.LocalTime
 import java.util.*
 
-class PurchaseInteractor(private val purchaseRepository: PurchaseRepository) {
+class PurchaseInteractor(
+    private val purchaseRepository: PurchaseRepository,
+    private val catalogRepository: CatalogRepository
+) {
 
     val timePeriods = mutableListOf<PurchaseTimePeriodModel>().apply {
         add(PurchaseTimePeriodModel(0, timeOfDay = "Утро", displayTime = "6:00 – 9:00", timeFrom = "6:00", timeTo = "9:00", isSelected = false))
@@ -19,6 +26,10 @@ class PurchaseInteractor(private val purchaseRepository: PurchaseRepository) {
         add(PurchaseTimePeriodModel(2, timeOfDay = "День", displayTime = "12:00 – 15:00", timeFrom = "12:00", timeTo = "15:00", isSelected = false))
         add(PurchaseTimePeriodModel(3, timeOfDay = "Вечер", displayTime = "15:00 – 18:00", timeFrom = "15:00", timeTo = "18:00", isSelected = false))
     }
+
+    private var serviceOrderViewState = ServiceOrderViewState()
+
+    val serviceOrderViewStateSubject = PublishSubject.create<ServiceOrderViewState>()
 
     fun createDateWeek(
         purchaseDateTimeModel: PurchaseDateTimeModel,
@@ -93,14 +104,6 @@ class PurchaseInteractor(private val purchaseRepository: PurchaseRepository) {
         )
     }
 
-    private fun checkSelectedDate(datesForCalendar: List<DateForCalendarModel>): List<DateForCalendarModel> {
-        val currentDate = datesForCalendar.find { it.isEnable }
-        datesForCalendar.forEach {
-            if (it == currentDate) it.isSelected = true
-        }
-        return datesForCalendar
-    }
-
     fun selectDay(
         purchaseDateModel: PurchaseDateModel,
         selectedDate: LocalDateTime
@@ -128,6 +131,94 @@ class PurchaseInteractor(private val purchaseRepository: PurchaseRepository) {
                 date = selectedDate,
                 periodList = periodList
             )
+    }
+
+    fun getSavedCards(): Single<List<CardModel>> {
+        return purchaseRepository.getSavedCards()
+    }
+
+    fun makeProductPurchase(
+        productId: String,
+        bindingId: String?,
+        email: String,
+        saveCard: Boolean,
+        objectId: String,
+        comment: String?,
+        deliveryDate: String?,
+        timeFrom: String?,
+        timeTo: String?,
+    ): Single<String> {
+        return purchaseRepository.makeProductPurchase(
+            productId = productId,
+            bindingId = bindingId,
+            email = email,
+            saveCard = saveCard,
+            objectId = objectId,
+            comment = comment,
+            deliveryDate = deliveryDate,
+            timeFrom = timeFrom,
+            timeTo = timeTo
+        )
+    }
+
+
+    fun selectServiceOrderProperty(property: PropertyItemModel){
+        serviceOrderViewState = serviceOrderViewState.copy(property = property)
+        validateServiceOrderViewState()
+    }
+
+    fun selectServiceOrderComment(comment: String){
+        serviceOrderViewState = serviceOrderViewState.copy(comment = comment.ifEmpty { null })
+        validateServiceOrderViewState()
+    }
+
+    fun selectServiceOrderDate(orderDate: PurchaseDateTimeModel){
+        serviceOrderViewState = serviceOrderViewState.copy(orderDate = orderDate)
+        validateServiceOrderViewState()
+    }
+
+    fun orderServiceOnBalance(productId: String, serviceId: String): Completable {
+        return catalogRepository.getAvailableServiceInProduct(productId, serviceId)
+            .flatMapCompletable{
+                purchaseRepository.orderServiceOnBalance(
+                    serviceId = serviceId,
+                    clientServiceId = it.id,
+                    objectId = serviceOrderViewState.property?.id ?: "",
+                    deliveryDate = serviceOrderViewState.orderDate?.date?.formatTo(
+                        DATE_PATTERN_DATE_AND_TIME_FOR_PURCHASE
+                    ) + TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT).removePrefix("GMT"),
+                    timeFrom = serviceOrderViewState.orderDate?.selectedPeriodModel?.timeFrom ?: "",
+                    timeTo = serviceOrderViewState.orderDate?.selectedPeriodModel?.timeTo ?: "",
+                    comment = serviceOrderViewState.comment
+                )
+            }
+    }
+
+    fun getServiceOrderedSubject(): PublishSubject<String>{
+        return purchaseRepository.getServiceOrderedSubject()
+    }
+
+    fun getProductPurchasedSubject(): PublishSubject<String>{
+        return purchaseRepository.getProductPurchasedSubject()
+    }
+
+    private fun validateServiceOrderViewState(){
+        val isServiceOrderTextViewEnabled = (serviceOrderViewState.property != null && serviceOrderViewState.orderDate != null)
+        serviceOrderViewState = serviceOrderViewState.copy(isServiceOrderTextViewEnabled = isServiceOrderTextViewEnabled)
+        serviceOrderViewStateSubject.onNext(serviceOrderViewState)
+    }
+
+    private fun checkPreviousButtonEnable(lastDateOfPreviousWeek: LocalDateTime): Boolean {
+        val date = LocalDateTime.now()
+        return date.dayOfYear <= lastDateOfPreviousWeek.dayOfYear
+    }
+
+    private fun checkSelectedDate(datesForCalendar: List<DateForCalendarModel>): List<DateForCalendarModel> {
+        val currentDate = datesForCalendar.find { it.isEnable }
+        datesForCalendar.forEach {
+            if (it == currentDate) it.isSelected = true
+        }
+        return datesForCalendar
     }
 
     private fun checkPeriodEnable(
@@ -161,38 +252,5 @@ class PurchaseInteractor(private val purchaseRepository: PurchaseRepository) {
             }
         }
         return periodList
-    }
-
-    private fun checkPreviousButtonEnable(lastDateOfPreviousWeek: LocalDateTime): Boolean {
-        val date = LocalDateTime.now()
-        return date.dayOfYear <= lastDateOfPreviousWeek.dayOfYear
-    }
-
-    fun getSavedCards(): Single<List<CardModel>> {
-        return purchaseRepository.getSavedCards()
-    }
-
-    fun makeProductPurchase(
-        productId: String,
-        bindingId: String?,
-        email: String,
-        saveCard: Boolean,
-        objectId: String,
-        comment: String?,
-        deliveryDate: String?,
-        timeFrom: String?,
-        timeTo: String?,
-    ): Single<String> {
-        return purchaseRepository.makeProductPurchase(
-            productId = productId,
-            bindingId = bindingId,
-            email = email,
-            saveCard = saveCard,
-            objectId = objectId,
-            comment = comment,
-            deliveryDate = deliveryDate,
-            timeFrom = timeFrom,
-            timeTo = timeTo
-        )
     }
 }

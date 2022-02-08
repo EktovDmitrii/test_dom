@@ -57,7 +57,7 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
         binding.includes.includesRecycler.apply {
             adapter = ProductInclusionAdapter(
                 onServiceClick = { viewModel.onServiceClick(it) },
-                onOrderClick = { viewModel.onServiceClick(it) } // TODO добавить после заказа услуги
+                onOrderClick = { viewModel.onServiceOrderClick(it) }
             )
             val horizontalGapInPixels = GRID_HORIZONTAL_GAP.dp(requireActivity())
             val verticalGapInPixels = GRID_VERTICAL_GAP.dp(requireActivity())

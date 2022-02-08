@@ -31,7 +31,7 @@ val domainModule = module {
 
     factory { CatalogInteractor(catalogRepository = get()) }
 
-    factory { PurchaseInteractor(purchaseRepository = get()) }
+    factory { PurchaseInteractor(purchaseRepository = get(), catalogRepository = get()) }
 
     factory { PoliciesInteractor(policiesRepository = get(), clientRepository = get(), clientSharedPreferences = get()) }
 }

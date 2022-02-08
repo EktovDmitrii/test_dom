@@ -1,16 +1,15 @@
 package com.custom.rgs_android_dom.ui.purchase.select.card
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ItemPurchaseCardBinding
 import com.custom.rgs_android_dom.databinding.ItemPurchaseNewCardBinding
-import com.custom.rgs_android_dom.domain.purchase.model.CardModel
-import com.custom.rgs_android_dom.domain.purchase.model.CardType
-import com.custom.rgs_android_dom.domain.purchase.model.NewCardModel
-import com.custom.rgs_android_dom.domain.purchase.model.SavedCardModel
+import com.custom.rgs_android_dom.domain.purchase.models.CardModel
+import com.custom.rgs_android_dom.domain.purchase.models.CardType
+import com.custom.rgs_android_dom.domain.purchase.models.NewCardModel
+import com.custom.rgs_android_dom.domain.purchase.models.SavedCardModel
 import com.custom.rgs_android_dom.ui.base.BaseViewHolder
 import com.custom.rgs_android_dom.utils.GlideApp
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
@@ -80,7 +79,6 @@ class CardsAdapter(
             binding.saveCardSwitch.isChecked = newCard.doSave
 
             binding.saveCardSwitch.setOnCheckedChangeListener { button, isChecked ->
-                Log.d("MyLog", "Set on checked change")
                 newCard.doSave = isChecked
                 onCardSelect(newCard)
             }

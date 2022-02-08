@@ -2,10 +2,10 @@ package com.custom.rgs_android_dom.ui.purchase.select.date_time
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.custom.rgs_android_dom.domain.purchase.model.PurchaseDateModel
-import com.custom.rgs_android_dom.domain.purchase.model.PurchaseDateTimeModel
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseDateModel
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseDateTimeModel
 import com.custom.rgs_android_dom.domain.purchase.PurchaseInteractor
-import com.custom.rgs_android_dom.domain.purchase.model.PurchaseTimePeriodModel
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseTimePeriodModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import org.joda.time.LocalDateTime
 

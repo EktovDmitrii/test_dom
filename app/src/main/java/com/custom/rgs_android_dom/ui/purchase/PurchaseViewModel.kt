@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.ui.purchase
 
-import android.util.Log
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,7 +7,7 @@ import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.purchase.PurchaseInteractor
-import com.custom.rgs_android_dom.domain.purchase.model.*
+import com.custom.rgs_android_dom.domain.purchase.models.*
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -18,6 +17,7 @@ import com.custom.rgs_android_dom.ui.purchase.select.date_time.PurchaseDateTimeF
 import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressFragment
 import com.custom.rgs_android_dom.ui.purchase.select.card.SelectCardFragment
 import com.custom.rgs_android_dom.ui.purchase.add.email.AddEmailFragment
+import com.custom.rgs_android_dom.ui.purchase.payments.PaymentWebViewFragment
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_AND_TIME_FOR_PURCHASE
 import com.custom.rgs_android_dom.utils.formatTo
 import com.custom.rgs_android_dom.utils.logException
@@ -64,7 +64,7 @@ class PurchaseViewModel(
             .subscribeBy(
                 onSuccess = {personalData->
                     purchaseController.value?.let {
-                        purchaseController.value = it.copy(email = personalData.checkoutEmail)
+                        purchaseController.value = it.copy(email = personalData.email.ifEmpty { null })
                         validateFields()
                     }
                 },
@@ -116,7 +116,6 @@ class PurchaseViewModel(
     }
 
     fun updateEmail(email: String) {
-        clientInteractor.saveCheckoutEmail(email)
         purchaseController.value?.let {
             purchaseController.value = it.copy(email = email)
             validateFields()

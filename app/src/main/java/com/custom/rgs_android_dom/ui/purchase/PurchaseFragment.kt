@@ -10,10 +10,10 @@ import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentPurchaseBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
-import com.custom.rgs_android_dom.domain.purchase.model.PurchaseDateTimeModel
-import com.custom.rgs_android_dom.domain.purchase.model.PurchaseModel
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseDateTimeModel
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.domain.purchase.model.*
+import com.custom.rgs_android_dom.domain.purchase.models.*
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
 import com.custom.rgs_android_dom.ui.purchase.add.agent.AddAgentFragment
 import com.custom.rgs_android_dom.ui.purchase.add.agent.PurchaseAgentListener
@@ -117,7 +117,7 @@ class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding
             binding.layoutPurchaseServiceHeader.durationTextView.visibleIf(purchase.duration != null)
 
             if (purchase.defaultProduct){
-                binding.layoutPurchaseServiceHeader.durationTextView.text = purchase.deliveryTime
+                binding.layoutPurchaseServiceHeader.durationTextView.text = "Работа займёт ~${purchase.deliveryTime}"
             } else {
                 binding.layoutPurchaseServiceHeader.durationTextView.text = "Действует ${purchase.duration}"
             }
@@ -203,7 +203,7 @@ class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding
         viewModel.updateAddress(propertyItemModel)
     }
 
-    override fun onSaveCommentClick(comment: String) {
+    override fun onCommentSelected(comment: String) {
         viewModel.updateComment(comment)
     }
 
