@@ -12,8 +12,8 @@ import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.ItemOrderAdditionalBillBinding
 import com.custom.rgs_android_dom.databinding.ItemOrderBinding
 import com.custom.rgs_android_dom.databinding.ItemOrderMainBillBinding
-import com.custom.rgs_android_dom.domain.client.models.Bill
-import com.custom.rgs_android_dom.domain.client.models.BillType
+import com.custom.rgs_android_dom.domain.client.models.InvoiceItemModel
+import com.custom.rgs_android_dom.domain.client.models.InvoiceType
 import com.custom.rgs_android_dom.domain.client.models.OrderItemModel
 import com.custom.rgs_android_dom.utils.GlideApp
 import com.custom.rgs_android_dom.utils.dp
@@ -63,7 +63,7 @@ class OrdersAdapter(
                     item.description,
                     Html.FROM_HTML_MODE_LEGACY
                 )
-                initBillItems(billContainer, item.bills)
+                initBillItems(billContainer, item.invoices)
 
                 root.setOnDebouncedClickListener {
                     onOrderClick(item)
@@ -71,13 +71,13 @@ class OrdersAdapter(
             }
         }
 
-        private fun initBillItems(billContainer: LinearLayout, bills: List<Bill>) {
+        private fun initBillItems(billContainer: LinearLayout, invoices: List<InvoiceItemModel>) {
             val context = billContainer.context
             billContainer.removeAllViews()
-            if (bills.isNotEmpty()) {
-                bills.forEach {
-                    if (it.type == BillType.MAIN) {
-                        if (bills.size > 1) {
+            if (invoices.isNotEmpty()) {
+                invoices.forEach {
+                    if (it.type == InvoiceType.MAIN) {
+                        if (invoices.size > 1) {
                             ItemOrderMainBillBinding.inflate(LayoutInflater.from(context), billContainer, false).apply {
                                 root.setOnDebouncedClickListener {
                                 }
@@ -92,7 +92,7 @@ class OrdersAdapter(
                                 billContainer.addView(root)
                             }
                         }
-                    } else if (it.type == BillType.ADDITIONAL) {
+                    } else if (it.type == InvoiceType.ADDITIONAL) {
                         ItemOrderAdditionalBillBinding.inflate(LayoutInflater.from(context), billContainer, false).apply {
                             billPayTextView.setOnDebouncedClickListener {
                             }

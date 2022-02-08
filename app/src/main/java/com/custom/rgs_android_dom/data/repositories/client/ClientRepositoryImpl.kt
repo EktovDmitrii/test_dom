@@ -1,9 +1,9 @@
 package com.custom.rgs_android_dom.data.repositories.client
 
 import com.custom.rgs_android_dom.data.network.MSDApi
-import com.custom.rgs_android_dom.data.network.mappers.ChatMapper
 import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
 import com.custom.rgs_android_dom.data.network.mappers.ClientOrdersMapper
+import com.custom.rgs_android_dom.data.network.mappers.GeneralInvoiceMapper
 import com.custom.rgs_android_dom.data.network.requests.DeleteContactsRequest
 import com.custom.rgs_android_dom.data.network.requests.UpdateClientRequest
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
@@ -204,8 +204,29 @@ class ClientRepositoryImpl(
     }
 
     override fun getOrders(size: Long, index: Long): Single<List<OrderItemModel>> {
+        return api.getOrders()
+            .flatMap { orderResponse ->
+                Single.just(ClientOrdersMapper.responseToOrderItem(emptyList(), orderResponse))
+                /*val orderIds = orderResponse.orders.map { order -> order.id }
+                getGeneralInvoices(size, index, "", "", "", orderIds.joinToString(","), true)
+                    .flatMap {
+                        Single.just(ClientOrdersMapper.responseToOrderItem(it, orderResponse))
+                    }*/
+            }
+
+    }
+
+    override fun getGeneralInvoices(
+        size: Long,
+        index: Long,
+        status: String,
+        num: String,
+        fullText: String,
+        orderIds: String,
+        withPayments: Boolean
+    ): Single<List<GeneralInvoice>> {
         val client = clientSharedPreferences.getClient()
-        return api.getOrders(client?.userId ?: "", size, index)
-            .flatMap { Single.just(ClientOrdersMapper.responseToOrderItem(it)) }
+        return api.getGeneralInvoices(client?.userId ?: "", size, index, status, num, fullText, orderIds, withPayments)
+            .flatMap { Single.just(GeneralInvoiceMapper.responseToDomainModel(it)) }
     }
 }
