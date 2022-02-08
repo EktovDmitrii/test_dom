@@ -65,7 +65,9 @@ class OrdersAdapter(
                 )
                 initBillItems(billContainer, item.bills)
 
-                root.setOnDebouncedClickListener { onOrderClick(item) }
+                root.setOnDebouncedClickListener {
+                    onOrderClick(item)
+                }
             }
         }
 
@@ -77,20 +79,23 @@ class OrdersAdapter(
                     if (it.type == BillType.MAIN) {
                         if (bills.size > 1) {
                             ItemOrderMainBillBinding.inflate(LayoutInflater.from(context), billContainer, false).apply {
-                                root.setOnDebouncedClickListener {  }
+                                root.setOnDebouncedClickListener {
+                                }
                                 billPayTextView.setBackgroundResource(R.drawable.rectangle_stroke_1dp_primary_500_radius_8dp)
                                 billPayTextView.setTextColor(ContextCompat.getColor(context, R.color.primary500))
                                 billContainer.addView(root)
                             }
                         } else {
                             ItemOrderMainBillBinding.inflate(LayoutInflater.from(context), billContainer, false).apply {
-                                root.setOnDebouncedClickListener {  }
+                                root.setOnDebouncedClickListener {
+                                }
                                 billContainer.addView(root)
                             }
                         }
                     } else if (it.type == BillType.ADDITIONAL) {
                         ItemOrderAdditionalBillBinding.inflate(LayoutInflater.from(context), billContainer, false).apply {
-                            billPayTextView.setOnDebouncedClickListener {  }
+                            billPayTextView.setOnDebouncedClickListener {
+                            }
                             descriptionTextView.text = it.description
                             billContainer.addView(root)
                         }
