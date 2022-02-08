@@ -26,8 +26,6 @@ import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
 import org.joda.time.format.DateTimeFormat
 import java.io.File
-import java.lang.Exception
-import java.util.concurrent.TimeUnit
 
 class ClientInteractor(
     private val clientRepository: ClientRepository,
@@ -56,7 +54,11 @@ class ClientInteractor(
     private var editAgentViewState = EditAgentViewState()
 
     fun getOrdersHistory(): Single<List<OrderItemModel>> {
-        return Single.just(sortOrderHistory(getOrdersHistoryMock())).delay(2, TimeUnit.SECONDS)
+        return clientRepository.getOrders(1000, 0)
+            .flatMap {
+                Single.just(sortOrderHistory(it))
+            }
+        //return Single.just(sortOrderHistory(getOrdersHistoryMock())).delay(2, TimeUnit.SECONDS)
     }
 
     private fun sortOrderHistory(orders: List<OrderItemModel>): List<OrderItemModel> {
@@ -608,20 +610,23 @@ class ClientInteractor(
                 date = LocalDate.parse("2022-01-23", DateTimeFormat.forPattern("yyyy-MM-dd")),
                 icon = "",
                 description = "<font color=\"${"#EEA641"}\">Подтверждён</font>  ∙  2 250 ₽  ∙  23.01.2022",
-                bills = listOf(
-                    Bill(
+                invoices = listOf(
+                    InvoiceItemModel(
                         id = 0,
-                        type = BillType.MAIN,
+                        orderId = "",
+                        type = InvoiceType.MAIN,
                         description = ""
                     ),
-                    Bill(
+                    InvoiceItemModel(
                         id = 0,
-                        type = BillType.ADDITIONAL,
+                        orderId = "",
+                        type = InvoiceType.ADDITIONAL,
                         description = "Дополнительный счёт ∙ 2 250 ₽"
                     ),
-                    Bill(
+                    InvoiceItemModel(
                         id = 1,
-                        type = BillType.ADDITIONAL,
+                        orderId = "",
+                        type = InvoiceType.ADDITIONAL,
                         description = "Дополнительный счёт ∙ 2 250 ₽"
                     )
                 )
@@ -634,10 +639,11 @@ class ClientInteractor(
                 date = LocalDate.parse("2022-02-02", DateTimeFormat.forPattern("yyyy-MM-dd")),
                 icon = "",
                 description = "<font color=\"${"#EEA641"}\">Подтверждён</font>  ∙  2 250 ₽  ∙  02.02.2022",
-                bills = listOf(
-                    Bill(
+                invoices = listOf(
+                    InvoiceItemModel(
                         id = 0,
-                        type = BillType.MAIN,
+                        orderId = "",
+                        type = InvoiceType.MAIN,
                         description = ""
                     )
                 )
@@ -651,7 +657,7 @@ class ClientInteractor(
                 date = LocalDate.parse("2022-02-01", DateTimeFormat.forPattern("yyyy-MM-dd")),
                 icon = "",
                 description = "<font color=\"${"#EEA641"}\">Активный</font>  ∙  2 250 ₽  ∙  01.02.2022",
-                bills = emptyList()
+                invoices = emptyList()
             ),
             OrderItemModel(
                 id = "",
@@ -661,7 +667,7 @@ class ClientInteractor(
                 date = LocalDate.parse("2022-02-05", DateTimeFormat.forPattern("yyyy-MM-dd")),
                 icon = "",
                 description = "<font color=\"${"#EEA641"}\">Подтверждён</font>  ∙  2 250 ₽  ∙  05.02.2022",
-                bills = emptyList()
+                invoices = emptyList()
             ),
             OrderItemModel(
                 id = "",
@@ -671,7 +677,7 @@ class ClientInteractor(
                 date = LocalDate.parse("2022-02-06", DateTimeFormat.forPattern("yyyy-MM-dd")),
                 icon = "",
                 description = "Отменен  ∙  2 250 ₽  ∙  06.02.2022",
-                bills = emptyList()
+                invoices = emptyList()
             ),
             OrderItemModel(
                 id = "",
@@ -681,7 +687,7 @@ class ClientInteractor(
                 date = LocalDate.parse("2022-02-07", DateTimeFormat.forPattern("yyyy-MM-dd")),
                 icon = "",
                 description = "Завершён  ∙  2 250 ₽  ∙  07.02.2022",
-                bills = emptyList()
+                invoices = emptyList()
             )
         )
 

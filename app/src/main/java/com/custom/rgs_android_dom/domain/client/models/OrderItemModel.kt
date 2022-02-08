@@ -11,15 +11,16 @@ data class OrderItemModel(
     val date: LocalDate,
     val icon: String,
     val description: String,
-    val bills: List<Bill>
+    val invoices: List<InvoiceItemModel>
 )
 
-data class Bill(
+data class InvoiceItemModel(
     val id: Int,
-    val type: BillType,
+    val orderId: String,
+    val type: InvoiceType,
     val description: String
 )
 
-enum class BillType {
+enum class InvoiceType {
     MAIN, ADDITIONAL
 }

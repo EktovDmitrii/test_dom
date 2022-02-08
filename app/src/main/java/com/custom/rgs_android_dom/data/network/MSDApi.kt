@@ -214,4 +214,19 @@ interface MSDApi {
 
     @GET("clients/{clientId}/orders")
     fun getOrders(@Path("clientId") clientId: String, @Query("size") size: Long, @Query("index") index: Long): Single<OrdersResponse>
+
+    @GET("clients/me/orders")
+    fun getOrders(): Single<OrdersResponse>
+
+    @GET("/client/{clientId}/general-invoices")
+    fun getGeneralInvoices(
+        @Path("clientId") clientId: String,
+        @Query("size") size: Long,
+        @Query("index") index: Long,
+        @Query("status") status: String,
+        @Query("num") num: String,
+        @Query("fullText") fullText: String,
+        @Query("orderIds") orderIds: String,
+        @Query("withPayments") withPayments: Boolean
+    ): Single<GeneralInvoicesResponse>
 }
