@@ -7,7 +7,6 @@ import com.custom.rgs_android_dom.domain.main.CommentModel
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
-import com.custom.rgs_android_dom.domain.chat.models.CallType
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
@@ -20,8 +19,6 @@ import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragmen
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductLauncher
 import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchFragment
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesFragment
-import com.custom.rgs_android_dom.ui.chat.ChatFragment
-import com.custom.rgs_android_dom.ui.chat.call.CallFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
@@ -214,18 +211,12 @@ class MainViewModel(
     }
 
     fun onPoliciesClick() {
-
         if (registrationInteractor.isAuthorized()) {
             ScreenManager.showScreen( PoliciesFragment() )
         } else {
             requestedScreen = TargetScreen.POLICIES
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
         }
-        /*if (registrationController.value == false) {
-            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
-        } else {
-            //todo go to PoliciesScreen
-        }*/
     }
 
     fun onProductsClick() {
