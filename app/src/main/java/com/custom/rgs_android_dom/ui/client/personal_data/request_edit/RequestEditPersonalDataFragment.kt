@@ -34,7 +34,7 @@ class RequestEditPersonalDataFragment() : BaseBottomSheetFragment<RequestEditPer
 
             if (isVisible){
                 binding.titleTextView.text = "Заявка отправлена.\nОператор свяжется с вами"
-                binding.iconImageView.setImageResource(R.drawable.ic_question)
+                binding.iconImageView.setImageResource(R.drawable.ic_success_question)
             } else {
                 binding.titleTextView.text = "Вы действительно\nхотите оставить заявку?"
                 binding.iconImageView.setImageResource(R.drawable.ic_question)
