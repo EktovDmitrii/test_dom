@@ -9,7 +9,7 @@ abstract class CardModel(
 
 data class NewCardModel(
     override var id: String = "new_card",
-    val doSave: Boolean = false,
+    var doSave: Boolean = false,
     val title: String = "Новой картой",
     override var isSelected: Boolean = false
 ): CardModel(isSelected, id)

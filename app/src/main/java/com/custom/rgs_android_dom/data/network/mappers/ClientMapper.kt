@@ -68,7 +68,8 @@ object ClientMapper {
             ),
             phone = response.phone,
             gender = response.gender,
-            status = response.status
+            status = response.status,
+            checkoutEmail = ""
         )
 
     }

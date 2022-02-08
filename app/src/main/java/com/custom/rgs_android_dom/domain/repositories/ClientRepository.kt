@@ -49,4 +49,6 @@ interface ClientRepository {
 
     fun getEditPersonalDataRequestedSubject(): BehaviorSubject<Boolean>
 
+    fun saveCheckoutEmail(email: String)
+
 }

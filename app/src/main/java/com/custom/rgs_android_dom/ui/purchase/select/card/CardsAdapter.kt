@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.purchase.select.card
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -75,9 +76,12 @@ class CardsAdapter(
             var newCard = item as NewCardModel
             binding.cardSaveLayout.visibleIf(newCard.isSelected)
             binding.cardCheckedImageView.visibleIf(newCard.isSelected)
-            binding.saveCardSwitch.setOnCheckedChangeListener { button, isChecked ->
-                newCard = newCard.copy(doSave = isChecked)
 
+            binding.saveCardSwitch.isChecked = newCard.doSave
+
+            binding.saveCardSwitch.setOnCheckedChangeListener { button, isChecked ->
+                Log.d("MyLog", "Set on checked change")
+                newCard.doSave = isChecked
                 onCardSelect(newCard)
             }
             binding.root.setOnDebouncedClickListener {

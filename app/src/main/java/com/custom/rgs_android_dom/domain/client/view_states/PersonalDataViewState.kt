@@ -8,5 +8,6 @@ data class PersonalDataViewState(
     val passport: String,
     val phone: String,
     val additionalPhone: String,
-    val email: String
+    val email: String,
+    val checkoutEmail: String?
 )

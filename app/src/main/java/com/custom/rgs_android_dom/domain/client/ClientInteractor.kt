@@ -25,7 +25,8 @@ import io.reactivex.subjects.PublishSubject
 import org.joda.time.LocalDateTime
 import java.io.File
 
-class ClientInteractor(
+class
+ClientInteractor(
     private val clientRepository: ClientRepository,
     private val registrationRepository: RegistrationRepository,
     private val catalogRepository: CatalogRepository,
@@ -500,6 +501,10 @@ class ClientInteractor(
                 avatar = null
             )
         }
+    }
+
+    fun saveCheckoutEmail(email: String){
+        clientRepository.saveCheckoutEmail(email)
     }
 
     private fun isBirthdayValid(birthday: LocalDateTime): Boolean {

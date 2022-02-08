@@ -13,8 +13,9 @@ interface PurchaseRepository {
         email: String,
         saveCard: Boolean,
         objectId: String,
-        deliveryDate: String,
-        timeFrom: String,
-        timeTo: String
+        comment: String?,
+        deliveryDate: String?,
+        timeFrom: String?,
+        timeTo: String?
     ): Single<String>
 }
