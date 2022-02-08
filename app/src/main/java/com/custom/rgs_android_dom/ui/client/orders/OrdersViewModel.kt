@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.client.models.OrderItemModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
+import com.custom.rgs_android_dom.ui.client.order_detail.OrderDetailFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -32,6 +33,7 @@ class OrdersViewModel(
     }
 
     fun onItemClick(itemModel: OrderItemModel) {
+        ScreenManager.showScreen(OrderDetailFragment.newInstance(""))
     }
 
     fun onPayClick(itemModel: OrderItemModel) {

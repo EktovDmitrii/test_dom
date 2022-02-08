@@ -229,4 +229,7 @@ interface MSDApi {
         @Query("orderIds") orderIds: String,
         @Query("withPayments") withPayments: Boolean
     ): Single<GeneralInvoicesResponse>
+
+    @GET("clients/{clientId}/orders/{orderId}")
+    fun getOrderDetail(@Path("clientId") clientId: String, @Path("orderId") orderId: String): Single<OrderResponse>
 }

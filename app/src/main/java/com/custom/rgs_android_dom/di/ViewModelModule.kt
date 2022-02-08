@@ -30,6 +30,7 @@ import com.custom.rgs_android_dom.ui.chat.files.manage.ManageFileViewModel
 import com.custom.rgs_android_dom.ui.chat.files.upload.UploadFilesViewModel
 import com.custom.rgs_android_dom.ui.chat.files.viewers.image.ImageViewerViewModel
 import com.custom.rgs_android_dom.ui.chat.files.viewers.video.VideoPlayerViewModel
+import com.custom.rgs_android_dom.ui.client.order_detail.OrderDetailViewModel
 import com.custom.rgs_android_dom.ui.client.orders.OrdersViewModel
 import com.custom.rgs_android_dom.ui.main.MainViewModel
 import com.custom.rgs_android_dom.ui.client.personal_data.add_photo.AddPhotoViewModel
@@ -72,6 +73,7 @@ val viewModelModule = module {
     viewModel { parameters-> CountriesViewModel(selectedCountryLetterCode = parameters.get(), countriesInteractor = get())}
     viewModel { ClientViewModel(clientInteractor = get(), registrationInteractor = get(), propertyInteractor = get()) }
     viewModel { OrdersViewModel(clientInteractor = get()) }
+    viewModel { OrderDetailViewModel(clientInteractor = get()) }
     viewModel { RootViewModel(registrationInteractor = get(), clientInteractor = get(), chatInteractor = get()) }
     viewModel { PersonalDataViewModel(clientInteractor = get()) }
     viewModel { EditPersonalDataViewModel(clientInteractor = get()) }
