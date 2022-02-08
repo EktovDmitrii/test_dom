@@ -7,6 +7,8 @@ import com.custom.rgs_android_dom.domain.main.CommentModel
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
+import com.custom.rgs_android_dom.domain.chat.models.CallType
+import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.about_app.AboutAppFragment
@@ -18,10 +20,13 @@ import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragmen
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductLauncher
 import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchFragment
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesFragment
+import com.custom.rgs_android_dom.ui.chat.ChatFragment
+import com.custom.rgs_android_dom.ui.chat.call.CallFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.navigation.TargetScreen
 import com.custom.rgs_android_dom.ui.policies.PoliciesFragment
 import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressFragment
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
@@ -40,6 +45,7 @@ class MainViewModel(
     private val registrationInteractor: RegistrationInteractor,
     private val propertyInteractor: PropertyInteractor,
     private val catalogInteractor: CatalogInteractor,
+    private val clientInteractor: ClientInteractor,
     private val context: Context
 ) : BaseViewModel() {
 
@@ -62,6 +68,8 @@ class MainViewModel(
 
     private val popularProductsController = MutableLiveData<List<ProductShortModel>>()
     val popularProductsObserver: LiveData<List<ProductShortModel>> = popularProductsController
+
+    private var requestedScreen = TargetScreen.UNSPECIFIED
 
     init {
         registrationController.value = registrationInteractor.isAuthorized().let {
@@ -109,6 +117,22 @@ class MainViewModel(
                 onError = {
                     logException(this, it)
                 }
+            ).addTo(dataCompositeDisposable)
+
+        clientInteractor.getClientSavedSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy (
+                onNext = {
+                    if (registrationInteractor.isAuthorized()) {
+                        when (requestedScreen) {
+                            TargetScreen.POLICIES -> ScreenManager.showScreen(PoliciesFragment())
+                            TargetScreen.UNSPECIFIED -> {}
+                        }
+                        requestedScreen = TargetScreen.UNSPECIFIED
+                    }
+                },
+                onError = { logException(this, it) }
             ).addTo(dataCompositeDisposable)
 
         loadContent()
@@ -190,11 +214,18 @@ class MainViewModel(
     }
 
     fun onPoliciesClick() {
-        if (registrationController.value == false) {
+
+        if (registrationInteractor.isAuthorized()) {
+            ScreenManager.showScreen( PoliciesFragment() )
+        } else {
+            requestedScreen = TargetScreen.POLICIES
+            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+        }
+        /*if (registrationController.value == false) {
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
         } else {
             //todo go to PoliciesScreen
-        }
+        }*/
     }
 
     fun onProductsClick() {
