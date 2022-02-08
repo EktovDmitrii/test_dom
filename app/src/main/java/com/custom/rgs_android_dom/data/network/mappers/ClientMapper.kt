@@ -4,6 +4,7 @@ import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.requests.*
 import com.custom.rgs_android_dom.data.network.responses.*
 import com.custom.rgs_android_dom.domain.client.models.*
+import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
 
 object ClientMapper {
@@ -134,6 +135,16 @@ object ClientMapper {
         } else {
             null
         }
+    }
+
+    fun responseToPolicy(response: ClientProductResponse): PolicyModel {
+        return PolicyModel(
+            id = response.id ?: "",
+            name = response.productName ?: "",
+            logo = response.logoSmall,
+            startsAt = response.validityFrom,
+            expiresAt = response.validityTo
+        )
     }
 
 }

@@ -488,7 +488,7 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="BottomAppBar">
 
-        <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullwidth
+        <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullWidth
             android:id="@+id/addTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

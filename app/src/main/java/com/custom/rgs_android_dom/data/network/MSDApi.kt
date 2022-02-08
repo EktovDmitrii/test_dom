@@ -215,4 +215,9 @@ interface MSDApi {
     @POST("clients/me/purchase/products/{productId}")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun makeProductPurchase(@Path("productId") productId: String, @Body order: PurchaseProductRequest) : Single<PurchaseResponse>
+
+    @POST("insurance/clients/me/contracts")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun bindPolicy(@Body body: BindPolicyRequest) : Single<BindPolicyResponse>
+
 }

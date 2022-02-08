@@ -87,6 +87,10 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
             viewModel.onOpenMedAppClick()
         }
 
+        binding.policiesLinearLayout.setOnDebouncedClickListener {
+            viewModel.onPoliciesClick()
+        }
+
         subscribe(viewModel.propertyItemsObserver) { propertyItems ->
             propertyItemsAdapter.setItems(propertyItems)
         }

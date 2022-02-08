@@ -191,6 +191,10 @@ ClientInteractor(
         }
     }
 
+    fun getClientModelSingle(): Single<ClientModel> {
+        return clientRepository.getClient()
+    }
+
     fun getEditPersonalDataViewState(): Single<EditPersonalDataViewState>{
         return Single.zip(clientRepository.getClient(), catalogRepository.getClientProducts()){ clientModel, clientProducts ->
             editPersonalDataViewState = EditPersonalDataViewStateMapper.from(clientModel, clientProducts)

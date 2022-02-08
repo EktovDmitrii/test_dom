@@ -34,7 +34,7 @@
         app:tabSelectedTextColor="@android:color/transparent"
         app:tabTextColor="@android:color/transparent" />
 
-    <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullwidth
+    <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullWidth
         android:id="@+id/nextTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

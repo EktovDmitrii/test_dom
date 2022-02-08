@@ -12,7 +12,7 @@ import com.custom.rgs_android_dom.utils.gone
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.visible
 
-class MSDTextViewLoaderFullwidth @JvmOverloads constructor(
+class MSDTextViewLoaderFullWidth @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null,
     defStyleAttr: Int = 0

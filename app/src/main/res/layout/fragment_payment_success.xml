@@ -71,7 +71,7 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullwidth
+        <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullWidth
             android:id="@+id/moreAboutTextView"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
