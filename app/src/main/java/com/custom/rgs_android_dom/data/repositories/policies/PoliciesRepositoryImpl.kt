@@ -1,86 +1,85 @@
 package com.custom.rgs_android_dom.data.repositories.policies
 
-import android.util.Log
+import android.annotation.SuppressLint
 import com.custom.rgs_android_dom.data.network.MSDApi
-import com.custom.rgs_android_dom.domain.policies.models.Failure
+import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
+import com.custom.rgs_android_dom.data.network.requests.BindPolicyRequest
+import com.custom.rgs_android_dom.domain.policies.models.BoundPolicyDialogModel
 import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
 import com.custom.rgs_android_dom.domain.repositories.PoliciesRepository
 import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
+import com.custom.rgs_android_dom.ui.policies.insurant.InsurantViewState
+import com.custom.rgs_android_dom.utils.tryParseDate
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import java.util.concurrent.TimeUnit
 
 class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
 
-    private val bindPolicySubject = BehaviorSubject.create<PolicyDialogModel>()
+    private var policyDialogSubject = PublishSubject.create<PolicyDialogModel>()
+    private val promptSaveSubject = BehaviorSubject.create<Boolean>()
 
-    override fun getPolicies(): Single<List<PolicyModel>> {
-        return /*api.getPolicies()*/ Single.create {
-            val list = listOf<PolicyModel>(
-                /*PolicyModel(
-                    id = "1",
-                    name = "Страховой продукт 1",
-                    logo = "",
-                    startsAt = "12.09.2022",
-                    expiresAt = "23.09.2030"
-                ),
-                PolicyModel(
-                    id = "2",
-                    name = "Страховой продукт 2",
-                    logo = "",
-                    startsAt = "12.09.2022",
-                    expiresAt = "21.01.2031"
-                ),
-                PolicyModel(
-                    id = "3",
-                    name = "Страховой продукт 3",
-                    logo = "",
-                    startsAt = "12.09.2022",
-                    expiresAt = "22.09.2033"
-                ),
-                PolicyModel(
-                    id = "4",
-                    name = "Страховой продукт 4",
-                    logo = "",
-                    startsAt = "12.09.2022",
-                    expiresAt = "23.03.2032"
-                ),
-                PolicyModel(
-                    id = "5",
-                    name = "Страховой продукт 5",
-                    logo = "",
-                    startsAt = "12.09.2022",
-                    expiresAt = "25.03.2024"
-                )*/
+    private var request: BindPolicyRequest = BindPolicyRequest()
+
+
+    override fun onInsurantDataChange(data: InsurantViewState) {
+        request = request.copy(
+            contractClientBirthDate = "${data.birthday.tryParseDate()}T00:00:00.000Z",
+            contractClientFirstName = data.firstName,
+            contractClientLastName = data.lastName,
+            contractClientMiddleName = data.middleName
+        )
+    }
+
+    override fun onPolicyChange(policy: String) {
+        request = request.copy(
+            contractSerial = policy.substringBefore(" "),
+            contractNumber = policy.substringAfter(" ")
+        )
+    }
+
+    @SuppressLint("CheckResult")
+    override fun bindPolicy(): Single<PolicyDialogModel> {
+        return api.bindPolicy(request).map { bindPolicyResponse ->
+            PolicyDialogModel(
+                bound = BoundPolicyDialogModel(
+                    startsAt = bindPolicyResponse.contract?.startDate,
+                    endsAt = bindPolicyResponse.contract?.endDate
+                )
             )
-            it.onSuccess(list)
         }
     }
 
-    override fun findPolicySingle(policy: String): Single<PolicyDialogModel> {
-        //api.getPolicy(policy)
-        //todo map api response to an enum
-        return Single.just(PolicyDialogModel(/*Failure.YET_NOT_DUE*/))
-        /*
-        * NOT_FOUND
-        * BOUND_TO_YOUR_PROFILE
-        * BOUND_TO_ANOTHER_PROFILE
-        * DATA_NOT_MATCH
-        * EXPIRED
-        * YET_NOT_DUE
-        * */
+    override fun getPolicyDialogSubject(): Observable<PolicyDialogModel> {
+        return policyDialogSubject.hide()
     }
 
-    override fun bindPolicy() {
-        //api.bindPolicy()
-        Log.d("Syrgashev", "repo bindPolicy called: ")
-        bindPolicySubject.onNext(PolicyDialogModel(failureMessage = Failure.YET_NOT_DUE))
+    override fun getPromptSaveSubject(): Observable<Boolean> {
+        return promptSaveSubject.hide()
     }
 
-    override fun getBindPolicySubject(): BehaviorSubject<PolicyDialogModel> {
-        Log.d("Syrgashev", "$this getBindPolicySubject called: ")
-        return bindPolicySubject
+    override fun newDialog(policyDialogModel: PolicyDialogModel) {
+        policyDialogSubject.onNext(policyDialogModel)
     }
 
+    override fun promptSavePersonalData(save: Boolean) {
+        promptSaveSubject.onNext(save)
+    }
+
+    override fun getRequest(): BindPolicyRequest {
+        return request
+    }
+
+    override fun getPoliciesSingle(): Single<List<PolicyModel>> {
+        return api.getClientProducts(5000, 0).map {
+            if (it.clientProducts != null) {
+                it.clientProducts.map {
+                    ClientMapper.responseToPolicy(it)
+                }
+            } else {
+                listOf()
+            }
+        }
+    }
 }

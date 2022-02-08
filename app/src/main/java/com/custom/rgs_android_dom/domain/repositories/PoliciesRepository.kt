@@ -1,19 +1,29 @@
 package com.custom.rgs_android_dom.domain.repositories
 
-import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
+import com.custom.rgs_android_dom.data.network.requests.BindPolicyRequest
 import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
+import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
+import com.custom.rgs_android_dom.ui.policies.insurant.InsurantViewState
+import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
 
 interface PoliciesRepository {
 
-    fun getPolicies(): Single<List<PolicyModel>>
+    fun onInsurantDataChange(data: InsurantViewState)
 
-    fun findPolicySingle(policy: String): Single<PolicyDialogModel>
+    fun onPolicyChange(policy: String)
 
-    fun bindPolicy()
+    fun bindPolicy(): Single<PolicyDialogModel>
 
-    fun getBindPolicySubject(): BehaviorSubject<PolicyDialogModel>
+    fun getPolicyDialogSubject(): Observable<PolicyDialogModel>
 
+    fun newDialog(policyDialogModel: PolicyDialogModel)
+
+    fun promptSavePersonalData(save: Boolean)
+
+    fun getPromptSaveSubject(): Observable<Boolean>
+
+    fun getRequest(): BindPolicyRequest
+
+    fun getPoliciesSingle(): Single<List<PolicyModel>>
 }

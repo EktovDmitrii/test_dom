@@ -44,7 +44,7 @@
         android:visibility="gone" />
 
     <include
-        android:id="@+id/dataAvailableStateLayout"
-        layout="@layout/layout_policies_data_available_state" />
+        android:id="@+id/dataStateLayout"
+        layout="@layout/layout_policies_available_state" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,7 +1,6 @@
 package com.custom.rgs_android_dom.ui.policies.insurant
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentInsurantBinding
@@ -14,6 +13,15 @@ import org.joda.time.LocalDateTime
 
 class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding>(R.layout.fragment_insurant) {
 
+    companion object {
+
+        private const val KEY_FRAGMENT_ID = "KEY_FRAGMENT_ID"
+
+        fun newInstance(fragmentId: Int) = InsurantFragment().args {
+            putInt(KEY_FRAGMENT_ID, fragmentId)
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -22,25 +30,30 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
         }
 
         binding.nextTextView.setOnDebouncedClickListener {
-            val dialog = PolicyDialogsFragment.newInstance(PolicyDialogModel(showLoader = true))
+            val dialog = PolicyDialogsFragment.newInstance(
+                PolicyDialogModel(showLoader = true),
+                requireArguments().getInt(KEY_FRAGMENT_ID)
+            )
             dialog.show(childFragmentManager, dialog.TAG)
+            hideSoftwareKeyboard()
             viewModel.onNextClick()
         }
 
         binding.firstNameEditText.addTextWatcher {
-            viewModel.firstNameChanged(it)
+            viewModel.firstNameChanged(it , binding.birthdayEditText.isMaskFiled())
         }
 
         binding.lastNameEditText.addTextWatcher {
-            viewModel.lastNameChanged(it)
+            viewModel.lastNameChanged(it, binding.birthdayEditText.isMaskFiled())
         }
 
         binding.middleNameEditText.addTextWatcher {
-            viewModel.middleNameChanged(it)
+            viewModel.middleNameChanged(it, binding.birthdayEditText.isMaskFiled())
         }
 
         binding.birthdayEditText.addTextWatcher {
-            viewModel.birthdayChanged(it)
+            binding.birthdayEditText.isMaskFiled()
+            viewModel.birthdayChanged(it, binding.birthdayEditText.isMaskFiled())
         }
 
         binding.birthdayEditText.setOnIconClickListener {

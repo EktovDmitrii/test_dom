@@ -1,13 +1,13 @@
 package com.custom.rgs_android_dom.ui.policies.insurant.dialogs
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPolicyDialogsBinding
 import com.custom.rgs_android_dom.domain.policies.models.Failure
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
+import com.custom.rgs_android_dom.domain.policies.models.ShowPromptModel
 import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
@@ -28,14 +28,14 @@ class PolicyDialogsFragment :
         const val MESSAGE_DATA_NOT_MATCH =
             "Введенные данные страхователя не соответствуют полису. Пожалуйста, обратитесь к Мастеру онлайн"
         const val MESSAGE_EXPIRED = "У данного полиса закончился срок действия. Пожалуйста, обратитесь к Мастеру онлайн"
-        const val MESSAGE_YET_NOT_DUE =
-            "У данного полиса еще не наступил срок действия. Пожалуйста, обратитесь к Мастеру онлайн"
 
         const val KEY_POLICY_DIALOG_MODEL = "KEY_POLICY_DIALOG_MODEL"
+        const val KEY_FRAGMENT_ID = "KEY_FRAGMENT_ID"
 
-        fun newInstance(model: PolicyDialogModel): PolicyDialogsFragment {
+        fun newInstance(model: PolicyDialogModel, fragmentId: Int): PolicyDialogsFragment {
             return PolicyDialogsFragment().args {
                 putSerializable(KEY_POLICY_DIALOG_MODEL, model)
+                putInt(KEY_FRAGMENT_ID, fragmentId)
             }
         }
     }
@@ -47,20 +47,26 @@ class PolicyDialogsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val fragmentId = requireArguments().getInt(KEY_FRAGMENT_ID)
+
         binding.loadingLayout.closeImageView.setOnDebouncedClickListener {
             viewModel.onCloseClick()
         }
 
         binding.savePolicyLayout.saveTextView.setOnDebouncedClickListener {
-            viewModel.onSavePolicyClick()
+            viewModel.onSaveClick()
         }
 
         binding.savePolicyLayout.cancelTextView.setOnDebouncedClickListener {
             viewModel.onCancelClick()
         }
 
+        binding.savePolicyLayout.successTextView.setOnDebouncedClickListener {
+            viewModel.onSuccessClick()
+        }
+
         binding.bindPolicySuccessLayout.understandTextView.setOnDebouncedClickListener {
-            viewModel.onUnderstandClick()
+            viewModel.onUnderstandClick(fragmentId)
         }
 
         binding.bindPolicyFailureLayout.chatTextView.setOnDebouncedClickListener {
@@ -81,8 +87,10 @@ class PolicyDialogsFragment :
 
         subscribe(viewModel.dialogModelObserver) {
             binding.loadingLayout.root.visibleIf(it.showLoader)
+            binding.bindPolicySuccessLayout.root.visibleIf(it.bound != null)
             binding.bindPolicyFailureLayout.root.visibleIf(it.failureMessage != null)
-            binding.bindPolicySuccessLayout.root.visibleIf(it.bound == true)
+            binding.savePolicyLayout.root.visibleIf(it.showPrompt != null)
+
             when {
                 it.failureMessage != null -> {
                     binding.bindPolicyFailureLayout.errorMessageTextView.text =
@@ -92,8 +100,44 @@ class PolicyDialogsFragment :
                             Failure.BOUND_TO_ANOTHER_PROFILE -> MESSAGE_BOUND_TO_ANOTHER_PROFILE
                             Failure.DATA_NOT_MATCH -> MESSAGE_DATA_NOT_MATCH
                             Failure.EXPIRED -> MESSAGE_EXPIRED
-                            Failure.YET_NOT_DUE -> MESSAGE_YET_NOT_DUE
+                            else -> "Unspecified error"
                         }
+                }
+                it.bound != null -> {
+                    //todo replace with translation value
+                    binding.bindPolicySuccessLayout.durationTextView.text =
+                        binding.bindPolicySuccessLayout.durationTextView.text.toString().insertDate(
+                            it.bound.startsAt, it.bound.endsAt
+                        )
+                    binding.bindPolicySuccessLayout.descriptionTextView.text =
+                        binding.bindPolicySuccessLayout.descriptionTextView.text.toString().insertDate(
+                            it.bound.startsAt, it.bound.endsAt
+                        )
+                }
+                it.showPrompt != null -> {
+                    when (it.showPrompt) {
+                        ShowPromptModel.Loading -> {
+                            binding.savePolicyLayout.saveTextView.visible()
+                            binding.savePolicyLayout.saveTextView.setLoading(true)
+                            binding.savePolicyLayout.cancelTextView.visible()
+
+                        }
+                        ShowPromptModel.Content -> {
+                            binding.savePolicyLayout.saveTextView.visible()
+                            binding.savePolicyLayout.cancelTextView.visible()
+                            binding.savePolicyLayout.saveTextView.setLoading(false)
+
+                        }
+                        ShowPromptModel.Done -> {
+                            binding.savePolicyLayout.saveTextView.gone()
+                            binding.savePolicyLayout.cancelTextView.gone()
+                            binding.savePolicyLayout.successTextView.visible()
+                            binding.savePolicyLayout.titleTextView.text = "Данные успешно сохранены!"
+                            binding.savePolicyLayout.descriptionTextView.text =
+                                "Данные полиса страхования успешно сохранены в вашем профиле"
+
+                        }
+                    }
                 }
             }
         }

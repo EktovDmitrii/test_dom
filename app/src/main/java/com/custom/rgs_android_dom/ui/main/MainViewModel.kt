@@ -193,7 +193,7 @@ class MainViewModel(
         if (registrationController.value == false) {
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
         } else {
-            ScreenManager.showScreen(PoliciesFragment())
+            //todo go to PoliciesScreen
         }
     }
 

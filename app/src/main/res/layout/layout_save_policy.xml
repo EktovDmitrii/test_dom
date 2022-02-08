@@ -41,14 +41,14 @@
         android:textSize="16sp"
         app:translationTextKey="Данные полиса страхования будут \nсохранены в вашем профиле" />
 
-    <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullwidth
+    <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullWidth
         android:id="@+id/saveTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         app:translationTextKey="Сохранить" />
 
-    <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullwidth
+    <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullWidth
         android:id="@+id/successTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

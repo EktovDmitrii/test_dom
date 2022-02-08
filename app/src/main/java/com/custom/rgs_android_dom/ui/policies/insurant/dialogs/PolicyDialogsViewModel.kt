@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.ui.policies.insurant.dialogs
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.policies.PoliciesInteractor
@@ -8,6 +7,8 @@ import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
+import com.custom.rgs_android_dom.domain.policies.models.ShowPromptModel
+import com.custom.rgs_android_dom.ui.navigation.POLICY
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -22,14 +23,11 @@ class PolicyDialogsViewModel(val policiesInteractor: PoliciesInteractor, model: 
     init {
         dialogModelController.value = model
 
-        policiesInteractor.getBindPolicySubject()
+        policiesInteractor.getPolicyDialogSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { Log.d("Syrgashev", "$this policiesInteractor.getBindPolicySubject() is called: ") }
             .subscribeBy(
-                onNext = {
-                    Log.d("Syrgashev", "model in PolicyDialogsViewModel: $it")
-                    dialogModelController.value = it },
+                onNext = { dialogModelController.value = it },
                 onError = { logException(this, it) })
             .addTo(dataCompositeDisposable)
     }
@@ -38,16 +36,29 @@ class PolicyDialogsViewModel(val policiesInteractor: PoliciesInteractor, model: 
         close()
     }
 
-    fun onSavePolicyClick() {
-        close()
+    fun onSaveClick() {
+        policiesInteractor.savePersonalData()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onComplete = { dialogModelController.value = PolicyDialogModel(showPrompt = ShowPromptModel.Done) },
+                onError = { logException(this, it) })
+            .addTo(dataCompositeDisposable)
     }
 
     fun onCancelClick() {
+        policiesInteractor.promptSavePersonalData(false)
         close()
     }
 
-    fun onUnderstandClick() {
+    fun onSuccessClick() {
+        policiesInteractor.promptSavePersonalData(false)
         close()
+    }
+
+    fun onUnderstandClick(fragmentId: Int) {
+        policiesInteractor.promptSavePersonalData(true)
+        ScreenManager.closeScreenToId(POLICY, fragmentId)
     }
 
     fun onChatClick() {

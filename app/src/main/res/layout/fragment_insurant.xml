@@ -151,22 +151,6 @@
             android:enabled="false"
             app:translationTextKey="Далее" />
 
-        <!--<com.custom.rgs_android_dom.views.text.MSDTextView
-            android:id="@+id/nextTextView"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_gravity="bottom"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="22dp"
-            android:background="@drawable/rectangle_filled_secondary_100_radius_12dp"
-            android:fontFamily="@font/my_service_bold"
-            android:gravity="center"
-            android:includeFontPadding="false"
-            android:textColor="@color/secondary400"
-            android:textSize="14sp"
-            app:translationTextKey="Далее" />-->
-
     </com.google.android.material.card.MaterialCardView>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

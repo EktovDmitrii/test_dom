@@ -1,56 +1,66 @@
 package com.custom.rgs_android_dom.domain.policies
 
 import android.util.Log
-import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
-import com.custom.rgs_android_dom.domain.repositories.PoliciesRepository
+import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
+import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
+import com.custom.rgs_android_dom.domain.policies.models.ShowPromptModel
+import com.custom.rgs_android_dom.domain.repositories.ClientRepository
+import com.custom.rgs_android_dom.domain.repositories.PoliciesRepository
 import com.custom.rgs_android_dom.ui.policies.insurant.InsurantViewState
+import com.custom.rgs_android_dom.utils.PATTERN_DATE_TIME_MILLIS
+import com.custom.rgs_android_dom.utils.logException
+import com.custom.rgs_android_dom.utils.tryParseLocalDateTime
+import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import org.joda.time.LocalDateTime
 
-class PoliciesInteractor(val policiesRepository: PoliciesRepository) {
+class PoliciesInteractor(
+    private val policiesRepository: PoliciesRepository,
+    private val clientRepository: ClientRepository,
+    private val clientSharedPreferences: ClientSharedPreferences
+) {
 
     private val insurantViewStateSubject = PublishSubject.create<InsurantViewState>()
-    private var insurantViewState = InsurantViewState(
-        firstName = "",
-        lastName = "",
-        middleName = "",
-        birthday = "",
-        policy = ""
-    )
+    private val policySubject = PublishSubject.create<String>()
 
-    fun getPolicies(): Single<List<PolicyModel>> {
-        return policiesRepository.getPolicies()
-    }
+    private var insurantViewState = InsurantViewState()
+    private var policy: String = ""
+
 
     fun policyChanged(policy: String) {
-        insurantViewState = insurantViewState.copy(policy = policy)
-        checkNextEnabled()
-        insurantViewStateSubject.onNext(insurantViewState)
+        this.policy = policy
+        policiesRepository.onPolicyChange(policy)
+        policySubject.onNext(policy)
     }
 
-    fun firstNameChanged(firstName: String) {
+    fun firstNameChanged(firstName: String, isMaskFilled: Boolean) {
         insurantViewState = insurantViewState.copy(firstName = firstName)
-        checkNextEnabled()
+        policiesRepository.onInsurantDataChange(insurantViewState)
+        checkNextEnabled(isMaskFilled)
         insurantViewStateSubject.onNext(insurantViewState)
     }
 
-    fun lastNameChanged(lastName: String) {
+    fun lastNameChanged(lastName: String, isMaskFilled: Boolean) {
         insurantViewState = insurantViewState.copy(lastName = lastName)
-        checkNextEnabled()
+        policiesRepository.onInsurantDataChange(insurantViewState)
+        checkNextEnabled(isMaskFilled)
         insurantViewStateSubject.onNext(insurantViewState)
     }
 
-    fun middleNameChanged(middleName: String) {
+    fun middleNameChanged(middleName: String, isMaskFilled: Boolean) {
         insurantViewState = insurantViewState.copy(middleName = middleName)
-        checkNextEnabled()
+        policiesRepository.onInsurantDataChange(insurantViewState)
+        checkNextEnabled(isMaskFilled)
         insurantViewStateSubject.onNext(insurantViewState)
     }
 
-    fun birthdayChanged(birthday: String) {
+    fun birthdayChanged(birthday: String, isMaskFilled: Boolean) {
         insurantViewState = insurantViewState.copy(birthday = birthday)
-        checkNextEnabled()
+        policiesRepository.onInsurantDataChange(insurantViewState)
+        checkNextEnabled(isMaskFilled)
         insurantViewStateSubject.onNext(insurantViewState)
     }
 
@@ -58,28 +68,69 @@ class PoliciesInteractor(val policiesRepository: PoliciesRepository) {
         return insurantViewStateSubject
     }
 
-    fun findPolicySingle(): Single<PolicyDialogModel> {
-        return policiesRepository.findPolicySingle(insurantViewState.policy)
+    fun getPolicySubject(): PublishSubject<String> {
+        return policySubject
     }
 
-    fun bindPolicy() {
-        //todo request model based on insurantViewState
-        policiesRepository.bindPolicy()
+    fun bindPolicy(): Single<PolicyDialogModel> {
+        return policiesRepository.bindPolicy()
     }
 
-    fun getBindPolicySubject(): BehaviorSubject<PolicyDialogModel> {
-        return policiesRepository.getBindPolicySubject()
+    fun getPolicyDialogSubject(): Observable<PolicyDialogModel> {
+        return policiesRepository.getPolicyDialogSubject()
     }
 
-    private fun checkNextEnabled() {
+    fun newDialog(policyDialogModel: PolicyDialogModel) {
+        policiesRepository.newDialog(policyDialogModel)
+    }
+
+    fun promptSavePersonalData(save: Boolean) {
+        policiesRepository.promptSavePersonalData(save)
+    }
+
+    fun getPromptSaveSubject(): Observable<Boolean> {
+        return policiesRepository.getPromptSaveSubject()
+    }
+
+    fun savePersonalData(): Completable {
+        policiesRepository.newDialog(PolicyDialogModel(showPrompt = ShowPromptModel.Loading))
+        val dataFromRequest = policiesRepository.getRequest()
+        var birthday: LocalDateTime?
+        val birthdayWithTimezone = dataFromRequest.contractClientBirthDate
+        birthday = birthdayWithTimezone.tryParseLocalDateTime({
+            logException(this, it)
+            birthday = null
+        }, format = PATTERN_DATE_TIME_MILLIS)
+        val client = clientSharedPreferences.getClient()
+        val avatar = clientRepository.getUserDetails().blockingGet().avatarUrl
+
+        return clientRepository.updateClient(
+            firstName = dataFromRequest.contractClientFirstName,
+            lastName = dataFromRequest.contractClientLastName,
+            middleName = dataFromRequest.contractClientMiddleName,
+            birthday = birthday,
+            gender = client?.gender,
+            phone = client?.phone,
+            email = client?.contacts?.find { it.type == "email" }?.contact ?: "",
+            avatar = avatar
+        )
+    }
+
+    fun getPoliciesSingle(): Single<List<PolicyModel>> {
+        return policiesRepository.getPoliciesSingle()
+    }
+
+    private fun checkNextEnabled(isMaskFilled: Boolean) {
         insurantViewState = if (insurantViewState.firstName.isNotEmpty() &&
             insurantViewState.lastName.isNotEmpty() &&
-            insurantViewState.birthday.isNotEmpty()
+            insurantViewState.birthday.isNotEmpty() &&
+            isMaskFilled
         ) {
             insurantViewState.copy(isNextEnabled = true)
         } else {
             insurantViewState.copy(isNextEnabled = false)
         }
+        policiesRepository.onInsurantDataChange(insurantViewState)
     }
 
 }

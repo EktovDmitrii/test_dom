@@ -134,7 +134,7 @@ val viewModelModule = module {
     viewModel { TabNewServiceViewModel() }
     viewModel { TabGuaranteeViewModel() }
     viewModel { TabSupportViewModel() }
-    viewModel { PoliciesViewModel(policiesInteractor = get()) }
+    viewModel { PoliciesViewModel(policiesInteractor = get(), clientInteractor = get()) }
     viewModel { AddPolicyViewModel(policiesInteractor = get()) }
     viewModel { InfoPolicyViewModel() }
     viewModel { InsurantViewModel(policiesInteractor = get()) }

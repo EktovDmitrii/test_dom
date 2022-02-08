@@ -119,6 +119,11 @@ class MSDPolicyInput @JvmOverloads constructor(
         }
     }
 
+    override fun setEnabled(isEnabled: Boolean) {
+        val state = if (isEnabled) State.NORMAL else State.DISABLED
+        setState(state)
+    }
+
     fun setText(text: String) {
         isFromUser = false
         binding.valueEditText.text = text.toEditable()
@@ -184,11 +189,6 @@ class MSDPolicyInput @JvmOverloads constructor(
                 super.setEnabled(true)
             }
         }
-    }
-
-    override fun setEnabled(isEnabled: Boolean) {
-        val state = if (isEnabled) State.NORMAL else State.DISABLED
-        setState(state)
     }
 
     enum class State { NORMAL, DISABLED, ERROR, SUCCESS }

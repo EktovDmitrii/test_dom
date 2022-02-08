@@ -10,50 +10,51 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iconImageView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="36dp"
         android:layout_height="36dp"
-        android:background="@drawable/rectangle_filled_white_radius_10dp" />
+        android:background="@drawable/rectangle_filled_white_radius_10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="229dp"
+        android:layout_height="254dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_policy_success"
-        android:layout_width="229dp"
-        android:layout_height="254dp" />
+        app:srcCompat="@drawable/ic_policy_success" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/titleTextView"
-            app:translationTextKey="Защита вашего дома"
-            tools:text="Защита вашего дома"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:gravity="center_vertical"
             android:fontFamily="@font/my_service_bold"
+            android:gravity="center_vertical"
             android:includeFontPadding="false"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:translationTextKey="Защита вашего дома" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/durationTextView"
-            app:translationTextKey="Действует с 02.05.2021 по 02.05.2022"
-            tools:text="Действует с 02.05.2021 по 02.05.2022"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/suisse_regular"
+            android:gravity="center_vertical"
             android:includeFontPadding="false"
+            android:lines="2"
+            android:minHeight="20dp"
             android:textColor="@color/white"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            app:translationTextKey="Действует с %s1 по %s2"
+            tools:text="Действует с 02.05.2021 по 02.05.2022" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

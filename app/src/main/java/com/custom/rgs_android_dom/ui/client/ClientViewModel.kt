@@ -16,7 +16,6 @@ import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.policies.PoliciesFragment
 import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressFragment
-import com.custom.rgs_android_dom.ui.property.add.select_type.SelectPropertyTypeFragment
 import com.custom.rgs_android_dom.ui.property.info.PropertyInfoFragment
 import com.custom.rgs_android_dom.ui.screen_stub.ScreenStubFragment
 import com.custom.rgs_android_dom.utils.logException
