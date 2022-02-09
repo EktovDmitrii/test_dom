@@ -89,6 +89,10 @@ class PurchaseInteractor(
         return purchaseRepository.getProductPurchasedSubject()
     }
 
+    fun notifyProductPurchased(productId: String){
+        purchaseRepository.notifyProductPurchased(productId)
+    }
+
     private fun validateServiceOrderViewState(){
         val isServiceOrderTextViewEnabled = (serviceOrderViewState.property != null && serviceOrderViewState.orderDate != null)
         serviceOrderViewState = serviceOrderViewState.copy(isServiceOrderTextViewEnabled = isServiceOrderTextViewEnabled)
