@@ -91,12 +91,7 @@ class ServiceOrderViewModel(
     }
 
     fun onSelectOrderDateClick(childFragmentManager: FragmentManager) {
-        val orderDate = if (serviceOrderViewStateController.value?.orderDate != null){
-            serviceOrderViewStateController.value?.orderDate
-        } else {
-            PurchaseDateTimeModel()
-        }
-        val purchaseDateTimeFragment = PurchaseDateTimeFragment.newInstance(orderDate)
+        val purchaseDateTimeFragment = PurchaseDateTimeFragment.newInstance()
         purchaseDateTimeFragment.show(childFragmentManager, purchaseDateTimeFragment.TAG)
     }
 

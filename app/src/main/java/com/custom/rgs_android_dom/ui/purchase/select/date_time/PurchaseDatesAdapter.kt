@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ItemDateTimeBinding
 import com.custom.rgs_android_dom.domain.purchase.models.DateForCalendarModel
-import com.custom.rgs_android_dom.utils.dpToPx
+import com.custom.rgs_android_dom.utils.dp
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import java.util.*
 
@@ -17,10 +17,10 @@ class PurchaseDatesAdapter(
     private val onDateClick: (DateForCalendarModel) -> Unit,
 ) : RecyclerView.Adapter<PurchaseDatesAdapter.PurchaseDateTimeViewHolder>() {
 
-    private var dateList = mutableListOf<DateForCalendarModel>()
+    private var dateList: List<DateForCalendarModel> = emptyList()
 
     override fun onBindViewHolder(holder: PurchaseDateTimeViewHolder, position: Int) {
-        (holder).bind(dateList[position])
+        holder.bind(dateList[position])
     }
 
     override fun onCreateViewHolder(
@@ -33,7 +33,7 @@ class PurchaseDatesAdapter(
             false
         )
         val metrics: DisplayMetrics = parent.resources.displayMetrics
-        val width = metrics.widthPixels - 8.dpToPx(binding.root.context)
+        val width = metrics.widthPixels - 8.dp(binding.root.context)
 
         binding.root.updateLayoutParams {
             this.width = width / 7
@@ -46,9 +46,12 @@ class PurchaseDatesAdapter(
     }
 
     fun setItems(dateForCalendarList: List<DateForCalendarModel>) {
-        dateList.clear()
-        dateList.addAll(dateForCalendarList)
+        dateList = dateForCalendarList
         notifyDataSetChanged()
+    }
+
+    fun getItem(position: Int): DateForCalendarModel {
+        return dateList[position]
     }
 
     inner class PurchaseDateTimeViewHolder(
@@ -59,38 +62,29 @@ class PurchaseDatesAdapter(
         fun bind(dateForCalendar: DateForCalendarModel) {
             binding.dayNumberTextView.text = dateForCalendar.dateNumber
 
-            binding.dayOfWeekTextView.text = dateForCalendar.dayInWeek.capitalize(Locale.getDefault())
-            if (dateForCalendar.isSelected) {
-                binding.dayNumberTextView.setBackgroundResource(R.drawable.rectangle_filled_secondary_100_radius_12dp)
-            } else binding.dayNumberTextView.setBackgroundColor(0)
+            binding.dayOfWeekTextView.text =
+                dateForCalendar.dayInWeek.capitalize(Locale.getDefault())
+
+            if (dateForCalendar.isSelected) binding.dayNumberTextView.setBackgroundResource(R.drawable.rectangle_filled_secondary_100_radius_12dp)
+            else binding.dayNumberTextView.setBackgroundColor(0)
+
+            binding.root.setOnDebouncedClickListener {
+                if (dateForCalendar.isEnable) onDateClick(dateForCalendar)
+            }
+
             if (dateForCalendar.isEnable) {
-                binding.root.setOnDebouncedClickListener {
-                    onDateClick(dateForCalendar)
-                }
                 binding.dayOfWeekTextView.setTextColor(
-                    ContextCompat.getColor(
-                        binding.root.context,
-                        R.color.secondary600
-                    )
+                    ContextCompat.getColor(binding.root.context, R.color.secondary600)
                 )
                 binding.dayNumberTextView.setTextColor(
-                    ContextCompat.getColor(
-                        binding.root.context,
-                        R.color.secondary800
-                    )
+                    ContextCompat.getColor(binding.root.context, R.color.secondary800)
                 )
             } else {
                 binding.dayOfWeekTextView.setTextColor(
-                    ContextCompat.getColor(
-                        binding.root.context,
-                        R.color.secondary300
-                    )
+                    ContextCompat.getColor(binding.root.context, R.color.secondary300)
                 )
                 binding.dayNumberTextView.setTextColor(
-                    ContextCompat.getColor(
-                        binding.root.context,
-                        R.color.secondary400
-                    )
+                    ContextCompat.getColor(binding.root.context, R.color.secondary400)
                 )
             }
         }
