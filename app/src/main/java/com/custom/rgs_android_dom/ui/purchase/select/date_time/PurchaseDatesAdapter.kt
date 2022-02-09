@@ -50,6 +50,10 @@ class PurchaseDatesAdapter(
         notifyDataSetChanged()
     }
 
+    fun getItem(position: Int): DateForCalendarModel {
+        return dateList[position]
+    }
+
     inner class PurchaseDateTimeViewHolder(
         private val binding: ItemDateTimeBinding,
         private val onDateClick: (DateForCalendarModel) -> Unit
@@ -58,7 +62,8 @@ class PurchaseDatesAdapter(
         fun bind(dateForCalendar: DateForCalendarModel) {
             binding.dayNumberTextView.text = dateForCalendar.dateNumber
 
-            binding.dayOfWeekTextView.text = dateForCalendar.dayInWeek.capitalize(Locale.getDefault())
+            binding.dayOfWeekTextView.text =
+                dateForCalendar.dayInWeek.capitalize(Locale.getDefault())
 
             if (dateForCalendar.isSelected) binding.dayNumberTextView.setBackgroundResource(R.drawable.rectangle_filled_secondary_100_radius_12dp)
             else binding.dayNumberTextView.setBackgroundColor(0)

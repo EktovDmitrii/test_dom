@@ -2,108 +2,75 @@ package com.custom.rgs_android_dom.ui.purchase.select.date_time
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.custom.rgs_android_dom.domain.purchase.model.PurchaseDateModel
 import com.custom.rgs_android_dom.domain.purchase.model.PurchaseDateTimeModel
-import com.custom.rgs_android_dom.domain.purchase.PurchaseInteractor
 import com.custom.rgs_android_dom.domain.purchase.model.DateForCalendarModel
 import com.custom.rgs_android_dom.domain.purchase.model.PurchaseTimePeriodModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_ONLY
+import com.custom.rgs_android_dom.utils.DATE_PATTERN_DAY_OF_WEEK
 import com.custom.rgs_android_dom.utils.formatTo
 import org.joda.time.LocalDateTime
 
-class PurchaseDateTimeViewModel(
-    private val purchaseInteractor: PurchaseInteractor
-) : BaseViewModel() {
+class PurchaseDateTimeViewModel : BaseViewModel() {
 
-    private val dateListController = MutableLiveData<PurchaseDateModel>()
-    val dateListObserver: LiveData<PurchaseDateModel> = dateListController
+    private val dateListController = MutableLiveData<List<DateForCalendarModel>>()
+    val dateListObserver: LiveData<List<DateForCalendarModel>> = dateListController
 
-//    private val calendarListController = MutableLiveData<DateForCalendarModel>()
-//    val calendarListObserver: LiveData<DateForCalendarModel> = calendarListController
+    private var calendarList: MutableList<DateForCalendarModel> = mutableListOf()
+
+    private val hasPreviousMonthController = MutableLiveData(false)
+    val hasPreviousMonthObserver: LiveData<Boolean> = hasPreviousMonthController
+
+    private var selectedDateTimeController = MutableLiveData<PurchaseDateTimeModel>()
+    val selectedDateTimeObserver: LiveData<PurchaseDateTimeModel> = selectedDateTimeController
 
     private var selectedDateTime = PurchaseDateTimeModel()
 
     init {
-        updateDateListController(purchaseInteractor.createDateWeek())
+        fillCalendarList(selectedDateTime.selectedDate, true)
+        selectedDateTimeController.value = selectedDateTime
     }
 
-    fun plusMonth() {
-//        val date = dateListController.value?.datesForCalendar?.first()?.date?.plusWeeks(1)
-//        val newDateListController = date?.let {
-//            selectedDateTime = selectedDateTime.copy(selectedDate = it)
-//
-//            dateListController.value?.copy(date = it)
-//        }
-//        newDateListController?.let {
-//            updateDateListController(purchaseInteractor.updateDateWeek(it))
-//        }
-    }
-
-    fun minusMonth() {
-//        val date = dateListController.value?.datesForCalendar?.first()?.date?.minusWeeks(1)
-//        val newDateListController = date?.let {
-//            dateListController.value?.copy(date = it)
-//        }
-//        newDateListController?.let {
-//            val newDateList = purchaseInteractor.updateDateWeek(it)
-//            selectedDateTime = selectedDateTime.copy(selectedDate = newDateList.date)
-//            updateDateListController(newDateList)
-//        }
+    private fun fillCalendarList(dateTimeModel: LocalDateTime, isFirst: Boolean) {
+        var firstDayInWeek = if (isFirst) dateTimeModel.minusDays(dateTimeModel.dayOfWeek - 1)
+        else dateTimeModel.plusDays(1)
+        for (counter in 0..31) {
+            calendarList.add(
+                DateForCalendarModel(
+                    dayInWeek = firstDayInWeek.formatTo(DATE_PATTERN_DAY_OF_WEEK),
+                    dateNumber = firstDayInWeek.dayOfMonth.toString(),
+                    date = firstDayInWeek,
+                    isEnable = firstDayInWeek.dayOfYear >= LocalDateTime.now().dayOfYear || firstDayInWeek.year > LocalDateTime.now().year,
+                    isSelected = selectedDateTime.selectedDate == firstDayInWeek
+                )
+            )
+            firstDayInWeek = firstDayInWeek.plusDays(1)
+        }
+        dateListController.value = calendarList
     }
 
     fun loadMoreDates() {
-
+        fillCalendarList(calendarList.last().date, false)
     }
 
     fun selectDay(date: LocalDateTime) {
-        selectedDateTime = selectedDateTime.copy(selectedDate = date)
+        selectedDateTime = selectedDateTime.copy(selectedDate = date, selectedPeriodModel = null)
+        selectedDateTimeController.value = selectedDateTime
 
-        dateListController.value?.let {
-            updateDateListController(purchaseInteractor.selectDay(it, date))
+        calendarList.forEach {
+            it.isSelected = it.date == date
         }
+        dateListController.value = calendarList
     }
 
     fun selectPeriod(purchasePeriodModel: PurchaseTimePeriodModel) {
         selectedDateTime = selectedDateTime.copy(selectedPeriodModel = purchasePeriodModel)
-
-        val periodList = dateListController.value?.periodList
-        periodList?.forEach {
-            it.isSelected = purchasePeriodModel.id == it.id
-        }
-        periodList?.let {
-            updateDateListController(
-                dateListController.value?.copy(
-                    periodList = it,
-                    selectedPeriod = purchasePeriodModel
-                )
-            )
-        }
+        selectedDateTimeController.value = selectedDateTime
     }
 
-    private fun updateDateListController(dateList: PurchaseDateModel?) {
-        dateListController.value = dateList?.copy(
-            periodList = dateList.periodList.onEach {
-                val isThatDayPeriod = selectedDateTime.selectedPeriodModel?.id == it.id &&
-                        selectedDateTime.selectedDate.formatTo(DATE_PATTERN_DATE_ONLY) == dateList.date.formatTo(
-                    DATE_PATTERN_DATE_ONLY
-                )
-                if (!it.isSelectable && isThatDayPeriod)
-                    selectedDateTime = selectedDateTime.copy(selectedPeriodModel = null)
-
-                it.isSelected = it.isSelectable && isThatDayPeriod
-            }
-        )
+    fun setPreviousMonthPossibility(hasPrevious: Boolean) {
+        hasPreviousMonthController.value = hasPrevious
     }
 
-    fun createPurchaseDateTimeModel(): PurchaseDateTimeModel? {
-        val selectedDate = dateListController.value?.date
-        val selectedPeriod = dateListController.value?.selectedPeriod
-        return if (selectedDate != null && selectedPeriod != null) PurchaseDateTimeModel(
-            selectedDate,
-            selectedPeriod
-        )
-        else null
-    }
+    fun createPurchaseDateTimeModel(): PurchaseDateTimeModel = selectedDateTime
 
 }

@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.purchase.select.date_time
 
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,11 +12,15 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPurchaseDateTimeBinding
 import com.custom.rgs_android_dom.domain.purchase.model.PurchaseDateTimeModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
+import com.custom.rgs_android_dom.utils.DATE_PATTERN_YEAR_MONTH
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
+import org.joda.time.LocalDateTime
 import java.io.Serializable
+import java.util.*
 
-class PurchaseDateTimeFragment : BaseBottomSheetModalFragment<PurchaseDateTimeViewModel, FragmentPurchaseDateTimeBinding>() {
+class PurchaseDateTimeFragment :
+    BaseBottomSheetModalFragment<PurchaseDateTimeViewModel, FragmentPurchaseDateTimeBinding>() {
 
     companion object {
         fun newInstance(): PurchaseDateTimeFragment = PurchaseDateTimeFragment()
@@ -31,7 +36,14 @@ class PurchaseDateTimeFragment : BaseBottomSheetModalFragment<PurchaseDateTimeVi
 
     override val TAG: String = "PURCHASE_DATE_TIME_FRAGMENT"
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    private var visibleMonth: Int? = 0
+    private var currDate: LocalDateTime = LocalDateTime.now()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         if (parentFragment is PurchaseDateTimeListener) {
             purchaseDateTimeListener = parentFragment as PurchaseDateTimeListener
         }
@@ -48,15 +60,23 @@ class PurchaseDateTimeFragment : BaseBottomSheetModalFragment<PurchaseDateTimeVi
         binding.datesRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             var loading = true
             var previousTotal = 0
-            var visibleThreshold = 5
+            var visibleThreshold = 31
             var firstVisibleItem = 0
             var visibleItemCount = 0
             var totalItemCount = 0
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-
                 val layoutManager = (binding.datesRecyclerView.layoutManager as LinearLayoutManager)
+
+                val lastVisibleItemPos = layoutManager.findLastVisibleItemPosition()
+                val lastItemDate = dateListAdapter.getItem(lastVisibleItemPos).date
+                if (visibleMonth != lastItemDate.monthOfYear) {
+                    binding.selectedMonth.monthTextView.text = formatMonth(lastItemDate.toDate())
+                    visibleMonth = lastItemDate.monthOfYear
+                    viewModel.setPreviousMonthPossibility(lastItemDate.monthOfYear > currDate.monthOfYear && lastItemDate.year >= currDate.year)
+                }
+
                 if (dx > 0) {
                     visibleItemCount = layoutManager.childCount
                     totalItemCount = layoutManager.itemCount
@@ -69,7 +89,8 @@ class PurchaseDateTimeFragment : BaseBottomSheetModalFragment<PurchaseDateTimeVi
                         }
                     }
                     if (!loading && (totalItemCount - visibleItemCount)
-                        <= (firstVisibleItem + visibleThreshold)) {
+                        <= (firstVisibleItem + visibleThreshold)
+                    ) {
                         viewModel.loadMoreDates()
                         loading = true
                     }
@@ -82,34 +103,78 @@ class PurchaseDateTimeFragment : BaseBottomSheetModalFragment<PurchaseDateTimeVi
         }
 
         binding.selectedMonth.nextMonthImageView.setOnDebouncedClickListener {
-            viewModel.plusMonth()
+            nextMonth()
         }
 
         binding.selectedMonth.previousMonthImageView.setOnDebouncedClickListener {
-            viewModel.minusMonth()
+            prevMonth()
         }
 
         binding.selectTextView.setOnDebouncedClickListener {
-            viewModel.createPurchaseDateTimeModel()?.let {
+            viewModel.createPurchaseDateTimeModel().let {
                 purchaseDateTimeListener?.onSelectDateTimeClick(it)
             }
             dismissAllowingStateLoss()
         }
-
         subscribe(viewModel.dateListObserver) {
-            dateListAdapter.setItems(it.datesForCalendar)
-            periodListAdapter.setItems(it.periodList)
+            dateListAdapter.setItems(it)
+        }
+        subscribe(viewModel.selectedDateTimeObserver) {
+            periodListAdapter.setSelected(it)
 
-            binding.selectedMonth.monthTextView.text = it.selectedMonth
-            binding.selectedMonth.previousMonthImageView.isEnabled = it.isPreviousMonthButtonEnable
-            binding.selectTextView.isEnabled = it.selectedPeriod != null
+            binding.selectTextView.isEnabled = it.selectedPeriodModel != null
+        }
+        subscribe(viewModel.hasPreviousMonthObserver) {
+            binding.selectedMonth.previousMonthImageView.isEnabled = it
 
             binding.selectedMonth.previousMonthImageView.setImageDrawable(
-                ContextCompat.getDrawable(requireContext(),
-                    if (it.isPreviousMonthButtonEnable) R.drawable.ic__arrow_left_24px
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    if (it) R.drawable.ic__arrow_left_24px
                     else R.drawable.ic__arrow_left_24px_secondary300
                 )
             )
+        }
+    }
+
+    private fun formatMonth(monthForDate: Date): String {
+        return SimpleDateFormat(DATE_PATTERN_YEAR_MONTH, Locale.getDefault())
+            .format(monthForDate)
+            .capitalize(Locale.getDefault())
+    }
+
+    private fun nextMonth() {
+        visibleMonth?.let {
+            val currLastPos =
+                (binding.datesRecyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+            val lastPosItem = dateListAdapter.getItem(currLastPos).date.dayOfYear
+
+            val newMonthFirstDay =
+                LocalDateTime().withMonthOfYear(it).plusMonths(1).withDayOfMonth(1).dayOfYear
+            val scrollPosition = currLastPos + (newMonthFirstDay - lastPosItem) + 6
+            if (scrollPosition > 0) {
+                binding.datesRecyclerView.scrollToPosition(scrollPosition)
+                viewModel.loadMoreDates()
+            }
+        }
+    }
+
+    private fun prevMonth() {
+        visibleMonth?.let {
+            val currFirstPos =
+                (binding.datesRecyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+            val firstPosItem = dateListAdapter.getItem(currFirstPos).date.dayOfYear
+
+            val newMonthFirstDay =
+                LocalDateTime().withMonthOfYear(it).minusMonths(1).withDayOfMonth(
+                    if (visibleMonth == currDate.monthOfYear + 1) {
+                        currDate.dayOfMonth
+                    } else {
+                        1
+                    }
+                ).dayOfYear
+
+            binding.datesRecyclerView.scrollToPosition(currFirstPos - (firstPosItem - newMonthFirstDay))
         }
     }
 
