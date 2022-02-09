@@ -6,11 +6,13 @@ import androidx.core.text.bold
 import androidx.core.text.toSpannable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.custom.rgs_android_dom.domain.purchase.PurchaseInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 
 class PaymentSuccessViewModel(
     private val productId: String,
-    email: String
+    email: String,
+    private val purchaseInteractor: PurchaseInteractor
 ) : BaseViewModel() {
 
     private val emailController = MutableLiveData<Spannable>()
@@ -21,6 +23,8 @@ class PaymentSuccessViewModel(
             .append("Чек об оплате отправлен на вашу почту ")
             .bold { append(email) }
             .toSpannable()
+
+        purchaseInteractor.notifyProductPurchased(productId)
     }
 
     fun onCloseScope() {

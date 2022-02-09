@@ -34,4 +34,6 @@ interface PurchaseRepository {
     fun getServiceOrderedSubject(): PublishSubject<String>
 
     fun getProductPurchasedSubject(): PublishSubject<String>
+
+    fun notifyProductPurchased(productId: String)
 }

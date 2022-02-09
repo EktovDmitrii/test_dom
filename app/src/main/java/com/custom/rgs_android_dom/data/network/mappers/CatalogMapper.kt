@@ -274,7 +274,8 @@ object CatalogMapper {
             productVersionId = response.productVersionId ?: "",
             status = response.status ?: "",
             validityFrom = response.validityFrom,
-            validityTo = response.validityTo
+            validityTo = response.validityTo,
+            defaultProduct = response.defaultProduct ?: false
         )
     }
 

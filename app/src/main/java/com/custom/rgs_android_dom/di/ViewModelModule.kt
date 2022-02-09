@@ -135,7 +135,7 @@ val viewModelModule = module {
     viewModel { SOSViewModel(chatInteractor = get(), registrationInteractor = get(), clientInteractor = get(), context = get()) }
     viewModel { parameters -> PaymentWebViewViewModel(url = parameters.get()) }
     viewModel { parameters -> PaymentErrorViewModel(firstFragmentId = parameters[0]) }
-    viewModel { parameters -> PaymentSuccessViewModel(productId = parameters[0], email = parameters[1]) }
+    viewModel { parameters -> PaymentSuccessViewModel(productId = parameters[0], email = parameters[1], purchaseInteractor = get()) }
     viewModel { parameters -> StoriesViewModel(tab = parameters.get()) }
     viewModel { TabNewServiceViewModel() }
     viewModel { TabGuaranteeViewModel() }
