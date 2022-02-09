@@ -182,7 +182,7 @@ interface MSDApi {
 
     @GET("clients/me/balance/products")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getClientProducts(@Query("size") size: Int, @Query("index") index: Int, @Query("status") status: String = "active"): Single<ClientProductsResponse>
+    fun getClientProducts(@Query("size") size: Int, @Query("index") index: Int, @Query("contractIds") contractIds: String?, @Query("status") status: String = "active"): Single<ClientProductsResponse>
 
     @GET("guests/purchase/products/{productId}/services/{serviceId}/details")
     @ErrorType(MSDNetworkErrorResponse::class)
@@ -219,6 +219,10 @@ interface MSDApi {
     @POST("insurance/clients/me/contracts")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun bindPolicy(@Body body: BindPolicyRequest) : Single<BindPolicyResponse>
+
+    @GET("insurance/clients/me/contracts")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getPolicyContracts() : Single<GetPolicyContractsResponse>
 
     @POST("clients/me/orders")
     @ErrorType(MSDNetworkErrorResponse::class)
