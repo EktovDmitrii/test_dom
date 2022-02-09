@@ -1,12 +1,8 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
 import com.custom.rgs_android_dom.BuildConfig
-import com.custom.rgs_android_dom.data.network.responses.OrderStatus
 import com.custom.rgs_android_dom.data.network.responses.OrdersResponse
-import com.custom.rgs_android_dom.domain.client.models.GeneralInvoice
-import com.custom.rgs_android_dom.domain.client.models.InvoiceItemModel
-import com.custom.rgs_android_dom.domain.client.models.InvoiceType
-import com.custom.rgs_android_dom.domain.client.models.OrderItemModel
+import com.custom.rgs_android_dom.domain.client.models.*
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_ONLY
 import com.custom.rgs_android_dom.utils.formatPrice
 import org.joda.time.LocalDate

@@ -49,7 +49,7 @@ interface ClientRepository {
 
     fun getEditPersonalDataRequestedSubject(): BehaviorSubject<Boolean>
 
-    fun getOrders(size: Long, index: Long): Single<List<OrderItemModel>>
+    fun getOrders(size: Long, index: Long): Single<List<Order>>
 
     fun getGeneralInvoices(
         size: Long,

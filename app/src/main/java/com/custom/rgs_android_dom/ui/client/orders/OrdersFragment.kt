@@ -2,12 +2,12 @@ package com.custom.rgs_android_dom.ui.client.orders
 
 import android.os.Bundle
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentOrdersBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.utils.*
+import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
+import com.custom.rgs_android_dom.utils.subscribe
+import com.custom.rgs_android_dom.utils.visibleIf
 
 class OrdersFragment : BaseFragment<OrdersViewModel, FragmentOrdersBinding>(R.layout.fragment_orders) {
 

@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.custom.rgs_android_dom.R
-import com.custom.rgs_android_dom.data.network.responses.OrderStatus
 import com.custom.rgs_android_dom.databinding.FragmentOrderDetailBinding
 import com.custom.rgs_android_dom.domain.client.models.Order
+import com.custom.rgs_android_dom.domain.client.models.OrderStatus
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
