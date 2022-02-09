@@ -4,6 +4,7 @@ import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
 import com.custom.rgs_android_dom.data.network.mappers.ClientOrdersMapper
 import com.custom.rgs_android_dom.data.network.mappers.GeneralInvoiceMapper
+import com.custom.rgs_android_dom.data.network.mappers.OrdersMapper
 import com.custom.rgs_android_dom.data.network.requests.DeleteContactsRequest
 import com.custom.rgs_android_dom.data.network.requests.UpdateClientRequest
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
@@ -203,13 +204,13 @@ class ClientRepositoryImpl(
         return editPersonalDataRequestedSubject
     }
 
-    override fun getOrders(size: Long, index: Long): Single<List<OrderItemModel>> {
+    override fun getOrders(size: Long, index: Long): Single<List<Order>> {
         return api.getOrders()
             .flatMap { orderResponse ->
                 val orderIds = orderResponse.orders.map { order -> order.id }
                 getGeneralInvoices(size = size, index = index, orderIds = orderIds.joinToString(","), withPayments = true)
                     .flatMap {
-                        Single.just(ClientOrdersMapper.responseToOrderItem(it, orderResponse))
+                        Single.just(OrdersMapper.responseToOrders(it, orderResponse))
                     }
             }
 

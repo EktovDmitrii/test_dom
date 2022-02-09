@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.domain.client.view_states
 
-import com.custom.rgs_android_dom.data.network.responses.OrderStatus
+import com.custom.rgs_android_dom.domain.client.models.OrderStatus
+
 
 data class OrderDetailViewState(
     val id: String,

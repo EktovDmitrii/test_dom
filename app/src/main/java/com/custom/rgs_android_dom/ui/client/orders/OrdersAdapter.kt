@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.client.orders
 
+import android.annotation.SuppressLint
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -13,20 +14,21 @@ import com.custom.rgs_android_dom.databinding.ItemOrderAdditionalBillBinding
 import com.custom.rgs_android_dom.databinding.ItemOrderBinding
 import com.custom.rgs_android_dom.databinding.ItemOrderMainBillBinding
 import com.custom.rgs_android_dom.domain.catalog.models.ProductPriceModel
-import com.custom.rgs_android_dom.domain.client.models.InvoiceType
-import com.custom.rgs_android_dom.domain.client.models.OrderItemModel
+import com.custom.rgs_android_dom.domain.client.models.Order
+import com.custom.rgs_android_dom.domain.client.models.OrderStatus
 import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
 import com.custom.rgs_android_dom.utils.GlideApp
 import com.custom.rgs_android_dom.utils.dp
+import com.custom.rgs_android_dom.utils.formatPrice
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 
 
 class OrdersAdapter(
-    private val onOrderClick: (OrderItemModel) -> Unit,
+    private val onOrderClick: (Order) -> Unit,
     private val onPayClick: (PurchaseModel) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var orders: List<OrderItemModel> = emptyList()
+    private var orders: List<Order> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding =
@@ -40,7 +42,7 @@ class OrdersAdapter(
 
     override fun getItemCount(): Int = orders.size
 
-    fun setItems(orders: List<OrderItemModel>){
+    fun setItems(orders: List<Order>){
         this.orders = orders
         notifyDataSetChanged()
     }
@@ -49,19 +51,20 @@ class OrdersAdapter(
         private val binding: ItemOrderBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: OrderItemModel) {
+        fun bind(item: Order) {
             with(binding) {
+                val service = if (item.services?.isNotEmpty() == true) item.services[0] else null
                 val context = root.context
-                if (item.icon.isNotBlank()) {
+                if (service?.serviceLogoMiddle?.isNotBlank() == true) {
                     GlideApp.with(context)
-                        .load(GlideUrlProvider.makeHeadersGlideUrl(item.icon))
+                        .load(GlideUrlProvider.makeHeadersGlideUrl(service.serviceLogoMiddle))
                         .transform(RoundedCorners(8.dp(context)))
                         .error(R.drawable.bg_secondary100_rounded_16dp)
                         .into(binding.orderImageView)
                 }
-                orderNameTextView.text = item.title
+                orderNameTextView.text = service?.serviceName
                 orderDetailTextView.text = Html.fromHtml(
-                    item.description,
+                    item.getOrderDescription(),
                     Html.FROM_HTML_MODE_LEGACY
                 )
                 initBillItems(billContainer, item)
@@ -72,52 +75,67 @@ class OrdersAdapter(
             }
         }
 
-        private fun initBillItems(billContainer: LinearLayout, item: OrderItemModel) {
+        @SuppressLint("SetTextI18n")
+        private fun initBillItems(billContainer: LinearLayout, item: Order) {
             val context = billContainer.context
             billContainer.removeAllViews()
-            val invoices = item.invoices
-            if (invoices.isNotEmpty()) {
-                invoices.forEach {
-                    val purchaseModel = PurchaseModel(
-                        id = item.productId,
-                        defaultProduct = item.defaultProduct,
-                        duration = null,
-                        deliveryTime = item.deliveryTime,
-                        logoSmall = if (item.icon.isEmpty()) "blink" else item.icon,
-                        name = item.title,
-                        price = ProductPriceModel(
-                            amount = it.amount,
-                            fix = item.fix,
-                            vatType = it.vatType?.toString()
-                        )
+            val invoices = item.generalInvoice?.items ?: emptyList()
+            val service = if (item.services?.isNotEmpty() == true) item.services[0] else null
+            val status = item.status
+            if (status == OrderStatus.DRAFT || status == OrderStatus.CONFIRMED) {
+                val purchaseModel = PurchaseModel(
+                    id = item.id,
+                    defaultProduct = service?.defaultProduct ?: false,
+                    duration = null,
+                    deliveryTime = item.deliveryTime?.let { time -> "${time.from} - ${time.to}" } ?: "",
+                    logoSmall = if (service?.serviceLogoMiddle?.isNotBlank() == true) service.serviceLogoMiddle else "empty",
+                    name = service?.serviceName ?: "",
+                    price = ProductPriceModel(
+                        amount = null,
+                        fix = service?.serviceFixPrice ?: false,
+                        vatType = null
                     )
-                    if (it.type == InvoiceType.MAIN) {
-                        if (invoices.size > 1) {
-                            ItemOrderMainBillBinding.inflate(LayoutInflater.from(context), billContainer, false).apply {
-                                root.setOnDebouncedClickListener {
-                                    onPayClick.invoke(purchaseModel)
-                                }
-                                billPayTextView.setBackgroundResource(R.drawable.rectangle_stroke_1dp_primary_500_radius_8dp)
-                                billPayTextView.setTextColor(ContextCompat.getColor(context, R.color.primary500))
-                                billContainer.addView(root)
-                            }
-                        } else {
-                            ItemOrderMainBillBinding.inflate(LayoutInflater.from(context), billContainer, false).apply {
-                                root.setOnDebouncedClickListener {
-                                    onPayClick.invoke(purchaseModel)
-                                }
-                                billContainer.addView(root)
-                            }
+                )
+                if (invoices.isNotEmpty()) {
+                    ItemOrderMainBillBinding.inflate(LayoutInflater.from(context), billContainer, false).apply {
+                        root.setOnDebouncedClickListener {
+                            onPayClick.invoke(purchaseModel)
                         }
-                    } else if (it.type == InvoiceType.ADDITIONAL) {
-                        ItemOrderAdditionalBillBinding.inflate(LayoutInflater.from(context), billContainer, false).apply {
-                            billPayTextView.setOnDebouncedClickListener {
-                                onPayClick.invoke(purchaseModel)
-                            }
-                            descriptionTextView.text = it.description
-                            billContainer.addView(root)
-                        }
+                        billPayTextView.setBackgroundResource(R.drawable.rectangle_stroke_1dp_primary_500_radius_8dp)
+                        billPayTextView.setTextColor(ContextCompat.getColor(context, R.color.primary500))
+                        billContainer.addView(root)
                     }
+                } else {
+                    ItemOrderMainBillBinding.inflate(LayoutInflater.from(context), billContainer, false).apply {
+                        root.setOnDebouncedClickListener {
+                            onPayClick.invoke(purchaseModel)
+                        }
+                        billContainer.addView(root)
+                    }
+                }
+            }
+
+            invoices.forEach {
+                val purchaseModel = PurchaseModel(
+                    id = item.id,
+                    defaultProduct = service?.defaultProduct ?: false,
+                    duration = null,
+                    deliveryTime = item.deliveryTime?.let { time -> "${time.from} - ${time.to}" } ?: "",
+                    logoSmall = if (service?.serviceLogoMiddle?.isNotBlank() == true) service.serviceLogoMiddle else "empty",
+                    name = service?.serviceName ?: "",
+                    price = ProductPriceModel(
+                        amount = it.amount,
+                        fix = service?.serviceFixPrice ?: false,
+                        vatType = it.vatType?.toString()
+                    )
+                )
+
+                ItemOrderAdditionalBillBinding.inflate(LayoutInflater.from(context), billContainer, false).apply {
+                    billPayTextView.setOnDebouncedClickListener {
+                        onPayClick.invoke(purchaseModel)
+                    }
+                    descriptionTextView.text = "Дополнительный счёт  ∙  ${it.price?.formatPrice()}"
+                    billContainer.addView(root)
                 }
             }
         }

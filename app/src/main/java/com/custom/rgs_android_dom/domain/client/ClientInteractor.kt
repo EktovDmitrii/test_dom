@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.domain.client
 
-import com.custom.rgs_android_dom.data.network.responses.OrderStatus
 import com.custom.rgs_android_dom.data.repositories.files.FilesRepositoryImpl.Companion.STORE_AVATARS
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
@@ -22,7 +21,9 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
+import org.joda.time.format.DateTimeFormat
 import java.io.File
 
 class
@@ -52,22 +53,22 @@ ClientInteractor(
     private var editPersonalDataViewState = EditPersonalDataViewState()
     private var editAgentViewState = EditAgentViewState()
 
-    fun getOrdersHistory(): Single<List<OrderItemModel>> {
+    fun getOrdersHistory(): Single<List<Order>> {
         return clientRepository.getOrders(1000, 0)
             .flatMap {
                 Single.just(sortOrderHistory(it))
             }
     }
 
-    private fun sortOrderHistory(orders: List<OrderItemModel>): List<OrderItemModel> {
-        val activeOrders = mutableListOf<OrderItemModel>()
-        val otherOrders = mutableListOf<OrderItemModel>()
+    private fun sortOrderHistory(orders: List<Order>): List<Order> {
+        val activeOrders = mutableListOf<Order>()
+        val otherOrders = mutableListOf<Order>()
         orders.forEach {
             if (it.status == OrderStatus.ACTIVE) activeOrders.add(it) else otherOrders.add(it)
         }
-        return mutableListOf<OrderItemModel>().apply {
-            addAll(activeOrders.sortedByDescending { it.date })
-            addAll(otherOrders.sortedByDescending { it.date })
+        return mutableListOf<Order>().apply {
+            addAll(activeOrders.sortedByDescending { LocalDate.parse(it.deliveryDate, DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZZ")) })
+            addAll(otherOrders.sortedByDescending { LocalDate.parse(it.deliveryDate, DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZZ")) })
         }
     }
 

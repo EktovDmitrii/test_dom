@@ -7,13 +7,13 @@ data class GeneralInvoicesResponse (
     val index: Int,
 
     @SerializedName("invoices")
-    val invoices: List<GeneralInvoice>,
+    val invoices: List<GeneralInvoiceResponse>,
 
     @SerializedName("total")
     val total: Int
 )
 
-data class GeneralInvoice (
+data class GeneralInvoiceResponse (
     @SerializedName("id")
     val id: String? = null,
 
@@ -27,7 +27,7 @@ data class GeneralInvoice (
     val cardBindingId: String? = null,
 
     @SerializedName("client")
-    val client: GeneralInvoiceClient? = null,
+    val client: GeneralInvoiceClientResponse? = null,
 
     @SerializedName("createdAt")
     val createdAt: String? = null,
@@ -36,10 +36,10 @@ data class GeneralInvoice (
     val currency: Int? = null,
 
     @SerializedName("details")
-    val details: GeneralInvoiceDetails? = null,
+    val details: GeneralInvoiceDetailsResponse? = null,
 
     @SerializedName("items")
-    val items: List<GeneralInvoiceItem>,
+    val items: List<GeneralInvoiceItemResponse>,
 
     @SerializedName("maskedPan")
     val maskedPan : String? = null,
@@ -69,7 +69,7 @@ data class GeneralInvoice (
     val vatTotal: Int? = null
 )
 
-data class GeneralInvoiceItem (
+data class GeneralInvoiceItemResponse (
     @SerializedName("amount")
     val amount: Int? = null,
 
@@ -89,7 +89,7 @@ data class GeneralInvoiceItem (
     val price: Int? = null,
 
     @SerializedName("provider")
-    val provider: GeneralInvoiceProvider? = null,
+    val provider: GeneralInvoiceProviderResponse? = null,
 
     @SerializedName("quantity")
     val quantity: Int? = null,
@@ -101,7 +101,7 @@ data class GeneralInvoiceItem (
     val vatType: Int? = null
 )
 
-data class GeneralInvoiceClient (
+data class GeneralInvoiceClientResponse (
     @SerializedName("email")
     val email: String? = null,
 
@@ -115,7 +115,7 @@ data class GeneralInvoiceClient (
     val phone: String? = null
 )
 
-data class GeneralInvoiceDetails (
+data class GeneralInvoiceDetailsResponse (
     @SerializedName("bankOrderId")
     val bankOrderId: String? = null,
 
@@ -135,7 +135,7 @@ data class GeneralInvoiceDetails (
     val paymentUrl: String? = null
 )
 
-data class GeneralInvoiceProvider (
+data class GeneralInvoiceProviderResponse (
     @SerializedName("agentType")
     val agentType: Int? = null,
 

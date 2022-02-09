@@ -1,8 +1,9 @@
 package com.custom.rgs_android_dom.domain.client.models
 
-import com.custom.rgs_android_dom.data.network.responses.DeliveryTimeResponse
-import com.custom.rgs_android_dom.data.network.responses.ProviderResponse
-import com.custom.rgs_android_dom.data.network.responses.ServicesResponse
+import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_ONLY
+import com.custom.rgs_android_dom.utils.formatPrice
+import org.joda.time.LocalDate
+import org.joda.time.format.DateTimeFormat
 import java.io.Serializable
 
 data class Order(
@@ -14,9 +15,22 @@ data class Order(
     val comment: String? = null,
     val createdAt: String? = null,
     val deliveryDate: String? = null,
-    val deliveryTime: DeliveryTimeResponse? = null,
-    val provider: ProviderResponse? = null,
+    val deliveryTime: DeliveryTime? = null,
+    val provider: OrderProvider? = null,
     val refId: String? = null,
-    val services: List<ServicesResponse>? = null,
-    val status: String? = null
-) : Serializable
+    val services: List<OrderService>? = null,
+    val status: OrderStatus,
+    val generalInvoice: GeneralInvoice? = null
+) : Serializable {
+
+    fun getOrderDescription(): String {
+        val localDate = LocalDate.parse(deliveryDate, DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZZ"))
+        val onlyDate = localDate.toString(DATE_PATTERN_DATE_ONLY)
+        val service = if (services?.isNotEmpty() == true) services[0] else null
+        val price = (service?.productPrice ?: 0).formatPrice()
+        val isYellowColor = status == OrderStatus.DRAFT || status == OrderStatus.CONFIRMED || status == OrderStatus.ACTIVE
+        return if (isYellowColor)
+            "<font color=\"${"#EEA641"}\">${status.value}</font>  ∙  $price  ∙  $onlyDate"
+        else "${status.value}  ∙  $price  ∙  $onlyDate"
+    }
+}
