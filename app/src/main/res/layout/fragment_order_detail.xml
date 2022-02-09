@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/primary400">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/rectangle_filled_white_top_radius_24dp">
+
+        <include
+            android:id="@+id/swipeAnchorLayout"
+            layout="@layout/layout_bottom_sheet_swipe_anchor"/>
+
+        <FrameLayout
+            android:id="@+id/actionBar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/white"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/backImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="5dp"
+                android:tint="@color/secondary600"
+                app:srcCompat="@drawable/ic_back_24px"/>
+
+        </FrameLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/orderStateTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/my_service_bold"
+                    android:textColor="@color/secondary900"
+                    android:textSize="24sp"
+                    android:paddingHorizontal="20dp"
+                    android:layout_marginBottom="18dp"
+                    tools:text="Заказ создан"/>
+
+                <include
+                    android:id="@+id/staticProgress"
+                    layout="@layout/view_static_progress"/>
+
+                <TextView
+                    android:id="@+id/topPaymentStateTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/primary500"
+                    android:fontFamily="@font/suisse_regular"
+                    android:textSize="16sp"
+                    android:paddingHorizontal="20dp"
+                    android:layout_marginTop="18dp"
+                    tools:text="Ожидает оплату"/>
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary800"
+                    android:fontFamily="@font/my_service_bold"
+                    android:textSize="16sp"
+                    android:paddingHorizontal="20dp"
+                    android:layout_marginTop="20dp"
+                    app:translationTextKey="Заказ"/>
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary500"
+                    android:fontFamily="@font/suisse_regular"
+                    android:textSize="16sp"
+                    android:paddingHorizontal="20dp"
+                    android:layout_marginTop="16dp"
+                    app:translationTextKey="Услуга"/>
+
+                <TextView
+                    android:id="@+id/serviceNameTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary900"
+                    android:fontFamily="@font/suisse_regular"
+                    android:textSize="16sp"
+                    android:paddingHorizontal="20dp"
+                    tools:text="Монтаж унитаза"/>
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary500"
+                    android:fontFamily="@font/suisse_regular"
+                    android:textSize="16sp"
+                    android:paddingHorizontal="20dp"
+                    android:layout_marginTop="16dp"
+                    app:translationTextKey="Адрес"/>
+
+                <TextView
+                    android:id="@+id/addressTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary900"
+                    android:fontFamily="@font/suisse_regular"
+                    android:textSize="16sp"
+                    android:paddingHorizontal="20dp"
+                    tools:text="Дом (пр-т Победителей, 147)"/>
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary500"
+                    android:fontFamily="@font/suisse_regular"
+                    android:textSize="16sp"
+                    android:paddingHorizontal="20dp"
+                    android:layout_marginTop="16dp"
+                    app:translationTextKey="Дата и время"/>
+
+                <TextView
+                    android:id="@+id/dateTimeTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary900"
+                    android:fontFamily="@font/suisse_regular"
+                    android:textSize="16sp"
+                    android:paddingHorizontal="20dp"
+                    tools:text="13 января 2022; 9:00 – 12:00"/>
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/commentTitleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary500"
+                    android:fontFamily="@font/suisse_regular"
+                    android:textSize="16sp"
+                    android:paddingHorizontal="20dp"
+                    android:layout_marginTop="16dp"
+                    app:translationTextKey="Комментарий"/>
+
+                <TextView
+                    android:id="@+id/commentTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary900"
+                    android:fontFamily="@font/suisse_regular"
+                    android:textSize="16sp"
+                    android:paddingHorizontal="20dp"
+                    tools:text="Ярік бачок потік "/>
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary800"
+                    android:fontFamily="@font/my_service_bold"
+                    android:textSize="16sp"
+                    android:paddingHorizontal="20dp"
+                    android:layout_marginTop="36dp"
+                    app:translationTextKey="Оплата"/>
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary500"
+                    android:fontFamily="@font/suisse_regular"
+                    android:textSize="16sp"
+                    android:paddingHorizontal="20dp"
+                    android:layout_marginTop="16dp"
+                    app:translationTextKey="Стоимость"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/priceTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/secondary900"
+                        android:fontFamily="@font/suisse_semi_bold"
+                        android:textSize="16sp"
+                        tools:text="1 500 ₽"/>
+
+                    <TextView
+                        android:id="@+id/paymentStateTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/secondary500"
+                        android:fontFamily="@font/suisse_regular"
+                        android:textSize="14sp"
+                        android:layout_marginStart="8dp"
+                        tools:text="Ожидает оплату"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/billPayTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="40dp"
+                    android:background="@drawable/rectangle_filled_primary_500_radius_8dp"
+                    android:gravity="center"
+                    android:paddingHorizontal="16dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:fontFamily="@font/my_service_medium"
+                    android:textSize="14sp"
+                    android:textColor="@color/white"
+                    app:translationTextKey="Оплатить" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/feedbackLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="20dp"
+                    android:paddingVertical="12dp"
+                    android:layout_marginBottom="39dp"
+                    android:background="@drawable/rectangle_filled_primary_100_radius_8dp">
+
+                    <com.custom.rgs_android_dom.views.text.MSDTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/secondary900"
+                        android:fontFamily="@font/suisse_regular"
+                        android:textSize="13sp"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="16dp"
+                        app:translationTextKey="При возникновении вопросов – обратитесь к Мастеру онлайн"/>
+
+                    <ImageView
+                        android:id="@+id/feedbackImageView"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:contentDescription="@null"
+                        android:layout_gravity="center"
+                        android:layout_marginHorizontal="16dp"
+                        android:src="@drawable/ic_feedback"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/cancelOrderTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:visibility="gone"
+                    android:background="@drawable/rectangle_stroke_1dp_secondary_200_radius_8dp"
+                    android:gravity="center"
+                    android:fontFamily="@font/my_service_medium"
+                    android:textSize="14sp"
+                    android:textColor="@color/secondary_default"
+                    app:translationTextKey="Отменить заказ"
+                    tools:visibility="visible"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </ScrollView>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</FrameLayout>

@@ -224,4 +224,24 @@ interface MSDApi {
     @ErrorType(MSDNetworkErrorResponse::class)
     fun orderServiceOnBalance(@Body body: OrderServiceRequest, @Query("confirm") confirmOrder: Boolean): Completable
 
+
+    @GET("clients/{clientId}/orders")
+    fun getOrders(@Path("clientId") clientId: String, @Query("size") size: Long, @Query("index") index: Long): Single<OrdersResponse>
+
+    @GET("clients/me/orders")
+    fun getOrders(): Single<OrdersResponse>
+
+    @GET("client/me/general-invoices")
+    fun getGeneralInvoices(
+        @Query("size") size: Long,
+        @Query("index") index: Long,
+        @Query("status") status: String? = null,
+        @Query("num") num: String? = null,
+        @Query("fullText") fullText: String? = null,
+        @Query("orderIds") orderIds: String,
+        @Query("withPayments") withPayments: Boolean? = null
+    ): Single<GeneralInvoicesResponse>
+
+    @GET("clients/{clientId}/orders/{orderId}")
+    fun getOrderDetail(@Path("clientId") clientId: String, @Path("orderId") orderId: String): Single<OrderResponse>
 }

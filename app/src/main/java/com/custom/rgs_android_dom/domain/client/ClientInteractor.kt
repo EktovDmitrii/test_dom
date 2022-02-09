@@ -1,15 +1,15 @@
 package com.custom.rgs_android_dom.domain.client
 
+import com.custom.rgs_android_dom.data.network.responses.OrderStatus
 import com.custom.rgs_android_dom.data.repositories.files.FilesRepositoryImpl.Companion.STORE_AVATARS
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
 import com.custom.rgs_android_dom.domain.client.exceptions.ValidateFieldModel
 import com.custom.rgs_android_dom.domain.client.mappers.AgentMapper
-import com.custom.rgs_android_dom.domain.client.models.Gender
 import com.custom.rgs_android_dom.domain.client.mappers.ClientShortViewStateMapper
 import com.custom.rgs_android_dom.domain.client.mappers.EditPersonalDataViewStateMapper
 import com.custom.rgs_android_dom.domain.client.mappers.PersonalDataMapper
-import com.custom.rgs_android_dom.domain.client.models.ClientModel
+import com.custom.rgs_android_dom.domain.client.models.*
 import com.custom.rgs_android_dom.domain.client.view_states.*
 import com.custom.rgs_android_dom.domain.repositories.CatalogRepository
 import com.custom.rgs_android_dom.domain.repositories.ClientRepository
@@ -51,6 +51,25 @@ ClientInteractor(
     private var fillClientViewState: FillClientViewState = FillClientViewState(registrationRepository.getCurrentPhone())
     private var editPersonalDataViewState = EditPersonalDataViewState()
     private var editAgentViewState = EditAgentViewState()
+
+    fun getOrdersHistory(): Single<List<OrderItemModel>> {
+        return clientRepository.getOrders(1000, 0)
+            .flatMap {
+                Single.just(sortOrderHistory(it))
+            }
+    }
+
+    private fun sortOrderHistory(orders: List<OrderItemModel>): List<OrderItemModel> {
+        val activeOrders = mutableListOf<OrderItemModel>()
+        val otherOrders = mutableListOf<OrderItemModel>()
+        orders.forEach {
+            if (it.status == OrderStatus.ACTIVE) activeOrders.add(it) else otherOrders.add(it)
+        }
+        return mutableListOf<OrderItemModel>().apply {
+            addAll(activeOrders.sortedByDescending { it.date })
+            addAll(otherOrders.sortedByDescending { it.date })
+        }
+    }
 
     //todo
     fun saveText(text: Boolean) {

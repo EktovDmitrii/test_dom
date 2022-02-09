@@ -319,6 +319,14 @@
         <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
+    <style name="BottomSheetTransparentBackground" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetTransparentBackgroundStyle</item>
+    </style>
+
+    <style name="BottomSheetTransparentBackgroundStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
     <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/rectangle_filled_white_top_radius_20dp</item>
     </style>

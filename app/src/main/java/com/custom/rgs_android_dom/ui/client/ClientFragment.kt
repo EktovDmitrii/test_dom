@@ -68,7 +68,7 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
         }
 
         binding.ordersHistoryLinearLayout.setOnDebouncedClickListener {
-            viewModel.onNotCreatedScreenClick()
+            viewModel.onOrdersHistoryClick()
         }
 
         binding.myCardsLinearLayout.setOnDebouncedClickListener {
