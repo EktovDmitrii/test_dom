@@ -148,20 +148,8 @@ class PurchaseViewModel(
     }
 
     fun onDateTimeClick(childFragmentManager: FragmentManager) {
-        val currentPurchaseDateTimeModel = purchaseController.value?.purchaseDateTimeModel
-
-        if (currentPurchaseDateTimeModel != null) {
-            val purchaseDateTimeFragment = PurchaseDateTimeFragment.newInstance(
-                currentPurchaseDateTimeModel
-            )
-            purchaseDateTimeFragment.show(childFragmentManager, purchaseDateTimeFragment.TAG)
-        } else {
-            val purchaseDateTimeFragment = PurchaseDateTimeFragment.newInstance(
-                PurchaseDateTimeModel()
-            )
-            purchaseDateTimeFragment.show(childFragmentManager, purchaseDateTimeFragment.TAG)
-        }
-
+        val purchaseDateTimeFragment = PurchaseDateTimeFragment.newInstance()
+        purchaseDateTimeFragment.show(childFragmentManager, purchaseDateTimeFragment.TAG)
     }
 
     fun onCardClick(childFragmentManager: FragmentManager) {
@@ -210,7 +198,7 @@ class PurchaseViewModel(
                 } else {
                     true
                 },
-                deliveryDate = purchase.purchaseDateTimeModel?.date?.formatTo(
+                deliveryDate = purchase.purchaseDateTimeModel?.selectedDate?.formatTo(
                     DATE_PATTERN_DATE_AND_TIME_FOR_PURCHASE
                 ) + TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT).removePrefix("GMT"),
                 timeFrom = purchase.purchaseDateTimeModel?.selectedPeriodModel?.timeFrom,

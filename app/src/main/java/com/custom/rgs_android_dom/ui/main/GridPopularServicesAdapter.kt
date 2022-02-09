@@ -45,7 +45,7 @@ class GridPopularServicesAdapter(
             binding.titleTextView.text = model.name
 
             GlideApp.with(binding.root.context)
-                .load(GlideUrlProvider.makeHeadersGlideUrl(model.icon))
+                .load(GlideUrlProvider.makeHeadersGlideUrl(model.logoMiddle))
                 .transform(RoundedCorners(16.dp(binding.root.context)))
                 .into(binding.logoImageView)
 

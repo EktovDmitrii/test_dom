@@ -120,8 +120,8 @@ class ServiceOrderFragment : BaseFragment<ServiceOrderViewModel, FragmentService
             viewState.orderDate?.let { orderDate->
                 binding.layoutDateTime.filledDateTimeGroup.visible()
                 binding.layoutDateTime.chooseDateTimeTextView.gone()
-                binding.layoutDateTime.timesOfDayTextView.text = orderDate.selectedPeriodModel?.displayTime
-                binding.layoutDateTime.timeIntervalTextView.text = orderDate.date.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
+                binding.layoutDateTime.timesOfDayTextView.text = "${orderDate.selectedPeriodModel?.timeFrom} – ${orderDate.selectedPeriodModel?.timeTo}"
+                binding.layoutDateTime.timeIntervalTextView.text = orderDate.selectedDate.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
             }
         }
 

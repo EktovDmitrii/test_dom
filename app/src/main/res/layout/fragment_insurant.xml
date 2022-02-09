@@ -59,7 +59,7 @@
                         android:includeFontPadding="false"
                         android:textColor="@color/secondary900"
                         android:textSize="16sp"
-                        app:translationTextKey="Данные полиса" />
+                        app:translationTextKey="Данные страхователя" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -127,7 +127,7 @@ val viewModelModule = module {
     viewModel { parameters -> CatalogPrimaryProductsViewModel(category = parameters.get()) }
     viewModel { parameters -> PurchaseViewModel(parameters.get(), propertyInteractor = get(), clientInteractor = get(), purchaseInteractor = get()) }
     viewModel { parameters -> SelectPurchaseAddressViewModel(selectedPropertyItem = parameters[0], propertyInteractor = get())}
-    viewModel { parameters -> PurchaseDateTimeViewModel(purchaseDateTimeModel = parameters.get(), purchaseInteractor = get()) }
+    viewModel { PurchaseDateTimeViewModel() }
     viewModel { parameters -> SelectCardViewModel(selectedCard = parameters[0], purchaseInteractor = get()) }
     viewModel { parameters -> AddCommentViewModel(comment = parameters[0]) }
     viewModel { parameters -> AddEmailViewModel(parameters[0]) }
