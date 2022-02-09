@@ -19,6 +19,9 @@ data class ServiceResponse(
     @SerializedName("defaultProduct")
     val defaultProduct: DefaultProductResponse?,
 
+    @SerializedName("duration")
+    val duration: ServiceDurationResponse?,
+
     @SerializedName("deliveryTime")
     val deliveryTime: String?,
 
@@ -36,6 +39,15 @@ data class ServiceResponse(
 
     @SerializedName("iconLink")
     val iconLink: String?,
+
+    @SerializedName("logoLarge")
+    val logoLarge: String?,
+
+    @SerializedName("logoMiddle")
+    val logoMiddle: String?,
+
+    @SerializedName("logoSmall")
+    val logoSmall: String?,
 
     @SerializedName("id")
     val id: String,

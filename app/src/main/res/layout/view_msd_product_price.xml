@@ -114,9 +114,9 @@
         app:strokeWidth="1dp">
 
         <ImageView
+            android:id="@+id/priceIncludedIcon"
             android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_catalog_primary_unit_letter_h_24dp" />
+            android:layout_height="24dp" />
     </androidx.cardview.widget.CardView>
 
     <com.custom.rgs_android_dom.views.text.MSDTextView

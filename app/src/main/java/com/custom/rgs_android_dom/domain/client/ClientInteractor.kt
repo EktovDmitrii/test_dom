@@ -22,12 +22,11 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
-import org.joda.time.format.DateTimeFormat
 import java.io.File
 
-class ClientInteractor(
+class
+ClientInteractor(
     private val clientRepository: ClientRepository,
     private val registrationRepository: RegistrationRepository,
     private val catalogRepository: CatalogRepository,
@@ -58,7 +57,6 @@ class ClientInteractor(
             .flatMap {
                 Single.just(sortOrderHistory(it))
             }
-        //return Single.just(sortOrderHistory(getOrdersHistoryMock())).delay(2, TimeUnit.SECONDS)
     }
 
     private fun sortOrderHistory(orders: List<OrderItemModel>): List<OrderItemModel> {
@@ -210,6 +208,10 @@ class ClientInteractor(
         }.doOnSuccess {
             CacheHelper.loadAndSaveClient()
         }
+    }
+
+    fun getClientModelSingle(): Single<ClientModel> {
+        return clientRepository.getClient()
     }
 
     fun getEditPersonalDataViewState(): Single<EditPersonalDataViewState>{
@@ -599,96 +601,5 @@ class ClientInteractor(
     fun getClientSavedSubject(): Observable<ClientModel> {
        return clientRepository.getClientUpdatedSubject()
     }
-
-    private fun getOrdersHistoryMock() =
-        listOf(
-            OrderItemModel(
-                id = "",
-                title = "Монтаж люстры",
-                status = OrderStatus.CONFIRMED,
-                price = 2250,
-                date = LocalDate.parse("2022-01-23", DateTimeFormat.forPattern("yyyy-MM-dd")),
-                icon = "",
-                description = "<font color=\"${"#EEA641"}\">Подтверждён</font>  ∙  2 250 ₽  ∙  23.01.2022",
-                invoices = listOf(
-                    InvoiceItemModel(
-                        id = 0,
-                        orderId = "",
-                        type = InvoiceType.MAIN,
-                        description = ""
-                    ),
-                    InvoiceItemModel(
-                        id = 0,
-                        orderId = "",
-                        type = InvoiceType.ADDITIONAL,
-                        description = "Дополнительный счёт ∙ 2 250 ₽"
-                    ),
-                    InvoiceItemModel(
-                        id = 1,
-                        orderId = "",
-                        type = InvoiceType.ADDITIONAL,
-                        description = "Дополнительный счёт ∙ 2 250 ₽"
-                    )
-                )
-            ),
-            OrderItemModel(
-                id = "",
-                title = "Монтаж люстры",
-                status = OrderStatus.CONFIRMED,
-                price = 2250,
-                date = LocalDate.parse("2022-02-02", DateTimeFormat.forPattern("yyyy-MM-dd")),
-                icon = "",
-                description = "<font color=\"${"#EEA641"}\">Подтверждён</font>  ∙  2 250 ₽  ∙  02.02.2022",
-                invoices = listOf(
-                    InvoiceItemModel(
-                        id = 0,
-                        orderId = "",
-                        type = InvoiceType.MAIN,
-                        description = ""
-                    )
-                )
-            ),
-            OrderItemModel(
-                id = "",
-                title = "Установка стиральной машины\n" +
-                        "с большим названием в 3 строчки но не больше чем это кjytxyjsafsdfasfsdfsdasdf",
-                status = OrderStatus.ACTIVE,
-                price = 2250,
-                date = LocalDate.parse("2022-02-01", DateTimeFormat.forPattern("yyyy-MM-dd")),
-                icon = "",
-                description = "<font color=\"${"#EEA641"}\">Активный</font>  ∙  2 250 ₽  ∙  01.02.2022",
-                invoices = emptyList()
-            ),
-            OrderItemModel(
-                id = "",
-                title = "Монтаж люстры",
-                status = OrderStatus.CONFIRMED,
-                price = 2250,
-                date = LocalDate.parse("2022-02-05", DateTimeFormat.forPattern("yyyy-MM-dd")),
-                icon = "",
-                description = "<font color=\"${"#EEA641"}\">Подтверждён</font>  ∙  2 250 ₽  ∙  05.02.2022",
-                invoices = emptyList()
-            ),
-            OrderItemModel(
-                id = "",
-                title = "Устранение засоров",
-                status = OrderStatus.CANCELLED,
-                price = 2250,
-                date = LocalDate.parse("2022-02-06", DateTimeFormat.forPattern("yyyy-MM-dd")),
-                icon = "",
-                description = "Отменен  ∙  2 250 ₽  ∙  06.02.2022",
-                invoices = emptyList()
-            ),
-            OrderItemModel(
-                id = "",
-                title = "Монтаж карниза",
-                status = OrderStatus.RESOLVED,
-                price = 2250,
-                date = LocalDate.parse("2022-02-07", DateTimeFormat.forPattern("yyyy-MM-dd")),
-                icon = "",
-                description = "Завершён  ∙  2 250 ₽  ∙  07.02.2022",
-                invoices = emptyList()
-            )
-        )
 
 }

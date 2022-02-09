@@ -18,8 +18,12 @@ interface CatalogRepository {
 
     fun getProductServices(productId: String): Single<List<ServiceShortModel>>
 
+    fun getProductServiceDetails(productId: String, serviceId: String): Single<ServiceModel>
+
     fun getAvailableServices(): Single<List<AvailableServiceModel>>
 
     fun getClientProducts(): Single<List<ClientProductModel>>
+
+    fun getAvailableServiceInProduct(productId: String, serviceId: String): Single<AvailableServiceModel>
 
 }

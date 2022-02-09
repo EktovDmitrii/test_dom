@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingTop="28dp">
+    android:layout_height="match_parent">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/noServicesLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:paddingBottom="168dp"
         android:visibility="gone"
         android:orientation="vertical"
+        android:paddingTop="86dp"
         tools:visibility="visible">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/temp_empty" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="188dp"
+            android:layout_height="143dp"
+            android:layout_gravity="center_horizontal"
+            app:srcCompat="@drawable/ic_tab_available_services_empty" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="21dp"
+            android:paddingHorizontal="52dp"
             android:fontFamily="@font/suisse_regular"
             android:gravity="center"
             android:textColor="@color/secondary500"
@@ -35,16 +34,18 @@
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/openCatalogTextView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="32dp"
             android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:paddingHorizontal="12dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/rectangle_filled_white_stroke_secondary_500_1dp_radius_24dp"
-            android:elevation="2dp"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="4dp"
+            android:translationZ="2dp"
             android:fontFamily="@font/suisse_regular"
             android:textColor="@color/secondary900"
-            android:textSize="14sp"
+            android:textSize="13sp"
+            app:lineHeight="24sp"
+            android:includeFontPadding="false"
             app:translationTextKey="Перейти в каталог услуг" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -56,11 +57,13 @@
         android:clipToPadding="false"
         android:orientation="vertical"
         android:overScrollMode="never"
+        android:paddingTop="28dp"
         android:paddingHorizontal="20dp"
         android:paddingBottom="168dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:verticalDecorationGap="8dp"
         tools:itemCount="10"
-        tools:listitem="@layout/item_catalog_available_service" />
+        tools:listitem="@layout/item_catalog_available_service"
+        android:visibility="gone"/>
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+</FrameLayout>

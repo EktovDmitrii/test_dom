@@ -10,6 +10,8 @@ import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
 import com.custom.rgs_android_dom.ui.catalog.product.ProductLauncher
+import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
+import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductLauncher
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogPrimaryProductsFragment
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesFragment
 import com.custom.rgs_android_dom.ui.catalog.subcategory.CatalogSubcategoryFragment
@@ -65,7 +67,11 @@ class TabCatalogViewModel(
     }
 
     fun onProductClick(productModel: ProductShortModel) {
-        ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(productModel.id)))
+        if (productModel.defaultProduct){
+            ScreenManager.showBottomScreen(SingleProductFragment.newInstance(SingleProductLauncher(productModel.id)))
+        } else {
+            ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(productModel.id)))
+        }
     }
 
     private fun loadCatalogCategories(){

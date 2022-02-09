@@ -22,5 +22,6 @@ data class ClientProductModel(
     val productVersionId: String?,
     val status: String?,
     val validityFrom: DateTime?,
-    val validityTo: DateTime?
+    val validityTo: DateTime?,
+    val defaultProduct: Boolean
 )

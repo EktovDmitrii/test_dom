@@ -51,6 +51,10 @@ class MSDTextInputLayout @JvmOverloads constructor(
             setText(it)
         }
 
+        attrs.getString(R.styleable.MSDTextInputLayout_placeholderText)?.let{
+            binding.containerTextInputLayout.placeholderText = it
+        }
+
         unfocusOnDone = attrs.getBoolean(R.styleable.MSDTextInputLayout_unfocusOnDone, false)
 
         binding.containerTextInputLayout.isEnabled = attrs.getBoolean(R.styleable.MSDTextInputLayout_enabled, true)
@@ -182,6 +186,10 @@ class MSDTextInputLayout @JvmOverloads constructor(
                 binding.containerTextInputLayout.boxStrokeColor = context.getColor(R.color.error500)
             }
         }
+    }
+
+    fun setSelection(length: Int){
+        binding.valueEditText.setSelection(length)
     }
 
     private fun setDigitsLimit(digitsBeforeZero: Int, digitsAfterZero: Int) {

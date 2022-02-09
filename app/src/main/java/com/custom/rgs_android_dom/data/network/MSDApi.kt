@@ -186,7 +186,11 @@ interface MSDApi {
 
     @GET("guests/purchase/products/{productId}/services/{serviceId}/details")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getGuestServiceDetails(@Path("productId") productId: String, @Path("serviceId") serviceId: String): Single<ServiceResponse>
+    fun getGuestProductServiceDetails(@Path("productId") productId: String, @Path("serviceId") serviceId: String): Single<ServiceResponse>
+
+    @GET("clients/me/purchase/products/{productId}/services/{serviceId}/details")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getProductServiceDetails(@Path("productId") productId: String, @Path("serviceId") serviceId: String): Single<ServiceResponse>
 
     @GET("guests/purchase/products/{productId}/services")
     @ErrorType(MSDNetworkErrorResponse::class)
@@ -202,7 +206,7 @@ interface MSDApi {
 
     @GET("clients/me/balance/services")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getAvailableServices(@Query("size") size: Int, @Query("index") index: Int, @Query("withBalance") withBalance: Boolean, @Query("status") status: String = "active"): Single<BalanceServicesResponse>
+    fun getAvailableServices(@Query("size") size: Int, @Query("index") index: Int, @Query("withBalance") withBalance: Boolean, @Query("status") status: String = "active", @Query("productId") productId: String? = null, @Query("serviceId") serviceId: String? = null): Single<BalanceServicesResponse>
 
     @GET("billing/clients/me/cards")
     @ErrorType(MSDNetworkErrorResponse::class)
@@ -212,22 +216,30 @@ interface MSDApi {
     @ErrorType(MSDNetworkErrorResponse::class)
     fun makeProductPurchase(@Path("productId") productId: String, @Body order: PurchaseProductRequest) : Single<PurchaseResponse>
 
+    @POST("insurance/clients/me/contracts")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun bindPolicy(@Body body: BindPolicyRequest) : Single<BindPolicyResponse>
+
+    @POST("clients/me/orders")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun orderServiceOnBalance(@Body body: OrderServiceRequest): Completable
+
+
     @GET("clients/{clientId}/orders")
     fun getOrders(@Path("clientId") clientId: String, @Query("size") size: Long, @Query("index") index: Long): Single<OrdersResponse>
 
     @GET("clients/me/orders")
     fun getOrders(): Single<OrdersResponse>
 
-    @GET("/client/{clientId}/general-invoices")
+    @GET("client/me/general-invoices")
     fun getGeneralInvoices(
-        @Path("clientId") clientId: String,
         @Query("size") size: Long,
         @Query("index") index: Long,
-        @Query("status") status: String,
-        @Query("num") num: String,
-        @Query("fullText") fullText: String,
+        @Query("status") status: String? = null,
+        @Query("num") num: String? = null,
+        @Query("fullText") fullText: String? = null,
         @Query("orderIds") orderIds: String,
-        @Query("withPayments") withPayments: Boolean
+        @Query("withPayments") withPayments: Boolean? = null
     ): Single<GeneralInvoicesResponse>
 
     @GET("clients/{clientId}/orders/{orderId}")

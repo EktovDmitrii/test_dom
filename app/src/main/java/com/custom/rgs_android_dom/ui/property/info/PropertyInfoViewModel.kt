@@ -67,12 +67,26 @@ class PropertyInfoViewModel(
             )
             .addTo(dataCompositeDisposable)
 
+        propertyInteractor.propertyDocumentDeletedSubject
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = { documentList ->
+                    propertyItemController.value = documentList
+                },
+                onError = {
+                    logException(this, it)
+                }
+            )
+            .addTo(dataCompositeDisposable)
+
         connectivityManager.connectivitySubject
             .distinctUntilChanged()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy {
-                internetConnectionController.value = it }
+                internetConnectionController.value = it
+            }
             .addTo(dataCompositeDisposable)
 
     }

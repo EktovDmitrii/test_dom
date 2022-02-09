@@ -4,10 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.client.models.OrderItemModel
+import com.custom.rgs_android_dom.domain.purchase.PurchaseInteractor
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
+import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.ui.client.order_detail.OrderDetailFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.purchase.PurchaseFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -15,7 +19,8 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
 class OrdersViewModel(
-    private val clientInteractor: ClientInteractor
+    private val clientInteractor: ClientInteractor,
+    private val purchaseInteractor: PurchaseInteractor
 ) : BaseViewModel() {
 
     private val ordersController = MutableLiveData<List<OrderItemModel>>()
@@ -23,6 +28,18 @@ class OrdersViewModel(
 
     init {
         loadOrderHistory()
+        purchaseInteractor.getProductPurchasedSubject()
+            .mergeWith(purchaseInteractor.getServiceOrderedSubject())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    loadOrderHistory()
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
     }
 
     fun onReloadClick() = loadOrderHistory()
@@ -36,7 +53,9 @@ class OrdersViewModel(
         ScreenManager.showScreen(OrderDetailFragment.newInstance(""))
     }
 
-    fun onPayClick(itemModel: OrderItemModel) {
+    fun onPayClick(purchaseModel: PurchaseModel) {
+        val purchaseFragment = PurchaseFragment.newInstance(purchaseModel)
+        ScreenManager.showScreenScope(purchaseFragment, PAYMENT)
     }
 
     fun onBackClick() {

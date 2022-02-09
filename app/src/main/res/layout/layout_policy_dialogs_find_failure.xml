@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="179dp"
+        android:layout_height="179dp"
+        android:layout_marginTop="24dp"
+        app:srcCompat="@drawable/image_broken_egg"
+        android:layout_gravity="center_horizontal"/>
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_marginTop="3dp"
+        android:gravity="center"
+        app:translationTextKey="Не удалась найти полис"
+        android:fontFamily="@font/my_service_bold"
+        android:textSize="20sp"
+        android:textColor="@color/secondary900"
+        android:includeFontPadding="false"/>
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
+        app:translationTextKey="К сожалению, мы не смогли найти указанный полис. Пожалуйста, обратитесь к Мастеру онлайн"
+        android:fontFamily="@font/suisse_regular"
+        android:textSize="16sp"
+        android:textColor="@color/secondary600"
+        android:includeFontPadding="false"/>
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/chatTextView"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="36dp"
+        app:translationTextKey="Написать мастеру онлайн"
+        android:gravity="center"
+        android:fontFamily="@font/my_service_bold"
+        android:textSize="14sp"
+        android:textColor="@color/white"
+        android:includeFontPadding="false"
+        android:background="@drawable/rectangle_filled_primary_500_radius_12dp" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/changeDataTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="36dp"
+        android:gravity="center"
+        app:translationTextKey="Изменить данные"
+        android:fontFamily="@font/my_service_bold"
+        android:textSize="14sp"
+        android:textColor="@color/primary500"
+        android:includeFontPadding="false"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

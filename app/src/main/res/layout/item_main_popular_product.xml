@@ -7,8 +7,9 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/largeLogoImageView"
-        android:layout_width="172dp"
-        android:layout_height="172dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
 
@@ -39,6 +40,8 @@
             android:layout_marginBottom="4dp"
             android:fontFamily="@font/my_service_medium"
             android:gravity="start"
+            android:maxLines="3"
+            android:ellipsize="end"
             android:textColor="@color/white"
             android:textSize="16sp"
             tools:text="Сезонное мытье окон" />

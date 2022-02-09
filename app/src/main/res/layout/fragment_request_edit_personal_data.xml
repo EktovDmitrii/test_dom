@@ -22,7 +22,7 @@
             android:layout_width="303dp"
             android:layout_height="160dp"
             android:layout_marginTop="54dp"
-            app:srcCompat="@drawable/ic_confirm_question"/>
+            app:srcCompat="@drawable/ic_question"/>
         
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/titleTextView"
@@ -50,7 +50,7 @@
             android:lineSpacingMultiplier="0"
             app:translationTextKey="Консультант свяжется с вами в чате, чтобы уточнить несколько вопросов"/>
 
-        <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullwidth
+        <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullWidth
             android:id="@+id/confirmTextView"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
@@ -58,7 +58,7 @@
             android:paddingHorizontal="4dp"
             app:translationTextKey="Отправить заявку" />
 
-        <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullwidth
+        <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullWidth
             android:id="@+id/successTextView"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
