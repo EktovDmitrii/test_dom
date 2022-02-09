@@ -54,7 +54,7 @@ class AvailableServicesAdapter(
 
         override fun bind(item: AvailableServiceModel) {
             GlideApp.with(binding.iconImageView.context)
-                .load(item.productIcon)
+                .load(item.serviceIcon)
                 .transform(
                     CenterCrop(),
                     RoundedCorners(8f.dp(binding.iconImageView.context).toInt())

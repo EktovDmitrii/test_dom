@@ -239,6 +239,7 @@ object CatalogMapper {
                         productId = serviceDetails.productId,
                         serviceName = serviceDetails.serviceName,
                         productIcon = "${BuildConfig.BASE_URL}/api/store/${serviceDetails.productIcon}",
+                        serviceIcon = "${BuildConfig.BASE_URL}/api/store/${serviceDetails.serviceIcon}",
                         available = serviceBalance?.available ?: 0,
                         total = serviceBalance?.total ?: 0,
                         validityFrom = serviceDetails.validityFrom,
