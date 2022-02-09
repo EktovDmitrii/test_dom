@@ -1,7 +1,9 @@
 package com.custom.rgs_android_dom.domain.policies
 
-import android.util.Log
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
+import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
+import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
+import com.custom.rgs_android_dom.domain.client.exceptions.ValidateFieldModel
 import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
 import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
 import com.custom.rgs_android_dom.domain.policies.models.ShowPromptModel
@@ -10,6 +12,7 @@ import com.custom.rgs_android_dom.domain.repositories.PoliciesRepository
 import com.custom.rgs_android_dom.ui.policies.insurant.InsurantViewState
 import com.custom.rgs_android_dom.utils.PATTERN_DATE_TIME_MILLIS
 import com.custom.rgs_android_dom.utils.logException
+import com.custom.rgs_android_dom.utils.tryParseDate
 import com.custom.rgs_android_dom.utils.tryParseLocalDateTime
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -22,6 +25,11 @@ class PoliciesInteractor(
     private val clientRepository: ClientRepository,
     private val clientSharedPreferences: ClientSharedPreferences
 ) {
+
+    companion object {
+        private val MIN_DATE = LocalDateTime.now().minusYears(16).plusDays(-1)
+        private val MAX_DATE = LocalDateTime.parse("1900-01-01")
+    }
 
     private val insurantViewStateSubject = PublishSubject.create<InsurantViewState>()
     private val policySubject = PublishSubject.create<String>()
@@ -72,7 +80,29 @@ class PoliciesInteractor(
         return policySubject
     }
 
-    fun bindPolicy(): Single<PolicyDialogModel> {
+    fun bindPolicy(): Single<Any> {
+        val errorsValidate = ArrayList<ValidateFieldModel>()
+
+        var birthday: LocalDateTime?
+        if (insurantViewState.birthday.isNotEmpty()){
+            val birthdayWithTimezone = "${insurantViewState.birthday.tryParseDate()}T00:00:00.000Z"
+            birthday = birthdayWithTimezone.tryParseLocalDateTime({
+                logException(this, it)
+                birthday = null
+            }, format = PATTERN_DATE_TIME_MILLIS)
+
+            if (birthday == null || birthday != null && !isBirthdayValid(birthday!!)) {
+                errorsValidate.add(ValidateFieldModel(ClientField.BIRTHDATE, "Проверьте, правильно ли введена дата рождения"))
+            }
+
+            if (errorsValidate.isNotEmpty()){
+                return Single.just(SpecificValidateClientExceptions(errorsValidate))
+            } else {
+                insurantViewStateSubject.onNext(insurantViewState.copy(isValidationPassed = true))
+            }
+
+        }
+
         return policiesRepository.bindPolicy()
     }
 
@@ -131,6 +161,10 @@ class PoliciesInteractor(
             insurantViewState.copy(isNextEnabled = false)
         }
         policiesRepository.onInsurantDataChange(insurantViewState)
+    }
+
+    private fun isBirthdayValid(birthday: LocalDateTime): Boolean {
+        return !(birthday.isAfter( MIN_DATE ) || birthday.isBefore( MAX_DATE ))
     }
 
 }

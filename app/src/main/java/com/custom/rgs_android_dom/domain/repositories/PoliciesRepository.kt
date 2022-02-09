@@ -13,7 +13,7 @@ interface PoliciesRepository {
 
     fun onPolicyChange(policy: String)
 
-    fun bindPolicy(): Single<PolicyDialogModel>
+    fun bindPolicy(): Single<Any>
 
     fun getPolicyDialogSubject(): Observable<PolicyDialogModel>
 
