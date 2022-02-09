@@ -124,6 +124,9 @@ class MainViewModel(
                     if (registrationInteractor.isAuthorized()) {
                         when (requestedScreen) {
                             TargetScreen.POLICIES -> ScreenManager.showScreen(PoliciesFragment())
+                            TargetScreen.ORDERS -> {
+                                // TODO ADD NAVIGATION TO ORDERS SCREEN
+                            }
                             TargetScreen.UNSPECIFIED -> {}
                         }
                         requestedScreen = TargetScreen.UNSPECIFIED
@@ -224,6 +227,15 @@ class MainViewModel(
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
         } else {
             ScreenManager.showBottomScreen(MainCatalogFragment.newInstance(MainCatalogFragment.TAB_MY_PRODUCTS))
+        }
+    }
+
+    fun onOrdersClick(){
+        if (registrationInteractor.isAuthorized()) {
+            // TODO ADD NAVIGATION TO ORDERS SCREEN
+        } else {
+            requestedScreen = TargetScreen.ORDERS
+            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
         }
     }
 

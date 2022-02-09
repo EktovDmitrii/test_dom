@@ -98,7 +98,7 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
             ),
             objectId = objectId
         )
-        return api.orderServiceOnBalance(orderServiceRequest).doOnComplete {
+        return api.orderServiceOnBalance(orderServiceRequest, true).doOnComplete {
             serviceOrdered.onNext(serviceId)
         }
     }
