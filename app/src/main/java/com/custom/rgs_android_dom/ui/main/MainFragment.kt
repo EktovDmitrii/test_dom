@@ -65,6 +65,10 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             viewModel.onProductsClick()
         }
 
+        binding.ordersLinearLayout.setOnDebouncedClickListener {
+            viewModel.onOrdersClick()
+        }
+
         binding.searchTagsLayout.tagsFlowLayout.children.forEach { view ->
             (view as TextView).let {
                 it.setOnDebouncedClickListener {
