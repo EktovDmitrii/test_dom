@@ -22,6 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
+            android:maxLines="3"
+            android:ellipsize="end"
             android:fontFamily="@font/suisse_regular"
             android:textColor="@color/secondary900"
             android:textSize="12sp"

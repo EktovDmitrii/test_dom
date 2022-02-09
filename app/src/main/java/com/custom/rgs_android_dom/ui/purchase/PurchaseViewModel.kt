@@ -1,19 +1,23 @@
 package com.custom.rgs_android_dom.ui.purchase
 
-import android.util.Log
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
-import com.custom.rgs_android_dom.domain.purchase_service.model.*
+import com.custom.rgs_android_dom.domain.purchase.PurchaseInteractor
+import com.custom.rgs_android_dom.domain.purchase.models.*
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
-import com.custom.rgs_android_dom.ui.purchase.edit_purchase_date_time.PurchaseDateTimeFragment
+import com.custom.rgs_android_dom.ui.purchase.add.agent.AddAgentFragment
+import com.custom.rgs_android_dom.ui.purchase.add.comment.AddCommentFragment
+import com.custom.rgs_android_dom.ui.purchase.select.date_time.PurchaseDateTimeFragment
 import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressFragment
+import com.custom.rgs_android_dom.ui.purchase.select.card.SelectCardFragment
+import com.custom.rgs_android_dom.ui.purchase.add.email.AddEmailFragment
+import com.custom.rgs_android_dom.ui.purchase.payments.PaymentWebViewFragment
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_AND_TIME_FOR_PURCHASE
 import com.custom.rgs_android_dom.utils.formatTo
 import com.custom.rgs_android_dom.utils.logException
@@ -54,15 +58,28 @@ class PurchaseViewModel(
                 }
             ).addTo(dataCompositeDisposable)
 
+        clientInteractor.getPersonalData()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {personalData->
+                    purchaseController.value?.let {
+                        purchaseController.value = it.copy(email = personalData.email.ifEmpty { null })
+                        validateFields()
+                    }
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
         propertyInteractor.getAllProperty()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
                     propertyListSize = it.size
-                    if (it.isNotEmpty()){
-                        updateAddress(it.last())
-                    }
+
                 },
                 onError = {
                     logException(this, it)
@@ -76,10 +93,17 @@ class PurchaseViewModel(
     }
 
     private fun validateFields() {
-        isEnableButtonController.value = purchaseObserver.value?.email != null &&
-                purchaseObserver.value?.card != null &&
-                purchaseObserver.value?.purchaseDateTimeModel != null &&
-                purchaseObserver.value?.propertyItemModel != null
+        if (purchaseObserver.value?.defaultProduct == true){
+            isEnableButtonController.value = purchaseObserver.value?.email != null &&
+                    purchaseObserver.value?.card != null &&
+                    purchaseObserver.value?.propertyItemModel != null &&
+                    purchaseObserver.value?.purchaseDateTimeModel != null
+        } else {
+            isEnableButtonController.value = purchaseObserver.value?.email != null &&
+                    purchaseObserver.value?.card != null &&
+                    purchaseObserver.value?.propertyItemModel != null
+        }
+
     }
 
     fun updateAddress(propertyItemModel: PropertyItemModel) {
@@ -94,13 +118,6 @@ class PurchaseViewModel(
     fun updateEmail(email: String) {
         purchaseController.value?.let {
             purchaseController.value = it.copy(email = email)
-            validateFields()
-        }
-    }
-
-    fun updateAgentCode(code: String) {
-        purchaseController.value?.let {
-            purchaseController.value = it.copy(agentCode = code)
             validateFields()
         }
     }
@@ -131,35 +148,37 @@ class PurchaseViewModel(
     }
 
     fun onDateTimeClick(childFragmentManager: FragmentManager) {
-        val currentPurchaseDateTimeModel = purchaseController.value?.purchaseDateTimeModel
-
-        if (currentPurchaseDateTimeModel != null) {
-            val purchaseDateTimeFragment = PurchaseDateTimeFragment.newInstance(
-                currentPurchaseDateTimeModel
-            )
-            purchaseDateTimeFragment.show(childFragmentManager, purchaseDateTimeFragment.TAG)
-        } else {
-            val purchaseDateTimeFragment = PurchaseDateTimeFragment.newInstance(
-                PurchaseDateTimeModel()
-            )
-            purchaseDateTimeFragment.show(childFragmentManager, purchaseDateTimeFragment.TAG)
-        }
-
+        val purchaseDateTimeFragment = PurchaseDateTimeFragment.newInstance()
+        purchaseDateTimeFragment.show(childFragmentManager, purchaseDateTimeFragment.TAG)
     }
 
     fun onCardClick(childFragmentManager: FragmentManager) {
-        val cardFragment = SelectCardBottomFragment.newInstance()
+        val cardFragment = SelectCardFragment.newInstance(purchaseController.value?.card)
         cardFragment.show(childFragmentManager, cardFragment.TAG)
     }
 
     fun onEmailClick(childFragmentManager: FragmentManager) {
-        val emailBottomFragment = AddEmailBottomFragment()
+        val emailBottomFragment = AddEmailFragment.newInstance(purchaseController.value?.email)
         emailBottomFragment.show(childFragmentManager, emailBottomFragment.TAG)
     }
 
     fun onCodeAgentClick(childFragmentManager: FragmentManager) {
-        val codeAgentBottomFragment = AddAgentBottomFragment()
-        codeAgentBottomFragment.show(childFragmentManager, codeAgentBottomFragment.TAG)
+        if (purchaseController.value?.agentCode.isNullOrEmpty()){
+            val addAgentFragment = AddAgentFragment()
+            addAgentFragment.show(childFragmentManager, addAgentFragment.TAG)
+        }
+    }
+
+    fun onAddCommentClick(childFragmentManager: FragmentManager){
+        val editPurchaseServiceComment = AddCommentFragment.newInstance(purchaseController.value?.comment)
+        editPurchaseServiceComment.show(childFragmentManager, editPurchaseServiceComment.TAG)
+    }
+
+    fun updateAgentCode(code: String) {
+        purchaseController.value?.let {
+            purchaseController.value = it.copy(agentCode = code)
+            validateFields()
+        }
     }
 
     fun makeOrder(navigateId: Int) {
@@ -173,18 +192,17 @@ class PurchaseViewModel(
                 },
                 email = purchase.email!!,
                 objectId = purchase.propertyItemModel!!.id,
+                comment = purchase.comment,
                 saveCard = if (purchase.card is NewCardModel) {
                     purchase.card.doSave
                 } else {
                     true
                 },
-                deliveryDate = purchase.purchaseDateTimeModel?.date?.formatTo(
+                deliveryDate = purchase.purchaseDateTimeModel?.selectedDate?.formatTo(
                     DATE_PATTERN_DATE_AND_TIME_FOR_PURCHASE
                 ) + TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT).removePrefix("GMT"),
-                timeFrom = purchase.purchaseDateTimeModel?.selectedPeriodModel!!.timeInterval.split(
-                    "–"
-                )[0],
-                timeTo = purchase.purchaseDateTimeModel?.selectedPeriodModel!!.timeInterval.split("–")[1]
+                timeFrom = purchase.purchaseDateTimeModel?.selectedPeriodModel?.timeFrom,
+                timeTo = purchase.purchaseDateTimeModel?.selectedPeriodModel?.timeTo
             )
                 .doOnSubscribe { isEnableButtonController.postValue(false) }
                 .subscribeOn(Schedulers.io())

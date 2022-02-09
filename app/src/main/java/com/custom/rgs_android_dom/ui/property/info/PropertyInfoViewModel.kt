@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.ui.property.info
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.custom.rgs_android_dom.MSDConnectivityManager
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
@@ -16,11 +17,15 @@ import io.reactivex.schedulers.Schedulers
 
 class PropertyInfoViewModel(
     private val objectId: String,
-    private val propertyInteractor: PropertyInteractor
+    private val propertyInteractor: PropertyInteractor,
+    private val connectivityManager: MSDConnectivityManager
 ) : BaseViewModel() {
 
     private val propertyItemController = MutableLiveData<PropertyItemModel>()
     val propertyItemObserver: LiveData<PropertyItemModel> = propertyItemController
+
+    private val internetConnectionController = MutableLiveData<Boolean>()
+    val internetConnectionObserver: LiveData<Boolean> = internetConnectionController
 
     init {
         propertyInteractor.getPropertyItem(objectId)
@@ -74,6 +79,16 @@ class PropertyInfoViewModel(
                 }
             )
             .addTo(dataCompositeDisposable)
+
+        connectivityManager.connectivitySubject
+            .distinctUntilChanged()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy {
+                internetConnectionController.value = it
+            }
+            .addTo(dataCompositeDisposable)
+
     }
 
     private fun updateDocuments(uri: List<Uri>) {

@@ -11,6 +11,8 @@ import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.custom.rgs_android_dom.R
+import com.custom.rgs_android_dom.utils.activity.hideKeyboardForced
+import com.custom.rgs_android_dom.utils.activity.hideSoftwareKeyboard
 import com.custom.rgs_android_dom.utils.hideSoftwareKeyboard
 import com.custom.rgs_android_dom.utils.subscribe
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -68,9 +70,11 @@ abstract class BaseBottomSheetModalFragment<VM : BaseViewModel, VB : ViewBinding
         subscribe(viewModel.loadingStateObserver) {
             handleState(it)
         }
+
         subscribe(viewModel.closeObserver) {
             onClose()
         }
+
         subscribe(viewModel.isKeyboardOpenObserver) {
             isKeyboardOpen = it
         }
@@ -90,7 +94,7 @@ abstract class BaseBottomSheetModalFragment<VM : BaseViewModel, VB : ViewBinding
     }
 
     open fun onClose() {
-        hideSoftwareKeyboard()
+        requireActivity().hideKeyboardForced()
         dismissAllowingStateLoss()
     }
 

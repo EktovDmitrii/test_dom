@@ -8,6 +8,9 @@ data class ProductShortModel(
     val title: String,
     val code: String,
     val icon: String,
+    val logoSmall: String,
+    val logoMiddle: String,
+    val logoLarge: String,
     val versionId: String,
     val name: String,
     val price: Int,
@@ -25,7 +28,10 @@ data class ProductShortModel(
             name = "",
             price = 0,
             tags = emptyList(),
-            icon = ""
+            icon = "",
+            logoSmall = "",
+            logoMiddle = "",
+            logoLarge = "",
         )
     }
 

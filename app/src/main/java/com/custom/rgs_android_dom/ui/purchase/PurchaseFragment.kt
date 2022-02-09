@@ -10,25 +10,29 @@ import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentPurchaseBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
-import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseDateTimeModel
-import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseModel
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseDateTimeModel
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.domain.purchase_service.model.*
+import com.custom.rgs_android_dom.domain.purchase.models.*
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
-import com.custom.rgs_android_dom.ui.purchase.add_purchase_service_comment.PurchaseCommentFragment
-import com.custom.rgs_android_dom.ui.purchase.edit_purchase_date_time.PurchaseDateTimeFragment
+import com.custom.rgs_android_dom.ui.purchase.add.agent.AddAgentFragment
+import com.custom.rgs_android_dom.ui.purchase.add.agent.PurchaseAgentListener
+import com.custom.rgs_android_dom.ui.purchase.add.comment.PurchaseCommentListener
+import com.custom.rgs_android_dom.ui.purchase.select.date_time.PurchaseDateTimeFragment
 import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressListener
+import com.custom.rgs_android_dom.ui.purchase.select.card.SelectCardFragment
+import com.custom.rgs_android_dom.ui.purchase.add.email.PurchaseEmailListener
 import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
 class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding>(R.layout.fragment_purchase),
     SelectPurchaseAddressListener,
-    PurchaseCommentFragment.PurchaseCommentListener,
+    PurchaseCommentListener,
     PurchaseDateTimeFragment.PurchaseDateTimeListener,
-    AddEmailBottomFragment.PurchaseEmailListener,
-    SelectCardBottomFragment.PurchaseCardListener,
-    AddAgentBottomFragment.PurchaseAgentCodeListener,
+    PurchaseEmailListener,
+    SelectCardFragment.PurchaseCardListener,
+    PurchaseAgentListener,
     ConfirmBottomSheetFragment.ConfirmListener {
 
     companion object {
@@ -65,8 +69,7 @@ class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding
         }
 
         binding.layoutProperty.addCommentTextView.setOnDebouncedClickListener {
-            val editPurchaseServiceComment = PurchaseCommentFragment.newInstance()
-            editPurchaseServiceComment.show(childFragmentManager, PurchaseCommentFragment.TAG)
+            viewModel.onAddCommentClick(childFragmentManager)
         }
 
         binding.layoutDateTime.root.setOnDebouncedClickListener {
@@ -89,19 +92,39 @@ class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding
             viewModel.makeOrder(getNavigateId())
         }
 
-        binding.makeOrderButton.btnTitle.text = "Заказать"
-
         subscribe(viewModel.purchaseObserver) { purchase ->
-            GlideApp.with(requireContext())
-                .load(GlideUrlProvider.makeHeadersGlideUrl(purchase.iconLink))
-                .transform(RoundedCorners(20.dp(requireContext())))
-                .into(binding.layoutPurchaseServiceHeader.orderImageView)
 
-            binding.layoutPurchaseServiceHeader.orderNameTextView.text = purchase.name
+            binding.makeOrderButton.btnTitle.text =  if (purchase.defaultProduct){
+                "Заказать"
+            } else {
+                "Оформить продукт"
+            }
+
+            GlideApp.with(requireContext())
+                .load(GlideUrlProvider.makeHeadersGlideUrl(purchase.logoSmall))
+                .transform(RoundedCorners(20.dp(requireContext())))
+                .into(binding.layoutPurchaseServiceHeader.logoImageView)
+
+            binding.layoutPurchaseServiceHeader.nameTextView.text = purchase.name
+
+            binding.layoutPurchaseServiceHeader.orderTitleTextView.text = if (purchase.defaultProduct){
+                "Ваш заказ"
+            } else {
+                "Оформление продукта"
+            }
+
+            binding.layoutDateTime.root.visibleIf(purchase.defaultProduct)
+            binding.layoutPurchaseServiceHeader.durationTextView.visibleIf(purchase.duration != null)
+
+            if (purchase.defaultProduct){
+                binding.layoutPurchaseServiceHeader.durationTextView.text = "Работа займёт ~${purchase.deliveryTime}"
+            } else {
+                binding.layoutPurchaseServiceHeader.durationTextView.text = "Действует ${purchase.duration}"
+            }
 
             purchase.price?.amount?.let { amount ->
-                binding.layoutPurchaseServiceHeader.orderCostTextView.text = amount.formatPrice()
-                binding.makeOrderButton.btnPrice.text = amount.formatPrice()
+                binding.layoutPurchaseServiceHeader.priceTextView.text = amount.formatPrice(isFixed = purchase.price.fix)
+                binding.makeOrderButton.btnPrice.text = amount.formatPrice(isFixed = purchase.price.fix)
             }
 
             purchase.email?.let { email ->
@@ -124,13 +147,19 @@ class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding
                 } else {
                     binding.layoutPayment.paymentCardGroup.invisible()
                     binding.layoutPayment.paymentNewCardImageView.visible()
-                    binding.layoutPayment.paymentCardTextView.text = (card as NewCardModel).title
+                    binding.layoutPayment.paymentCardTextView.text = "Оплата новой картой"
                     binding.layoutPayment.paymentCardTextView.typeface = ResourcesCompat.getFont(requireContext(), R.font.suisse_semi_bold)
                 }
             }
 
             binding.layoutProperty.root.visibleIf(purchase.propertyItemModel != null)
             binding.layoutNoProperty.root.visibleIf(purchase.propertyItemModel == null)
+
+            binding.layoutProperty.addCommentTextView.text = if (purchase.comment.isNullOrEmpty()){
+                "Добавить комментарий"
+            } else {
+                "Редактировать комментарий"
+            }
 
             purchase.propertyItemModel?.let {
                 binding.layoutProperty.propertyTypeTextView.text = it.name
@@ -157,6 +186,7 @@ class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding
         }
 
         subscribe(viewModel.isEnableButtonObserver) { isEnable ->
+            binding.makeOrderButton.productArrangeBtn.isEnabled = isEnable
             if (isEnable) {
                 binding.makeOrderButton.btnTitle.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
                 binding.makeOrderButton.btnPrice.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
@@ -173,21 +203,20 @@ class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding
         viewModel.updateAddress(propertyItemModel)
     }
 
-    override fun onSaveCommentClick(comment: String) {
+    override fun onCommentSelected(comment: String) {
         viewModel.updateComment(comment)
     }
 
     override fun onSelectDateTimeClick(purchaseDateTimeModel: PurchaseDateTimeModel) {
         binding.layoutDateTime.filledDateTimeGroup.visible()
         binding.layoutDateTime.chooseDateTimeTextView.gone()
-        binding.layoutDateTime.timesOfDayTextView.text = purchaseDateTimeModel.selectedPeriodModel?.timeInterval
-        binding.layoutDateTime.timeIntervalTextView.text = purchaseDateTimeModel.date.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
-        viewModel.updateDateTime(purchaseDateTimeModel)
-    }
 
-    override fun onConfirmClick() {
-        val addAgentBottomFragment = AddAgentBottomFragment()
-        addAgentBottomFragment.show(childFragmentManager, addAgentBottomFragment.TAG)
+        purchaseDateTimeModel.selectedPeriodModel?.let {
+            binding.layoutDateTime.timesOfDayTextView.text = "${it.timeFrom} – ${it.timeTo}"
+        }
+        binding.layoutDateTime.timeIntervalTextView.text = purchaseDateTimeModel.selectedDate.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
+
+        viewModel.updateDateTime(purchaseDateTimeModel)
     }
 
     override fun onSaveEmailClick(email: String) {
@@ -213,4 +242,8 @@ class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding
         viewModel.updateAgentCode(code)
     }
 
+    override fun onConfirmClick() {
+        val addAgentBottomFragment = AddAgentFragment()
+        addAgentBottomFragment.show(childFragmentManager, addAgentBottomFragment.TAG)
+    }
 }

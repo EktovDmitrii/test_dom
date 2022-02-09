@@ -1,12 +1,9 @@
 package com.custom.rgs_android_dom.ui.property.add.details
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.Network
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.custom.rgs_android_dom.MSDConnectivityManager
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyDocumentValidationException
@@ -24,13 +21,12 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
-@SuppressLint("MissingPermission")
 class PropertyDetailsViewModel(
     propertyName: String,
     propertyAddress: AddressItemModel,
     propertyType: PropertyType,
     private val propertyInteractor: PropertyInteractor,
-    private val context: Context
+    connectivityManager: MSDConnectivityManager
 ) : BaseViewModel() {
 
     private val propertyDetailsViewStateController = MutableLiveData<PropertyDetailsViewState>()
@@ -40,19 +36,13 @@ class PropertyDetailsViewModel(
     val internetConnectionObserver: LiveData<Boolean> = internetConnectionController
 
     init {
-
-        val connectivityManager =  this.context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        connectivityManager.registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {
-
-            override fun onAvailable(network: Network) {
-                onInternetConnectionChanged(true)
-            }
-
-            override fun onLost(network: Network) {
-                onInternetConnectionChanged(false)
-            }
-
-        })
+        connectivityManager.connectivitySubject
+            .distinctUntilChanged()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy {
+                internetConnectionController.value = it }
+            .addTo(dataCompositeDisposable)
 
         propertyInteractor.propertyDetailsViewStateSubject
             .subscribeOn(Schedulers.io())
@@ -170,10 +160,6 @@ class PropertyDetailsViewModel(
 
     fun onRemoveDocumentClick(uri: Uri) {
         propertyInteractor.onRemoveDocument(uri)
-    }
-
-    fun onInternetConnectionChanged(isAvailable: Boolean) {
-        internetConnectionController.postValue(isAvailable)
     }
 
 }

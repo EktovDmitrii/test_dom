@@ -13,6 +13,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         app:hintTextColor="@color/secondary500"
         android:textColorHint="@color/secondary500"
+        app:placeholderTextColor="@color/secondary400"
         app:boxStrokeColor="@color/primary500"
         app:boxStrokeErrorColor="@color/error500"
         app:boxStrokeWidth="1dp"

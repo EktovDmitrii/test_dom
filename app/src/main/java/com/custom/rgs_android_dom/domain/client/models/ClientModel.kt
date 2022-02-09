@@ -18,7 +18,8 @@ data class ClientModel (
 	val opdAgreement: ClientOpdAgreement?,
 	val phone: String,
 	val gender: Gender?,
-	val status: String?
+	val status: String?,
+	var checkoutEmail: String?
 ) {
 
 	fun getChatChannelId(): String {

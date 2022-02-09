@@ -7,12 +7,7 @@ import com.custom.rgs_android_dom.databinding.ItemProductAdvantageWithNumberBind
 
 class ProductAdvantagesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var advantages: List<String> = listOf(
-        "310 мастеров готовы к работе",
-        "Все работы застрахованы",
-        "310 мастеров готовы к работе",
-        "Все работы застрахованы"
-    )
+    private var advantages: List<String> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding =

@@ -1,14 +1,19 @@
 package com.custom.rgs_android_dom.ui.catalog.product
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.*
-import com.custom.rgs_android_dom.domain.purchase_service.model.PurchaseModel
+import com.custom.rgs_android_dom.domain.property.PropertyInteractor
+import com.custom.rgs_android_dom.domain.purchase.PurchaseInteractor
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
+import com.custom.rgs_android_dom.ui.catalog.product.service.ServiceFragment
+import com.custom.rgs_android_dom.ui.catalog.product.service.ServiceLauncher
 import com.custom.rgs_android_dom.ui.navigation.PAYMENT
+import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -16,11 +21,18 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.purchase.PurchaseFragment
+import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderFragment
+import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
+import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_FULL_MONTH
+import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_ONLY
+import com.custom.rgs_android_dom.utils.formatTo
 
 class ProductViewModel(
-    private val productId: String,
+    private val product: ProductLauncher,
     private val registrationInteractor: RegistrationInteractor,
-    private val catalogInteractor: CatalogInteractor
+    private val catalogInteractor: CatalogInteractor,
+    private val propertyInteractor: PropertyInteractor,
+    private val purchaseInteractor: PurchaseInteractor
 ) : BaseViewModel() {
 
     private val productController = MutableLiveData<ProductModel>()
@@ -29,30 +41,54 @@ class ProductViewModel(
     private val productServicesController = MutableLiveData<List<ServiceShortModel>>()
     val productServicesObserver: LiveData<List<ServiceShortModel>> = productServicesController
 
+    private val productAddressController = MutableLiveData<String?>()
+    val productAddressObserver: LiveData<String?> = productAddressController
+
+    private val productValidToController = MutableLiveData<String?>()
+    val productValidToObserver: LiveData<String?> = productValidToController
+
     init {
-        catalogInteractor.getProduct(productId)
+        productValidToController.value = product.purchaseValidTo?.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
+
+        catalogInteractor.getProduct(product.productId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = { product ->
-                    productController.value = product
+                    productController.value = product.copy(isPurchased = this.product.isPurchased)
                 },
                 onError = {
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
 
-        catalogInteractor.getProductServices(productId)
+        product.purchaseObjectId?.let { objectId ->
+            propertyInteractor.getPropertyItem(objectId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                    onSuccess = {
+                        productAddressController.value = it.address?.address
+                    },
+                    onError = {
+                        logException(this, it)
+                    }
+                ).addTo(dataCompositeDisposable)
+        }
+
+        purchaseInteractor.getServiceOrderedSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
-                onSuccess = {
-                    productServicesController.value = it
+                onNext = {
+                    getIncludedServices()
                 },
                 onError = {
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
+
+        getIncludedServices()
     }
 
     fun onBackClick() {
@@ -64,20 +100,51 @@ class ProductViewModel(
             productController.value?.let {
                 val purchaseServiceModel = PurchaseModel(
                     id = it.id,
-                    iconLink = it.iconLink,
+                    defaultProduct = it.defaultProduct,
+                    duration = it.duration,
+                    deliveryTime = it.deliveryTime,
+                    logoSmall = it.logoSmall,
                     name = it.name,
                     price = it.price
                 )
                 val purchaseFragment = PurchaseFragment.newInstance(purchaseServiceModel)
                 ScreenManager.showScreenScope(purchaseFragment, PAYMENT)
             }
+        } else {
+            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
         }
     }
 
     fun onServiceClick(serviceShortModel: ServiceShortModel) {
-        serviceShortModel.serviceId?.let { id ->
-            val serviceFragment = SingleProductFragment.newInstance(id, true)
-            ScreenManager.showBottomScreen(serviceFragment)
-        }
+        val serviceFragment = ServiceFragment.newInstance(
+            ServiceLauncher(
+                productId = product.productId,
+                serviceId = serviceShortModel.serviceId,
+                isPurchased = product.isPurchased,
+                purchaseValidTo = product.purchaseValidTo,
+                purchaseObjectId = product.purchaseObjectId,
+                quantity = serviceShortModel.quantity
+            )
+        )
+        ScreenManager.showBottomScreen(serviceFragment)
+    }
+
+    fun onServiceOrderClick(serviceShortModel: ServiceShortModel){
+        val serviceOrderFragment = ServiceOrderFragment.newInstance(serviceShortModel.serviceId, product.productId)
+        ScreenManager.showScreen(serviceOrderFragment)
+    }
+
+    private fun getIncludedServices(){
+        catalogInteractor.getProductServices(product.productId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    productServicesController.value = it.map { it.copy(isPurchased = product.isPurchased) }
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
     }
 }

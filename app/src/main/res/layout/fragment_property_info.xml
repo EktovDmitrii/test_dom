@@ -198,7 +198,7 @@
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <com.custom.rgs_android_dom.views.MSDRecyclerView
-                        android:id="@+id/listDocumentsRecyclerView"
+                        android:id="@+id/documentsRecyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="116dp"
                         android:layout_marginTop="8dp"
