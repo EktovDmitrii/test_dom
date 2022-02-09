@@ -53,7 +53,7 @@ class PopularProductsAdapter(private val onProductClick: (productId: String) -> 
             model.icon.let {
                 GlideApp.with(binding.root.context)
                     .load(GlideUrlProvider.makeHeadersGlideUrl(it))
-                    .into(binding.smallLogoImageView)
+                    .into(binding.largeLogoImageView)
             }
 
             model.icon.let {
