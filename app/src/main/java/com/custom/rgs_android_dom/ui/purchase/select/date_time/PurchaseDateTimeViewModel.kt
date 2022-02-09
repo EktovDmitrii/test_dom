@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.domain.purchase.models.PurchaseDateTimeModel
 import com.custom.rgs_android_dom.domain.purchase.models.DateForCalendarModel
 import com.custom.rgs_android_dom.domain.purchase.models.PurchaseTimePeriodModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.purchase.select.date_time.PurchaseDateTimeFragment.Companion.ITEM_SIZE_THRESHOLD
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DAY_OF_WEEK
 import com.custom.rgs_android_dom.utils.formatTo
 import org.joda.time.LocalDateTime
@@ -33,7 +34,7 @@ class PurchaseDateTimeViewModel : BaseViewModel() {
     private fun fillCalendarList(dateTimeModel: LocalDateTime, isFirst: Boolean) {
         var firstDayInWeek = if (isFirst) dateTimeModel.minusDays(dateTimeModel.dayOfWeek - 1)
         else dateTimeModel.plusDays(1)
-        for (counter in 0..31) {
+        for (counter in 0..ITEM_SIZE_THRESHOLD) {
             calendarList.add(
                 DateForCalendarModel(
                     dayInWeek = firstDayInWeek.formatTo(DATE_PATTERN_DAY_OF_WEEK),

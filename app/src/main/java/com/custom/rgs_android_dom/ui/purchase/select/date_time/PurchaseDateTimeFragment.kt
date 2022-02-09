@@ -23,6 +23,9 @@ class PurchaseDateTimeFragment :
     BaseBottomSheetModalFragment<PurchaseDateTimeViewModel, FragmentPurchaseDateTimeBinding>() {
 
     companion object {
+        const val ITEM_SIZE_THRESHOLD = 31
+        const val LAST_POSITION_IN_WEEK = 6
+
         fun newInstance(): PurchaseDateTimeFragment = PurchaseDateTimeFragment()
     }
 
@@ -60,7 +63,7 @@ class PurchaseDateTimeFragment :
         binding.datesRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             var loading = true
             var previousTotal = 0
-            var visibleThreshold = 31
+            var visibleThreshold = ITEM_SIZE_THRESHOLD
             var firstVisibleItem = 0
             var visibleItemCount = 0
             var totalItemCount = 0
@@ -151,7 +154,7 @@ class PurchaseDateTimeFragment :
 
             val newMonthFirstDay =
                 LocalDateTime().withMonthOfYear(it).plusMonths(1).withDayOfMonth(1).dayOfYear
-            val scrollPosition = currLastPos + (newMonthFirstDay - lastPosItem) + 6
+            val scrollPosition = currLastPos + (newMonthFirstDay - lastPosItem) + LAST_POSITION_IN_WEEK
             if (scrollPosition > 0) {
                 binding.datesRecyclerView.scrollToPosition(scrollPosition)
                 viewModel.loadMoreDates()
