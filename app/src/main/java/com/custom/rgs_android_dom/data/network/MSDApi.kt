@@ -222,7 +222,7 @@ interface MSDApi {
 
     @POST("clients/me/orders")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun orderServiceOnBalance(@Body body: OrderServiceRequest): Completable
+    fun orderServiceOnBalance(@Body body: OrderServiceRequest, @Query("confirm") confirmOrder: Boolean): Completable
 
 
     @GET("clients/{clientId}/orders")
