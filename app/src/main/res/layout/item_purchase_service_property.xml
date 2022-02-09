@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
-        android:id="@+id/propertyTypeTextView"
+        android:id="@+id/propertyNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
@@ -37,7 +37,7 @@
         android:textColor="@color/secondary600"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@id/propertyTypeImageView"
-        app:layout_constraintTop_toBottomOf="@id/propertyTypeTextView"
+        app:layout_constraintTop_toBottomOf="@id/propertyNameTextView"
         tools:text="Г.Москва " />
 
     <androidx.appcompat.widget.AppCompatImageView

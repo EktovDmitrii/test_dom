@@ -6,6 +6,9 @@ data class BalanceServiceResponse(
     @SerializedName("serviceId")
     val serviceId: String,
 
+    @SerializedName("clientServiceId")
+    val clientServiceId: String,
+
     @SerializedName("available")
     val available: Int,
 

@@ -206,7 +206,7 @@ interface MSDApi {
 
     @GET("clients/me/balance/services")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getAvailableServices(@Query("size") size: Int, @Query("index") index: Int, @Query("withBalance") withBalance: Boolean, @Query("status") status: String = "active"): Single<BalanceServicesResponse>
+    fun getAvailableServices(@Query("size") size: Int, @Query("index") index: Int, @Query("withBalance") withBalance: Boolean, @Query("status") status: String = "active", @Query("productId") productId: String? = null, @Query("serviceId") serviceId: String? = null): Single<BalanceServicesResponse>
 
     @GET("billing/clients/me/cards")
     @ErrorType(MSDNetworkErrorResponse::class)
@@ -215,4 +215,13 @@ interface MSDApi {
     @POST("clients/me/purchase/products/{productId}")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun makeProductPurchase(@Path("productId") productId: String, @Body order: PurchaseProductRequest) : Single<PurchaseResponse>
+
+    @POST("insurance/clients/me/contracts")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun bindPolicy(@Body body: BindPolicyRequest) : Single<BindPolicyResponse>
+
+    @POST("clients/me/orders")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun orderServiceOnBalance(@Body body: OrderServiceRequest): Completable
+
 }

@@ -23,9 +23,8 @@ class ProductInclusionAdapter(
     private var inclusions: List<ServiceShortModel> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val binding =
-            ItemGridCatalogInfoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ProductFeatureViewHolder(binding, onServiceClick)
+        val binding = ItemGridCatalogInfoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ProductFeatureViewHolder(binding, onServiceClick, onOrderClick)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -54,7 +53,7 @@ class ProductInclusionAdapter(
             } else {
                 binding.numberTextView.text = "${item.quantity}"
             }
-            binding.orderTextView.visibleIf(item.isPurchased)
+            binding.orderTextView.visibleIf(item.isPurchased && item.quantity >0)
             binding.orderTextView.setOnDebouncedClickListener {
                 onOrderClick(item)
             }

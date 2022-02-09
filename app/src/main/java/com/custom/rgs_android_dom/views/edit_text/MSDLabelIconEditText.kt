@@ -29,12 +29,15 @@ class MSDLabelIconEditText @JvmOverloads constructor(
 
     private var isFromUser = true
 
+    private var isMaskFilled = false
+
     private val maskedValueChangedListener = object : MaskedTextChangedListener.ValueListener {
         override fun onTextChanged(
             maskFilled: Boolean,
             extractedValue: String,
             formattedValue: String
         ) {
+            isMaskFilled = maskFilled
             if (isFromUser){
                 onTextChangedListener(formattedValue, maskFilled)
             }
@@ -107,6 +110,15 @@ class MSDLabelIconEditText @JvmOverloads constructor(
         binding.iconImageView.setOnDebouncedClickListener {
             onIconClickListener()
         }
+    }
+
+    override fun setEnabled(isEnabled: Boolean){
+        val state = if (isEnabled) State.NORMAL else State.DISABLED
+        setState(state)
+    }
+
+    fun isMaskFiled(): Boolean {
+        return isMaskFilled
     }
 
     fun setText(text: String){
@@ -207,11 +219,6 @@ class MSDLabelIconEditText @JvmOverloads constructor(
                 super.setEnabled(true)
             }
         }
-    }
-
-    override fun setEnabled(isEnabled: Boolean){
-        val state = if (isEnabled) State.NORMAL else State.DISABLED
-        setState(state)
     }
 
     enum class State { NORMAL, DISABLED, ERROR, SUCCESS }

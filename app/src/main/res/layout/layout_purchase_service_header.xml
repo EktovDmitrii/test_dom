@@ -58,6 +58,7 @@
         android:fontFamily="@font/suisse_regular"
         android:textColor="@color/secondary600"
         android:textSize="14sp"
+        android:includeFontPadding="false"
         app:layout_constraintStart_toEndOf="@id/logoImageView"
         app:layout_constraintTop_toBottomOf="@id/nameTextView"
         tools:hint="Работа займет ~3 часа"/>
@@ -70,6 +71,7 @@
         android:fontFamily="@font/suisse_regular"
         android:textColor="@color/secondary900"
         android:textSize="14sp"
+        android:includeFontPadding="false"
         app:layout_constraintStart_toEndOf="@id/logoImageView"
         app:layout_constraintTop_toBottomOf="@id/durationTextView"
         tools:text="1500 Р" />

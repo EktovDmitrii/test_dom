@@ -2,8 +2,9 @@ package com.custom.rgs_android_dom.ui.purchase.select.card
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.custom.rgs_android_dom.domain.purchase.model.CardModel
+import com.custom.rgs_android_dom.domain.purchase.models.CardModel
 import com.custom.rgs_android_dom.domain.purchase.PurchaseInteractor
+import com.custom.rgs_android_dom.domain.purchase.models.NewCardModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -24,7 +25,14 @@ class SelectCardViewModel(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map {savedCards->
-                savedCards.find { it.id == selectedCard?.id }?.isSelected = true
+                savedCards.find { it.id == selectedCard?.id }?.apply {
+                    isSelected = true
+                    selectedCard?.let {
+                        if (it is NewCardModel && it.doSave){
+                            (this as NewCardModel).doSave = true
+                        }
+                    }
+                }
                 return@map savedCards
             }
             .subscribeBy(

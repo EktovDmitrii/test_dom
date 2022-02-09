@@ -107,4 +107,10 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
         }
     }
 
+    override fun getAvailableServiceInProduct(productId: String, serviceId: String): Single<AvailableServiceModel> {
+        return api.getAvailableServices(5000, 0, true, "active", productId, serviceId).map { response->
+            CatalogMapper.responseToBalanceServices(response)[0]
+        }
+    }
+
 }

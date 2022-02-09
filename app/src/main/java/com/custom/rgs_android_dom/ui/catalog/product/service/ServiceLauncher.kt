@@ -6,6 +6,7 @@ import java.io.Serializable
 data class ServiceLauncher(
     val productId: String,
     val serviceId: String,
+    val quantity: Long,
     val isPurchased: Boolean = false,
     val paidDate: DateTime? = null,
     val purchaseValidTo: DateTime? = null,

@@ -42,10 +42,16 @@ class SingleProductFragment :
         super.onViewCreated(view, savedInstanceState)
 
         binding.advantagesLayout.advantagesRecycler.adapter = ProductAdvantagesAdapter()
+        binding.features.featuresValue1.text = "Поддержка 24/7"
 
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
         }
+
+        binding.checkoutButton.root.setOnDebouncedClickListener {
+            viewModel.onCheckoutClick()
+        }
+
         binding.features.featuresValue1.text = "Поддержка 24/7"
 
         subscribe(viewModel.productObserver) { product ->
@@ -58,7 +64,7 @@ class SingleProductFragment :
                 .transform(RoundedCorners(16.dp(requireContext())))
                 .into(binding.header.logoImageView)
 
-            binding.validity.validityValue.text = product.duration.toString()
+            binding.validity.validityValue.text = product.duration.toString() + " после покупки"
             binding.header.headerTitle.text = product.name
             binding.header.headerDescription.text = product.title
             binding.about.aboutValue.text = product.description
@@ -69,7 +75,7 @@ class SingleProductFragment :
             }
             product.price?.amount?.let { price ->
                 binding.priceView.setPrice(price)
-                binding.detailButton.btnPrice.text = price.formatPrice(isFixed = product.price.fix)
+                binding.checkoutButton.btnPrice.text = price.formatPrice(isFixed = product.price.fix)
             }
             product.advantages?.let {
                 advantagesAdapter.setItems(it)
@@ -80,13 +86,11 @@ class SingleProductFragment :
             }
 
             if (product.isPurchased) {
-                binding.detailButton.btnTitle.text = "Заказать"
-                binding.detailButton.btnTitle.gravity = Gravity.CENTER
-                binding.detailButton.btnPriceGroup.gone()
+                binding.checkoutButton.btnTitle.text = "Заказать"
+                binding.checkoutButton.btnPriceGroup.gone()
             } else {
-                binding.detailButton.btnTitle.text = "Оформить"
-                binding.detailButton.btnTitle.gravity = Gravity.CENTER_VERTICAL or Gravity.START
-                binding.detailButton.btnPriceGroup.visible()
+                binding.checkoutButton.btnTitle.text = "Оформить"
+                binding.checkoutButton.btnPriceGroup.visible()
             }
         }
         subscribe(viewModel.productAddressObserver) { address ->

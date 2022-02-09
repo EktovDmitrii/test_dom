@@ -2,9 +2,9 @@ package com.custom.rgs_android_dom.ui.purchase.select.date_time
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.custom.rgs_android_dom.domain.purchase.model.PurchaseDateTimeModel
-import com.custom.rgs_android_dom.domain.purchase.model.DateForCalendarModel
-import com.custom.rgs_android_dom.domain.purchase.model.PurchaseTimePeriodModel
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseDateTimeModel
+import com.custom.rgs_android_dom.domain.purchase.models.DateForCalendarModel
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseTimePeriodModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DAY_OF_WEEK
 import com.custom.rgs_android_dom.utils.formatTo

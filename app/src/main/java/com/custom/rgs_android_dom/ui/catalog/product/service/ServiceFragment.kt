@@ -45,6 +45,11 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
         }
+
+        binding.detailButton.root.setOnDebouncedClickListener {
+            viewModel.onServiceOrderClick()
+        }
+
         binding.features.featuresValue1.text = "Поддержка 24/7"
 
         subscribe(viewModel.serviceObserver) { service ->
@@ -69,8 +74,6 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
             service.deliveryTime?.let {
                 binding.longness.longnessValue.text = "$it"
             }
-            binding.priceView.goneIf(!service.isPurchased)
-            binding.detailButton.root.goneIf(!service.isPurchased)
 
             binding.detailButton.btnTitle.text = "Заказать"
             binding.detailButton.btnTitle.gravity = Gravity.CENTER
@@ -82,6 +85,15 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
                 binding.address.root.visible()
             }
         }
+
+        subscribe(viewModel.priceTextViewVisibleObserver){
+            binding.priceView.visibleIf(it)
+        }
+
+        subscribe(viewModel.orderTextViewVisibleObserver){
+            binding.detailButton.root.visibleIf(it)
+        }
+
         subscribe(viewModel.productValidToObserver) { validTo ->
             validTo?.let {
                 binding.validityUntill.validityTillValue.text = it

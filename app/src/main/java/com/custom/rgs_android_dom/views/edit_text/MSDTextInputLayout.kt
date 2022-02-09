@@ -188,6 +188,10 @@ class MSDTextInputLayout @JvmOverloads constructor(
         }
     }
 
+    fun setSelection(length: Int){
+        binding.valueEditText.setSelection(length)
+    }
+
     private fun setDigitsLimit(digitsBeforeZero: Int, digitsAfterZero: Int) {
         binding.valueEditText.filters = arrayOf(DecimalDigitsInputFilter(digitsBeforeZero, digitsAfterZero))
     }

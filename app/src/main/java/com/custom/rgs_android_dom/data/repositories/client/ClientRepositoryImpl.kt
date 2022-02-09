@@ -200,4 +200,5 @@ class ClientRepositoryImpl(
     override fun getEditPersonalDataRequestedSubject(): BehaviorSubject<Boolean> {
         return editPersonalDataRequestedSubject
     }
+
 }

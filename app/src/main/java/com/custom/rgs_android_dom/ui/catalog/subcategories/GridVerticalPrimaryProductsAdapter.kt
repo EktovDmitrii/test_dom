@@ -50,7 +50,7 @@ class GridVerticalPrimaryProductsAdapter(
                 .into(binding.iconImageView)
 
             GlideApp.with(binding.root.context)
-                .load(GlideUrlProvider.makeHeadersGlideUrl(model.logoLarge))
+                .load(GlideUrlProvider.makeHeadersGlideUrl(model.logoMiddle))
                 .transform(RoundedCorners(16.dp(binding.root.context)))
                 .into(binding.logoImageView)
 

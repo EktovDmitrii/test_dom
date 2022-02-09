@@ -2,16 +2,19 @@ package com.custom.rgs_android_dom.data.repositories.purchase
 
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.PurchaseMapper
-import com.custom.rgs_android_dom.data.network.requests.OrderRequest
-import com.custom.rgs_android_dom.data.network.requests.OrderTimeRequest
-import com.custom.rgs_android_dom.data.network.requests.PurchaseProductRequest
-import com.custom.rgs_android_dom.domain.purchase.model.CardModel
-import com.custom.rgs_android_dom.domain.purchase.model.NewCardModel
-import com.custom.rgs_android_dom.domain.purchase.model.SavedCardModel
+import com.custom.rgs_android_dom.data.network.requests.*
+import com.custom.rgs_android_dom.domain.purchase.models.CardModel
+import com.custom.rgs_android_dom.domain.purchase.models.NewCardModel
 import com.custom.rgs_android_dom.domain.repositories.PurchaseRepository
+import com.custom.rgs_android_dom.utils.safeLet
+import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.subjects.PublishSubject
 
 class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
+
+    private val serviceOrdered = PublishSubject.create<String>()
+    private val productPurchased = PublishSubject.create<String>()
 
     override fun getSavedCards(): Single<List<CardModel>> {
         return api.getSavedCards().toSingle().map { list ->
@@ -27,28 +30,85 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
         email: String,
         saveCard: Boolean,
         objectId: String,
-        deliveryDate: String,
-        timeFrom: String,
-        timeTo: String
+        comment: String?,
+        deliveryDate: String?,
+        timeFrom: String?,
+        timeTo: String?
     ): Single<String> {
-        val orderRequest = PurchaseProductRequest(
+
+        var orderRequest: OrderRequest? = null
+        if (comment != null){
+            orderRequest = OrderRequest(
+                comment = comment
+            )
+        }
+
+        safeLet(deliveryDate, timeFrom, timeTo){deliveryDate, timeFrom, timeTo->
+            if (orderRequest == null){
+                orderRequest = OrderRequest(
+                    deliveryDate = deliveryDate,
+                    deliveryTime = OrderTimeRequest(
+                        timeFrom = timeFrom,
+                        timeTo = timeTo
+                    )
+                )
+            } else {
+                orderRequest = orderRequest?.copy(
+                    deliveryDate = deliveryDate,
+                    deliveryTime = OrderTimeRequest(
+                        timeFrom = timeFrom,
+                        timeTo = timeTo
+                    )
+                )
+            }
+        }
+
+        val purchaseRequest = PurchaseProductRequest(
             bindingId = bindingId,
             email = email,
             saveCard = saveCard,
             objectId = objectId,
-            order = OrderRequest(
-                deliveryDate = deliveryDate,
-                deliveryTime = OrderTimeRequest(
-                    timeFrom = timeFrom,
-                    timeTo = timeTo
-                )
-            )
+            order = orderRequest
         )
+
         return api.makeProductPurchase(
             productId = productId,
-            order = orderRequest
+            order = purchaseRequest
         ).map {
+            productPurchased.onNext(productId)
             PurchaseMapper.responseToPaymentUrl(it)
         }
+    }
+
+    override fun orderServiceOnBalance(
+        serviceId: String,
+        clientServiceId: String,
+        objectId: String,
+        deliveryDate: String,
+        timeFrom: String,
+        timeTo: String,
+        comment: String?
+    ): Completable {
+        val orderServiceRequest = OrderServiceRequest(
+            clientServiceId = clientServiceId,
+            comment = comment,
+            deliveryDate = deliveryDate,
+            deliveryTime = DeliveryTimeRequest(
+                from = timeFrom,
+                to = timeTo
+            ),
+            objectId = objectId
+        )
+        return api.orderServiceOnBalance(orderServiceRequest).doOnComplete {
+            serviceOrdered.onNext(serviceId)
+        }
+    }
+
+    override fun getServiceOrderedSubject(): PublishSubject<String> {
+        return serviceOrdered
+    }
+
+    override fun getProductPurchasedSubject(): PublishSubject<String> {
+        return productPurchased
     }
 }

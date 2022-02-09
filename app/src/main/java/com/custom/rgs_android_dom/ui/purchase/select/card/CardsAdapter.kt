@@ -6,10 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ItemPurchaseCardBinding
 import com.custom.rgs_android_dom.databinding.ItemPurchaseNewCardBinding
-import com.custom.rgs_android_dom.domain.purchase.model.CardModel
-import com.custom.rgs_android_dom.domain.purchase.model.CardType
-import com.custom.rgs_android_dom.domain.purchase.model.NewCardModel
-import com.custom.rgs_android_dom.domain.purchase.model.SavedCardModel
+import com.custom.rgs_android_dom.domain.purchase.models.CardModel
+import com.custom.rgs_android_dom.domain.purchase.models.CardType
+import com.custom.rgs_android_dom.domain.purchase.models.NewCardModel
+import com.custom.rgs_android_dom.domain.purchase.models.SavedCardModel
 import com.custom.rgs_android_dom.ui.base.BaseViewHolder
 import com.custom.rgs_android_dom.utils.GlideApp
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
@@ -75,9 +75,11 @@ class CardsAdapter(
             var newCard = item as NewCardModel
             binding.cardSaveLayout.visibleIf(newCard.isSelected)
             binding.cardCheckedImageView.visibleIf(newCard.isSelected)
-            binding.saveCardSwitch.setOnCheckedChangeListener { button, isChecked ->
-                newCard = newCard.copy(doSave = isChecked)
 
+            binding.saveCardSwitch.isChecked = newCard.doSave
+
+            binding.saveCardSwitch.setOnCheckedChangeListener { button, isChecked ->
+                newCard.doSave = isChecked
                 onCardSelect(newCard)
             }
             binding.root.setOnDebouncedClickListener {

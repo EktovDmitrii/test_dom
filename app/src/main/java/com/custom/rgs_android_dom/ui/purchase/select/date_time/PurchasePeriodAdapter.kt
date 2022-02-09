@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.LayoutPurchasePeriodBinding
 import com.custom.rgs_android_dom.domain.purchase.model.PurchaseDateTimeModel
-import com.custom.rgs_android_dom.domain.purchase.model.PurchaseTimePeriodModel
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseTimePeriodModel
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import org.joda.time.LocalDateTime
 import org.joda.time.LocalTime
