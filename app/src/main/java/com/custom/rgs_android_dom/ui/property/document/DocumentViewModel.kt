@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui.property.document
 
 import android.net.Uri
+import android.os.Environment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
@@ -14,6 +15,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import java.io.File
 
 class DocumentViewModel(
     private val objectId: String,
@@ -21,13 +23,21 @@ class DocumentViewModel(
     private val propertyInteractor: PropertyInteractor
 ) : BaseViewModel() {
 
+    private val isDeleteButtonVisibleController = MutableLiveData<Boolean>()
+    val isDeleteButtonVisibleObserver: LiveData<Boolean> = isDeleteButtonVisibleController
+
     private val propertyItemController = MutableLiveData<PropertyItemModel>()
     val propertyDocumentsObserver: LiveData<PropertyItemModel> = propertyItemController
 
     private val downloadFileController = MutableLiveData<PropertyDocument>()
     val downloadFileObserver: LiveData<PropertyDocument> = downloadFileController
 
+    private val openFileController = MutableLiveData<Uri>()
+    val openFileObserver: LiveData<Uri> = openFileController
+
     init {
+        isDeleteButtonVisibleController.value = false
+
         propertyItemController.postValue(propertyItemModel)
 
         propertyInteractor.propertyInfoStateSubject
@@ -55,9 +65,24 @@ class DocumentViewModel(
                 }
             )
             .addTo(dataCompositeDisposable)
+
+        propertyInteractor.propertyDocumentDeletedSubject
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = { documentList ->
+                    propertyItemController.value = documentList
+                },
+                onError = {
+                    logException(this, it)
+                }
+            )
+            .addTo(dataCompositeDisposable)
+
     }
 
     private fun updateDocuments(uri: List<Uri>) {
+
         propertyItemController.value?.let {
             propertyInteractor.updatePropertyItem(
                 objectId = objectId,
@@ -78,6 +103,7 @@ class DocumentViewModel(
     }
 
     fun onFileClick(propertyDocument: PropertyDocument) {
+        changeDeleteButtonsVisibility(false)
         val documentType = propertyDocument.link.substringAfterLast(".", "missing")
         var documentIndex = 0
         propertyItemController.value?.documents?.forEachIndexed { index, propertyDoc ->
@@ -85,12 +111,18 @@ class DocumentViewModel(
                 documentIndex = index
         }
         when (documentType) {
-            "jpg" -> showDetailDocumentScreen(documentIndex)
-            "jpeg" -> showDetailDocumentScreen(documentIndex)
-            "png" -> showDetailDocumentScreen(documentIndex)
-            "bmp" -> showDetailDocumentScreen(documentIndex)
+            "jpg", "jpeg", "png", "bmp" -> showDetailDocumentScreen(documentIndex)
             else -> {
-                downloadFileController.value = propertyDocument
+                val file = File(
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                        .absoluteFile.path + File.separator + propertyDocument.name
+                )
+                if (file.exists()) {
+                    openFileController.value = Uri.fromFile(file)
+                } else {
+                    downloadFileController.value = propertyDocument
+                }
+
             }
         }
     }
@@ -105,7 +137,12 @@ class DocumentViewModel(
         )
     }
 
+    fun changeDeleteButtonsVisibility(isDeleteButtonVisible: Boolean){
+        isDeleteButtonVisibleController.value = isDeleteButtonVisible
+    }
+
     fun deleteDocument(propertyDocument: PropertyDocument) {
+        changeDeleteButtonsVisibility(true)
         val documentsList = propertyItemController.value?.documents
         documentsList?.remove(propertyDocument)
         val newPropertyItemModel = documentsList?.let {
@@ -115,6 +152,7 @@ class DocumentViewModel(
         }
 
         if (newPropertyItemModel != null) {
+            propertyInteractor.onFilesToDeleteSelected(newPropertyItemModel)
             propertyInteractor.updateDocument(objectId, newPropertyItemModel)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

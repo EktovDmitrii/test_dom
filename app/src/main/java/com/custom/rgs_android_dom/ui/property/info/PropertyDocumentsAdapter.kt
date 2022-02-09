@@ -12,6 +12,10 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.ItemAddPropertyBinding
+import com.custom.rgs_android_dom.utils.GlideApp
+import com.custom.rgs_android_dom.utils.dp
+import com.custom.rgs_android_dom.utils.gone
+import com.custom.rgs_android_dom.utils.visible
 import com.custom.rgs_android_dom.databinding.ItemPropertyDownloadedDocumentBinding
 import com.custom.rgs_android_dom.domain.property.models.AddDocument
 import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
@@ -85,6 +89,7 @@ class PropertyDocumentsAdapter(private val onAddClick: () -> Unit) : RecyclerVie
     inner class PropertyDocumentsViewHolder(
         private val binding: ItemPropertyDownloadedDocumentBinding
     ) : RecyclerView.ViewHolder(binding.root) {
+
 
         private val textFilesExtensions = listOf("pdf", "txt", "doc", "docx", "rtf")
         private val mediaFilesExtensions = listOf("jpeg", "jpg", "png", "bmp")

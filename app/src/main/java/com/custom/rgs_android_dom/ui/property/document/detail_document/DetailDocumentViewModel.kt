@@ -75,6 +75,7 @@ class DetailDocumentViewModel(
         }
 
         if (newPropertyItemModel != null) {
+            propertyInteractor.onFilesToDeleteSelected(newPropertyItemModel)
             propertyInteractor.updateDocument(objectId, newPropertyItemModel)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
