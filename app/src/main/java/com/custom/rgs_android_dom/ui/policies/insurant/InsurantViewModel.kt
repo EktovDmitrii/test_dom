@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.data.network.mappers.PoliciesMapper
 import com.custom.rgs_android_dom.data.network.toMSDErrorModel
+import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
 import com.custom.rgs_android_dom.domain.policies.PoliciesInteractor
 import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
@@ -17,6 +18,9 @@ class InsurantViewModel(private val policiesInteractor: PoliciesInteractor) : Ba
 
     private val insurantViewStateController = MutableLiveData<InsurantViewState>()
     val insurantViewStateObserver: LiveData<InsurantViewState> = insurantViewStateController
+
+    private val validateExceptionController = MutableLiveData<SpecificValidateClientExceptions>()
+    val validateExceptionObserver: LiveData<SpecificValidateClientExceptions> = validateExceptionController
 
     init {
         policiesInteractor.getInsurantViewStateSubject()
@@ -54,7 +58,12 @@ class InsurantViewModel(private val policiesInteractor: PoliciesInteractor) : Ba
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    policiesInteractor.newDialog(it) },
+                    if( it is PolicyDialogModel ) {
+                        policiesInteractor.newDialog(it)
+                    } else {
+                        validateExceptionController.value = it as SpecificValidateClientExceptions
+                    }
+                            },
                 onError = {
                     if (it.toMSDErrorModel() != null) {
                         policiesInteractor.newDialog(

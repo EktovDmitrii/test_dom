@@ -88,7 +88,12 @@ class DocumentListFragment :
         }
 
         binding.addDocumentTextView.setOnDebouncedClickListener {
+            viewModel.changeDeleteButtonsVisibility(false)
             openPropertyUploadDocumentsScreen()
+        }
+
+        binding.saveDocumentListImageView.setOnDebouncedClickListener {
+            viewModel.changeDeleteButtonsVisibility(false)
         }
 
         binding.listDocumentsRecyclerView.adapter =
@@ -110,7 +115,8 @@ class DocumentListFragment :
             )
 
         binding.editDocumentListImageView.setOnDebouncedClickListener {
-            val editDocumentListBottomSheetFragment = EditDocumentListBottomSheetFragment.newInstance()
+            val editDocumentListBottomSheetFragment =
+                EditDocumentListBottomSheetFragment.newInstance()
             editDocumentListBottomSheetFragment.show(
                 childFragmentManager,
                 EditDocumentListBottomSheetFragment.TAG
@@ -121,23 +127,28 @@ class DocumentListFragment :
         }
         subscribe(viewModel.propertyDocumentsObserver) { propertyItem ->
 
-            binding.editDocumentListImageView.visibleIf(propertyItem.documents.isNotEmpty())
             binding.emptyDocListGroup.visibleIf(propertyItem.documents.isEmpty())
             binding.listDocumentsRecyclerView.visibleIf(propertyItem.documents.isNotEmpty())
 
             if (propertyItem.documents.isNotEmpty()) {
                 documentListAdapter.setItems(
-                    propertyItem.documents,
-                    false
+                    propertyItem.documents
                 )
+            } else {
+                viewModel.changeDeleteButtonsVisibility(false)
             }
         }
         subscribe(viewModel.downloadFileObserver) {
             downloadFile(it)
         }
+        subscribe(viewModel.isDeleteButtonVisibleObserver) {
+            changeDeleteButtonVisibility(it)
+        }
     }
 
     override fun changeDeleteButtonVisibility(isDeleteButtonVisible: Boolean) {
+        binding.editDocumentListImageView.visibleIf(!isDeleteButtonVisible)
+        binding.saveDocumentListImageView.visibleIf(isDeleteButtonVisible)
         documentListAdapter.showDeleteButton(isDeleteButtonVisible)
     }
 
@@ -174,7 +185,7 @@ class DocumentListFragment :
         requireContext().unregisterReceiver(onDownloadCompleteReceiver)
     }
 
-    private fun openPropertyUploadDocumentsScreen(){
+    private fun openPropertyUploadDocumentsScreen() {
         val propertyUploadFilesFragment = PropertyUploadDocumentsFragment()
         propertyUploadFilesFragment.show(childFragmentManager, propertyUploadFilesFragment.TAG)
     }

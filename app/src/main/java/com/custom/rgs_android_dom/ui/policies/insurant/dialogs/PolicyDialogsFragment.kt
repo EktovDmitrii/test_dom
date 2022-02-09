@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.ui.policies.insurant.dialogs
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.content.res.AppCompatResources
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPolicyDialogsBinding
 import com.custom.rgs_android_dom.domain.policies.models.Failure
@@ -132,9 +133,15 @@ class PolicyDialogsFragment :
                             binding.savePolicyLayout.saveTextView.gone()
                             binding.savePolicyLayout.cancelTextView.gone()
                             binding.savePolicyLayout.successTextView.visible()
+                            binding.savePolicyLayout.iconImageView.setImageDrawable(
+                                AppCompatResources.getDrawable(
+                                    requireActivity(),
+                                    R.drawable.ic_success_question
+                                )
+                            )
                             binding.savePolicyLayout.titleTextView.text = "Данные успешно сохранены!"
                             binding.savePolicyLayout.descriptionTextView.text =
-                                "Данные полиса страхования успешно сохранены в вашем профиле"
+                                "Данные из полиса страхования сохранены в вашем профиле"
 
                         }
                     }

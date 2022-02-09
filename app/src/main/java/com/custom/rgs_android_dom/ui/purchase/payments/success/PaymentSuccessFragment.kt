@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.ui.purchase
+package com.custom.rgs_android_dom.ui.purchase.payments.success
 
 import android.os.Bundle
 import android.view.View

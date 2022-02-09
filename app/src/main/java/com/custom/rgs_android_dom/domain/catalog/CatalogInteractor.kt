@@ -138,4 +138,8 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
             )
         )
     }
+
+    fun getAvailableServiceInProduct(productId: String, serviceId: String): Single<AvailableServiceModel> {
+        return catalogRepository.getAvailableServiceInProduct(productId, serviceId)
+    }
 }

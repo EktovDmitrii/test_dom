@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.AvailableServiceModel
+import com.custom.rgs_android_dom.domain.purchase.PurchaseInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.service.ServiceFragment
@@ -19,7 +20,8 @@ import io.reactivex.schedulers.Schedulers
 
 class TabAvailableServicesViewModel(
     private val catalogInteractor: CatalogInteractor,
-    private val registrationInteractor: RegistrationInteractor
+    private val registrationInteractor: RegistrationInteractor,
+    private val purchaseInteractor: PurchaseInteractor
 ) : BaseViewModel() {
 
     private val availableServicesController = MutableLiveData<List<AvailableServiceModel>>()
@@ -54,6 +56,30 @@ class TabAvailableServicesViewModel(
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
+
+        purchaseInteractor.getProductPurchasedSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    loadAvailableServices()
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
+        purchaseInteractor.getServiceOrderedSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    loadAvailableServices()
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
     }
 
     fun onServiceClick(service: AvailableServiceModel) {
@@ -62,8 +88,9 @@ class TabAvailableServicesViewModel(
                 productId = service.productId,
                 serviceId = service.serviceId,
                 isPurchased = true,
-                paidDate = service.validityFrom,
-                purchaseObjectId = service.objectId
+                purchaseObjectId = service.objectId,
+                purchaseValidTo = service.validityTo,
+                quantity = service.available.toLong()
             )
         )
         ScreenManager.showBottomScreen(singleProductFragment)

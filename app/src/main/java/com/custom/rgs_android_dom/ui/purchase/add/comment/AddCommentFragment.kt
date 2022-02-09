@@ -48,7 +48,7 @@ class AddCommentFragment : BaseBottomSheetModalFragment<AddCommentViewModel, Fra
         expand()
 
         binding.saveTextView.setOnDebouncedClickListener {
-            purchaseCommentListener?.onSaveCommentClick(binding.commentTextInputLayout.getText())
+            purchaseCommentListener?.onCommentSelected(binding.commentTextInputLayout.getText())
             onClose()
         }
 
@@ -66,5 +66,5 @@ class AddCommentFragment : BaseBottomSheetModalFragment<AddCommentViewModel, Fra
 }
 
 interface PurchaseCommentListener : Serializable {
-    fun onSaveCommentClick(comment: String)
+    fun onCommentSelected(comment: String)
 }

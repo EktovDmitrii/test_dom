@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.domain.purchase.model
+package com.custom.rgs_android_dom.domain.purchase.models
 
 import java.io.Serializable
 

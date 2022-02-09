@@ -40,7 +40,7 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
     }
 
     @SuppressLint("CheckResult")
-    override fun bindPolicy(): Single<PolicyDialogModel> {
+    override fun bindPolicy(): Single<Any> {
         return api.bindPolicy(request).map { bindPolicyResponse ->
             PolicyDialogModel(
                 bound = BoundPolicyDialogModel(

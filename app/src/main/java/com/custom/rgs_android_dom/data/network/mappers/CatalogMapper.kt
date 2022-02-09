@@ -213,7 +213,7 @@ object CatalogMapper {
             priceAmount = response.priceAmount,
             providerId = response.providerId,
             providerName = response.providerName,
-            quantity = response.quantity,
+            quantity = response.quantity ?: -1,
             serviceCode = response.serviceCode,
             serviceId = response.serviceId,
             serviceName = response.serviceName,

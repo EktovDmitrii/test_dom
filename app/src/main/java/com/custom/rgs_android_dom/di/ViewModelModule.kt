@@ -65,6 +65,10 @@ import com.custom.rgs_android_dom.ui.purchase.select.date_time.PurchaseDateTimeV
 import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressViewModel
 import com.custom.rgs_android_dom.ui.purchase.select.card.SelectCardViewModel
 import com.custom.rgs_android_dom.ui.purchase.add.email.AddEmailViewModel
+import com.custom.rgs_android_dom.ui.purchase.payments.PaymentWebViewViewModel
+import com.custom.rgs_android_dom.ui.purchase.payments.error.PaymentErrorViewModel
+import com.custom.rgs_android_dom.ui.purchase.payments.success.PaymentSuccessViewModel
+import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderViewModel
 import com.custom.rgs_android_dom.ui.stories.StoriesViewModel
 import com.custom.rgs_android_dom.ui.stories.tabs.TabGuaranteeViewModel
 import com.custom.rgs_android_dom.ui.stories.tabs.TabNewServiceViewModel
@@ -98,7 +102,7 @@ val viewModelModule = module {
     viewModel { RequestEditPersonalDataViewModel(clientInteractor = get()) }
     viewModel { parameters -> SelectAddressViewModel( propertyCount = parameters.get(), propertyInteractor = get(), addressInteractor = get(), context = get()) }
     viewModel { AddressSuggestionsViewModel(addressInteractor = get()) }
-    viewModel { MainViewModel(registrationInteractor = get(), propertyInteractor = get(), catalogInteractor = get(), context = get()) }
+    viewModel { MainViewModel(registrationInteractor = get(), propertyInteractor = get(), catalogInteractor = get(), clientInteractor = get(), context = get()) }
     viewModel { WebViewViewModel() }
     viewModel { AddPhotoViewModel(clientInteractor = get()) }
     viewModel { UploadFilesViewModel(chatInteractor = get()) }
@@ -111,19 +115,19 @@ val viewModelModule = module {
     viewModel { RequestRationaleViewModel() }
     viewModel { parameters -> MainCatalogViewModel(tab = parameters.get()) }
     viewModel { TabCatalogViewModel(catalogInteractor = get(), registrationInteractor = get()) }
-    viewModel { TabMyProductsViewModel(catalogInteractor = get(), registrationInteractor = get()) }
-    viewModel { TabAvailableServicesViewModel(catalogInteractor = get(), registrationInteractor = get()) }
+    viewModel { TabMyProductsViewModel(catalogInteractor = get(), registrationInteractor = get(), purchaseInteractor = get(), clientInteractor = get()) }
+    viewModel { TabAvailableServicesViewModel(catalogInteractor = get(), registrationInteractor = get(), purchaseInteractor = get()) }
     viewModel { parameters -> CatalogSubcategoriesViewModel(category = parameters.get(), registrationInteractor = get()) }
     viewModel { parameters -> CatalogSubcategoryViewModel(subCategory = parameters.get(), registrationInteractor = get()) }
     viewModel { parameters -> SingleProductViewModel(product = parameters.get(), registrationInteractor = get(), catalogInteractor = get(), propertyInteractor = get()) }
-    viewModel { parameters -> ServiceViewModel(service = parameters.get(), catalogInteractor = get(), propertyInteractor = get()) }
+    viewModel { parameters -> ServiceViewModel(service = parameters.get(), catalogInteractor = get(), propertyInteractor = get(), purchaseInteractor = get()) }
     viewModel { MoreSingleProductViewModel() }
     viewModel { parameters -> CatalogSearchViewModel(tag = parameters[0], catalogInteractor = get(), registrationInteractor = get(), clientInteractor = get()) }
-    viewModel { parameters -> ProductViewModel(product = parameters.get(), registrationInteractor = get(), catalogInteractor = get(), propertyInteractor = get()) }
+    viewModel { parameters -> ProductViewModel(product = parameters.get(), registrationInteractor = get(), catalogInteractor = get(), propertyInteractor = get(), purchaseInteractor = get()) }
     viewModel { parameters -> CatalogPrimaryProductsViewModel(category = parameters.get()) }
     viewModel { parameters -> PurchaseViewModel(parameters.get(), propertyInteractor = get(), clientInteractor = get(), purchaseInteractor = get()) }
     viewModel { parameters -> SelectPurchaseAddressViewModel(selectedPropertyItem = parameters[0], propertyInteractor = get())}
-    viewModel { parameters -> PurchaseDateTimeViewModel(purchaseDateTimeModel = parameters.get(), purchaseInteractor = get()) }
+    viewModel { PurchaseDateTimeViewModel() }
     viewModel { parameters -> SelectCardViewModel(selectedCard = parameters[0], purchaseInteractor = get()) }
     viewModel { parameters -> AddCommentViewModel(comment = parameters[0]) }
     viewModel { parameters -> AddEmailViewModel(parameters[0]) }
@@ -141,4 +145,5 @@ val viewModelModule = module {
     viewModel { InfoPolicyViewModel() }
     viewModel { InsurantViewModel(policiesInteractor = get()) }
     viewModel { parameters -> PolicyDialogsViewModel(policiesInteractor = get(), model = parameters.get()) }
+    viewModel { parameters -> ServiceOrderViewModel(serviceId = parameters[0], productId = parameters[1], propertyInteractor = get(), catalogInteractor = get(), purchaseInteractor = get()) }
 }

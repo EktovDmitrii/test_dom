@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentInsurantBinding
+import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.policies.insurant.dialogs.PolicyDialogsFragment
@@ -30,12 +31,6 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
         }
 
         binding.nextTextView.setOnDebouncedClickListener {
-            val dialog = PolicyDialogsFragment.newInstance(
-                PolicyDialogModel(showLoader = true),
-                requireArguments().getInt(KEY_FRAGMENT_ID)
-            )
-            dialog.show(childFragmentManager, dialog.TAG)
-            hideSoftwareKeyboard()
             viewModel.onNextClick()
         }
 
@@ -54,6 +49,7 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
         binding.birthdayEditText.addTextWatcher {
             binding.birthdayEditText.isMaskFiled()
             viewModel.birthdayChanged(it, binding.birthdayEditText.isMaskFiled())
+            binding.birthdayEditText.setState(MSDLabelIconEditText.State.NORMAL)
         }
 
         binding.birthdayEditText.setOnIconClickListener {
@@ -69,7 +65,23 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
         }
 
         subscribe(viewModel.insurantViewStateObserver) {
-            binding.nextTextView.isEnabled = it.isNextEnabled
+          binding.nextTextView.isEnabled = it.isNextEnabled
+            if (it.isValidationPassed) {
+                val dialog = PolicyDialogsFragment.newInstance(
+                    PolicyDialogModel(showLoader = true),
+                    requireArguments().getInt(KEY_FRAGMENT_ID)
+                )
+                dialog.show(childFragmentManager, dialog.TAG)
+                hideSoftwareKeyboard()
+            }
+        }
+
+        subscribe(viewModel.validateExceptionObserver) { specError ->
+            specError.fields.forEach {
+                if (it.fieldName == ClientField.BIRTHDATE) {
+                    binding.birthdayEditText.setState( MSDLabelIconEditText.State.ERROR, it.errorMessage )
+                }
+            }
         }
 
     }

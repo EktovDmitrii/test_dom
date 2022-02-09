@@ -58,6 +58,16 @@
                 android:tint="@color/secondary800"
                 app:srcCompat="@drawable/ic_menu_24px" />
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/saveDocumentListImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:paddingHorizontal="24dp"
+                android:visibility="gone"
+                android:tint="@color/primary500"
+                app:srcCompat="@drawable/ic_confirm_24px" />
+
         </FrameLayout>
 
     </com.google.android.material.appbar.AppBarLayout>

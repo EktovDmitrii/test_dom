@@ -5,5 +5,6 @@ data class InsurantViewState(
     val lastName: String = "",
     val middleName: String = "",
     val birthday: String = "",
-    val isNextEnabled: Boolean = false
+    val isNextEnabled: Boolean = false,
+    val isValidationPassed: Boolean = false
 )

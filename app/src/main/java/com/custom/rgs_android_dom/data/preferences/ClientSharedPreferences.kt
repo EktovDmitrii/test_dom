@@ -21,7 +21,6 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
         private const val PREF_KEY_LIVEKIT_CALL_ID = "PREF_KEY_LIVEKIT_ROOM_TOKEN"
         private const val PREF_KEY_AGENT = "PREF_KEY_AGENT"
         private const val PREF_EDIT_AGENT_WAS_REQUESTED = "PREF_TEXT_AGENT"
-        private const val PREF_KEY_CHECKOUT_EMAIL = "PREF_KEY_CHECKOUT_EMAIL"
 
         private const val PREFS_ONBOARDING = "OnboardingSharedPreference"
         private const val PREF_IS_FIRST_RUN = "PREF_IS_FIRST_RUN"
@@ -73,9 +72,7 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
         if (clientString != null){
             val client = gson.fromJson(clientString, ClientModel::class.java)
             client.agent = getAgent()
-            client.checkoutEmail = getCheckoutEmail()
             client.agent?.editAgentWasRequested = getText()
-            Log.d("MyLog", "Get client email " + getCheckoutEmail())
             return client
         }
         return null
@@ -115,13 +112,6 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
         }
     }
 
-    fun saveCheckoutEmail(email: String){
-        Log.d("MyLog", "Save checkout email " + email)
-        preferences.edit {
-            putString(PREF_KEY_CHECKOUT_EMAIL, email)
-        }
-    }
-
     fun clear() {
         preferences.edit {
             clear()
@@ -137,7 +127,4 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
         return null
     }
 
-    private fun getCheckoutEmail(): String? {
-        return preferences.getString(PREF_KEY_CHECKOUT_EMAIL, null)
-    }
 }

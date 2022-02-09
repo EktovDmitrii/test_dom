@@ -24,7 +24,7 @@
         android:includeFontPadding="false"
         android:textColor="@color/secondary900"
         android:textSize="20sp"
-        app:translationTextKey="Хотите сохранить \nданные в профиле?" />
+        app:translationTextKey="Хотите сохранить данные \nиз полиса в профиле?" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/descriptionTextView"
@@ -39,7 +39,7 @@
         android:lineSpacingMultiplier="0"
         android:textColor="@color/secondary600"
         android:textSize="16sp"
-        app:translationTextKey="Данные полиса страхования будут \nсохранены в вашем профиле" />
+        app:translationTextKey="Мы сохраним указанные ФИО и дату рождения в ваш профиль" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullWidth
         android:id="@+id/saveTextView"

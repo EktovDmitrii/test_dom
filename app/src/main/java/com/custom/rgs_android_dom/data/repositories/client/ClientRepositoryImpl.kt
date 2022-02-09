@@ -201,7 +201,4 @@ class ClientRepositoryImpl(
         return editPersonalDataRequestedSubject
     }
 
-    override fun saveCheckoutEmail(email: String) {
-        clientSharedPreferences.saveCheckoutEmail(email)
-    }
 }

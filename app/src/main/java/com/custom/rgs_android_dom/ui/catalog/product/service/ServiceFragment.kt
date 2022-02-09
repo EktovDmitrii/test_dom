@@ -45,6 +45,11 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
         }
+
+        binding.detailButton.root.setOnDebouncedClickListener {
+            viewModel.onServiceOrderClick()
+        }
+
         binding.features.featuresValue1.text = "Поддержка 24/7"
 
         subscribe(viewModel.serviceObserver) { service ->
@@ -53,7 +58,7 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
                 .transform(RoundedCorners(6.dp(requireContext())))
                 .into(binding.header.iconImageView)
             GlideApp.with(requireContext())
-                .load(GlideUrlProvider.makeHeadersGlideUrl(service.logoMiddle))
+                .load(GlideUrlProvider.makeHeadersGlideUrl(service.logoLarge))
                 .transform(RoundedCorners(16.dp(requireContext())))
                 .into(binding.header.logoImageView)
 
@@ -65,12 +70,12 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
             binding.header.headerTitle.text = service.name
             binding.header.headerDescription.text = service.title
             binding.about.aboutValue.text = service.description
+
+            binding.priceView.setIcon(service.iconLink)
             binding.priceView.type = MSDProductPriceView.PriceType.Included
             service.deliveryTime?.let {
                 binding.longness.longnessValue.text = "$it"
             }
-            binding.priceView.goneIf(!service.isPurchased)
-            binding.detailButton.root.goneIf(!service.isPurchased)
 
             binding.detailButton.btnTitle.text = "Заказать"
             binding.detailButton.btnTitle.gravity = Gravity.CENTER
@@ -82,15 +87,19 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
                 binding.address.root.visible()
             }
         }
+
+        subscribe(viewModel.priceTextViewVisibleObserver){
+            binding.priceView.visibleIf(it)
+        }
+
+        subscribe(viewModel.orderTextViewVisibleObserver){
+            binding.detailButton.root.visibleIf(it)
+        }
+
         subscribe(viewModel.productValidToObserver) { validTo ->
             validTo?.let {
                 binding.validityUntill.validityTillValue.text = it
                 binding.validityUntill.root.visible()
-            }
-        }
-        subscribe(viewModel.productPaidDateObserver) { paidDate ->
-            paidDate?.let {
-                binding.priceView.setPurchasedDate(it)
             }
         }
     }

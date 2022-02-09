@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.ui.purchase
+package com.custom.rgs_android_dom.ui.purchase.payments
 
 import android.os.Bundle
 import android.view.View
@@ -9,6 +9,8 @@ import com.custom.rgs_android_dom.databinding.FragmentPaymentWebviewBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.purchase.payments.error.PaymentErrorFragment
+import com.custom.rgs_android_dom.ui.purchase.payments.success.PaymentSuccessFragment
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setStatusBarColor
 import com.custom.rgs_android_dom.utils.subscribe
