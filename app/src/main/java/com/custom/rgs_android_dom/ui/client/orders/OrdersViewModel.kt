@@ -50,7 +50,7 @@ class OrdersViewModel(
     }
 
     fun onItemClick(itemModel: OrderItemModel) {
-        ScreenManager.showScreen(OrderDetailFragment.newInstance(""))
+        //ScreenManager.showScreen(OrderDetailFragment.newInstance(""))
     }
 
     fun onPayClick(purchaseModel: PurchaseModel) {

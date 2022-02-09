@@ -7,8 +7,11 @@ import androidx.core.content.ContextCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.responses.OrderStatus
 import com.custom.rgs_android_dom.databinding.FragmentOrderDetailBinding
+import com.custom.rgs_android_dom.domain.client.models.Order
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.utils.*
+import org.koin.core.parameter.ParametersDefinition
+import org.koin.core.parameter.parametersOf
 
 class OrderDetailFragment :
     BaseFragment<OrderDetailViewModel, FragmentOrderDetailBinding>(R.layout.fragment_order_detail),
@@ -17,9 +20,9 @@ class OrderDetailFragment :
     companion object {
         private const val ARG_ORDER_ID = "ARG_ORDER_ID"
 
-        fun newInstance(id: String): OrderDetailFragment {
+        fun newInstance(order: Order): OrderDetailFragment {
             return OrderDetailFragment().args {
-                putString(ARG_ORDER_ID, id)
+                putSerializable(ARG_ORDER_ID, order)
             }
         }
     }
@@ -30,6 +33,12 @@ class OrderDetailFragment :
 
     override fun onCancelOrderClick() {
         viewModel.onCancelOrderClick()
+    }
+
+    override fun getParameters(): ParametersDefinition = {
+        parametersOf(
+            requireArguments().getSerializable(ARG_ORDER_ID)
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,7 +61,7 @@ class OrderDetailFragment :
         subscribe(viewModel.orderViewStateObserver) { state ->
             binding.orderStateTextView.text = state.getOrderStateTitle()
             initStaticProgressView(state.orderStatus)
-            binding.payStateTextView.text = state.paymentStatus
+            binding.topPaymentStateTextView.text = state.paymentStatus
             binding.serviceNameTextView.text = state.serviceName
             binding.addressTextView.text = state.address
             binding.dateTimeTextView.text = state.dateTime

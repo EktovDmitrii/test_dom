@@ -88,7 +88,7 @@ val viewModelModule = module {
     viewModel { parameters-> CountriesViewModel(selectedCountryLetterCode = parameters.get(), countriesInteractor = get())}
     viewModel { ClientViewModel(clientInteractor = get(), registrationInteractor = get(), propertyInteractor = get()) }
     viewModel { OrdersViewModel(clientInteractor = get(), purchaseInteractor = get()) }
-    viewModel { OrderDetailViewModel(clientInteractor = get()) }
+    viewModel { parameters -> OrderDetailViewModel(clientInteractor = get(), order = parameters.get()) }
     viewModel { RootViewModel(registrationInteractor = get(), clientInteractor = get(), chatInteractor = get()) }
     viewModel { PersonalDataViewModel(clientInteractor = get()) }
     viewModel { EditPersonalDataViewModel(clientInteractor = get()) }
