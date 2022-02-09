@@ -26,12 +26,12 @@
         android:layout_height="40dp"
         android:layout_marginTop="@dimen/material_margin_super_small"
         android:background="@drawable/rectangle_stroke_filled_white_radius_12dp"
-        android:drawableStart="@drawable/ic_catalog_stars"
+        android:drawableStart="@drawable/ic_catalog_earphones"
         android:drawablePadding="12dp"
         android:elevation="2dp"
         android:textColor="@color/secondary900"
         android:textSize="16sp"
-        app:translationTextKey="Широкий спектр услуг" />
+        app:translationTextKey="Поддержка 24/7" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/featuresValue2"
@@ -39,7 +39,7 @@
         android:layout_height="40dp"
         android:layout_marginTop="@dimen/material_margin_small"
         android:background="@drawable/rectangle_stroke_filled_white_radius_12dp"
-        android:drawableStart="@drawable/ic_catalog_clip"
+        android:drawableStart="@drawable/ic_catalog_guarantee"
         android:drawablePadding="12dp"
         android:elevation="3dp"
         android:textColor="@color/secondary900"

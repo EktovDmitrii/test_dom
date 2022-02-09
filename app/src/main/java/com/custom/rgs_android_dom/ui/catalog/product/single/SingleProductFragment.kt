@@ -42,7 +42,6 @@ class SingleProductFragment :
         super.onViewCreated(view, savedInstanceState)
 
         binding.advantagesLayout.advantagesRecycler.adapter = ProductAdvantagesAdapter()
-        binding.features.featuresValue1.text = "Поддержка 24/7"
 
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
@@ -51,8 +50,6 @@ class SingleProductFragment :
         binding.checkoutButton.root.setOnDebouncedClickListener {
             viewModel.onCheckoutClick()
         }
-
-        binding.features.featuresValue1.text = "Поддержка 24/7"
 
         subscribe(viewModel.productObserver) { product ->
             GlideApp.with(requireContext())
