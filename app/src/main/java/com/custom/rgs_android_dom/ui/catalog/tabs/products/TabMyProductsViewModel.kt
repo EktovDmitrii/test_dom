@@ -4,13 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.ClientProductModel
+import com.custom.rgs_android_dom.domain.chat.models.CallType
+import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.purchase.PurchaseInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
 import com.custom.rgs_android_dom.ui.catalog.product.ProductLauncher
+import com.custom.rgs_android_dom.ui.chat.ChatFragment
+import com.custom.rgs_android_dom.ui.chat.call.CallFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.navigation.TargetScreen
+import com.custom.rgs_android_dom.ui.policies.PoliciesFragment
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -21,7 +27,8 @@ import io.reactivex.schedulers.Schedulers
 class TabMyProductsViewModel(
     private val catalogInteractor: CatalogInteractor,
     private val registrationInteractor: RegistrationInteractor,
-    private val purchaseInteractor: PurchaseInteractor
+    private val purchaseInteractor: PurchaseInteractor,
+    private val clientInteractor: ClientInteractor
 ) : BaseViewModel() {
 
     private val myProductsController = MutableLiveData<List<ClientProductModel>>()
@@ -29,6 +36,8 @@ class TabMyProductsViewModel(
 
     private val isNoProductsLayoutVisibleController = MutableLiveData<Unit>()
     val isNoProductsLayoutVisibleObserver: LiveData<Unit> = isNoProductsLayoutVisibleController
+
+    private var requestedScreen = TargetScreen.UNSPECIFIED
 
     init {
         loadClientProducts()
@@ -68,6 +77,22 @@ class TabMyProductsViewModel(
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
+
+        clientInteractor.getClientSavedSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy (
+                onNext = {
+                    if (registrationInteractor.isAuthorized()) {
+                        when (requestedScreen) {
+                            TargetScreen.POLICIES -> ScreenManager.showScreen(PoliciesFragment())
+                            else -> {}
+                        }
+                        requestedScreen = TargetScreen.UNSPECIFIED
+                    }
+                },
+                onError = { logException(this, it) }
+            ).addTo(dataCompositeDisposable)
     }
 
     fun onProductClick(product: ClientProductModel) {
@@ -84,8 +109,9 @@ class TabMyProductsViewModel(
     }
 
     fun onAddPolicyClick(){
-        if (registrationInteractor.isAuthorized()){
-            // TODO Navigate to policy screen
+        requestedScreen = TargetScreen.POLICIES
+        if (registrationInteractor.isAuthorized()) {
+            ScreenManager.showScreen(PoliciesFragment())
         } else {
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
         }

@@ -115,7 +115,7 @@ val viewModelModule = module {
     viewModel { RequestRationaleViewModel() }
     viewModel { parameters -> MainCatalogViewModel(tab = parameters.get()) }
     viewModel { TabCatalogViewModel(catalogInteractor = get(), registrationInteractor = get()) }
-    viewModel { TabMyProductsViewModel(catalogInteractor = get(), registrationInteractor = get(), purchaseInteractor = get()) }
+    viewModel { TabMyProductsViewModel(catalogInteractor = get(), registrationInteractor = get(), purchaseInteractor = get(), clientInteractor = get()) }
     viewModel { TabAvailableServicesViewModel(catalogInteractor = get(), registrationInteractor = get(), purchaseInteractor = get()) }
     viewModel { parameters -> CatalogSubcategoriesViewModel(category = parameters.get(), registrationInteractor = get()) }
     viewModel { parameters -> CatalogSubcategoryViewModel(subCategory = parameters.get(), registrationInteractor = get()) }
