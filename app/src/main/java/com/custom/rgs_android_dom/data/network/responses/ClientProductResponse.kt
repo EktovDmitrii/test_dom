@@ -63,5 +63,8 @@ data class ClientProductResponse(
     val validityFrom: DateTime?,
 
     @SerializedName("validityTo")
-    val validityTo: DateTime?
+    val validityTo: DateTime?,
+
+    @SerializedName("defaultProduct")
+    val defaultProduct: Boolean?
 )

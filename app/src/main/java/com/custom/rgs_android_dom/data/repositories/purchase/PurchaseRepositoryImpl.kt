@@ -75,7 +75,6 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
             productId = productId,
             order = purchaseRequest
         ).map {
-            productPurchased.onNext(productId)
             PurchaseMapper.responseToPaymentUrl(it)
         }
     }
@@ -110,5 +109,9 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
 
     override fun getProductPurchasedSubject(): PublishSubject<String> {
         return productPurchased
+    }
+
+    override fun notifyProductPurchased(productId: String) {
+        productPurchased.onNext(productId)
     }
 }
