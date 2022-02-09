@@ -58,7 +58,7 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
                 .transform(RoundedCorners(6.dp(requireContext())))
                 .into(binding.header.iconImageView)
             GlideApp.with(requireContext())
-                .load(GlideUrlProvider.makeHeadersGlideUrl(service.logoMiddle))
+                .load(GlideUrlProvider.makeHeadersGlideUrl(service.logoLarge))
                 .transform(RoundedCorners(16.dp(requireContext())))
                 .into(binding.header.logoImageView)
 
@@ -100,11 +100,6 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
             validTo?.let {
                 binding.validityUntill.validityTillValue.text = it
                 binding.validityUntill.root.visible()
-            }
-        }
-        subscribe(viewModel.productPaidDateObserver) { paidDate ->
-            paidDate?.let {
-                binding.priceView.setPurchasedDate(it)
             }
         }
     }

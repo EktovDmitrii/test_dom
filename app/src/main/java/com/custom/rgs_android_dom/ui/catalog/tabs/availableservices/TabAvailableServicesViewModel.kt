@@ -88,8 +88,8 @@ class TabAvailableServicesViewModel(
                 productId = service.productId,
                 serviceId = service.serviceId,
                 isPurchased = true,
-                paidDate = service.validityFrom,
                 purchaseObjectId = service.objectId,
+                purchaseValidTo = service.validityTo,
                 quantity = service.available.toLong()
             )
         )

@@ -76,7 +76,6 @@ class TabMyProductsViewModel(
                 ProductLauncher(
                     productId = product.productId,
                     isPurchased = true,
-                    paidDate = product.validityFrom,
                     purchaseValidTo = product.validityTo,
                     purchaseObjectId = product.objectId
                 )

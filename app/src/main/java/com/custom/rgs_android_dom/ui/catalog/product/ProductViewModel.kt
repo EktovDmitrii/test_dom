@@ -47,12 +47,8 @@ class ProductViewModel(
     private val productValidToController = MutableLiveData<String?>()
     val productValidToObserver: LiveData<String?> = productValidToController
 
-    private val productPaidDateController = MutableLiveData<String?>()
-    val productPaidDateObserver: LiveData<String?> = productPaidDateController
-
     init {
         productValidToController.value = product.purchaseValidTo?.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
-        productPaidDateController.value = product.paidDate?.formatTo(DATE_PATTERN_DATE_ONLY)
 
         catalogInteractor.getProduct(product.productId)
             .subscribeOn(Schedulers.io())
@@ -125,6 +121,8 @@ class ProductViewModel(
                 productId = product.productId,
                 serviceId = serviceShortModel.serviceId,
                 isPurchased = product.isPurchased,
+                purchaseValidTo = product.purchaseValidTo,
+                purchaseObjectId = product.purchaseObjectId,
                 quantity = serviceShortModel.quantity
             )
         )
