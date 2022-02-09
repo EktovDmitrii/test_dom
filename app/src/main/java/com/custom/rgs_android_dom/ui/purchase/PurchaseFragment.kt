@@ -113,7 +113,7 @@ class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding
                 "Оформление продукта"
             }
 
-//            binding.layoutDateTime.root.visibleIf(purchase.defaultProduct)
+            binding.layoutDateTime.root.visibleIf(purchase.defaultProduct)
             binding.layoutPurchaseServiceHeader.durationTextView.visibleIf(purchase.duration != null)
 
             if (purchase.defaultProduct){
