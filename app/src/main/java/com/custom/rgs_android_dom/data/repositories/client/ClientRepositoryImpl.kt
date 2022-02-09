@@ -229,4 +229,5 @@ class ClientRepositoryImpl(
         return api.getGeneralInvoices(client?.userId ?: "", size, index, status, num, fullText, orderIds, withPayments)
             .flatMap { Single.just(GeneralInvoiceMapper.responseToDomainModel(it)) }
     }
+
 }

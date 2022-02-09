@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import com.custom.rgs_android_dom.R
-import com.custom.rgs_android_dom.databinding.FragmentRequestEditAgentBinding
 import com.custom.rgs_android_dom.databinding.FragmentRequestEditPersonalDataBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.utils.*
@@ -38,7 +37,7 @@ class RequestEditPersonalDataFragment() : BaseBottomSheetFragment<RequestEditPer
                 binding.iconImageView.setImageResource(R.drawable.ic_success_question)
             } else {
                 binding.titleTextView.text = "Вы действительно\nхотите оставить заявку?"
-                binding.iconImageView.setImageResource(R.drawable.ic_confirm_question)
+                binding.iconImageView.setImageResource(R.drawable.ic_question)
             }
         }
     }

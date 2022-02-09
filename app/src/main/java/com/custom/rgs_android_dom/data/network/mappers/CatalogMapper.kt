@@ -44,6 +44,7 @@ object CatalogMapper {
                 productTags = categoryNode.productTags ?: listOf(),
                 products = listOf(),
                 subCategories = subCategories,
+                sortOrder = categoryNode.sortOrder ?: 0,
                 isPrimary = categoryNode.productTags?.contains(TAG_PRODUCT_VIEW) ?: false
             )
             catalogCategories.add(category)
@@ -141,6 +142,9 @@ object CatalogMapper {
             descriptionFormat = response.descriptionFormat,
             descriptionRef = response.descriptionRef,
             iconLink = "${BuildConfig.BASE_URL}/api/store/${response.iconLink}",
+            logoSmall = "${BuildConfig.BASE_URL}/api/store/${response.logoSmall}",
+            logoMiddle = "${BuildConfig.BASE_URL}/api/store/${response.logoMiddle}",
+            logoLarge = "${BuildConfig.BASE_URL}/api/store/${response.logoLarge}",
             id = response.id,
             internalDescription = response.internalDescription,
             name = response.name,
@@ -148,7 +152,8 @@ object CatalogMapper {
             price = if (response.price != null){
                 ServicePriceModel(
                     amount = response.price.amount,
-                    vatType = response.price.vatType
+                    vatType = response.price.vatType,
+                    fix = response.price.fix
                 )
             } else {
                 null
@@ -166,6 +171,14 @@ object CatalogMapper {
             title = response.title,
             type = response.type,
             unitType = response.unitType,
+            duration = if (response.duration != null){
+                ServiceDurationModel(
+                    unitType = response.duration.unitType.asEnumOrDefault(ProductUnitType.UNKNOWN),
+                    units = response.duration.units
+                )
+            } else {
+                null
+            },
             validityFrom = response.validityFrom,
             validityTo = response.validityTo,
             versionActivatedAt = response.versionActivatedAt,
@@ -184,6 +197,9 @@ object CatalogMapper {
             title = response.title ?: "",
             code = response.code,
             icon = "${BuildConfig.BASE_URL}/api/store/${response.iconLink}",
+            logoSmall = "${BuildConfig.BASE_URL}/api/store/${response.logoSmall}",
+            logoMiddle = "${BuildConfig.BASE_URL}/api/store/${response.logoMiddle}",
+            logoLarge = "${BuildConfig.BASE_URL}/api/store/${response.logoLarge}",
             versionId = response.versionId,
             name = response.name,
             price = response.price,
@@ -197,7 +213,7 @@ object CatalogMapper {
             priceAmount = response.priceAmount,
             providerId = response.providerId,
             providerName = response.providerName,
-            quantity = response.quantity,
+            quantity = response.quantity ?: -1,
             serviceCode = response.serviceCode,
             serviceId = response.serviceId,
             serviceName = response.serviceName,
@@ -258,7 +274,8 @@ object CatalogMapper {
             productVersionId = response.productVersionId ?: "",
             status = response.status ?: "",
             validityFrom = response.validityFrom,
-            validityTo = response.validityTo
+            validityTo = response.validityTo,
+            defaultProduct = response.defaultProduct ?: false
         )
     }
 

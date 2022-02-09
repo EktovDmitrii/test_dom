@@ -27,7 +27,8 @@ import org.joda.time.LocalDateTime
 import org.joda.time.format.DateTimeFormat
 import java.io.File
 
-class ClientInteractor(
+class
+ClientInteractor(
     private val clientRepository: ClientRepository,
     private val registrationRepository: RegistrationRepository,
     private val catalogRepository: CatalogRepository,
@@ -210,6 +211,10 @@ class ClientInteractor(
         }.doOnSuccess {
             CacheHelper.loadAndSaveClient()
         }
+    }
+
+    fun getClientModelSingle(): Single<ClientModel> {
+        return clientRepository.getClient()
     }
 
     fun getEditPersonalDataViewState(): Single<EditPersonalDataViewState>{

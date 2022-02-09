@@ -5,6 +5,7 @@ import java.io.Serializable
 
 data class SingleProductLauncher(
     val productId: String,
+    val serviceId: String? = null,
     val isIncluded: Boolean = false,
     val isPurchased: Boolean = false,
     val paidDate: DateTime? = null,

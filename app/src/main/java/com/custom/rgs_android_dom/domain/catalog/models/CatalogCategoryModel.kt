@@ -10,6 +10,7 @@ data class CatalogCategoryModel(
     val logoMiddle: String,
     val logoLarge: String,
     val isPrimary: Boolean = false,
+    val sortOrder: Int,
     val productTags: List<String>,
     var products: List<ProductShortModel>,
     var subCategories: List<CatalogSubCategoryModel>

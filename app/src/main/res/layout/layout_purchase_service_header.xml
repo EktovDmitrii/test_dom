@@ -9,7 +9,7 @@
     android:background="@drawable/rectangle_filled_white_radius_24dp">
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
-        android:id="@+id/yourOrderTextView"
+        android:id="@+id/orderTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/my_service_bold"
@@ -20,10 +20,10 @@
         android:gravity="center_vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:translationTextKey="Ваш заказ" />
+        tools:hint="Ваш заказ"/>
 
     <com.custom.rgs_android_dom.views.MSDImageView
-        android:id="@+id/orderImageView"
+        android:id="@+id/logoImageView"
         android:layout_width="66dp"
         android:layout_height="66dp"
         android:layout_marginTop="8dp"
@@ -31,13 +31,13 @@
         android:outlineProvider="background"
         android:scaleType="fitXY"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/yourOrderTextView" />
+        app:layout_constraintTop_toBottomOf="@id/orderTitleTextView" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
-        android:id="@+id/orderNameTextView"
+        android:id="@+id/nameTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
+        android:layout_marginStart="16dp"
         android:fontFamily="@font/my_service_medium"
         android:textColor="@color/secondary800"
         android:textSize="14sp"
@@ -45,37 +45,35 @@
         android:ellipsize="end"
         app:lineHeight="24dp"
         android:gravity="center_vertical"
-        app:layout_constraintStart_toEndOf="@id/orderImageView"
-        app:layout_constraintTop_toTopOf="@id/orderImageView"
+        app:layout_constraintStart_toEndOf="@id/logoImageView"
+        app:layout_constraintTop_toTopOf="@id/logoImageView"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="Установка стиральной машины с большим названием в 3 строчки но не больше чем Установка стиральной машины с большим названием в 3 строчки но не больше чем" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
-        android:id="@+id/orderRemainedTimeTextView"
+        android:id="@+id/durationTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginStart="18dp"
+        android:layout_marginStart="16dp"
         android:fontFamily="@font/suisse_regular"
         android:textColor="@color/secondary600"
         android:textSize="14sp"
-        app:lineHeight="20dp"
-        android:gravity="bottom"
-        app:layout_constraintStart_toEndOf="@id/orderImageView"
-        app:layout_constraintTop_toBottomOf="@id/orderNameTextView"
-        app:translationTextKey="Работа займет ~3 часа"/>
+        android:includeFontPadding="false"
+        app:layout_constraintStart_toEndOf="@id/logoImageView"
+        app:layout_constraintTop_toBottomOf="@id/nameTextView"
+        tools:hint="Работа займет ~3 часа"/>
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
-        android:id="@+id/orderCostTextView"
+        android:id="@+id/priceTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
+        android:layout_marginStart="16dp"
         android:fontFamily="@font/suisse_regular"
         android:textColor="@color/secondary900"
         android:textSize="14sp"
-        app:lineHeight="24dp"
-        app:layout_constraintStart_toEndOf="@id/orderImageView"
-        app:layout_constraintTop_toBottomOf="@id/orderRemainedTimeTextView"
+        android:includeFontPadding="false"
+        app:layout_constraintStart_toEndOf="@id/logoImageView"
+        app:layout_constraintTop_toBottomOf="@id/durationTextView"
         tools:text="1500 Р" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

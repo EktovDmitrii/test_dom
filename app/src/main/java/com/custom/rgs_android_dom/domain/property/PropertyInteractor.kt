@@ -42,6 +42,7 @@ class PropertyInteractor(
     val propertyDetailsViewStateSubject = PublishSubject.create<PropertyDetailsViewState>()
     val propertyInfoStateSubject = PublishSubject.create<PropertyItemModel>()
     val propertyDocumentUploadedSubject = propertyRepository.getPropertyDocumentUploadedSubject()
+    val propertyDocumentDeletedSubject = propertyRepository.getPropertyDocumentDeletedSubject()
     private lateinit var documentValidationException: PropertyDocumentValidationException
 
     private var selectAddressViewState = SelectAddressViewState(
@@ -315,6 +316,10 @@ class PropertyInteractor(
 
     fun onFilesToUploadSelected(files: List<Uri>) {
         propertyRepository.onFilesToUploadSelected(files)
+    }
+
+    fun onFilesToDeleteSelected(propertyItemModel: PropertyItemModel){
+        propertyRepository.onFileToDeleteSelected(propertyItemModel)
     }
 
     private fun validateFiles(files: List<File>): Boolean {

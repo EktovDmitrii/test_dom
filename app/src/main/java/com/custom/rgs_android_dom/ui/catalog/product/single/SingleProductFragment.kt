@@ -42,36 +42,40 @@ class SingleProductFragment :
         super.onViewCreated(view, savedInstanceState)
 
         binding.advantagesLayout.advantagesRecycler.adapter = ProductAdvantagesAdapter()
+        binding.features.featuresValue1.text = "Поддержка 24/7"
 
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
         }
-//        if (requireArguments().getBoolean(ARG_IS_PRODUCT_INCLUDED, false))
-//            binding.priceView.type = MSDProductPriceView.PriceType.Included
+
+        binding.checkoutButton.root.setOnDebouncedClickListener {
+            viewModel.onCheckoutClick()
+        }
+
+        binding.features.featuresValue1.text = "Поддержка 24/7"
+
         subscribe(viewModel.productObserver) { product ->
             GlideApp.with(requireContext())
                 .load(GlideUrlProvider.makeHeadersGlideUrl(product.iconLink))
                 .transform(RoundedCorners(6.dp(requireContext())))
                 .into(binding.header.iconImageView)
             GlideApp.with(requireContext())
-                .load(GlideUrlProvider.makeHeadersGlideUrl(product.logoMiddle))
+                .load(GlideUrlProvider.makeHeadersGlideUrl(product.logoLarge))
                 .transform(RoundedCorners(16.dp(requireContext())))
                 .into(binding.header.logoImageView)
 
-            binding.validity.validityValue.text =
-                "${product.duration?.units} ${product.duration?.unitType?.description}"
+            binding.validity.validityValue.text = product.duration.toString() + " после покупки"
             binding.header.headerTitle.text = product.name
             binding.header.headerDescription.text = product.title
             binding.about.aboutValue.text = product.description
             binding.priceView.type = when {
                 product.isPurchased -> MSDProductPriceView.PriceType.Purchased
-                product.isIncluded -> MSDProductPriceView.PriceType.Included
                 product.price?.fix == true -> MSDProductPriceView.PriceType.Fixed
                 else -> MSDProductPriceView.PriceType.Unfixed
             }
             product.price?.amount?.let { price ->
                 binding.priceView.setPrice(price)
-                binding.detailButton.btnPrice.text = price.formatPrice(isFixed = product.price.fix)
+                binding.checkoutButton.btnPrice.text = price.formatPrice(isFixed = product.price.fix)
             }
             product.advantages?.let {
                 advantagesAdapter.setItems(it)
@@ -80,16 +84,13 @@ class SingleProductFragment :
             product.deliveryTime?.let {
                 binding.longness.longnessValue.text = "$it"
             }
-            binding.features.featuresValue1.text = "Поддержка 24/7"
 
             if (product.isPurchased) {
-                binding.detailButton.btnTitle.text = "Заказать"
-                binding.detailButton.btnTitle.gravity = Gravity.CENTER
-                binding.detailButton.btnPriceGroup.gone()
+                binding.checkoutButton.btnTitle.text = "Заказать"
+                binding.checkoutButton.btnPriceGroup.gone()
             } else {
-                binding.detailButton.btnTitle.text = "Оформить"
-                binding.detailButton.btnTitle.gravity = Gravity.CENTER_VERTICAL or Gravity.START
-                binding.detailButton.btnPriceGroup.visible()
+                binding.checkoutButton.btnTitle.text = "Оформить"
+                binding.checkoutButton.btnPriceGroup.visible()
             }
         }
         subscribe(viewModel.productAddressObserver) { address ->
