@@ -62,7 +62,7 @@
                     layout="@layout/view_static_progress"/>
 
                 <TextView
-                    android:id="@+id/payStateTextView"
+                    android:id="@+id/topPaymentStateTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/primary500"
@@ -163,12 +163,67 @@
                     android:paddingHorizontal="20dp"
                     tools:text="Ярік бачок потік "/>
 
-                <FrameLayout
+                <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary800"
+                    android:fontFamily="@font/my_service_bold"
+                    android:textSize="16sp"
+                    android:paddingHorizontal="20dp"
                     android:layout_marginTop="36dp"
+                    app:translationTextKey="Оплата"/>
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary500"
+                    android:fontFamily="@font/suisse_regular"
+                    android:textSize="16sp"
+                    android:paddingHorizontal="20dp"
+                    android:layout_marginTop="16dp"
+                    app:translationTextKey="Стоимость"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/priceTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/secondary900"
+                        android:fontFamily="@font/suisse_semi_bold"
+                        android:textSize="16sp"
+                        tools:text="1 500 ₽"/>
+
+                    <TextView
+                        android:id="@+id/paymentStateTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/secondary500"
+                        android:fontFamily="@font/suisse_regular"
+                        android:textSize="14sp"
+                        android:layout_marginStart="8dp"
+                        tools:text="Ожидает оплату"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/billPayTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginBottom="40dp"
-                    android:background="@color/black"/>
+                    android:background="@drawable/rectangle_filled_primary_500_radius_8dp"
+                    android:gravity="center"
+                    android:paddingHorizontal="16dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:fontFamily="@font/my_service_medium"
+                    android:textSize="14sp"
+                    android:textColor="@color/white"
+                    app:translationTextKey="Оплатить" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/feedbackLinearLayout"
