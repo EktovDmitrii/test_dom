@@ -34,9 +34,6 @@ class ServiceViewModel(
     private val productValidToController = MutableLiveData<String?>()
     val productValidToObserver: LiveData<String?> = productValidToController
 
-    private val productPaidDateController = MutableLiveData<String?>()
-    val productPaidDateObserver: LiveData<String?> = productPaidDateController
-
     private val orderTextViewVisibleController = MutableLiveData<Boolean>()
     val orderTextViewVisibleObserver: LiveData<Boolean> = orderTextViewVisibleController
 
@@ -47,7 +44,6 @@ class ServiceViewModel(
         productValidToController.value = service.purchaseValidTo?.formatTo(
             DATE_PATTERN_DATE_FULL_MONTH
         )
-        productPaidDateController.value = service.paidDate?.formatTo(DATE_PATTERN_DATE_ONLY)
 
         catalogInteractor.getProductServiceDetails(service.productId, service.serviceId)
             .subscribeOn(Schedulers.io())

@@ -3,10 +3,12 @@ package com.custom.rgs_android_dom.ui.main
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.ItemMainPopularProductBinding
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
 import com.custom.rgs_android_dom.utils.GlideApp
+import com.custom.rgs_android_dom.utils.dp
 import com.custom.rgs_android_dom.utils.formatPrice
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 
@@ -49,17 +51,18 @@ class PopularProductsAdapter(private val onProductClick: (productId: String) -> 
             binding.labelTextView.text = model.name
             binding.priceTextView.text = model.price.formatPrice()
 
-            // todo change icons when response data is appropriate
-            model.icon.let {
+            model.logoLarge.let {
                 GlideApp.with(binding.root.context)
                     .load(GlideUrlProvider.makeHeadersGlideUrl(it))
+                    .transform(RoundedCorners(20.dp(binding.root.context)))
                     .into(binding.largeLogoImageView)
             }
 
             model.icon.let {
                 GlideApp.with(binding.root.context)
                     .load(GlideUrlProvider.makeHeadersGlideUrl(it))
-                    .into(binding.largeLogoImageView)
+                    .transform(RoundedCorners(6.dp(binding.root.context)))
+                    .into(binding.smallLogoImageView)
             }
 
         }

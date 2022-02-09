@@ -100,11 +100,6 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
                 binding.validityUntill.root.visible()
             }
         }
-        subscribe(viewModel.productPaidDateObserver) { paidDate ->
-            paidDate?.let {
-                binding.priceView.setPurchasedDate(it)
-            }
-        }
     }
 
     override fun getThemeResource(): Int {
