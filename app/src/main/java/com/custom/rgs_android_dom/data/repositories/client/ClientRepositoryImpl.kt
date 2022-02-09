@@ -206,12 +206,11 @@ class ClientRepositoryImpl(
     override fun getOrders(size: Long, index: Long): Single<List<OrderItemModel>> {
         return api.getOrders()
             .flatMap { orderResponse ->
-                Single.just(ClientOrdersMapper.responseToOrderItem(emptyList(), orderResponse))
-                /*val orderIds = orderResponse.orders.map { order -> order.id }
-                getGeneralInvoices(size, index, "", "", "", orderIds.joinToString(","), true)
+                val orderIds = orderResponse.orders.map { order -> order.id }
+                getGeneralInvoices(size = size, index = index, orderIds = orderIds.joinToString(","), withPayments = true)
                     .flatMap {
                         Single.just(ClientOrdersMapper.responseToOrderItem(it, orderResponse))
-                    }*/
+                    }
             }
 
     }
@@ -219,15 +218,16 @@ class ClientRepositoryImpl(
     override fun getGeneralInvoices(
         size: Long,
         index: Long,
-        status: String,
-        num: String,
-        fullText: String,
+        status: String?,
+        num: String?,
+        fullText: String?,
         orderIds: String,
         withPayments: Boolean
     ): Single<List<GeneralInvoice>> {
-        val client = clientSharedPreferences.getClient()
-        return api.getGeneralInvoices(client?.userId ?: "", size, index, status, num, fullText, orderIds, withPayments)
-            .flatMap { Single.just(GeneralInvoiceMapper.responseToDomainModel(it)) }
+        return api.getGeneralInvoices(size = size, index = index, orderIds = orderIds, withPayments = withPayments)
+            .flatMap {
+                Single.just(GeneralInvoiceMapper.responseToDomainModel(it))
+            }
     }
 
 }

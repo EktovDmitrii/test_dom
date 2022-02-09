@@ -54,9 +54,9 @@ interface ClientRepository {
     fun getGeneralInvoices(
         size: Long,
         index: Long,
-        status: String,
-        num: String,
-        fullText: String,
+        status: String? = null,
+        num: String? = null,
+        fullText: String? = null,
         orderIds: String,
         withPayments: Boolean
     ): Single<List<GeneralInvoice>>
