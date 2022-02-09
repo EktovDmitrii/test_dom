@@ -102,7 +102,7 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
     override fun getClientProducts(): Single<List<ClientProductModel>> {
         return api.getClientProducts(5000, 0).map {response ->
             return@map if (response.clientProducts != null){
-                response.clientProducts.map { CatalogMapper.responseToClientProduct(it) }.filter { !it.defaultProduct }
+                response.clientProducts.map { CatalogMapper.responseToClientProduct(it) }
             } else listOf()
         }
     }
