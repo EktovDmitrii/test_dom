@@ -80,18 +80,19 @@ class OrderDetailFragment :
                 Html.FROM_HTML_MODE_LEGACY
             )
             binding.billPayTextView.visibleIf(state.status == OrderStatus.DRAFT || state.status == OrderStatus.CONFIRMED)
-            initGeneralInvoices(state.generalInvoice)
+            initGeneralInvoices(state.status, state.generalInvoice)
 
             initCancelOrderButton(state.status)
         }
     }
 
-    private fun initGeneralInvoices(invoices: List<GeneralInvoice>?) {
+    private fun initGeneralInvoices(status: OrderStatus, invoices: List<GeneralInvoice>?) {
         binding.generalInvoicesContainer.removeAllViews()
         invoices?.forEach {
             ItemOrderGeneralInvoiceBinding.inflate(LayoutInflater.from(context), binding.generalInvoicesContainer, false).apply {
                 this.fullPriceTextView.text = it.getFullPrice().formatPrice()
-                paymentStateTextView.gone()
+                paymentStateTextView.visibleIf(status == OrderStatus.CANCELLED)
+                paymentStateTextView.text = "Счёт аннулирован"
                 it.items.map { invoiceItem ->
                     initServiceItem(servicesContainer, invoiceItem)
                 }

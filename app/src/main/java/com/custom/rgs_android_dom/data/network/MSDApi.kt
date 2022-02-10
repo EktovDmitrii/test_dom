@@ -231,7 +231,7 @@ interface MSDApi {
     @GET("clients/me/orders")
     fun getOrders(): Single<OrdersResponse>
 
-    @GET("client/me/general-invoices")
+    @GET("clients/me/billing/general-invoices")
     fun getGeneralInvoices(
         @Query("size") size: Long,
         @Query("index") index: Long,

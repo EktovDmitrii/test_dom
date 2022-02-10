@@ -55,6 +55,8 @@ data class Order(
     fun getPaymentStateWithDate(): String {
         return if (status == OrderStatus.DRAFT || status == OrderStatus.CONFIRMED) {
             "<font color=\"${"#8E8F8F"}\">Ожидает оплату</font>"
+        } else if (status == OrderStatus.CANCELLED) {
+            "Счёт аннулирован"
         } else {
             "<font color=\"${"#EEA641"}\">Оплачено</font>"
         }
