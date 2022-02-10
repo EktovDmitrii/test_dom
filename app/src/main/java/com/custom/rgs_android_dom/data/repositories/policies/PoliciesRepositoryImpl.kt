@@ -1,7 +1,6 @@
 package com.custom.rgs_android_dom.data.repositories.policies
 
 import android.annotation.SuppressLint
-import android.util.Log
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
 import com.custom.rgs_android_dom.data.network.requests.BindPolicyRequest

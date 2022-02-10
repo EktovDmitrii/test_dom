@@ -28,7 +28,22 @@ object ChatMapper{
                 sender = if (messageResponse.userId == userId) Sender.ME else Sender.OPPONENT,
                 createdAt = messageResponse.createdAt.withZone(DateTimeZone.getDefault()).toLocalDateTime(),
                 type = messageResponse.type,
-                member = null
+                member = null,
+                widget = messageResponse.details?.let {
+                    val avatar = if (it.avatar.isNotEmpty()) {
+                        "${AVATAR_ENDPOINT}/${it.avatar}"
+                    } else {
+                        ""
+                    }
+                    WidgetModel(
+                        avatar = avatar,
+                        description = it.description,
+                        name = it.name,
+                        price = WidgetPriceModel(amount = it.price.amount,vatType = it.price.vatType),
+                        productId = it.productId,
+                        widgetType = it.widgetType
+                    )
+                }
             )
         }
     }
@@ -45,7 +60,22 @@ object ChatMapper{
             sender = if (messageResponse.userId == userId) Sender.ME else Sender.OPPONENT,
             createdAt = messageResponse.createdAt.withZone(DateTimeZone.getDefault()).toLocalDateTime(),
             type = messageResponse.type,
-            member = null
+            member = null,
+            widget = messageResponse.details?.let {
+                val avatar = if (it.avatar.isNotEmpty()) {
+                    "${AVATAR_ENDPOINT}/${it.avatar}"
+                } else {
+                    ""
+                }
+                WidgetModel(
+                    avatar = avatar,
+                    description = it.description,
+                    name = it.name,
+                    price = WidgetPriceModel(amount = it.price.amount,vatType = it.price.vatType),
+                    productId = it.productId,
+                    widgetType = it.widgetType
+                )
+            }
         )
     }
 

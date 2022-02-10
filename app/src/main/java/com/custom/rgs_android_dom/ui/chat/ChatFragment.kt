@@ -57,10 +57,17 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
         layoutManager.stackFromEnd = true
         binding.messagesRecyclerView.layoutManager = layoutManager
 
-        binding.messagesRecyclerView.adapter = ChatAdapter() {
-            viewModel.onFileClick(it)
-            hideSoftwareKeyboard()
-        }
+        binding.messagesRecyclerView.adapter = ChatAdapter(
+            {
+                viewModel.onFileClick(it)
+                hideSoftwareKeyboard()
+            },
+            {
+               if (it != null) {
+                   viewModel.onProductClick(it)
+               }
+            }
+        )
 
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
