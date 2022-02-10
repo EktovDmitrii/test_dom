@@ -42,7 +42,6 @@ class SingleProductFragment :
         super.onViewCreated(view, savedInstanceState)
 
         binding.advantagesLayout.advantagesRecycler.adapter = ProductAdvantagesAdapter()
-        binding.features.featuresValue1.text = "Поддержка 24/7"
 
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
@@ -56,10 +55,6 @@ class SingleProductFragment :
 
         subscribe(viewModel.productObserver) { product ->
             GlideApp.with(requireContext())
-                .load(GlideUrlProvider.makeHeadersGlideUrl(product.iconLink))
-                .transform(RoundedCorners(6.dp(requireContext())))
-                .into(binding.header.iconImageView)
-            GlideApp.with(requireContext())
                 .load(GlideUrlProvider.makeHeadersGlideUrl(product.logoLarge))
                 .transform(RoundedCorners(16.dp(requireContext())))
                 .into(binding.header.logoImageView)
@@ -68,10 +63,12 @@ class SingleProductFragment :
             binding.header.headerTitle.text = product.name
             binding.header.headerDescription.text = product.title
             binding.about.aboutValue.text = product.description
-            binding.priceView.type = when {
-                product.isPurchased -> MSDProductPriceView.PriceType.Purchased
-                product.price?.fix == true -> MSDProductPriceView.PriceType.Fixed
-                else -> MSDProductPriceView.PriceType.Unfixed
+
+            binding.priceView.goneIf(product.isPurchased)
+            binding.priceView.type = if (product.price?.fix == true) {
+                MSDProductPriceView.PriceType.Fixed
+            } else {
+                MSDProductPriceView.PriceType.Unfixed
             }
             product.price?.amount?.let { price ->
                 binding.priceView.setPrice(price)
@@ -87,27 +84,11 @@ class SingleProductFragment :
 
             if (product.isPurchased) {
                 binding.checkoutButton.btnTitle.text = "Заказать"
+                binding.checkoutButton.btnTitle.gravity = Gravity.CENTER
                 binding.checkoutButton.btnPriceGroup.gone()
             } else {
                 binding.checkoutButton.btnTitle.text = "Оформить"
                 binding.checkoutButton.btnPriceGroup.visible()
-            }
-        }
-        subscribe(viewModel.productAddressObserver) { address ->
-            address?.let {
-                binding.address.addressValue.text = it
-                binding.address.root.visible()
-            }
-        }
-        subscribe(viewModel.productValidToObserver) { validTo ->
-            validTo?.let {
-                binding.validityUntill.validityTillValue.text = it
-                binding.validityUntill.root.visible()
-            }
-        }
-        subscribe(viewModel.productPaidDateObserver) { paidDate ->
-            paidDate?.let {
-                binding.priceView.setPurchasedDate(it)
             }
         }
     }
