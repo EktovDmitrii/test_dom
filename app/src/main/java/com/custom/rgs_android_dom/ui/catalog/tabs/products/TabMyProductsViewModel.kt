@@ -11,8 +11,8 @@ import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
 import com.custom.rgs_android_dom.ui.catalog.product.ProductLauncher
-import com.custom.rgs_android_dom.ui.catalog.product.service.ServiceFragment
-import com.custom.rgs_android_dom.ui.catalog.product.service.ServiceLauncher
+import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
+import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductLauncher
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.navigation.TargetScreen
@@ -97,28 +97,14 @@ class TabMyProductsViewModel(
 
     fun onProductClick(product: ClientProductModel) {
         if (product.defaultProduct){
-            catalogInteractor.getProductServices(product.productId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                    onSuccess = {services->
-                        val service = services[0]
-                        val serviceFragment = ServiceFragment.newInstance(
-                            ServiceLauncher(
-                                productId = product.productId,
-                                serviceId = service.serviceId,
-                                isPurchased = true,
-                                purchaseValidTo = product.validityTo,
-                                purchaseObjectId = product.objectId,
-                                quantity = service.quantity
-                            )
-                        )
-                        ScreenManager.showBottomScreen(serviceFragment)
-                    },
-                    onError = {
-                        logException(this, it)
-                    }
-                ).addTo(dataCompositeDisposable)
+            ScreenManager.showBottomScreen(
+                SingleProductFragment.newInstance(
+                    SingleProductLauncher(
+                        productId = product.productId,
+                        isPurchased = true
+                    )
+                )
+            )
         } else {
             ScreenManager.showBottomScreen(
                 ProductFragment.newInstance(

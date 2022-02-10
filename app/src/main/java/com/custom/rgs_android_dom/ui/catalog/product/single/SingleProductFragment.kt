@@ -51,8 +51,6 @@ class SingleProductFragment :
             viewModel.onCheckoutClick()
         }
 
-        binding.features.featuresValue1.text = "Поддержка 24/7"
-
         subscribe(viewModel.productObserver) { product ->
             GlideApp.with(requireContext())
                 .load(GlideUrlProvider.makeHeadersGlideUrl(product.logoLarge))
