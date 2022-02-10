@@ -50,8 +50,6 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
             viewModel.onServiceOrderClick()
         }
 
-        binding.features.featuresValue1.text = "Поддержка 24/7"
-
         subscribe(viewModel.serviceObserver) { service ->
             GlideApp.with(requireContext())
                 .load(GlideUrlProvider.makeHeadersGlideUrl(service.iconLink))

@@ -95,14 +95,14 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
 
     override fun getAvailableServices(): Single<List<AvailableServiceModel>> {
         return api.getAvailableServices(5000, 0, true).map { response->
-            CatalogMapper.responseToBalanceServices(response)
+            CatalogMapper.responseToBalanceServices(response).filter { it.available > 0 }
         }
     }
 
     override fun getClientProducts(): Single<List<ClientProductModel>> {
         return api.getClientProducts(5000, 0, null).map {response ->
             return@map if (response.clientProducts != null){
-                response.clientProducts.map { CatalogMapper.responseToClientProduct(it) }.filter { !it.defaultProduct }
+                response.clientProducts.map { CatalogMapper.responseToClientProduct(it) }
             } else listOf()
         }
     }

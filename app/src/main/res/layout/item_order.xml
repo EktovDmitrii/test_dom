@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingHorizontal="20dp"
+    android:paddingTop="20dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/orderImageView"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/bg_secondary100_rounded_16dp"
+        android:outlineProvider="background"
+        android:scaleType="fitXY"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/orderNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:fontFamily="@font/suisse_regular"
+        android:textColor="@color/secondary900"
+        android:textSize="16sp"
+        android:maxLines="3"
+        android:ellipsize="end"
+        app:lineHeight="24dp"
+        android:gravity="center_vertical"
+        app:layout_constraintStart_toEndOf="@id/orderImageView"
+        app:layout_constraintTop_toTopOf="@id/orderImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Установка стиральной машины с большим названием в 3 строчки но не больше чем это арр врааврраврарва" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/orderDetailTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:fontFamily="@font/suisse_regular"
+        android:textSize="12sp"
+        app:lineHeight="20dp"
+        android:textColor="@color/secondary500"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/orderNameTextView"
+        app:layout_constraintStart_toEndOf="@id/orderImageView"
+        tools:text="Завершён  •  2 050 ₽  •  11.11.21"/>
+
+    <LinearLayout
+        android:id="@+id/billContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toEndOf="@id/orderImageView"
+        app:layout_constraintTop_toBottomOf="@id/orderDetailTextView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

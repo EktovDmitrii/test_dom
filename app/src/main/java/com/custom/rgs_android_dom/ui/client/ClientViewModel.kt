@@ -4,13 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.client.view_states.ClientShortViewState
+import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.models.AddPropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
-import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.about_app.AboutAppFragment
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.client.agent.AgentFragment
+import com.custom.rgs_android_dom.ui.client.orders.OrdersFragment
 import com.custom.rgs_android_dom.ui.client.personal_data.PersonalDataFragment
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -114,6 +115,10 @@ class ClientViewModel(
 
     fun onNotCreatedScreenClick(){
         ScreenManager.showScreen(ScreenStubFragment())
+    }
+
+    fun onOrdersHistoryClick() {
+        ScreenManager.showScreen(OrdersFragment())
     }
 
     fun onAddPropertyClick(){

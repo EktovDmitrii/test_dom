@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.catalog.tabs.products
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
@@ -10,6 +11,8 @@ import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
 import com.custom.rgs_android_dom.ui.catalog.product.ProductLauncher
+import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
+import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductLauncher
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.navigation.TargetScreen
@@ -93,16 +96,27 @@ class TabMyProductsViewModel(
     }
 
     fun onProductClick(product: ClientProductModel) {
-        ScreenManager.showBottomScreen(
-            ProductFragment.newInstance(
-                ProductLauncher(
-                    productId = product.productId,
-                    isPurchased = true,
-                    purchaseValidTo = product.validityTo,
-                    purchaseObjectId = product.objectId
+        if (product.defaultProduct){
+            ScreenManager.showBottomScreen(
+                SingleProductFragment.newInstance(
+                    SingleProductLauncher(
+                        productId = product.productId,
+                        isPurchased = true
+                    )
                 )
             )
-        )
+        } else {
+            ScreenManager.showBottomScreen(
+                ProductFragment.newInstance(
+                    ProductLauncher(
+                        productId = product.productId,
+                        isPurchased = true,
+                        purchaseValidTo = product.validityTo,
+                        purchaseObjectId = product.objectId
+                    )
+                )
+            )
+        }
     }
 
     fun onAddPolicyClick(){
@@ -132,4 +146,5 @@ class TabMyProductsViewModel(
         }
 
     }
+
 }

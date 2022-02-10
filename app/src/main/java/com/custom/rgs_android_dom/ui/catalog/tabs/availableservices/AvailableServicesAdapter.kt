@@ -54,7 +54,7 @@ class AvailableServicesAdapter(
 
         override fun bind(item: AvailableServiceModel) {
             GlideApp.with(binding.iconImageView.context)
-                .load(item.productIcon)
+                .load(item.serviceIcon)
                 .transform(
                     CenterCrop(),
                     RoundedCorners(8f.dp(binding.iconImageView.context).toInt())
@@ -65,6 +65,7 @@ class AvailableServicesAdapter(
 
             binding.nameTextView.text = item.serviceName
             if (item.available == INFINITY) {
+                binding.quantityTextView.text = ""
                 binding.quantityTextView.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.ic_infinity, 0, 0, 0
                 )

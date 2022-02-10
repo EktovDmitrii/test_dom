@@ -4,7 +4,7 @@ data class ServiceShortModel(
     val priceAmount: Long?,
     val providerId: String?,
     val providerName: String?,
-    val quantity: Long,
+    var quantity: Long,
     val serviceCode: String?,
     val serviceId: String,
     val serviceName: String?,

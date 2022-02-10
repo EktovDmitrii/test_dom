@@ -65,39 +65,6 @@
         android:visibility="gone"
         app:constraint_referenced_ids="priceUnfixedValue, priceUnfixedTextView" />
 
-    <com.custom.rgs_android_dom.views.text.MSDTextView
-        android:id="@+id/pricePurchasedValue"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/material_margin_super_small"
-        android:fontFamily="@font/my_service_bold"
-        android:textColor="@color/secondary900"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/priceTitle"
-        app:translationTextKey="1500 ₽" />
-
-    <com.custom.rgs_android_dom.views.text.MSDTextView
-        android:id="@+id/pricePurchasedDate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/material_margin_super_small"
-        android:fontFamily="@font/suisse_regular"
-        android:textColor="@color/secondary900"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pricePurchasedValue"
-        app:translationTextKey="Оплачено 12.12.2021" />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/pricePurchasedGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="pricePurchasedValue, pricePurchasedDate" />
-
     <androidx.cardview.widget.CardView
         android:id="@+id/priceIncludedImageView"
         android:layout_width="24dp"

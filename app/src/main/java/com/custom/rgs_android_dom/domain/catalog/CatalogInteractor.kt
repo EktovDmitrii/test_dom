@@ -57,7 +57,13 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
     }
 
     fun getProductServices(productId: String): Single<List<ServiceShortModel>> {
-        return catalogRepository.getProductServices(productId)
+        return catalogRepository.getProductServices(productId).map { services->
+            services.forEach { service->
+                val availableService = catalogRepository.getAvailableServiceInProduct(productId, service.serviceId).blockingGet()
+                service.quantity = availableService.available.toLong()
+            }
+            services
+        }
     }
 
     fun getProductServiceDetails(productId: String, serviceId: String): Single<ServiceModel> {
@@ -86,12 +92,11 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
     }
 
     fun getPopularCategories(): Single<List<CatalogCategoryModel>>{
-        return catalogRepository.getCatalogCategories()
-            .map {
-                it.filter {
-                    it.subCategories.isNotEmpty() && it.productTags.contains(TAG_POPULAR_CATEGORIES)
-                }.take(CNT_POPULAR_CATEGORIES_IN_MAIN)
-            }
+        return getCatalogCategories().map {
+            it.filter {
+                it.subCategories.isNotEmpty() && it.productTags.contains(TAG_POPULAR_CATEGORIES)
+            }.take(CNT_POPULAR_CATEGORIES_IN_MAIN)
+        }
     }
 
     fun getAvailableServices(): Single<List<AvailableServiceModel>>{

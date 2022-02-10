@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/secondary800"
+        android:fontFamily="@font/my_service_bold"
+        android:textSize="16sp"
+        android:paddingHorizontal="20dp"
+        android:layout_marginTop="36dp"
+        app:translationTextKey="Дополнительный счёт" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/secondary500"
+        android:fontFamily="@font/suisse_regular"
+        android:textSize="16sp"
+        android:paddingHorizontal="20dp"
+        android:layout_marginTop="16dp"
+        app:translationTextKey="Услуги"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/servicesContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="20dp"
+        android:orientation="vertical"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@color/secondary200"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:orientation="horizontal">
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:textColor="@color/secondary900"
+            android:fontFamily="@font/suisse_semi_bold"
+            android:textSize="16sp"
+            android:layout_marginTop="7dp"
+            app:translationTextKey="Итоговая стоимость"/>
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/fullPriceTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/secondary900"
+            android:fontFamily="@font/suisse_semi_bold"
+            android:textSize="16sp"
+            android:textAlignment="textEnd"
+            android:layout_marginTop="7dp"
+            app:translationTextKey="4 500 ₽"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <TextView
+        android:id="@+id/paymentStateTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/secondary500"
+        android:fontFamily="@font/suisse_regular"
+        android:textSize="14sp"
+        android:layout_marginTop="12dp"
+        android:paddingHorizontal="20dp"
+        tools:text="Ожидает оплату"/>
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/billPayTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rectangle_filled_primary_500_radius_8dp"
+        android:gravity="center"
+        android:paddingHorizontal="16dp"
+        android:layout_marginHorizontal="20dp"
+        android:fontFamily="@font/my_service_medium"
+        android:textSize="14sp"
+        android:textColor="@color/white"
+        app:translationTextKey="Оплатить" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

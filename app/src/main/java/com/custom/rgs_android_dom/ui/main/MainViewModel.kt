@@ -20,6 +20,7 @@ import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductLaunche
 import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchFragment
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
+import com.custom.rgs_android_dom.ui.client.orders.OrdersFragment
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -124,6 +125,9 @@ class MainViewModel(
                     if (registrationInteractor.isAuthorized()) {
                         when (requestedScreen) {
                             TargetScreen.POLICIES -> ScreenManager.showScreen(PoliciesFragment())
+                            TargetScreen.ORDERS -> {
+                                // TODO ADD NAVIGATION TO ORDERS SCREEN
+                            }
                             TargetScreen.UNSPECIFIED -> {}
                         }
                         requestedScreen = TargetScreen.UNSPECIFIED
@@ -224,6 +228,15 @@ class MainViewModel(
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
         } else {
             ScreenManager.showBottomScreen(MainCatalogFragment.newInstance(MainCatalogFragment.TAB_MY_PRODUCTS))
+        }
+    }
+
+    fun onOrdersClick(){
+        if (registrationInteractor.isAuthorized()) {
+            ScreenManager.showScreen(OrdersFragment())
+        } else {
+            requestedScreen = TargetScreen.ORDERS
+            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
         }
     }
 

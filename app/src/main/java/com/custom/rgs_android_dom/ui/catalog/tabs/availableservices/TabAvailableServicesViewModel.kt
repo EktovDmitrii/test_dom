@@ -83,17 +83,39 @@ class TabAvailableServicesViewModel(
     }
 
     fun onServiceClick(service: AvailableServiceModel) {
-        val singleProductFragment = ServiceFragment.newInstance(
-            ServiceLauncher(
-                productId = service.productId,
-                serviceId = service.serviceId,
-                isPurchased = true,
-                purchaseObjectId = service.objectId,
-                purchaseValidTo = service.validityTo,
-                quantity = service.available.toLong()
-            )
-        )
-        ScreenManager.showBottomScreen(singleProductFragment)
+        catalogInteractor.getProduct(service.productId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = { product ->
+                    if (product.defaultProduct) {
+                        ScreenManager.showBottomScreen(
+                            SingleProductFragment.newInstance(
+                                SingleProductLauncher(
+                                    productId = product.id,
+                                    isPurchased = true
+                                )
+                            )
+                        )
+                    } else {
+                        ScreenManager.showBottomScreen(
+                            ServiceFragment.newInstance(
+                                ServiceLauncher(
+                                    productId = service.productId,
+                                    serviceId = service.serviceId,
+                                    isPurchased = true,
+                                    purchaseObjectId = service.objectId,
+                                    purchaseValidTo = service.validityTo,
+                                    quantity = service.available.toLong()
+                                )
+                            )
+                        )
+                    }
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
     }
 
     private fun loadAvailableServices(){
