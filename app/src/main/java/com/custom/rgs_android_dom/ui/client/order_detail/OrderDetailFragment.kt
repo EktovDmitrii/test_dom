@@ -2,12 +2,16 @@ package com.custom.rgs_android_dom.ui.client.order_detail
 
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.text.Html
+import android.view.LayoutInflater
 import android.view.View
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.ContextCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentOrderDetailBinding
-import com.custom.rgs_android_dom.domain.client.models.Order
-import com.custom.rgs_android_dom.domain.client.models.OrderStatus
+import com.custom.rgs_android_dom.databinding.ItemOrderGeneralInvoiceBinding
+import com.custom.rgs_android_dom.databinding.ItemOrderGeneralInvoiceServiceBinding
+import com.custom.rgs_android_dom.domain.client.models.*
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
@@ -59,16 +63,50 @@ class OrderDetailFragment :
         }
 
         subscribe(viewModel.orderViewStateObserver) { state ->
+            val service = if (state.services?.isNotEmpty() == true) state.services[0] else null
             binding.orderStateTextView.text = state.getOrderStateTitle()
-            initStaticProgressView(state.orderStatus)
-            binding.topPaymentStateTextView.text = state.paymentStatus
-            binding.serviceNameTextView.text = state.serviceName
-            binding.addressTextView.text = state.address
-            binding.dateTimeTextView.text = state.dateTime
+            initStaticProgressView(state.status)
+            binding.topPaymentStateTextView.text = state.getPaymentState()
+            binding.serviceNameTextView.text = service?.serviceName
+            binding.addressTextView.text = state.address?.address
+            binding.dateTimeTextView.text = state.getDateTime()
             binding.commentTextView.text = state.comment
-            binding.commentTitleTextView.visibleIf(state.comment.isNotBlank())
-            binding.commentTextView.visibleIf(state.comment.isNotBlank())
-            initCancelOrderButton(state.orderStatus)
+            binding.commentTitleTextView.visibleIf(state.comment?.isNotBlank() == true)
+            binding.commentTextView.visibleIf(state.comment?.isNotBlank() == true)
+
+            binding.priceTextView.text = (service?.productPrice ?: 0).formatPrice()
+            binding.paymentStateTextView.text = Html.fromHtml(
+                state.getPaymentStateWithDate(),
+                Html.FROM_HTML_MODE_LEGACY
+            )
+            binding.billPayTextView.visibleIf(state.status == OrderStatus.DRAFT || state.status == OrderStatus.CONFIRMED)
+            initGeneralInvoices(state.generalInvoice)
+
+            initCancelOrderButton(state.status)
+        }
+    }
+
+    private fun initGeneralInvoices(invoices: List<GeneralInvoice>?) {
+        binding.generalInvoicesContainer.removeAllViews()
+        invoices?.forEach {
+            ItemOrderGeneralInvoiceBinding.inflate(LayoutInflater.from(context), binding.generalInvoicesContainer, false).apply {
+                this.fullPriceTextView.text = it.getFullPrice().formatPrice()
+                paymentStateTextView.gone()
+                it.items.map { invoiceItem ->
+                    initServiceItem(servicesContainer, invoiceItem)
+                }
+                binding.generalInvoicesContainer.addView(root)
+            }
+        }
+    }
+
+    private fun initServiceItem(container: LinearLayoutCompat, invoiceItemModel: GeneralInvoiceItem) {
+        ItemOrderGeneralInvoiceServiceBinding.inflate(LayoutInflater.from(context), container, false).apply {
+            serviceNameTextView.text = invoiceItemModel.getNameWithAmount()
+            counterTextView.visibleIf(invoiceItemModel.quantity != null && invoiceItemModel.quantity > 1)
+            counterTextView.text = invoiceItemModel.quantity?.toString()
+            priceTextView.text = invoiceItemModel.getPriceText()
+            container.addView(root)
         }
     }
 

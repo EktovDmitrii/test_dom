@@ -215,7 +215,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="32dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginBottom="40dp"
                     android:background="@drawable/rectangle_filled_primary_500_radius_8dp"
                     android:gravity="center"
                     android:paddingHorizontal="16dp"
@@ -226,10 +225,17 @@
                     app:translationTextKey="Оплатить" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/generalInvoicesContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/feedbackLinearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:layout_marginTop="40dp"
                     android:layout_marginHorizontal="20dp"
                     android:paddingVertical="12dp"
                     android:layout_marginBottom="39dp"

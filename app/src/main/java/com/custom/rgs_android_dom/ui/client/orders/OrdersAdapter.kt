@@ -79,7 +79,7 @@ class OrdersAdapter(
         private fun initBillItems(billContainer: LinearLayout, item: Order) {
             val context = billContainer.context
             billContainer.removeAllViews()
-            val invoices = item.generalInvoice?.items ?: emptyList()
+            val invoices = item.generalInvoice ?: emptyList()
             val service = if (item.services?.isNotEmpty() == true) item.services[0] else null
             val status = item.status
             if (status == OrderStatus.DRAFT || status == OrderStatus.CONFIRMED) {
@@ -124,9 +124,9 @@ class OrdersAdapter(
                     logoSmall = if (service?.serviceLogoMiddle?.isNotBlank() == true) service.serviceLogoMiddle else "empty",
                     name = service?.serviceName ?: "",
                     price = ProductPriceModel(
-                        amount = it.amount,
+                        amount = null,
                         fix = service?.serviceFixPrice ?: false,
-                        vatType = it.vatType?.toString()
+                        vatType = null
                     )
                 )
 
@@ -134,7 +134,7 @@ class OrdersAdapter(
                     billPayTextView.setOnDebouncedClickListener {
                         onPayClick.invoke(purchaseModel)
                     }
-                    descriptionTextView.text = "Дополнительный счёт  ∙  ${it.price?.formatPrice()}"
+                    descriptionTextView.text = "Дополнительный счёт  ∙  ${it.getFullPrice().formatPrice()}"
                     billContainer.addView(root)
                 }
             }

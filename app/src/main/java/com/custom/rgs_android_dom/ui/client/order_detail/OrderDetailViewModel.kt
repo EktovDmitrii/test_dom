@@ -12,8 +12,12 @@ class OrderDetailViewModel(
     private val order: Order
 ) : BaseViewModel() {
 
-    private val orderViewStateController = MutableLiveData<OrderDetailViewState>()
-    val orderViewStateObserver: LiveData<OrderDetailViewState> = orderViewStateController
+    private val orderViewStateController = MutableLiveData<Order>()
+    val orderViewStateObserver: LiveData<Order> = orderViewStateController
+
+    init {
+        orderViewStateController.value = order
+    }
 
     fun onFeedbackClick() {
     }

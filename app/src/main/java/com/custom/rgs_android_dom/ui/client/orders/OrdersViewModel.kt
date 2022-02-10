@@ -9,6 +9,7 @@ import com.custom.rgs_android_dom.domain.purchase.PurchaseInteractor
 import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
+import com.custom.rgs_android_dom.ui.client.order_detail.OrderDetailFragment
 import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.purchase.PurchaseFragment
@@ -50,7 +51,7 @@ class OrdersViewModel(
     }
 
     fun onItemClick(order: Order) {
-        //ScreenManager.showScreen(OrderDetailFragment.newInstance(""))
+        ScreenManager.showScreen(OrderDetailFragment.newInstance(order))
     }
 
     fun onPayClick(purchaseModel: PurchaseModel) {

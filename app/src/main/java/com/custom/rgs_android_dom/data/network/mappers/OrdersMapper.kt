@@ -10,16 +10,12 @@ object OrdersMapper {
     private const val ICON_ENDPOINT = "${BuildConfig.BASE_URL}/api/store"
 
     fun responseToOrders(invoices: List<GeneralInvoice>, ordersResponse: OrdersResponse): List<Order> {
-        val invoicesMap = mutableMapOf<String, GeneralInvoice>()
-        invoices.forEach {
-            invoicesMap[it.details?.orderId ?: ""] = it
-        }
         return ordersResponse.orders.map {
-            responseToOrder(generalInvoice = invoicesMap[it.id], orderResponse = it)
+            responseToOrder(generalInvoices = invoices, orderResponse = it)
         }
     }
 
-    fun responseToOrder(generalInvoice: GeneralInvoice? = null, orderResponse: OrderResponse): Order {
+    fun responseToOrder(generalInvoices: List<GeneralInvoice>? = null, orderResponse: OrderResponse): Order {
         return Order(
             id = orderResponse.id,
             address = OrderAddress(
@@ -70,7 +66,9 @@ object OrdersMapper {
                 )
             },
             status = getStatus(orderResponse.status ?: ""),
-            generalInvoice = generalInvoice
+            generalInvoice = generalInvoices?.filter { invoice ->
+                invoice.details?.orderId == orderResponse.id
+            }
         )
     }
 

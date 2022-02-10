@@ -21,4 +21,13 @@ data class GeneralInvoice(
     val submittedAt: String? = null,
     val type: String? = null,
     val vatTotal: Int? = null
-) : Serializable
+) : Serializable {
+
+    fun getFullPrice(): Int {
+        var fullPrice = 0
+        items.forEach {
+            fullPrice += ((it.price ?: 0) * (it.quantity ?: 0))
+        }
+        return fullPrice
+    }
+}
