@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.domain.purchase
 
+import com.custom.rgs_android_dom.domain.client.models.Order
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.purchase.models.*
 import com.custom.rgs_android_dom.domain.purchase.view_states.ServiceOrderViewState
@@ -64,9 +65,9 @@ class PurchaseInteractor(
         validateServiceOrderViewState()
     }
 
-    fun orderServiceOnBalance(productId: String, serviceId: String): Completable {
+    fun orderServiceOnBalance(productId: String, serviceId: String): Single<Order> {
         return catalogRepository.getAvailableServiceInProduct(productId, serviceId)
-            .flatMapCompletable{
+            .flatMap {
                 purchaseRepository.orderServiceOnBalance(
                     serviceId = serviceId,
                     clientServiceId = it.id,

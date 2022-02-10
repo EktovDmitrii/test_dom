@@ -46,7 +46,7 @@ class PaymentSuccessFragment :
             viewModel.onCloseScope()
         }
         binding.moreAboutTextView.setOnDebouncedClickListener {
-            viewModel.onCloseScope()
+            viewModel.onMoreClick()
         }
 
         subscribe(viewModel.emailObserver) {

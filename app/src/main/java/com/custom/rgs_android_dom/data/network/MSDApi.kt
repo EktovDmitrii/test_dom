@@ -4,6 +4,7 @@ import com.custom.rgs_android_dom.data.network.data_adapters.NetworkException
 import com.custom.rgs_android_dom.data.network.error.MSDNetworkErrorResponse
 import com.custom.rgs_android_dom.data.network.responses.*
 import com.custom.rgs_android_dom.data.network.requests.*
+import com.custom.rgs_android_dom.domain.client.models.Order
 import com.custom.rgs_android_dom.domain.error.model.MSDErrorModel
 import io.reactivex.Completable
 import io.reactivex.Maybe
@@ -208,7 +209,7 @@ interface MSDApi {
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getAvailableServices(@Query("size") size: Int, @Query("index") index: Int, @Query("withBalance") withBalance: Boolean, @Query("status") status: String = "active", @Query("productId") productId: String? = null, @Query("serviceId") serviceId: String? = null): Single<BalanceServicesResponse>
 
-    @GET("billing/clients/me/cards")
+    @GET("clients/me/billing/cards")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getSavedCards(): Maybe<List<SavedCardResponse>>
 
@@ -222,7 +223,7 @@ interface MSDApi {
 
     @POST("clients/me/orders")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun orderServiceOnBalance(@Body body: OrderServiceRequest, @Query("confirm") confirmOrder: Boolean): Completable
+    fun orderServiceOnBalance(@Body body: OrderServiceRequest, @Query("confirm") confirmOrder: Boolean): Single<OrderResponse>
 
 
     @GET("clients/{clientId}/orders")
