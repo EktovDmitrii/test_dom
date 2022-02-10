@@ -11,6 +11,7 @@ import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.domain.repositories.ChatRepository
+import com.custom.rgs_android_dom.ui.managers.MSDConnectivityManager
 import com.custom.rgs_android_dom.ui.managers.MediaOutputManager
 import com.custom.rgs_android_dom.utils.WsResponseParser
 import com.custom.rgs_android_dom.utils.toMultipartFormData
@@ -27,6 +28,8 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import okhttp3.*
@@ -43,7 +46,8 @@ class ChatRepositoryImpl(private val api: MSDApi,
                          private val gson: Gson,
                          private val authContentProviderManager: AuthContentProviderManager,
                          private val context: Context,
-                         private val mediaOutputManager: MediaOutputManager
+                         private val mediaOutputManager: MediaOutputManager,
+                         private val connectivityManager: MSDConnectivityManager
 ) : ChatRepository {
 
     companion object {
@@ -51,6 +55,24 @@ class ChatRepositoryImpl(private val api: MSDApi,
         private const val LIVEKIT_TAG = "MSDLiveKit"
 
         private const val CLOSE_REASON_NORMAL = 1000
+    }
+
+    init {
+        connectivityManager.connectivitySubject
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    if (!it){
+                        disconnectFromWebSocket()
+                    } else {
+                        Log.d(TAG, "ON CONNECTION SUBJECT CHANGED")
+                        if (!isConnected){
+                            connectToWebSocket()
+                        }
+                    }
+                }
+            )
     }
 
     private val filesToUploadSubject = PublishSubject.create<List<File>>()
@@ -92,6 +114,10 @@ class ChatRepositoryImpl(private val api: MSDApi,
         override fun onFailure(webSocket: WebSocket, throwable: Throwable, response: Response?) {
             Log.d(TAG, "ON failure")
             throwable.printStackTrace()
+            disconnectFromWebSocket()
+            if (connectivityManager.isInternetConnected()){
+                connectToWebSocket()
+            }
         }
     }
 
@@ -192,6 +218,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
     override fun disconnectFromWebSocket(){
         isConnected = false
         webSocket?.close(CLOSE_REASON_NORMAL, null)
+        webSocket = null
     }
 
     override fun getWsEventsSubject(): PublishSubject<WsEventModel<*>> {

@@ -26,7 +26,7 @@ class WsResponseParser(private val gson: Gson) {
             val jsonResponse = JSONObject(message).getJSONObject(FIELD_DATA)
             return when (jsonResponse.getString(FIELD_EVENT)){
                 EVENT_POSTED -> {
-                    val chatMessageResponse = gson.fromJson(jsonResponse.getJSONObject(FIELD_DATA).toString(), ChatMessageResponse::class.java)
+                    val chatMessageResponse = gson.fromJson(jsonResponse.getJSONObject(FIELD_DATA).toString().safeJSON(), ChatMessageResponse::class.java)
                     val chatMessageModel = ChatMapper.responseToChatMessage(chatMessageResponse, userId)
 
                     WsChatMessageModel(event = WsEventModel.Event.POSTED, message = chatMessageModel)

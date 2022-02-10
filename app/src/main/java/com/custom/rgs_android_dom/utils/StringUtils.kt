@@ -75,3 +75,7 @@ fun String.insertDate(startsAt: DateTime?, expiresAt: DateTime?): String {
     val result = this.replace("%s1", startsAt?.formatTo(DATE_PATTERN_DATE_ONLY) ?: "")
     return result.replace("%s2", expiresAt?.formatTo(DATE_PATTERN_DATE_ONLY) ?: "")
 }
+
+fun String.safeJSON(): String {
+    return this.replace("{}", "null")
+}
