@@ -7,7 +7,7 @@ data class OrdersResponse(
     val index: Int,
 
     @SerializedName("orders")
-    val orders: List<OrderResponse>,
+    val orders: List<OrderResponse>?,
 
     @SerializedName("total")
     val total: Int

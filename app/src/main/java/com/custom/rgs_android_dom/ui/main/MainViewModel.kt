@@ -126,7 +126,7 @@ class MainViewModel(
                         when (requestedScreen) {
                             TargetScreen.POLICIES -> ScreenManager.showScreen(PoliciesFragment())
                             TargetScreen.ORDERS -> {
-                                // TODO ADD NAVIGATION TO ORDERS SCREEN
+                                ScreenManager.showScreen(OrdersFragment())
                             }
                             TargetScreen.UNSPECIFIED -> {}
                         }
