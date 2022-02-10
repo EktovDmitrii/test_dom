@@ -58,10 +58,10 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
 
     fun getProductServices(productId: String): Single<List<ServiceShortModel>> {
         return catalogRepository.getProductServices(productId).map { services->
-            services.forEach { service->
+            /*services.forEach { service->
                 val availableService = catalogRepository.getAvailableServiceInProduct(productId, service.serviceId).blockingGet()
                 service.quantity = availableService.available.toLong()
-            }
+            }*/
             services
         }
     }
