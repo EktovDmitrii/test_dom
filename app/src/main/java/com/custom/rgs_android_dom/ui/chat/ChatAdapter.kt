@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
@@ -15,7 +17,8 @@ import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.utils.recycler_view.VerticalItemDecoration
 
 class ChatAdapter(
-    private val onFileClick: (ChatFileModel) -> Unit = {}
+    private val onFileClick: (ChatFileModel) -> Unit = {},
+    private val onProductClick : (productId: String?) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var chatItems: ArrayList<ChatItemModel> = arrayListOf()
@@ -24,6 +27,7 @@ class ChatAdapter(
         private const val ITEM_TYPE_MY_MESSAGE = 1
         private const val ITEM_TYPE_OPPONENT_MESSAGE = 2
         private const val ITEM_TYPE_DATE_DIVIDER = 3
+        private const val ITEM_TYPE_WIDGET_PRODUCT = 4
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -39,16 +43,23 @@ class ChatAdapter(
             is DateDividerViewHolder -> {
                 holder.bind(message as ChatDateDividerModel)
             }
+            is WidgetProductViewHolder -> {
+                holder.bind(message as ChatMessageModel)
+            }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (chatItems[position]) {
+        return when (val model = chatItems[position]) {
             is ChatMessageModel -> {
-                if ((chatItems[position] as ChatMessageModel).sender == Sender.ME) {
+                if (model.sender == Sender.ME) {
                     ITEM_TYPE_MY_MESSAGE
-                } else {
-                    ITEM_TYPE_OPPONENT_MESSAGE
+                } else  {
+                    if (model.widget != null){
+                        ITEM_TYPE_WIDGET_PRODUCT
+                    } else {
+                        ITEM_TYPE_OPPONENT_MESSAGE
+                    }
                 }
             }
             is ChatDateDividerModel -> {
@@ -85,6 +96,14 @@ class ChatAdapter(
                     false
                 )
                 DateDividerViewHolder(binding)
+            }
+            ITEM_TYPE_WIDGET_PRODUCT -> {
+                val binding = ItemChatWidgetOrderProductBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+                WidgetProductViewHolder(binding, onProductClick)
             }
             else -> {
                 val binding = ItemChatMessageMyBinding.inflate(
@@ -302,6 +321,29 @@ class ChatAdapter(
 
         fun bind(model: ChatDateDividerModel) {
             binding.dateTextView.text = model.date
+        }
+    }
+
+    inner class WidgetProductViewHolder(
+        private val binding: ItemChatWidgetOrderProductBinding,
+        private val noProductClick : (productId: String?) -> Unit) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(model: ChatMessageModel) {
+
+            binding.productImageView
+            binding.productNameTextView.text = model.widget?.name
+            binding.priceTextView.text = model.widget?.price?.amount?.simplePriceFormat()
+
+            val avatar = model.widget?.avatar
+            if (!avatar.isNullOrEmpty()) {
+                GlideApp.with(binding.productImageView.context)
+                    .load(GlideUrlProvider.makeHeadersGlideUrl(avatar))
+                    .transform(CenterCrop(), RoundedCorners(8.dp(binding.productImageView.context)))
+                    .into(binding.productImageView)
+            }
+
+            binding.toProductLinearLayout.setOnDebouncedClickListener {
+                noProductClick(model.widget?.productId) }
         }
     }
 

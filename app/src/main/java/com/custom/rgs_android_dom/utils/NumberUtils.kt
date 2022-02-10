@@ -27,6 +27,14 @@ fun Int.formatPrice(isFixed: Boolean = true): String {
         .toString()
 }
 
+fun Int.simplePriceFormat() : String {
+    return StringBuilder()
+        .append(this)
+        .append(' ')
+        .append(Html.fromHtml("&#x20bd",0))
+        .toString()
+}
+
 fun Int.formatQuantity(): String {
     return when {
         this.toString().takeLast(2).toInt() in 11..19 -> "$this видов услуг"

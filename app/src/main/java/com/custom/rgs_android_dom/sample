@@ -1,0 +1,50 @@
+[
+{
+  "id": "d16f5ac8-7630-47ee-80ab-97524e7ceacd",
+  "corrId": "4e7c24da-aea9-4dd4-a3c3-f34754a7dfe4",
+  "type": "chat",
+  "data": {
+    "data": {
+      "channelId": "uf7tudtnib8cpqkdhejxcyhn3e",
+      "createdAt": "2022-02-09T12:18:55.797Z",
+      "details": {
+        "avatar": "",
+        "description": "",
+        "name": "aggr product",
+        "price": {
+          "Amount": 100000,
+          "VatType": "no"
+        },
+        "productId": "c781d807-e75a-4559-a370-de43c584fb33",
+        "widgetType": "product"
+      },
+      "files": null,
+      "message": "",
+      "postId": "39qsk8h5j3b3uetp5ek9tywe6a",
+      "type": "",
+      "userId": "34641d02-f726-4757-88a1-42922c6b045f"
+    },
+    "event": "posted"
+  }
+},
+{
+  "id": "537e4bbd-3c51-4d0b-b6d0-09e7df35fac8",
+  "corrId": "82ee61b8-db07-4f45-b6c5-4cb059c61b75",
+  "type": "chat",
+  "data": {
+    "data": {
+      "channelId": "uf7tudtnib8cpqkdhejxcyhn3e",
+      "createdAt": "2022-02-09T12:49:45.308Z",
+      "details": {},
+      "files": null,
+      "message": "аксессуары",
+      "postId": "u3gek77yt7ffjk9zz3fkicqzhh",
+      "type": "",
+      "userId": "fd61219d-81db-4766-960f-ab2c4d3b4e1a"
+    },
+    "event": "posted"
+  }
+},
+  [ChatDateDividerModel(date=13 January), ChatMessageModel(channelId=uf7tudtnib8cpqkdhejxcyhn3e, files=null, fileIds=null, id=dk3duefpjtyy5e4i87k3et45fw, message=Здравствуйте!
+    Задайте любой вопрос в чат, вам ответит консультант Мой_Сервис Дом., userId=de34cde4-8f72-44a1-8ed7-623657275c24, sender=OPPONENT, createdAt=2022-01-13T16:28:42.937, type=custom_bot_message, member=null, widget=null), ChatMessageModel(channelId=uf7tudtnib8cpqkdhejxcyhn3e, files=null, fileIds=null, id=rtfbgmop1pgn7pp45skrasi3xr, message=привет, userId=fd61219d-81db-4766-960f-ab2c4d3b4e1a, sender=ME, createdAt=2022-02-09T14:55:19.169, type=, member=ChannelMemberModel(avatar=, firstName=, lastName=, middleName=, type=client, userId=fd61219d-81db-4766-960f-ab2c4d3b4e1a), widget=null), ChatMessageModel(channelId=uf7tudtnib8cpqkdhejxcyhn3e, files=null, fileIds=null, id=qey7spmdtpnr5x3mg458dusgwo, message=, userId=34641d02-f726-4757-88a1-42922c6b045f, sender=OPPONENT, createdAt=2022-02-09T14:55:44.983, type=, member=ChannelMemberModel(avatar=https://ddom.moi-service.ru/api/store/front:wwmd4mo79pde9rzidm39oj1m8o.png, firstName=Vlad, lastName=Secreate, middleName=, type=consultant, userId=34641d02-f726-4757-88a1-42922c6b045f), widget=WidgetModel(avatar=123, description=description, name=service-provider, price=WidgetPriceModel(amount=200000, vatType=no), productId=44038943-4f07-4e4d-ab46-f1302df3aa52, widgetType=product)), ChatMessageModel(channelId=uf7tudtnib8cpqkdhejxcyhn3e, files=null, fileIds=null, id=81qasjaf57d39kgbcaz7crcgzy, message=консультант, userId=34641d02-f726-4757-88a1-42922c6b045f, sender=OPPONENT, createdAt=2022-02-09T15:13:29.114, type=, member=ChannelMemberModel(avatar=https://ddom.moi-service.ru/api/store/front:wwmd4mo79pde9rzidm39oj1m8o.png, firstName=Vlad, lastName=Secreate, middleName=, type=consultant, userId=34641d02-f726-4757-88a1-42922c6b045f), widget=null), ChatMessageModel(channelId=uf7tudtnib8cpqkdhejxcyhn3e, files=null, fileIds=null, id=39qsk8h5j3b3uetp5ek9tywe6a, message=, userId=34641d02-f726-4757-88a1-42922c6b045f, sender=OPPONENT, createdAt=2022-02-09T15:18:55.797, type=, member=ChannelMemberModel(avatar=https://ddom.moi-service.ru/api/store/front:wwmd4mo79pde9rzidm39oj1m8o.png, firstName=Vlad, lastName=Secreate, middleName=, type=consultant, userId=34641d02-f726-4757-88a1-42922c6b045f), widget=WidgetModel(avatar=, description=, name=aggr product, price=WidgetPriceModel(amount=100000, vatType=no), productId=c781d807-e75a-4559-a370-de43c584fb33, widgetType=product)), ChatMessageModel(channelId=uf7tudtnib8cpqkdhejxcyhn3e, files=null, fileIds=null, id=u3gek77yt7ffjk9zz3fkicqzhh, message=аксессуары, userId=fd61219d-81db-4766-960f-ab2c4d3b4e1a, sender=ME, createdAt=2022-02-09T15:49:45.308, type=, member=ChannelMemberModel(avatar=, firstName=, lastName=, middleName=, type=client, userId=fd61219d-81db-4766-960f-ab2c4d3b4e1a), widget=null)]
+  ]
