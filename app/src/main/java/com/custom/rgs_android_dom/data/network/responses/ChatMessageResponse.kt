@@ -24,5 +24,8 @@ data class ChatMessageResponse(
     val createdAt: DateTime,
 
     @SerializedName("type")
-    val type: String
+    val type: String,
+
+    @SerializedName("details")
+    val details: WidgetResponse?
 )
