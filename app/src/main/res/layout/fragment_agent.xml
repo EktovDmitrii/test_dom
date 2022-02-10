@@ -120,7 +120,7 @@
                 android:orientation="vertical"
                 android:paddingStart="16dp"
                 android:paddingTop="10dp"
-                android:paddingEnd="64dp"
+                android:paddingEnd="36dp"
                 android:paddingBottom="8dp"
                 android:visibility="gone"
                 tools:visibility="visible">
@@ -128,7 +128,6 @@
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
                     android:fontFamily="@font/suisse_regular"
                     android:lineSpacingExtra="24dp"
                     android:lineSpacingMultiplier="0"
