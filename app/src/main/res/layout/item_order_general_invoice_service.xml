@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingTop="0dp"
+    android:paddingBottom="12dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/serviceNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/secondary900"
+        android:fontFamily="@font/suisse_regular"
+        android:textSize="16sp"
+        android:layout_marginEnd="16dp"
+        tools:text="Демонтаж старого унитаза, 2шт"/>
+
+    <TextView
+        android:id="@+id/counterTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/secondary600"
+        android:fontFamily="@font/suisse_regular"
+        android:textSize="14sp"
+        android:paddingHorizontal="10dp"
+        android:background="@drawable/rectangle_filled_secondary_100_radius_32dp"
+        tools:text="2"/>
+
+    <TextView
+        android:id="@+id/priceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/secondary600"
+        android:fontFamily="@font/suisse_semi_bold"
+        android:textSize="16sp"
+        android:layout_marginStart="5dp"
+        tools:text="x 1 500 ₽"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

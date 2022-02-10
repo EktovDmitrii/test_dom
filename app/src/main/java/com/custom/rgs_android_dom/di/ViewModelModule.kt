@@ -31,6 +31,8 @@ import com.custom.rgs_android_dom.ui.chat.files.manage.ManageFileViewModel
 import com.custom.rgs_android_dom.ui.chat.files.upload.UploadFilesViewModel
 import com.custom.rgs_android_dom.ui.chat.files.viewers.image.ImageViewerViewModel
 import com.custom.rgs_android_dom.ui.chat.files.viewers.video.VideoPlayerViewModel
+import com.custom.rgs_android_dom.ui.client.order_detail.OrderDetailViewModel
+import com.custom.rgs_android_dom.ui.client.orders.OrdersViewModel
 import com.custom.rgs_android_dom.ui.main.MainViewModel
 import com.custom.rgs_android_dom.ui.client.personal_data.add_photo.AddPhotoViewModel
 import com.custom.rgs_android_dom.ui.property.add.details.PropertyDetailsViewModel
@@ -85,6 +87,8 @@ val viewModelModule = module {
     viewModel { parameters-> RegistrationFillClientViewModel(phone = parameters.get(), clientInteractor= get()) }
     viewModel { parameters-> CountriesViewModel(selectedCountryLetterCode = parameters.get(), countriesInteractor = get())}
     viewModel { ClientViewModel(clientInteractor = get(), registrationInteractor = get(), propertyInteractor = get()) }
+    viewModel { OrdersViewModel(clientInteractor = get(), purchaseInteractor = get()) }
+    viewModel { parameters -> OrderDetailViewModel(clientInteractor = get(), order = parameters.get()) }
     viewModel { RootViewModel(registrationInteractor = get(), clientInteractor = get(), chatInteractor = get()) }
     viewModel { PersonalDataViewModel(clientInteractor = get()) }
     viewModel { EditPersonalDataViewModel(clientInteractor = get()) }
@@ -135,7 +139,7 @@ val viewModelModule = module {
     viewModel { SOSViewModel(chatInteractor = get(), registrationInteractor = get(), clientInteractor = get(), context = get()) }
     viewModel { parameters -> PaymentWebViewViewModel(url = parameters.get()) }
     viewModel { parameters -> PaymentErrorViewModel(firstFragmentId = parameters[0]) }
-    viewModel { parameters -> PaymentSuccessViewModel(productId = parameters[0], email = parameters[1], purchaseInteractor = get()) }
+    viewModel { parameters -> PaymentSuccessViewModel(productId = parameters[0], email = parameters[1], purchaseInteractor = get(), catalogInteractor = get()) }
     viewModel { parameters -> StoriesViewModel(tab = parameters.get()) }
     viewModel { TabNewServiceViewModel() }
     viewModel { TabGuaranteeViewModel() }

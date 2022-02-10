@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="20dp">
+
+    <View
+        android:id="@+id/firstLine"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:layout_weight="1"
+        android:layout_marginEnd="12dp"
+        android:backgroundTint="@color/secondary100"
+        android:background="@drawable/rectangle_filled_black_radius_4dp"
+        tools:backgroundTint="@color/primary500"/>
+
+    <View
+        android:id="@+id/secondLine"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:layout_weight="1"
+        android:layout_marginEnd="12dp"
+        android:backgroundTint="@color/secondary100"
+        android:background="@drawable/rectangle_filled_black_radius_4dp" />
+
+    <View
+        android:id="@+id/thirdLine"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:layout_weight="1"
+        android:layout_marginEnd="12dp"
+        android:backgroundTint="@color/secondary100"
+        android:background="@drawable/rectangle_filled_black_radius_4dp" />
+
+    <View
+        android:id="@+id/fourthLine"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:layout_weight="1"
+        android:backgroundTint="@color/secondary100"
+        android:background="@drawable/rectangle_filled_black_radius_4dp" />
+
+</LinearLayout>

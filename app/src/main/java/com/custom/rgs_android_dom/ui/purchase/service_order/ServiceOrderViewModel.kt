@@ -11,6 +11,9 @@ import com.custom.rgs_android_dom.domain.purchase.PurchaseInteractor
 import com.custom.rgs_android_dom.domain.purchase.models.*
 import com.custom.rgs_android_dom.domain.purchase.view_states.ServiceOrderViewState
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.client.order_detail.OrderDetailFragment
+import com.custom.rgs_android_dom.ui.client.orders.OrdersFragment
+import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.purchase.add.comment.AddCommentFragment
 import com.custom.rgs_android_dom.ui.purchase.select.date_time.PurchaseDateTimeFragment
 import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressFragment
@@ -114,26 +117,23 @@ class ServiceOrderViewModel(
 
     fun onOrderClick(){
         purchaseInteractor.orderServiceOnBalance(productId, serviceId)
-            .compose(
-                ProgressTransformer<Completable>(
-                    onLoading = {
-                        isOrderPerformingController.value = true
-                    },
-                    onError = {
-                        logException(this, it)
-                        isOrderPerformingController.value = false
-                    },
-                    onLoaded = {
-                        isOrderPerformingController.value = false
-
-                        // TODO navigate to order history
-                        // Now Just  close the screen
-                        closeController.value = Unit
-                    }
-                )
-            )
-            .subscribe()
-            .addTo(dataCompositeDisposable)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                isOrderPerformingController.value = true
+            }
+            .subscribeBy(
+                onSuccess = {order->
+                    isOrderPerformingController.value = false
+                    val orderFragment = OrderDetailFragment.newInstance(order)
+                    ScreenManager.showScreen(orderFragment)
+                    closeController.value = Unit
+                },
+                onError = {
+                    logException(this, it)
+                    isOrderPerformingController.value = false
+                }
+            ).addTo(dataCompositeDisposable)
     }
 
 }

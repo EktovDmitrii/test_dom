@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.custom.rgs_android_dom.views.text.MSDTextView
+    android:id="@+id/billPayTextView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="32dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="16dp"
+    android:background="@drawable/button_stroke_secondary_200_radius_8dp"
+    android:gravity="center"
+    android:paddingHorizontal="16dp"
+    android:fontFamily="@font/my_service_medium"
+    android:textSize="14sp"
+    android:textColor="@color/secondary_default"
+    app:translationTextKey="Оплатить" />
