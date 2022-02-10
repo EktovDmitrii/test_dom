@@ -19,6 +19,9 @@ data class BalanceServiceDetailsResponse(
     @SerializedName("productIcon")
     val productIcon: String?,
 
+    @SerializedName("serviceIcon")
+    val serviceIcon: String?,
+
     @SerializedName("validityFrom")
     val validityFrom: DateTime?,
 
