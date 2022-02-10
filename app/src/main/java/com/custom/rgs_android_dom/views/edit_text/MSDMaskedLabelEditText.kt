@@ -111,8 +111,9 @@ class MSDMaskedLabelEditText @JvmOverloads constructor(
             if (isFromUser){
                 textWatcher(it.toString())
             }
-
         }
+
+        setText("")
     }
 
     fun setText(text: String){
