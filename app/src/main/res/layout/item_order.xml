@@ -50,7 +50,7 @@
         tools:text="Завершён  •  2 050 ₽  •  11.11.21"/>
 
     <LinearLayout
-        android:id="@+id/billContainer"
+        android:id="@+id/invoiceContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"

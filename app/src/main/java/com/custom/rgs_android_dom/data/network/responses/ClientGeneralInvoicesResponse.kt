@@ -7,7 +7,7 @@ data class GeneralInvoicesResponse (
     val index: Int,
 
     @SerializedName("invoices")
-    val invoices: List<GeneralInvoiceResponse>,
+    val invoices: List<GeneralInvoiceResponse>? = null,
 
     @SerializedName("total")
     val total: Int
