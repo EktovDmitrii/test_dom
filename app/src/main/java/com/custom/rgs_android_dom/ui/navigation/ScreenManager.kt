@@ -9,7 +9,6 @@ import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.demo.DemoFragment
 import com.custom.rgs_android_dom.ui.main.MainFragment
-import com.custom.rgs_android_dom.ui.policies.insurant.dialogs.NonRecallable
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.ui.root.RootFragment
 import com.custom.rgs_android_dom.utils.activity.hideSoftwareKeyboard
@@ -30,7 +29,7 @@ object ScreenManager {
     @IdRes
     private var bottomContainerId: Int? = null
 
-    private var fragmentsToRestore = mutableSetOf<BaseFragment<*,*>>()
+    private var fragmentsToRestore = mutableListOf<BaseFragment<*,*>>()
 
     fun init(activity: AppCompatActivity, @IdRes containerId: Int) {
         this.activity = activity
@@ -81,8 +80,8 @@ object ScreenManager {
             saveAndClearBaseFragmentsStack(stack)
         }
 
-        val transaction = beginTransaction() ?: return
         val container = bottomContainerId ?: return
+        val transaction = beginTransaction() ?: return
 
         onBottomSheetChanged(fragment)
 

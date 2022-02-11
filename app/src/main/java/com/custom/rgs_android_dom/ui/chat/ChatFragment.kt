@@ -18,7 +18,6 @@ import com.custom.rgs_android_dom.data.network.url.DownloadManagerRequestProvide
 import com.custom.rgs_android_dom.databinding.FragmentChatBinding
 import com.custom.rgs_android_dom.domain.chat.models.ChatFileModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
-import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.chat.files.upload.UploadFilesFragment
 import com.custom.rgs_android_dom.utils.*
 
@@ -189,7 +188,5 @@ class ChatFragment : BaseBottomSheetFragment<ChatViewModel, FragmentChatBinding>
         requireContext().startActivity(intent)
         requireContext().unregisterReceiver(onDownloadCompleteReceiver)
     }
-
-
 
 }
