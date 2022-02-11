@@ -71,7 +71,7 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
                 .transform(RoundedCorners(6.dp(requireContext())))
                 .into(binding.header.iconImageView)
             GlideApp.with(requireContext())
-                .load(GlideUrlProvider.makeHeadersGlideUrl(product.logoLarge))
+                .load(GlideUrlProvider.makeHeadersGlideUrl(product.logoMiddle))
                 .transform(RoundedCorners(16.dp(requireContext())))
                 .into(binding.header.logoImageView)
 
