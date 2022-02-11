@@ -53,7 +53,7 @@ class SingleProductFragment :
 
         subscribe(viewModel.productObserver) { product ->
             GlideApp.with(requireContext())
-                .load(GlideUrlProvider.makeHeadersGlideUrl(product.logoLarge))
+                .load(GlideUrlProvider.makeHeadersGlideUrl(product.logoMiddle))
                 .transform(RoundedCorners(16.dp(requireContext())))
                 .into(binding.header.logoImageView)
 
