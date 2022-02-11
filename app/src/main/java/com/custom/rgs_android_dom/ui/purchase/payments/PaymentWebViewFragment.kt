@@ -12,6 +12,7 @@ import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.purchase.payments.error.PaymentErrorFragment
 import com.custom.rgs_android_dom.ui.purchase.payments.success.PaymentSuccessFragment
 import com.custom.rgs_android_dom.utils.args
+import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.setStatusBarColor
 import com.custom.rgs_android_dom.utils.subscribe
 import org.koin.core.parameter.ParametersDefinition
@@ -54,6 +55,9 @@ class PaymentWebViewFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.closeImageView.setOnDebouncedClickListener {
+            viewModel.onBack()
+        }
         binding.paymentWebView.webChromeClient = WebChromeClient()
 
         val email = requireArguments().getString(ARG_EMAIL) ?: ""

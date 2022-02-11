@@ -94,7 +94,11 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnError { handleNetworkException(it) }
-            .subscribeBy()
+            .subscribeBy(
+                onError = {
+                    handleNetworkException(it)
+                }
+            )
             .addTo(dataCompositeDisposable)
     }
 
