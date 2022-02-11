@@ -7,6 +7,8 @@ import com.custom.rgs_android_dom.domain.chat.models.CallType
 import com.custom.rgs_android_dom.domain.chat.models.ChatFileModel
 import com.custom.rgs_android_dom.domain.chat.models.ChatItemModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
+import com.custom.rgs_android_dom.ui.catalog.product.ProductLauncher
 import com.custom.rgs_android_dom.ui.chat.call.CallFragment
 import com.custom.rgs_android_dom.ui.chat.files.viewers.image.ImageViewerFragment
 import com.custom.rgs_android_dom.ui.chat.files.viewers.video.VideoPlayerFragment
@@ -92,7 +94,11 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnError { handleNetworkException(it) }
-            .subscribeBy()
+            .subscribeBy(
+                onError = {
+                    handleNetworkException(it)
+                }
+            )
             .addTo(dataCompositeDisposable)
     }
 
@@ -135,5 +141,9 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
+    }
+
+    fun onProductClick(productId: String) {
+        ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(productId = productId)))
     }
 }

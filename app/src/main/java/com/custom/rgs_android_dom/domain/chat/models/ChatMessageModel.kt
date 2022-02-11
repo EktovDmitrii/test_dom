@@ -12,5 +12,6 @@ data class ChatMessageModel(
     var sender: Sender,
     val createdAt: LocalDateTime,
     val type: String,
-    var member: ChannelMemberModel?
+    var member: ChannelMemberModel?,
+    val widget: WidgetModel?
 ) : ChatItemModel()

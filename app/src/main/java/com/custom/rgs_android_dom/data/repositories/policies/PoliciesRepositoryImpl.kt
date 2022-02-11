@@ -72,14 +72,22 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
     }
 
     override fun getPoliciesSingle(): Single<List<PolicyModel>> {
-        return api.getClientProducts(5000, 0).map {
-            if (it.clientProducts != null) {
-                it.clientProducts.map {
-                    ClientMapper.responseToPolicy(it)
+
+        val contractIds = api.getPolicyContracts().map {
+            if (!it.contracts.isNullOrEmpty()){
+                it.contracts.joinToString(",") { it.id }
+            } else ""
+        }.blockingGet()
+
+        return if (!contractIds.isNullOrEmpty()){
+            api.getClientProducts(50, 0, contractIds)
+                .map {
+                    if (it.clientProducts != null) {
+                        it.clientProducts.map { ClientMapper.responseToPolicy(it) }
+                    } else {
+                        listOf()
+                    }
                 }
-            } else {
-                listOf()
-            }
-        }
+        } else { Single.just(listOf()) }
     }
 }

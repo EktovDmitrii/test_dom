@@ -6,8 +6,7 @@ import com.custom.rgs_android_dom.domain.client.models.*
 object GeneralInvoiceMapper {
 
     fun responseToDomainModel(response: GeneralInvoicesResponse): List<GeneralInvoice> {
-        val invoices = response.invoices ?: emptyList()
-        return invoices.map {
+        return response.invoice?.map {
             GeneralInvoice(
                 id = it.id,
                 amountTotal = it.amountTotal,
@@ -58,6 +57,7 @@ object GeneralInvoiceMapper {
                 type = it.type,
                 vatTotal = it.vatTotal
             )
-        }
+        } ?: listOf()
+
     }
 }

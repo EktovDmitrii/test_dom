@@ -9,9 +9,9 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
 
     companion object {
         private const val TAG_POPULAR_SEARCH_PRODUCTS = "ВыводитьВПоиске"
-        private const val TAG_POPULAR_PRODUCTS = "ВыводитьНаГлавной"
-        private const val TAG_POPULAR_CATEGORIES = "ВыводитьНаГлавной"
-        private const val TAG_POPULAR_SERVICES = "ВыводитьНаГлавной"
+        private const val TAG_POPULAR_PRODUCTS = "ВыводитьПродуктНаГлавной"
+        private const val TAG_POPULAR_CATEGORIES = "ВыводитьУзелНаГлавной"
+        private const val TAG_POPULAR_SERVICES = "ВыводитьУслугуНаГлавной"
         private const val CNT_POPULAR_SERVICES_IN_MAIN = 9
         private const val CNT_POPULAR_CATEGORIES_IN_MAIN = 6
         private const val CNT_POPULAR_PRODUCTS_IN_MAIN = 13
@@ -58,10 +58,10 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
 
     fun getProductServices(productId: String): Single<List<ServiceShortModel>> {
         return catalogRepository.getProductServices(productId).map { services->
-            services.forEach { service->
+            /*services.forEach { service->
                 val availableService = catalogRepository.getAvailableServiceInProduct(productId, service.serviceId).blockingGet()
                 service.quantity = availableService.available.toLong()
-            }
+            }*/
             services
         }
     }
@@ -92,12 +92,11 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
     }
 
     fun getPopularCategories(): Single<List<CatalogCategoryModel>>{
-        return catalogRepository.getCatalogCategories()
-            .map {
-                it.filter {
-                    it.subCategories.isNotEmpty() && it.productTags.contains(TAG_POPULAR_CATEGORIES)
-                }.take(CNT_POPULAR_CATEGORIES_IN_MAIN)
-            }
+        return getCatalogCategories().map {
+            it.filter {
+                it.subCategories.isNotEmpty() && it.productTags.contains(TAG_POPULAR_CATEGORIES)
+            }.take(CNT_POPULAR_CATEGORIES_IN_MAIN)
+        }
     }
 
     fun getAvailableServices(): Single<List<AvailableServiceModel>>{

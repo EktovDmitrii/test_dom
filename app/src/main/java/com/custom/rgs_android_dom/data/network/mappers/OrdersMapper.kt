@@ -10,9 +10,9 @@ object OrdersMapper {
     private const val ICON_ENDPOINT = "${BuildConfig.BASE_URL}/api/store"
 
     fun responseToOrders(invoices: List<GeneralInvoice>, ordersResponse: OrdersResponse): List<Order> {
-        return ordersResponse.orders.map {
+        return ordersResponse.orders?.map {
             responseToOrder(generalInvoices = invoices, orderResponse = it)
-        }
+        } ?: listOf()
     }
 
     fun responseToOrder(generalInvoices: List<GeneralInvoice>? = null, orderResponse: OrderResponse): Order {

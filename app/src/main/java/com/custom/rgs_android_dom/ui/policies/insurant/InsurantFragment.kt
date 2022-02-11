@@ -23,6 +23,8 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
         }
     }
 
+    private var shouldShowDialog = false
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -31,6 +33,7 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
         }
 
         binding.nextTextView.setOnDebouncedClickListener {
+            shouldShowDialog = true
             viewModel.onNextClick()
         }
 
@@ -65,12 +68,15 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
         }
 
         subscribe(viewModel.insurantViewStateObserver) {
-          binding.nextTextView.isEnabled = it.isNextEnabled
-            if (it.isValidationPassed) {
+            binding.firstNameEditText.setText(it.firstName)
+            binding.lastNameEditText.setText(it.lastName)
+            binding.middleNameEditText.setText(it.middleName)
+            binding.nextTextView.isEnabled = it.isNextEnabled
+            if (it.isValidationPassed && shouldShowDialog) {
+                shouldShowDialog = false
                 val dialog = PolicyDialogsFragment.newInstance(
                     PolicyDialogModel(showLoader = true),
-                    requireArguments().getInt(KEY_FRAGMENT_ID)
-                )
+                    requireArguments().getInt(KEY_FRAGMENT_ID))
                 dialog.show(childFragmentManager, dialog.TAG)
                 hideSoftwareKeyboard()
             }

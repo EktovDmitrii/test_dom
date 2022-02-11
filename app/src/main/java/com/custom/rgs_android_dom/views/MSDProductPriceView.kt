@@ -29,7 +29,6 @@ class MSDProductPriceView @JvmOverloads constructor(
 
             binding.priceValue.visibleIf(type == PriceType.Fixed)
             binding.priceUnfixedGroup.visibleIf(type == PriceType.Unfixed)
-            binding.pricePurchasedGroup.visibleIf(type == PriceType.Purchased)
             binding.priceIncludedGroup.visibleIf(type == PriceType.Included)
         }
 
@@ -48,13 +47,8 @@ class MSDProductPriceView @JvmOverloads constructor(
         when (type) {
             PriceType.Fixed  -> binding.priceValue.text = priceStr
             PriceType.Unfixed -> binding.priceUnfixedValue.text = priceStr
-            PriceType.Purchased -> binding.pricePurchasedValue.text = priceStr
             else -> throw IllegalArgumentException("Invalid price type: $type")
         }
-    }
-
-    fun setPurchasedDate(date: String) {
-        binding.pricePurchasedDate.text = "Оплачено $date"
     }
 
     fun setIcon(icon: String) {

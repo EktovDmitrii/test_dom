@@ -63,7 +63,7 @@ class PolicyDialogsViewModel(val policiesInteractor: PoliciesInteractor, model: 
 
     fun onChatClick() {
         close()
-        ScreenManager.showScreen(ChatFragment())
+        ScreenManager.showBottomScreen(ChatFragment())
     }
 
     fun onChangeDataClick() {

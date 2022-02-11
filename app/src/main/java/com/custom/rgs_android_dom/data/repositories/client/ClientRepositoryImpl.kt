@@ -206,11 +206,17 @@ class ClientRepositoryImpl(
     override fun getOrders(size: Long, index: Long): Single<List<Order>> {
         return api.getOrders()
             .flatMap { orderResponse ->
-                val orderIds = orderResponse.orders.map { order -> order.id }
-                getGeneralInvoices(size = size, index = index, orderIds = orderIds.joinToString(","), withPayments = true)
-                    .flatMap {
-                        Single.just(OrdersMapper.responseToOrders(it, orderResponse))
-                    }
+                val orders = orderResponse.orders
+                if (orders != null){
+                    val orderIds = orderResponse.orders.map { order -> order.id }
+                    getGeneralInvoices(size = size, index = index, orderIds = orderIds.joinToString(","), withPayments = true)
+                        .flatMap {
+                            Single.just(OrdersMapper.responseToOrders(it, orderResponse))
+                        }
+                } else {
+                    Single.just(listOf())
+                }
+
             }
 
     }
