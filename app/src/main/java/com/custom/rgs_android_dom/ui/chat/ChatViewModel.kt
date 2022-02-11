@@ -144,7 +144,6 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
     }
 
     fun onProductClick(productId: String) {
-        close()
         ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(productId = productId)))
     }
 }

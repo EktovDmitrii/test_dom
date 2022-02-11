@@ -86,7 +86,7 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                 onNext = {
                     when (requestedScreen) {
                         TargetScreen.CHAT -> {
-                            ScreenManager.showScreen(ChatFragment())
+                            ScreenManager.showBottomScreen(ChatFragment())
                         }
                         TargetScreen.AUDIO_CALL -> {
                             ScreenManager.showScreen(
@@ -140,7 +140,7 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
 
     fun onChatClick() {
         if (registrationInteractor.isAuthorized()) {
-            ScreenManager.showScreen(ChatFragment())
+            ScreenManager.showBottomScreen(ChatFragment())
         } else {
             requestedScreen = TargetScreen.CHAT
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)

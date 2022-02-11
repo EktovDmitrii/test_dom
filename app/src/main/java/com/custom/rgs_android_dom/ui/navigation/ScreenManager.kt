@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.demo.DemoFragment
+import com.custom.rgs_android_dom.ui.main.MainFragment
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.ui.root.RootFragment
 import com.custom.rgs_android_dom.utils.activity.hideSoftwareKeyboard
@@ -28,6 +29,8 @@ object ScreenManager {
     @IdRes
     private var bottomContainerId: Int? = null
 
+    private var fragmentsToRestore = mutableListOf<BaseFragment<*,*>>()
+
     fun init(activity: AppCompatActivity, @IdRes containerId: Int) {
         this.activity = activity
         this.containerId = containerId
@@ -46,7 +49,6 @@ object ScreenManager {
             scopes.clear()
             fragments.clear()
             bottomFragments.clear()
-
             showScreen(screen)
         }
     }
@@ -73,6 +75,11 @@ object ScreenManager {
     }
 
     fun showBottomScreen(fragment: BaseBottomSheetFragment<*, *>) {
+        val stack = activity?.supportFragmentManager?.fragments as List<Fragment>
+        if (stack.last() is BaseFragment<*,*> && fragments[NavigationMenu.HOME]?.size!! > 1) {
+            saveAndClearBaseFragmentsStack(stack)
+        }
+
         val container = bottomContainerId ?: return
         val transaction = beginTransaction() ?: return
 
@@ -91,7 +98,13 @@ object ScreenManager {
             transaction.commitAllowingStateLoss()
             bottomFragments.removeLast()
             if (bottomFragments.isNotEmpty()){
-                onBottomSheetChanged(bottomFragments.last())
+                val currentBottomSheetFragment = bottomFragments.last()
+                onBottomSheetChanged(currentBottomSheetFragment)
+                if (currentBottomSheetFragment is MainFragment) {
+                    if (fragmentsToRestore.isNotEmpty()) {
+                        restoreBaseFragmentsStack()
+                    }
+                }
             }
         }
 
@@ -256,4 +269,27 @@ object ScreenManager {
                 }
         }
     }
+
+    private fun saveAndClearBaseFragmentsStack(stack: List<Fragment>) {
+        var size = stack.size
+        stack.reversed().forEach {
+            if (it is BaseBottomSheetFragment<*,*>) { return }
+            if (it is BaseFragment<*,*>){
+                if (size-- > 1) {
+                    fragmentsToRestore.add(it)
+                    back(it.getNavigateId())
+                } else { return }
+            }
+        }
+    }
+
+    private fun restoreBaseFragmentsStack() {
+        if (fragmentsToRestore.isNotEmpty()) {
+            fragmentsToRestore.reversed().forEach {
+                showScreen(it)
+            }
+            fragmentsToRestore.clear()
+        }
+    }
+
 }

@@ -100,9 +100,7 @@ class PoliciesInteractor(
             } else {
                 insurantViewStateSubject.onNext(insurantViewState.copy(isValidationPassed = true))
             }
-
         }
-
         return policiesRepository.bindPolicy()
     }
 
