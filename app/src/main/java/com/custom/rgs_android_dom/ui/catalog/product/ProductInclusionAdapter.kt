@@ -46,11 +46,15 @@ class ProductInclusionAdapter(
 
         override fun bind(item: ServiceShortModel) {
             binding.titleTextView.text = item.serviceName
-            if (item.quantity?.toInt() == INFINITY) {
+
+            binding.numberTextView.visibleIf(item.quantity > 0)
+
+            if (item.quantity.toInt() == INFINITY) {
+                binding.numberTextView.text = ""
                 binding.numberTextView.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.ic_infinity, 0, 0, 0
                 )
-            } else {
+            } else if (item.quantity.toInt() > 0) {
                 binding.numberTextView.text = "${item.quantity}"
             }
             binding.orderTextView.visibleIf(item.isPurchased && item.quantity >0)

@@ -1,8 +1,10 @@
 package com.custom.rgs_android_dom.data.repositories.purchase
 
 import com.custom.rgs_android_dom.data.network.MSDApi
+import com.custom.rgs_android_dom.data.network.mappers.OrdersMapper
 import com.custom.rgs_android_dom.data.network.mappers.PurchaseMapper
 import com.custom.rgs_android_dom.data.network.requests.*
+import com.custom.rgs_android_dom.domain.client.models.Order
 import com.custom.rgs_android_dom.domain.purchase.models.CardModel
 import com.custom.rgs_android_dom.domain.purchase.models.NewCardModel
 import com.custom.rgs_android_dom.domain.repositories.PurchaseRepository
@@ -87,7 +89,7 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
         timeFrom: String,
         timeTo: String,
         comment: String?
-    ): Completable {
+    ): Single<Order> {
         val orderServiceRequest = OrderServiceRequest(
             clientServiceId = clientServiceId,
             comment = comment,
@@ -98,8 +100,9 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
             ),
             objectId = objectId
         )
-        return api.orderServiceOnBalance(orderServiceRequest, true).doOnComplete {
+        return api.orderServiceOnBalance(orderServiceRequest, true).map {response->
             serviceOrdered.onNext(serviceId)
+            return@map OrdersMapper.responseToOrder(orderResponse = response)
         }
     }
 
