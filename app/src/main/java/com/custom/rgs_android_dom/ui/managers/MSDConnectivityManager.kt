@@ -1,8 +1,9 @@
-package com.custom.rgs_android_dom
+package com.custom.rgs_android_dom.ui.managers
 
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
+import com.custom.rgs_android_dom.utils.isInternetConnected
 import io.reactivex.subjects.BehaviorSubject
 
 class MSDConnectivityManager(private val context: Context) {
@@ -24,5 +25,9 @@ class MSDConnectivityManager(private val context: Context) {
             }
 
         })
+    }
+
+    fun isInternetConnected(): Boolean{
+        return context.isInternetConnected()
     }
 }
