@@ -3,10 +3,7 @@ package com.custom.rgs_android_dom.data.network.mappers
 import android.graphics.BitmapFactory
 import android.util.Base64
 import com.custom.rgs_android_dom.BuildConfig
-import com.custom.rgs_android_dom.data.network.responses.CallInfoResponse
-import com.custom.rgs_android_dom.data.network.responses.ChannelMemberResponse
-import com.custom.rgs_android_dom.data.network.responses.ChatFileResponse
-import com.custom.rgs_android_dom.data.network.responses.ChatMessageResponse
+import com.custom.rgs_android_dom.data.network.responses.*
 import com.custom.rgs_android_dom.domain.chat.models.*
 import org.joda.time.DateTimeZone
 import org.joda.time.LocalDateTime
@@ -30,18 +27,30 @@ object ChatMapper{
                 type = messageResponse.type,
                 member = null,
                 widget = messageResponse.details?.let {
-                    val avatar = if (it.avatar.isNotEmpty()) {
+                    val avatar = if (!it.avatar.isNullOrEmpty()) {
                         "${AVATAR_ENDPOINT}/${it.avatar}"
                     } else {
                         ""
                     }
                     WidgetModel(
                         avatar = avatar,
-                        description = it.description,
-                        name = it.name,
-                        price = WidgetPriceModel(amount = it.price.amount,vatType = it.price.vatType),
-                        productId = it.productId,
-                        widgetType = it.widgetType
+                        description = it.description ?: "",
+                        name = it.name ?: "",
+                        price = WidgetPriceModel(amount = it.price?.amount,vatType = it.price?.vatType),
+                        productId = it.productId ?: "",
+                        widgetType = it.widgetType,
+                        amount = it.amount,
+                        invoiceId = it.invoiceId,
+                        items = it.items?.map { WidgetAdditionalInvoiceItemModel(
+                            amount = it.amount,
+                            name = it.name,
+                            price = it.price,
+                            quantity = it.quantity
+                        )} ?: listOf(),
+                        orderId = it.orderId,
+                        paymentUrl = it.paymentUrl,
+                        serviceLogo = it.serviceLogo,
+                        serviceName = it.serviceName,
                     )
                 }
             )
@@ -62,18 +71,30 @@ object ChatMapper{
             type = messageResponse.type,
             member = null,
             widget = messageResponse.details?.let {
-                val avatar = if (it.avatar.isNotEmpty()) {
+                val avatar = if (!it.avatar.isNullOrEmpty()) {
                     "${AVATAR_ENDPOINT}/${it.avatar}"
                 } else {
                     ""
                 }
                 WidgetModel(
                     avatar = avatar,
-                    description = it.description,
-                    name = it.name,
-                    price = WidgetPriceModel(amount = it.price.amount,vatType = it.price.vatType),
-                    productId = it.productId,
-                    widgetType = it.widgetType
+                    description = it.description ?: "",
+                    name = it.name ?: "",
+                    price = WidgetPriceModel(amount = it.price?.amount,vatType = it.price?.vatType),
+                    productId = it.productId ?: "",
+                    widgetType = it.widgetType,
+                    amount = it.amount,
+                    invoiceId = it.invoiceId,
+                    items = it.items?.map { WidgetAdditionalInvoiceItemModel(
+                        amount = it.amount,
+                        name = it.name,
+                        price = it.price,
+                        quantity = it.quantity
+                    )} ?: listOf(),
+                    orderId = it.orderId,
+                    paymentUrl = it.paymentUrl,
+                    serviceLogo = it.serviceLogo,
+                    serviceName = it.serviceName,
                 )
             }
         )

@@ -28,6 +28,10 @@ class ChatAdapter(
         private const val ITEM_TYPE_OPPONENT_MESSAGE = 2
         private const val ITEM_TYPE_DATE_DIVIDER = 3
         private const val ITEM_TYPE_WIDGET_PRODUCT = 4
+        private const val ITEM_TYPE_WIDGET_ADDITIONAL_INVOICE = 5
+
+        private const val WIDGET_TYPE_ADDITIONAL_INVOICE = "generalinvoicepayment"
+        private const val WIDGET_TYPE_PRODUCT = "product"
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -46,6 +50,10 @@ class ChatAdapter(
             is WidgetProductViewHolder -> {
                 holder.bind(message as ChatMessageModel)
             }
+            is WidgetAdditionalInvoiceViewHolder -> {
+                holder.bind(message as ChatMessageModel)
+            }
+
         }
     }
 
@@ -56,7 +64,12 @@ class ChatAdapter(
                     ITEM_TYPE_MY_MESSAGE
                 } else  {
                     if (model.widget != null){
-                        ITEM_TYPE_WIDGET_PRODUCT
+                        when (model.widget.widgetType) {
+                            WIDGET_TYPE_ADDITIONAL_INVOICE -> ITEM_TYPE_WIDGET_ADDITIONAL_INVOICE
+                            WIDGET_TYPE_PRODUCT -> ITEM_TYPE_WIDGET_PRODUCT
+                            else -> -1
+                        }
+
                     } else {
                         ITEM_TYPE_OPPONENT_MESSAGE
                     }
@@ -104,6 +117,14 @@ class ChatAdapter(
                     false
                 )
                 WidgetProductViewHolder(binding, onProductClick)
+            }
+            ITEM_TYPE_WIDGET_ADDITIONAL_INVOICE -> {
+                val binding = ItemChatWidgetAdditionalInvoiceBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+                WidgetAdditionalInvoiceViewHolder(binding)
             }
             else -> {
                 val binding = ItemChatMessageMyBinding.inflate(
@@ -330,7 +351,6 @@ class ChatAdapter(
 
         fun bind(model: ChatMessageModel) {
 
-            binding.productImageView
             binding.productNameTextView.text = model.widget?.name
             binding.priceTextView.text = model.widget?.price?.amount?.simplePriceFormat()
 
@@ -344,6 +364,34 @@ class ChatAdapter(
 
             binding.toProductLinearLayout.setOnDebouncedClickListener {
                 noProductClick(model.widget?.productId) }
+        }
+    }
+
+    inner class WidgetAdditionalInvoiceViewHolder(
+        private val binding: ItemChatWidgetAdditionalInvoiceBinding
+        ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(model: ChatMessageModel) {
+
+            binding.serviceNameTextView.text = model.widget?.serviceName
+
+            val serviceLogo = model.widget?.serviceLogo
+            if (!serviceLogo.isNullOrEmpty()) {
+                GlideApp.with(binding.serviceImageView.context)
+                    .load(GlideUrlProvider.makeHeadersGlideUrl(serviceLogo))
+                    .transform(CenterCrop(), RoundedCorners(8.dp(binding.serviceImageView.context)))
+                    .into(binding.serviceImageView)
+            }
+
+            binding.totalPriceTextView.text = model.widget?.amount?.simplePriceFormat() ?: ""
+            binding.amountToPayTextView.text = model.widget?.amount?.simplePriceFormat() ?: ""
+            val adapter = WidgetAdditionalInvoiceItemsAdapter()
+            binding.additionalItemsRecyclerView.adapter = adapter
+            model.widget?.items?.let { adapter.setItems(it) }
+
+            binding.orderLinearLayout.setOnDebouncedClickListener {
+
+            }
         }
     }
 
