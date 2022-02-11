@@ -17,11 +17,14 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.DownloadManagerRequestProvider
 import com.custom.rgs_android_dom.databinding.FragmentChatBinding
 import com.custom.rgs_android_dom.domain.chat.models.ChatFileModel
+import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.chat.files.upload.UploadFilesFragment
 import com.custom.rgs_android_dom.utils.*
 
-class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.fragment_chat) {
+class ChatFragment : BaseBottomSheetFragment<ChatViewModel, FragmentChatBinding>() {
+
+    override val TAG: String = "CHAT_FRAGMENT"
 
     companion object{
         private const val UP_DIRECTION = 1
@@ -65,6 +68,7 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
             {
                if (it != null) {
                    viewModel.onProductClick(it)
+                   hideSoftwareKeyboard()
                }
             }
         )
@@ -134,6 +138,14 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
         }
     }
 
+    override fun getThemeResource(): Int {
+        return R.style.BottomSheetNoDim
+    }
+
+    override fun isNavigationViewVisible(): Boolean {
+        return false
+    }
+
     override fun onLoading() {
         super.onLoading()
         binding.loadingProgressBar.visible()
@@ -177,5 +189,7 @@ class ChatFragment : BaseFragment<ChatViewModel, FragmentChatBinding>(R.layout.f
         requireContext().startActivity(intent)
         requireContext().unregisterReceiver(onDownloadCompleteReceiver)
     }
+
+
 
 }

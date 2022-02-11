@@ -14,7 +14,7 @@ import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
 class PolicyDialogsFragment :
-    BaseBottomSheetFragment<PolicyDialogsViewModel, FragmentPolicyDialogsBinding>() {
+    BaseBottomSheetFragment<PolicyDialogsViewModel, FragmentPolicyDialogsBinding>(), NonRecallable {
 
     override val TAG: String = "POLICY_DIALOGS_FRAGMENT"
 

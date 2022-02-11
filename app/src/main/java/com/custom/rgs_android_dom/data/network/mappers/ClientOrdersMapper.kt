@@ -17,7 +17,7 @@ object ClientOrdersMapper {
         invoices.forEach {
             invoicesMap[it.details?.orderId ?: ""] = it
         }
-        return ordersResponse.orders.map {
+        return ordersResponse.orders?.map {
             val service = if (it.services?.isNotEmpty() == true) it.services[0] else null
             val status = getStatus(it.status ?: "")
             val localDateTime = LocalDate.parse(it.deliveryDate, DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZZ"))
@@ -58,7 +58,7 @@ object ClientOrdersMapper {
                     }
                 }
             )
-        }
+        } ?: listOf()
     }
 
     private fun getOrderDescription(status: OrderStatus, productPrice: Int, localDate: LocalDate): String {
