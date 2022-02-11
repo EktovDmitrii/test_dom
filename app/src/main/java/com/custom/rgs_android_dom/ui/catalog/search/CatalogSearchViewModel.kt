@@ -86,7 +86,7 @@ class CatalogSearchViewModel(
             .subscribeBy (
                 onNext = {
                     when (screenToOpenOnLogin) {
-                        TargetScreen.CHAT -> { ScreenManager.showScreen(ChatFragment()) }
+                        TargetScreen.CHAT -> { ScreenManager.showBottomScreen(ChatFragment()) }
                     }
                     screenToOpenOnLogin = TargetScreen.UNSPECIFIED
                 },
@@ -126,7 +126,7 @@ class CatalogSearchViewModel(
 
     fun onOpenChatClick(){
         if (registrationInteractor.isAuthorized()){
-            ScreenManager.showScreen(ChatFragment())
+            ScreenManager.showBottomScreen(ChatFragment())
         } else {
             screenToOpenOnLogin = TargetScreen.CHAT
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)

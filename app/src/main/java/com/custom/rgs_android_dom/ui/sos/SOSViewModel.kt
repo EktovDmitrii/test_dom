@@ -54,7 +54,7 @@ class SOSViewModel(
                     if (isAuthorized) {
                         when (requestedScreen) {
                             TargetScreen.PHONE_CALL -> onFreePhoneCallClick()
-                            TargetScreen.CHAT -> { ScreenManager.showScreen(ChatFragment()) }
+                            TargetScreen.CHAT -> { ScreenManager.showBottomScreen(ChatFragment()) }
                             TargetScreen.AUDIO_CALL -> {
                                 ScreenManager.showScreen(
                                     CallFragment.newInstance(
@@ -113,7 +113,7 @@ class SOSViewModel(
     fun onChatClick() {
         requestedScreen = TargetScreen.CHAT
         if (isAuthorized) {
-            ScreenManager.showScreen(ChatFragment())
+            ScreenManager.showBottomScreen(ChatFragment())
         } else {
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
         }
