@@ -21,6 +21,11 @@ import com.custom.rgs_android_dom.ui.main.MainFragment
 import com.custom.rgs_android_dom.ui.navigation.TargetScreen
 import com.custom.rgs_android_dom.utils.logException
 import com.custom.rgs_android_dom.views.NavigationScope
+import com.yandex.metrica.YandexMetrica
+import com.yandex.metrica.profile.Attribute
+import com.yandex.metrica.profile.BirthDateAttribute
+import com.yandex.metrica.profile.GenderAttribute
+import com.yandex.metrica.profile.UserProfile
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -149,18 +154,38 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
 
     fun onMainClick(){
         ScreenManager.showBottomScreen(MainFragment())
+        YandexMetrica.reportEvent("mp_menu", "{\"menu_item\":\"Главная\"}")
     }
 
     fun onCatalogueClick(){
         ScreenManager.showBottomScreen(MainCatalogFragment.newInstance())
+        YandexMetrica.reportEvent("mp_menu", "{\"menu_item\":\"Каталог\"}")
     }
 
     fun onProfileClick(){
         ScreenManager.showBottomScreen(ClientFragment())
+        YandexMetrica.reportEvent("mp_menu", "{\"menu_item\":\"Профиль\"}")
     }
 
     fun onLoginClick(){
         ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+        YandexMetrica.reportEvent("mp_menu", "{\"menu_item\":\"Войти\"}")
+
+//        // Creating the UserProfile instance.
+//        val userProfile = UserProfile.newBuilder() // Updating predefined attributes.
+//            .apply(Attribute.name().withValue("John"))
+//            .apply(Attribute.gender().withValue(GenderAttribute.Gender.MALE))
+//            .apply(Attribute.birthDate().withAge(24))
+//            .apply(Attribute.notificationsEnabled().withValue(false)) // Updating custom attributes.
+//            .apply(Attribute.customString("backend_id").withValue("string"))
+//            .apply(Attribute.customNumber("rgs_client").withValue(55.0))
+//            .apply(Attribute.customCounter("user_id").withDelta(1.0))
+//            .build()
+//        // Setting the ProfileID using the method of the YandexMetrica class.
+//        YandexMetrica.setUserProfileID("id")
+//
+//        // Sending the UserProfile instance.
+//        YandexMetrica.reportUserProfile(userProfile)
     }
 
     fun onChatCallClick(){
