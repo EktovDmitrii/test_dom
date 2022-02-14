@@ -40,6 +40,8 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.detailButton.btnTitle.text = "Заказать"
+
         binding.advantagesLayout.advantagesRecycler.adapter = ProductAdvantagesAdapter()
 
         binding.backImageView.setOnDebouncedClickListener {
@@ -75,7 +77,7 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
                 binding.longness.longnessValue.text = "$it"
             }
 
-            binding.detailButton.btnTitle.text = "Заказать"
+
             binding.detailButton.btnTitle.gravity = Gravity.CENTER
             binding.detailButton.btnPriceGroup.gone()
         }
@@ -99,6 +101,12 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
                 binding.validityUntill.validityTillValue.text = it
                 binding.validityUntill.root.visible()
             }
+        }
+
+        subscribe(viewModel.isOrderTextViewEnabledObserver){
+            binding.detailButton.root.isEnabled = it
+            binding.detailButton.productArrangeBtn.isEnabled = it
+            binding.detailButton.btnTitle.isEnabled = it
         }
     }
 

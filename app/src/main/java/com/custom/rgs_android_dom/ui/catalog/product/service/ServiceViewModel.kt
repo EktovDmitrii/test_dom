@@ -38,12 +38,17 @@ class ServiceViewModel(
     val orderTextViewVisibleObserver: LiveData<Boolean> = orderTextViewVisibleController
 
     private val priceTextViewVisibleController = MutableLiveData<Boolean>()
-    val priceTextViewVisibleObserver: LiveData<Boolean> = orderTextViewVisibleController
+    val priceTextViewVisibleObserver: LiveData<Boolean> = priceTextViewVisibleController
+
+    private val isOrderTextViewEnabledController = MutableLiveData<Boolean>()
+    val isOrderTextViewEnabledObserver: LiveData<Boolean> = isOrderTextViewEnabledController
 
     init {
         productValidToController.value = service.purchaseValidTo?.formatTo(
             DATE_PATTERN_DATE_FULL_MONTH
         )
+
+        isOrderTextViewEnabledController.value = service.canBeOrdered
 
         catalogInteractor.getProductServiceDetails(service.productId, service.serviceId)
             .subscribeOn(Schedulers.io())
