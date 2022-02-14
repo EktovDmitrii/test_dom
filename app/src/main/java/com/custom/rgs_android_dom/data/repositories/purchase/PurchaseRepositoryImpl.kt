@@ -52,7 +52,8 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
                     deliveryTime = OrderTimeRequest(
                         timeFrom = timeFrom,
                         timeTo = timeTo
-                    )
+                    ),
+                    withOrder = true
                 )
             } else {
                 orderRequest = orderRequest?.copy(
@@ -60,7 +61,8 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
                     deliveryTime = OrderTimeRequest(
                         timeFrom = timeFrom,
                         timeTo = timeTo
-                    )
+                    ),
+                    withOrder = true
                 )
             }
         }
