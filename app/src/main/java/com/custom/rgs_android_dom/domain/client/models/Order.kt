@@ -45,20 +45,30 @@ data class Order(
     }
 
     fun getPaymentState(): String {
-        return if (status == OrderStatus.DRAFT || status == OrderStatus.CONFIRMED) {
-            "Ожидает оплату"
-        } else {
-            "Оплачен"
+        return when (status) {
+            OrderStatus.DRAFT -> {
+                "Ожидает оплату"
+            }
+            OrderStatus.CANCELLED -> {
+                "Счёт аннулирован"
+            }
+            else -> {
+                "Оплачен"
+            }
         }
     }
 
     fun getPaymentStateWithDate(): String {
-        return if (status == OrderStatus.DRAFT || status == OrderStatus.CONFIRMED) {
-            "<font color=\"${"#8E8F8F"}\">Ожидает оплату</font>"
-        } else if (status == OrderStatus.CANCELLED) {
-            "Счёт аннулирован"
-        } else {
-            "<font color=\"${"#EEA641"}\">Оплачено</font>"
+        return when (status) {
+            OrderStatus.DRAFT -> {
+                "<font color=\"${"#8E8F8F"}\">Ожидает оплату</font>"
+            }
+            OrderStatus.CANCELLED -> {
+                "Счёт аннулирован"
+            }
+            else -> {
+                "<font color=\"${"#EEA641"}\">Оплачено</font>"
+            }
         }
     }
 }

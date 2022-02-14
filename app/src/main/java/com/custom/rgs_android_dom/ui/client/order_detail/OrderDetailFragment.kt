@@ -75,7 +75,13 @@ class OrderDetailFragment :
             binding.commentTextView.text = state.comment
             binding.commentTitleTextView.visibleIf(state.comment?.isNotBlank() == true)
             binding.commentTextView.visibleIf(state.comment?.isNotBlank() == true)
-
+            binding.productTitleTextView.text = service?.productName
+            service?.productIcon?.let { logo ->
+                GlideApp.with(requireContext())
+                    .load(GlideUrlProvider.makeHeadersGlideUrl(logo))
+                    .transform(RoundedCorners(4.dp(requireContext())))
+                    .into(binding.productIconImageView)
+            }
             binding.priceTextView.text = (service?.productPrice ?: 0).formatPrice()
             binding.paymentStateTextView.text = Html.fromHtml(
                 state.getPaymentStateWithDate(),
@@ -86,10 +92,19 @@ class OrderDetailFragment :
             binding.billPayTextView.visibleIf(!isDefaultProduct && orderStateForPay)
             initGeneralInvoices(state.status, state.generalInvoice)
             initCancelOrderButton(state.status)
+            initPriceViews(state.status)
             binding.feedbackImageView.setOnDebouncedClickListener {
                 viewModel.onFeedbackClick()
             }
         }
+    }
+
+    private fun initPriceViews(status: OrderStatus) {
+        binding.priceContainer.goneIf(status == OrderStatus.CONFIRMED)
+        binding.priceTitleTextView.goneIf(status == OrderStatus.CONFIRMED)
+        binding.billPayTextView.goneIf(status == OrderStatus.CONFIRMED || status == OrderStatus.CANCELLED)
+        binding.productContainer.visibleIf(status == OrderStatus.CONFIRMED)
+        binding.paymentTypeTitleTextView.visibleIf(status == OrderStatus.CONFIRMED)
     }
 
     private fun initGeneralInvoices(status: OrderStatus, invoices: List<GeneralInvoice>?) {
@@ -119,8 +134,7 @@ class OrderDetailFragment :
 
     private fun initCancelOrderButton(orderStatus: OrderStatus) {
          when (orderStatus) {
-             OrderStatus.DRAFT -> binding.cancelOrderTextView.visible()
-             OrderStatus.CONFIRMED -> binding.cancelOrderTextView.visible()
+             OrderStatus.DRAFT, OrderStatus.CONFIRMED -> binding.cancelOrderTextView.visible()
              else -> binding.cancelOrderTextView.gone()
          }
     }
@@ -171,6 +185,8 @@ class OrderDetailFragment :
                 changeSecondLineColor(canceledColor)
                 changeThirdLineColor(canceledColor)
                 changeFourthLineColor(canceledColor)
+
+                binding.serviceNameTextView.setTextColor(canceledColor)
             }
         }
     }

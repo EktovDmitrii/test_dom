@@ -39,7 +39,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:overScrollMode="never">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -202,7 +203,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:scaleType="fitXY"
-                        app:srcCompat="@color/secondary100" />
+                        android:background="@drawable/rectangle_filled_secondary_100_radius_4dp" />
 
                     <TextView
                         android:id="@+id/productTitleTextView"
@@ -228,6 +229,7 @@
                     app:translationTextKey="Стоимость"/>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/priceContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="20dp"

@@ -82,7 +82,7 @@ class OrdersAdapter(
             val invoices = item.generalInvoice ?: emptyList()
             val service = if (item.services?.isNotEmpty() == true) item.services[0] else null
             val status = item.status
-            if (status == OrderStatus.DRAFT || status == OrderStatus.CONFIRMED) {
+            if (status == OrderStatus.DRAFT) {
                 val purchaseModel = PurchaseModel(
                     id = item.id,
                     defaultProduct = service?.defaultProduct ?: false,
