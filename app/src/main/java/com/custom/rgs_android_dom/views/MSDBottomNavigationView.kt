@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
+import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdBottomNavigationMenuBinding
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
+import com.custom.rgs_android_dom.utils.visibleIf
 
 class MSDBottomNavigationView @JvmOverloads constructor(
     context: Context,
@@ -21,7 +23,7 @@ class MSDBottomNavigationView @JvmOverloads constructor(
     private val navigationViews = mapOf(
         NavigationScope.NAV_MAIN to binding.navMainLinearLayout,
         NavigationScope.NAV_CATALOG to binding.navCatalogLinearLayout,
-        NavigationScope.NAV_CHAT to binding.navChatLinearLayout,
+        NavigationScope.NAV_CHAT to binding.navChatsConstraintLayout,
         NavigationScope.NAV_LOGIN to binding.navLoginLinearLayout,
         NavigationScope.NAV_PROFILE to binding.navProfileLinearLayout
     )
@@ -54,6 +56,17 @@ class MSDBottomNavigationView @JvmOverloads constructor(
 
     fun setNavigationChangedListener(navigationChangedListener: (NavigationScope) -> Unit = {}){
         this.navigationChangedListener = navigationChangedListener
+    }
+
+    fun updateUnreadPostsCount(unreadMessages: Int){
+        binding.unreadPostsFrameLayout.visibleIf(unreadMessages > 0)
+        if (unreadMessages < 100){
+            binding.unreadPostsFrameLayout.setBackgroundResource(R.drawable.circle_stroke_1dp_white_solid_primary_500)
+            binding.unreadPostsTextView.text = unreadMessages.toString()
+        } else {
+            binding.unreadPostsFrameLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_white_radius_32px_solid_primary_500)
+            binding.unreadPostsTextView.text = "99+"
+        }
     }
 }
 
