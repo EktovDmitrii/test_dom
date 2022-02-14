@@ -2,12 +2,15 @@ package com.custom.rgs_android_dom.ui.catalog.product
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ItemGridCatalogInfoBinding
 import com.custom.rgs_android_dom.domain.catalog.models.ServiceShortModel
 import com.custom.rgs_android_dom.ui.base.BaseViewHolder
+import com.custom.rgs_android_dom.utils.gone
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
+import com.custom.rgs_android_dom.utils.visible
 import com.custom.rgs_android_dom.utils.visibleIf
 
 class ProductInclusionAdapter(
@@ -47,17 +50,30 @@ class ProductInclusionAdapter(
         override fun bind(item: ServiceShortModel) {
             binding.titleTextView.text = item.serviceName
 
-            binding.numberTextView.visibleIf(item.quantity > 0)
+            binding.numberTextView.visibleIf(item.quantity >= 0)
 
             if (item.quantity.toInt() == INFINITY) {
                 binding.numberTextView.text = ""
                 binding.numberTextView.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.ic_infinity, 0, 0, 0
                 )
-            } else if (item.quantity.toInt() > 0) {
+            } else if (item.quantity.toInt() >= 0) {
                 binding.numberTextView.text = "${item.quantity}"
             }
-            binding.orderTextView.visibleIf(item.isPurchased && item.quantity >0)
+
+            if (item.isPurchased){
+                binding.orderTextView.visible()
+                if (item.canBeOrdered){
+                    binding.orderTextView.isEnabled = true
+                    binding.orderTextView.setTextColor(ContextCompat.getColor(binding.orderTextView.context, R.color.primary500))
+                } else {
+                    binding.orderTextView.isEnabled = false
+                    binding.orderTextView.setTextColor(ContextCompat.getColor(binding.orderTextView.context, R.color.secondary400))
+                }
+            } else {
+                binding.orderTextView.gone()
+            }
+
             binding.orderTextView.setOnDebouncedClickListener {
                 onOrderClick(item)
             }

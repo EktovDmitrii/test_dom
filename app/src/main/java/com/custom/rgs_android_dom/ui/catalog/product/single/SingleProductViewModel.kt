@@ -52,24 +52,26 @@ class SingleProductViewModel(
         productController.value?.let { product ->
             if (registrationInteractor.isAuthorized()) {
                 if (product.isPurchased){
-                    catalogInteractor.getProductServices(product.id)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeBy(
-                            onSuccess = {
-                                if (it.isNotEmpty()){
-                                    val serviceOrderFragment = ServiceOrderFragment.newInstance(
-                                        it[0].serviceId,
-                                        product.id
-                                    )
-                                    ScreenManager.showScreen(serviceOrderFragment)
-                                }
+                    product.validityFrom?.let { validityFrom->
+                        catalogInteractor.getProductServices(product.id, product.isPurchased, product.validityFrom)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeBy(
+                                onSuccess = {
+                                    if (it.isNotEmpty()){
+                                        val serviceOrderFragment = ServiceOrderFragment.newInstance(
+                                            it[0].serviceId,
+                                            product.id
+                                        )
+                                        ScreenManager.showScreen(serviceOrderFragment)
+                                    }
 
-                            },
-                            onError = {
-                                logException(this, it)
-                            }
-                        ).addTo(dataCompositeDisposable)
+                                },
+                                onError = {
+                                    logException(this, it)
+                                }
+                            ).addTo(dataCompositeDisposable)
+                    }
                 } else {
                     val purchaseServiceModel = PurchaseModel(
                         id = product.id,

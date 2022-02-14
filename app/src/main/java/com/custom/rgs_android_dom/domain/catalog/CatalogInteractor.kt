@@ -1,9 +1,11 @@
 package com.custom.rgs_android_dom.domain.catalog
 
+import android.util.Log
 import com.custom.rgs_android_dom.domain.catalog.models.*
 import com.custom.rgs_android_dom.domain.main.CommentModel
 import com.custom.rgs_android_dom.domain.repositories.CatalogRepository
 import io.reactivex.Single
+import org.joda.time.DateTime
 
 class CatalogInteractor(private val catalogRepository: CatalogRepository) {
 
@@ -56,13 +58,24 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
         return catalogRepository.getProduct(productId)
     }
 
-    fun getProductServices(productId: String): Single<List<ServiceShortModel>> {
+    fun getProductServices(productId: String, isPurchased: Boolean, validityFrom: DateTime): Single<List<ServiceShortModel>> {
         return catalogRepository.getProductServices(productId).map { services->
-            /*services.forEach { service->
-                val availableService = catalogRepository.getAvailableServiceInProduct(productId, service.serviceId).blockingGet()
-                service.quantity = availableService.available.toLong()
-            }*/
-            services
+            if (isPurchased){
+                services.forEach { service->
+                    val availableService = catalogRepository.getAvailableServiceInProduct(productId, service.serviceId).blockingGet()
+                    service.quantity = availableService.available.toLong()
+                }
+            }
+            if (validityFrom.isAfterNow){
+                services.forEach { service->
+                    service.canBeOrdered = false
+                }
+            } else{
+                services.forEach{service->
+                    service.canBeOrdered = service.quantity > 0
+                }
+            }
+            return@map services.map { it.copy(isPurchased = isPurchased) }
         }
     }
 

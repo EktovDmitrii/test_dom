@@ -123,7 +123,8 @@ class ProductViewModel(
                 isPurchased = product.isPurchased,
                 purchaseValidTo = product.purchaseValidTo,
                 purchaseObjectId = product.purchaseObjectId,
-                quantity = serviceShortModel.quantity
+                quantity = serviceShortModel.quantity,
+                canBeOrdered = serviceShortModel.canBeOrdered
             )
         )
         ScreenManager.showBottomScreen(serviceFragment)
@@ -135,16 +136,19 @@ class ProductViewModel(
     }
 
     private fun getIncludedServices(){
-        catalogInteractor.getProductServices(product.productId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onSuccess = {
-                    productServicesController.value = it.map { it.copy(isPurchased = product.isPurchased) }
-                },
-                onError = {
-                    logException(this, it)
-                }
-            ).addTo(dataCompositeDisposable)
+        product.purchaseValidFrom?.let { purchaseValidFrom->
+            catalogInteractor.getProductServices(product.productId, product.isPurchased, purchaseValidFrom)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                    onSuccess = {
+                        productServicesController.value = it.map { it.copy(isPurchased = product.isPurchased) }
+                    },
+                    onError = {
+                        logException(this, it)
+                    }
+                ).addTo(dataCompositeDisposable)
+        }
+
     }
 }
