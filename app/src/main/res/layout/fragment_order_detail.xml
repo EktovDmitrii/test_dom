@@ -164,6 +164,7 @@
                     tools:text="Ярік бачок потік "/>
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/paymentTitleTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/secondary800"
@@ -174,6 +175,49 @@
                     app:translationTextKey="Оплата"/>
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/paymentTypeTitleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary500"
+                    android:fontFamily="@font/suisse_regular"
+                    android:textSize="16sp"
+                    android:paddingHorizontal="20dp"
+                    android:layout_marginTop="16dp"
+                    android:visibility="gone"
+                    app:translationTextKey="Способ оплаты"
+                    tools:visibility="visible"/>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/productContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="20dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/productIconImageView"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@color/secondary100" />
+
+                    <TextView
+                        android:id="@+id/productTitleTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/secondary900"
+                        android:fontFamily="@font/suisse_regular"
+                        android:textSize="16sp"
+                        android:layout_marginStart="16dp"
+                        tools:text="Тепловизионная диагностика недвижимости"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/priceTitleTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/secondary500"

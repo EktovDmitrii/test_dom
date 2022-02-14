@@ -2,7 +2,6 @@ package com.custom.rgs_android_dom.data.repositories.client
 
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
-import com.custom.rgs_android_dom.data.network.mappers.ClientOrdersMapper
 import com.custom.rgs_android_dom.data.network.mappers.GeneralInvoiceMapper
 import com.custom.rgs_android_dom.data.network.mappers.OrdersMapper
 import com.custom.rgs_android_dom.data.network.requests.DeleteContactsRequest
