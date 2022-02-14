@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentRequestEditPersonalDataBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.utils.*
+import com.yandex.metrica.YandexMetrica
 
 class RequestEditPersonalDataFragment() : BaseBottomSheetFragment<RequestEditPersonalDataViewModel, FragmentRequestEditPersonalDataBinding>() {
 
@@ -16,6 +17,8 @@ class RequestEditPersonalDataFragment() : BaseBottomSheetFragment<RequestEditPer
         super.onViewCreated(view, savedInstanceState)
 
         binding.confirmTextView.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("profile_personal_data_request")
+
             viewModel.onConfirmClick()
         }
 

@@ -9,6 +9,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.custom.rgs_android_dom.databinding.FragmentEditDocumentListBottomSheetBinding
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.yandex.metrica.YandexMetrica
 import java.io.Serializable
 
 class EditDocumentListBottomSheetFragment : BottomSheetDialogFragment() {
@@ -40,11 +41,15 @@ class EditDocumentListBottomSheetFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.addDocumentTextView.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("profile_docs_action", "{\"object_action\":\"${binding.addDocumentTextView.text}\"}")
+
             editDocumentListListener?.addDocumentToList()
             dismissAllowingStateLoss()
         }
 
         binding.editDocumentListTextView.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("profile_docs_action", "{\"object_action\":\"${binding.editDocumentListTextView.text}\"}")
+
             editDocumentListListener?.changeDeleteButtonVisibility(true)
             dismissAllowingStateLoss()
         }

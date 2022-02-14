@@ -11,6 +11,7 @@ import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
 import com.custom.rgs_android_dom.views.edit_text.MSDLabelIconEditText
 import com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
+import com.yandex.metrica.YandexMetrica
 import org.joda.time.LocalDateTime
 
 class EditPersonalDataFragment :
@@ -80,6 +81,8 @@ class EditPersonalDataFragment :
         }
 
         binding.saveTextView.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("profile_personal_data_save")
+
             hideSoftwareKeyboard()
             viewModel.onSaveClick()
         }

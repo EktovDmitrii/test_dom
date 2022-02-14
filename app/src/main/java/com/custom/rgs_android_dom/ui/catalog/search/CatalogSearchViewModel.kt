@@ -18,6 +18,7 @@ import com.custom.rgs_android_dom.ui.navigation.TargetScreen
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.utils.logException
 import com.jakewharton.rxrelay2.PublishRelay
+import com.yandex.metrica.YandexMetrica
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -112,6 +113,8 @@ class CatalogSearchViewModel(
     }
 
     fun onProductClick(product: ProductShortModel){
+        YandexMetrica.reportEvent("mp_search_service", "{\"service\":\"${product.name}\"}")
+
         if (product.defaultProduct){
             ScreenManager.showBottomScreen(SingleProductFragment.newInstance(SingleProductLauncher( product.id)))
         } else {

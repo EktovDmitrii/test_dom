@@ -63,4 +63,11 @@ class SelectPropertyTypeViewModel(private val propertyName: String,
         closeController.value = Unit
     }
 
+    fun getSelectedType(): String {
+        return when (propertyType) {
+            PropertyType.APARTMENT -> "Квартира"
+            PropertyType.HOUSE -> "Дом"
+            else -> ""
+        }
+    }
 }

@@ -154,23 +154,18 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
 
     fun onMainClick(){
         ScreenManager.showBottomScreen(MainFragment())
-        YandexMetrica.reportEvent("mp_menu", "{\"menu_item\":\"Главная\"}")
     }
 
     fun onCatalogueClick(){
         ScreenManager.showBottomScreen(MainCatalogFragment.newInstance())
-        YandexMetrica.reportEvent("mp_menu", "{\"menu_item\":\"Каталог\"}")
     }
 
     fun onProfileClick(){
         ScreenManager.showBottomScreen(ClientFragment())
-        YandexMetrica.reportEvent("mp_menu", "{\"menu_item\":\"Профиль\"}")
     }
 
     fun onLoginClick(){
         ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
-        YandexMetrica.reportEvent("mp_menu", "{\"menu_item\":\"Войти\"}")
-
 //        // Creating the UserProfile instance.
 //        val userProfile = UserProfile.newBuilder() // Updating predefined attributes.
 //            .apply(Attribute.name().withValue("John"))

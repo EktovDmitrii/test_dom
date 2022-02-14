@@ -17,6 +17,7 @@ import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesF
 import com.custom.rgs_android_dom.ui.catalog.subcategory.CatalogSubcategoryFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.logException
+import com.yandex.metrica.YandexMetrica
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -57,6 +58,8 @@ class TabCatalogViewModel(
     }
 
     fun onAllProductsClick(category: CatalogCategoryModel){
+        YandexMetrica.reportEvent("catalog_catalog_service_click_all", "{\"category\":\"${category.name}\"}")
+
         val catalogSubcategoriesFragment = CatalogSubcategoriesFragment.newInstance(category)
         ScreenManager.showBottomScreen(catalogSubcategoriesFragment)
     }

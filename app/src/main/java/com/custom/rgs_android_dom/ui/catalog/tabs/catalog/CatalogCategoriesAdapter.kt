@@ -10,6 +10,7 @@ import com.custom.rgs_android_dom.domain.catalog.models.CatalogSubCategoryModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
 import com.custom.rgs_android_dom.ui.base.BaseViewHolder
 import com.custom.rgs_android_dom.utils.*
+import com.yandex.metrica.YandexMetrica
 
 class CatalogCategoriesAdapter(
     private val onSubCategoryClick: (CatalogSubCategoryModel) -> Unit = {},

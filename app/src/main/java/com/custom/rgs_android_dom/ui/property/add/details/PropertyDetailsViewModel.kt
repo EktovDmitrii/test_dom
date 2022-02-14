@@ -16,6 +16,7 @@ import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.logException
 import com.custom.rgs_android_dom.views.MSDYesNoSelector
+import com.yandex.metrica.YandexMetrica
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -64,7 +65,8 @@ class PropertyDetailsViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                         propertyInteractor.updateDocuments(it)
+                    YandexMetrica.reportEvent("profile_object_add_complete")
+                    propertyInteractor.updateDocuments(it)
                 },
                 onError = {
                     logException(this, it)

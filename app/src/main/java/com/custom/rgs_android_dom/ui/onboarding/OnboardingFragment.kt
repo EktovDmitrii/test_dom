@@ -8,6 +8,7 @@ import com.custom.rgs_android_dom.databinding.FragmentOnboardingBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.utils.*
 import com.google.android.material.tabs.TabLayoutMediator
+import com.yandex.metrica.YandexMetrica
 
 class OnboardingFragment :
     BaseFragment<OnboardingViewModel, FragmentOnboardingBinding>(R.layout.fragment_onboarding) {
@@ -35,6 +36,7 @@ class OnboardingFragment :
         binding.onboardingViewPager.adapter = OnboardingPagerAdapter(this)
         binding.onboardingViewPager.isUserInputEnabled = false
         binding.onboardingViewPager.registerOnPageChangeCallback(viewPagerChangeListener)
+        YandexMetrica.reportEvent("onboarding_progress", "{\"progress_status\":\"1\"}")
 
         TabLayoutMediator(
             binding.onboardingTabLayout,
@@ -43,10 +45,18 @@ class OnboardingFragment :
 
         binding.nextTextView.setOnDebouncedClickListener {
             val curr = binding.onboardingViewPager.currentItem
-            if (curr == OnboardingPagerAdapter.TABS_COUNT - 1) viewModel.onLoginClick()
-            else binding.onboardingViewPager.currentItem = curr + 1
+
+            YandexMetrica.reportEvent("onboarding_progress", "{\"progress_status\":\"${curr+1}\"}")
+
+            if (curr == OnboardingPagerAdapter.TABS_COUNT - 1) {
+                viewModel.onLoginClick()
+            } else {
+                binding.onboardingViewPager.currentItem = curr + 1
+            }
         }
         binding.skipTextView.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("onboarding_complete")
+
             viewModel.onSkipClick()
         }
 

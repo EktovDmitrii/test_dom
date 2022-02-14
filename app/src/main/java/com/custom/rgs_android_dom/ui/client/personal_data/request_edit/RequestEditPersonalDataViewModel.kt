@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.utils.logException
+import com.yandex.metrica.YandexMetrica
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -24,6 +25,8 @@ class RequestEditPersonalDataViewModel(
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
             .subscribeBy(
                 onComplete = {
+                    YandexMetrica.reportEvent("profile_personal_data_request_confirm")
+
                     loadingStateController.value = LoadingState.CONTENT
                     isSuccessTextViewVisibleController.value = true
                 },

@@ -15,6 +15,7 @@ import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.views.NavigationScope
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.*
+import com.yandex.metrica.YandexMetrica
 
 class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.fragment_root) {
 
@@ -27,6 +28,7 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
 
     private var canTransit = true
     private var canTransitReverse = false
+    private var isChatEventLogged = false
 
     private val bottomSheetCallback = object : BottomSheetCallback() {
         override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -75,18 +77,28 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
         binding.bottomNavigationView.setNavigationChangedListener { navigationItem->
             when (navigationItem){
                 NavigationScope.NAV_MAIN -> {
+                    YandexMetrica.reportEvent("mp_menu", "{\"menu_item\":\"Главная\"}")
+
                     viewModel.onMainClick()
                 }
                 NavigationScope.NAV_CATALOG -> {
+                    YandexMetrica.reportEvent("mp_menu", "{\"menu_item\":\"Каталог\"}")
+
                     viewModel.onCatalogueClick()
                 }
                 NavigationScope.NAV_CHAT -> {
+                    YandexMetrica.reportEvent("mp_menu", "{\"menu_item\":\"Чат\"}")
+
                     viewModel.onChatClick()
                 }
                 NavigationScope.NAV_LOGIN -> {
+                    YandexMetrica.reportEvent("mp_menu", "{\"menu_item\":\"Войти\"}")
+
                     viewModel.onLoginClick()
                 }
                 NavigationScope.NAV_PROFILE -> {
+                    YandexMetrica.reportEvent("mp_menu", "{\"menu_item\":\"Профиль\"}")
+
                     viewModel.onProfileClick()
                 }
             }
@@ -105,14 +117,17 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
         }
 
         binding.chatLinearLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("master_online_connection", "{\"connection\":\"Чат\"}")
             viewModel.onChatClick()
         }
 
         binding.chatCallLinearLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("master_online_connection", "{\"connection\":\"Звонок\"}")
             viewModel.onChatCallClick()
         }
 
         binding.chatVideoCallLinearLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("master_online_connection", "{\"connection\":\"Видео\"}")
             viewModel.onChatVideoCallClick()
         }
 
@@ -161,6 +176,8 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
     }
 
     private fun makePhoneCall(){
+        YandexMetrica.reportEvent("master_online_connection", "{\"connection\":\"8-800\"}")
+
         val phoneCallIntent = Intent(Intent.ACTION_DIAL)
         phoneCallIntent.data = Uri.parse("tel:88006004358")
         phoneCallIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -199,6 +216,7 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
         when (newState) {
             SlideState.TOP -> {
                 updateToolbarState()
+                isChatEventLogged = false
             }
             SlideState.MOVING_TOP -> {
                 if (canTransitReverse) {
@@ -218,6 +236,10 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
             }
             SlideState.BOTTOM -> {
                 canTransitReverse = true
+                if (!isChatEventLogged) {
+                    YandexMetrica.reportEvent("master_online_open")
+                    isChatEventLogged = true
+                }
             }
         }
     }

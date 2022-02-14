@@ -24,6 +24,7 @@ import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.ScreenPoint
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.*
+import com.yandex.metrica.YandexMetrica
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -122,8 +123,10 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
        }
 
        binding.nextTextView.setOnDebouncedClickListener {
-            hideSoftwareKeyboard(true)
-            viewModel.onNextClick()
+           YandexMetrica.reportEvent("profile_object_add_address")
+
+           hideSoftwareKeyboard(true)
+           viewModel.onNextClick()
        }
 
         subscribe(viewModel.selectAddressViewStateObserver){selectAddressViewState->
@@ -203,7 +206,13 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
     }
 
     override fun onConfirmClick() {
+        YandexMetrica.reportEvent("profile_object_add_abort_yes")
+
         ScreenManager.closeScope(ADD_PROPERTY)
+    }
+
+    override fun onCancelClick() {
+        YandexMetrica.reportEvent("profile_object_add_abort_no")
     }
 
     override fun dispatchTouchEvent(event: MotionEvent) {

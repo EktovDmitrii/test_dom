@@ -17,6 +17,7 @@ import com.custom.rgs_android_dom.utils.GlideApp
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
+import com.yandex.metrica.YandexMetrica
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -96,6 +97,8 @@ class DetailDocumentFragment :
     }
 
     override fun onConfirmClick() {
+        YandexMetrica.reportEvent("profile_docs_delete")
+
         viewModel.deleteDocument()
         onClose()
     }

@@ -10,6 +10,7 @@ import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.client.agent.request_edit.RequestEditAgentFragment
 import com.custom.rgs_android_dom.ui.client.personal_data.add_photo.AddPhotoFragment
 import com.custom.rgs_android_dom.utils.*
+import com.yandex.metrica.YandexMetrica
 
 class PersonalDataFragment : BaseFragment<PersonalDataViewModel, FragmentPersonalDataBinding>(R.layout.fragment_personal_data) {
 
@@ -22,6 +23,8 @@ class PersonalDataFragment : BaseFragment<PersonalDataViewModel, FragmentPersona
         }
 
         binding.editImageView.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("profile_personal_data_edit")
+
             viewModel.onEditClick()
         }
 

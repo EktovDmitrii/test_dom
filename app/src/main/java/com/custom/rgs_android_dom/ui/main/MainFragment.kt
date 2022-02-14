@@ -13,6 +13,7 @@ import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.views.NavigationScope
 import com.custom.rgs_android_dom.utils.recycler_view.GridThreeSpanItemDecoration
 import com.skydoves.androidveil.VeilLayout
+import com.yandex.metrica.YandexMetrica
 
 class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>() {
 
@@ -42,42 +43,60 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             PopularCategoriesAdapter { viewModel.onCategoryClick(it) }
 
         binding.loginLinearLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("mp_action", "{\"action\":\"Войти\"}")
+
             viewModel.onLoginClick()
         }
 
         binding.noPropertyLinearLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("mp_action", "{\"action\":\"Добавить\"}")
+
             viewModel.onNoPropertyClick()
         }
 
         binding.propertyAvailableLinearLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("mp_action", "{\"action\":\"Мой дом\"}")
+
             viewModel.onPropertyAvailableClick()
         }
 
         binding.sosLinearLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("mp_action", "{\"action\":\"SOS\"}")
+
             viewModel.onSOSClick()
         }
 
         binding.policiesLinearLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("mp_action", "{\"action\":\"Полисы\"}")
+
             viewModel.onPoliciesClick()
         }
 
         binding.productsLinearLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("mp_action", "{\"action\":\"Продукты\"}")
+
             viewModel.onProductsClick()
         }
 
         binding.ordersLinearLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("mp_action", "{\"action\":\"Заказы\"}")
+
             viewModel.onOrdersClick()
         }
 
         binding.searchTagsLayout.tagsFlowLayout.children.forEach { view ->
             (view as TextView).let {
                 it.setOnDebouncedClickListener {
+                    YandexMetrica.reportEvent("mp_tag_service", "{\"service\":\"${it.text}\"}")
+
                     viewModel.onTagClick(it.text.toString())
                 }
             }
         }
 
         binding.aboutApplicationLayout.aboutServiceTextView.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("mp_about")
+
             viewModel.onAboutServiceClick()
         }
 
@@ -93,7 +112,9 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             .load(R.mipmap.master_male_2)
             .transform(GranularRoundedCorners(0f,0f, 16f.dp(requireContext()), 0f))
             .into(binding.ratingLayout.ratingMasterMale)
-        binding.ratingLayout.ratingRecyclerView.adapter = RatingCommentsAdapter()
+        binding.ratingLayout.ratingRecyclerView.adapter = RatingCommentsAdapter(
+            onCommentClick = { YandexMetrica.reportEvent("mp_rating") }
+        )
 
         binding.popularServicesLayout.popularServicesRecyclerView.adapter =
             GridPopularServicesAdapter(

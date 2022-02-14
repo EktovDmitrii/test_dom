@@ -10,6 +10,7 @@ import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.registration.agreement.RegistrationAgreementFragment
 import com.custom.rgs_android_dom.utils.logException
+import com.yandex.metrica.YandexMetrica
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -123,7 +124,11 @@ class RegistrationCodeViewModel(
             .doFinally {
                 closeController.value = Unit
                 if (isNewUser){
+                    YandexMetrica.reportEvent("login_success_reg")
+
                     ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(phone), REGISTRATION)
+                } else {
+                    YandexMetrica.reportEvent("login_success_auth")
                 }
             }
             .subscribeBy(
