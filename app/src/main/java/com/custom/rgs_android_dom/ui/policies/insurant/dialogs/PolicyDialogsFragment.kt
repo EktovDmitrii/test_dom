@@ -156,8 +156,4 @@ class PolicyDialogsFragment :
         dismissAllowingStateLoss()
     }
 
-    /*override fun getThemeResource(): Int {
-        return R.style.BottomSheet
-    }*/
-
 }
