@@ -73,8 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="24dp"
-            android:inputType="number|text"
-            android:digits="1234567890 "
+            android:inputType="text"
             app:translationHintKey="Введите серию и номер полиса"
             app:translationInfoKey="Где найти?"
             app:translationLabelKey="Серия и номер полиса" />

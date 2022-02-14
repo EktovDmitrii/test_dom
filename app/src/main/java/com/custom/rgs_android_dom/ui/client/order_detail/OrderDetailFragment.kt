@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
+import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentOrderDetailBinding
 import com.custom.rgs_android_dom.databinding.ItemOrderGeneralInvoiceBinding
 import com.custom.rgs_android_dom.databinding.ItemOrderGeneralInvoiceServiceBinding
@@ -79,10 +81,14 @@ class OrderDetailFragment :
                 state.getPaymentStateWithDate(),
                 Html.FROM_HTML_MODE_LEGACY
             )
-            binding.billPayTextView.visibleIf(state.status == OrderStatus.DRAFT || state.status == OrderStatus.CONFIRMED)
+            val isDefaultProduct = service?.defaultProduct ?: false
+            val orderStateForPay = state.status == OrderStatus.DRAFT || state.status == OrderStatus.CONFIRMED
+            binding.billPayTextView.visibleIf(!isDefaultProduct && orderStateForPay)
             initGeneralInvoices(state.status, state.generalInvoice)
-
             initCancelOrderButton(state.status)
+            binding.feedbackImageView.setOnDebouncedClickListener {
+                viewModel.onFeedbackClick()
+            }
         }
     }
 
