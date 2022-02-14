@@ -21,7 +21,8 @@ class OrderDetailViewModel(
     }
 
     fun onFeedbackClick() {
-        ScreenManager.showScreen(ChatFragment())
+        closeController.value = Unit
+        ScreenManager.showBottomScreen(ChatFragment())
     }
 
     fun onCancelOrderClick() {

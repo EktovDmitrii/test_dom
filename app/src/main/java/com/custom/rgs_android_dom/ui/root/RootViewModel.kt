@@ -53,8 +53,6 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
         checkSignedAgreement()
         subscribeAuthStateChanges()
 
-        unreadPostsController.value = 22
-
         isUserAuthorizedController.value = registrationInteractor.isAuthorized()
 
         val scopes = listOf(
