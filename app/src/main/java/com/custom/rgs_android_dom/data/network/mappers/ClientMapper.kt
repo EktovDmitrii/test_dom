@@ -5,7 +5,9 @@ import com.custom.rgs_android_dom.data.network.requests.*
 import com.custom.rgs_android_dom.data.network.responses.*
 import com.custom.rgs_android_dom.domain.client.models.*
 import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
+import com.custom.rgs_android_dom.domain.policies.models.PolicyShortModel
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
+import org.joda.time.DateTime
 
 object ClientMapper {
 
@@ -137,13 +139,29 @@ object ClientMapper {
         }
     }
 
-    fun responseToPolicy(response: ClientProductResponse): PolicyModel {
-        return PolicyModel(
+    fun responseToPolicyShort(response: ClientProductResponse): PolicyShortModel {
+        return PolicyShortModel(
             id = response.id ?: "",
+            contractId = response.contractId ?: "",
             name = response.productName ?: "",
             logo = response.logoSmall,
             startsAt = response.validityFrom,
             expiresAt = response.validityTo
+        )
+    }
+
+    fun responseToPolicy(clientProductResponse: ClientProductResponse?,contractResponse: ContractResponse?): PolicyModel {
+
+        return PolicyModel(
+            id= clientProductResponse?.productId ?: "",
+            logo = clientProductResponse?.logoSmall ?: "",
+            productTitle= clientProductResponse?.productTitle ?: "",//?
+            productDescription = clientProductResponse?.productDescription ?: "",
+            address = "",//?
+            includedProducts = listOf(),//?
+            policySeriesAndNumber = "${contractResponse?.serial} ${contractResponse?.number}",
+            startsAt = contractResponse?.startDate,
+            expiresAt = contractResponse?.endDate
         )
     }
 

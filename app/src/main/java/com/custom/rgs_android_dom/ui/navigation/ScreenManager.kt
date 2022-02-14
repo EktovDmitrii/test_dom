@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.navigation
 
+import android.util.Log
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -118,6 +119,7 @@ object ScreenManager {
         transaction.add(container, fragment)
         transaction.commitNow()
         addFragmentInScope(fragment, scopeId)
+        Log.d("Syrgashev", "stack: ${activity?.supportFragmentManager?.fragments as List<Fragment>}")
     }
 
     fun closeScope(scopeId: Int) {
@@ -166,6 +168,8 @@ object ScreenManager {
     }
 
     fun back(idFragment: Int) {
+        Log.d("Syrgashev", "ScreenManager back is called: ")
+        Log.d("Syrgashev", "stack: ${activity?.supportFragmentManager?.fragments as List<Fragment>}")
         val transaction = beginTransaction() ?: return
         val removed = ArrayList<Fragment>()
         scopes.forEach {

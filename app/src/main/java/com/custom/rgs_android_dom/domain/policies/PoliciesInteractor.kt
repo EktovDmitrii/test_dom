@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClien
 import com.custom.rgs_android_dom.domain.client.exceptions.ValidateFieldModel
 import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
 import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
+import com.custom.rgs_android_dom.domain.policies.models.PolicyShortModel
 import com.custom.rgs_android_dom.domain.policies.models.ShowPromptModel
 import com.custom.rgs_android_dom.domain.repositories.ClientRepository
 import com.custom.rgs_android_dom.domain.repositories.PoliciesRepository
@@ -84,7 +85,7 @@ class PoliciesInteractor(
         val errorsValidate = ArrayList<ValidateFieldModel>()
 
         var birthday: LocalDateTime?
-        if (insurantViewState.birthday.isNotEmpty()){
+        if (insurantViewState.birthday.isNotEmpty()) {
             val birthdayWithTimezone = "${insurantViewState.birthday.tryParseDate()}T00:00:00.000Z"
             birthday = birthdayWithTimezone.tryParseLocalDateTime({
                 logException(this, it)
@@ -92,10 +93,15 @@ class PoliciesInteractor(
             }, format = PATTERN_DATE_TIME_MILLIS)
 
             if (birthday == null || birthday != null && !isBirthdayValid(birthday!!)) {
-                errorsValidate.add(ValidateFieldModel(ClientField.BIRTHDATE, "Проверьте, правильно ли введена дата рождения"))
+                errorsValidate.add(
+                    ValidateFieldModel(
+                        ClientField.BIRTHDATE,
+                        "Проверьте, правильно ли введена дата рождения"
+                    )
+                )
             }
 
-            if (errorsValidate.isNotEmpty()){
+            if (errorsValidate.isNotEmpty()) {
                 return Single.just(SpecificValidateClientExceptions(errorsValidate))
             } else {
                 insurantViewStateSubject.onNext(insurantViewState.copy(isValidationPassed = true))
@@ -144,7 +150,7 @@ class PoliciesInteractor(
         )
     }
 
-    fun getPoliciesSingle(): Single<List<PolicyModel>> {
+    fun getPoliciesSingle(): Single<List<PolicyShortModel>> {
         return policiesRepository.getPoliciesSingle()
     }
 
@@ -163,6 +169,10 @@ class PoliciesInteractor(
 
     private fun isBirthdayValid(birthday: LocalDateTime): Boolean {
         return !(birthday.isAfter( MIN_DATE ) || birthday.isBefore( MAX_DATE ))
+    }
+
+    fun getClientProductSingle(contractId: String): Single<PolicyModel> {
+        return policiesRepository.getPolicySingle(contractId)
     }
 
 }
