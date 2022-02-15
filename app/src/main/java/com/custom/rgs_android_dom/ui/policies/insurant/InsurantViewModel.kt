@@ -80,4 +80,8 @@ class InsurantViewModel(private val policiesInteractor: PoliciesInteractor) : Ba
             .addTo(dataCompositeDisposable)
     }
 
+    fun restoreViewState(viewState: InsurantViewState) {
+        policiesInteractor.restoreViewState(viewState)
+    }
+
 }

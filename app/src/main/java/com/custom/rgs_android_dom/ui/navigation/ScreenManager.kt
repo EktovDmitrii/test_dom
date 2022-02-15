@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
 import com.custom.rgs_android_dom.ui.demo.DemoFragment
 import com.custom.rgs_android_dom.ui.main.MainFragment
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
@@ -100,7 +101,7 @@ object ScreenManager {
             if (bottomFragments.isNotEmpty()){
                 val currentBottomSheetFragment = bottomFragments.last()
                 onBottomSheetChanged(currentBottomSheetFragment)
-                if (currentBottomSheetFragment is MainFragment) {
+                if (currentBottomSheetFragment is MainFragment || currentBottomSheetFragment is MainCatalogFragment ) {
                     if (fragmentsToRestore.isNotEmpty()) {
                         restoreBaseFragmentsStack()
                     }
