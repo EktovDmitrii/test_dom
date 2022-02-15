@@ -52,10 +52,6 @@ class RegistrationAgreementFragment :
             viewModel.onNextClick()
         }
 
-        binding.closeImageView.setOnDebouncedClickListener {
-            viewModel.onCloseClick()
-        }
-
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
         }
