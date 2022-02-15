@@ -24,7 +24,6 @@ class OrderDetailViewModel(
     }
 
     fun onFeedbackClick() {
-        closeController.value = Unit
         ScreenManager.showBottomScreen(ChatFragment())
     }
 
