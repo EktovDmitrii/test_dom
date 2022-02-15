@@ -135,6 +135,10 @@ class ChatFragment : BaseBottomSheetFragment<ChatViewModel, FragmentChatBinding>
         subscribe(viewModel.downloadFileObserver) {
             downloadFile(it)
         }
+
+        subscribe(viewModel.closeObserver) {
+            viewModel.disposeAll()
+        }
     }
 
     override fun getThemeResource(): Int {
