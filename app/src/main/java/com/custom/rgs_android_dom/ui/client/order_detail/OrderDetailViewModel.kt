@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.client.models.Order
+import com.custom.rgs_android_dom.domain.client.models.OrderStatus
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -16,8 +17,10 @@ class OrderDetailViewModel(
     private val orderViewStateController = MutableLiveData<Order>()
     val orderViewStateObserver: LiveData<Order> = orderViewStateController
 
+    private var orderDetails: Order = order
+
     init {
-        orderViewStateController.value = order
+        orderViewStateController.value = orderDetails
     }
 
     fun onFeedbackClick() {
@@ -26,6 +29,8 @@ class OrderDetailViewModel(
     }
 
     fun onCancelOrderClick() {
+        orderDetails = orderDetails.copy(status = OrderStatus.CANCELLED)
+        orderViewStateController.value = orderDetails
     }
 
     fun onBackClick() {

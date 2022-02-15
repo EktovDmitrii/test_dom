@@ -33,7 +33,7 @@ class CancelOrderBottomFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        if (parentFragment is EditDocumentBottomSheetFragment.EditDocumentListener) {
+        if (parentFragment is CancelOrderListener) {
             cancelOrderListener = parentFragment as CancelOrderListener
         }
         return binding.root
