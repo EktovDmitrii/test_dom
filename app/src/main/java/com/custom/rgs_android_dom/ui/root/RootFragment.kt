@@ -138,6 +138,10 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
             binding.phoneCallLinearLayout.visibleIf(it)
         }
 
+        subscribe(viewModel.unreadPostsObserver){
+            binding.bottomNavigationView.updateUnreadPostsCount(it)
+        }
+
     }
 
     override fun onStart() {

@@ -99,4 +99,6 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
         }
 
     }
+
+
 }

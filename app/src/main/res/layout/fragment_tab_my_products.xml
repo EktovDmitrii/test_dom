@@ -41,7 +41,7 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:background="@drawable/rectangle_filled_white_stroke_secondary_500_1dp_radius_24dp"
-            android:translationZ="2dp"
+            android:elevation="4dp"
             app:translationTextKey="Привязать полис"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>

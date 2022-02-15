@@ -9,5 +9,6 @@ data class ServiceLauncher(
     val quantity: Long,
     val isPurchased: Boolean = false,
     val purchaseValidTo: DateTime? = null,
-    val purchaseObjectId: String? = null
+    val purchaseObjectId: String? = null,
+    val canBeOrdered: Boolean = false
 ) : Serializable

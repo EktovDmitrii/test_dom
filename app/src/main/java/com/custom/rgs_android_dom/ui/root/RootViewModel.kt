@@ -42,6 +42,9 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
     private val isUserAuthorizedController = MutableLiveData<Boolean>()
     val isUserAuthorizedObserver: LiveData<Boolean> = isUserAuthorizedController
 
+    private val unreadPostsController = MutableLiveData<Int>()
+    val unreadPostsObserver: LiveData<Int> = unreadPostsController
+
     private val authContentProviderManager: AuthContentProviderManager by inject()
     private val logoutCompositeDisposable = CompositeDisposable()
     private var requestedScreen = TargetScreen.UNSPECIFIED
