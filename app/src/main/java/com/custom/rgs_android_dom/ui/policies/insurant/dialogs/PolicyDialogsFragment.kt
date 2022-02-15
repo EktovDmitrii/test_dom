@@ -9,12 +9,13 @@ import com.custom.rgs_android_dom.domain.policies.models.Failure
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
 import com.custom.rgs_android_dom.domain.policies.models.ShowPromptModel
+import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
 class PolicyDialogsFragment :
-    BaseBottomSheetFragment<PolicyDialogsViewModel, FragmentPolicyDialogsBinding>() {
+    BaseBottomSheetModalFragment<PolicyDialogsViewModel, FragmentPolicyDialogsBinding>() {
 
     override val TAG: String = "POLICY_DIALOGS_FRAGMENT"
 
@@ -153,10 +154,6 @@ class PolicyDialogsFragment :
 
     override fun onClose() {
         dismissAllowingStateLoss()
-    }
-
-    override fun getThemeResource(): Int {
-        return R.style.BottomSheet
     }
 
 }

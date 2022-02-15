@@ -4,8 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.client.models.Order
-import com.custom.rgs_android_dom.domain.client.view_states.OrderDetailViewState
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.chat.ChatFragment
+import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 
 class OrderDetailViewModel(
     private val clientInteractor: ClientInteractor,
@@ -20,6 +21,8 @@ class OrderDetailViewModel(
     }
 
     fun onFeedbackClick() {
+        closeController.value = Unit
+        ScreenManager.showBottomScreen(ChatFragment())
     }
 
     fun onCancelOrderClick() {
