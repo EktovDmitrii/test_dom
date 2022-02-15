@@ -20,6 +20,9 @@ data class OrderResponse (
     @SerializedName("address")
     val address: OrderAddressResponse? = null,
 
+    @SerializedName("object")
+    val orderObject: OrderObjectResponse? = null,
+
     @SerializedName("client")
     val client: OrderClientResponse? = null,
 
@@ -141,6 +144,14 @@ data class OrderAddressResponse (
 
     @SerializedName("regionName")
     val regionName: String? = null
+)
+
+data class OrderObjectResponse(
+    @SerializedName("objectId")
+    val objectId: String? = null,
+
+    @SerializedName("objectName")
+    val objectName: String? = null
 )
 
 data class DeliveryTimeResponse (

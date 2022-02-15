@@ -70,7 +70,7 @@ class OrderDetailFragment :
             initStaticProgressView(state.status)
             binding.topPaymentStateTextView.text = state.getPaymentState()
             binding.serviceNameTextView.text = service?.serviceName
-            binding.addressTextView.text = state.address?.address
+            binding.addressTextView.text = "${state.address?.objectName} (${state.address?.address})"
             binding.dateTimeTextView.text = state.getDateTime()
             binding.commentTextView.text = state.comment
             binding.commentTitleTextView.visibleIf(state.comment?.isNotBlank() == true)
