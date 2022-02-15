@@ -9,7 +9,6 @@ import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.policies.insurant.dialogs.PolicyDialogsFragment
 import com.custom.rgs_android_dom.utils.*
-import com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
 import com.custom.rgs_android_dom.views.edit_text.MSDLabelIconEditText
 import org.joda.time.LocalDateTime
 
@@ -76,7 +75,7 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
                 binding.lastNameEditText.setText(it.lastName)
                 binding.middleNameEditText.setText(it.middleName)
                 shouldRestore = false
-                viewModel.onViewCreated(it)
+                viewModel.restoreViewState(it)
             }
 
             binding.nextTextView.isEnabled = it.isNextEnabled

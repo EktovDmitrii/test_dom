@@ -175,8 +175,8 @@ class PoliciesInteractor(
         return policiesRepository.getPolicySingle(contractId)
     }
 
-    fun onViewCreated(viewState: InsurantViewState) {
-        policiesRepository.onViewCreated(viewState)
+    fun restoreViewState(viewState: InsurantViewState) {
+        policiesRepository.restoreViewState(viewState)
     }
 
 }

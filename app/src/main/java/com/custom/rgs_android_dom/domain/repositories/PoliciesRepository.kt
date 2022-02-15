@@ -30,5 +30,5 @@ interface PoliciesRepository {
 
     fun getPolicySingle(contractId: String): Single<PolicyModel>
 
-    fun onViewCreated(viewState: InsurantViewState)
+    fun restoreViewState(viewState: InsurantViewState)
 }

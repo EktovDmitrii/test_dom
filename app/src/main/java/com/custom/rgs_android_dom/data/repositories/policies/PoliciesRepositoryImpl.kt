@@ -121,7 +121,7 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
         }
     }
 
-    override fun onViewCreated(viewState: InsurantViewState) {
+    override fun restoreViewState(viewState: InsurantViewState) {
         request = request.copy(
             contractClientFirstName = viewState.firstName,
             contractClientMiddleName = viewState.middleName,
