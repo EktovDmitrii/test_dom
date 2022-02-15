@@ -69,6 +69,11 @@ class ChatFragment : BaseBottomSheetFragment<ChatViewModel, FragmentChatBinding>
                    viewModel.onProductClick(it)
                    hideSoftwareKeyboard()
                }
+            },
+            { invoiceId, productId, amount ->
+                if (invoiceId.isNotEmpty() && productId.isNotEmpty()) {
+                    viewModel.onPayClick(invoiceId, productId, amount)
+                }
             }
         )
 

@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.chat
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
@@ -12,7 +13,9 @@ import com.custom.rgs_android_dom.ui.catalog.product.ProductLauncher
 import com.custom.rgs_android_dom.ui.chat.call.CallFragment
 import com.custom.rgs_android_dom.ui.chat.files.viewers.image.ImageViewerFragment
 import com.custom.rgs_android_dom.ui.chat.files.viewers.video.VideoPlayerFragment
+import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.purchase.payments.PaymentWebViewFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -145,5 +148,39 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
 
     fun onProductClick(productId: String) {
         ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(productId = productId)))
+    }
+
+    fun onPayClick(invoiceId: String, productId: String, amount: Int) {
+        Log.d("Syrgashev", "onPayClick: ")
+        chatInteractor.postInvoiceSingle(invoiceId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    val paymentUrl = it.details?.paymentUrl
+Log.d("Syrgashev", "paymentUrl: $paymentUrl")
+                    if (paymentUrl != null){
+                        ScreenManager.showScreenScope(
+                            PaymentWebViewFragment.newInstance(
+                                url = paymentUrl ,
+                                productId = productId,
+                                email = it.details.paymentEmail ?: "",
+                                price = amount.toString()
+                            ), PAYMENT
+                        )
+                    }
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+        /*ScreenManager.showScreenScope(
+            PaymentWebViewFragment.newInstance(
+                url = paymentUrl,
+                productId = *//*purchase.id*//*"productId",
+                email = *//*purchase.email*//*"email",
+                price = *//*purchase.price?.amount.toString()*//*"13 rub"
+            ), PAYMENT
+        )*/
     }
 }

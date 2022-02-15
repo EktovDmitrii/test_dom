@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.domain.chat
 
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
+import com.custom.rgs_android_dom.data.repositories.chat.InvoiceModel
 import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.domain.repositories.ChatRepository
 import com.custom.rgs_android_dom.domain.chat.models.WsChatMessageModel
@@ -224,5 +225,9 @@ class ChatInteractor(
 
     suspend fun switchVideoTrack() {
         chatRepository.switchVideoTrack()
+    }
+
+    fun postInvoiceSingle(invoiceId: String) : Single<InvoiceModel> {
+        return chatRepository.postInvoiceSingle(invoiceId)
     }
 }

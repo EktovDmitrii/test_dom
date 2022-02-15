@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui.chat
 
 import android.text.util.Linkify
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
@@ -18,7 +19,8 @@ import com.custom.rgs_android_dom.utils.recycler_view.VerticalItemDecoration
 
 class ChatAdapter(
     private val onFileClick: (ChatFileModel) -> Unit = {},
-    private val onProductClick : (productId: String?) -> Unit
+    private val onProductClick: (productId: String?) -> Unit,
+    private val onPayClick: (String, String, Int) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var chatItems: ArrayList<ChatItemModel> = arrayListOf()
@@ -62,8 +64,8 @@ class ChatAdapter(
             is ChatMessageModel -> {
                 if (model.sender == Sender.ME) {
                     ITEM_TYPE_MY_MESSAGE
-                } else  {
-                    if (model.widget != null){
+                } else {
+                    if (model.widget != null) {
                         when (model.widget.widgetType) {
                             WIDGET_TYPE_ADDITIONAL_INVOICE -> ITEM_TYPE_WIDGET_ADDITIONAL_INVOICE
                             WIDGET_TYPE_PRODUCT -> ITEM_TYPE_WIDGET_PRODUCT
@@ -124,7 +126,7 @@ class ChatAdapter(
                     parent,
                     false
                 )
-                WidgetAdditionalInvoiceViewHolder(binding)
+                WidgetAdditionalInvoiceViewHolder(binding,onPayClick)
             }
             else -> {
                 val binding = ItemChatMessageMyBinding.inflate(
@@ -214,9 +216,10 @@ class ChatAdapter(
             previousChatItemModel = chatItems[absoluteAdapterPosition - 1]
 
             if (previousChatItemModel is ChatMessageModel && previousChatItemModel.sender == Sender.OPPONENT
-                || (previousChatItemModel is ChatDateDividerModel)) {
+                || (previousChatItemModel is ChatDateDividerModel)
+            ) {
 
-                when(previousChatItemModel){
+                when (previousChatItemModel) {
                     is ChatMessageModel -> {
                         binding.myMessageContainerRelativeLayout.setMargins(top = marginTopToSenderOpponent)
                     }
@@ -242,9 +245,15 @@ class ChatAdapter(
             decorateItem()
             val member = model.member
 
-            if (member == null){
+            if (member == null) {
                 binding.nameTextView.text = "Мой_Сервис Дом"
-                binding.avatarImageView.setImageDrawable(ResourcesCompat.getDrawable(binding.avatarImageView.resources, R.drawable.ic_chat_avatar_stub, null))
+                binding.avatarImageView.setImageDrawable(
+                    ResourcesCompat.getDrawable(
+                        binding.avatarImageView.resources,
+                        R.drawable.ic_chat_avatar_stub,
+                        null
+                    )
+                )
             } else {
                 // TODO Replace with real position key (${member.type})
                 binding.nameTextView.text = "${member.lastName} ${member.firstName}, консультант"
@@ -317,7 +326,7 @@ class ChatAdapter(
                 || (previousChatItemModel is ChatDateDividerModel)
                 || (previousChatItemModel as ChatMessageModel).type != (currentChatItemModel as ChatMessageModel).type
             ) {
-                when(previousChatItemModel){
+                when (previousChatItemModel) {
                     is ChatMessageModel -> {
                         binding.opponentContainerLinearLayout.setMargins(top = marginTopToSenderMe)
                     }
@@ -347,7 +356,8 @@ class ChatAdapter(
 
     inner class WidgetProductViewHolder(
         private val binding: ItemChatWidgetOrderProductBinding,
-        private val noProductClick : (productId: String?) -> Unit) : RecyclerView.ViewHolder(binding.root) {
+        private val noProductClick: (productId: String?) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: ChatMessageModel) {
 
@@ -363,13 +373,15 @@ class ChatAdapter(
             }
 
             binding.toProductLinearLayout.setOnDebouncedClickListener {
-                noProductClick(model.widget?.productId) }
+                noProductClick(model.widget?.productId)
+            }
         }
     }
 
     inner class WidgetAdditionalInvoiceViewHolder(
-        private val binding: ItemChatWidgetAdditionalInvoiceBinding
-        ) : RecyclerView.ViewHolder(binding.root) {
+        private val binding: ItemChatWidgetAdditionalInvoiceBinding,
+        private val onPayClick: (String,String,Int) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: ChatMessageModel) {
 
@@ -390,7 +402,12 @@ class ChatAdapter(
             model.widget?.items?.let { adapter.setItems(it) }
 
             binding.orderLinearLayout.setOnDebouncedClickListener {
-
+                Log.d("Syrgashev", "orderLinearLayout clicked: ")
+                onPayClick(
+                    model.widget?.invoiceId ?: "",
+                    model.widget?.productId ?: "",
+                    model.widget?.amount ?: 0
+                )
             }
         }
     }
