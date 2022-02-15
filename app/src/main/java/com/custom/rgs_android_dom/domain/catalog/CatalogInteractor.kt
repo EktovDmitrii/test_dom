@@ -58,7 +58,7 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
         return catalogRepository.getProduct(productId)
     }
 
-    fun getProductServices(productId: String, isPurchased: Boolean, validityFrom: DateTime): Single<List<ServiceShortModel>> {
+    fun getProductServices(productId: String, isPurchased: Boolean, validityFrom: DateTime?): Single<List<ServiceShortModel>> {
         return catalogRepository.getProductServices(productId).map { services->
             if (isPurchased){
                 services.forEach { service->
@@ -66,7 +66,7 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
                     service.quantity = availableService.available.toLong()
                 }
             }
-            if (validityFrom.isAfterNow){
+            if (validityFrom !=null && validityFrom.isAfterNow){
                 services.forEach { service->
                     service.canBeOrdered = false
                 }
