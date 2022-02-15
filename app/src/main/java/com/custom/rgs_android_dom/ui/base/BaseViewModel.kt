@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.ui.base
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -28,7 +27,6 @@ open class BaseViewModel : ViewModel(), KoinComponent {
     val isKeyboardOpenObserver: LiveData<Boolean> = isKeyboardOpenController
 
     fun close(){
-        Log.d("Syrgashev", "BaseViewModel close called: ")
         closeController.value = Unit
     }
 

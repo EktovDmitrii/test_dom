@@ -1,7 +1,6 @@
 package com.custom.rgs_android_dom.domain.repositories
 
 import com.custom.rgs_android_dom.data.network.requests.BindPolicyRequest
-import com.custom.rgs_android_dom.domain.catalog.models.ClientProductModel
 import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
 import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
 import com.custom.rgs_android_dom.domain.policies.models.PolicyShortModel
@@ -30,4 +29,6 @@ interface PoliciesRepository {
     fun getPoliciesSingle(): Single<List<PolicyShortModel>>
 
     fun getPolicySingle(contractId: String): Single<PolicyModel>
+
+    fun onViewCreated(viewState: InsurantViewState)
 }

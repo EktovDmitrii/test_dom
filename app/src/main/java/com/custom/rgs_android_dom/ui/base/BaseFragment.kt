@@ -1,7 +1,6 @@
 package com.custom.rgs_android_dom.ui.base
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
@@ -33,7 +32,6 @@ abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(layout: Int) : 
             handleState(it)
         }
         subscribe(viewModel.closeObserver) {
-            Log.d("Syrgashev", "BaseFragment subscribe called: ")
             onClose()
             viewModel.disposeAll()
         }
@@ -52,7 +50,6 @@ abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(layout: Int) : 
     open fun onError(){}
 
     open fun onClose(){
-        Log.d("Syrgashev", "BaseFragment onClose called: ")
         hideSoftwareKeyboard()
         ScreenManager.back(getNavigateId())
     }

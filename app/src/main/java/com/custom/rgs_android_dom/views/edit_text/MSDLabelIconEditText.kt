@@ -117,7 +117,7 @@ class MSDLabelIconEditText @JvmOverloads constructor(
         setState(state)
     }
 
-    fun isMaskFiled(): Boolean {
+    fun isMaskFilled(): Boolean {
         return isMaskFilled
     }
 

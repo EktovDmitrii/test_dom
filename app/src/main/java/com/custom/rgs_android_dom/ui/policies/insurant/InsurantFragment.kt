@@ -9,6 +9,7 @@ import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.policies.insurant.dialogs.PolicyDialogsFragment
 import com.custom.rgs_android_dom.utils.*
+import com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
 import com.custom.rgs_android_dom.views.edit_text.MSDLabelIconEditText
 import org.joda.time.LocalDateTime
 
@@ -24,9 +25,12 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
     }
 
     private var shouldShowDialog = false
+    private var shouldRestore = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        shouldRestore = true
 
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
@@ -38,20 +42,19 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
         }
 
         binding.firstNameEditText.addTextWatcher {
-            viewModel.firstNameChanged(it , binding.birthdayEditText.isMaskFiled())
+            viewModel.firstNameChanged(it , binding.birthdayEditText.isMaskFilled())
         }
 
         binding.lastNameEditText.addTextWatcher {
-            viewModel.lastNameChanged(it, binding.birthdayEditText.isMaskFiled())
+            viewModel.lastNameChanged(it, binding.birthdayEditText.isMaskFilled())
         }
 
         binding.middleNameEditText.addTextWatcher {
-            viewModel.middleNameChanged(it, binding.birthdayEditText.isMaskFiled())
+            viewModel.middleNameChanged(it, binding.birthdayEditText.isMaskFilled())
         }
 
         binding.birthdayEditText.addTextWatcher {
-            binding.birthdayEditText.isMaskFiled()
-            viewModel.birthdayChanged(it, binding.birthdayEditText.isMaskFiled())
+            viewModel.birthdayChanged(it, binding.birthdayEditText.isMaskFilled())
             binding.birthdayEditText.setState(MSDLabelIconEditText.State.NORMAL)
         }
 
@@ -68,9 +71,14 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
         }
 
         subscribe(viewModel.insurantViewStateObserver) {
-            binding.firstNameEditText.setText(it.firstName)
-            binding.lastNameEditText.setText(it.lastName)
-            binding.middleNameEditText.setText(it.middleName)
+            if(shouldRestore){
+                binding.firstNameEditText.setText(it.firstName)
+                binding.lastNameEditText.setText(it.lastName)
+                binding.middleNameEditText.setText(it.middleName)
+                shouldRestore = false
+                viewModel.onViewCreated(it)
+            }
+
             binding.nextTextView.isEnabled = it.isNextEnabled
             if (it.isValidationPassed && shouldShowDialog) {
                 shouldShowDialog = false

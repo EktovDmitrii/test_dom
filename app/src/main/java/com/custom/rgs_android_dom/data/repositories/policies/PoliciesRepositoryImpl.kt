@@ -1,10 +1,11 @@
 package com.custom.rgs_android_dom.data.repositories.policies
 
 import android.annotation.SuppressLint
-import android.util.Log
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
 import com.custom.rgs_android_dom.data.network.requests.BindPolicyRequest
+import com.custom.rgs_android_dom.data.network.responses.ProductServicesResponse
+import com.custom.rgs_android_dom.data.network.responses.PropertyItemResponse
 import com.custom.rgs_android_dom.domain.policies.models.BoundPolicyDialogModel
 import com.custom.rgs_android_dom.domain.policies.models.PolicyShortModel
 import com.custom.rgs_android_dom.domain.repositories.PoliciesRepository
@@ -43,7 +44,6 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
 
     @SuppressLint("CheckResult")
     override fun bindPolicy(): Single<Any> {
-        Log.d("Syrgashev", "request: $request")
         return api.bindPolicy(request).map { bindPolicyResponse ->
             PolicyDialogModel(
                 bound = BoundPolicyDialogModel(
@@ -95,21 +95,36 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
     }
 
     override fun getPolicySingle(contractId: String): Single<PolicyModel> {
-        val clientProducts  = api.getClientProducts(1, 0, contractId)
-        val contracts = api.getPolicyContracts()
-        return Single.zip(clientProducts,contracts){clientProducts,contracts ->
-            ClientMapper.responseToPolicy(clientProducts.clientProducts?.get(0),
-                contracts.contracts?.first { it.id == contractId })
+        val clientProductsSingle  = api.getClientProducts(1, 0, contractId)
+        val contractsSingle = api.getPolicyContracts()
+
+        return Single.zip(clientProductsSingle,contractsSingle) { clientProducts, contracts ->
+            val product = clientProducts.clientProducts?.get(0)
+            val objectId = product?.objectId
+            var propertyItemResponse: PropertyItemResponse? = null
+
+            if (objectId != null) {
+                propertyItemResponse = api.getAllProperty().blockingGet().objects?.first { it.id == objectId }
+            }
+
+            var productServicesResponse: ProductServicesResponse? = null
+            if (product?.productId != null){
+                productServicesResponse = api.getProductServicesResponse(product.productId, 100, 0).blockingGet()
+            }
+
+            ClientMapper.responseToPolicy(
+                product,
+                contracts.contracts?.first { it.id == contractId },
+                propertyItemResponse,
+                productServicesResponse
+            )
         }
+    }
 
-
-        /*api.getClientProducts(1, 0, contractId)
-            .map {
-                if (it.clientProducts != null) {
-                     CatalogMapper.responseToClientProduct(it.clientProducts.last())
-                } else {
-                    null
-                }
-            }*/
+    override fun onViewCreated(viewState: InsurantViewState) {
+        request = request.copy(
+            contractClientFirstName = viewState.firstName,
+            contractClientMiddleName = viewState.middleName,
+            contractClientLastName = viewState.lastName)
     }
 }
