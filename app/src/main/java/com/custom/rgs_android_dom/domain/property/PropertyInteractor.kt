@@ -394,10 +394,9 @@ class PropertyInteractor(
         return postDocumentsSingle(documentsToPost)
             .flatMap { propertyDocuments ->
                 val newDocumentsList = propertyItemModel.documents + propertyDocuments
-                propertyItemModel.documents = newDocumentsList.toMutableList()
                 propertyRepository.updateProperty(
                     objectId,
-                    propertyItemModel
+                    propertyItemModel.copy(documents = newDocumentsList.toMutableList())
                 )
             }
     }
