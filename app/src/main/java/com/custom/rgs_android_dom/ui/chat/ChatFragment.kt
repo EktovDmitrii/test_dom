@@ -70,9 +70,9 @@ class ChatFragment : BaseBottomSheetFragment<ChatViewModel, FragmentChatBinding>
                    hideSoftwareKeyboard()
                }
             },
-            { invoiceId, productId, amount ->
-                if (invoiceId.isNotEmpty() && productId.isNotEmpty()) {
-                    viewModel.onPayClick(invoiceId, productId, amount)
+            { paymentUrl, productId, amount ->
+                if (paymentUrl.isNotEmpty()) {
+                    viewModel.onPayClick(paymentUrl, productId, amount)
                 }
             }
         )

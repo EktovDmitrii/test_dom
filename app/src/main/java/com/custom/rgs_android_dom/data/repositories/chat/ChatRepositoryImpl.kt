@@ -469,7 +469,4 @@ class ChatRepositoryImpl(private val api: MSDApi,
         }
     }
 
-    override fun postInvoiceSingle(invoiceId: String): Single<InvoiceModel> {
-        return api.postAdditionalInvoice(invoiceId).map { ChatMapper.responseToInvoiceModel(it) }
-    }
 }

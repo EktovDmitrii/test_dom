@@ -1,12 +1,12 @@
 package com.custom.rgs_android_dom.ui.chat
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.chat.models.CallType
 import com.custom.rgs_android_dom.domain.chat.models.ChatFileModel
 import com.custom.rgs_android_dom.domain.chat.models.ChatItemModel
+import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
 import com.custom.rgs_android_dom.ui.catalog.product.ProductLauncher
@@ -23,7 +23,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import java.io.File
 
-class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel() {
+class ChatViewModel(private val chatInteractor: ChatInteractor, clientInteractor: ClientInteractor) : BaseViewModel() {
 
     private val chatItemsController = MutableLiveData<List<ChatItemModel>>()
     val chatItemsObserver: LiveData<List<ChatItemModel>> = chatItemsController
@@ -33,6 +33,8 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
 
     private val downloadFileController = MutableLiveData<ChatFileModel>()
     val downloadFileObserver: LiveData<ChatFileModel> = downloadFileController
+
+    private var email: String? = null
 
     init {
 
@@ -80,6 +82,18 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
             .subscribeBy(
                 onNext = {
                     postFilesInChat(it)
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
+        clientInteractor.getPersonalData()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = { personalData ->
+                        email = personalData.email.ifEmpty { null }
                 },
                 onError = {
                     logException(this, it)
@@ -150,37 +164,15 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
         ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(productId = productId)))
     }
 
-    fun onPayClick(invoiceId: String, productId: String, amount: Int) {
-        Log.d("Syrgashev", "onPayClick: ")
-        chatInteractor.postInvoiceSingle(invoiceId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onSuccess = {
-                    val paymentUrl = it.details?.paymentUrl
-Log.d("Syrgashev", "paymentUrl: $paymentUrl")
-                    if (paymentUrl != null){
-                        ScreenManager.showScreenScope(
-                            PaymentWebViewFragment.newInstance(
-                                url = paymentUrl ,
-                                productId = productId,
-                                email = it.details.paymentEmail ?: "",
-                                price = amount.toString()
-                            ), PAYMENT
-                        )
-                    }
-                },
-                onError = {
-                    logException(this, it)
-                }
-            ).addTo(dataCompositeDisposable)
-        /*ScreenManager.showScreenScope(
+    fun onPayClick(paymentUrl: String, productId: String, amount: Int) {
+        ScreenManager.showScreenScope(
             PaymentWebViewFragment.newInstance(
-                url = paymentUrl,
-                productId = *//*purchase.id*//*"productId",
-                email = *//*purchase.email*//*"email",
-                price = *//*purchase.price?.amount.toString()*//*"13 rub"
+                url = paymentUrl ,
+                productId = productId,
+                email =  email ?: "",
+                price = amount.toString()
             ), PAYMENT
-        )*/
+        )
     }
+
 }

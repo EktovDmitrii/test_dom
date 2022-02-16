@@ -36,6 +36,7 @@ class PurchaseInteractor(
         deliveryDate: String?,
         timeFrom: String?,
         timeTo: String?,
+        withOrder: Boolean
     ): Single<String> {
         return purchaseRepository.makeProductPurchase(
             productId = productId,
@@ -46,7 +47,8 @@ class PurchaseInteractor(
             comment = comment,
             deliveryDate = deliveryDate,
             timeFrom = timeFrom,
-            timeTo = timeTo
+            timeTo = timeTo,
+            withOrder = withOrder
         )
     }
 

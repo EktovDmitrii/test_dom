@@ -28,7 +28,10 @@ data class OrderRequest(
     val deliveryDate: String? = null,
 
     @SerializedName("deliveryTime")
-    val deliveryTime: OrderTimeRequest? = null
+    val deliveryTime: OrderTimeRequest? = null,
+
+    @SerializedName("withOrder")
+    val withOrder: Boolean = false
 )
 
 data class OrderTimeRequest(

@@ -249,9 +249,4 @@ interface MSDApi {
     @GET("clients/{clientId}/orders/{orderId}")
     fun getOrderDetail(@Path("clientId") clientId: String, @Path("orderId") orderId: String): Single<OrderResponse>
 
-    @POST("/clients/me/billing/general-invoices/{invoiceId}/submit")
-    @ErrorType(MSDNetworkErrorResponse::class)
-    fun postAdditionalInvoice(@Path("invoiceId") invoiceId: String) : Single<PostAdditionalInvoiceResponse>
-
-
 }

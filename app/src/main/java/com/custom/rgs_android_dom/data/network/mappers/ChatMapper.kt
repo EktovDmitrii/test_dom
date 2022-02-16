@@ -4,10 +4,7 @@ import android.graphics.BitmapFactory
 import android.util.Base64
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.responses.*
-import com.custom.rgs_android_dom.data.repositories.chat.InvoiceDetailsModel
-import com.custom.rgs_android_dom.data.repositories.chat.InvoiceModel
 import com.custom.rgs_android_dom.domain.chat.models.*
-import com.google.gson.annotations.SerializedName
 import org.joda.time.DateTimeZone
 import org.joda.time.LocalDateTime
 
@@ -88,7 +85,7 @@ object ChatMapper{
                     widgetType = it.widgetType,
                     amount = it.amount,
                     invoiceId = it.invoiceId,
-                    items = it.items?.map { WidgetAdditionalInvoiceItemModel(
+                    items = it.items?.reversed()?.map { WidgetAdditionalInvoiceItemModel(
                         amount = it.amount,
                         name = it.name,
                         price = it.price,
@@ -152,19 +149,6 @@ object ChatMapper{
             initiatorUserId = response.initiatorUserId ?: "",
             recipientUserId = response.recipientUserId ?: "",
             taskId = response.taskId ?: ""
-        )
-    }
-
-    fun responseToInvoiceModel(postAdditionalInvoiceResponse: PostAdditionalInvoiceResponse) : InvoiceModel {
-        return InvoiceModel(
-            details = InvoiceDetailsModel(
-                paymentUrl = postAdditionalInvoiceResponse.details?.paymentUrl,
-                orderId = postAdditionalInvoiceResponse.details?.orderId,
-                paymentOrderId = postAdditionalInvoiceResponse.details?.paymentOrderId,
-                bankOrderId = postAdditionalInvoiceResponse.details?.bankOrderId,
-                paymentEmail = postAdditionalInvoiceResponse.details?.paymentEmail,
-                orderCode = postAdditionalInvoiceResponse.details?.orderCode
-            )
         )
     }
 

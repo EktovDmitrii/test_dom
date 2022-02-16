@@ -1,7 +1,6 @@
 package com.custom.rgs_android_dom.ui.chat
 
 import android.text.util.Linkify
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
@@ -386,8 +385,8 @@ class ChatAdapter(
         fun bind(model: ChatMessageModel) {
 
             binding.serviceNameTextView.text = model.widget?.serviceName
-
             val serviceLogo = model.widget?.serviceLogo
+
             if (!serviceLogo.isNullOrEmpty()) {
                 GlideApp.with(binding.serviceImageView.context)
                     .load(GlideUrlProvider.makeHeadersGlideUrl(serviceLogo))
@@ -402,9 +401,8 @@ class ChatAdapter(
             model.widget?.items?.let { adapter.setItems(it) }
 
             binding.orderLinearLayout.setOnDebouncedClickListener {
-                Log.d("Syrgashev", "orderLinearLayout clicked: ")
                 onPayClick(
-                    model.widget?.invoiceId ?: "",
+                    model.widget?.paymentUrl ?: "",
                     model.widget?.productId ?: "",
                     model.widget?.amount ?: 0
                 )
