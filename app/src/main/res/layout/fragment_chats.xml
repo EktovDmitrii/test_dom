@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:clickable="true">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:layout_height="72dp">
+
+        <include
+            android:id="@+id/swipeAnchorLayout"
+            layout="@layout/layout_bottom_sheet_swipe_anchor"/>
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/my_service_bold"
+            android:textSize="16sp"
+            android:textColor="@color/secondary900"
+            android:layout_marginTop="6dp"
+            app:translationTextKey="Чаты"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="168dp">
+
+            <com.custom.rgs_android_dom.views.MSDRecyclerView
+                android:id="@+id/activeCasesRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="20dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:verticalDecorationGap="16dp"
+                android:overScrollMode="never"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_case_item"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/archivedDividerConstraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp">
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/archivedTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:fontFamily="@font/suisse_regular"
+                    android:textSize="14sp"
+                    android:textColor="@color/secondary400"
+                    app:translationTextKey="Архив"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/secondary100"
+                    android:layout_marginEnd="12dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/archivedTitleTextView"
+                    app:layout_constraintTop_toTopOf="@+id/archivedTitleTextView"
+                    app:layout_constraintBottom_toBottomOf="@+id/archivedTitleTextView"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/secondary100"
+                    android:layout_marginStart="12dp"
+                    app:layout_constraintStart_toEndOf="@+id/archivedTitleTextView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/archivedTitleTextView"
+                    app:layout_constraintBottom_toBottomOf="@+id/archivedTitleTextView"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.custom.rgs_android_dom.views.MSDRecyclerView
+                android:id="@+id/archivedCasesRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="20dp"
+                android:layout_marginTop="24dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:verticalDecorationGap="16dp"
+                android:overScrollMode="never"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_case_item"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

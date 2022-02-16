@@ -10,8 +10,9 @@ import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
-import com.custom.rgs_android_dom.ui.chat.ChatFragment
-import com.custom.rgs_android_dom.ui.chat.call.CallFragment
+import com.custom.rgs_android_dom.ui.chats.chat.ChatFragment
+import com.custom.rgs_android_dom.ui.chats.chat.call.CallFragment
+import com.custom.rgs_android_dom.ui.chats.ChatsFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -87,13 +88,15 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy (
                 onNext = {
+                    loadCases()
                     when (requestedScreen) {
                         TargetScreen.CHAT -> {
-                            ScreenManager.showBottomScreen(ChatFragment())
+                            ScreenManager.showBottomScreen(ChatFragment.newInstance(chatInteractor.getMasterOnlineCase()))
                         }
                         TargetScreen.AUDIO_CALL -> {
                             ScreenManager.showScreen(
                                 CallFragment.newInstance(
+                                    chatInteractor.getMasterOnlineCase().channelId,
                                     CallType.AUDIO_CALL,
                                     chatInteractor.getCurrentConsultant()
                                 )
@@ -102,6 +105,7 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                         TargetScreen.VIDEO_CALL -> {
                             ScreenManager.showScreen(
                                 CallFragment.newInstance(
+                                    chatInteractor.getMasterOnlineCase().channelId,
                                     CallType.VIDEO_CALL,
                                     chatInteractor.getCurrentConsultant()
                                 )
@@ -112,6 +116,11 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                 },
                 onError = { logException(this, it) }
             ).addTo(dataCompositeDisposable)
+
+        if (registrationInteractor.isAuthorized()){
+            loadCases()
+        }
+
     }
 
     fun subscribeLogout() {
@@ -143,7 +152,7 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
 
     fun onChatClick() {
         if (registrationInteractor.isAuthorized()) {
-            ScreenManager.showBottomScreen(ChatFragment())
+            ScreenManager.showBottomScreen(ChatsFragment())
         } else {
             requestedScreen = TargetScreen.CHAT
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
@@ -170,6 +179,7 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
         if (registrationInteractor.isAuthorized()) {
             ScreenManager.showScreen(
                 CallFragment.newInstance(
+                    chatInteractor.getMasterOnlineCase().channelId,
                     CallType.AUDIO_CALL,
                     chatInteractor.getCurrentConsultant()
                 )
@@ -184,6 +194,7 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
         if (registrationInteractor.isAuthorized()) {
             ScreenManager.showScreen(
                 CallFragment.newInstance(
+                    chatInteractor.getMasterOnlineCase().channelId,
                     CallType.VIDEO_CALL,
                     chatInteractor.getCurrentConsultant()
                 )
@@ -249,6 +260,30 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe()
+            .addTo(dataCompositeDisposable)
+    }
+
+    private fun loadCases(){
+        chatInteractor.getUnreadPostsCountFlowable()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    unreadPostsController.value = it
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
+        chatInteractor.loadCases()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onError = {
+                    logException(this, it)
+                }
+            )
             .addTo(dataCompositeDisposable)
     }
 

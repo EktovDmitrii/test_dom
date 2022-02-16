@@ -47,7 +47,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/backImageView"
             app:layout_constraintTop_toTopOf="parent"
-            app:translationTextKey="Мастер онлайн" />
+            tools:text="Мастер онлайн" />
 
         <com.custom.rgs_android_dom.views.MSDImageView
             android:id="@+id/dropDownImageView"

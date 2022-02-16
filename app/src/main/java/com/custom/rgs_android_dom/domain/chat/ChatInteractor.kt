@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.domain.repositories.ChatRepository
 import com.custom.rgs_android_dom.domain.chat.models.WsChatMessageModel
 import com.custom.rgs_android_dom.utils.*
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
@@ -29,8 +30,8 @@ class ChatInteractor(
     private var cachedChatItems = arrayListOf<ChatItemModel>()
     private var cachedChannelMembers = arrayListOf<ChannelMemberModel>()
 
-    fun getChatHistory(): Single<List<ChatItemModel>> {
-        return chatRepository.getChatHistory().map { allMessages->
+    fun getChatHistory(channelId: String): Single<List<ChatItemModel>> {
+        return chatRepository.getChatHistory(channelId).map { allMessages->
             val chatItems = arrayListOf<ChatItemModel>()
 
             val filteredMessages = allMessages.filter { !it.type.startsWith(TYPE_SYSTEM_MESSAGE) }
@@ -52,7 +53,7 @@ class ChatInteractor(
             cachedChatItems = chatItems
             return@map chatItems
         }.flatMap {
-            return@flatMap chatRepository.getChannelMembers()
+            return@flatMap chatRepository.getChannelMembers(channelId)
         }.map {
             cachedChannelMembers.clear()
             cachedChannelMembers.addAll(it)
@@ -77,8 +78,8 @@ class ChatInteractor(
         }
     }
 
-    fun sendMessage(message: String? = null, fileIds: List<String>? = null): Completable {
-        return chatRepository.sendMessage(message, fileIds)
+    fun sendMessage(channelId: String, message: String? = null, fileIds: List<String>? = null): Completable {
+        return chatRepository.sendMessage(channelId, message, fileIds)
     }
 
     fun onFilesToUploadSelected(files: List<File>){
@@ -97,15 +98,15 @@ class ChatInteractor(
         return chatRepository.getFilesToUploadSubject()
     }
 
-    fun postFilesToChat(files: List<File>): Completable {
+    fun postFilesToChat(channelId: String, files: List<File>): Completable {
         return Observable.fromArray(files)
             .flatMapIterable {
                 it
             }.flatMapSingle {
-                chatRepository.postFileInChat(it)
+                chatRepository.postFileInChat(channelId, it)
             }.toList()
             .flatMapCompletable { chatFiles ->
-                sendMessage(message = " ", fileIds = chatFiles.map { it.id })
+                sendMessage(channelId = channelId, message = " ", fileIds = chatFiles.map { it.id })
             }
     }
 
@@ -118,7 +119,7 @@ class ChatInteractor(
                         if (cachedChannelMembers.find { it.userId == currentMessage.userId } == null) {
                             cachedChannelMembers.clear()
                             cachedChannelMembers.addAll(
-                                chatRepository.getChannelMembers().blockingGet()
+                                chatRepository.getChannelMembers(currentMessage.channelId).blockingGet()
                             )
                         }
                         onNewMessage(currentMessage)
@@ -144,8 +145,8 @@ class ChatInteractor(
         }
     }
 
-    fun requestLiveKitToken(): Completable {
-        return chatRepository.requestLiveKitToken()
+    fun requestLiveKitToken(channelId: String): Completable {
+        return chatRepository.requestLiveKitToken(channelId)
             .flatMapCompletable {
                 Completable.complete()
             }
@@ -224,5 +225,31 @@ class ChatInteractor(
 
     suspend fun switchVideoTrack() {
         chatRepository.switchVideoTrack()
+    }
+
+    fun loadCases(): Completable {
+        return chatRepository.loadCases()
+    }
+
+    fun getCasesFlowable(): Flowable<ClientCasesModel>{
+        return chatRepository.getCasesFlowable()
+    }
+
+    fun getUnreadPostsCountFlowable(): Flowable<Int>{
+        return chatRepository.getCasesFlowable().map { cases->
+            var unreadPosts = 0
+            cases.activeCases.forEach {
+                unreadPosts += it.unreadPosts
+            }
+            cases.archivedCases.forEach {
+                unreadPosts += it.unreadPosts
+            }
+
+            unreadPosts
+        }
+    }
+
+    fun getMasterOnlineCase(): CaseModel {
+        return chatRepository.getMasterOnlineCase()
     }
 }

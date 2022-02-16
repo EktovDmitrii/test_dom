@@ -1,7 +1,7 @@
 package com.custom.rgs_android_dom.di
 
 import com.custom.rgs_android_dom.ui.about_app.AboutAppViewModel
-import com.custom.rgs_android_dom.ui.chat.ChatViewModel
+import com.custom.rgs_android_dom.ui.chats.chat.ChatViewModel
 import com.custom.rgs_android_dom.ui.countries.CountriesViewModel
 import com.custom.rgs_android_dom.ui.demo.DemoViewModel
 import com.custom.rgs_android_dom.ui.root.RootViewModel
@@ -24,13 +24,14 @@ import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogPrimaryProduct
 import com.custom.rgs_android_dom.ui.catalog.tabs.availableservices.TabAvailableServicesViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.catalog.TabCatalogViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.products.TabMyProductsViewModel
-import com.custom.rgs_android_dom.ui.chat.call.CallViewModel
-import com.custom.rgs_android_dom.ui.chat.call.media_output_chooser.MediaOutputChooserViewModel
+import com.custom.rgs_android_dom.ui.chats.chat.call.CallViewModel
+import com.custom.rgs_android_dom.ui.chats.chat.call.media_output_chooser.MediaOutputChooserViewModel
 import com.custom.rgs_android_dom.ui.rationale.RequestRationaleViewModel
-import com.custom.rgs_android_dom.ui.chat.files.manage.ManageFileViewModel
-import com.custom.rgs_android_dom.ui.chat.files.upload.UploadFilesViewModel
-import com.custom.rgs_android_dom.ui.chat.files.viewers.image.ImageViewerViewModel
-import com.custom.rgs_android_dom.ui.chat.files.viewers.video.VideoPlayerViewModel
+import com.custom.rgs_android_dom.ui.chats.chat.files.manage.ManageFileViewModel
+import com.custom.rgs_android_dom.ui.chats.chat.files.upload.UploadFilesViewModel
+import com.custom.rgs_android_dom.ui.chats.chat.files.viewers.image.ImageViewerViewModel
+import com.custom.rgs_android_dom.ui.chats.chat.files.viewers.video.VideoPlayerViewModel
+import com.custom.rgs_android_dom.ui.chats.ChatsViewModel
 import com.custom.rgs_android_dom.ui.client.order_detail.OrderDetailViewModel
 import com.custom.rgs_android_dom.ui.client.orders.OrdersViewModel
 import com.custom.rgs_android_dom.ui.main.MainViewModel
@@ -89,14 +90,14 @@ val viewModelModule = module {
     viewModel { parameters-> CountriesViewModel(selectedCountryLetterCode = parameters.get(), countriesInteractor = get())}
     viewModel { ClientViewModel(clientInteractor = get(), registrationInteractor = get(), propertyInteractor = get()) }
     viewModel { OrdersViewModel(clientInteractor = get(), purchaseInteractor = get()) }
-    viewModel { parameters -> OrderDetailViewModel(clientInteractor = get(), order = parameters.get()) }
+    viewModel { parameters -> OrderDetailViewModel(chatInteractor = get(), order = parameters.get()) }
     viewModel { RootViewModel(registrationInteractor = get(), clientInteractor = get(), chatInteractor = get()) }
     viewModel { PersonalDataViewModel(clientInteractor = get()) }
     viewModel { EditPersonalDataViewModel(clientInteractor = get()) }
     viewModel { AgentViewModel(clientInteractor = get()) }
     viewModel { EditAgentViewModel(clientInteractor = get()) }
     viewModel { AboutAppViewModel() }
-    viewModel { ChatViewModel(chatInteractor = get()) }
+    viewModel { parameters -> ChatViewModel(case = parameters[0], chatInteractor = get()) }
     viewModel { parameters-> SelectPropertyTypeViewModel(propertyName = parameters[0], propertyAddress = parameters[1], propertyInteractor = get()) }
     viewModel { parameters-> PropertyDetailsViewModel(propertyName = parameters[0], propertyAddress = parameters[1], propertyType = parameters[2], propertyInteractor = get(), connectivityManager = get()) }
     viewModel { parameters-> PropertyInfoViewModel(objectId = parameters.get(), propertyInteractor = get(), connectivityManager = get()) }
@@ -114,7 +115,7 @@ val viewModelModule = module {
     viewModel { parameters-> ImageViewerViewModel(chatFile = parameters.get()) }
     viewModel { parameters-> ManageFileViewModel(chatFile = parameters.get()) }
     viewModel { parameters -> VideoPlayerViewModel(chatFile = parameters.get()) }
-    viewModel { parameters -> CallViewModel(callType = parameters[0], consultant = parameters[1], chatInteractor = get(), mediaOutputManager = get()) }
+    viewModel { parameters -> CallViewModel(channelId = parameters[0], callType = parameters[1], consultant = parameters[2], chatInteractor = get(), mediaOutputManager = get()) }
     viewModel { PropertyUploadDocumentsViewModel(propertyInteractor = get()) }
     viewModel { MediaOutputChooserViewModel(mediaOutputManager = get()) }
     viewModel { RequestRationaleViewModel() }
@@ -152,4 +153,5 @@ val viewModelModule = module {
     viewModel { parameters -> PolicyDialogsViewModel(policiesInteractor = get(), model = parameters.get()) }
     viewModel { parameters -> ServiceOrderViewModel(serviceId = parameters[0], productId = parameters[1], propertyInteractor = get(), catalogInteractor = get(), purchaseInteractor = get()) }
     viewModel { parameters -> PolicyViewModel(contractId = parameters.get(),policiesInteractor = get()) }
+    viewModel { ChatsViewModel(chatInteractor = get()) }
 }
