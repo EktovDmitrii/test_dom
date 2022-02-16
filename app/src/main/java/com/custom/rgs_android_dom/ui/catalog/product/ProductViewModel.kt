@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.ui.catalog.product
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
@@ -24,7 +23,6 @@ import com.custom.rgs_android_dom.ui.purchase.PurchaseFragment
 import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderFragment
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_FULL_MONTH
-import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_ONLY
 import com.custom.rgs_android_dom.utils.formatTo
 
 class ProductViewModel(
@@ -136,19 +134,16 @@ class ProductViewModel(
     }
 
     private fun getIncludedServices(){
-        product.purchaseValidFrom?.let { purchaseValidFrom->
-            catalogInteractor.getProductServices(product.productId, product.isPurchased, purchaseValidFrom)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                    onSuccess = {
-                        productServicesController.value = it.map { it.copy(isPurchased = product.isPurchased) }
-                    },
-                    onError = {
-                        logException(this, it)
-                    }
-                ).addTo(dataCompositeDisposable)
-        }
-
+        catalogInteractor.getProductServices(product.productId, product.isPurchased, product.purchaseValidFrom)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    productServicesController.value = it.map { it.copy(isPurchased = product.isPurchased) }
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
     }
 }

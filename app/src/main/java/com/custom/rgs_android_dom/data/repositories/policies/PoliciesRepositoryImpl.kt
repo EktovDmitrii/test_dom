@@ -4,10 +4,13 @@ import android.annotation.SuppressLint
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
 import com.custom.rgs_android_dom.data.network.requests.BindPolicyRequest
+import com.custom.rgs_android_dom.data.network.responses.ProductServicesResponse
+import com.custom.rgs_android_dom.data.network.responses.PropertyItemResponse
 import com.custom.rgs_android_dom.domain.policies.models.BoundPolicyDialogModel
-import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
+import com.custom.rgs_android_dom.domain.policies.models.PolicyShortModel
 import com.custom.rgs_android_dom.domain.repositories.PoliciesRepository
 import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
+import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
 import com.custom.rgs_android_dom.ui.policies.insurant.InsurantViewState
 import com.custom.rgs_android_dom.utils.tryParseDate
 import io.reactivex.Observable
@@ -71,7 +74,7 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
         return request
     }
 
-    override fun getPoliciesSingle(): Single<List<PolicyModel>> {
+    override fun getPoliciesSingle(): Single<List<PolicyShortModel>> {
 
         val contractIds = api.getPolicyContracts().map {
             if (!it.contracts.isNullOrEmpty()){
@@ -83,11 +86,45 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
             api.getClientProducts(50, 0, contractIds)
                 .map {
                     if (it.clientProducts != null) {
-                        it.clientProducts.map { ClientMapper.responseToPolicy(it) }
+                        it.clientProducts.map { ClientMapper.responseToPolicyShort(it) }
                     } else {
                         listOf()
                     }
                 }
         } else { Single.just(listOf()) }
+    }
+
+    override fun getPolicySingle(contractId: String): Single<PolicyModel> {
+        val clientProductsSingle  = api.getClientProducts(1, 0, contractId)
+        val contractsSingle = api.getPolicyContracts()
+
+        return Single.zip(clientProductsSingle,contractsSingle) { clientProducts, contracts ->
+            val product = clientProducts.clientProducts?.get(0)
+            val objectId = product?.objectId
+            var propertyItemResponse: PropertyItemResponse? = null
+
+            if (objectId != null) {
+                propertyItemResponse = api.getAllProperty().blockingGet().objects?.first { it.id == objectId }
+            }
+
+            var productServicesResponse: ProductServicesResponse? = null
+            if (product?.productId != null){
+                productServicesResponse = api.getProductServicesResponse(product.productId, 100, 0).blockingGet()
+            }
+
+            ClientMapper.responseToPolicy(
+                product,
+                contracts.contracts?.first { it.id == contractId },
+                propertyItemResponse,
+                productServicesResponse
+            )
+        }
+    }
+
+    override fun restoreViewState(viewState: InsurantViewState) {
+        request = request.copy(
+            contractClientFirstName = viewState.firstName,
+            contractClientMiddleName = viewState.middleName,
+            contractClientLastName = viewState.lastName)
     }
 }

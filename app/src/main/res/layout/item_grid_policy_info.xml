@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="160dp"
+    android:minHeight="128dp">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:background="@drawable/rectangle_filled_white_radius_20dp"
+        android:minHeight="120dp"
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:translationZ="3dp">
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/titleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/suisse_regular"
+            android:includeFontPadding="false"
+            android:lines="5"
+            android:textColor="@color/secondary900"
+            android:textSize="13sp"
+            app:lineHeight="20dp"
+            tools:text="Поиск утечек тепла, сквозняков. Поиск утечек тепла, сквозняков. Поиск утечек тепла, сквозняков. Поиск утечек тепла, сквозняков. Поиск утечек тепла, сквозняков. Поиск утечек тепла, сквозняков. Поиск утечек тепла, сквозняков. Поиск утечек тепла, сквозняков. Поиск утечек тепла, сквозняков. Поиск утечек тепла, сквозняков. Поиск утечек тепла, сквозняков." />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/orderTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/my_service_bold"
+            android:includeFontPadding="false"
+            android:paddingVertical="4dp"
+            android:paddingEnd="16dp"
+            android:textColor="@color/primary500"
+            android:textSize="14sp"
+            app:translationTextKey="Заказать" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <TextView
+        android:id="@+id/numberTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_gravity="top|end"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/circle_grey_background"
+        android:fontFamily="@font/suisse_regular"
+        android:includeFontPadding="false"
+        android:outlineProvider="none"
+        android:textColor="@color/secondary900"
+        android:textSize="14sp"
+        android:translationZ="12dp"
+        tools:text="1" />
+
+</FrameLayout>

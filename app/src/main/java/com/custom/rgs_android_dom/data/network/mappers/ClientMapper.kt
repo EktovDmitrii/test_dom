@@ -3,8 +3,10 @@ package com.custom.rgs_android_dom.data.network.mappers
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.requests.*
 import com.custom.rgs_android_dom.data.network.responses.*
+import com.custom.rgs_android_dom.domain.catalog.models.ServiceShortModel
 import com.custom.rgs_android_dom.domain.client.models.*
 import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
+import com.custom.rgs_android_dom.domain.policies.models.PolicyShortModel
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
 
 object ClientMapper {
@@ -137,13 +139,42 @@ object ClientMapper {
         }
     }
 
-    fun responseToPolicy(response: ClientProductResponse): PolicyModel {
-        return PolicyModel(
+    fun responseToPolicyShort(response: ClientProductResponse): PolicyShortModel {
+        return PolicyShortModel(
             id = response.id ?: "",
+            contractId = response.contractId ?: "",
             name = response.productName ?: "",
             logo = response.logoSmall,
             startsAt = response.validityFrom,
             expiresAt = response.validityTo
+        )
+    }
+
+    fun responseToPolicy(clientProductResponse: ClientProductResponse?,contractResponse: ContractResponse?, propertyItemResponse: PropertyItemResponse?, productServicesResponse: ProductServicesResponse?): PolicyModel {
+
+        return PolicyModel(
+            id= clientProductResponse?.productId ?: "",
+            productId = clientProductResponse?.productId ?: "",
+            logo = clientProductResponse?.productIcon ?: "",
+            productTitle= clientProductResponse?.productTitle ?: "",
+            productDescription = clientProductResponse?.productDescription ?: "",
+            address = propertyItemResponse?.address?.address ?: "",
+            includedProducts = productServicesResponse?.items?.map {
+                ServiceShortModel(
+                    priceAmount = it.priceAmount,
+                    providerId = it.providerId,
+                    providerName = it.providerName,
+                    quantity = it.quantity ?: 0,
+                    serviceCode = it.serviceCode,
+                    serviceId = it.serviceId,
+                    serviceName = it.serviceName,
+                    serviceVersionId = it.serviceVersionId,
+                    isPurchased = true)
+            } ?: listOf(),
+            policySeriesAndNumber = "${contractResponse?.serial} ${contractResponse?.number}",
+            clientName = "${contractResponse?.clientLastName} ${contractResponse?.clientFirstName} ${contractResponse?.clientMiddleName}",
+            startsAt = contractResponse?.startDate,
+            expiresAt = contractResponse?.endDate
         )
     }
 

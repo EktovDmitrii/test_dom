@@ -55,6 +55,7 @@ import com.custom.rgs_android_dom.ui.policies.add.AddPolicyViewModel
 import com.custom.rgs_android_dom.ui.policies.add.info.InfoPolicyViewModel
 import com.custom.rgs_android_dom.ui.policies.insurant.InsurantViewModel
 import com.custom.rgs_android_dom.ui.policies.insurant.dialogs.PolicyDialogsViewModel
+import com.custom.rgs_android_dom.ui.policies.policy.PolicyViewModel
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsViewModel
 import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressViewModel
 import com.custom.rgs_android_dom.ui.property.document.DocumentViewModel
@@ -150,4 +151,5 @@ val viewModelModule = module {
     viewModel { InsurantViewModel(policiesInteractor = get()) }
     viewModel { parameters -> PolicyDialogsViewModel(policiesInteractor = get(), model = parameters.get()) }
     viewModel { parameters -> ServiceOrderViewModel(serviceId = parameters[0], productId = parameters[1], propertyInteractor = get(), catalogInteractor = get(), purchaseInteractor = get()) }
+    viewModel { parameters -> PolicyViewModel(contractId = parameters.get(),policiesInteractor = get()) }
 }
