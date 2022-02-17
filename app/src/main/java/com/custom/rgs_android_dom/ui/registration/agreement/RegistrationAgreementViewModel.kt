@@ -20,6 +20,8 @@ class RegistrationAgreementViewModel(private val phone: String,
     private val isNextTextViewEnabledController = MutableLiveData<Boolean>()
     val isNextTextViewEnabledObserver: LiveData<Boolean> = isNextTextViewEnabledController
 
+    private var isAcceptedAgreement = false
+
     fun onAcceptAgreementCheckedChanged(isChecked: Boolean){
         isNextTextViewEnabledController.value = isChecked
     }
@@ -28,16 +30,23 @@ class RegistrationAgreementViewModel(private val phone: String,
        acceptAgreement()
     }
 
-    fun onCloseClick(){
-        closeController.value = Unit
-        //ScreenManager.showScreen(MainFragment())
-    }
-
-    fun onBackClick(){
-        closeController.value = Unit
-        /*if (!closeAfterAccept){
-            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
-        }*/
+    fun onBackClick(callback: () -> Unit){
+        if (!isAcceptedAgreement) {
+            registrationInteractor.logout()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                    onComplete = {
+                        callback.invoke()
+                    },
+                    onError = {
+                        callback.invoke()
+                        logException(this, it)
+                    }
+                ).addTo(dataCompositeDisposable)
+        } else {
+            callback.invoke()
+        }
     }
 
     private fun acceptAgreement(){
@@ -49,6 +58,7 @@ class RegistrationAgreementViewModel(private val phone: String,
             .doOnError { loadingStateController.value = LoadingState.ERROR }
             .subscribeBy(
                 onComplete = {
+                    isAcceptedAgreement = true
                     closeController.value = Unit
                     if (!closeAfterAccept){
                         ScreenManager.showScreenScope(RegistrationFillClientFragment.newInstance(phone),REGISTRATION)
