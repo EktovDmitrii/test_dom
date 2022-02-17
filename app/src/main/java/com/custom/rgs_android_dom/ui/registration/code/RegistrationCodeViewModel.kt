@@ -71,13 +71,14 @@ class RegistrationCodeViewModel(
 
     fun onCodeComplete(code: String){
         registrationInteractor.login(phone, code, token)
+            .flatMap { clientInteractor.getClient() }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
             .doOnSuccess { loadingStateController.value = LoadingState.CONTENT }
             .subscribeBy(
-                onSuccess = {isNewUser->
-                    saveClientAndClose(isNewUser)
+                onSuccess = {
+                    saveClientAndClose(it.isOpdSigned)
                     /*else {
                         ScreenManager.showScreen(MainFragment())
                     }*/
@@ -116,14 +117,14 @@ class RegistrationCodeViewModel(
         showResendCodeController.value = Unit
     }
 
-    private fun saveClientAndClose(isNewUser: Boolean){
+    private fun saveClientAndClose(isOpdSigned: Boolean){
         clientInteractor.loadAndSaveClient()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doFinally {
                 closeController.value = Unit
-                if (isNewUser){
-                    ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(phone), REGISTRATION)
+                if (!isOpdSigned){
+                    ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(phone, true), REGISTRATION)
                 }
             }
             .subscribeBy(
