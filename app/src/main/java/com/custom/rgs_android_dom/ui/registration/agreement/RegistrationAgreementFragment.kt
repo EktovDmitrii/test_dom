@@ -93,7 +93,7 @@ class RegistrationAgreementFragment :
             resources.getColor(R.color.primary500,null),
             Pair("пользовательского соглашения,", View.OnClickListener {
                 val webViewFragment =
-                    WebViewFragment.newInstance("https://moi-service.ru/legal/moi-servis-med/polzovatelskoe-soglashenie")
+                    WebViewFragment.newInstance("https://moi-service.ru/legal/moi-service-dom/polzovatelskoe-soglashenie")
                 ScreenManager.showScreen(webViewFragment)
             }),
             Pair("политику обработки персональных данных", View.OnClickListener {
