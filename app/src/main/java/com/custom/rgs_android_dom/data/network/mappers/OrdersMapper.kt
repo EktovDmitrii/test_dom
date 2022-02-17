@@ -19,6 +19,7 @@ object OrdersMapper {
         return Order(
             id = orderResponse.id,
             address = OrderAddress(
+                objectName = orderResponse.orderObject?.objectName,
                 address = orderResponse.address?.address,
                 cityFiasId = orderResponse.address?.cityFiasId,
                 cityName = orderResponse.address?.cityName,
