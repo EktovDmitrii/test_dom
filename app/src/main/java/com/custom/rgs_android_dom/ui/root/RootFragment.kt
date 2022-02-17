@@ -117,6 +117,10 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
             viewModel.onChatVideoCallClick()
         }
 
+        binding.actionsChatsTextView.setOnDebouncedClickListener {
+            viewModel.onChatsClick()
+        }
+
         subscribe(viewModel.navScopesVisibilityObserver){ scopes->
             scopes.forEach {
                 binding.bottomNavigationView.setNavigationScopeVisible(it.first, it.second)

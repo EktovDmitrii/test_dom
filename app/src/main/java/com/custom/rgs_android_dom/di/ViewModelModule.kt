@@ -128,7 +128,7 @@ val viewModelModule = module {
     viewModel { parameters -> SingleProductViewModel(product = parameters.get(), registrationInteractor = get(), catalogInteractor = get()) }
     viewModel { parameters -> ServiceViewModel(service = parameters.get(), catalogInteractor = get(), propertyInteractor = get(), purchaseInteractor = get()) }
     viewModel { MoreSingleProductViewModel() }
-    viewModel { parameters -> CatalogSearchViewModel(tag = parameters[0], catalogInteractor = get(), registrationInteractor = get(), clientInteractor = get()) }
+    viewModel { parameters -> CatalogSearchViewModel(tag = parameters[0], catalogInteractor = get(), registrationInteractor = get(), clientInteractor = get(), chatInteractor = get()) }
     viewModel { parameters -> ProductViewModel(product = parameters.get(), registrationInteractor = get(), catalogInteractor = get(), propertyInteractor = get(), purchaseInteractor = get()) }
     viewModel { parameters -> CatalogPrimaryProductsViewModel(category = parameters.get()) }
     viewModel { parameters -> PurchaseViewModel(parameters.get(), propertyInteractor = get(), clientInteractor = get(), purchaseInteractor = get()) }
@@ -150,7 +150,7 @@ val viewModelModule = module {
     viewModel { AddPolicyViewModel(policiesInteractor = get()) }
     viewModel { InfoPolicyViewModel() }
     viewModel { InsurantViewModel(policiesInteractor = get()) }
-    viewModel { parameters -> PolicyDialogsViewModel(policiesInteractor = get(), model = parameters.get()) }
+    viewModel { parameters -> PolicyDialogsViewModel(policiesInteractor = get(), model = parameters.get(), chatInteractor = get()) }
     viewModel { parameters -> ServiceOrderViewModel(serviceId = parameters[0], productId = parameters[1], propertyInteractor = get(), catalogInteractor = get(), purchaseInteractor = get()) }
     viewModel { parameters -> PolicyViewModel(contractId = parameters.get(),policiesInteractor = get()) }
     viewModel { ChatsViewModel(chatInteractor = get()) }

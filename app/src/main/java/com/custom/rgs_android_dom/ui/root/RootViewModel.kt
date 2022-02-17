@@ -111,6 +111,9 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                                 )
                             )
                         }
+                        TargetScreen.CHATS -> {
+                            ScreenManager.showBottomScreen(ChatsFragment())
+                        }
                     }
                     requestedScreen = TargetScreen.UNSPECIFIED
                 },
@@ -201,6 +204,15 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
             )
         } else {
             requestedScreen = TargetScreen.VIDEO_CALL
+            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+        }
+    }
+
+    fun onChatsClick(){
+        if (registrationInteractor.isAuthorized()) {
+            ScreenManager.showBottomScreen(ChatsFragment())
+        } else {
+            requestedScreen = TargetScreen.CHATS
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
         }
     }

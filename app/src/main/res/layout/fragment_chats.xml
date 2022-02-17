@@ -47,7 +47,6 @@
                 android:paddingHorizontal="20dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:verticalDecorationGap="16dp"
-                android:overScrollMode="never"
                 tools:itemCount="3"
                 tools:listitem="@layout/item_case_item"/>
 
@@ -99,7 +98,6 @@
                 android:layout_marginTop="24dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:verticalDecorationGap="16dp"
-                android:overScrollMode="never"
                 tools:itemCount="3"
                 tools:listitem="@layout/item_case_item"/>
 
