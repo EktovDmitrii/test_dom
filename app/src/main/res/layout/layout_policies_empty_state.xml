@@ -26,7 +26,7 @@
         android:includeFontPadding="false"
         android:textColor="@color/secondary500"
         android:textSize="14sp"
-        app:translationTextKey="У вас нет пока нет ни одного \nполиса страхования" />
+        app:translationTextKey="У вас пока нет ни одного \nполиса страхования" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/bindTextView"
