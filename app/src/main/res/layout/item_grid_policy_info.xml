@@ -39,7 +39,7 @@
             android:includeFontPadding="false"
             android:paddingVertical="4dp"
             android:paddingEnd="16dp"
-            android:textColor="@color/primary500"
+            android:textColor="@drawable/text_color_selector"
             android:textSize="14sp"
             app:translationTextKey="Заказать" />
 
