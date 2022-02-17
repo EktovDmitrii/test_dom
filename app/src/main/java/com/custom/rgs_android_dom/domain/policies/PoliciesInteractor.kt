@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.domain.policies
 
+import android.util.Log
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
@@ -38,7 +39,6 @@ class PoliciesInteractor(
     private var insurantViewState = InsurantViewState()
     private var policy: String = ""
 
-
     fun policyChanged(policy: String) {
         this.policy = policy
         policiesRepository.onPolicyChange(policy)
@@ -47,30 +47,30 @@ class PoliciesInteractor(
 
     fun firstNameChanged(firstName: String, isMaskFilled: Boolean) {
         insurantViewState = insurantViewState.copy(firstName = firstName)
-        policiesRepository.onInsurantDataChange(insurantViewState)
+        policiesRepository.onFirstNameChanged(firstName)
         checkNextEnabled(isMaskFilled)
-        insurantViewStateSubject.onNext(insurantViewState)
+        //insurantViewStateSubject.onNext(insurantViewState)
     }
 
     fun lastNameChanged(lastName: String, isMaskFilled: Boolean) {
         insurantViewState = insurantViewState.copy(lastName = lastName)
-        policiesRepository.onInsurantDataChange(insurantViewState)
+        policiesRepository.onLastNameChanged(lastName)
         checkNextEnabled(isMaskFilled)
-        insurantViewStateSubject.onNext(insurantViewState)
+        //insurantViewStateSubject.onNext(insurantViewState)
     }
 
     fun middleNameChanged(middleName: String, isMaskFilled: Boolean) {
         insurantViewState = insurantViewState.copy(middleName = middleName)
-        policiesRepository.onInsurantDataChange(insurantViewState)
+        policiesRepository.onMiddleNameChanged(middleName)
         checkNextEnabled(isMaskFilled)
-        insurantViewStateSubject.onNext(insurantViewState)
+        //insurantViewStateSubject.onNext(insurantViewState)
     }
 
     fun birthdayChanged(birthday: String, isMaskFilled: Boolean) {
         insurantViewState = insurantViewState.copy(birthday = birthday)
-        policiesRepository.onInsurantDataChange(insurantViewState)
+        policiesRepository.onBirthdayChanged(birthday)
         checkNextEnabled(isMaskFilled)
-        insurantViewStateSubject.onNext(insurantViewState)
+        //insurantViewStateSubject.onNext(insurantViewState)
     }
 
     fun getInsurantViewStateSubject(): PublishSubject<InsurantViewState> {
@@ -104,7 +104,9 @@ class PoliciesInteractor(
             if (errorsValidate.isNotEmpty()) {
                 return Single.just(SpecificValidateClientExceptions(errorsValidate))
             } else {
-                insurantViewStateSubject.onNext(insurantViewState.copy(isValidationPassed = true))
+                insurantViewState = insurantViewState.copy(isValidationPassed = true)
+                insurantViewStateSubject.onNext(insurantViewState)
+                insurantViewState = insurantViewState.copy(isValidationPassed = false)
             }
         }
         return policiesRepository.bindPolicy()
@@ -164,7 +166,7 @@ class PoliciesInteractor(
         } else {
             insurantViewState.copy(isNextEnabled = false)
         }
-        policiesRepository.onInsurantDataChange(insurantViewState)
+        insurantViewStateSubject.onNext(insurantViewState)
     }
 
     private fun isBirthdayValid(birthday: LocalDateTime): Boolean {

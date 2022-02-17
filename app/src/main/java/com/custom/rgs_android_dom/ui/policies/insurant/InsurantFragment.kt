@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui.policies.insurant
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentInsurantBinding
@@ -24,12 +25,15 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
     }
 
     private var shouldShowDialog = false
-    private var shouldRestore = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        shouldRestore = true
+        if (savedInstanceState != null){
+            binding.firstNameEditText.setText(viewModel.insurantViewStateObserver.value?.firstName ?: "")
+            binding.lastNameEditText.setText(viewModel.insurantViewStateObserver.value?.lastName ?: "")
+            binding.middleNameEditText.setText(viewModel.insurantViewStateObserver.value?.middleName ?: "")
+        }
 
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
@@ -70,14 +74,6 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
         }
 
         subscribe(viewModel.insurantViewStateObserver) {
-            if(shouldRestore){
-                binding.firstNameEditText.setText(it.firstName)
-                binding.lastNameEditText.setText(it.lastName)
-                binding.middleNameEditText.setText(it.middleName)
-                shouldRestore = false
-                viewModel.restoreViewState(it)
-            }
-
             binding.nextTextView.isEnabled = it.isNextEnabled
             if (it.isValidationPassed && shouldShowDialog) {
                 shouldShowDialog = false

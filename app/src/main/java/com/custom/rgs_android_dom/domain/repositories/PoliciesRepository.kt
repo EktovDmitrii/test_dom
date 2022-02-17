@@ -10,8 +10,6 @@ import io.reactivex.Single
 
 interface PoliciesRepository {
 
-    fun onInsurantDataChange(data: InsurantViewState)
-
     fun onPolicyChange(policy: String)
 
     fun bindPolicy(): Single<Any>
@@ -31,4 +29,12 @@ interface PoliciesRepository {
     fun getPolicySingle(contractId: String): Single<PolicyModel>
 
     fun restoreViewState(viewState: InsurantViewState)
+
+    fun onFirstNameChanged(firstName: String)
+
+    fun onLastNameChanged(lastName: String)
+
+    fun onMiddleNameChanged(middleName: String)
+
+    fun onBirthdayChanged(birthday: String)
 }

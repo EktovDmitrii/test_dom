@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.data.repositories.policies
 
 import android.annotation.SuppressLint
+import android.util.Log
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
 import com.custom.rgs_android_dom.data.network.requests.BindPolicyRequest
@@ -25,15 +26,6 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
 
     private var request: BindPolicyRequest = BindPolicyRequest()
 
-
-    override fun onInsurantDataChange(data: InsurantViewState) {
-        request = request.copy(
-            contractClientBirthDate = "${data.birthday.tryParseDate()}T00:00:00.000Z",
-            contractClientFirstName = data.firstName,
-            contractClientLastName = data.lastName,
-            contractClientMiddleName = data.middleName
-        )
-    }
 
     override fun onPolicyChange(policy: String) {
         request = request.copy(
@@ -127,4 +119,22 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
             contractClientMiddleName = viewState.middleName,
             contractClientLastName = viewState.lastName)
     }
+
+    override fun onFirstNameChanged(firstName: String) {
+        request = request.copy(contractClientFirstName = firstName)
+    }
+
+    override fun onLastNameChanged(lastName: String) {
+        Log.d("Syrgashev", "last name: $lastName")
+        request = request.copy(contractClientLastName = lastName)
+    }
+
+    override fun onMiddleNameChanged(middleName: String) {
+        request = request.copy(contractClientMiddleName = middleName)
+    }
+
+    override fun onBirthdayChanged(birthday: String) {
+        request = request.copy(contractClientBirthDate = "${birthday.tryParseDate()}T00:00:00.000Z")
+    }
+
 }
