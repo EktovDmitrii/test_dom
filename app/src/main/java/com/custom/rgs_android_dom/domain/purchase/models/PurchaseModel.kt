@@ -11,6 +11,7 @@ data class PurchaseModel(
     val defaultProduct: Boolean,
     val duration: ProductDurationModel?,
     val deliveryTime: String?,
+    val deliveryType: String? = null,
     val logoSmall: String,
     val name: String,
     val price: ProductPriceModel?,

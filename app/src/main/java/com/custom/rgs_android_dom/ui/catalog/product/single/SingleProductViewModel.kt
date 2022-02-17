@@ -78,6 +78,7 @@ class SingleProductViewModel(
                         defaultProduct = product.defaultProduct,
                         duration = product.duration,
                         deliveryTime = product.deliveryTime,
+                        //deliveryType = product.deliveryType,
                         logoSmall = product.logoSmall,
                         name = product.name,
                         price = product.price
