@@ -18,7 +18,7 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
         }
 
         return catalogNodesSingle.map { response->
-            CatalogMapper.responseToCatalogCategories(response.items ?: listOf())
+            CatalogMapper.responseToCatalogCategories(response.items?.filter { it.name?.contains("node") == false} ?: listOf())
         }
     }
 

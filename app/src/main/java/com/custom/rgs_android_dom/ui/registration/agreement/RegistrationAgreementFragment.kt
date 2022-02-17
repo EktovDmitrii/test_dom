@@ -53,7 +53,7 @@ class RegistrationAgreementFragment :
         }
 
         binding.backImageView.setOnDebouncedClickListener {
-            viewModel.onBackClick()
+            onClose()
         }
 
         subscribe(viewModel.isNextTextViewEnabledObserver) {
@@ -66,8 +66,11 @@ class RegistrationAgreementFragment :
     }
 
     override fun onClose() {
-        hideSoftwareKeyboard()
-        ScreenManager.closeScope(REGISTRATION)
+        viewModel.onBackClick {
+            hideSoftwareKeyboard()
+            viewModel.disposeAll()
+            ScreenManager.closeScope(REGISTRATION)
+        }
     }
 
     override fun onLoading() {

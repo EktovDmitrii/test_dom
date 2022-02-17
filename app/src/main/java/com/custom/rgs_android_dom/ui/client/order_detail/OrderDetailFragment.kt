@@ -70,7 +70,7 @@ class OrderDetailFragment :
             initStaticProgressView(state.status)
             binding.topPaymentStateTextView.text = state.getPaymentState()
             binding.serviceNameTextView.text = service?.serviceName
-            binding.addressTextView.text = state.address?.address
+            binding.addressTextView.text = "${state.address?.objectName} (${state.address?.address})"
             binding.dateTimeTextView.text = state.getDateTime()
             binding.commentTextView.text = state.comment
             binding.commentTitleTextView.visibleIf(state.comment?.isNotBlank() == true)
@@ -88,23 +88,18 @@ class OrderDetailFragment :
                 Html.FROM_HTML_MODE_LEGACY
             )
             val isDefaultProduct = service?.defaultProduct ?: false
-            val orderStateForPay = state.status == OrderStatus.DRAFT || state.status == OrderStatus.CONFIRMED
-            binding.billPayTextView.visibleIf(!isDefaultProduct && orderStateForPay)
+            val orderStateForPay = state.status == OrderStatus.DRAFT
+            binding.billPayTextView.visibleIf(isDefaultProduct && orderStateForPay)
+            binding.productContainer.visibleIf(!isDefaultProduct)
+            binding.paymentTypeTitleTextView.visibleIf(!isDefaultProduct)
+            binding.priceContainer.goneIf(!isDefaultProduct)
+            binding.priceTitleTextView.goneIf(!isDefaultProduct)
             initGeneralInvoices(state.status, state.generalInvoice)
             initCancelOrderButton(state.status)
-            initPriceViews(state.status)
             binding.feedbackImageView.setOnDebouncedClickListener {
                 viewModel.onFeedbackClick()
             }
         }
-    }
-
-    private fun initPriceViews(status: OrderStatus) {
-        binding.priceContainer.goneIf(status == OrderStatus.CONFIRMED)
-        binding.priceTitleTextView.goneIf(status == OrderStatus.CONFIRMED)
-        binding.billPayTextView.goneIf(status == OrderStatus.CONFIRMED || status == OrderStatus.CANCELLED)
-        binding.productContainer.visibleIf(status == OrderStatus.CONFIRMED)
-        binding.paymentTypeTitleTextView.visibleIf(status == OrderStatus.CONFIRMED)
     }
 
     private fun initGeneralInvoices(status: OrderStatus, invoices: List<GeneralInvoice>?) {
@@ -186,7 +181,7 @@ class OrderDetailFragment :
                 changeThirdLineColor(canceledColor)
                 changeFourthLineColor(canceledColor)
 
-                binding.serviceNameTextView.setTextColor(canceledColor)
+                binding.topPaymentStateTextView.setTextColor(canceledColor)
             }
         }
     }

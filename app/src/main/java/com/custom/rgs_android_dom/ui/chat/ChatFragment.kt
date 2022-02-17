@@ -69,6 +69,11 @@ class ChatFragment : BaseBottomSheetFragment<ChatViewModel, FragmentChatBinding>
                    viewModel.onProductClick(it)
                    hideSoftwareKeyboard()
                }
+            },
+            { paymentUrl, productId, amount ->
+                if (paymentUrl.isNotEmpty()) {
+                    viewModel.onPayClick(paymentUrl, productId, amount)
+                }
             }
         )
 
@@ -134,6 +139,10 @@ class ChatFragment : BaseBottomSheetFragment<ChatViewModel, FragmentChatBinding>
 
         subscribe(viewModel.downloadFileObserver) {
             downloadFile(it)
+        }
+
+        subscribe(viewModel.closeObserver) {
+            viewModel.disposeAll()
         }
     }
 

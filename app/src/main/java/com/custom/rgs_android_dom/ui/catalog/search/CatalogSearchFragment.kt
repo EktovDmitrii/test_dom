@@ -40,10 +40,12 @@ class CatalogSearchFragment : BaseFragment<CatalogSearchViewModel, FragmentCatal
         binding.searchInput.focus()
 
         binding.searchResultsRecyclerView.adapter = CatalogSearchResultsAdapter {
+            hideSoftwareKeyboard()
             viewModel.onProductClick(it)
         }
 
         binding.popularProductsRecyclerView.adapter = CatalogSearchResultsAdapter {
+            hideSoftwareKeyboard()
             viewModel.onProductClick(it)
         }
 
