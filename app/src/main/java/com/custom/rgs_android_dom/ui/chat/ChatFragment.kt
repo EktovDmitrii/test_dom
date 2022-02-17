@@ -165,7 +165,7 @@ class ChatFragment : BaseBottomSheetFragment<ChatViewModel, FragmentChatBinding>
 
 
     private fun downloadFile(chatFile: ChatFileModel) {
-        val url = "${BuildConfig.BASE_URL}/api/chat/users/${chatFile.senderId}/files/${chatFile.id}"
+        val url = "${BuildConfig.BASE_URL}/api/chat/users/me/files/${chatFile.id}"
         val request = DownloadManagerRequestProvider.makeDownloadManagerRequest(
             url,
             chatFile.name,
