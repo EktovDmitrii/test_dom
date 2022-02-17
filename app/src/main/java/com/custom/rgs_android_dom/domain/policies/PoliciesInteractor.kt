@@ -46,31 +46,31 @@ class PoliciesInteractor(
     }
 
     fun firstNameChanged(firstName: String, isMaskFilled: Boolean) {
+        Log.d("Syrgashev", "firstNameChanged: ")
         insurantViewState = insurantViewState.copy(firstName = firstName)
         policiesRepository.onFirstNameChanged(firstName)
         checkNextEnabled(isMaskFilled)
-        //insurantViewStateSubject.onNext(insurantViewState)
     }
 
     fun lastNameChanged(lastName: String, isMaskFilled: Boolean) {
+        Log.d("Syrgashev", "lastNameChanged: ")
         insurantViewState = insurantViewState.copy(lastName = lastName)
         policiesRepository.onLastNameChanged(lastName)
         checkNextEnabled(isMaskFilled)
-        //insurantViewStateSubject.onNext(insurantViewState)
     }
 
     fun middleNameChanged(middleName: String, isMaskFilled: Boolean) {
+        Log.d("Syrgashev", "middleNameChanged: ")
         insurantViewState = insurantViewState.copy(middleName = middleName)
         policiesRepository.onMiddleNameChanged(middleName)
         checkNextEnabled(isMaskFilled)
-        //insurantViewStateSubject.onNext(insurantViewState)
     }
 
     fun birthdayChanged(birthday: String, isMaskFilled: Boolean) {
+        Log.d("Syrgashev", "birthdayChanged: ")
         insurantViewState = insurantViewState.copy(birthday = birthday)
         policiesRepository.onBirthdayChanged(birthday)
         checkNextEnabled(isMaskFilled)
-        //insurantViewStateSubject.onNext(insurantViewState)
     }
 
     fun getInsurantViewStateSubject(): PublishSubject<InsurantViewState> {
@@ -106,7 +106,6 @@ class PoliciesInteractor(
             } else {
                 insurantViewState = insurantViewState.copy(isValidationPassed = true)
                 insurantViewStateSubject.onNext(insurantViewState)
-                insurantViewState = insurantViewState.copy(isValidationPassed = false)
             }
         }
         return policiesRepository.bindPolicy()
@@ -157,7 +156,8 @@ class PoliciesInteractor(
     }
 
     private fun checkNextEnabled(isMaskFilled: Boolean) {
-        insurantViewState = if (insurantViewState.firstName.isNotEmpty() &&
+        insurantViewState = if (
+            insurantViewState.firstName.isNotEmpty() &&
             insurantViewState.lastName.isNotEmpty() &&
             insurantViewState.birthday.isNotEmpty() &&
             isMaskFilled
@@ -166,6 +166,7 @@ class PoliciesInteractor(
         } else {
             insurantViewState.copy(isNextEnabled = false)
         }
+        Log.d("Syrgashev", "insurantViewState in checkNextEnabled(): $insurantViewState")
         insurantViewStateSubject.onNext(insurantViewState)
     }
 
