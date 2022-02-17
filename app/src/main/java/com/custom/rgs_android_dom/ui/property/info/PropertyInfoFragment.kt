@@ -44,6 +44,7 @@ class PropertyInfoFragment :
         }
 
         binding.backImageView.setOnDebouncedClickListener {
+            viewModel.disposeAll()
             onClose()
         }
 
