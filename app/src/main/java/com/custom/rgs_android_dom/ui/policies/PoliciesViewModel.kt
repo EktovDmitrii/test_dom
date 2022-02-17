@@ -39,7 +39,7 @@ class PoliciesViewModel(private val policiesInteractor: PoliciesInteractor, clie
                 onSuccess = {
                     if (it.birthDate != null ||
                         it.firstName.isNotEmpty() ||
-                        it.middleName != null ||
+                        !it.middleName.isNullOrEmpty() ||
                         it.lastName.isNotEmpty()
                     ) {
                         isPersonalDataFilled = true
