@@ -6,13 +6,16 @@ import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.chat.models.CallType
 import com.custom.rgs_android_dom.domain.chat.models.ChatFileModel
 import com.custom.rgs_android_dom.domain.chat.models.ChatItemModel
+import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
 import com.custom.rgs_android_dom.ui.catalog.product.ProductLauncher
 import com.custom.rgs_android_dom.ui.chat.call.CallFragment
 import com.custom.rgs_android_dom.ui.chat.files.viewers.image.ImageViewerFragment
 import com.custom.rgs_android_dom.ui.chat.files.viewers.video.VideoPlayerFragment
+import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.purchase.payments.PaymentWebViewFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -20,7 +23,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import java.io.File
 
-class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel() {
+class ChatViewModel(private val chatInteractor: ChatInteractor, clientInteractor: ClientInteractor) : BaseViewModel() {
 
     private val chatItemsController = MutableLiveData<List<ChatItemModel>>()
     val chatItemsObserver: LiveData<List<ChatItemModel>> = chatItemsController
@@ -30,6 +33,8 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
 
     private val downloadFileController = MutableLiveData<ChatFileModel>()
     val downloadFileObserver: LiveData<ChatFileModel> = downloadFileController
+
+    private var email: String? = null
 
     init {
 
@@ -77,6 +82,18 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
             .subscribeBy(
                 onNext = {
                     postFilesInChat(it)
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
+        clientInteractor.getPersonalData()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = { personalData ->
+                        email = personalData.email.ifEmpty { null }
                 },
                 onError = {
                     logException(this, it)
@@ -146,4 +163,16 @@ class ChatViewModel(private val chatInteractor: ChatInteractor) : BaseViewModel(
     fun onProductClick(productId: String) {
         ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(productId = productId)))
     }
+
+    fun onPayClick(paymentUrl: String, productId: String, amount: Int) {
+        ScreenManager.showScreenScope(
+            PaymentWebViewFragment.newInstance(
+                url = paymentUrl ,
+                productId = productId,
+                email =  email ?: "",
+                price = amount.toString()
+            ), PAYMENT
+        )
+    }
+
 }

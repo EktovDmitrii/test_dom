@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.domain.repositories
 
-import com.custom.rgs_android_dom.data.network.responses.ChatFilePreviewResponse
 import com.custom.rgs_android_dom.domain.chat.models.*
 import io.reactivex.Completable
 import io.reactivex.Single

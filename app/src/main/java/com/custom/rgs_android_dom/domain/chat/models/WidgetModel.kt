@@ -6,5 +6,12 @@ data class WidgetModel(
     val name: String,
     val price: WidgetPriceModel,
     val productId: String,
-    val widgetType: String
+    val widgetType: String,
+    val amount: Int?,
+    val invoiceId: String?,
+    val items: List<WidgetAdditionalInvoiceItemModel>? = listOf(),
+    val orderId: String?,
+    val paymentUrl: String?,
+    val serviceLogo: String?,
+    val serviceName: String?
 )

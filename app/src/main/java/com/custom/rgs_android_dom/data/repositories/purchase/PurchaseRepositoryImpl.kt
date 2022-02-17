@@ -9,7 +9,6 @@ import com.custom.rgs_android_dom.domain.purchase.models.CardModel
 import com.custom.rgs_android_dom.domain.purchase.models.NewCardModel
 import com.custom.rgs_android_dom.domain.repositories.PurchaseRepository
 import com.custom.rgs_android_dom.utils.safeLet
-import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 
@@ -35,7 +34,8 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
         comment: String?,
         deliveryDate: String?,
         timeFrom: String?,
-        timeTo: String?
+        timeTo: String?,
+        withOrder: Boolean
     ): Single<String> {
 
         var orderRequest: OrderRequest? = null
@@ -67,6 +67,12 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
             }
         }
 
+        if (orderRequest != null) {
+            orderRequest = orderRequest!!.copy(
+                withOrder = withOrder
+            )
+        }
+
         val purchaseRequest = PurchaseProductRequest(
             bindingId = bindingId,
             email = email,
@@ -74,7 +80,6 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
             objectId = objectId,
             order = orderRequest
         )
-
         return api.makeProductPurchase(
             productId = productId,
             order = purchaseRequest
