@@ -119,7 +119,6 @@ class CatalogSearchViewModel(
         } else {
             ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(product.id)))
         }
-        closeController.value = Unit
     }
 
     fun onCancelClick(){

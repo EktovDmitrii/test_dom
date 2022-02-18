@@ -2,7 +2,6 @@ package com.custom.rgs_android_dom.domain.repositories
 
 import com.custom.rgs_android_dom.domain.client.models.Order
 import com.custom.rgs_android_dom.domain.purchase.models.CardModel
-import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 
@@ -19,7 +18,8 @@ interface PurchaseRepository {
         comment: String?,
         deliveryDate: String?,
         timeFrom: String?,
-        timeTo: String?
+        timeTo: String?,
+        withOrder: Boolean
     ): Single<String>
 
     fun orderServiceOnBalance(

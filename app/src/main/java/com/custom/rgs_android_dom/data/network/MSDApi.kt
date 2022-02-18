@@ -4,7 +4,6 @@ import com.custom.rgs_android_dom.data.network.data_adapters.NetworkException
 import com.custom.rgs_android_dom.data.network.error.MSDNetworkErrorResponse
 import com.custom.rgs_android_dom.data.network.responses.*
 import com.custom.rgs_android_dom.data.network.requests.*
-import com.custom.rgs_android_dom.domain.client.models.Order
 import com.custom.rgs_android_dom.domain.error.model.MSDErrorModel
 import io.reactivex.Completable
 import io.reactivex.Maybe
@@ -268,4 +267,5 @@ interface MSDApi {
 
     @PUT("chat/users/me/channels/{channelId}/typing")
     fun notifyTyping(@Path("channelId") channelId: String): Completable
+
 }

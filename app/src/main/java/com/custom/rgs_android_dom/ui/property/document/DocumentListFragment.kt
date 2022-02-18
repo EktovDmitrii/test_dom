@@ -84,6 +84,7 @@ class DocumentListFragment :
         downloadManager = requireContext().getDownloadManager()
 
         binding.backImageView.setOnDebouncedClickListener {
+            viewModel.disposeAll()
             onClose()
         }
 

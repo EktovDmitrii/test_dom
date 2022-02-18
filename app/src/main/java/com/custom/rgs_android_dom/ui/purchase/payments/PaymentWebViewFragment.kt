@@ -33,7 +33,7 @@ class PaymentWebViewFragment :
             productId: String,
             email: String,
             price: String,
-            fragmentId: Int
+            fragmentId: Int = 0
         ): PaymentWebViewFragment {
             return PaymentWebViewFragment().args {
                 putString(ARG_PAYMENT_URL, url)

@@ -14,6 +14,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 
 class PropertyInfoViewModel(
     private val objectId: String,
@@ -57,9 +58,12 @@ class PropertyInfoViewModel(
         propertyInteractor.propertyDocumentUploadedSubject
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .delay(500, TimeUnit.MILLISECONDS)
             .subscribeBy(
                 onNext = { uri ->
-                    updateDocuments(uri)
+                    propertyItemController.value?.let {
+                        updateDocuments(it, uri)
+                    }
                 },
                 onError = {
                     logException(this, it)
@@ -91,24 +95,22 @@ class PropertyInfoViewModel(
 
     }
 
-    private fun updateDocuments(uri: List<Uri>) {
-        propertyItemController.value?.let {
-            propertyInteractor.updatePropertyItem(
-                objectId = objectId,
-                propertyItemModel = it,
-                filesUri = uri,
-            ).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                    onSuccess = {
-                        propertyInteractor.propertyInfoStateSubject.onNext(it)
-                    },
-                    onError = {
-                        logException(this, it)
-                        networkErrorController.value = "Не удалось загрузить объект"
-                    }
-                ).addTo(dataCompositeDisposable)
-        }
+    private fun updateDocuments(currentModel: PropertyItemModel, uri: List<Uri>) {
+        propertyInteractor.updatePropertyItem(
+            objectId = objectId,
+            propertyItemModel = currentModel,
+            filesUri = uri,
+        ).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    propertyInteractor.propertyInfoStateSubject.onNext(it)
+                },
+                onError = {
+                    logException(this, it)
+                    networkErrorController.value = "Не удалось загрузить объект"
+                }
+            ).addTo(dataCompositeDisposable)
     }
 
     fun onShowAllDocumentsClick() {

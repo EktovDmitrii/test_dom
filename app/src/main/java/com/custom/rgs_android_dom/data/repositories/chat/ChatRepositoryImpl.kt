@@ -474,6 +474,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
         }
     }
 
+
     override fun loadCases(): Completable {
         val client = clientSharedPreferences.getClient()
         val channelId = client?.getChatChannelId() ?: ""

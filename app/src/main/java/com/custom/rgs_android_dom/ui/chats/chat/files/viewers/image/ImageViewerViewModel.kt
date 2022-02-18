@@ -23,7 +23,7 @@ class ImageViewerViewModel(private val chatFile: ChatFileModel) : BaseViewModel(
     val manageFileObserver: LiveData<ChatFileModel> = manageFileController
 
     init {
-        val url = "${BuildConfig.BASE_URL}/api/chat/users/${chatFile.senderId}/files/${chatFile.id}"
+        val url = "${BuildConfig.BASE_URL}/api/chat/users/me/files/${chatFile.id}"
         urlController.value = url
 
         nameController.value = chatFile.name.toUpperCase(Locale.getDefault())

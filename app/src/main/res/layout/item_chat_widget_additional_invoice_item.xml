@@ -7,6 +7,7 @@
     android:orientation="horizontal">
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/nameTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
@@ -58,8 +59,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="top"
-            android:layout_marginStart="4dp"
-            android:fontFamily="@font/suisse_regular"
+            android:layout_marginHorizontal="4dp"
+            android:fontFamily="@font/suisse_semi_bold"
             android:includeFontPadding="false"
             android:text="x"
             android:textColor="@color/secondary600"

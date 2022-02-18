@@ -37,9 +37,9 @@ class PoliciesViewModel(private val policiesInteractor: PoliciesInteractor, clie
             .subscribeBy(
                 onError = { logException(this, it) },
                 onSuccess = {
-                    if (it.birthDate != null &&
-                        it.firstName.isNotEmpty() &&
-                        it.middleName != null &&
+                    if (it.birthDate != null ||
+                        it.firstName.isNotEmpty() ||
+                        !it.middleName.isNullOrEmpty() ||
                         it.lastName.isNotEmpty()
                     ) {
                         isPersonalDataFilled = true

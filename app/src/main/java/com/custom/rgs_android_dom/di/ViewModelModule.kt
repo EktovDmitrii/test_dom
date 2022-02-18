@@ -97,7 +97,7 @@ val viewModelModule = module {
     viewModel { AgentViewModel(clientInteractor = get()) }
     viewModel { EditAgentViewModel(clientInteractor = get()) }
     viewModel { AboutAppViewModel() }
-    viewModel { parameters -> ChatViewModel(case = parameters[0], chatInteractor = get()) }
+    viewModel { parameters -> ChatViewModel(case = parameters[0], chatInteractor = get(), clientInteractor = get()) }
     viewModel { parameters-> SelectPropertyTypeViewModel(propertyName = parameters[0], propertyAddress = parameters[1], propertyInteractor = get()) }
     viewModel { parameters-> PropertyDetailsViewModel(propertyName = parameters[0], propertyAddress = parameters[1], propertyType = parameters[2], propertyInteractor = get(), connectivityManager = get()) }
     viewModel { parameters-> PropertyInfoViewModel(objectId = parameters.get(), propertyInteractor = get(), connectivityManager = get()) }
