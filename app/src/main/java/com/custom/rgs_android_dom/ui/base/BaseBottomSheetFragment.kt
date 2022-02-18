@@ -64,10 +64,6 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB : ViewBinding>: Bo
 
     }
 
-    open fun close(){
-        viewModel.close()
-    }
-
     open fun getParameters(): ParametersDefinition = {
         emptyParametersHolder()
     }
@@ -77,6 +73,7 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB : ViewBinding>: Bo
     open fun onError() {}
 
     open fun onClose() {
+        viewModel.disposeAll()
         hideSoftwareKeyboard()
         ScreenManager.closeCurrentBottomFragment()
     }

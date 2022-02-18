@@ -3,6 +3,9 @@ package com.custom.rgs_android_dom.data.repositories.chat
 import android.content.Context
 import android.util.Log
 import com.custom.rgs_android_dom.BuildConfig
+import com.custom.rgs_android_dom.data.db.MSDDatabase
+import com.custom.rgs_android_dom.data.db.mappers.ChatsDbMapper
+import com.custom.rgs_android_dom.data.db.models.chat.CaseDbModel
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.ChatMapper
 import com.custom.rgs_android_dom.data.network.requests.SendMessageRequest
@@ -24,6 +27,7 @@ import io.livekit.android.room.participant.Participant
 import io.livekit.android.room.participant.RemoteParticipant
 import io.livekit.android.room.track.*
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -47,7 +51,8 @@ class ChatRepositoryImpl(private val api: MSDApi,
                          private val authContentProviderManager: AuthContentProviderManager,
                          private val context: Context,
                          private val mediaOutputManager: MediaOutputManager,
-                         private val connectivityManager: MSDConnectivityManager
+                         private val connectivityManager: MSDConnectivityManager,
+                         private val database: MSDDatabase
 ) : ChatRepository {
 
     companion object {
@@ -97,6 +102,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
         override fun onOpen(webSocket: WebSocket, response: Response) {
             Log.d(TAG, "ON OPEN")
+            wsEventSubject.onNext(WsConnectionModel(WsEventModel.Event.SOCKET_CONNECTED))
         }
 
         override fun onMessage(webSocket: WebSocket, text: String) {
@@ -104,6 +110,15 @@ class ChatRepositoryImpl(private val api: MSDApi,
             val parsedMessage = wsResponseParser.parse(text, clientSharedPreferences.getClient()?.userId ?: "")
             if (parsedMessage != null){
                 wsEventSubject.onNext(parsedMessage)
+
+                when (parsedMessage.event){
+                    WsEventModel.Event.CALL_DECLINED -> {
+                        clearRoomDataOnOpponentDeclined()
+                    }
+                    WsEventModel.Event.ROOM_CLOSED -> {
+                        clearRoomDataOnOpponentDeclined()
+                    }
+                }
             }
         }
 
@@ -113,6 +128,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
         override fun onFailure(webSocket: WebSocket, throwable: Throwable, response: Response?) {
             Log.d(TAG, "ON failure")
+            wsEventSubject.onNext(WsConnectionModel(WsEventModel.Event.SOCKET_DISCONNECTED))
             throwable.printStackTrace()
             disconnectFromWebSocket()
             if (connectivityManager.isInternetConnected()){
@@ -225,9 +241,8 @@ class ChatRepositoryImpl(private val api: MSDApi,
         return wsEventSubject
     }
 
-    override fun getChatHistory(): Single<List<ChatMessageModel>> {
+    override fun getChatHistory(channelId: String): Single<List<ChatMessageModel>> {
         val client = clientSharedPreferences.getClient()
-        val channelId = client?.getChatChannelId() ?: ""
         return api.getChatMessages(channelId, 1000, 0).map {
             ChatMapper.responseToChatMessages(it, client?.userId ?: "")
         }.map {
@@ -235,9 +250,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
         }
     }
 
-    override fun getChannelMembers(): Single<List<ChannelMemberModel>> {
-        val client = clientSharedPreferences.getClient()
-        val channelId = client?.getChatChannelId() ?: ""
+    override fun getChannelMembers(channelId: String): Single<List<ChannelMemberModel>> {
         return api.getChannelMembers(channelId).toSingle().map {
             ChatMapper.responseToChannelMembers(it)
         }.onErrorResumeNext {
@@ -247,19 +260,13 @@ class ChatRepositoryImpl(private val api: MSDApi,
         }
     }
 
-    override fun sendMessage(message: String?, fileIds: List<String>?): Completable {
+    override fun sendMessage(channelId: String, message: String?, fileIds: List<String>?): Completable {
         val request = SendMessageRequest(message = message, fileIds = fileIds)
-
-        val client = clientSharedPreferences.getClient()
-
-        val channelId = client?.getChatChannelId() ?: ""
-
         return api.postMessage(channelId, request)
     }
 
-    override fun postFileInChat(file: File): Single<ChatFileModel> {
+    override fun postFileInChat(channelId: String, file: File): Single<ChatFileModel> {
         val client = clientSharedPreferences.getClient()
-        val channelId = client?.getChatChannelId() ?: ""
         return api.postFileInChat(file.toMultipartFormData(), channelId).map {
             ChatMapper.responseToChatFile(it, client?.id ?: "", LocalDateTime.now(DateTimeZone.getDefault()))
         }
@@ -273,9 +280,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
         filesToUploadSubject.onNext(files)
     }
 
-    override fun requestLiveKitToken(): Single<CallInfoModel> {
-        val client = clientSharedPreferences.getClient()
-        val channelId = client?.getChatChannelId() ?: ""
+    override fun requestLiveKitToken(channelId: String): Single<CallInfoModel> {
         return api.startCall(channelId).map {
             ChatMapper.responseToCallInfo(it)
         }
@@ -469,4 +474,57 @@ class ChatRepositoryImpl(private val api: MSDApi,
         }
     }
 
+
+    override fun loadCases(): Completable {
+        val client = clientSharedPreferences.getClient()
+        val channelId = client?.getChatChannelId() ?: ""
+
+        return Single.zip(
+            api.getCases(size = 5000, index = 0),
+            api.getSubtypes(size = 5000, index = 0, withArchived = true, withInternal = true),
+            api.getUnreadPostsCount(channelId)){cases, subtypes, unreadPosts->
+
+            val cases = ChatsDbMapper.fromResponse(
+                response = cases,
+                subtypes = subtypes.subtypes ?: listOf(),
+                masterOnlineChannelId = channelId,
+                masterOnlineUnreadPosts = unreadPosts.count ?: 0
+            )
+            Log.d("MyLog", "Inserting cases " + cases.size)
+            database.chatsDao.insertCases(cases)
+        }.flatMapCompletable {
+            Completable.complete()
+        }
+    }
+
+    override fun getCasesFlowable(): Flowable<ClientCasesModel> {
+        return database.chatsDao.getCasesFlowable().map {
+            ChatsDbMapper.toModel(it)
+        }
+    }
+
+    override fun getMasterOnlineCase(): CaseModel {
+        val client = clientSharedPreferences.getClient()
+        val channelId = client?.getChatChannelId() ?: ""
+
+        return CaseModel(
+            channelId = channelId,
+            name = "Мастер онлайн",
+            subtype = null,
+            taskId = "",
+            unreadPosts = 0,
+            isArchived = false,
+            status = CaseStatus.UNKNOWN,
+            subStatus = CaseSubStatus.UNKNOWN,
+            reportedAt = DateTime.now()
+        )
+    }
+
+    override fun viewChannel(channelId: String): Completable {
+        return api.viewChannel(channelId)
+    }
+
+    override fun notifyTyping(channelId: String): Completable {
+        return api.notifyTyping(channelId)
+    }
 }

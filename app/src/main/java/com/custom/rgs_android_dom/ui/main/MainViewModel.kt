@@ -181,7 +181,11 @@ class MainViewModel(
                         }
                     )
                 )
-                .subscribe()
+                .subscribeBy(
+                    onError = {
+                        logException(this, it)
+                    }
+                )
                 .addTo(dataCompositeDisposable)
         } else {
             loadingStateController.value = LoadingState.ERROR

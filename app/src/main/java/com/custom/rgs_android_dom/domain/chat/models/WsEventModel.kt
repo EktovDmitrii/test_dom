@@ -9,7 +9,10 @@ abstract class WsEventModel<out T>(
         POSTED,
         CHANNEL_VIEWED,
         CALL_JOIN,
-        CALL_DECLINED
+        CALL_DECLINED,
+        ROOM_CLOSED,
+        SOCKET_CONNECTED,
+        SOCKET_DISCONNECTED
     }
 
 }
