@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.root
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
@@ -83,6 +84,7 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
             .subscribeBy (
                 onNext = {
                     loadCases()
+                    Log.d("MyLog", "Client saved subject " + requestedScreen)
                     when (requestedScreen) {
                         TargetScreen.CHAT -> {
                             ScreenManager.showBottomScreen(ChatFragment.newInstance(chatInteractor.getMasterOnlineCase()))
@@ -232,6 +234,7 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
             ScreenManager.showBottomScreen(ChatsFragment())
         } else {
             requestedScreen = TargetScreen.CHATS
+            Log.d("MyLog", "BEFORE REQ " + requestedScreen)
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
         }
     }
