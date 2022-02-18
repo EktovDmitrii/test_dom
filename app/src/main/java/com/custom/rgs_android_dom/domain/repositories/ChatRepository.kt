@@ -62,4 +62,10 @@ interface ChatRepository {
 
     fun getMasterOnlineCase(): CaseModel
 
+    fun viewChannel(channelId: String): Completable
+
+    fun notifyTyping(channelId: String): Completable
+
+    fun clearCases(): Completable
+
 }

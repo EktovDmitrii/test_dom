@@ -26,8 +26,8 @@ class ChatViewModel(
     private val chatInteractor: ChatInteractor
 ) : BaseViewModel() {
 
-    private val titleController = MutableLiveData<String>()
-    val titleObserver: LiveData<String> = titleController
+    private val caseController = MutableLiveData<CaseModel>()
+    val caseObserver: LiveData<CaseModel> = caseController
 
     private val chatItemsController = MutableLiveData<List<ChatItemModel>>()
     val chatItemsObserver: LiveData<List<ChatItemModel>> = chatItemsController
@@ -40,7 +40,7 @@ class ChatViewModel(
 
     init {
 
-        titleController.value = case.name
+        caseController.value = case
 
         chatInteractor.subscribeToSocketEvents()
             .subscribeOn(Schedulers.io())
@@ -55,6 +55,8 @@ class ChatViewModel(
                 onSuccess = {
                     loadingStateController.value = LoadingState.CONTENT
                     chatItemsController.value = it
+
+                    viewChannel()
                 },
                 onError = {
                     logException(this, it)
@@ -71,8 +73,9 @@ class ChatViewModel(
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
             .subscribeBy(
                 onNext = {
-                    if (it.isNotEmpty()){
+                    if (it.isNotEmpty() && it[0].channelId == case.channelId){
                         newItemsController.value = it
+                        viewChannel()
                     }
                 },
                 onError = {
@@ -138,21 +141,38 @@ class ChatViewModel(
         ScreenManager.showScreen(callFragment)
     }
 
+    fun onProductClick(productId: String) {
+        ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(productId = productId)))
+    }
+
+    fun onChatClose(){
+        viewChannel()
+    }
+
+    fun onUserTyping(){
+        chatInteractor.notifyTyping(case.channelId)
+    }
+
     private fun postFilesInChat(files: List<File>){
         chatInteractor.postFilesToChat(case.channelId, files)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
-                onComplete = {
-
-                },
                 onError = {
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
     }
 
-    fun onProductClick(productId: String) {
-        ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(productId = productId)))
+    private fun viewChannel(){
+        chatInteractor.viewChannel(case.channelId)
+            .andThen(chatInteractor.loadCases())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
     }
 }

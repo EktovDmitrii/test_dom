@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -68,6 +69,8 @@ class ChatFragment : BaseBottomSheetFragment<ChatViewModel, FragmentChatBinding>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.d("MyLog", "On View created")
+
         downloadManager = requireContext().getDownloadManager()
 
         val layoutManager = binding.messagesRecyclerView.layoutManager as LinearLayoutManager
@@ -92,6 +95,7 @@ class ChatFragment : BaseBottomSheetFragment<ChatViewModel, FragmentChatBinding>
         }
 
         binding.messageEditText.addTextChangedListener {
+            viewModel.onUserTyping()
             binding.sendMessageImageView.isEnabled = it.toString().trim().isNotEmpty()
         }
 
@@ -151,8 +155,17 @@ class ChatFragment : BaseBottomSheetFragment<ChatViewModel, FragmentChatBinding>
             downloadFile(it)
         }
 
-        subscribe(viewModel.titleObserver){
-            binding.titleTextView.text = it
+        subscribe(viewModel.caseObserver){
+            binding.titleTextView.text = it.name
+
+            if (it.isArchived) {
+                binding.titleTextView.setCompoundDrawables(null,null,null,null )
+            }
+            binding.audioCallImageView.goneIf(it.isArchived)
+            binding.videoCallImageView.goneIf(it.isArchived)
+            binding.sendMessageBottomAppBar.goneIf(it.isArchived)
+
+            binding.archivedFrameLayout.visibleIf(it.isArchived)
         }
     }
 
@@ -180,6 +193,11 @@ class ChatFragment : BaseBottomSheetFragment<ChatViewModel, FragmentChatBinding>
         super.onError()
         binding.loadingProgressBar.gone()
         binding.sendMessageBottomAppBar.visible()
+    }
+
+    override fun onClose() {
+        super.onClose()
+        viewModel.onChatClose()
     }
 
 

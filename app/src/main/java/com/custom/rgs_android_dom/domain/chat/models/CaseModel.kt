@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.domain.chat.models
 
+import org.joda.time.DateTime
 import java.io.Serializable
 
 data class CaseModel(
@@ -8,5 +9,8 @@ data class CaseModel(
     val subtype: SubtypeModel?,
     val taskId: String,
     val unreadPosts: Int,
-    val isArchived: Boolean
+    val isArchived: Boolean,
+    val status: CaseStatus,
+    val subStatus: CaseSubStatus,
+    val reportedAt: DateTime
 ): Serializable

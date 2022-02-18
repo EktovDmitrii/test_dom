@@ -501,7 +501,22 @@ class ChatRepositoryImpl(private val api: MSDApi,
             subtype = null,
             taskId = "",
             unreadPosts = 0,
-            isArchived = false
+            isArchived = false,
+            status = CaseStatus.UNKNOWN,
+            subStatus = CaseSubStatus.UNKNOWN,
+            reportedAt = DateTime.now()
         )
+    }
+
+    override fun viewChannel(channelId: String): Completable {
+        return api.viewChannel(channelId)
+    }
+
+    override fun notifyTyping(channelId: String): Completable {
+        return api.notifyTyping(channelId)
+    }
+
+    override fun clearCases(): Completable {
+        return database.chatsDao.clearCases()
     }
 }

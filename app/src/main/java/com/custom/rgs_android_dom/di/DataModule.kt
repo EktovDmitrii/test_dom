@@ -17,7 +17,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val dataModule = module {
-    single <RegistrationRepository> { RegistrationRepositoryImpl(api = get(), clientSharedPreferences = get(), chatRepository = get(), authContentProviderManager = get()) }
+    single <RegistrationRepository> { RegistrationRepositoryImpl(api = get(), clientSharedPreferences = get(), chatRepository = get(), authContentProviderManager = get(), database = get()) }
     single <ClientRepository> {ClientRepositoryImpl(api = get(), clientSharedPreferences = get())}
     single <CountriesRepository> { CountriesRepositoryMock() }
     single <TranslationRepository> { TranslationRepositoryImpl(api = get()) }

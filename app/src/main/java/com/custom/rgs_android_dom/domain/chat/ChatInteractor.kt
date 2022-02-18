@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.domain.chat
 
+import android.util.Log
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.domain.repositories.ChatRepository
@@ -9,9 +10,13 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.disposables.Disposable
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import org.joda.time.LocalDateTime
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 class ChatInteractor(
     private val chatRepository: ChatRepository,
@@ -29,6 +34,10 @@ class ChatInteractor(
 
     private var cachedChatItems = arrayListOf<ChatItemModel>()
     private var cachedChannelMembers = arrayListOf<ChannelMemberModel>()
+
+    private var typingTimerStarted: Boolean = false
+    private var typingIntervalDisposable: Disposable? = null
+    private var typingEndedDisposable: Disposable? = null
 
     fun getChatHistory(channelId: String): Single<List<ChatItemModel>> {
         return chatRepository.getChatHistory(channelId).map { allMessages->
@@ -63,17 +72,6 @@ class ChatInteractor(
                     chatItem.member = cachedChannelMembers.find { it.userId == chatItem.userId }
                 }
             }
-
-            /*cachedChatItems.forEach { chatItem->
-                if (chatItem is ChatMessageModel){
-                    chatItem.files?.let { chatFiles->
-                        chatFiles.forEach { chatFile->
-                            val preview = chatRepository.getChatFilePreview(chatItem.userId, chatFile.id).blockingGet()
-                            chatFile.preview = preview
-                        }
-                    }
-                }
-            }*/
             return@map cachedChatItems
         }
     }
@@ -192,6 +190,7 @@ class ChatInteractor(
     }
 
     private fun onNewMessage(newMessage: ChatMessageModel){
+        Log.d("MyLog", "ON NEW MESSAGE!!!!!!!!!!!!!!!!!!!!!!!")
         val chatItems = arrayListOf<ChatItemModel>()
         newMessage.member = cachedChannelMembers.find { it.userId == newMessage.userId }
         // TODO Find out how chat messages can be empty
@@ -252,4 +251,37 @@ class ChatInteractor(
     fun getMasterOnlineCase(): CaseModel {
         return chatRepository.getMasterOnlineCase()
     }
+
+    fun viewChannel(channelId: String): Completable {
+        return chatRepository.viewChannel(channelId)
+    }
+
+    fun notifyTyping(channelId: String){
+        if (!typingTimerStarted){
+            typingIntervalDisposable = Observable.interval(0,3, TimeUnit.SECONDS)
+                .flatMap {
+                    chatRepository.notifyTyping(channelId).toObservable<Unit>()
+                }
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribeBy (
+                    onError = {
+                        logException(this, it)
+                    }
+                )
+            typingTimerStarted = true
+        }
+
+        typingEndedDisposable?.dispose()
+        typingEndedDisposable = Completable.timer(3, TimeUnit.SECONDS)
+            .subscribe {
+                typingTimerStarted = false
+                typingIntervalDisposable?.dispose()
+            }
+    }
+
+    fun clearCases(): Completable {
+        return chatRepository.clearCases()
+    }
+
 }

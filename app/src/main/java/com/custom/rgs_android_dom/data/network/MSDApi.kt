@@ -262,4 +262,10 @@ interface MSDApi {
 
     @GET("chat/users/me/channels/{channelId}/posts/unread-count")
     fun getUnreadPostsCount(@Path("channelId") channelId: String): Single<UnreadPostsCountResponse>
+
+    @PUT("chat/users/me/channels/{channelId}/view")
+    fun viewChannel(@Path("channelId") channelId: String): Completable
+
+    @PUT("chat/users/me/channels/{channelId}/typing")
+    fun notifyTyping(@Path("channelId") channelId: String): Completable
 }

@@ -6,9 +6,9 @@ import com.custom.rgs_android_dom.data.db.models.chat.SubtypeDbModel
 import com.custom.rgs_android_dom.data.network.responses.CaseResponse
 import com.custom.rgs_android_dom.data.network.responses.ClientCasesResponse
 import com.custom.rgs_android_dom.data.network.responses.SubtypeResponse
-import com.custom.rgs_android_dom.domain.chat.models.CaseModel
-import com.custom.rgs_android_dom.domain.chat.models.ClientCasesModel
-import com.custom.rgs_android_dom.domain.chat.models.SubtypeModel
+import com.custom.rgs_android_dom.domain.chat.models.*
+import com.custom.rgs_android_dom.utils.asEnumOrDefault
+import org.joda.time.DateTime
 
 object ChatsDbMapper {
 
@@ -26,7 +26,10 @@ object ChatsDbMapper {
                     subtype = null,
                     taskId = "",
                     unreadPosts = masterOnlineUnreadPosts,
-                    isArchived = false
+                    isArchived = false,
+                    status = CaseStatus.UNKNOWN,
+                    subStatus = CaseSubStatus.UNKNOWN,
+                    reportedAt = DateTime.now()
                 )
             )
             if (response.activeCases != null){
@@ -53,7 +56,10 @@ object ChatsDbMapper {
             subtype = subtype?.let { fromSubtypeResponse(it) },
             taskId = response.taskId,
             unreadPosts = response.unreadPosts,
-            isArchived = isArchived
+            isArchived = isArchived,
+            status = response.status.asEnumOrDefault(CaseStatus.UNKNOWN),
+            subStatus = response.subStatus.asEnumOrDefault(CaseSubStatus.UNKNOWN),
+            reportedAt = response.reportedAt
         )
     }
 
@@ -75,7 +81,10 @@ object ChatsDbMapper {
             subtype = caseDbModel.subtype?.let { fromSubtypeDbModel(it) },
             taskId = caseDbModel.taskId,
             unreadPosts = caseDbModel.unreadPosts,
-            isArchived = caseDbModel.isArchived
+            isArchived = caseDbModel.isArchived,
+            status = caseDbModel.status,
+            subStatus = caseDbModel.subStatus,
+            reportedAt = caseDbModel.reportedAt
         )
     }
 

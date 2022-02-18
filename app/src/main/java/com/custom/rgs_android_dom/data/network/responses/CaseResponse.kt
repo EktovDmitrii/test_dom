@@ -1,6 +1,9 @@
 package com.custom.rgs_android_dom.data.network.responses
 
+import com.custom.rgs_android_dom.domain.chat.models.CaseStatus
+import com.custom.rgs_android_dom.domain.chat.models.CaseSubStatus
 import com.google.gson.annotations.SerializedName
+import org.joda.time.DateTime
 
 data class CaseResponse(
     @SerializedName("channelId")
@@ -16,5 +19,14 @@ data class CaseResponse(
     val taskId: String,
 
     @SerializedName("unreadPosts")
-    val unreadPosts: Int
+    val unreadPosts: Int,
+
+    @SerializedName("status")
+    val status: String,
+
+    @SerializedName("subStatus")
+    val subStatus: String,
+
+    @SerializedName("reportedAt")
+    val reportedAt: DateTime
 )

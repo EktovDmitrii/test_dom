@@ -37,9 +37,6 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
     private val navScopesVisibilityController = MutableLiveData<List<Pair<NavigationScope, Boolean>>>()
     val navScopesVisibilityObserver: LiveData<List<Pair<NavigationScope, Boolean>>> = navScopesVisibilityController
 
-    private val navScopeEnabledController = MutableLiveData<Pair<NavigationScope, Boolean>>()
-    val navScopeEnabledObserver: LiveData<Pair<NavigationScope, Boolean>> = navScopeEnabledController
-
     private val isUserAuthorizedController = MutableLiveData<Boolean>()
     val isUserAuthorizedObserver: LiveData<Boolean> = isUserAuthorizedController
 
@@ -62,8 +59,6 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
         )
         navScopesVisibilityController.value = scopes
 
-        navScopeEnabledController.value = Pair(NavigationScope.NAV_CHAT, registrationInteractor.isAuthorized())
-
         registrationInteractor.getLoginSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -74,8 +69,6 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                         Pair(NavigationScope.NAV_LOGIN, false)
                     )
                     navScopesVisibilityController.value = scopes
-                    navScopeEnabledController.value = Pair(NavigationScope.NAV_CHAT, true)
-
                     isUserAuthorizedController.value = true
                 },
                 onError = {
@@ -120,6 +113,36 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                 onError = { logException(this, it) }
             ).addTo(dataCompositeDisposable)
 
+        chatInteractor.subscribeToSocketEvents()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
+
+        chatInteractor.getUnreadPostsCountFlowable()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    unreadPostsController.value = it
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
+        chatInteractor.newChatItemsSubject
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    loadCases()
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
+
         if (registrationInteractor.isAuthorized()){
             loadCases()
         }
@@ -137,10 +160,7 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                         Pair(NavigationScope.NAV_LOGIN, true)
                     )
                     navScopesVisibilityController.value = scopes
-                    navScopeEnabledController.value = Pair(NavigationScope.NAV_CHAT, false)
-
                     isUserAuthorizedController.value = false
-
                 },
                 onError = {
                     logException(this, it)
@@ -155,7 +175,7 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
 
     fun onChatClick() {
         if (registrationInteractor.isAuthorized()) {
-            ScreenManager.showBottomScreen(ChatsFragment())
+            ScreenManager.showBottomScreen(ChatFragment.newInstance(chatInteractor.getMasterOnlineCase()))
         } else {
             requestedScreen = TargetScreen.CHAT
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
@@ -276,18 +296,6 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
     }
 
     private fun loadCases(){
-        chatInteractor.getUnreadPostsCountFlowable()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onNext = {
-                    unreadPostsController.value = it
-                },
-                onError = {
-                    logException(this, it)
-                }
-            ).addTo(dataCompositeDisposable)
-
         chatInteractor.loadCases()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -298,5 +306,4 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
             )
             .addTo(dataCompositeDisposable)
     }
-
 }

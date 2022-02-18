@@ -48,7 +48,7 @@ class ChatsFragment : BaseBottomSheetFragment<ChatsViewModel, FragmentChatsBindi
     }
 
     override fun getNavigationScope(): NavigationScope? {
-        return NavigationScope.NAV_CHAT
+        return NavigationScope.NAV_CHATS
     }
 
 }
