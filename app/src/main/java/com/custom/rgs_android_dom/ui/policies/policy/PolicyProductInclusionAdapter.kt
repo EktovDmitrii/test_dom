@@ -58,6 +58,7 @@ class PolicyProductInclusionAdapter (
                 binding.numberTextView.text = "${item.quantity}"
             }
             binding.orderTextView.visibleIf(item.isPurchased && item.quantity >0)
+            binding.orderTextView.isEnabled = !item.canBeOrdered
             binding.orderTextView.setOnDebouncedClickListener {
                 onOrderClick(item)
             }
