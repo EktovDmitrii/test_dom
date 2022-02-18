@@ -102,6 +102,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
         override fun onOpen(webSocket: WebSocket, response: Response) {
             Log.d(TAG, "ON OPEN")
+            wsEventSubject.onNext(WsConnectionModel(WsEventModel.Event.SOCKET_CONNECTED))
         }
 
         override fun onMessage(webSocket: WebSocket, text: String) {
@@ -109,6 +110,15 @@ class ChatRepositoryImpl(private val api: MSDApi,
             val parsedMessage = wsResponseParser.parse(text, clientSharedPreferences.getClient()?.userId ?: "")
             if (parsedMessage != null){
                 wsEventSubject.onNext(parsedMessage)
+
+                when (parsedMessage.event){
+                    WsEventModel.Event.CALL_DECLINED -> {
+                        clearRoomDataOnOpponentDeclined()
+                    }
+                    WsEventModel.Event.ROOM_CLOSED -> {
+                        clearRoomDataOnOpponentDeclined()
+                    }
+                }
             }
         }
 
@@ -118,6 +128,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
         override fun onFailure(webSocket: WebSocket, throwable: Throwable, response: Response?) {
             Log.d(TAG, "ON failure")
+            wsEventSubject.onNext(WsConnectionModel(WsEventModel.Event.SOCKET_DISCONNECTED))
             throwable.printStackTrace()
             disconnectFromWebSocket()
             if (connectivityManager.isInternetConnected()){
@@ -514,9 +525,5 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
     override fun notifyTyping(channelId: String): Completable {
         return api.notifyTyping(channelId)
-    }
-
-    override fun clearCases(): Completable {
-        return database.chatsDao.clearCases()
     }
 }

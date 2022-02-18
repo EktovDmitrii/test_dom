@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProvide
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthState
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.chat.models.CallType
+import com.custom.rgs_android_dom.domain.chat.models.WsEventModel
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
@@ -113,11 +114,6 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                 onError = { logException(this, it) }
             ).addTo(dataCompositeDisposable)
 
-        chatInteractor.subscribeToSocketEvents()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
-
         chatInteractor.getUnreadPostsCountFlowable()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -130,18 +126,21 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                 }
             ).addTo(dataCompositeDisposable)
 
-        chatInteractor.newChatItemsSubject
+        chatInteractor.getWsEventsSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    loadCases()
+                    when (it.event){
+                        WsEventModel.Event.POSTED -> {
+                            loadCases()
+                        }
+                    }
                 },
                 onError = {
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
-
 
         if (registrationInteractor.isAuthorized()){
             loadCases()

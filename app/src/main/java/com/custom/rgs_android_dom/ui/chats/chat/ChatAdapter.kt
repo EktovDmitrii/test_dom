@@ -190,23 +190,25 @@ class ChatAdapter(
                 R.drawable.rectangle_filled_primary_500_radius_16dp_top_end_4dp
             )
 
-            previousChatItemModel = chatItems[absoluteAdapterPosition - 1]
+            if (absoluteAdapterPosition-1 > -1){
+                previousChatItemModel = chatItems[absoluteAdapterPosition - 1]
 
-            if (previousChatItemModel is ChatMessageModel && previousChatItemModel.sender == Sender.OPPONENT
-                || (previousChatItemModel is ChatDateDividerModel)) {
+                if (previousChatItemModel is ChatMessageModel && previousChatItemModel.sender == Sender.OPPONENT
+                    || (previousChatItemModel is ChatDateDividerModel)) {
 
-                when(previousChatItemModel){
-                    is ChatMessageModel -> {
-                        binding.myMessageContainerRelativeLayout.setMargins(top = marginTopToSenderOpponent)
+                    when(previousChatItemModel){
+                        is ChatMessageModel -> {
+                            binding.myMessageContainerRelativeLayout.setMargins(top = marginTopToSenderOpponent)
+                        }
+                        is ChatDateDividerModel -> {
+                            binding.myMessageContainerRelativeLayout.setMargins(top = marginTopToDateDivider)
+                        }
                     }
-                    is ChatDateDividerModel -> {
-                        binding.myMessageContainerRelativeLayout.setMargins(top = marginTopToDateDivider)
-                    }
+                    binding.messageContainerFrameLayout.background = topEndCornerWithDifferentRadiusDrawable
+                } else {
+                    binding.myMessageContainerRelativeLayout.setMargins(top = marginTopToSenderMe)
+                    binding.messageContainerFrameLayout.background = allCornersTheSameRadiusDrawable
                 }
-                binding.messageContainerFrameLayout.background = topEndCornerWithDifferentRadiusDrawable
-            } else {
-                binding.myMessageContainerRelativeLayout.setMargins(top = marginTopToSenderMe)
-                binding.messageContainerFrameLayout.background = allCornersTheSameRadiusDrawable
             }
         }
 

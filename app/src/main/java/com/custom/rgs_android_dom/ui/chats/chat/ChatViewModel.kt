@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.chats.chat
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
@@ -42,7 +43,7 @@ class ChatViewModel(
 
         caseController.value = case
 
-        chatInteractor.subscribeToSocketEvents()
+        chatInteractor.startListenNewMessageEvent()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe()
@@ -73,6 +74,7 @@ class ChatViewModel(
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
             .subscribeBy(
                 onNext = {
+                    Log.d("MyLog", "NEW MESSAGES " + it.size + it[0].channelId + " " + case.channelId)
                     if (it.isNotEmpty() && it[0].channelId == case.channelId){
                         newItemsController.value = it
                         viewChannel()

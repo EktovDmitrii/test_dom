@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.domain.chat
 
-import android.util.Log
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.domain.repositories.ChatRepository
@@ -30,7 +29,6 @@ class ChatInteractor(
 
     var invalidUploadFileSubject = PublishSubject.create<File>()
     val newChatItemsSubject = PublishSubject.create<List<ChatItemModel>>()
-    val callJoinSubject = PublishSubject.create<CallJoinModel>()
 
     private var cachedChatItems = arrayListOf<ChatItemModel>()
     private var cachedChannelMembers = arrayListOf<ChannelMemberModel>()
@@ -47,11 +45,11 @@ class ChatInteractor(
             if (filteredMessages.isNotEmpty()){
                 filteredMessages.forEachIndexed { index, currentMessage ->
                     if (index == 0){
-                        val dateDivider = ChatDateDividerModel(currentMessage.createdAt.formatTo(DATE_PATTERN_DAY_MONTH_FULL_ONLY))
+                        val dateDivider = ChatDateDividerModel(date = currentMessage.createdAt.formatTo(DATE_PATTERN_DAY_MONTH_FULL_ONLY), channelId = channelId)
                         chatItems.add(dateDivider)
                     } else {
                         val prevMessage = if (index -1 >=0) filteredMessages[index-1] else null
-                        val dateDivider = getDateDivider(currentMessage.createdAt, prevMessage?.createdAt)
+                        val dateDivider = getDateDivider(currentMessage.channelId, currentMessage.createdAt, prevMessage?.createdAt)
                         if (dateDivider != null){
                             chatItems.add(dateDivider)
                         }
@@ -108,7 +106,7 @@ class ChatInteractor(
             }
     }
 
-    fun subscribeToSocketEvents(): Completable {
+    fun startListenNewMessageEvent(): Completable {
         return chatRepository.getWsEventsSubject().flatMapCompletable {
             when (it.event){
                 WsEventModel.Event.POSTED -> {
@@ -123,18 +121,9 @@ class ChatInteractor(
                         onNewMessage(currentMessage)
                     }
                 }
-                WsEventModel.Event.CALL_JOIN -> {
-                    (it as WsCallJoinModel).data?.let { callJoinModel->
-                        callJoinSubject.onNext(callJoinModel)
-                    }
-                }
-                WsEventModel.Event.CALL_DECLINED -> {
-                    chatRepository.clearRoomDataOnOpponentDeclined()
-                }
             }
             Completable.complete()
         }
-
     }
 
     fun connectToWebSocket(){
@@ -190,18 +179,17 @@ class ChatInteractor(
     }
 
     private fun onNewMessage(newMessage: ChatMessageModel){
-        Log.d("MyLog", "ON NEW MESSAGE!!!!!!!!!!!!!!!!!!!!!!!")
         val chatItems = arrayListOf<ChatItemModel>()
         newMessage.member = cachedChannelMembers.find { it.userId == newMessage.userId }
         // TODO Find out how chat messages can be empty
         if (cachedChatItems.isNotEmpty()){
             val prevMessage = cachedChatItems[cachedChatItems.size-1] as ChatMessageModel
-            getDateDivider(newMessage.createdAt, prevMessage.createdAt)?.let { dateDivider->
+            getDateDivider(newMessage.channelId, newMessage.createdAt, prevMessage.createdAt)?.let { dateDivider->
                 chatItems.add(dateDivider)
             }
             chatItems.add(newMessage)
         } else {
-            val dateDivider = ChatDateDividerModel(newMessage.createdAt.formatTo(DATE_PATTERN_DAY_MONTH_FULL_ONLY))
+            val dateDivider = ChatDateDividerModel(date = newMessage.createdAt.formatTo(DATE_PATTERN_DAY_MONTH_FULL_ONLY), channelId = newMessage.channelId)
             chatItems.add(dateDivider)
             chatItems.add(newMessage)
         }
@@ -209,10 +197,10 @@ class ChatInteractor(
         newChatItemsSubject.onNext(chatItems)
     }
 
-    private fun getDateDivider(currentMessageDate: LocalDateTime, previousMessageDate: LocalDateTime?): ChatDateDividerModel? {
+    private fun getDateDivider(channelId: String, currentMessageDate: LocalDateTime, previousMessageDate: LocalDateTime?): ChatDateDividerModel? {
         previousMessageDate?.let { previousMessageDate->
             if (previousMessageDate.getPeriod(currentMessageDate).days >0 ) {
-                return ChatDateDividerModel(currentMessageDate.formatTo((DATE_PATTERN_DAY_MONTH_FULL_ONLY)))
+                return ChatDateDividerModel(date = currentMessageDate.formatTo((DATE_PATTERN_DAY_MONTH_FULL_ONLY)), channelId = channelId)
             }
         }
         return null
@@ -280,8 +268,8 @@ class ChatInteractor(
             }
     }
 
-    fun clearCases(): Completable {
-        return chatRepository.clearCases()
+    fun getWsEventsSubject(): PublishSubject<WsEventModel<*>>{
+        return chatRepository.getWsEventsSubject()
     }
 
 }

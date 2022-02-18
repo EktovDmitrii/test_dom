@@ -66,6 +66,4 @@ interface ChatRepository {
 
     fun notifyTyping(channelId: String): Completable
 
-    fun clearCases(): Completable
-
 }

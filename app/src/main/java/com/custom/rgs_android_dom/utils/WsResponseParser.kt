@@ -19,6 +19,7 @@ class WsResponseParser(private val gson: Gson) {
         const val EVENT_CHANNEL_VIEWED = "channel_viewed"
         const val EVENT_CALL_JOIN = "webrtc.call.can-join"
         const val EVENT_CALL_DECLINED = "webrtc.call.declined"
+        const val EVENT_ROOM_CLOSED = "webrtc.room.closed"
     }
 
     fun parse(message: String, userId: String): WsEventModel<*>?{
@@ -41,6 +42,9 @@ class WsResponseParser(private val gson: Gson) {
                 EVENT_CALL_DECLINED -> {
                     val declineUserId = jsonResponse.getJSONObject(FIELD_DATA).getString(FIELD_DECLINE_USER_ID)
                     WsCallDeclinedModel(event = WsEventModel.Event.CALL_DECLINED, declineUserId = declineUserId)
+                }
+                EVENT_ROOM_CLOSED -> {
+                    WsRoomClosedModel(event = WsEventModel.Event.ROOM_CLOSED)
                 }
                 else -> null
             }

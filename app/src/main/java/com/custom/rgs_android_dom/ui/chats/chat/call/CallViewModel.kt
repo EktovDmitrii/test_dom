@@ -1,13 +1,11 @@
 package com.custom.rgs_android_dom.ui.chats.chat.call
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
-import com.custom.rgs_android_dom.domain.chat.models.CallType
-import com.custom.rgs_android_dom.domain.chat.models.ChannelMemberModel
-import com.custom.rgs_android_dom.domain.chat.models.MediaOutputType
-import com.custom.rgs_android_dom.domain.chat.models.RoomInfoModel
+import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.managers.MediaOutputManager
 import com.custom.rgs_android_dom.utils.logException
@@ -43,19 +41,24 @@ class CallViewModel(private val channelId: String,
     private var cameraEnabled = false
 
     init {
-        chatInteractor.subscribeToSocketEvents()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
 
-        chatInteractor.callJoinSubject
+        chatInteractor.getWsEventsSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    viewModelScope.launch {
-                        chatInteractor.connectToLiveKitRoom(it, callType, cameraEnabled, micEnabled)
+                    Log.d("MyLog", "WS EVENT " + it.event)
+                    when (it.event){
+                        WsEventModel.Event.CALL_JOIN -> {
+                            (it as WsCallJoinModel).data?.let { callJoinModel->
+                                viewModelScope.launch {
+                                    Log.d("MyLog", "Connect to LK room")
+                                    chatInteractor.connectToLiveKitRoom(callJoinModel, callType, cameraEnabled, micEnabled)
+                                }
+                            }
+                        }
                     }
+
                 },
                 onError = {
                     logException(this, it)
