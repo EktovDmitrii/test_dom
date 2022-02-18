@@ -36,6 +36,7 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
 
     @SuppressLint("CheckResult")
     override fun bindPolicy(): Single<Any> {
+        Log.d("Syrgashev", "bind policy is called. request: $request")
         return api.bindPolicy(request).map { bindPolicyResponse ->
             PolicyDialogModel(
                 bound = BoundPolicyDialogModel(
@@ -125,7 +126,6 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
     }
 
     override fun onLastNameChanged(lastName: String) {
-        Log.d("Syrgashev", "last name: $lastName")
         request = request.copy(contractClientLastName = lastName)
     }
 

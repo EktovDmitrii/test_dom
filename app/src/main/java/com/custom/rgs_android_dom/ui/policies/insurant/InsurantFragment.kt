@@ -72,7 +72,8 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
 
         subscribe(viewModel.insurantViewStateObserver) {
             binding.nextTextView.isEnabled = it.isNextEnabled
-
+            Log.d("Syrgashev", "insurantViewState: $it")
+Log.d("Syrgashev", "binding.nextTextView.isEnabled: ${binding.nextTextView.isEnabled}")
             if (shouldRestore
                 && it.firstName.isNotEmpty()
                 && it.lastName.isNotEmpty()
@@ -81,6 +82,7 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
                 binding.lastNameEditText.setText(it.lastName)
                 binding.middleNameEditText.setText(it.middleName)
                 shouldRestore = false
+                viewModel.restoreViewState(it)
             }
 
 

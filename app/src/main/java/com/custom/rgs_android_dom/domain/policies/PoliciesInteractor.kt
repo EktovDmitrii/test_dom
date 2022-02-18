@@ -46,28 +46,24 @@ class PoliciesInteractor(
     }
 
     fun firstNameChanged(firstName: String, isMaskFilled: Boolean) {
-        Log.d("Syrgashev", "firstNameChanged: ")
         insurantViewState = insurantViewState.copy(firstName = firstName)
         policiesRepository.onFirstNameChanged(firstName)
         checkNextEnabled(isMaskFilled)
     }
 
     fun lastNameChanged(lastName: String, isMaskFilled: Boolean) {
-        Log.d("Syrgashev", "lastNameChanged: ")
         insurantViewState = insurantViewState.copy(lastName = lastName)
         policiesRepository.onLastNameChanged(lastName)
         checkNextEnabled(isMaskFilled)
     }
 
     fun middleNameChanged(middleName: String, isMaskFilled: Boolean) {
-        Log.d("Syrgashev", "middleNameChanged: ")
         insurantViewState = insurantViewState.copy(middleName = middleName)
         policiesRepository.onMiddleNameChanged(middleName)
         checkNextEnabled(isMaskFilled)
     }
 
     fun birthdayChanged(birthday: String, isMaskFilled: Boolean) {
-        Log.d("Syrgashev", "birthdayChanged: ")
         insurantViewState = insurantViewState.copy(birthday = birthday)
         policiesRepository.onBirthdayChanged(birthday)
         checkNextEnabled(isMaskFilled)
@@ -83,7 +79,7 @@ class PoliciesInteractor(
 
     fun bindPolicy(): Single<Any> {
         val errorsValidate = ArrayList<ValidateFieldModel>()
-
+Log.d("Syrgashev", "insurantViewState: $insurantViewState")
         var birthday: LocalDateTime?
         if (insurantViewState.birthday.isNotEmpty()) {
             val birthdayWithTimezone = "${insurantViewState.birthday.tryParseDate()}T00:00:00.000Z"

@@ -13,7 +13,6 @@ object PoliciesMapper {
 
 
     fun responseErrorToFailure(message: String?): Failure {
-        Log.d("Syrgashev", "error message: $message")
         return when (message) {
             MESSAGE_NOT_FOUND -> Failure.NOT_FOUND
             MESSAGE_BOUND_TO_YOUR_PROFILE -> Failure.BOUND_TO_YOUR_PROFILE
