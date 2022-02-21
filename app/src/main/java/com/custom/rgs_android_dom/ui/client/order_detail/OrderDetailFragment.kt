@@ -71,6 +71,8 @@ class OrderDetailFragment :
             binding.topPaymentStateTextView.text = state.getPaymentState()
             binding.serviceNameTextView.text = service?.serviceName
             binding.addressTextView.text = "${state.address?.objectName} (${state.address?.address})"
+            binding.addressTitleTextView.visibleIf(state.address?.address?.isNotBlank() == true)
+            binding.addressTextView.visibleIf(state.address?.address?.isNotBlank() == true)
             binding.dateTimeTextView.text = state.getDateTime()
             binding.commentTextView.text = state.comment
             binding.commentTitleTextView.visibleIf(state.comment?.isNotBlank() == true)
