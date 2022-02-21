@@ -1,7 +1,6 @@
 package com.custom.rgs_android_dom.ui.client.personal_data.edit
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentEditPersonalDataBinding

@@ -1,6 +1,8 @@
 package com.custom.rgs_android_dom.ui.policies.insurant
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import com.custom.rgs_android_dom.R
@@ -10,6 +12,7 @@ import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.policies.insurant.dialogs.PolicyDialogsFragment
 import com.custom.rgs_android_dom.utils.*
+import com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
 import com.custom.rgs_android_dom.views.edit_text.MSDLabelIconEditText
 import org.joda.time.LocalDateTime
 
@@ -27,10 +30,14 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
     private var shouldShowDialog = false
     private var shouldRestore = false
 
+    private var initViewState: InsurantViewState? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         shouldRestore = true
+
+        viewModel.requireViewState(binding.birthdayEditText.isMaskFilled())
 
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
@@ -72,19 +79,6 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
 
         subscribe(viewModel.insurantViewStateObserver) {
             binding.nextTextView.isEnabled = it.isNextEnabled
-            Log.d("Syrgashev", "insurantViewState: $it")
-Log.d("Syrgashev", "binding.nextTextView.isEnabled: ${binding.nextTextView.isEnabled}")
-            if (shouldRestore
-                && it.firstName.isNotEmpty()
-                && it.lastName.isNotEmpty()
-                && it.middleName.isNotEmpty()) {
-                binding.firstNameEditText.setText(it.firstName)
-                binding.lastNameEditText.setText(it.lastName)
-                binding.middleNameEditText.setText(it.middleName)
-                shouldRestore = false
-                viewModel.restoreViewState(it)
-            }
-
 
             if (it.isValidationPassed && shouldShowDialog) {
                 shouldShowDialog = false

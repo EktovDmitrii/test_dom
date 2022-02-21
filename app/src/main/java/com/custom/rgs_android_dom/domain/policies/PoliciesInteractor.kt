@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.domain.policies
 
-import android.util.Log
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
@@ -47,29 +46,26 @@ class PoliciesInteractor(
 
     fun firstNameChanged(firstName: String, isMaskFilled: Boolean) {
         insurantViewState = insurantViewState.copy(firstName = firstName)
-        policiesRepository.onFirstNameChanged(firstName)
         checkNextEnabled(isMaskFilled)
     }
 
     fun lastNameChanged(lastName: String, isMaskFilled: Boolean) {
         insurantViewState = insurantViewState.copy(lastName = lastName)
-        policiesRepository.onLastNameChanged(lastName)
         checkNextEnabled(isMaskFilled)
     }
 
     fun middleNameChanged(middleName: String, isMaskFilled: Boolean) {
         insurantViewState = insurantViewState.copy(middleName = middleName)
-        policiesRepository.onMiddleNameChanged(middleName)
         checkNextEnabled(isMaskFilled)
     }
 
     fun birthdayChanged(birthday: String, isMaskFilled: Boolean) {
         insurantViewState = insurantViewState.copy(birthday = birthday)
-        policiesRepository.onBirthdayChanged(birthday)
         checkNextEnabled(isMaskFilled)
     }
 
-    fun getInsurantViewStateSubject(): PublishSubject<InsurantViewState> {
+    fun getInsurantViewStateSubject(isMaskFilled: Boolean): PublishSubject<InsurantViewState> {
+        checkNextEnabled(isMaskFilled)
         return insurantViewStateSubject
     }
 
@@ -79,7 +75,6 @@ class PoliciesInteractor(
 
     fun bindPolicy(): Single<Any> {
         val errorsValidate = ArrayList<ValidateFieldModel>()
-Log.d("Syrgashev", "insurantViewState: $insurantViewState")
         var birthday: LocalDateTime?
         if (insurantViewState.birthday.isNotEmpty()) {
             val birthdayWithTimezone = "${insurantViewState.birthday.tryParseDate()}T00:00:00.000Z"
@@ -104,7 +99,7 @@ Log.d("Syrgashev", "insurantViewState: $insurantViewState")
                 insurantViewStateSubject.onNext(insurantViewState)
             }
         }
-        return policiesRepository.bindPolicy()
+        return policiesRepository.bindPolicy(insurantViewState)
     }
 
     fun getPolicyDialogSubject(): Observable<PolicyDialogModel> {
@@ -125,9 +120,8 @@ Log.d("Syrgashev", "insurantViewState: $insurantViewState")
 
     fun savePersonalData(): Completable {
         policiesRepository.newDialog(PolicyDialogModel(showPrompt = ShowPromptModel.Loading))
-        val dataFromRequest = policiesRepository.getRequest()
         var birthday: LocalDateTime?
-        val birthdayWithTimezone = dataFromRequest.contractClientBirthDate
+        val birthdayWithTimezone = "${insurantViewState.birthday.tryParseDate()}T00:00:00.000Z"/*dataFromRequest.contractClientBirthDate*/
         birthday = birthdayWithTimezone.tryParseLocalDateTime({
             logException(this, it)
             birthday = null
@@ -136,9 +130,9 @@ Log.d("Syrgashev", "insurantViewState: $insurantViewState")
         val avatar = clientRepository.getUserDetails().blockingGet().avatarUrl
 
         return clientRepository.updateClient(
-            firstName = dataFromRequest.contractClientFirstName,
-            lastName = dataFromRequest.contractClientLastName,
-            middleName = dataFromRequest.contractClientMiddleName,
+            firstName = insurantViewState.firstName,
+            lastName = insurantViewState.lastName,
+            middleName = insurantViewState.middleName,
             birthday = birthday,
             gender = client?.gender,
             phone = client?.phone,
@@ -155,6 +149,7 @@ Log.d("Syrgashev", "insurantViewState: $insurantViewState")
         insurantViewState = if (
             insurantViewState.firstName.isNotEmpty() &&
             insurantViewState.lastName.isNotEmpty() &&
+            insurantViewState.middleName.isNotEmpty() &&
             insurantViewState.birthday.isNotEmpty() &&
             isMaskFilled
         ) {
@@ -162,7 +157,6 @@ Log.d("Syrgashev", "insurantViewState: $insurantViewState")
         } else {
             insurantViewState.copy(isNextEnabled = false)
         }
-        Log.d("Syrgashev", "insurantViewState in checkNextEnabled(): $insurantViewState")
         insurantViewStateSubject.onNext(insurantViewState)
     }
 
@@ -172,10 +166,6 @@ Log.d("Syrgashev", "insurantViewState: $insurantViewState")
 
     fun getClientProductSingle(contractId: String): Single<PolicyModel> {
         return policiesRepository.getPolicySingle(contractId)
-    }
-
-    fun restoreViewState(viewState: InsurantViewState) {
-        policiesRepository.restoreViewState(viewState)
     }
 
 }

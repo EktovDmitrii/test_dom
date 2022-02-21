@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.domain.repositories
 
-import com.custom.rgs_android_dom.data.network.requests.BindPolicyRequest
 import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
 import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
 import com.custom.rgs_android_dom.domain.policies.models.PolicyShortModel
@@ -12,7 +11,7 @@ interface PoliciesRepository {
 
     fun onPolicyChange(policy: String)
 
-    fun bindPolicy(): Single<Any>
+    fun bindPolicy(insurantViewState: InsurantViewState): Single<Any>
 
     fun getPolicyDialogSubject(): Observable<PolicyDialogModel>
 
@@ -22,19 +21,8 @@ interface PoliciesRepository {
 
     fun getPromptSaveSubject(): Observable<Boolean>
 
-    fun getRequest(): BindPolicyRequest
-
     fun getPoliciesSingle(): Single<List<PolicyShortModel>>
 
     fun getPolicySingle(contractId: String): Single<PolicyModel>
 
-    fun restoreViewState(viewState: InsurantViewState)
-
-    fun onFirstNameChanged(firstName: String)
-
-    fun onLastNameChanged(lastName: String)
-
-    fun onMiddleNameChanged(middleName: String)
-
-    fun onBirthdayChanged(birthday: String)
 }
