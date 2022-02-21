@@ -99,8 +99,8 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
         val contractsSingle = api.getPolicyContracts()
 
         return Single.zip(clientProductsSingle,contractsSingle) { clientProducts, contracts ->
-            val product = clientProducts.clientProducts?.get(0)
-            val objectId = product?.objectId
+            val clientProductResponse = clientProducts.clientProducts?.get(0)
+            val objectId = clientProductResponse?.objectId
             var propertyItemResponse: PropertyItemResponse? = null
 
             if (objectId != null) {
@@ -108,12 +108,12 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
             }
 
             var productServicesResponse: ProductServicesResponse? = null
-            if (product?.productId != null){
-                productServicesResponse = api.getProductServicesResponse(product.productId, 100, 0).blockingGet()
+            if (clientProductResponse?.productId != null){
+                productServicesResponse = api.getProductServicesResponse(clientProductResponse.productId, 100, 0).blockingGet()
             }
 
             ClientMapper.responseToPolicy(
-                product,
+                clientProductResponse,
                 contracts.contracts?.first { it.id == contractId },
                 propertyItemResponse,
                 productServicesResponse

@@ -169,7 +169,11 @@ object ClientMapper {
                     serviceId = it.serviceId,
                     serviceName = it.serviceName,
                     serviceVersionId = it.serviceVersionId,
-                    isPurchased = true)
+                    isPurchased = true,
+                    canBeOrdered = clientProductResponse?.validityFrom?.isBeforeNow ?: false &&
+                            clientProductResponse?.validityTo?.isAfterNow ?: false &&
+                            contractResponse?.startDate?.isBeforeNow ?: false &&
+                            contractResponse?.endDate?.isAfterNow ?: false)
             } ?: listOf(),
             policySeriesAndNumber = "${contractResponse?.serial} ${contractResponse?.number}",
             clientName = "${contractResponse?.clientLastName} ${contractResponse?.clientFirstName} ${contractResponse?.clientMiddleName}",
