@@ -30,22 +30,22 @@ class RegistrationAgreementViewModel(private val phone: String,
        acceptAgreement()
     }
 
-    fun onBackClick(callback: () -> Unit){
+    fun onBackClick(callback: (Boolean) -> Unit){
         if (!isAcceptedAgreement) {
             registrationInteractor.logout()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                     onComplete = {
-                        callback.invoke()
+                        callback.invoke(isAcceptedAgreement)
                     },
                     onError = {
-                        callback.invoke()
+                        callback.invoke(isAcceptedAgreement)
                         logException(this, it)
                     }
                 ).addTo(dataCompositeDisposable)
         } else {
-            callback.invoke()
+            callback.invoke(isAcceptedAgreement)
         }
     }
 
