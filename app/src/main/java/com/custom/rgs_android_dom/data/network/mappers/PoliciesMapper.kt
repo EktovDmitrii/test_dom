@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
-import android.util.Log
 import com.custom.rgs_android_dom.domain.policies.models.Failure
 
 object PoliciesMapper {

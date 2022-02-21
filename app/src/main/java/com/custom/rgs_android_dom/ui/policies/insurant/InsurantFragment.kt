@@ -1,9 +1,6 @@
 package com.custom.rgs_android_dom.ui.policies.insurant
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentInsurantBinding
@@ -12,7 +9,6 @@ import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.policies.insurant.dialogs.PolicyDialogsFragment
 import com.custom.rgs_android_dom.utils.*
-import com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
 import com.custom.rgs_android_dom.views.edit_text.MSDLabelIconEditText
 import org.joda.time.LocalDateTime
 
@@ -28,14 +24,10 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
     }
 
     private var shouldShowDialog = false
-    private var shouldRestore = false
 
-    private var initViewState: InsurantViewState? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        shouldRestore = true
 
         viewModel.requireViewState(binding.birthdayEditText.isMaskFilled())
 

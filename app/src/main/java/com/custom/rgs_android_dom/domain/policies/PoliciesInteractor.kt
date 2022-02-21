@@ -121,7 +121,7 @@ class PoliciesInteractor(
     fun savePersonalData(): Completable {
         policiesRepository.newDialog(PolicyDialogModel(showPrompt = ShowPromptModel.Loading))
         var birthday: LocalDateTime?
-        val birthdayWithTimezone = "${insurantViewState.birthday.tryParseDate()}T00:00:00.000Z"/*dataFromRequest.contractClientBirthDate*/
+        val birthdayWithTimezone = "${insurantViewState.birthday.tryParseDate()}T00:00:00.000Z"
         birthday = birthdayWithTimezone.tryParseLocalDateTime({
             logException(this, it)
             birthday = null
