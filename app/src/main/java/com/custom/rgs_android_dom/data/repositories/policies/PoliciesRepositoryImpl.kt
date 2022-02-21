@@ -76,21 +76,27 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
 
     override fun getPoliciesSingle(): Single<List<PolicyShortModel>> {
 
-        val contractIds = api.getPolicyContracts().map {
+        val policyContractSingle = api.getPolicyContracts()
+
+        val contractIds = policyContractSingle.map {
             if (!it.contracts.isNullOrEmpty()){
                 it.contracts.joinToString(",") { it.id }
             } else ""
         }.blockingGet()
 
+        val contractsSingle = api.getPolicyContracts()
+
+        val clientProductsSingle = api.getClientProducts(50, 0, contractIds)
+
         return if (!contractIds.isNullOrEmpty()){
-            api.getClientProducts(50, 0, contractIds)
-                .map {
-                    if (it.clientProducts != null) {
-                        it.clientProducts.map { ClientMapper.responseToPolicyShort(it) }
-                    } else {
-                        listOf()
-                    }
+            Single.zip(contractsSingle, clientProductsSingle) { contracts, clientProducts ->
+                if (clientProducts.clientProducts != null){
+                    clientProducts.clientProducts.map { ClientMapper.responseToPolicyShort(it, contracts) }
+                } else {
+                    listOf()
                 }
+
+            }
         } else { Single.just(listOf()) }
     }
 

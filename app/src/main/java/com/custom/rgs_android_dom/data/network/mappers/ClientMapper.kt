@@ -139,14 +139,14 @@ object ClientMapper {
         }
     }
 
-    fun responseToPolicyShort(response: ClientProductResponse): PolicyShortModel {
+    fun responseToPolicyShort(response: ClientProductResponse, contracts: GetPolicyContractsResponse): PolicyShortModel {
         return PolicyShortModel(
             id = response.id ?: "",
             contractId = response.contractId ?: "",
             name = response.productName ?: "",
             logo = response.logoSmall,
-            startsAt = response.validityFrom,
-            expiresAt = response.validityTo
+            startsAt = contracts.contracts?.find { response.contractId == it.id }?.startDate,
+            expiresAt = contracts.contracts?.find { response.contractId == it.id }?.endDate
         )
     }
 
