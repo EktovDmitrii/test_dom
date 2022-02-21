@@ -7,10 +7,10 @@ import com.custom.rgs_android_dom.data.network.requests.BindPolicyRequest
 import com.custom.rgs_android_dom.data.network.responses.ProductServicesResponse
 import com.custom.rgs_android_dom.data.network.responses.PropertyItemResponse
 import com.custom.rgs_android_dom.domain.policies.models.BoundPolicyDialogModel
-import com.custom.rgs_android_dom.domain.policies.models.PolicyShortModel
-import com.custom.rgs_android_dom.domain.repositories.PoliciesRepository
 import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
 import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
+import com.custom.rgs_android_dom.domain.policies.models.PolicyShortModel
+import com.custom.rgs_android_dom.domain.repositories.PoliciesRepository
 import com.custom.rgs_android_dom.ui.policies.insurant.InsurantViewState
 import com.custom.rgs_android_dom.utils.tryParseDate
 import io.reactivex.Observable
@@ -26,15 +26,6 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
     private var request: BindPolicyRequest = BindPolicyRequest()
 
 
-    override fun onInsurantDataChange(data: InsurantViewState) {
-        request = request.copy(
-            contractClientBirthDate = "${data.birthday.tryParseDate()}T00:00:00.000Z",
-            contractClientFirstName = data.firstName,
-            contractClientLastName = data.lastName,
-            contractClientMiddleName = data.middleName
-        )
-    }
-
     override fun onPolicyChange(policy: String) {
         request = request.copy(
             contractSerial = policy.substringBefore(" "),
@@ -43,7 +34,14 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
     }
 
     @SuppressLint("CheckResult")
-    override fun bindPolicy(): Single<Any> {
+    override fun bindPolicy(insurantViewState: InsurantViewState): Single<Any> {
+        request = request.copy(
+            contractClientBirthDate = "${insurantViewState.birthday.tryParseDate()}T00:00:00.000Z",
+            contractClientFirstName = insurantViewState.firstName,
+            contractClientLastName = insurantViewState.lastName,
+            contractClientMiddleName = insurantViewState.middleName
+        )
+
         return api.bindPolicy(request).map { bindPolicyResponse ->
             PolicyDialogModel(
                 bound = BoundPolicyDialogModel(
@@ -68,10 +66,6 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
 
     override fun promptSavePersonalData(save: Boolean) {
         promptSaveSubject.onNext(save)
-    }
-
-    override fun getRequest(): BindPolicyRequest {
-        return request
     }
 
     override fun getPoliciesSingle(): Single<List<PolicyShortModel>> {
@@ -127,10 +121,4 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
         }
     }
 
-    override fun restoreViewState(viewState: InsurantViewState) {
-        request = request.copy(
-            contractClientFirstName = viewState.firstName,
-            contractClientMiddleName = viewState.middleName,
-            contractClientLastName = viewState.lastName)
-    }
 }
