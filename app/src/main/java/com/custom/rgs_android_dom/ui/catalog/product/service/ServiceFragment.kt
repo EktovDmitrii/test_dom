@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui.catalog.product.service
 
 import android.os.Bundle
+import android.text.Html
 import android.view.Gravity
 import android.view.View
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -69,7 +70,12 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
             }
             binding.header.headerTitle.text = service.name
             binding.header.headerDescription.text = service.title
-            binding.about.aboutValue.text = service.description
+            binding.about.aboutValue.text = service.description?.let { descr ->
+                Html.fromHtml(
+                    descr,
+                    Html.FROM_HTML_MODE_LEGACY
+                )
+            }
 
             binding.priceView.setIcon(service.iconLink)
             binding.priceView.type = MSDProductPriceView.PriceType.Included
