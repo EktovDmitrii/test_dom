@@ -10,9 +10,6 @@ class EventGsonAdapter : TypeAdapter<WsEventModel.Event>() {
 
     override fun write(out: JsonWriter, value: WsEventModel.Event?) {
         val eventString = when (value){
-            null -> {
-                ""
-            }
             WsEventModel.Event.POSTED -> {
                 "posted"
             }
@@ -24,6 +21,9 @@ class EventGsonAdapter : TypeAdapter<WsEventModel.Event>() {
             }
             WsEventModel.Event.CALL_DECLINED -> {
                 "webrtc.call.declined"
+            }
+            else -> {
+                ""
             }
         }
         out.value(eventString)

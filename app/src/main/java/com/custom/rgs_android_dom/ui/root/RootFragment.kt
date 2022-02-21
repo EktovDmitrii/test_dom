@@ -9,7 +9,7 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentRootBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.chat.ChatFragment
+import com.custom.rgs_android_dom.ui.chats.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.main.MainFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.*
@@ -81,8 +81,8 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
                 NavigationScope.NAV_CATALOG -> {
                     viewModel.onCatalogueClick()
                 }
-                NavigationScope.NAV_CHAT -> {
-                    viewModel.onChatClick()
+                NavigationScope.NAV_CHATS -> {
+                    viewModel.onChatsClick()
                 }
                 NavigationScope.NAV_LOGIN -> {
                     viewModel.onLoginClick()
@@ -117,14 +117,14 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
             viewModel.onChatVideoCallClick()
         }
 
+        binding.actionsChatsTextView.setOnDebouncedClickListener {
+            viewModel.onChatsClick()
+        }
+
         subscribe(viewModel.navScopesVisibilityObserver){ scopes->
             scopes.forEach {
                 binding.bottomNavigationView.setNavigationScopeVisible(it.first, it.second)
             }
-        }
-
-        subscribe(viewModel.navScopeEnabledObserver){
-            binding.bottomNavigationView.setNavigationScopeEnabled(it.first, it.second)
         }
 
         subscribe(viewModel.isUserAuthorizedObserver){

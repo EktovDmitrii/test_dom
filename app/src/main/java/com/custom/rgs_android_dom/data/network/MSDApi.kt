@@ -228,9 +228,8 @@ interface MSDApi {
     @ErrorType(MSDNetworkErrorResponse::class)
     fun orderServiceOnBalance(@Body body: OrderServiceRequest, @Query("confirm") confirmOrder: Boolean): Single<OrderResponse>
 
-
-    @GET("clients/{clientId}/orders")
-    fun getOrders(@Path("clientId") clientId: String, @Query("size") size: Long, @Query("index") index: Long): Single<OrdersResponse>
+    @GET("clients/me/orders")
+    fun getOrders(@Query("size") size: Long, @Query("index") index: Long): Single<OrdersResponse>
 
     @GET("clients/me/orders")
     fun getOrders(): Single<OrdersResponse>
@@ -246,7 +245,27 @@ interface MSDApi {
         @Query("withPayments") withPayments: Boolean? = null
     ): Single<GeneralInvoicesResponse>
 
-    @GET("clients/{clientId}/orders/{orderId}")
-    fun getOrderDetail(@Path("clientId") clientId: String, @Path("orderId") orderId: String): Single<OrderResponse>
+    @GET("clients/me/orders/{orderId}")
+    fun getOrderDetail(@Path("orderId") orderId: String): Single<OrderResponse>
+
+    @GET("clients/me/crm/tasks/client-cases")
+    fun getCases(@Query("size") size: Long, @Query("index") index: Long): Single<ClientCasesResponse>
+
+    @GET("crm/tasks/subtypes/search/query")
+    fun getSubtypes(
+        @Query("size") size: Long,
+        @Query("index") index: Long,
+        @Query("withArchived") withArchived: Boolean,
+        @Query("withInternal") withInternal: Boolean
+    ): Single<SubtypesResponse>
+
+    @GET("chat/users/me/channels/{channelId}/posts/unread-count")
+    fun getUnreadPostsCount(@Path("channelId") channelId: String): Single<UnreadPostsCountResponse>
+
+    @PUT("chat/users/me/channels/{channelId}/view")
+    fun viewChannel(@Path("channelId") channelId: String): Completable
+
+    @PUT("chat/users/me/channels/{channelId}/typing")
+    fun notifyTyping(@Path("channelId") channelId: String): Completable
 
 }
