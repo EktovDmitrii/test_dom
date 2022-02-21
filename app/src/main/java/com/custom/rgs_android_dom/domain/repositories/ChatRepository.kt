@@ -28,7 +28,7 @@ interface ChatRepository {
 
     fun disconnectFromWebSocket()
 
-    fun getWsEventsSubject(): PublishSubject<WsEventModel<*>>
+    fun getWsEventsSubject(): PublishSubject<WsMessageModel<*>>
 
     suspend fun connectToLiveKitRoom(callJoin: CallJoinModel, callType: CallType, cameraEnabled: Boolean, micEnabled: Boolean)
 
