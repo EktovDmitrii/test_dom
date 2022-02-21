@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.policies.policy
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,7 +8,9 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ItemGridPolicyInfoBinding
 import com.custom.rgs_android_dom.domain.catalog.models.ServiceShortModel
 import com.custom.rgs_android_dom.ui.base.BaseViewHolder
+import com.custom.rgs_android_dom.utils.gone
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
+import com.custom.rgs_android_dom.utils.visible
 import com.custom.rgs_android_dom.utils.visibleIf
 
 class PolicyProductInclusionAdapter (
@@ -57,8 +60,16 @@ class PolicyProductInclusionAdapter (
             } else if (item.quantity.toInt() > 0) {
                 binding.numberTextView.text = "${item.quantity}"
             }
-            binding.orderTextView.visibleIf(item.isPurchased && item.quantity >0)
-            binding.orderTextView.isEnabled = !item.canBeOrdered
+
+            //Log.d("Syrgashev", "item.canBeOrdered: ${item.canBeOrdered}")
+            if (item.isPurchased){
+                binding.orderTextView.visible()
+                binding.orderTextView.isEnabled = item.canBeOrdered
+            } else {
+                binding.orderTextView.gone()
+            }
+
+
             binding.orderTextView.setOnDebouncedClickListener {
                 onOrderClick(item)
             }

@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.data.repositories.policies
 
 import android.annotation.SuppressLint
+import android.util.Log
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
 import com.custom.rgs_android_dom.data.network.requests.BindPolicyRequest
@@ -99,8 +100,8 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
         val contractsSingle = api.getPolicyContracts()
 
         return Single.zip(clientProductsSingle,contractsSingle) { clientProducts, contracts ->
-            val product = clientProducts.clientProducts?.get(0)
-            val objectId = product?.objectId
+            val clientProductResponse = clientProducts.clientProducts?.get(0)
+            val objectId = clientProductResponse?.objectId
             var propertyItemResponse: PropertyItemResponse? = null
 
             if (objectId != null) {
@@ -108,12 +109,16 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
             }
 
             var productServicesResponse: ProductServicesResponse? = null
-            if (product?.productId != null){
-                productServicesResponse = api.getProductServicesResponse(product.productId, 100, 0).blockingGet()
+            if (clientProductResponse?.productId != null){
+                productServicesResponse = api.getProductServicesResponse(clientProductResponse.productId, 100, 0).blockingGet()
             }
+            Log.d("Syrgashev", "clientProductResponse: $clientProductResponse")
+            Log.d("Syrgashev", "contract: ${contracts.contracts?.first { it.id == contractId }}")
+            Log.d("Syrgashev", "propertyItemResponse: $propertyItemResponse")
+            Log.d("Syrgashev", "productServicesResponse: $productServicesResponse")
 
             ClientMapper.responseToPolicy(
-                product,
+                clientProductResponse,
                 contracts.contracts?.first { it.id == contractId },
                 propertyItemResponse,
                 productServicesResponse
