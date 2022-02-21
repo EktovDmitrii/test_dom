@@ -109,7 +109,7 @@ class ChatInteractor(
     fun startListenNewMessageEvent(): Completable {
         return chatRepository.getWsEventsSubject().flatMapCompletable {
             when (it.event){
-                WsEventModel.Event.POSTED -> {
+                WsEvent.POSTED -> {
                     val messageModel = (it as WsChatMessageModel).data
                     messageModel?.takeIf {!it.type.startsWith(TYPE_SYSTEM_MESSAGE)}?.let { currentMessage ->
                         if (cachedChannelMembers.find { it.userId == currentMessage.userId } == null) {
@@ -268,7 +268,7 @@ class ChatInteractor(
             }
     }
 
-    fun getWsEventsSubject(): PublishSubject<WsEventModel<*>>{
+    fun getWsEventsSubject(): PublishSubject<WsMessageModel<*>>{
         return chatRepository.getWsEventsSubject()
     }
 

@@ -3,10 +3,7 @@ package com.custom.rgs_android_dom.ui.chats.chat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
-import com.custom.rgs_android_dom.domain.chat.models.CallType
-import com.custom.rgs_android_dom.domain.chat.models.CaseModel
-import com.custom.rgs_android_dom.domain.chat.models.ChatFileModel
-import com.custom.rgs_android_dom.domain.chat.models.ChatItemModel
+import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
@@ -45,7 +42,6 @@ class ChatViewModel(
     private var email: String? = null
 
     init {
-
         caseController.value = case
 
         chatInteractor.startListenNewMessageEvent()
@@ -53,25 +49,7 @@ class ChatViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe()
 
-        chatInteractor.getChatHistory(case.channelId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
-            .subscribeBy(
-                onSuccess = {
-                    loadingStateController.value = LoadingState.CONTENT
-                    chatItemsController.value = it
-
-                    viewChannel()
-                },
-                onError = {
-                    logException(this, it)
-
-                    handleNetworkException(it)
-
-                    loadingStateController.value = LoadingState.ERROR
-                }
-            ).addTo(dataCompositeDisposable)
+        loadChatHistory()
 
         chatInteractor.newChatItemsSubject
             .subscribeOn(Schedulers.io())
@@ -107,6 +85,22 @@ class ChatViewModel(
             .subscribeBy(
                 onSuccess = { personalData ->
                         email = personalData.email.ifEmpty { null }
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
+        chatInteractor.getWsEventsSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    when (it.event){
+                        WsEvent.SOCKET_CONNECTED -> {
+                            loadChatHistory()
+                        }
+                    }
                 },
                 onError = {
                     logException(this, it)
@@ -171,6 +165,39 @@ class ChatViewModel(
         chatInteractor.notifyTyping(case.channelId)
     }
 
+    fun onPayClick(paymentUrl: String, productId: String, amount: Int) {
+        ScreenManager.showScreenScope(
+            PaymentWebViewFragment.newInstance(
+                url = paymentUrl ,
+                productId = productId,
+                email =  email ?: "",
+                price = amount.toString()
+            ), PAYMENT
+        )
+    }
+
+    private fun loadChatHistory(){
+        chatInteractor.getChatHistory(case.channelId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
+            .subscribeBy(
+                onSuccess = {
+                    loadingStateController.value = LoadingState.CONTENT
+                    chatItemsController.value = it
+
+                    viewChannel()
+                },
+                onError = {
+                    logException(this, it)
+
+                    handleNetworkException(it)
+
+                    loadingStateController.value = LoadingState.ERROR
+                }
+            ).addTo(dataCompositeDisposable)
+    }
+
     private fun postFilesInChat(files: List<File>){
         chatInteractor.postFilesToChat(case.channelId, files)
             .subscribeOn(Schedulers.io())
@@ -193,16 +220,4 @@ class ChatViewModel(
                 }
             ).addTo(dataCompositeDisposable)
     }
-
-    fun onPayClick(paymentUrl: String, productId: String, amount: Int) {
-        ScreenManager.showScreenScope(
-            PaymentWebViewFragment.newInstance(
-                url = paymentUrl ,
-                productId = productId,
-                email =  email ?: "",
-                price = amount.toString()
-            ), PAYMENT
-        )
-    }
-
 }

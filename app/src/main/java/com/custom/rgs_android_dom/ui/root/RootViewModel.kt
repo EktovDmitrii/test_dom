@@ -7,7 +7,8 @@ import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProvide
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthState
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.chat.models.CallType
-import com.custom.rgs_android_dom.domain.chat.models.WsEventModel
+import com.custom.rgs_android_dom.domain.chat.models.WsEvent
+import com.custom.rgs_android_dom.domain.chat.models.WsMessageModel
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
@@ -134,7 +135,7 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
             .subscribeBy(
                 onNext = {
                     when (it.event){
-                        WsEventModel.Event.POSTED -> {
+                        WsEvent.POSTED -> {
                             loadCases()
                         }
                     }
