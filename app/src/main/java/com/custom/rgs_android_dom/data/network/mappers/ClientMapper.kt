@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
-import android.util.Log
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.requests.*
 import com.custom.rgs_android_dom.data.network.responses.*
@@ -152,11 +151,6 @@ object ClientMapper {
     }
 
     fun responseToPolicy(clientProductResponse: ClientProductResponse?,contractResponse: ContractResponse?, propertyItemResponse: PropertyItemResponse?, productServicesResponse: ProductServicesResponse?): PolicyModel {
-
-        Log.d("Syrgashev", "clientProductResponse?.validityFrom?.isBeforeNow: ${clientProductResponse?.validityFrom?.isBeforeNow}")
-        Log.d("Syrgashev", "clientProductResponse?.validityTo?.isAfterNow: ${clientProductResponse?.validityTo?.isAfterNow}")
-        Log.d("Syrgashev", "contractResponse?.startDate?.isBeforeNow: ${contractResponse?.startDate?.isBeforeNow}")
-        Log.d("Syrgashev", "contractResponse?.endDate?.isAfterNow: ${contractResponse?.endDate?.isAfterNow}")
 
         return PolicyModel(
             id= clientProductResponse?.productId ?: "",

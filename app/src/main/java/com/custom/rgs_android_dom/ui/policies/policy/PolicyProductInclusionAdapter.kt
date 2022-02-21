@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.ui.policies.policy
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -61,7 +60,6 @@ class PolicyProductInclusionAdapter (
                 binding.numberTextView.text = "${item.quantity}"
             }
 
-            //Log.d("Syrgashev", "item.canBeOrdered: ${item.canBeOrdered}")
             if (item.isPurchased){
                 binding.orderTextView.visible()
                 binding.orderTextView.isEnabled = item.canBeOrdered
