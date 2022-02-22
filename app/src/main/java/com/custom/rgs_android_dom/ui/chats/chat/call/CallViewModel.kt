@@ -47,12 +47,10 @@ class CallViewModel(private val channelId: String,
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    Log.d("MyLog", "WS EVENT " + it.event)
                     when (it.event){
                         WsEvent.CALL_JOIN -> {
                             (it as WsCallJoinModel).data?.let { callJoinModel->
                                 viewModelScope.launch {
-                                    Log.d("MyLog", "Connect to LK room")
                                     chatInteractor.connectToLiveKitRoom(callJoinModel, callType, cameraEnabled, micEnabled)
                                 }
                             }

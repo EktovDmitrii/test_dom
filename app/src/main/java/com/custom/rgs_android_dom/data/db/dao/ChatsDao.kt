@@ -7,6 +7,7 @@ import androidx.room.Query
 import com.custom.rgs_android_dom.data.db.models.chat.CaseDbModel
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Single
 
 @Dao
 interface ChatsDao {
@@ -18,5 +19,5 @@ interface ChatsDao {
     fun getCasesFlowable(): Flowable<List<CaseDbModel>>
 
     @Query("DELETE FROM cases")
-    fun clearCases(): Completable
+    fun clearCases()
 }

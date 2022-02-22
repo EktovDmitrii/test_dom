@@ -29,6 +29,7 @@ class RegistrationRepositoryImpl(
 
     private val logout = PublishSubject.create<Unit>()
     private val loginSubject = PublishSubject.create<Unit>()
+    private val authFlowEnded = PublishSubject.create<Unit>()
 
     override fun getCurrentPhone(): String {
         return clientSharedPreferences.getPhone() ?: ""
@@ -59,7 +60,8 @@ class RegistrationRepositoryImpl(
     }
 
     override fun logout(): Completable {
-        return api.postLogout().andThen(database.chatsDao.clearCases()).doFinally {
+        return api.postLogout().doFinally {
+            database.chatsDao.clearCases()
             if (isAuthorized()){
                 chatRepository.disconnectFromWebSocket()
                 authContentProviderManager.clear()
@@ -131,5 +133,13 @@ class RegistrationRepositoryImpl(
             clientSharedPreferences.onFirstRun()
         }
         return result
+    }
+
+    override fun getAuthFlowEndedSubject(): PublishSubject<Unit> {
+        return authFlowEnded
+    }
+
+    override fun finishAuth() {
+        authFlowEnded.onNext(Unit)
     }
 }

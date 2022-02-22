@@ -490,7 +490,10 @@ class ChatRepositoryImpl(private val api: MSDApi,
                 masterOnlineChannelId = channelId,
                 masterOnlineUnreadPosts = unreadPosts.count ?: 0
             )
-            database.chatsDao.insertCases(cases)
+            database.runInTransaction {
+                database.chatsDao.clearCases()
+                database.chatsDao.insertCases(cases)
+            }
         }.flatMapCompletable {
             Completable.complete()
         }
