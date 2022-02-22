@@ -85,7 +85,7 @@ val viewModelModule = module {
     viewModel { OnboardingViewModel() }
     viewModel { TabOnboardingViewModel() }
     viewModel { DemoViewModel() }
-    viewModel { parameters-> RegistrationAgreementViewModel(phone = parameters[0], closeAfterAccept = parameters[1], registrationInteractor = get()) }
+    viewModel { parameters-> RegistrationAgreementViewModel(phone = parameters[0], registrationInteractor = get()) }
     viewModel { parameters-> RegistrationFillClientViewModel(phone = parameters.get(), clientInteractor= get()) }
     viewModel { parameters-> CountriesViewModel(selectedCountryLetterCode = parameters.get(), countriesInteractor = get())}
     viewModel { ClientViewModel(clientInteractor = get(), registrationInteractor = get(), propertyInteractor = get()) }

@@ -124,7 +124,7 @@ class RegistrationCodeViewModel(
             .doFinally {
                 closeController.value = Unit
                 if (!isOpdSigned){
-                    ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(phone, true), REGISTRATION)
+                    ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(phone), REGISTRATION)
                 }
             }
             .subscribeBy(
