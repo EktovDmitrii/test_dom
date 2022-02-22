@@ -25,7 +25,7 @@ data class Order(
 ) : Serializable {
 
     fun getOrderDescription(): String {
-        val localDate = LocalDate.parse(deliveryDate, DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZZ"))
+        val localDate = LocalDate.parse(createdAt, DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"))
         val onlyDate = localDate.toString(DATE_PATTERN_DATE_ONLY)
         val service = if (services?.isNotEmpty() == true) services[0] else null
         val price = (service?.productPrice ?: 0).formatPrice()
@@ -59,6 +59,8 @@ data class Order(
     }
 
     fun getPaymentStateWithDate(): String {
+        val localDate = LocalDate.parse(createdAt, DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"))
+        val date = localDate.toString(DATE_PATTERN_DATE_ONLY)
         return when (status) {
             OrderStatus.DRAFT -> {
                 "<font color=\"${"#8E8F8F"}\">Ожидает оплату</font>"
@@ -67,7 +69,7 @@ data class Order(
                 "Счёт аннулирован"
             }
             else -> {
-                "<font color=\"${"#EEA641"}\">Оплачено</font>"
+                "<font color=\"${"#EEA641"}\">Оплачен $date</font>"
             }
         }
     }

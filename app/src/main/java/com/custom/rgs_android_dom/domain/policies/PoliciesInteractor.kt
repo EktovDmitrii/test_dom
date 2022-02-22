@@ -38,7 +38,6 @@ class PoliciesInteractor(
     private var insurantViewState = InsurantViewState()
     private var policy: String = ""
 
-
     fun policyChanged(policy: String) {
         this.policy = policy
         policiesRepository.onPolicyChange(policy)
@@ -47,33 +46,26 @@ class PoliciesInteractor(
 
     fun firstNameChanged(firstName: String, isMaskFilled: Boolean) {
         insurantViewState = insurantViewState.copy(firstName = firstName)
-        policiesRepository.onInsurantDataChange(insurantViewState)
         checkNextEnabled(isMaskFilled)
-        insurantViewStateSubject.onNext(insurantViewState)
     }
 
     fun lastNameChanged(lastName: String, isMaskFilled: Boolean) {
         insurantViewState = insurantViewState.copy(lastName = lastName)
-        policiesRepository.onInsurantDataChange(insurantViewState)
         checkNextEnabled(isMaskFilled)
-        insurantViewStateSubject.onNext(insurantViewState)
     }
 
     fun middleNameChanged(middleName: String, isMaskFilled: Boolean) {
         insurantViewState = insurantViewState.copy(middleName = middleName)
-        policiesRepository.onInsurantDataChange(insurantViewState)
         checkNextEnabled(isMaskFilled)
-        insurantViewStateSubject.onNext(insurantViewState)
     }
 
     fun birthdayChanged(birthday: String, isMaskFilled: Boolean) {
         insurantViewState = insurantViewState.copy(birthday = birthday)
-        policiesRepository.onInsurantDataChange(insurantViewState)
         checkNextEnabled(isMaskFilled)
-        insurantViewStateSubject.onNext(insurantViewState)
     }
 
-    fun getInsurantViewStateSubject(): PublishSubject<InsurantViewState> {
+    fun getInsurantViewStateSubject(isMaskFilled: Boolean): PublishSubject<InsurantViewState> {
+        checkNextEnabled(isMaskFilled)
         return insurantViewStateSubject
     }
 
@@ -83,7 +75,6 @@ class PoliciesInteractor(
 
     fun bindPolicy(): Single<Any> {
         val errorsValidate = ArrayList<ValidateFieldModel>()
-
         var birthday: LocalDateTime?
         if (insurantViewState.birthday.isNotEmpty()) {
             val birthdayWithTimezone = "${insurantViewState.birthday.tryParseDate()}T00:00:00.000Z"
@@ -104,10 +95,11 @@ class PoliciesInteractor(
             if (errorsValidate.isNotEmpty()) {
                 return Single.just(SpecificValidateClientExceptions(errorsValidate))
             } else {
-                insurantViewStateSubject.onNext(insurantViewState.copy(isValidationPassed = true))
+                insurantViewState = insurantViewState.copy(isValidationPassed = true)
+                insurantViewStateSubject.onNext(insurantViewState)
             }
         }
-        return policiesRepository.bindPolicy()
+        return policiesRepository.bindPolicy(insurantViewState)
     }
 
     fun getPolicyDialogSubject(): Observable<PolicyDialogModel> {
@@ -128,9 +120,8 @@ class PoliciesInteractor(
 
     fun savePersonalData(): Completable {
         policiesRepository.newDialog(PolicyDialogModel(showPrompt = ShowPromptModel.Loading))
-        val dataFromRequest = policiesRepository.getRequest()
         var birthday: LocalDateTime?
-        val birthdayWithTimezone = dataFromRequest.contractClientBirthDate
+        val birthdayWithTimezone = "${insurantViewState.birthday.tryParseDate()}T00:00:00.000Z"
         birthday = birthdayWithTimezone.tryParseLocalDateTime({
             logException(this, it)
             birthday = null
@@ -139,9 +130,9 @@ class PoliciesInteractor(
         val avatar = clientRepository.getUserDetails().blockingGet().avatarUrl
 
         return clientRepository.updateClient(
-            firstName = dataFromRequest.contractClientFirstName,
-            lastName = dataFromRequest.contractClientLastName,
-            middleName = dataFromRequest.contractClientMiddleName,
+            firstName = insurantViewState.firstName,
+            lastName = insurantViewState.lastName,
+            middleName = insurantViewState.middleName,
             birthday = birthday,
             gender = client?.gender,
             phone = client?.phone,
@@ -155,8 +146,10 @@ class PoliciesInteractor(
     }
 
     private fun checkNextEnabled(isMaskFilled: Boolean) {
-        insurantViewState = if (insurantViewState.firstName.isNotEmpty() &&
+        insurantViewState = if (
+            insurantViewState.firstName.isNotEmpty() &&
             insurantViewState.lastName.isNotEmpty() &&
+            insurantViewState.middleName.isNotEmpty() &&
             insurantViewState.birthday.isNotEmpty() &&
             isMaskFilled
         ) {
@@ -164,7 +157,7 @@ class PoliciesInteractor(
         } else {
             insurantViewState.copy(isNextEnabled = false)
         }
-        policiesRepository.onInsurantDataChange(insurantViewState)
+        insurantViewStateSubject.onNext(insurantViewState)
     }
 
     private fun isBirthdayValid(birthday: LocalDateTime): Boolean {
@@ -173,10 +166,6 @@ class PoliciesInteractor(
 
     fun getClientProductSingle(contractId: String): Single<PolicyModel> {
         return policiesRepository.getPolicySingle(contractId)
-    }
-
-    fun restoreViewState(viewState: InsurantViewState) {
-        policiesRepository.restoreViewState(viewState)
     }
 
 }

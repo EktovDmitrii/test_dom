@@ -104,6 +104,7 @@
                     tools:text="Монтаж унитаза"/>
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/addressTitleTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/secondary500"

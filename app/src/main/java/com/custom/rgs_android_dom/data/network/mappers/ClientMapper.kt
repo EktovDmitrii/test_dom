@@ -139,14 +139,14 @@ object ClientMapper {
         }
     }
 
-    fun responseToPolicyShort(response: ClientProductResponse): PolicyShortModel {
+    fun responseToPolicyShort(response: ClientProductResponse, contracts: GetPolicyContractsResponse): PolicyShortModel {
         return PolicyShortModel(
             id = response.id ?: "",
             contractId = response.contractId ?: "",
             name = response.productName ?: "",
             logo = response.logoSmall,
-            startsAt = response.validityFrom,
-            expiresAt = response.validityTo
+            startsAt = contracts.contracts?.find { response.contractId == it.id }?.startDate,
+            expiresAt = contracts.contracts?.find { response.contractId == it.id }?.endDate
         )
     }
 
@@ -170,7 +170,11 @@ object ClientMapper {
                     serviceName = it.serviceName,
                     serviceDeliveryType = it.serviceDeliveryType,
                     serviceVersionId = it.serviceVersionId,
-                    isPurchased = true)
+                    isPurchased = true,
+                    canBeOrdered = clientProductResponse?.validityFrom?.isBeforeNow ?: false &&
+                            clientProductResponse?.validityTo?.isAfterNow ?: false &&
+                            contractResponse?.startDate?.isBeforeNow ?: false &&
+                            contractResponse?.endDate?.isAfterNow ?: false)
             } ?: listOf(),
             policySeriesAndNumber = "${contractResponse?.serial} ${contractResponse?.number}",
             clientName = "${contractResponse?.clientLastName} ${contractResponse?.clientFirstName} ${contractResponse?.clientMiddleName}",

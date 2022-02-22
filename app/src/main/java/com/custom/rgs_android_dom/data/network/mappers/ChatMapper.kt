@@ -134,7 +134,7 @@ object ChatMapper{
             id = fileResponse.id,
             mimeType = fileResponse.mimeType,
             miniPreview = miniPreview,
-            preview = "${BuildConfig.BASE_URL}/api/chat/users/${senderId}/files/${fileResponse.id}/preview",
+            preview = "${BuildConfig.BASE_URL}/api/chat/users/me/files/${fileResponse.id}/preview",
             name = fileResponse.name,
             size = fileResponse.size,
             width = fileResponse.width,

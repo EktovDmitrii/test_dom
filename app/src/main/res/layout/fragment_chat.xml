@@ -36,37 +36,43 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_back_24dp" />
 
-        <com.custom.rgs_android_dom.views.text.MSDTextView
-            android:id="@+id/titleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:fontFamily="@font/my_service_medium"
-            android:textColor="@color/secondary900"
-            android:textSize="18sp"
-            android:gravity="center"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/titleContainerLinearLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingEnd="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/backImageView"
             app:layout_constraintTop_toTopOf="parent"
-            app:translationTextKey="Мастер онлайн" />
+            app:layout_constraintEnd_toStartOf="@+id/audioCallImageView">
 
-        <com.custom.rgs_android_dom.views.MSDImageView
-            android:id="@+id/dropDownImageView"
-            android:layout_width="16dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/titleTextView"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_dropdown_16dp" />
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/titleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/my_service_medium"
+                android:textColor="@color/secondary900"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:lines="1"
+                android:ellipsize="end"
+                android:drawableEnd="@drawable/ic_dropdown_16dp"
+                android:drawablePadding="8dp"
+                tools:text="Мастер онлайн" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
 
         <com.custom.rgs_android_dom.views.MSDImageView
             android:id="@+id/audioCallImageView"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginEnd="20dp"
-            app:layout_constraintBottom_toBottomOf="@id/titleTextView"
+            app:layout_constraintBottom_toBottomOf="@id/titleContainerLinearLayout"
             app:layout_constraintEnd_toStartOf="@id/videoCallImageView"
-            app:layout_constraintTop_toTopOf="@id/titleTextView"
+            app:layout_constraintTop_toTopOf="@id/titleContainerLinearLayout"
             app:srcCompat="@drawable/ic_chat_accept_24dp" />
 
         <com.custom.rgs_android_dom.views.MSDImageView
@@ -75,9 +81,9 @@
             android:layout_height="24dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="20dp"
-            app:layout_constraintBottom_toBottomOf="@id/titleTextView"
+            app:layout_constraintBottom_toBottomOf="@id/titleContainerLinearLayout"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/titleTextView"
+            app:layout_constraintTop_toTopOf="@id/titleContainerLinearLayout"
             app:srcCompat="@drawable/ic_chat_video_call_24dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -121,9 +127,11 @@
                 android:layout_height="wrap_content"
                 android:clickable="false"
                 android:focusable="false"
+                android:visibility="gone"
                 app:contentInsetStart="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                tools:visibility="visible">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -185,6 +193,30 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/archivedFrameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="82dp"
+                android:background="@color/secondary100"
+                android:visibility="gone"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/suisse_semi_bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/secondary500"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="24dp"
+                    app:translationTextKey="Чат архивирован"/>
+
+            </FrameLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

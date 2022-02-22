@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.databinding.FragmentRegistrationAgreementBindi
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.ui.web_view.WebViewFragment
 import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
@@ -66,10 +67,15 @@ class RegistrationAgreementFragment :
     }
 
     override fun onClose() {
-        viewModel.onBackClick {
+        viewModel.onBackClick { isAccepted ->
             hideSoftwareKeyboard()
             viewModel.disposeAll()
-            ScreenManager.closeScope(REGISTRATION)
+            if (isAccepted) {
+                ScreenManager.closeScope(REGISTRATION)
+            } else {
+                super.onClose()
+                ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+            }
         }
     }
 
@@ -93,7 +99,7 @@ class RegistrationAgreementFragment :
             resources.getColor(R.color.primary500,null),
             Pair("пользовательского соглашения,", View.OnClickListener {
                 val webViewFragment =
-                    WebViewFragment.newInstance("https://moi-service.ru/legal/moi-servis-med/polzovatelskoe-soglashenie")
+                    WebViewFragment.newInstance("https://moi-service.ru/legal/moi-service-dom/polzovatelskoe-soglashenie")
                 ScreenManager.showScreen(webViewFragment)
             }),
             Pair("политику обработки персональных данных", View.OnClickListener {

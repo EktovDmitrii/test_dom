@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.data.repositories.registration
 
+import com.custom.rgs_android_dom.data.db.MSDDatabase
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.requests.GetCodeRequest
 import com.custom.rgs_android_dom.data.network.requests.LoginRequest
@@ -18,7 +19,8 @@ class RegistrationRepositoryImpl(
     private val api: MSDApi,
     private val clientSharedPreferences: ClientSharedPreferences,
     private val chatRepository: ChatRepository,
-    private val authContentProviderManager: AuthContentProviderManager
+    private val authContentProviderManager: AuthContentProviderManager,
+    private val database: MSDDatabase
 ) : RegistrationRepository {
 
     companion object {
@@ -57,7 +59,7 @@ class RegistrationRepositoryImpl(
     }
 
     override fun logout(): Completable {
-        return api.postLogout().doFinally {
+        return api.postLogout().andThen(database.chatsDao.clearCases()).doFinally {
             if (isAuthorized()){
                 chatRepository.disconnectFromWebSocket()
                 authContentProviderManager.clear()

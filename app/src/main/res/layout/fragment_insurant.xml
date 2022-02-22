@@ -147,8 +147,8 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="22dp"
-            style="@style/Button.Filled.Primary"
             android:enabled="false"
+            style="@style/Button.Filled.Primary"
             app:translationTextKey="Далее" />
 
     </com.google.android.material.card.MaterialCardView>

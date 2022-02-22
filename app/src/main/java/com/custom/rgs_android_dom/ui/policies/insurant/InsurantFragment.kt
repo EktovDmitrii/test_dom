@@ -24,12 +24,12 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
     }
 
     private var shouldShowDialog = false
-    private var shouldRestore = false
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        shouldRestore = true
+        viewModel.requireViewState(binding.birthdayEditText.isMaskFilled())
 
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
@@ -70,15 +70,8 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
         }
 
         subscribe(viewModel.insurantViewStateObserver) {
-            if(shouldRestore){
-                binding.firstNameEditText.setText(it.firstName)
-                binding.lastNameEditText.setText(it.lastName)
-                binding.middleNameEditText.setText(it.middleName)
-                shouldRestore = false
-                viewModel.restoreViewState(it)
-            }
-
             binding.nextTextView.isEnabled = it.isNextEnabled
+
             if (it.isValidationPassed && shouldShowDialog) {
                 shouldShowDialog = false
                 val dialog = PolicyDialogsFragment.newInstance(
