@@ -248,7 +248,7 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                 .subscribeBy(
                     onSuccess = {
                         if (!it.isOpdSigned){
-                            ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(it.phone, true), REGISTRATION)
+                            ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(it.phone), REGISTRATION)
                         }
                     },
                     onError = {
