@@ -27,6 +27,7 @@ import io.reactivex.schedulers.Schedulers
 class ServiceOrderViewModel(
     private val serviceId: String,
     private val productId: String,
+    private val deliveryType: String?,
     private val propertyInteractor: PropertyInteractor,
     private val catalogInteractor: CatalogInteractor,
     private val purchaseInteractor: PurchaseInteractor
@@ -51,7 +52,7 @@ class ServiceOrderViewModel(
             propertyCount = propertyList.size
             serviceController.postValue(service)
 
-            purchaseInteractor.setPropertyOptional(service.deliveryType)
+            purchaseInteractor.setPropertyOptional(deliveryType ?: service.deliveryType)
         }
         .compose(
             ProgressTransformer(

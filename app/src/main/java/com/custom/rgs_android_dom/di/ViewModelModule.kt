@@ -150,6 +150,6 @@ val viewModelModule = module {
     viewModel { InfoPolicyViewModel() }
     viewModel { InsurantViewModel(policiesInteractor = get()) }
     viewModel { parameters -> PolicyDialogsViewModel(policiesInteractor = get(), model = parameters.get()) }
-    viewModel { parameters -> ServiceOrderViewModel(serviceId = parameters[0], productId = parameters[1], propertyInteractor = get(), catalogInteractor = get(), purchaseInteractor = get()) }
+    viewModel { parameters -> ServiceOrderViewModel(serviceId = parameters[0], productId = parameters[1], deliveryType = parameters[2], propertyInteractor = get(), catalogInteractor = get(), purchaseInteractor = get()) }
     viewModel { parameters -> PolicyViewModel(contractId = parameters.get(),policiesInteractor = get()) }
 }

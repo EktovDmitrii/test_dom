@@ -168,6 +168,7 @@ object ClientMapper {
                     serviceCode = it.serviceCode,
                     serviceId = it.serviceId,
                     serviceName = it.serviceName,
+                    serviceDeliveryType = it.serviceDeliveryType,
                     serviceVersionId = it.serviceVersionId,
                     isPurchased = true)
             } ?: listOf(),

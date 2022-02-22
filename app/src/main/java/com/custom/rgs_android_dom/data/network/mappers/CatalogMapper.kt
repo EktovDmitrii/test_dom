@@ -217,6 +217,7 @@ object CatalogMapper {
             serviceCode = response.serviceCode,
             serviceId = response.serviceId,
             serviceName = response.serviceName,
+            serviceDeliveryType = response.serviceDeliveryType,
             serviceVersionId = response.serviceVersionId
         )
     }

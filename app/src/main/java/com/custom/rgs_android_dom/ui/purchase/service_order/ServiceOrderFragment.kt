@@ -25,11 +25,13 @@ class ServiceOrderFragment : BaseFragment<ServiceOrderViewModel, FragmentService
     companion object {
         private const val ARG_SERVICE_ID = "ARG_SERVICE_ID"
         private const val ARG_PRODUCT_ID = "ARG_PRODUCT_ID"
+        private const val ARG_DELIVERY_TYPE = "ARG_DELIVERY_TYPE"
 
-        fun newInstance(serviceId: String, productId: String): ServiceOrderFragment {
+        fun newInstance(serviceId: String, productId: String, deliveryType: String? = null): ServiceOrderFragment {
             return ServiceOrderFragment().args {
                 putString(ARG_SERVICE_ID, serviceId)
                 putString(ARG_PRODUCT_ID, productId)
+                putString(ARG_DELIVERY_TYPE, deliveryType)
             }
         }
     }
@@ -41,7 +43,8 @@ class ServiceOrderFragment : BaseFragment<ServiceOrderViewModel, FragmentService
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
             requireArguments().getString(ARG_SERVICE_ID),
-            requireArguments().getString(ARG_PRODUCT_ID)
+            requireArguments().getString(ARG_PRODUCT_ID),
+            requireArguments().getString(ARG_DELIVERY_TYPE)
         )
     }
 
