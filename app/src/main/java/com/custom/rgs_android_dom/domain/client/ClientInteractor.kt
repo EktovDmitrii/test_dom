@@ -599,8 +599,7 @@ ClientInteractor(
         return clientRepository.updatePassport(id, serial, number)
     }
 
-    fun getClientSavedSubject(): Observable<ClientModel> {
-       return clientRepository.getClientUpdatedSubject()
+    fun finishAuth(){
+        registrationRepository.finishAuth()
     }
-
 }

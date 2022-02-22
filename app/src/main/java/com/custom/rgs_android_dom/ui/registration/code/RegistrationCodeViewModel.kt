@@ -125,6 +125,8 @@ class RegistrationCodeViewModel(
                 closeController.value = Unit
                 if (!isOpdSigned){
                     ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(phone), REGISTRATION)
+                } else {
+                    clientInteractor.finishAuth()
                 }
             }
             .subscribeBy(

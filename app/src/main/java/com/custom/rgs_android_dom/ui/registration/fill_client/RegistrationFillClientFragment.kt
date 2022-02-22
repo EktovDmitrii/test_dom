@@ -55,7 +55,7 @@ class RegistrationFillClientFragment : BaseFragment<RegistrationFillClientViewMo
         }
 
         binding.skipTextView.setOnDebouncedClickListener {
-            viewModel.onSkipClick()
+            viewModel.onCloseClick()
         }
 
         binding.closeImageView.setOnDebouncedClickListener {
