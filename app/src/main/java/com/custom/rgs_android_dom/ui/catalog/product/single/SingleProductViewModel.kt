@@ -65,7 +65,6 @@ class SingleProductViewModel(
                                         )
                                         ScreenManager.showScreen(serviceOrderFragment)
                                     }
-
                                 },
                                 onError = {
                                     logException(this, it)

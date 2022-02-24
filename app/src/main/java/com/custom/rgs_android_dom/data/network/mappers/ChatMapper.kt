@@ -10,7 +10,11 @@ import org.joda.time.LocalDateTime
 
 object ChatMapper{
 
-    private const val AVATAR_ENDPOINT = "${BuildConfig.BASE_URL}/api/store"
+    private const val STORE_ENDPOINT = "${BuildConfig.BASE_URL}/api/store"
+    private const val WIDGET_TYPE_ORDER_COMPLEX_PRODUCT = "OrderComplexProduct"
+    private const val WIDGET_TYPE_ORDER_PRODUCT = "Product"
+    private const val WIDGET_TYPE_ORDER_DEFAULT_PRODUCT = "OrderDefaultProduct"
+    private const val WIDGET_TYPE_ADDITIONAL_INVOICE = "GeneralInvoicePayment"
 
     fun responseToChatMessages(response: List<ChatMessageResponse>, userId: String): List<ChatMessageModel> {
         return response.map { messageResponse->
@@ -26,33 +30,7 @@ object ChatMapper{
                 createdAt = messageResponse.createdAt.withZone(DateTimeZone.getDefault()).toLocalDateTime(),
                 type = messageResponse.type,
                 member = null,
-                widget = messageResponse.details?.let {
-                    val avatar = if (!it.avatar.isNullOrEmpty()) {
-                        "${AVATAR_ENDPOINT}/${it.avatar}"
-                    } else {
-                        ""
-                    }
-                    WidgetModel(
-                        avatar = avatar,
-                        description = it.description ?: "",
-                        name = it.name ?: "",
-                        price = WidgetPriceModel(amount = it.price?.amount,vatType = it.price?.vatType),
-                        productId = it.productId ?: "",
-                        widgetType = it.widgetType,
-                        amount = it.amount,
-                        invoiceId = it.invoiceId,
-                        items = it.items?.map { WidgetAdditionalInvoiceItemModel(
-                            amount = it.amount,
-                            name = it.name,
-                            price = it.price,
-                            quantity = it.quantity
-                        )} ?: listOf(),
-                        orderId = it.orderId,
-                        paymentUrl = it.paymentUrl,
-                        serviceLogo = it.serviceLogo,
-                        serviceName = it.serviceName,
-                    )
-                }
+                widget = widgetModel(messageResponse.details)
             )
         }
     }
@@ -70,40 +48,14 @@ object ChatMapper{
             createdAt = messageResponse.createdAt.withZone(DateTimeZone.getDefault()).toLocalDateTime(),
             type = messageResponse.type,
             member = null,
-            widget = messageResponse.details?.let {
-                val avatar = if (!it.avatar.isNullOrEmpty()) {
-                    "${AVATAR_ENDPOINT}/${it.avatar}"
-                } else {
-                    ""
-                }
-                WidgetModel(
-                    avatar = avatar,
-                    description = it.description ?: "",
-                    name = it.name ?: "",
-                    price = WidgetPriceModel(amount = it.price?.amount,vatType = it.price?.vatType),
-                    productId = it.productId ?: "",
-                    widgetType = it.widgetType,
-                    amount = it.amount,
-                    invoiceId = it.invoiceId,
-                    items = it.items?.reversed()?.map { WidgetAdditionalInvoiceItemModel(
-                        amount = it.amount,
-                        name = it.name,
-                        price = it.price,
-                        quantity = it.quantity
-                    )} ?: listOf(),
-                    orderId = it.orderId,
-                    paymentUrl = it.paymentUrl,
-                    serviceLogo = it.serviceLogo,
-                    serviceName = it.serviceName,
-                )
-            }
+            widget = widgetModel(messageResponse.details)
         )
     }
 
     fun responseToChannelMembers(response: List<ChannelMemberResponse>): List<ChannelMemberModel> {
         return response.map {
             val avatar = if (it.avatar?.isNotEmpty() == true) {
-                "${AVATAR_ENDPOINT}/${it.avatar}"
+                "${STORE_ENDPOINT}/${it.avatar}"
             } else {
                 ""
             }
@@ -150,6 +102,99 @@ object ChatMapper{
             recipientUserId = response.recipientUserId ?: "",
             taskId = response.taskId ?: ""
         )
+    }
+
+    private fun widgetModel(details: WidgetResponse?): WidgetModel? {
+        details?.let {
+            when (it.widgetType) {
+                WIDGET_TYPE_ORDER_COMPLEX_PRODUCT -> {
+                    val icon = if (!it.icon.isNullOrEmpty()) {
+                        "${STORE_ENDPOINT}/${it.icon}"
+                    } else {
+                        ""
+                    }
+                    return WidgetModel.WidgetOrderComplexProductModel(
+                        clientServiceId = it.clientServiceId,
+                        deliveryTime = it.deliveryTime,
+                        icon = icon,
+                        name = it.name,
+                        objAddr = it.objAddr,
+                        objId = it.objId,
+                        objName = it.objName,
+                        orderDate = it.orderDate,
+                        orderTime = OrderTimeModel(
+                            from = it.orderTime?.from,
+                            to = it.orderTime?.to
+                        ),
+                        widgetType = it.widgetType
+                    )
+                }
+                WIDGET_TYPE_ORDER_PRODUCT -> {
+                    val avatar = if (!it.avatar.isNullOrEmpty()) {
+                        "${STORE_ENDPOINT}/${it.avatar}"
+                    } else {
+                        ""
+                    }
+                    return WidgetModel.WidgetOrderProductModel(
+                        avatar = avatar,
+                        description = it.description,
+                        name = it.name,
+                        price = WidgetPriceModel(amount = it.price?.amount, vatType = it.price?.vatType),
+                        productId = it.productId,
+                        widgetType = it.widgetType
+                    )
+                }
+                WIDGET_TYPE_ORDER_DEFAULT_PRODUCT -> {
+                    val icon = if (!it.icon.isNullOrEmpty()) {
+                        "${STORE_ENDPOINT}/${it.icon}"
+                    } else {
+                        ""
+                    }
+                    val objPhotoLink = if (!it.objPhotoLink.isNullOrEmpty()) {
+                        "${STORE_ENDPOINT}/${it.objPhotoLink}"
+                    } else {
+                        ""
+                    }
+                    return WidgetModel.WidgetOrderDefaultProductModel(
+                        deliveryTime = it.deliveryTime,
+                        icon = icon,
+                        name = it.name,
+                        objAddr = it.objAddr,
+                        objId = it.objId,
+                        objName = it.objName,
+                        objPhotoLink = objPhotoLink,
+                        objType = it.objType,
+                        orderDate = it.orderDate,
+                        orderTime = OrderTimeModel(
+                            from = it.orderTime?.from,
+                            to = it.orderTime?.to
+                        ),
+                        productId = it.productId,
+                        widgetType = it.widgetType,
+                        price1 = it.price1
+                    )
+                }
+                WIDGET_TYPE_ADDITIONAL_INVOICE -> return WidgetModel.WidgetAdditionalInvoiceModel(
+                    amount = it.amount,
+                    invoiceId = it.invoiceId,
+                    items = it.items?.map {
+                        WidgetAdditionalInvoiceItemModel(
+                            amount = it.amount,
+                            name = it.name,
+                            price = it.price,
+                            quantity = it.quantity
+                        )
+                    } ?: listOf(),
+                    orderId = it.orderId,
+                    paymentUrl = it.paymentUrl,
+                    serviceLogo = it.serviceLogo,
+                    serviceName = it.serviceName,
+                    widgetType = it.widgetType
+                )
+                else -> return null
+            }
+
+        } ?: return null
     }
 
 }

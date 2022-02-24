@@ -3,11 +3,9 @@ package com.custom.rgs_android_dom.ui.chats.chat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
-import com.custom.rgs_android_dom.domain.chat.models.CallType
-import com.custom.rgs_android_dom.domain.chat.models.CaseModel
-import com.custom.rgs_android_dom.domain.chat.models.ChatFileModel
-import com.custom.rgs_android_dom.domain.chat.models.ChatItemModel
+import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
 import com.custom.rgs_android_dom.ui.catalog.product.ProductLauncher
@@ -16,6 +14,7 @@ import com.custom.rgs_android_dom.ui.chats.chat.files.viewers.image.ImageViewerF
 import com.custom.rgs_android_dom.ui.chats.chat.files.viewers.video.VideoPlayerFragment
 import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.purchase.PurchaseFragment
 import com.custom.rgs_android_dom.ui.purchase.payments.PaymentWebViewFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -159,8 +158,8 @@ class ChatViewModel(
         ScreenManager.showScreen(callFragment)
     }
 
-    fun onProductClick(productId: String) {
-        ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(productId = productId)))
+    fun onProductClick(widget: WidgetModel.WidgetOrderProductModel) {
+        ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(productId = widget.productId ?: "")))
     }
 
     fun onChatClose(){
@@ -194,15 +193,52 @@ class ChatViewModel(
             ).addTo(dataCompositeDisposable)
     }
 
-    fun onPayClick(paymentUrl: String, productId: String, amount: Int) {
+    fun onPayClick(widget: WidgetModel.WidgetAdditionalInvoiceModel) {
         ScreenManager.showScreenScope(
             PaymentWebViewFragment.newInstance(
-                url = paymentUrl ,
-                productId = productId,
+                url = widget.paymentUrl ?: "",
+                productId = /*widget.productId*/"",
                 email =  email ?: "",
-                price = amount.toString()
+                price = widget.amount.toString()
             ), PAYMENT
         )
+    }
+
+    fun orderDefaultProduct(widget: WidgetModel.WidgetOrderDefaultProductModel) {
+
+        /*val purchaseServiceModel = PurchaseModel(
+            id = widget.id,
+            defaultProduct = widget.defaultProduct,
+            duration = widget.duration,
+            deliveryTime = widget.deliveryTime,
+            logoSmall = widget.logoSmall,
+            name = widget.name,
+            price = product.price
+        )*/
+
+        /*ScreenManager.showBottomScreen(
+            PurchaseFragment.newInstance(
+                PurchaseModel(
+                    id = widget.productId,
+                    defaultProduct = widget.,
+                    duration =,
+                    deliveryTime =,
+                    logoSmall =,
+                    name =,
+                    price =,
+                    propertyItemModel =,
+                    email =,
+                    card =,
+                    comment =,
+                    purchaseDateTimeModel =,
+                    agentCode =
+                )
+            )
+        )*/
+    }
+
+    fun orderComplexProduct(widget: WidgetModel.WidgetOrderComplexProductModel) {
+
     }
 
 }

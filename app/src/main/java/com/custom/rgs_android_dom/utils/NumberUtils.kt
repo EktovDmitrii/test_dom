@@ -35,6 +35,21 @@ fun Int.simplePriceFormat() : String {
         .toString()
 }
 
+fun Int.formatPriceGroupedByThousands(): String {
+    val formatter: DecimalFormat = NumberFormat.getInstance(Locale.getDefault()) as DecimalFormat
+    val symbols: DecimalFormatSymbols = formatter.decimalFormatSymbols
+    symbols.groupingSeparator = ' '
+    formatter.decimalFormatSymbols = symbols
+    val formatted = formatter.format(this)
+    return StringBuilder()
+        .append(formatted)
+        .append(' ')
+        .append(Html.fromHtml("&#x20bd",0))
+        .toString()
+}
+
+
+
 fun Int.formatQuantity(): String {
     return when {
         this.toString().takeLast(2).toInt() in 11..19 -> "$this видов услуг"

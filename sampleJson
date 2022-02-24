@@ -1,0 +1,81 @@
+//"widgetType":"GeneralInvoicePayment"
+{
+  "amount": 15660,
+  "invoiceId": "5278dcd4-ce78-4712-a27e-b210ce2cb85b",
+  "items": [
+    {
+      "amount": 3900,
+      "name": "Доп. услуга 3",
+      "price": 3900,
+      "quantity": 1
+    },
+    {
+      "amount": 2400,
+      "name": "Доп. услуга 1",
+      "price": 1200,
+      "quantity": 2
+    },
+    {
+      "amount": 9360,
+      "name": "Доп. услуга 2",
+      "price": 2340,
+      "quantity": 4
+    }
+  ],
+  "orderId": "408c0b39-f576-4d25-ba70-df2678e9f39b",
+  "paymentUrl": "https://3dsec.sberbank.ru/payment/merchants/sbersafe_sberid/payment_ru.html?mdOrder=e4920b6e-762d-7e3a-a380-401928361174",
+  "serviceLogo": "",
+  "serviceName": "Дефолтный для заказа",
+  "widgetType": "GeneralInvoicePayment"
+}
+
+
+"widgetType": "OrderDefaultProduct"
+{
+  "deliveryTime": "1h",
+  "icon": "service:kwa1w4yjnpfg5f9uantghqoefo.png",
+  "name": "Химчистка",
+  "objAddr": "115432, г Москва, 2-й Южнопортовый проезд, д 23 к 2, кв.184",
+  "objId": "117dade8-7159-432e-be89-044b96cfcfae",
+  "objName": "Квартира 3",
+  "objPhotoLink": "",
+  "objType": "apartment",
+  "orderDate": "2022-02-25T00:00:00Z",
+  "orderTime": {
+    "From": "12:00",
+    "To": "15:00"
+  },
+  "price": 15000,
+  "productId": "69436c43-dc9c-423c-bced-cca44ccbaec5",
+  "widgetType": "OrderDefaultProduct"
+}
+
+"widgetType": "OrderComplexProduct"
+{
+  "clientServiceId": "8f8df2c3-b34a-4953-a4fe-7761afd0ef73",
+  "deliveryTime": "2h",
+  "icon": "456",
+  "name": "Полив цветов",
+  "objAddr": "115432, г Москва, 2-й Южнопортовый проезд, д 23 к 2, кв.184",
+  "objId": "652fa864-86b8-427d-9240-c813d8daa18b",
+  "objName": "Квартира 5",
+  "orderDate": "2022-02-25T00:00:00Z",
+  "orderTime": {
+    "From": "9:00",
+    "To": "12:00"
+  },
+  "widgetType": "OrderComplexProduct"
+}
+
+"widgetType": "Product"
+{
+  "avatar": "service:kwa1w4yjnpfg5f9uantghqoefo.png",
+  "description": "Люстры и светильников",
+  "name": "Люстры и светильников",
+  "price": {
+    "Amount": 10000,
+    "VatType": "no"
+  },
+  "productId": "762c6cd2-cabf-47b7-9bfd-ac32596d916d",
+  "widgetType": "Product"
+}

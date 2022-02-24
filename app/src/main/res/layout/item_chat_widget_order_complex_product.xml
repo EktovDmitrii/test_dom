@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginStart="20dp"
+    android:layout_marginTop="24dp"
+    android:layout_marginEnd="34dp"
     android:paddingBottom="12dp">
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -62,7 +65,7 @@
                     android:textColor="@color/secondary900"
                     android:textSize="14sp"
                     app:lineHeight="20dp"
-                    app:translationTextKey="Замена замка" />
+                    tools:text="Замена замка" />
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:id="@+id/durationTextView"
@@ -93,7 +96,7 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <!--<androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/propertyLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -137,7 +140,7 @@
                         android:textColor="@color/secondary900"
                         android:textSize="14sp"
                         app:lineHeight="20dp"
-                        app:translationTextKey="Мой Дом" />
+                        tools:text="Мой Дом" />
 
                     <com.custom.rgs_android_dom.views.text.MSDTextView
                         android:id="@+id/addressTextView"
@@ -203,7 +206,7 @@
                         android:textColor="@color/secondary900"
                         android:textSize="14sp"
                         app:lineHeight="20dp"
-                        app:translationTextKey="9:00 – 12:00" />
+                        tools:text="9:00 – 12:00" />
 
                     <com.custom.rgs_android_dom.views.text.MSDTextView
                         android:id="@+id/dateTextView"
@@ -216,13 +219,13 @@
                         android:textColor="@color/secondary600"
                         android:textSize="14sp"
                         app:lineHeight="20dp"
-                        app:translationTextKey="18 января 2022" />
+                        tools:text="18 января 2022" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>-->
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -244,7 +247,7 @@
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:layout_width="wrap_content"
             android:layout_height="24dp"
-            android:layout_gravity="start"
+            android:layout_gravity="center"
             android:fontFamily="@font/my_service_medium"
             android:gravity="center_vertical"
             android:includeFontPadding="false"
@@ -252,7 +255,7 @@
             android:textSize="14sp"
             app:translationTextKey="Перейти к заказу" />
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <!--<androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end"
@@ -274,9 +277,9 @@
                 android:includeFontPadding="false"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                app:translationTextKey="1 500 ₽" />
+                tools:text="1 500 ₽" />
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>-->
 
     </FrameLayout>
 
