@@ -8,6 +8,7 @@ import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentServiceOrderBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
+import com.custom.rgs_android_dom.domain.purchase.models.DeliveryType
 import com.custom.rgs_android_dom.domain.purchase.models.PurchaseDateTimeModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.purchase.add.comment.PurchaseCommentListener
@@ -27,11 +28,11 @@ class ServiceOrderFragment : BaseFragment<ServiceOrderViewModel, FragmentService
         private const val ARG_PRODUCT_ID = "ARG_PRODUCT_ID"
         private const val ARG_DELIVERY_TYPE = "ARG_DELIVERY_TYPE"
 
-        fun newInstance(serviceId: String, productId: String, deliveryType: String? = null): ServiceOrderFragment {
+        fun newInstance(serviceId: String, productId: String, deliveryType: DeliveryType? = null): ServiceOrderFragment {
             return ServiceOrderFragment().args {
                 putString(ARG_SERVICE_ID, serviceId)
                 putString(ARG_PRODUCT_ID, productId)
-                putString(ARG_DELIVERY_TYPE, deliveryType)
+                putSerializable(ARG_DELIVERY_TYPE, deliveryType)
             }
         }
     }
@@ -44,7 +45,7 @@ class ServiceOrderFragment : BaseFragment<ServiceOrderViewModel, FragmentService
         parametersOf(
             requireArguments().getString(ARG_SERVICE_ID),
             requireArguments().getString(ARG_PRODUCT_ID),
-            requireArguments().getString(ARG_DELIVERY_TYPE)
+            requireArguments().getSerializable(ARG_DELIVERY_TYPE)
         )
     }
 

@@ -96,8 +96,8 @@ class PurchaseInteractor(
         purchaseRepository.notifyProductPurchased(productId)
     }
 
-    fun setPropertyOptional(deliveryType: String?) {
-        isPropertyOptional = deliveryType == "online"
+    fun setPropertyOptional(deliveryType: DeliveryType?) {
+        isPropertyOptional = deliveryType == DeliveryType.ONLINE
     }
 
     private fun validateServiceOrderViewState(){

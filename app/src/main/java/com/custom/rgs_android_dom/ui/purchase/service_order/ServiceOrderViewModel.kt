@@ -27,7 +27,7 @@ import io.reactivex.schedulers.Schedulers
 class ServiceOrderViewModel(
     private val serviceId: String,
     private val productId: String,
-    private val deliveryType: String?,
+    private val deliveryType: DeliveryType?,
     private val propertyInteractor: PropertyInteractor,
     private val catalogInteractor: CatalogInteractor,
     private val purchaseInteractor: PurchaseInteractor

@@ -4,8 +4,10 @@ import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.responses.*
 import com.custom.rgs_android_dom.domain.catalog.models.*
 import com.custom.rgs_android_dom.domain.catalog.models.ClientProductModel
+import com.custom.rgs_android_dom.domain.purchase.models.DeliveryType
 import com.custom.rgs_android_dom.utils.asEnumOrDefault
 import com.custom.rgs_android_dom.utils.safeLet
+import java.lang.IllegalArgumentException
 
 object CatalogMapper {
 
@@ -137,7 +139,11 @@ object CatalogMapper {
                 null
             },
             deliveryTime = response.deliveryTime,
-            deliveryType = response.deliveryType,
+            deliveryType = when (response.deliveryType) {
+                "online" -> DeliveryType.ONLINE
+                "visit" -> DeliveryType.VISIT
+                else -> null
+            },
             description = response.description,
             descriptionFormat = response.descriptionFormat,
             descriptionRef = response.descriptionRef,
@@ -217,7 +223,11 @@ object CatalogMapper {
             serviceCode = response.serviceCode,
             serviceId = response.serviceId,
             serviceName = response.serviceName,
-            serviceDeliveryType = response.serviceDeliveryType,
+            serviceDeliveryType = when (response.serviceDeliveryType) {
+                "online" -> DeliveryType.ONLINE
+                "visit" -> DeliveryType.VISIT
+                else -> throw IllegalArgumentException("wrong argument ${response.serviceDeliveryType} for serviceDeliveryType")
+            },
             serviceVersionId = response.serviceVersionId
         )
     }

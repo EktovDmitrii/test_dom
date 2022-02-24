@@ -96,7 +96,7 @@ class PurchaseViewModel(
         if (purchaseObserver.value?.defaultProduct == true){
             isEnableButtonController.value = purchaseObserver.value?.email != null &&
                     purchaseObserver.value?.card != null &&
-                    (purchaseObserver.value?.deliveryType == "online" || purchaseObserver.value?.propertyItemModel != null) &&
+                    (purchaseObserver.value?.deliveryType == DeliveryType.ONLINE || purchaseObserver.value?.propertyItemModel != null) &&
                     purchaseObserver.value?.purchaseDateTimeModel != null
         } else {
             isEnableButtonController.value = purchaseObserver.value?.email != null &&
