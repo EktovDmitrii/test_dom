@@ -14,7 +14,8 @@ import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
 class PropertyInfoFragment :
-    BaseBottomSheetFragment<PropertyInfoViewModel, FragmentPropertyInfoBinding>() {
+    BaseBottomSheetFragment<PropertyInfoViewModel, FragmentPropertyInfoBinding>(),
+    EditPropertyBottomSheetFragment.EditPropertyInfoListener {
 
     override val TAG: String = "PROPERTY_INFO_FRAGMENT"
 
@@ -49,7 +50,8 @@ class PropertyInfoFragment :
         }
 
         binding.moreImageView.setOnDebouncedClickListener {
-
+            val editPropertyInfoBottomSheetFragment = EditPropertyBottomSheetFragment.newInstance()
+            editPropertyInfoBottomSheetFragment.show(childFragmentManager, EditPropertyBottomSheetFragment.TAG)
         }
 
         subscribe(viewModel.propertyItemObserver) { propertyItem ->
@@ -102,6 +104,14 @@ class PropertyInfoFragment :
 
     override fun isNavigationViewVisible(): Boolean {
         return false
+    }
+
+    override fun onEditPropertyClicked() {
+        viewModel.navigateToEditProperty()
+    }
+
+    override fun onDeletePropertyClicked() {
+        // TODO не в этой задаче
     }
 
 }

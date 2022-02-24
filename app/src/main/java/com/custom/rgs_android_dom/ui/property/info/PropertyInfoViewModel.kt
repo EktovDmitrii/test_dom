@@ -7,7 +7,9 @@ import com.custom.rgs_android_dom.ui.managers.MSDConnectivityManager
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.property.add.details.PropertyDetailsFragment
 import com.custom.rgs_android_dom.ui.property.document.DocumentListFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -119,6 +121,12 @@ class PropertyInfoViewModel(
                 objectId,
                 propertyItemObserver.value!!
             )
+        )
+    }
+
+    fun navigateToEditProperty() {
+        ScreenManager.showScreen(
+            EditPropertyInfoFragment.newInstance()
         )
     }
 }
