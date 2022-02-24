@@ -51,40 +51,44 @@ class SingleProductViewModel(
     fun onCheckoutClick() {
         productController.value?.let { product ->
             if (registrationInteractor.isAuthorized()) {
-                if (product.isPurchased){
-                    product.validityFrom?.let { validityFrom->
-                        catalogInteractor.getProductServices(product.id, product.isPurchased, product.validityFrom)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribeBy(
-                                onSuccess = {
-                                    if (it.isNotEmpty()){
-                                        val serviceOrderFragment = ServiceOrderFragment.newInstance(
-                                            it[0].serviceId,
-                                            product.id
-                                        )
-                                        ScreenManager.showScreen(serviceOrderFragment)
-                                    }
-
-                                },
-                                onError = {
-                                    logException(this, it)
+                catalogInteractor.getProductServices(
+                    product.id,
+                    product.isPurchased,
+                    product.validityFrom
+                )
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeBy(
+                        onSuccess = {
+                            if (it.isNotEmpty()) {
+                                if (product.isPurchased) { // TODO временно до новой другой задачи
+                                    val serviceOrderFragment = ServiceOrderFragment.newInstance(
+                                        it[0].serviceId,
+                                        product.id,
+                                        it[0].serviceDeliveryType
+                                    )
+                                    ScreenManager.showScreen(serviceOrderFragment)
+                                } else {
+                                    val purchaseServiceModel = PurchaseModel(
+                                        id = product.id,
+                                        defaultProduct = product.defaultProduct,
+                                        duration = product.duration,
+                                        deliveryTime = product.deliveryTime,
+                                        deliveryType = it[0].serviceDeliveryType,
+                                        logoSmall = product.logoSmall,
+                                        name = product.name,
+                                        price = product.price
+                                    )
+                                    val purchaseFragment =
+                                        PurchaseFragment.newInstance(purchaseServiceModel)
+                                    ScreenManager.showScreenScope(purchaseFragment, PAYMENT)
                                 }
-                            ).addTo(dataCompositeDisposable)
-                    }
-                } else {
-                    val purchaseServiceModel = PurchaseModel(
-                        id = product.id,
-                        defaultProduct = product.defaultProduct,
-                        duration = product.duration,
-                        deliveryTime = product.deliveryTime,
-                        logoSmall = product.logoSmall,
-                        name = product.name,
-                        price = product.price
-                    )
-                    val purchaseFragment = PurchaseFragment.newInstance(purchaseServiceModel)
-                    ScreenManager.showScreenScope(purchaseFragment, PAYMENT)
-                }
+                            }
+                        },
+                        onError = {
+                            logException(this, it)
+                        }
+                    ).addTo(dataCompositeDisposable)
             } else {
                 ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
             }
