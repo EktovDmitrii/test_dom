@@ -12,14 +12,12 @@ import com.custom.rgs_android_dom.domain.purchase.models.*
 import com.custom.rgs_android_dom.domain.purchase.view_states.ServiceOrderViewState
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.client.order_detail.OrderDetailFragment
-import com.custom.rgs_android_dom.ui.client.orders.OrdersFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.purchase.add.comment.AddCommentFragment
 import com.custom.rgs_android_dom.ui.purchase.select.date_time.PurchaseDateTimeFragment
 import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressFragment
 import com.custom.rgs_android_dom.utils.ProgressTransformer
 import com.custom.rgs_android_dom.utils.logException
-import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -29,6 +27,7 @@ import io.reactivex.schedulers.Schedulers
 class ServiceOrderViewModel(
     private val serviceId: String,
     private val productId: String,
+    private val deliveryType: DeliveryType?,
     private val propertyInteractor: PropertyInteractor,
     private val catalogInteractor: CatalogInteractor,
     private val purchaseInteractor: PurchaseInteractor
@@ -52,6 +51,8 @@ class ServiceOrderViewModel(
         ){ service, propertyList ->
             propertyCount = propertyList.size
             serviceController.postValue(service)
+
+            purchaseInteractor.setPropertyOptional(deliveryType ?: service.deliveryType)
         }
         .compose(
             ProgressTransformer(
