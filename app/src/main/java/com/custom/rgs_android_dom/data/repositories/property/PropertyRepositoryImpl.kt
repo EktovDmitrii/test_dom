@@ -67,6 +67,16 @@ class PropertyRepositoryImpl(
         }
     }
 
+    override fun updatePropertyInfo(
+        objectId: String,
+        propertyItemModel: PropertyItemModel
+    ): Single<PropertyItemModel> {
+        val updatePropertyRequest = PropertyMapper.propertyToRequest(propertyItemModel)
+        return api.updatePropertyInfo(objectId, updatePropertyRequest).map { response ->
+            PropertyMapper.responseToProperty(response)
+        }
+    }
+
     override fun getAllProperty(): Single<List<PropertyItemModel>> {
         return api.getAllProperty().map { response ->
             response.objects?.map { PropertyMapper.responseToProperty(it) } ?: listOf()

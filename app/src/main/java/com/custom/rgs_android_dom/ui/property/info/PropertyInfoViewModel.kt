@@ -126,7 +126,7 @@ class PropertyInfoViewModel(
 
     fun navigateToEditProperty() {
         ScreenManager.showScreen(
-            EditPropertyInfoFragment.newInstance()
+            EditPropertyInfoFragment.newInstance(objectId)
         )
     }
 }

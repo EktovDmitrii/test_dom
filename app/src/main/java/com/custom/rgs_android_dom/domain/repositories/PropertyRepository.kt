@@ -24,6 +24,11 @@ interface PropertyRepository {
         documents: List<PropertyDocument>
     ): Completable
 
+    fun updatePropertyInfo(
+        objectId: String,
+        propertyItemModel: PropertyItemModel
+    ): Single<PropertyItemModel>
+
     fun getAllProperty(): Single<List<PropertyItemModel>>
 
     fun getPropertyItem(objectId: String): Single<PropertyItemModel>
