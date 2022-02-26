@@ -33,6 +33,7 @@ import com.custom.rgs_android_dom.ui.chats.chat.files.viewers.image.ImageViewerV
 import com.custom.rgs_android_dom.ui.chats.chat.files.viewers.video.VideoPlayerViewModel
 import com.custom.rgs_android_dom.ui.chats.ChatsViewModel
 import com.custom.rgs_android_dom.ui.client.order_detail.OrderDetailViewModel
+import com.custom.rgs_android_dom.ui.client.order_detail.cancel_order.CancelOrderViewModel
 import com.custom.rgs_android_dom.ui.client.orders.OrdersViewModel
 import com.custom.rgs_android_dom.ui.main.MainViewModel
 import com.custom.rgs_android_dom.ui.client.personal_data.add_photo.AddPhotoViewModel
@@ -90,7 +91,7 @@ val viewModelModule = module {
     viewModel { parameters-> CountriesViewModel(selectedCountryLetterCode = parameters.get(), countriesInteractor = get())}
     viewModel { ClientViewModel(clientInteractor = get(), registrationInteractor = get(), propertyInteractor = get()) }
     viewModel { OrdersViewModel(clientInteractor = get(), purchaseInteractor = get()) }
-    viewModel { parameters -> OrderDetailViewModel(chatInteractor = get(), order = parameters.get()) }
+    viewModel { parameters -> OrderDetailViewModel(chatInteractor = get(), order = parameters.get(), clientInteractor = get()) }
     viewModel { RootViewModel(registrationInteractor = get(), clientInteractor = get(), chatInteractor = get()) }
     viewModel { PersonalDataViewModel(clientInteractor = get()) }
     viewModel { EditPersonalDataViewModel(clientInteractor = get()) }
@@ -141,7 +142,7 @@ val viewModelModule = module {
     viewModel { SOSViewModel(chatInteractor = get(), registrationInteractor = get(), clientInteractor = get(), context = get()) }
     viewModel { parameters -> PaymentWebViewViewModel(url = parameters.get()) }
     viewModel { parameters -> PaymentErrorViewModel(firstFragmentId = parameters[0]) }
-    viewModel { parameters -> PaymentSuccessViewModel(productId = parameters[0], email = parameters[1], purchaseInteractor = get(), catalogInteractor = get()) }
+    viewModel { parameters -> PaymentSuccessViewModel(productId = parameters[0], email = parameters[1], orderId = parameters[2], purchaseInteractor = get(), catalogInteractor = get(), clientInteractor = get()) }
     viewModel { parameters -> StoriesViewModel(tab = parameters.get()) }
     viewModel { TabNewServiceViewModel() }
     viewModel { TabGuaranteeViewModel() }
@@ -154,4 +155,5 @@ val viewModelModule = module {
     viewModel { parameters -> ServiceOrderViewModel(serviceId = parameters[0], productId = parameters[1], deliveryType = parameters[2], propertyInteractor = get(), catalogInteractor = get(), purchaseInteractor = get()) }
     viewModel { parameters -> PolicyViewModel(contractId = parameters.get(),policiesInteractor = get()) }
     viewModel { ChatsViewModel(chatInteractor = get(), registrationInteractor = get()) }
+    viewModel { parameters -> CancelOrderViewModel(order = parameters[0], clientInteractor = get()) }
 }

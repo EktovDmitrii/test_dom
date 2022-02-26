@@ -213,10 +213,11 @@ class PurchaseViewModel(
                     onSuccess = {
                         ScreenManager.showScreenScope(
                             PaymentWebViewFragment.newInstance(
-                                url = it,
+                                url = it.paymentUrl,
                                 productId = purchase.id,
                                 email = purchase.email,
                                 price = purchase.price?.amount.toString(),
+                                orderId = it.orderId,
                                 fragmentId = navigateId
                             ), PAYMENT
                         )

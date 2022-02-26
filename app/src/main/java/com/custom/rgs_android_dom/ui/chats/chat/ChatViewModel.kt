@@ -171,7 +171,8 @@ class ChatViewModel(
                 url = paymentUrl ,
                 productId = productId,
                 email =  email ?: "",
-                price = amount.toString()
+                price = amount.toString(),
+                orderId = ""
             ), PAYMENT
         )
     }

@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.data.network.requests.*
 import com.custom.rgs_android_dom.domain.client.models.Order
 import com.custom.rgs_android_dom.domain.purchase.models.CardModel
 import com.custom.rgs_android_dom.domain.purchase.models.NewCardModel
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseInfoModel
 import com.custom.rgs_android_dom.domain.repositories.PurchaseRepository
 import com.custom.rgs_android_dom.utils.safeLet
 import io.reactivex.Single
@@ -36,7 +37,7 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
         timeFrom: String?,
         timeTo: String?,
         withOrder: Boolean
-    ): Single<String> {
+    ): Single<PurchaseInfoModel> {
 
         var orderRequest: OrderRequest? = null
         if (comment != null){
@@ -84,7 +85,7 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
             productId = productId,
             order = purchaseRequest
         ).map {
-            PurchaseMapper.responseToPaymentUrl(it)
+            PurchaseMapper.responseToPurchaseInfo(it)
         }
     }
 

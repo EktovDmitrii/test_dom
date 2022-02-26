@@ -268,4 +268,9 @@ interface MSDApi {
     @PUT("chat/users/me/channels/{channelId}/typing")
     fun notifyTyping(@Path("channelId") channelId: String): Completable
 
+    @POST("clients/me/orders/{orderId}/tasks/requests/cancellations")
+    fun cancelTask(@Path("orderId") orderId: String): Single<CancelledTaskResponse>
+
+    @GET("clients/me/orders/{orderId}/tasks/requests/cancellations")
+    fun getCancelledTasks(@Path("orderId") orderId: String): Single<CancelledTasksResponse>
 }
