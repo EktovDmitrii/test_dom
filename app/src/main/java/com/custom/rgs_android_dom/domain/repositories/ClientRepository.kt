@@ -1,5 +1,7 @@
 package com.custom.rgs_android_dom.domain.repositories
 
+import androidx.core.content.edit
+import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.domain.client.models.*
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -60,5 +62,13 @@ interface ClientRepository {
         orderIds: String,
         withPayments: Boolean
     ): Single<List<GeneralInvoice>>
+
+    fun getOrder(orderId: String): Single<Order>
+
+    fun cancelOrder(orderId: String): Completable
+
+    fun getOrderCancelledSubject(): PublishSubject<Unit>
+
+    fun getCancelledTasks(orderId: String): Single<List<CancelledTaskModel>>
 
 }

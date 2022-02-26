@@ -113,7 +113,12 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
     }
 
     fun getAvailableServices(): Single<List<AvailableServiceModel>>{
-        return catalogRepository.getAvailableServices()
+        return Single.zip(catalogRepository.getClientProducts(), catalogRepository.getAvailableServices()){products, services->
+           return@zip services.filter { service->
+               val product = products.find { it.productId == service.productId && it.defaultProduct }
+               return@filter product == null
+           }
+        }
     }
 
     fun getClientProducts(): Single<List<ClientProductModel>>{

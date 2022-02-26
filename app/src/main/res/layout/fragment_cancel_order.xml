@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@android:color/transparent">
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -15,14 +16,16 @@
             android:id="@+id/swipeAnchorLayout"
             layout="@layout/layout_bottom_sheet_swipe_anchor" />
 
-        <ImageView
-            android:layout_width="146dp"
-            android:layout_height="146dp"
-            android:layout_marginTop="60dp"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iconImageView"
+            android:layout_width="303dp"
+            android:layout_height="160dp"
+            android:layout_marginTop="54dp"
             android:layout_gravity="center"
-            android:background="@drawable/ic_cancel_order"/>
+            app:srcCompat="@drawable/ic_question"/>
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/secondary900"
@@ -43,11 +46,18 @@
             android:paddingHorizontal="20dp"
             android:layout_gravity="center"
             android:textAlignment="center"
-            app:translationTextKey="Консультант свяжется с вами в чате,
-чтобы уточнить несколько вопросов"/>
+            app:translationTextKey="Мастер онлайн свяжется с вами в чате,\nчтобы уточнить несколько вопросов"/>
+
+        <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullWidth
+            android:id="@+id/cancelOrderTextView"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="32dp"
+            android:paddingHorizontal="24dp"
+            app:translationTextKey="Отменить заказ" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
-            android:id="@+id/applyTextView"
+            android:id="@+id/successTextView"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@drawable/button_filled_primary500_radius_12dp"
@@ -57,16 +67,19 @@
             android:textColor="@color/white"
             android:textSize="14sp"
             android:layout_marginHorizontal="24dp"
-            app:translationTextKey="Отменить заказ"/>
+            android:layout_marginBottom="22dp"
+            android:visibility="gone"
+            app:translationTextKey="Отлично!"
+            tools:visibility="gone"/>
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
-            android:id="@+id/cancelTextView"
+            android:id="@+id/closeTextView"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:fontFamily="@font/my_service_bold"
             android:gravity="center"
             android:layout_marginTop="12dp"
-            android:layout_marginBottom="34dp"
+            android:layout_marginBottom="22dp"
             android:textColor="@color/primary500"
             android:textSize="14sp"
             android:layout_marginHorizontal="24dp"

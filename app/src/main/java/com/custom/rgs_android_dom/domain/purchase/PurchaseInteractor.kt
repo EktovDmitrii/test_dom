@@ -37,7 +37,7 @@ class PurchaseInteractor(
         timeFrom: String?,
         timeTo: String?,
         withOrder: Boolean
-    ): Single<String> {
+    ): Single<PurchaseInfoModel> {
         return purchaseRepository.makeProductPurchase(
             productId = productId,
             bindingId = bindingId,

@@ -26,6 +26,7 @@ class ClientRepositoryImpl(
     private val clientUpdatedSubject: PublishSubject<ClientModel> = PublishSubject.create()
     private val editAgentRequestedSubject: PublishSubject<Boolean> = PublishSubject.create()
     private val editPersonalDataRequestedSubject: BehaviorSubject<Boolean> = BehaviorSubject.create()
+    private val orderCancelledSubject: PublishSubject<Unit> = PublishSubject.create()
 
     override fun updateClient(
         firstName: String?,
@@ -233,6 +234,33 @@ class ClientRepositoryImpl(
             .flatMap {
                 Single.just(GeneralInvoiceMapper.responseToDomainModel(it))
             }
+    }
+
+    override fun getOrder(orderId: String): Single<Order> {
+        return api.getOrderDetail(orderId).flatMap {orderResponse->
+            val orderIds = listOf(orderResponse.id)
+            return@flatMap getGeneralInvoices(size = 1000, index = 0, orderIds = orderIds.joinToString(","), withPayments = true)
+                .flatMap {
+                    Single.just(OrdersMapper.responseToOrder(it, orderResponse))
+                }
+        }
+    }
+
+    override fun cancelOrder(orderId: String): Completable {
+        return api.cancelTask(orderId).flatMapCompletable {
+            orderCancelledSubject.onNext(Unit)
+            Completable.complete()
+        }
+    }
+
+    override fun getOrderCancelledSubject(): PublishSubject<Unit> {
+        return orderCancelledSubject
+    }
+
+    override fun getCancelledTasks(orderId: String): Single<List<CancelledTaskModel>> {
+        return api.getCancelledTasks(orderId).map { response->
+            OrdersMapper.responseToCancelledTasks(response)
+        }
     }
 
 }

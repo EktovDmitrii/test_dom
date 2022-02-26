@@ -17,4 +17,7 @@ data class PurchaseResponse(
 
     @SerializedName("bankOrderId")
     val bankOrderId: String?,
+
+    @SerializedName("orderId")
+    val orderId: String?
 )

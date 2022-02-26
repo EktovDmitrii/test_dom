@@ -602,4 +602,20 @@ ClientInteractor(
     fun finishAuth(){
         registrationRepository.finishAuth()
     }
+
+    fun getOrder(orderId: String): Single<Order>{
+        return clientRepository.getOrder(orderId)
+    }
+
+    fun cancelOrder(order: Order): Completable {
+        return clientRepository.cancelOrder(order.id)
+    }
+
+    fun getOrderCancelledSubject(): PublishSubject<Unit>{
+        return clientRepository.getOrderCancelledSubject()
+    }
+
+    fun getCancelledTasks(orderId: String): Single<List<CancelledTaskModel>>{
+        return clientRepository.getCancelledTasks(orderId)
+    }
 }
