@@ -118,7 +118,7 @@ class EditPropertyInfoFragment :
                 binding.isTemporarySelector.setSelection(isTemporary)
             }
 
-            binding.cityApartmentTextInputLayout.setText(propertyViewState.address.regionName.ifEmpty { "Не определено" })
+            binding.cityApartmentTextInputLayout.setText(propertyViewState.address.cityName.ifEmpty { "Не определено" })
             binding.addressApartmentTextInputLayout.setText(propertyViewState.address.addressString)
             binding.totalAreaInputLayout.setText(if (propertyViewState.totalArea.isNotEmpty()) "${propertyViewState.totalArea} м²" else "")
             binding.floorTextInputLayout.setText(propertyViewState.floor)
@@ -126,7 +126,7 @@ class EditPropertyInfoFragment :
             binding.commentInputLayout.setText(propertyViewState.comment)
         }
         subscribe(viewModel.selectAddressItemModelObserver) {
-            binding.cityApartmentTextInputLayout.setText(it.regionName.ifEmpty { "Не определено" })
+            binding.cityApartmentTextInputLayout.setText(it.cityName.ifEmpty { "Не определено" })
             binding.addressApartmentTextInputLayout.setText(it.addressString)
         }
         subscribe(viewModel.isEnabledSaveButtonObserver) {

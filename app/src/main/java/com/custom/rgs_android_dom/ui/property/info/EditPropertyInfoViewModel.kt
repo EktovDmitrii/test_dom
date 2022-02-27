@@ -8,6 +8,7 @@ import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyDocumentValidationException
 import com.custom.rgs_android_dom.domain.property.details.exceptions.ValidatePropertyException
 import com.custom.rgs_android_dom.domain.property.details.view_states.PropertyDetailsViewState
+import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.navigation.UPDATE_PROPERTY
@@ -128,6 +129,10 @@ class EditPropertyInfoViewModel(
 
     fun onPropertyTypeChanged(type: String){
         propertyInteractor.updatePropertyType(type)
+        if (type == PropertyType.HOUSE.type) {
+            propertyInteractor.updatePropertyEntrance("")
+            propertyInteractor.updatePropertyFloor("")
+        }
     }
 
     fun onEntranceChanged(entrance: String) {
