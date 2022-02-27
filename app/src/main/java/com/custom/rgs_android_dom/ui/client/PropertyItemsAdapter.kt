@@ -3,13 +3,17 @@ package com.custom.rgs_android_dom.ui.client
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
+import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.ItemAddPropertyItemBinding
 import com.custom.rgs_android_dom.databinding.ItemPropertyItemBinding
 import com.custom.rgs_android_dom.domain.property.models.AddPropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.ui.base.BaseViewHolder
+import com.custom.rgs_android_dom.utils.GlideApp
+import com.custom.rgs_android_dom.utils.dp
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 
 class PropertyItemsAdapter(
@@ -70,12 +74,19 @@ class PropertyItemsAdapter(
 
         override fun bind(item: PropertyItemModel) {
             binding.nameTextView.text = item.name
-            when (item.type){
-                PropertyType.HOUSE -> {
-                    binding.propertyImageView.setImageResource(R.drawable.ic_type_home)
-                }
-                PropertyType.APARTMENT -> {
-                    binding.propertyImageView.setImageResource(R.drawable.ic_type_apartment_334px)
+            if (item.photoLink != null) {
+                GlideApp.with(binding.root.context)
+                    .load(GlideUrlProvider.makeHeadersGlideUrl(item.photoLink))
+                    .transform(RoundedCorners(24.dp(binding.root.context)))
+                    .into(binding.propertyImageView)
+            } else {
+                when (item.type) {
+                    PropertyType.HOUSE -> {
+                        binding.propertyImageView.setImageResource(R.drawable.ic_type_home)
+                    }
+                    PropertyType.APARTMENT -> {
+                        binding.propertyImageView.setImageResource(R.drawable.ic_type_apartment_334px)
+                    }
                 }
             }
             binding.containerFrameLayout.setOnDebouncedClickListener {

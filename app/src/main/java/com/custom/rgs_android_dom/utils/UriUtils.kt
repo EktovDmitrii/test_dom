@@ -1,16 +1,17 @@
 package com.custom.rgs_android_dom.utils
 
+import android.annotation.SuppressLint
 import android.content.ContentResolver.SCHEME_FILE
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
-import android.util.Log
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.util.*
 import kotlin.text.StringBuilder
 
+@SuppressLint("Range")
 fun Uri.getFileName(context: Context): String? =
     if (SCHEME_FILE == scheme) lastPathSegment
     else context.contentResolver.query(

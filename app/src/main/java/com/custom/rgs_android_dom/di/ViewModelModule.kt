@@ -61,6 +61,7 @@ import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDo
 import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressViewModel
 import com.custom.rgs_android_dom.ui.property.document.DocumentViewModel
 import com.custom.rgs_android_dom.ui.property.document.detail_document.DetailDocumentViewModel
+import com.custom.rgs_android_dom.ui.property.info.EditPropertyAvatarBottomSheetViewModel
 import com.custom.rgs_android_dom.ui.property.info.EditPropertyInfoViewModel
 import com.custom.rgs_android_dom.ui.purchase.*
 import com.custom.rgs_android_dom.ui.purchase.add.agent.AddAgentViewModel
@@ -103,7 +104,8 @@ val viewModelModule = module {
     viewModel { parameters-> PropertyDetailsViewModel(propertyName = parameters[0], propertyAddress = parameters[1], propertyType = parameters[2], propertyInteractor = get(), connectivityManager = get()) }
     viewModel { parameters-> PropertyInfoViewModel(objectId = parameters.get(), propertyInteractor = get(), connectivityManager = get()) }
     viewModel { parameters-> EditPropertyInfoViewModel(objectId = parameters.get(), propertyInteractor = get(), addressInteractor = get()) }
-    viewModel { parameters-> DocumentViewModel(objectId = parameters[0], propertyItemModel = parameters[1], propertyInteractor = get()) }
+    viewModel { parameters-> EditPropertyAvatarBottomSheetViewModel(propertyInteractor = get()) }
+    viewModel { parameters-> DocumentViewModel(objectId = parameters.get(), propertyInteractor = get()) }
     viewModel { parameters-> DetailDocumentViewModel( objectId = parameters[0], documentIndex = parameters[1], propertyItemModel = parameters[2], propertyInteractor = get()) }
     viewModel { ScreenStubViewModel() }
     viewModel { RequestEditAgentViewModel(clientInteractor = get()) }

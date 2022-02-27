@@ -11,7 +11,7 @@
         android:layout_height="0dp"
         android:orientation="horizontal"
         android:overScrollMode="never"
-        app:layout_constraintBottom_toTopOf="@+id/actionsBottomAppBar"
+        app:layout_constraintBottom_toTopOf="@+id/saveBottomAppBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -100,8 +100,10 @@
                     android:src="@drawable/ic_camera" />
 
                 <ImageView
+                    android:id="@+id/propertyAvatarImageView"
                     android:layout_width="116dp"
-                    android:layout_height="116dp" />
+                    android:layout_height="116dp"
+                    />
             </RelativeLayout>
 
             <TextView
@@ -147,7 +149,6 @@
                     android:layout_marginEnd="6dp"
                     android:background="@drawable/bg_selector_property_type_background"
                     android:button="@android:color/transparent"
-                    android:checked="true"
                     android:text="Дом"
                     android:textColor="@color/selector_property_info" />
 
@@ -177,18 +178,31 @@
                 android:textSize="14sp"
                 app:translationTextKey="Адрес" />
 
-            <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
-                android:id="@+id/addressApartmentTextInputLayout"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:clickable="true"
-                app:placeholderText="Адрес"
-                android:inputType="none"
-                android:paddingHorizontal="20dp"
-                app:translationHintKey="Адрес" />
+                android:layout_height="wrap_content">
+
+                <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
+                    android:id="@+id/addressApartmentTextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:maxLength="250"
+                    android:inputType="textMultiLine"
+                    android:paddingHorizontal="20dp"
+                    app:translationHintKey="Адрес" />
+
+                <View
+                    android:id="@+id/addressApartmentClickView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:background="@android:color/transparent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/apartmentDataLinearLayout"
@@ -209,14 +223,15 @@
 
                     <FrameLayout
                         android:layout_width="0dp"
-                        android:layout_height="71dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1">
 
                         <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
                             android:id="@+id/floorTextInputLayout"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_gravity="center_vertical"
+                            android:background="@drawable/bg_property_info_edit_background"
                             android:imeOptions="actionNext"
                             android:inputType="number"
                             android:paddingHorizontal="20dp"
@@ -231,13 +246,14 @@
 
                     <FrameLayout
                         android:layout_width="0dp"
-                        android:layout_height="71dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1">
 
                         <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
                             android:id="@+id/entranceTextInputLayout"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_property_info_edit_background"
                             android:layout_gravity="center_vertical"
                             android:imeOptions="actionNext"
                             android:inputType="number"
@@ -259,7 +275,7 @@
                     android:background="@color/secondary100" />
 
                 <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
-                    android:id="@+id/city_name_apartment_text_input_layout"
+                    android:id="@+id/cityApartmentTextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
@@ -272,69 +288,6 @@
                     app:translationHintKey="Населённый пункт" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/homeDataLinearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/secondary100" />
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="71dp"
-                        android:layout_weight="1">
-
-                        <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
-                            android:id="@+id/corpusHomeTextInputLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:imeOptions="actionNext"
-                            android:paddingHorizontal="20dp"
-                            app:translationHintKey="Корпус" />
-
-                    </FrameLayout>
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/secondary100" />
-
-                    <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="71dp"
-                        android:layout_weight="1">
-
-                        <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
-                            android:id="@+id/city_name_home_text_input_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:imeOptions="actionNext"
-                            android:inputType="none"
-                            android:maxLength="250"
-                            android:paddingHorizontal="20dp"
-                            app:boxStrokeWidth="0dp"
-                            app:boxStrokeWidthFocused="0dp"
-                            app:translationHintKey="Населённый пункт" />
-
-                    </FrameLayout>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
 
             <com.custom.rgs_android_dom.views.text.MSDTextView
                 android:layout_width="match_parent"
@@ -467,7 +420,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/actionsBottomAppBar"
+        android:id="@+id/saveBottomAppBar"
         android:layout_width="match_parent"
         android:layout_height="82dp"
         android:paddingHorizontal="20dp"
@@ -481,7 +434,7 @@
         tools:ignore="BottomAppBar">
 
         <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullWidth
-            android:id="@+id/addTextView"
+            android:id="@+id/saveTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"

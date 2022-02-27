@@ -1,27 +1,15 @@
 package com.custom.rgs_android_dom.ui.property.info
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import by.kirich1409.viewbindingdelegate.CreateMethod
-import by.kirich1409.viewbindingdelegate.viewBinding
-import com.custom.rgs_android_dom.R
+import androidx.activity.result.contract.ActivityResultContracts
 import com.custom.rgs_android_dom.databinding.FragmentEditPropertyAvatarBottomSheetBinding
-import com.custom.rgs_android_dom.utils.args
-import com.custom.rgs_android_dom.utils.goneIf
-import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import java.io.Serializable
+import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
+import com.custom.rgs_android_dom.utils.*
 
-class EditPropertyAvatarBottomSheetFragment : BottomSheetDialogFragment() {
-
-    private var editPropertyAvatarInfoListener: EditPropertyAvatarInfoListener? = null
-
-    private val binding: FragmentEditPropertyAvatarBottomSheetBinding by viewBinding(createMethod = CreateMethod.INFLATE)
+class EditPropertyAvatarBottomSheetFragment : BaseBottomSheetModalFragment<EditPropertyAvatarBottomSheetViewModel, FragmentEditPropertyAvatarBottomSheetBinding>() {
 
     companion object {
-        const val TAG: String = "EDIT_PROPERTY_AVATAR_INFO_FRAGMENT"
         private const val ARG_AVATAR_IS_EXIST: String = "ARG_AVATAR_IS_EXIST"
 
         fun newInstance(isExistAvatar: Boolean): EditPropertyAvatarBottomSheetFragment =
@@ -30,41 +18,28 @@ class EditPropertyAvatarBottomSheetFragment : BottomSheetDialogFragment() {
             }
     }
 
-    override fun getTheme(): Int {
-        return R.style.BottomSheet
-    }
+    override val TAG: String = "ADD_PHOTO_FRAGMENT"
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        if (parentFragment is EditPropertyAvatarInfoListener) {
-            editPropertyAvatarInfoListener = parentFragment as EditPropertyAvatarInfoListener
+    private val getPhotoFromGalleryAction =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.convertToFile(requireActivity())?.let {
+                viewModel.onAvatarSelected(it)
+            }
         }
-
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val isExistAvatar = requireArguments().getBoolean(ARG_AVATAR_IS_EXIST, false)
         binding.deletePropertyAvatarTextView.goneIf(!isExistAvatar)
+        binding.dividerView1.goneIf(!isExistAvatar)
+
         binding.editPropertyAvatarTextView.setOnDebouncedClickListener {
-            editPropertyAvatarInfoListener?.onLoadAvatarClicked()
-            dismissAllowingStateLoss()
+            getPhotoFromGalleryAction.launch("image/*")
         }
+
         binding.deletePropertyAvatarTextView.setOnDebouncedClickListener {
-            editPropertyAvatarInfoListener?.onDeleteAvatarClicked()
-            dismissAllowingStateLoss()
-        }
-        binding.cancelPropertyAvatarTextView.setOnDebouncedClickListener {
-            dismissAllowingStateLoss()
+            viewModel.onDeleteAvatarClick()
         }
     }
 
-    interface EditPropertyAvatarInfoListener : Serializable {
-        fun onLoadAvatarClicked()
-        fun onDeleteAvatarClicked()
-    }
 }

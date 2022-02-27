@@ -7,9 +7,8 @@ import com.custom.rgs_android_dom.ui.managers.MSDConnectivityManager
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
-import com.custom.rgs_android_dom.ui.property.add.details.PropertyDetailsFragment
+import com.custom.rgs_android_dom.ui.navigation.UPDATE_PROPERTY
 import com.custom.rgs_android_dom.ui.property.document.DocumentListFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -31,18 +30,7 @@ class PropertyInfoViewModel(
     val internetConnectionObserver: LiveData<Boolean> = internetConnectionController
 
     init {
-        propertyInteractor.getPropertyItem(objectId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onSuccess = {
-                    propertyInteractor.propertyInfoStateSubject.onNext(it)
-                },
-                onError = {
-                    logException(this, it)
-                    networkErrorController.value = "Не удалось загрузить объект"
-                }
-            ).addTo(dataCompositeDisposable)
+        getPropertyItem()
 
         propertyInteractor.propertyInfoStateSubject
             .subscribeOn(Schedulers.io())
@@ -95,10 +83,36 @@ class PropertyInfoViewModel(
             }
             .addTo(dataCompositeDisposable)
 
+        propertyInteractor.getPropertyAddedSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    getPropertyItem()
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+    }
+
+    private fun getPropertyItem() {
+        propertyInteractor.getPropertyItem(objectId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    propertyInteractor.propertyInfoStateSubject.onNext(it)
+                },
+                onError = {
+                    logException(this, it)
+                    networkErrorController.value = "Не удалось загрузить объект"
+                }
+            ).addTo(dataCompositeDisposable)
     }
 
     private fun updateDocuments(currentModel: PropertyItemModel, uri: List<Uri>) {
-        propertyInteractor.updatePropertyItem(
+        propertyInteractor.updatePropertyDocuments(
             objectId = objectId,
             propertyItemModel = currentModel,
             filesUri = uri,
@@ -117,16 +131,14 @@ class PropertyInfoViewModel(
 
     fun onShowAllDocumentsClick() {
         ScreenManager.showScreen(
-            DocumentListFragment.newInstance(
-                objectId,
-                propertyItemObserver.value!!
-            )
+            DocumentListFragment.newInstance(objectId)
         )
     }
 
     fun navigateToEditProperty() {
-        ScreenManager.showScreen(
-            EditPropertyInfoFragment.newInstance(objectId)
+        ScreenManager.showScreenScope(
+            EditPropertyInfoFragment.newInstance(objectId),
+            UPDATE_PROPERTY
         )
     }
 }

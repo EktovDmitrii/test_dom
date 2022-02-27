@@ -19,5 +19,11 @@ data class PropertyAddressResponse(
     val regionFiasId: String?,
 
     @SerializedName("regionName")
-    val regionName: String?
+    val regionName: String?,
+
+    @SerializedName("entrance")
+    val entrance: Int? = null,
+
+    @SerializedName("floor")
+    val floor: Int? = null
 )

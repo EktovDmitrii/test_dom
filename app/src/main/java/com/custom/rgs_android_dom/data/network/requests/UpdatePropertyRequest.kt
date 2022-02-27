@@ -28,6 +28,9 @@ data class UpdatePropertyRequest (
     @SerializedName("name")
     val name: String,
 
+    @SerializedName("photoLink")
+    val photoLink: String?,
+
     @SerializedName("totalArea")
     val totalArea: Float?
 )

@@ -3,13 +3,12 @@ package com.custom.rgs_android_dom.ui.property.info
 import android.os.Bundle
 import android.view.View
 import com.custom.rgs_android_dom.R
+import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentPropertyInfoBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsFragment
-import com.custom.rgs_android_dom.utils.args
-import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
-import com.custom.rgs_android_dom.utils.subscribe
+import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -68,6 +67,11 @@ class PropertyInfoFragment :
             binding.titleTextView.text = propertyItem.name
             binding.subtitleTextView.text = propertyItem.address?.address ?: ""
             binding.addressTextView.setValue(propertyItem.address?.address ?: "")
+            propertyItem.photoLink?.let{
+                GlideApp.with(requireContext())
+                    .load(GlideUrlProvider.makeHeadersGlideUrl(it))
+                    .into(binding.propertyImageView)
+            }
 
             propertyItem.isOwn?.let { isOwn ->
                 binding.isOwnTextView.setValue(if (isOwn) "Да" else "Нет")

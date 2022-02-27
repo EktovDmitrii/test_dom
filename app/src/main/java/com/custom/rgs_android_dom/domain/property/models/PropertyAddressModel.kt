@@ -8,5 +8,7 @@ data class PropertyAddressModel(
     val cityName: String,
     val fiasId: String,
     val regionFiasId: String,
-    val regionName: String
+    val regionName: String,
+    val entrance: Int?,
+    val floor: Int?,
 ) : Serializable
