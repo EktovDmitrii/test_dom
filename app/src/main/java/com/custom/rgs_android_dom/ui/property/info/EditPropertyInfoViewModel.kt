@@ -21,9 +21,13 @@ import io.reactivex.schedulers.Schedulers
 
 class EditPropertyInfoViewModel(
     private val objectId: String,
+    private val isEditable: Boolean,
     private val propertyInteractor: PropertyInteractor,
     private val addressInteractor: AddressInteractor
     ) : BaseViewModel() {
+
+    private val objectIdController = MutableLiveData(objectId)
+    val objectIdObserver: LiveData<String> = objectIdController
 
     private val propertyDetailsViewStateController = MutableLiveData<PropertyDetailsViewState>()
     val propertyDetailsObserver: LiveData<PropertyDetailsViewState> = propertyDetailsViewStateController
@@ -39,6 +43,12 @@ class EditPropertyInfoViewModel(
 
     private val uploadedLocallyAvatarController = MutableLiveData<String>()
     val uploadedLocallyAvatarObserver: LiveData<String> = uploadedLocallyAvatarController
+
+    private val editPropertyRequestedController = MutableLiveData<Boolean>()
+    val editPropertyRequestedObserver: LiveData<Boolean> = editPropertyRequestedController
+
+    private val isPropertyEditableController = MutableLiveData(isEditable)
+    val isPropertyEditableObserver: LiveData<Boolean> = isPropertyEditableController
 
     init {
         propertyInteractor.getPropertyItem(objectId)
@@ -116,6 +126,30 @@ class EditPropertyInfoViewModel(
                 onNext = {
                     uploadedLocallyAvatarController.value = it
                     isExistAvatarController.value = !it.isNullOrEmpty()
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
+        propertyInteractor.getModifications(objectId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    editPropertyRequestedController.value = it.isNotEmpty()
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
+        propertyInteractor.getEditPropertyRequestedSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    editPropertyRequestedController.value = it
                 },
                 onError = {
                     logException(this, it)

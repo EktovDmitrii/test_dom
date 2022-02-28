@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.data.network.mappers.PropertyMapper
 import com.custom.rgs_android_dom.data.network.requests.*
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
+import com.custom.rgs_android_dom.domain.property.models.ModificationTask
 import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PostPropertyDocument
@@ -13,6 +14,7 @@ import com.custom.rgs_android_dom.domain.repositories.PropertyRepository
 import com.custom.rgs_android_dom.utils.toMultipartFormData
 import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import java.io.File
 
@@ -32,7 +34,7 @@ class PropertyRepositoryImpl(
     private val propertyAvatarRemovedSubject = PublishSubject.create<Unit>()
     private val propertyDocumentsUploadedSubject = PublishSubject.create<List<Uri>>()
     private val propertyDocumentsDeletedSubject = PublishSubject.create<PropertyItemModel>()
-
+    private val editPropertyRequestedSubject: BehaviorSubject<Boolean> = BehaviorSubject.create()
 
     override fun addProperty(
         name: String,
@@ -173,6 +175,23 @@ class PropertyRepositoryImpl(
         val updatePropertyRequest = PropertyMapper.propertyToRequest(propertyItemModel)
         return api.updatePropertyItem(objectId, updatePropertyRequest).map { response ->
             PropertyMapper.responseToProperty(response)
+        }
+    }
+
+    override fun getEditPropertyRequestedSubject(): BehaviorSubject<Boolean> {
+        return editPropertyRequestedSubject
+    }
+
+    override fun requestEditProperty(objectId: String): Completable {
+        return api.requestModification(objectId).map {
+            editPropertyRequestedSubject.onNext(true)
+        }.ignoreElement()
+    }
+
+    override fun getModifications(objectId: String): Single<List<ModificationTask>> {
+        return api.getObjectModifications(objectId).map {
+            editPropertyRequestedSubject.onNext(!it.tasks.isNullOrEmpty())
+            PropertyMapper.responseToModifications(it)
         }
     }
 }
