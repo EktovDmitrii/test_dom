@@ -26,7 +26,7 @@ sealed class WidgetModel(open val widgetType: String?) {
         val orderTime: OrderTimeModel?,
         val productId: String?,
         override val widgetType: String?,
-        val price1: Int?
+        val price: Int?
     ) : WidgetModel(widgetType)
 
     data class WidgetAdditionalInvoiceModel(

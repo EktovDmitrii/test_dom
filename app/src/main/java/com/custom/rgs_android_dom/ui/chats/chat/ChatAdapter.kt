@@ -453,8 +453,8 @@ class ChatAdapter(
             } else {
                 binding.propertyLinearLayout.gone()
             }
-            binding.priceTextView.text = widget.price1?.formatPriceGroupedByThousands()
-            binding.amountToPayTextView.text = widget.price1?.formatPriceGroupedByThousands()
+            binding.priceTextView.text = widget.price?.formatPriceGroupedByThousands()
+            binding.amountToPayTextView.text = widget.price?.formatPriceGroupedByThousands()
             binding.timeTextView.text = widget.orderTime?.formatOrderTime()
             binding.dateTextView.text = widget.orderDate?.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
             binding.serviceNameTextView.text = widget.name
@@ -497,7 +497,7 @@ class ChatAdapter(
             val widget = model.widget as WidgetModel.WidgetOrderComplexProductModel
             binding.serviceNameTextView.text = widget.name
             binding.durationTextView.text = widget.deliveryTime?.formatDeliveryTime()
-            binding.priceTextView.text = "0"
+            binding.priceTextView.text = 0.simplePriceFormat()
             val icon = widget.icon
             if (!icon.isNullOrEmpty()) {
                 GlideApp.with(binding.serviceImageView.context)

@@ -9,6 +9,8 @@ import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Single
 import okhttp3.MultipartBody
+import org.json.JSONObject
+import retrofit2.Call
 import retrofit2.http.*
 import kotlin.reflect.KClass
 

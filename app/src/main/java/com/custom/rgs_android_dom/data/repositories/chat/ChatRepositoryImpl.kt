@@ -5,23 +5,19 @@ import android.util.Log
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.db.MSDDatabase
 import com.custom.rgs_android_dom.data.db.mappers.ChatsDbMapper
-import com.custom.rgs_android_dom.data.db.models.chat.CaseDbModel
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.ChatMapper
 import com.custom.rgs_android_dom.data.network.requests.SendMessageRequest
-import com.custom.rgs_android_dom.data.network.responses.ChatFilePreviewResponse
-import com.custom.rgs_android_dom.data.network.responses.ChatMessageResponse
-import com.custom.rgs_android_dom.data.network.responses.WidgetResponse
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.domain.chat.models.*
-import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.domain.repositories.ChatRepository
 import com.custom.rgs_android_dom.ui.managers.MSDConnectivityManager
 import com.custom.rgs_android_dom.ui.managers.MediaOutputManager
 import com.custom.rgs_android_dom.utils.WsResponseParser
 import com.custom.rgs_android_dom.utils.toMultipartFormData
 import com.google.gson.Gson
+import com.google.gson.JsonElement
 import io.livekit.android.ConnectOptions
 import io.livekit.android.LiveKit
 import io.livekit.android.room.Room
@@ -35,7 +31,6 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
@@ -45,17 +40,22 @@ import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import org.joda.time.Duration
 import org.joda.time.LocalDateTime
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
 import java.io.File
 import java.util.concurrent.TimeUnit
 
-class ChatRepositoryImpl(private val api: MSDApi,
-                         private val clientSharedPreferences: ClientSharedPreferences,
-                         private val gson: Gson,
-                         private val authContentProviderManager: AuthContentProviderManager,
-                         private val context: Context,
-                         private val mediaOutputManager: MediaOutputManager,
-                         private val connectivityManager: MSDConnectivityManager,
-                         private val database: MSDDatabase
+
+class ChatRepositoryImpl(
+    private val api: MSDApi,
+    private val clientSharedPreferences: ClientSharedPreferences,
+    private val gson: Gson,
+    private val authContentProviderManager: AuthContentProviderManager,
+    private val context: Context,
+    private val mediaOutputManager: MediaOutputManager,
+    private val connectivityManager: MSDConnectivityManager,
+    private val database: MSDDatabase
 ) : ChatRepository {
 
     companion object {
@@ -71,11 +71,11 @@ class ChatRepositoryImpl(private val api: MSDApi,
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    if (!it){
+                    if (!it) {
                         disconnectFromWebSocket()
                     } else {
                         Log.d(TAG, "ON CONNECTION SUBJECT CHANGED")
-                        if (!isConnected){
+                        if (!isConnected) {
                             connectToWebSocket()
                         }
                     }
@@ -111,10 +111,10 @@ class ChatRepositoryImpl(private val api: MSDApi,
         override fun onMessage(webSocket: WebSocket, text: String) {
             Log.d(TAG, "ON MESSAGE " + text)
             val parsedMessage = wsResponseParser.parse(text, clientSharedPreferences.getClient()?.userId ?: "")
-            if (parsedMessage != null){
+            if (parsedMessage != null) {
                 wsEventSubject.onNext(parsedMessage)
 
-                when (parsedMessage.event){
+                when (parsedMessage.event) {
                     WsEventModel.Event.CALL_DECLINED -> {
                         clearRoomDataOnOpponentDeclined()
                     }
@@ -134,7 +134,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
             wsEventSubject.onNext(WsConnectionModel(WsEventModel.Event.SOCKET_DISCONNECTED))
             throwable.printStackTrace()
             disconnectFromWebSocket()
-            if (connectivityManager.isInternetConnected()){
+            if (connectivityManager.isInternetConnected()) {
                 connectToWebSocket()
             }
         }
@@ -206,10 +206,10 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
     }
 
-    override fun connectToWebSocket(){
+    override fun connectToWebSocket() {
         val token = authContentProviderManager.getAccessToken()
         Log.d(TAG, "CONNECTING TO SOCKET " + token)
-        if (token != null){
+        if (token != null) {
             val wsUrl = BuildConfig.WS_URL.replace("%s", token)
             val clientBuilder = OkHttpClient.Builder()
 
@@ -234,7 +234,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
     }
 
-    override fun disconnectFromWebSocket(){
+    override fun disconnectFromWebSocket() {
         isConnected = false
         webSocket?.close(CLOSE_REASON_NORMAL, null)
         webSocket = null
@@ -251,6 +251,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
         }.map {
             it.reversed()
         }
+
     }
 
     override fun getChannelMembers(channelId: String): Single<List<ChannelMemberModel>> {
@@ -289,7 +290,12 @@ class ChatRepositoryImpl(private val api: MSDApi,
         }
     }
 
-    override suspend fun connectToLiveKitRoom(callJoin: CallJoinModel, callType: CallType, cameraEnabled: Boolean, micEnabled: Boolean) {
+    override suspend fun connectToLiveKitRoom(
+        callJoin: CallJoinModel,
+        callType: CallType,
+        cameraEnabled: Boolean,
+        micEnabled: Boolean
+    ) {
         mediaOutputManager.onCallStarted()
 
         val withVideo = (callType == CallType.VIDEO_CALL && cameraEnabled)
@@ -304,7 +310,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
             roomListener
         )
 
-        val videoTrack = if (withVideo){
+        val videoTrack = if (withVideo) {
             val videoTrack = room.localParticipant.createVideoTrack()
             room.localParticipant.publishVideoTrack(videoTrack)
             videoTrack.startCapture()
@@ -313,7 +319,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
             null
         }
 
-        val audioTrack = if (micEnabled){
+        val audioTrack = if (micEnabled) {
             val audioTrack = room.localParticipant.createAudioTrack()
             audioTrack.enabled = micEnabled
             room.localParticipant.publishAudioTrack(audioTrack)
@@ -345,7 +351,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
     }
 
     override fun leaveLiveKitRoom() {
-        if (roomInfo?.room?.state == Room.State.CONNECTED){
+        if (roomInfo?.room?.state == Room.State.CONNECTED) {
             roomInfo?.room?.disconnect()
         }
         clearRoomData()
@@ -356,7 +362,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
     }
 
     override fun getActualRoomInfo(): RoomInfoModel? {
-        return if (isInCall){
+        return if (isInCall) {
             roomInfo
         } else null
     }
@@ -373,10 +379,10 @@ class ChatRepositoryImpl(private val api: MSDApi,
     override suspend fun enableCamera(enable: Boolean) {
         roomInfo = roomInfo?.copy(cameraEnabled = enable)
 
-        if (enable && roomInfo?.myVideoTrack == null){
+        if (enable && roomInfo?.myVideoTrack == null) {
             val videoTrack = roomInfo?.room?.localParticipant?.createVideoTrack()
 
-            videoTrack?.let {videoTrack->
+            videoTrack?.let { videoTrack ->
                 roomInfo?.room?.localParticipant?.publishVideoTrack(videoTrack)
                 videoTrack.startCapture()
             }
@@ -395,10 +401,10 @@ class ChatRepositoryImpl(private val api: MSDApi,
     override suspend fun enableMic(enable: Boolean) {
         roomInfo = roomInfo?.copy(micEnabled = enable)
 
-        if (enable && roomInfo?.myAudioTrack == null){
-            val audioTrack =  roomInfo?.room?.localParticipant?.createAudioTrack()
+        if (enable && roomInfo?.myAudioTrack == null) {
+            val audioTrack = roomInfo?.room?.localParticipant?.createAudioTrack()
 
-            audioTrack?.let { audioTrack->
+            audioTrack?.let { audioTrack ->
                 roomInfo?.room?.localParticipant?.publishAudioTrack(audioTrack)
             }
             roomInfo = roomInfo?.copy(myAudioTrack = audioTrack)
@@ -411,7 +417,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
         }
     }
 
-    private fun clearRoomData(){
+    private fun clearRoomData() {
         roomInfo = null
         isInCall = false
         clientSharedPreferences.clearLiveKitRoomCredentials()
@@ -426,7 +432,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
         */
     }
 
-    private fun startCallTimer(){
+    private fun startCallTimer() {
         callStartTime = DateTime.now()
         callTimeDisposable = Observable.timer(1000, TimeUnit.MILLISECONDS)
             .repeat()
@@ -439,7 +445,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
             }
     }
 
-    private fun stopCallTimer(){
+    private fun stopCallTimer() {
         callTimeDisposable?.dispose()
         callStartTime = null
     }
@@ -449,7 +455,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
         val localVideoTrackOptions = room.videoTrackCaptureDefaults
         val myVideoTrackOptions = room.localParticipant.videoTrackCaptureDefaults
         val myVideoTrack = (roomInfo?.myVideoTrack as LocalVideoTrack)
-        if (localVideoTrackOptions.position == CameraPosition.FRONT){
+        if (localVideoTrackOptions.position == CameraPosition.FRONT) {
             roomInfo = roomInfo?.copy(frontCameraEnabled = false)
             room.localParticipant.videoTrackCaptureDefaults = myVideoTrackOptions.copy(position = CameraPosition.BACK)
         } else {
@@ -485,7 +491,8 @@ class ChatRepositoryImpl(private val api: MSDApi,
         return Single.zip(
             api.getCases(size = 5000, index = 0),
             api.getSubtypes(size = 5000, index = 0, withArchived = true, withInternal = true),
-            api.getUnreadPostsCount(channelId)){cases, subtypes, unreadPosts->
+            api.getUnreadPostsCount(channelId)
+        ) { cases, subtypes, unreadPosts ->
 
             val cases = ChatsDbMapper.fromResponse(
                 response = cases,

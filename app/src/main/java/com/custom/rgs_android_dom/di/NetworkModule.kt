@@ -4,6 +4,7 @@ import com.custom.rgs_android_dom.data.network.data_adapters.*
 import com.custom.rgs_android_dom.data.network.interceptors.AuthTokenInterceptor
 import com.custom.rgs_android_dom.data.network.interceptors.CustomHttpLoggingInterceptor
 import com.custom.rgs_android_dom.data.network.provider.ApiProvider
+import com.custom.rgs_android_dom.data.network.responses.WidgetResponse
 import com.custom.rgs_android_dom.domain.client.models.Gender
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.domain.chat.models.WsEventModel
@@ -26,6 +27,7 @@ val networkModule = module {
             .registerTypeAdapter(Gender::class.java, GenderGsonAdapter())
             .registerTypeAdapter(PropertyType::class.java, PropertyTypeGsonAdapter())
             .registerTypeAdapter(WsEventModel.Event::class.java, EventGsonAdapter())
+            .registerTypeAdapter(WidgetResponse::class.java, WidgetResponseAdapter())
             .create()
     }
 
