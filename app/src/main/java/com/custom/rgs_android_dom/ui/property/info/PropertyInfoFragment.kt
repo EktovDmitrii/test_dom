@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.databinding.FragmentPropertyInfoBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsFragment
+import com.custom.rgs_android_dom.ui.property.info.more.PropertyMoreFragment
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
@@ -49,7 +50,7 @@ class PropertyInfoFragment :
         }
 
         binding.moreImageView.setOnDebouncedClickListener {
-
+            viewModel.onMoreClick()
         }
 
         subscribe(viewModel.propertyItemObserver) { propertyItem ->
@@ -93,6 +94,11 @@ class PropertyInfoFragment :
 
         subscribe(viewModel.internetConnectionObserver) {
             adapter.onInternetConnectionChanged(it)
+        }
+
+        subscribe(viewModel.propertyMoreObserver){
+            val propertyMoreFragment = PropertyMoreFragment.newInstance(it)
+            propertyMoreFragment.show(childFragmentManager, propertyMoreFragment.TAG)
         }
     }
 

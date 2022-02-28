@@ -28,6 +28,9 @@ class PropertyInfoViewModel(
     private val internetConnectionController = MutableLiveData<Boolean>()
     val internetConnectionObserver: LiveData<Boolean> = internetConnectionController
 
+    private val propertyMoreController = MutableLiveData<PropertyItemModel>()
+    val propertyMoreObserver: LiveData<PropertyItemModel> = propertyMoreController
+
     init {
         propertyInteractor.getPropertyItem(objectId)
             .subscribeOn(Schedulers.io())
@@ -95,6 +98,19 @@ class PropertyInfoViewModel(
 
     }
 
+    fun onShowAllDocumentsClick() {
+        ScreenManager.showScreen(
+            DocumentListFragment.newInstance(
+                objectId,
+                propertyItemObserver.value!!
+            )
+        )
+    }
+
+    fun onMoreClick(){
+        propertyMoreController.value = propertyItemController.value
+    }
+
     private fun updateDocuments(currentModel: PropertyItemModel, uri: List<Uri>) {
         propertyInteractor.updatePropertyItem(
             objectId = objectId,
@@ -111,14 +127,5 @@ class PropertyInfoViewModel(
                     networkErrorController.value = "Не удалось загрузить объект"
                 }
             ).addTo(dataCompositeDisposable)
-    }
-
-    fun onShowAllDocumentsClick() {
-        ScreenManager.showScreen(
-            DocumentListFragment.newInstance(
-                objectId,
-                propertyItemObserver.value!!
-            )
-        )
     }
 }
