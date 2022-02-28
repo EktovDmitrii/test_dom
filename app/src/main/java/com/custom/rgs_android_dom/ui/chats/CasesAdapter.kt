@@ -94,6 +94,19 @@ class CasesAdapter(private val onCaseClick: (CaseModel) -> Unit) : RecyclerView.
                 binding.statusTextView.gone()
 
             } else {
+                model.subtype?.logo?.let {
+                    GlideApp.with(binding.root.context)
+                        .load(GlideUrlProvider.makeHeadersGlideUrl(it))
+                        .apply(
+                            RequestOptions().transform(
+                                CenterCrop(),
+                                RoundedCorners(16.dp(binding.root.context))
+                            )
+                        )
+                        .error(R.drawable.rectangle_filled_secondary_100_radius_16dp)
+                        .into(binding.logoImageView)
+                }
+
                 binding.logoImageView.colorFilter = grayscaleFilter
                 binding.statusTextView.visible()
                 binding.reportedAtTextView.gone()

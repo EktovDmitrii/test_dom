@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.domain.repositories
 
 import com.custom.rgs_android_dom.domain.client.models.Order
 import com.custom.rgs_android_dom.domain.purchase.models.CardModel
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseInfoModel
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 
@@ -20,7 +21,7 @@ interface PurchaseRepository {
         timeFrom: String?,
         timeTo: String?,
         withOrder: Boolean
-    ): Single<String>
+    ): Single<PurchaseInfoModel>
 
     fun orderServiceOnBalance(
         serviceId: String,

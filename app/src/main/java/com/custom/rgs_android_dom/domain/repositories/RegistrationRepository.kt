@@ -41,4 +41,8 @@ interface RegistrationRepository {
     fun getLoginSubject(): PublishSubject<Unit>
 
     fun isFirstRun(): Boolean
+
+    fun getAuthFlowEndedSubject(): PublishSubject<Unit>
+
+    fun finishAuth()
 }

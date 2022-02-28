@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -69,8 +68,6 @@ class ChatFragment : BaseBottomSheetFragment<ChatViewModel, FragmentChatBinding>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d("MyLog", "On View created")
-
         downloadManager = requireContext().getDownloadManager()
 
         val layoutManager = binding.messagesRecyclerView.layoutManager as LinearLayoutManager
@@ -88,7 +85,7 @@ class ChatFragment : BaseBottomSheetFragment<ChatViewModel, FragmentChatBinding>
             },
             {
                 if (!it.paymentUrl.isNullOrEmpty()) {
-                    viewModel.onPayClick(it)
+                    viewModel.onWidgetPayClick(it)
                 }
                 hideSoftwareKeyboard()
             },

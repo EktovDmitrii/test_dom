@@ -1,6 +1,5 @@
-package com.custom.rgs_android_dom.ui.client.order_detail
+package com.custom.rgs_android_dom.ui.client.order_detail.cancel_order
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
@@ -15,27 +14,17 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
 
-class OrderDetailViewModel(
-    private val chatInteractor: ChatInteractor,
-    private val clientInteractor: ClientInteractor,
-    private val order: Order
+class CancelOrderViewModel(
+    private val order: Order,
+    private val clientInteractor: ClientInteractor
 ) : BaseViewModel() {
-
-    private val orderViewStateController = MutableLiveData<Order>()
-    val orderViewStateObserver: LiveData<Order> = orderViewStateController
-
-    private val showCancelOrderScreenController = MutableLiveData<Order>()
-    val showCancelOrderScreenObserver: LiveData<Order> = showCancelOrderScreenController
 
     private val orderCancelledController = MutableLiveData<Unit>()
     val orderCancelledObserver: LiveData<Unit> = orderCancelledController
 
-    private var orderDetails: Order = order
-
     init {
-        orderViewStateController.value = orderDetails
-
         clientInteractor.getOrderCancelledSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -47,33 +36,20 @@ class OrderDetailViewModel(
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
+    }
 
-        clientInteractor.getCancelledTasks(order.id)
+    fun onCancelOrderClick(){
+        clientInteractor.cancelOrder(order)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                loadingStateController.value = LoadingState.LOADING
+            }
             .subscribeBy(
-                onSuccess = {
-                    // TODO Replace with enum when we will have all values
-                    if (it.isNotEmpty() && it[0].status == "open"){
-                        orderCancelledController.value = Unit
-                    }
-                },
                 onError = {
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
     }
 
-    fun onFeedbackClick() {
-        closeController.value = Unit
-        ScreenManager.showBottomScreen(ChatFragment.newInstance(chatInteractor.getMasterOnlineCase()))
-    }
-
-    fun onCancelOrderClick() {
-        showCancelOrderScreenController.value = order
-    }
-
-    fun onBackClick() {
-        closeController.value = Unit
-    }
 }

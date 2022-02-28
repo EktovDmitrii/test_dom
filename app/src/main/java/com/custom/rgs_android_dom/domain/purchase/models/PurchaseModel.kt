@@ -11,6 +11,7 @@ data class PurchaseModel(
     val defaultProduct: Boolean,
     val duration: ProductDurationModel?,
     val deliveryTime: String?,
+    val deliveryType: DeliveryType? = null,
     val logoSmall: String,
     val name: String,
     val price: ProductPriceModel?,
@@ -21,3 +22,8 @@ data class PurchaseModel(
     val purchaseDateTimeModel: PurchaseDateTimeModel? = null,
     val agentCode: String? = null
 ) : Serializable
+
+
+enum class DeliveryType : Serializable {
+    VISIT, ONLINE
+}

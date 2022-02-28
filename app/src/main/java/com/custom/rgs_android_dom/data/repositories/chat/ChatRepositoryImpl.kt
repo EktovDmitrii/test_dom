@@ -15,9 +15,9 @@ import com.custom.rgs_android_dom.domain.repositories.ChatRepository
 import com.custom.rgs_android_dom.ui.managers.MSDConnectivityManager
 import com.custom.rgs_android_dom.ui.managers.MediaOutputManager
 import com.custom.rgs_android_dom.utils.WsResponseParser
+import com.custom.rgs_android_dom.utils.logException
 import com.custom.rgs_android_dom.utils.toMultipartFormData
 import com.google.gson.Gson
-import com.google.gson.JsonElement
 import io.livekit.android.ConnectOptions
 import io.livekit.android.LiveKit
 import io.livekit.android.room.Room
@@ -40,22 +40,17 @@ import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import org.joda.time.Duration
 import org.joda.time.LocalDateTime
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
 import java.io.File
 import java.util.concurrent.TimeUnit
 
-
-class ChatRepositoryImpl(
-    private val api: MSDApi,
-    private val clientSharedPreferences: ClientSharedPreferences,
-    private val gson: Gson,
-    private val authContentProviderManager: AuthContentProviderManager,
-    private val context: Context,
-    private val mediaOutputManager: MediaOutputManager,
-    private val connectivityManager: MSDConnectivityManager,
-    private val database: MSDDatabase
+class ChatRepositoryImpl(private val api: MSDApi,
+                         private val clientSharedPreferences: ClientSharedPreferences,
+                         private val gson: Gson,
+                         private val authContentProviderManager: AuthContentProviderManager,
+                         private val context: Context,
+                         private val mediaOutputManager: MediaOutputManager,
+                         private val connectivityManager: MSDConnectivityManager,
+                         private val database: MSDDatabase
 ) : ChatRepository {
 
     companion object {
@@ -71,11 +66,11 @@ class ChatRepositoryImpl(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    if (!it) {
+                    if (!it){
                         disconnectFromWebSocket()
+                        leaveLiveKitRoom()
                     } else {
-                        Log.d(TAG, "ON CONNECTION SUBJECT CHANGED")
-                        if (!isConnected) {
+                        if (!isConnected){
                             connectToWebSocket()
                         }
                     }
@@ -87,7 +82,7 @@ class ChatRepositoryImpl(
 
     var isConnected = false
 
-    private val wsEventSubject: PublishSubject<WsEventModel<*>> = PublishSubject.create()
+    private val wsMessageSubject: PublishSubject<WsMessageModel<*>> = PublishSubject.create()
     private val wsResponseParser = WsResponseParser(gson)
 
     private val roomInfoSubject = PublishSubject.create<RoomInfoModel>()
@@ -100,25 +95,28 @@ class ChatRepositoryImpl(
     private var isInCall: Boolean = false
     private var roomInfo: RoomInfoModel? = null
 
+    private var socketRecreateDisposable: Disposable? = null
+
     private var webSocket: WebSocket? = null
     private val webSocketListener = object : WebSocketListener() {
 
         override fun onOpen(webSocket: WebSocket, response: Response) {
             Log.d(TAG, "ON OPEN")
-            wsEventSubject.onNext(WsConnectionModel(WsEventModel.Event.SOCKET_CONNECTED))
+            wsMessageSubject.onNext(WsConnectionModel(WsEvent.SOCKET_CONNECTED))
         }
 
         override fun onMessage(webSocket: WebSocket, text: String) {
             Log.d(TAG, "ON MESSAGE " + text)
+            socketRecreateDisposable?.dispose()
             val parsedMessage = wsResponseParser.parse(text, clientSharedPreferences.getClient()?.userId ?: "")
-            if (parsedMessage != null) {
-                wsEventSubject.onNext(parsedMessage)
+            if (parsedMessage != null){
+                wsMessageSubject.onNext(parsedMessage)
 
-                when (parsedMessage.event) {
-                    WsEventModel.Event.CALL_DECLINED -> {
+                when (parsedMessage.event){
+                    WsEvent.CALL_DECLINED -> {
                         clearRoomDataOnOpponentDeclined()
                     }
-                    WsEventModel.Event.ROOM_CLOSED -> {
+                    WsEvent.ROOM_CLOSED -> {
                         clearRoomDataOnOpponentDeclined()
                     }
                 }
@@ -131,10 +129,11 @@ class ChatRepositoryImpl(
 
         override fun onFailure(webSocket: WebSocket, throwable: Throwable, response: Response?) {
             Log.d(TAG, "ON failure")
-            wsEventSubject.onNext(WsConnectionModel(WsEventModel.Event.SOCKET_DISCONNECTED))
-            throwable.printStackTrace()
+            wsMessageSubject.onNext(WsConnectionModel(WsEvent.SOCKET_DISCONNECTED))
+            logException(this, throwable)
             disconnectFromWebSocket()
-            if (connectivityManager.isInternetConnected()) {
+            leaveLiveKitRoom()
+            if (connectivityManager.isInternetConnected()){
                 connectToWebSocket()
             }
         }
@@ -206,10 +205,10 @@ class ChatRepositoryImpl(
 
     }
 
-    override fun connectToWebSocket() {
+    override fun connectToWebSocket(){
         val token = authContentProviderManager.getAccessToken()
         Log.d(TAG, "CONNECTING TO SOCKET " + token)
-        if (token != null) {
+        if (token != null){
             val wsUrl = BuildConfig.WS_URL.replace("%s", token)
             val clientBuilder = OkHttpClient.Builder()
 
@@ -228,10 +227,7 @@ class ChatRepositoryImpl(
                 )
 
             isConnected = true
-
-            Log.d(TAG, "CONNECTED")
         }
-
     }
 
     override fun disconnectFromWebSocket() {
@@ -240,8 +236,8 @@ class ChatRepositoryImpl(
         webSocket = null
     }
 
-    override fun getWsEventsSubject(): PublishSubject<WsEventModel<*>> {
-        return wsEventSubject
+    override fun getWsEventsSubject(): PublishSubject<WsMessageModel<*>> {
+        return wsMessageSubject
     }
 
     override fun getChatHistory(channelId: String): Single<List<ChatMessageModel>> {
@@ -251,7 +247,6 @@ class ChatRepositoryImpl(
         }.map {
             it.reversed()
         }
-
     }
 
     override fun getChannelMembers(channelId: String): Single<List<ChannelMemberModel>> {
@@ -265,6 +260,7 @@ class ChatRepositoryImpl(
     }
 
     override fun sendMessage(channelId: String, message: String?, fileIds: List<String>?): Completable {
+        startSocketRecreateTimer()
         val request = SendMessageRequest(message = message, fileIds = fileIds)
         return api.postMessage(channelId, request)
     }
@@ -290,12 +286,7 @@ class ChatRepositoryImpl(
         }
     }
 
-    override suspend fun connectToLiveKitRoom(
-        callJoin: CallJoinModel,
-        callType: CallType,
-        cameraEnabled: Boolean,
-        micEnabled: Boolean
-    ) {
+    override suspend fun connectToLiveKitRoom(callJoin: CallJoinModel, callType: CallType, cameraEnabled: Boolean, micEnabled: Boolean) {
         mediaOutputManager.onCallStarted()
 
         val withVideo = (callType == CallType.VIDEO_CALL && cameraEnabled)
@@ -310,7 +301,7 @@ class ChatRepositoryImpl(
             roomListener
         )
 
-        val videoTrack = if (withVideo) {
+        val videoTrack = if (withVideo){
             val videoTrack = room.localParticipant.createVideoTrack()
             room.localParticipant.publishVideoTrack(videoTrack)
             videoTrack.startCapture()
@@ -319,7 +310,7 @@ class ChatRepositoryImpl(
             null
         }
 
-        val audioTrack = if (micEnabled) {
+        val audioTrack = if (micEnabled){
             val audioTrack = room.localParticipant.createAudioTrack()
             audioTrack.enabled = micEnabled
             room.localParticipant.publishAudioTrack(audioTrack)
@@ -351,7 +342,7 @@ class ChatRepositoryImpl(
     }
 
     override fun leaveLiveKitRoom() {
-        if (roomInfo?.room?.state == Room.State.CONNECTED) {
+        if (roomInfo?.room?.state == Room.State.CONNECTED){
             roomInfo?.room?.disconnect()
         }
         clearRoomData()
@@ -362,7 +353,7 @@ class ChatRepositoryImpl(
     }
 
     override fun getActualRoomInfo(): RoomInfoModel? {
-        return if (isInCall) {
+        return if (isInCall){
             roomInfo
         } else null
     }
@@ -379,10 +370,10 @@ class ChatRepositoryImpl(
     override suspend fun enableCamera(enable: Boolean) {
         roomInfo = roomInfo?.copy(cameraEnabled = enable)
 
-        if (enable && roomInfo?.myVideoTrack == null) {
+        if (enable && roomInfo?.myVideoTrack == null){
             val videoTrack = roomInfo?.room?.localParticipant?.createVideoTrack()
 
-            videoTrack?.let { videoTrack ->
+            videoTrack?.let {videoTrack->
                 roomInfo?.room?.localParticipant?.publishVideoTrack(videoTrack)
                 videoTrack.startCapture()
             }
@@ -401,10 +392,10 @@ class ChatRepositoryImpl(
     override suspend fun enableMic(enable: Boolean) {
         roomInfo = roomInfo?.copy(micEnabled = enable)
 
-        if (enable && roomInfo?.myAudioTrack == null) {
-            val audioTrack = roomInfo?.room?.localParticipant?.createAudioTrack()
+        if (enable && roomInfo?.myAudioTrack == null){
+            val audioTrack =  roomInfo?.room?.localParticipant?.createAudioTrack()
 
-            audioTrack?.let { audioTrack ->
+            audioTrack?.let { audioTrack->
                 roomInfo?.room?.localParticipant?.publishAudioTrack(audioTrack)
             }
             roomInfo = roomInfo?.copy(myAudioTrack = audioTrack)
@@ -417,7 +408,7 @@ class ChatRepositoryImpl(
         }
     }
 
-    private fun clearRoomData() {
+    private fun clearRoomData(){
         roomInfo = null
         isInCall = false
         clientSharedPreferences.clearLiveKitRoomCredentials()
@@ -432,7 +423,7 @@ class ChatRepositoryImpl(
         */
     }
 
-    private fun startCallTimer() {
+    private fun startCallTimer(){
         callStartTime = DateTime.now()
         callTimeDisposable = Observable.timer(1000, TimeUnit.MILLISECONDS)
             .repeat()
@@ -445,7 +436,7 @@ class ChatRepositoryImpl(
             }
     }
 
-    private fun stopCallTimer() {
+    private fun stopCallTimer(){
         callTimeDisposable?.dispose()
         callStartTime = null
     }
@@ -455,7 +446,7 @@ class ChatRepositoryImpl(
         val localVideoTrackOptions = room.videoTrackCaptureDefaults
         val myVideoTrackOptions = room.localParticipant.videoTrackCaptureDefaults
         val myVideoTrack = (roomInfo?.myVideoTrack as LocalVideoTrack)
-        if (localVideoTrackOptions.position == CameraPosition.FRONT) {
+        if (localVideoTrackOptions.position == CameraPosition.FRONT){
             roomInfo = roomInfo?.copy(frontCameraEnabled = false)
             room.localParticipant.videoTrackCaptureDefaults = myVideoTrackOptions.copy(position = CameraPosition.BACK)
         } else {
@@ -491,8 +482,7 @@ class ChatRepositoryImpl(
         return Single.zip(
             api.getCases(size = 5000, index = 0),
             api.getSubtypes(size = 5000, index = 0, withArchived = true, withInternal = true),
-            api.getUnreadPostsCount(channelId)
-        ) { cases, subtypes, unreadPosts ->
+            api.getUnreadPostsCount(channelId)){cases, subtypes, unreadPosts->
 
             val cases = ChatsDbMapper.fromResponse(
                 response = cases,
@@ -500,8 +490,10 @@ class ChatRepositoryImpl(
                 masterOnlineChannelId = channelId,
                 masterOnlineUnreadPosts = unreadPosts.count ?: 0
             )
-            Log.d("MyLog", "Inserting cases " + cases.size)
-            database.chatsDao.insertCases(cases)
+            database.runInTransaction {
+                database.chatsDao.clearCases()
+                database.chatsDao.insertCases(cases)
+            }
         }.flatMapCompletable {
             Completable.complete()
         }
@@ -536,5 +528,18 @@ class ChatRepositoryImpl(
 
     override fun notifyTyping(channelId: String): Completable {
         return api.notifyTyping(channelId)
+    }
+
+    private fun startSocketRecreateTimer(){
+        socketRecreateDisposable?.dispose()
+        socketRecreateDisposable = Completable.timer(6, TimeUnit.SECONDS)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy {
+                Log.d(TAG, "No one responding. Disconnecting")
+                disconnectFromWebSocket()
+                leaveLiveKitRoom()
+                connectToWebSocket()
+            }
     }
 }

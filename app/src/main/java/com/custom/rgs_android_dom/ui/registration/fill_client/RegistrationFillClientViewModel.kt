@@ -61,11 +61,8 @@ class RegistrationFillClientViewModel(
         clientInteractor.onKnowAgentCodeClick()
     }
 
-    fun onSkipClick(){
-        closeController.value = Unit
-    }
-
     fun onCloseClick(){
+        clientInteractor.finishAuth()
         closeController.value = Unit
     }
 

@@ -1,13 +1,12 @@
 package com.custom.rgs_android_dom.ui.root
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthState
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.chat.models.CallType
-import com.custom.rgs_android_dom.domain.chat.models.WsEventModel
+import com.custom.rgs_android_dom.domain.chat.models.WsEvent
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
@@ -46,7 +45,6 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
     val unreadPostsObserver: LiveData<Int> = unreadPostsController
 
     private val authContentProviderManager: AuthContentProviderManager by inject()
-    private val logoutCompositeDisposable = CompositeDisposable()
     private var requestedScreen = TargetScreen.UNSPECIFIED
 
     init {
@@ -78,13 +76,12 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                 }
             ).addTo(dataCompositeDisposable)
 
-        clientInteractor.getClientSavedSubject()
+        registrationInteractor.getAuthFlowEndedSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy (
                 onNext = {
                     loadCases()
-                    Log.d("MyLog", "Client saved subject " + requestedScreen)
                     when (requestedScreen) {
                         TargetScreen.CHAT -> {
                             ScreenManager.showBottomScreen(ChatFragment.newInstance(chatInteractor.getMasterOnlineCase()))
@@ -134,7 +131,7 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
             .subscribeBy(
                 onNext = {
                     when (it.event){
-                        WsEventModel.Event.POSTED -> {
+                        WsEvent.POSTED -> {
                             loadCases()
                         }
                     }
@@ -144,13 +141,6 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                 }
             ).addTo(dataCompositeDisposable)
 
-        if (registrationInteractor.isAuthorized()){
-            loadCases()
-        }
-
-    }
-
-    fun subscribeLogout() {
         registrationInteractor.getLogoutSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -162,16 +152,16 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                     )
                     navScopesVisibilityController.value = scopes
                     isUserAuthorizedController.value = false
+                    ScreenManager.resetStackAndShowScreen(RootFragment())
                 },
                 onError = {
                     logException(this, it)
                 }
-            ).addTo(logoutCompositeDisposable)
-    }
+            ).addTo(dataCompositeDisposable)
 
-
-    fun unsubscribeLogout() {
-        //logoutCompositeDisposable.clear()
+        if (registrationInteractor.isAuthorized()){
+            loadCases()
+        }
     }
 
     fun onChatClick() {
@@ -234,7 +224,6 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
             ScreenManager.showBottomScreen(ChatsFragment())
         } else {
             requestedScreen = TargetScreen.CHATS
-            Log.d("MyLog", "BEFORE REQ " + requestedScreen)
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
         }
     }
@@ -247,7 +236,7 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                 .subscribeBy(
                     onSuccess = {
                         if (!it.isOpdSigned){
-                            ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(it.phone, true), REGISTRATION)
+                            ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(it.phone), REGISTRATION)
                         }
                     },
                     onError = {

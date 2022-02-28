@@ -96,7 +96,7 @@ class PurchaseViewModel(
         if (purchaseObserver.value?.defaultProduct == true){
             isEnableButtonController.value = purchaseObserver.value?.email != null &&
                     purchaseObserver.value?.card != null &&
-                    purchaseObserver.value?.propertyItemModel != null &&
+                    (purchaseObserver.value?.deliveryType == DeliveryType.ONLINE || purchaseObserver.value?.propertyItemModel != null) &&
                     purchaseObserver.value?.purchaseDateTimeModel != null
         } else {
             isEnableButtonController.value = purchaseObserver.value?.email != null &&
@@ -213,10 +213,11 @@ class PurchaseViewModel(
                     onSuccess = {
                         ScreenManager.showScreenScope(
                             PaymentWebViewFragment.newInstance(
-                                url = it,
+                                url = it.paymentUrl,
                                 productId = purchase.id,
                                 email = purchase.email,
                                 price = purchase.price?.amount.toString(),
+                                orderId = it.orderId,
                                 fragmentId = navigateId
                             ), PAYMENT
                         )

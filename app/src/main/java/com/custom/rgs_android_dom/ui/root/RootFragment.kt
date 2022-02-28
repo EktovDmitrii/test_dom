@@ -62,7 +62,6 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
         super.onViewCreated(view, savedInstanceState)
 
         ScreenManager.initBottomSheet(R.id.bottomContainer)
-
         ScreenManager.onBottomSheetChanged = {fragment->
             bottomSheetMainFragment = fragment
             measureAndShowFragment()
@@ -144,16 +143,6 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
 
     }
 
-    override fun onStart() {
-        super.onStart()
-        viewModel.subscribeLogout()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        viewModel.unsubscribeLogout()
-    }
-
     override fun setStatusBarColor() {
         setStatusBarColor(R.color.primary400)
     }
@@ -173,31 +162,34 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
     }
 
     private fun measureAndShowFragment() {
+        try {
+            binding.root.afterMeasured {
+                bottomSheetBehavior = from<View>(binding.bottomContainer)
+                scroller = bottomSheetBehavior?.getViewDragHelper()?.getScroller()
 
-        binding.root.afterMeasured {
-            bottomSheetBehavior = from<View>(binding.bottomContainer)
-            scroller = bottomSheetBehavior?.getViewDragHelper()?.getScroller()
+                bottomSheetBehavior?.addBottomSheetCallback(bottomSheetCallback)
 
-            bottomSheetBehavior?.addBottomSheetCallback(bottomSheetCallback)
+                val bottomSheetTopPadding = if (bottomSheetMainFragment is ChatFragment){ 0 } else { binding.toolbarLinearLayout.height }
 
-            val bottomSheetTopPadding = if (bottomSheetMainFragment is ChatFragment){ 0 } else { binding.toolbarLinearLayout.height }
+                peekHeight = binding.root.getLocationOnScreen().y - binding.actionsLinearLayout.getLocationOnScreen().y + bottomSheetTopPadding
+                binding.bottomContainer.setPadding(0, bottomSheetTopPadding, 0, 0)
 
-            peekHeight = binding.root.getLocationOnScreen().y - binding.actionsLinearLayout.getLocationOnScreen().y + bottomSheetTopPadding
-            binding.bottomContainer.setPadding(0, bottomSheetTopPadding, 0, 0)
+                beforeBottomSheetInit()
 
-            beforeBottomSheetInit()
+                binding.toolbarLinearLayout.setOnDebouncedClickListener {
+                    bottomSheetBehavior?.state = STATE_COLLAPSED
+                }
 
-            binding.toolbarLinearLayout.setOnDebouncedClickListener {
-                bottomSheetBehavior?.state = STATE_COLLAPSED
+                if (bottomSheetBehavior?.state == STATE_EXPANDED) {
+                    afterBottomSheetInit()
+                } else {
+                    bottomSheetBehavior?.state = STATE_EXPANDED
+                }
             }
-
-            if (bottomSheetBehavior?.state == STATE_EXPANDED) {
-                afterBottomSheetInit()
-            } else {
-                bottomSheetBehavior?.state = STATE_EXPANDED
-            }
-
+        } catch (e: Exception){
+            logException(this, e)
         }
+
     }
 
     private fun onSlideStateChanged(newState: SlideState) {

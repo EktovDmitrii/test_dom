@@ -7,7 +7,9 @@ import com.custom.rgs_android_dom.domain.catalog.models.ServiceShortModel
 import com.custom.rgs_android_dom.domain.client.models.*
 import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
 import com.custom.rgs_android_dom.domain.policies.models.PolicyShortModel
+import com.custom.rgs_android_dom.domain.purchase.models.DeliveryType
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
+import java.lang.IllegalArgumentException
 
 object ClientMapper {
 
@@ -168,6 +170,11 @@ object ClientMapper {
                     serviceCode = it.serviceCode,
                     serviceId = it.serviceId,
                     serviceName = it.serviceName,
+                    serviceDeliveryType = when (it.serviceDeliveryType) {
+                        "online" -> DeliveryType.ONLINE
+                        "visit" -> DeliveryType.VISIT
+                        else -> throw IllegalArgumentException("wrong argument ${it.serviceDeliveryType} for serviceDeliveryType")
+                    },
                     serviceVersionId = it.serviceVersionId,
                     isPurchased = true,
                     canBeOrdered = clientProductResponse?.validityFrom?.isBeforeNow ?: false &&

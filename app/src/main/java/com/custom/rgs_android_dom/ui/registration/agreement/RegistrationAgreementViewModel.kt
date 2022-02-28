@@ -14,7 +14,6 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
 class RegistrationAgreementViewModel(private val phone: String,
-                                     private val closeAfterAccept: Boolean,
                                      private val registrationInteractor: RegistrationInteractor) : BaseViewModel() {
 
     private val isNextTextViewEnabledController = MutableLiveData<Boolean>()
@@ -60,9 +59,8 @@ class RegistrationAgreementViewModel(private val phone: String,
                 onComplete = {
                     isAcceptedAgreement = true
                     closeController.value = Unit
-                    if (!closeAfterAccept){
-                        ScreenManager.showScreenScope(RegistrationFillClientFragment.newInstance(phone),REGISTRATION)
-                    }
+
+                    ScreenManager.showScreenScope(RegistrationFillClientFragment.newInstance(phone),REGISTRATION)
                 },
                 onError = {
                     logException(this, it)
