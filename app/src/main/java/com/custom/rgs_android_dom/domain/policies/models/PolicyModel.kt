@@ -9,7 +9,7 @@ data class PolicyModel (
     val logo: String? = null,
     val productTitle: String,
     val productDescription: String,
-    val address: String,
+    val address: String?,
     val includedProducts: List<ServiceShortModel>? = listOf(),
     val policySeriesAndNumber: String,
     val clientName: String,

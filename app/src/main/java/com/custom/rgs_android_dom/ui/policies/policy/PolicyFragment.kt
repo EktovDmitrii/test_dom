@@ -62,7 +62,9 @@ class PolicyFragment : BaseFragment<PolicyViewModel, FragmentPolicyBinding>(R.la
             binding.startDateTextView.text = it.startsAt?.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
             binding.expirationDateTextView.text = it.expiresAt?.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
             binding.policyDataTextView.text = it.policySeriesAndNumber
-            binding.addressTextView.text = it.address
+            binding.addressTitleTextView.goneIf(it.address == null)
+            binding.addressTextView.goneIf(it.address == null)
+            binding.addressTextView.text = it.address ?: ""
             binding.descriptionTextView.text = it.productDescription
             binding.clientNameTextView.text = it.clientName
         }
