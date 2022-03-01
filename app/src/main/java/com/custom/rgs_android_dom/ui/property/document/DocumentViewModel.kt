@@ -19,7 +19,6 @@ import java.io.File
 
 class DocumentViewModel(
     private val objectId: String,
-    propertyItemModel: PropertyItemModel,
     private val propertyInteractor: PropertyInteractor
 ) : BaseViewModel() {
 
@@ -93,7 +92,7 @@ class DocumentViewModel(
     }
 
     private fun updateDocuments(currentModel: PropertyItemModel, uri: List<Uri>) {
-        propertyInteractor.updatePropertyItem(
+        propertyInteractor.updatePropertyDocuments(
             objectId = objectId,
             propertyItemModel = currentModel,
             filesUri = uri,

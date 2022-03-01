@@ -10,6 +10,7 @@ import java.io.Serializable
 data class Order(
     val id: String,
     val address: OrderAddress? = null,
+    val objectId: String? = null,
     val client: OrderClient? = null,
     val closedAt: String? = null,
     val code: String? = null,

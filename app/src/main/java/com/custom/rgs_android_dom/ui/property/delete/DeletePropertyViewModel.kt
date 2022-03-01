@@ -30,4 +30,22 @@ class DeletePropertyViewModel(
         propertyController.value = property
     }
 
+    fun onDeleteClick(){
+        propertyInteractor.deleteProperty(property.id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                loadingStateController.value = LoadingState.LOADING
+            }
+            .subscribeBy(
+                onComplete = {
+                    close()
+                },
+                onError = {
+                    loadingStateController.value = LoadingState.ERROR
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+    }
+
 }

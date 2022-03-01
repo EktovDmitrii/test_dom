@@ -9,6 +9,8 @@ import com.custom.rgs_android_dom.ui.property.delete.DeletePropertyFragment
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
+import org.koin.core.parameter.ParametersDefinition
+import org.koin.core.parameter.parametersOf
 
 class PropertyMoreFragment() : BaseBottomSheetModalFragment<PropertyMoreViewModel, FragmentPropertyMoreBinding>(){
 
@@ -24,6 +26,10 @@ class PropertyMoreFragment() : BaseBottomSheetModalFragment<PropertyMoreViewMode
 
     override val TAG: String = "PROPERTY_MORE_FRAGMENT"
 
+    override fun getParameters(): ParametersDefinition = {
+        parametersOf(requireArguments().getSerializable(ARG_PROPERTY) as PropertyItemModel)
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,10 +44,6 @@ class PropertyMoreFragment() : BaseBottomSheetModalFragment<PropertyMoreViewMode
 
         binding.cancelTextView.setOnDebouncedClickListener {
             dismissAllowingStateLoss()
-        }
-
-        subscribe(viewModel.editPropertyObserver){
-
         }
 
         subscribe(viewModel.deletePropertyObserver){

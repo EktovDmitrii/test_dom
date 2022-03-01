@@ -11,12 +11,14 @@ import com.custom.rgs_android_dom.databinding.FragmentCancelOrderBinding
 import com.custom.rgs_android_dom.databinding.FragmentDeletePropertyBinding
 import com.custom.rgs_android_dom.domain.client.models.Order
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
+import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
+import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-class DeletePropertyFragment : BaseBottomSheetFragment<DeletePropertyViewModel, FragmentDeletePropertyBinding>() {
+class DeletePropertyFragment : BaseBottomSheetModalFragment<DeletePropertyViewModel, FragmentDeletePropertyBinding>() {
 
     companion object {
         private const val ARG_PROPERTY = "ARG_PROPERTY"
@@ -30,10 +32,6 @@ class DeletePropertyFragment : BaseBottomSheetFragment<DeletePropertyViewModel, 
 
     override val TAG = "DELETE_PROPERTY_FRAGMENT"
 
-    override fun getThemeResource(): Int {
-        return R.style.BottomSheet
-    }
-
     override fun getParameters(): ParametersDefinition = {
         parametersOf(requireArguments().getSerializable(ARG_PROPERTY) as PropertyItemModel)
     }
@@ -41,12 +39,21 @@ class DeletePropertyFragment : BaseBottomSheetFragment<DeletePropertyViewModel, 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        subscribe(viewModel.propertyObserver){
-            binding.nameTextView.text = it.name
-            binding.addressTextView.text = it.address?.address
+        binding.closeTextView.setOnDebouncedClickListener {
+            viewModel.close()
+        }
 
-            /*GlideApp.with(binding.root.context)
-                .load(GlideUrlProvider.makeHeadersGlideUrl(it))
+        binding.deletePropertyTextView.setOnDebouncedClickListener {
+            viewModel.onDeleteClick()
+        }
+
+        subscribe(viewModel.propertyObserver){propertyItem->
+            binding.nameTextView.text = propertyItem.name
+            binding.addressTextView.text = propertyItem.address?.address
+
+            if (propertyItem.photoLink != null){
+                GlideApp.with(binding.root.context)
+                .load(GlideUrlProvider.makeHeadersGlideUrl(propertyItem.photoLink))
                 .apply(
                     RequestOptions().transform(
                         CenterCrop(),
@@ -54,20 +61,38 @@ class DeletePropertyFragment : BaseBottomSheetFragment<DeletePropertyViewModel, 
                     )
                 )
                 .error(R.drawable.rectangle_filled_secondary_100_radius_16dp)
-                .into(binding.logoImageView)*/
+                .into(binding.propertyLogoImageView)
+            } else {
+                when (propertyItem.type) {
+                    PropertyType.HOUSE -> {
+                        binding.propertyLogoImageView.setImageResource(R.drawable.ic_type_home)
+                    }
+                    PropertyType.APARTMENT -> {
+                        binding.propertyLogoImageView.setImageResource(R.drawable.ic_type_apartment_334px)
+                    }
+                }
+            }
         }
     }
 
     override fun onLoading() {
         super.onLoading()
+        binding.deletePropertyTextView.setLoading(true)
+        binding.closeTextView.invisible()
     }
 
     override fun onError() {
         super.onError()
+
+        binding.deletePropertyTextView.setLoading(false)
+        binding.closeTextView.visible()
     }
 
     override fun onContent() {
         super.onContent()
+
+        binding.deletePropertyTextView.setLoading(false)
+        binding.closeTextView.visible()
     }
 
 }

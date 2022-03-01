@@ -12,6 +12,7 @@ data class PropertyItemModel(
     val isRent: Boolean?,
     val isTemporary: Boolean?,
     val name: String,
+    val photoLink: String?,
     val status: String,
     val totalArea: Float?,
     val type: PropertyType

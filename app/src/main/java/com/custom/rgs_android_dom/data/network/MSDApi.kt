@@ -89,6 +89,14 @@ interface MSDApi {
     @ErrorType(MSDNetworkErrorResponse::class)
     fun updatePropertyItem(@Path("objectId") objectId: String ,@Body body: UpdatePropertyRequest): Single<PropertyItemResponse>
 
+    @POST("property/clients/me/objects/{objectId}/tasks/requests/modifications")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun requestModification(@Path("objectId") objectId: String ): Single<Unit>
+
+    @GET("property/clients/me/objects/{objectId}/tasks/requests/modifications")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getObjectModifications(@Path("objectId") objectId: String ): Single<TaskModificationsResponse>
+
     @GET("property/clients/me/objects")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getAllProperty(): Single<AllPropertyResponse>
@@ -273,4 +281,8 @@ interface MSDApi {
 
     @GET("clients/me/orders/{orderId}/tasks/requests/cancellations")
     fun getCancelledTasks(@Path("orderId") orderId: String): Single<CancelledTasksResponse>
+
+    @DELETE("property/clients/me/objects/{objectId}")
+    fun deleteProperty(@Path("objectId") objectId: String): Completable
+
 }

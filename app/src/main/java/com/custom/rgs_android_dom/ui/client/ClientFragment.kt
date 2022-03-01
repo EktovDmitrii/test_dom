@@ -135,6 +135,10 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
         subscribe(viewModel.swipeRefreshingObserver){
             binding.swipeRefreshLayout.isRefreshing = it
         }
+
+        subscribe(viewModel.notificationObserver){
+            notification(it)
+        }
     }
 
     override fun getThemeResource(): Int {

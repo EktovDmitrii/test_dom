@@ -64,7 +64,7 @@ class PropertyDetailsViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                         propertyInteractor.updateDocuments(it)
+                    propertyInteractor.updateDocuments(it)
                 },
                 onError = {
                     logException(this, it)
@@ -116,10 +116,6 @@ class PropertyDetailsViewModel(
             loadingStateController.value = LoadingState.CONTENT
         }
 
-    }
-
-    fun onAddressChanged(address: String) {
-        propertyInteractor.updatePropertyAddress(address)
     }
 
     fun onEntranceChanged(entrance: String) {
