@@ -3,6 +3,8 @@ package com.custom.rgs_android_dom.ui.property.info
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.custom.rgs_android_dom.domain.client.ClientInteractor
+import com.custom.rgs_android_dom.domain.client.models.OrderStatus
 import com.custom.rgs_android_dom.ui.managers.MSDConnectivityManager
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
@@ -20,6 +22,7 @@ import java.util.concurrent.TimeUnit
 class PropertyInfoViewModel(
     private val objectId: String,
     private val propertyInteractor: PropertyInteractor,
+    private val clientInteractor: ClientInteractor,
     private val connectivityManager: MSDConnectivityManager
 ) : BaseViewModel() {
 
@@ -136,9 +139,21 @@ class PropertyInfoViewModel(
     }
 
     fun navigateToEditProperty() {
-        ScreenManager.showScreenScope(
-            EditPropertyInfoFragment.newInstance(objectId),
-            UPDATE_PROPERTY
-        )
+        clientInteractor.getOrdersHistory()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = { orders ->
+                    val isObjectEditable = orders.firstOrNull { it.objectId == objectId && (it.status == OrderStatus.ACTIVE || it.status == OrderStatus.CONFIRMED) } == null
+                    ScreenManager.showScreenScope(
+                        EditPropertyInfoFragment.newInstance(objectId, isObjectEditable),
+                        UPDATE_PROPERTY
+                    )
+                },
+                onError = {
+                    logException(this, it)
+                    handleNetworkException(it)
+                }
+            ).addTo(dataCompositeDisposable)
     }
 }

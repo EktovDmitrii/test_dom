@@ -11,6 +11,7 @@ import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyDoc
 import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyField
 import com.custom.rgs_android_dom.domain.property.details.exceptions.ValidatePropertyException
 import com.custom.rgs_android_dom.domain.property.details.view_states.PropertyDetailsViewState
+import com.custom.rgs_android_dom.domain.property.models.ModificationTask
 import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
@@ -23,6 +24,7 @@ import com.custom.rgs_android_dom.utils.sizeInMb
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import java.io.File
 
@@ -265,9 +267,13 @@ class PropertyInteractor(
     }
 
     fun updateAvatar(id: String?) {
-        propertyDetailsViewState = propertyDetailsViewState.copy(photoLink = id)
-        if (id != null) propertyAvatarSubject.onNext("$STORE_PATH$id")
-        else propertyAvatarSubject.onNext("")
+        propertyDetailsViewState =  if (id != null) {
+            propertyAvatarSubject.onNext(STORE_PATH + id)
+            propertyDetailsViewState.copy(photoLink = STORE_PATH + id)
+        } else {
+            propertyAvatarSubject.onNext("")
+            propertyDetailsViewState.copy(photoLink = null)
+        }
     }
 
     fun updatePropertyAvatar(avatar: File): Completable {
@@ -358,7 +364,7 @@ class PropertyInteractor(
             isOwn = propertyDetailsViewState.isOwn,
             isRent = propertyDetailsViewState.isRent,
             isTemporary = propertyDetailsViewState.isTemporary,
-            photoLink = propertyDetailsViewState.photoLink,
+            photoLink = propertyDetailsViewState.photoLink?.removePrefix(STORE_PATH),
             totalArea = totalArea,
             comment = comment,
             floor = floor,
@@ -504,4 +510,15 @@ class PropertyInteractor(
         propertyItemModel
     )
 
+    fun getEditPropertyRequestedSubject(): BehaviorSubject<Boolean> {
+        return propertyRepository.getEditPropertyRequestedSubject()
+    }
+
+    fun requestModification(objectId: String): Completable {
+        return propertyRepository.requestEditProperty(objectId)
+    }
+
+    fun getModifications(objectId: String): Single<List<ModificationTask>> {
+        return propertyRepository.getModifications(objectId)
+    }
 }

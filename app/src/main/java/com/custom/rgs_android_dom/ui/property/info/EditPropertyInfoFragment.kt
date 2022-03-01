@@ -1,7 +1,14 @@
 package com.custom.rgs_android_dom.ui.property.info
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
+import android.util.Size
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
+import android.widget.PopupWindow
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
@@ -20,16 +27,21 @@ class EditPropertyInfoFragment :
 
     companion object {
         private const val ARG_OBJECT_ID = "ARG_OBJECT_ID"
+        private const val ARG_IS_EDITABLE = "ARG_IS_EDITABLE"
 
-        fun newInstance(objectId: String): EditPropertyInfoFragment {
+        fun newInstance(objectId: String, isEditable: Boolean): EditPropertyInfoFragment {
             return EditPropertyInfoFragment().args {
                 putString(ARG_OBJECT_ID, objectId)
+                putBoolean(ARG_IS_EDITABLE, isEditable)
             }
         }
     }
 
     override fun getParameters(): ParametersDefinition = {
-        parametersOf(requireArguments().getString(ARG_OBJECT_ID))
+        parametersOf(
+            requireArguments().getString(ARG_OBJECT_ID),
+            requireArguments().getBoolean(ARG_IS_EDITABLE)
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,6 +71,15 @@ class EditPropertyInfoFragment :
                 else PropertyType.HOUSE.type
             )
         }
+        binding.isOwnInfoImageView.setOnDebouncedClickListener {
+            showPopUpWindow(binding.isOwnInfoImageView)
+        }
+        binding.isInRentInfoImageView.setOnDebouncedClickListener {
+            showPopUpWindow(binding.isInRentInfoImageView)
+        }
+        binding.isTemporaryInfoImageView.setOnDebouncedClickListener {
+            showPopUpWindow(binding.isTemporaryInfoImageView)
+        }
         binding.nameApartmentTextInputLayout.addTextWatcher {
             viewModel.onPropertyNameChanged(it)
         }
@@ -86,6 +107,8 @@ class EditPropertyInfoFragment :
         binding.saveTextView.setOnDebouncedClickListener {
             viewModel.onSaveClicked()
         }
+        makeRequestLink()
+
         subscribe(viewModel.propertyDetailsObserver) { propertyViewState ->
             binding.nameApartmentTextInputLayout.setText(propertyViewState.name)
 
@@ -145,6 +168,35 @@ class EditPropertyInfoFragment :
                 binding.propertyAvatarImageView.setImageResource(0)
             }
         }
+        subscribe(viewModel.editPropertyRequestedObserver) { wasRequested ->
+            binding.editRequestTextView.goneIf(wasRequested)
+            binding.descriptionTextView.text = if (wasRequested) {
+                "Заявка на изменение типа, адреса и информации о недвижимости успешно отправлена."
+            } else {
+                "Тип, адрес и информацию о недвижимости можно изменить только по запросу"
+            }
+        }
+        subscribe(viewModel.isPropertyEditableObserver) { isPropertyEditable ->
+            binding.notClickableView.visibleIf(!isPropertyEditable)
+            binding.requestEditLinearLayout.visibleIf(!isPropertyEditable)
+        }
+    }
+
+    private fun makeRequestLink() {
+        binding.editRequestTextView.makeStringWithLink(
+            resources.getColor(R.color.primary500,null),
+            Pair(
+                "оставьте заявку",
+                View.OnClickListener {
+                    viewModel.objectIdObserver.value?.let { objectId ->
+                        val requestPropertyInfoEditFragment = RequestPropertyInfoEditFragment.newInstance(objectId)
+                        requestPropertyInfoEditFragment.show(
+                            childFragmentManager,
+                            requestPropertyInfoEditFragment.TAG
+                        )
+                    }
+                })
+        )
     }
 
     private fun setVisibleFlatFields(isVisible: Boolean) {
@@ -152,5 +204,64 @@ class EditPropertyInfoFragment :
         binding.entranceTextInputLayout.toggleEnable(isVisible)
         binding.floorTextInputLayout.isEnabled = isVisible
         binding.entranceTextInputLayout.isEnabled = isVisible
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun showPopUpWindow(anchorView: View) {
+        val context = anchorView.context
+        val triangleHeight = 8.dp(context)
+        PopupWindow().apply {
+            width = WindowManager.LayoutParams.WRAP_CONTENT
+            height = WindowManager.LayoutParams.WRAP_CONTENT
+            isFocusable = true
+            isClippingEnabled = false
+            val inflater: LayoutInflater =
+                (context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater)
+
+            contentView = inflater.inflate(R.layout.popup_window_below_info_icon, null, false)
+            contentView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+
+            val anchorViewLocation = IntArray(2)
+            anchorView.getLocationOnScreen(anchorViewLocation)
+
+            val bottomBarLocation = IntArray(2)
+            binding.saveBottomAppBar.getLocationOnScreen(bottomBarLocation)
+
+            val showBelow: Boolean
+            contentView = if (bottomBarLocation[1] - anchorViewLocation[1] > contentView.measuredHeight) {
+                showBelow = true
+                inflater.inflate(R.layout.popup_window_below_info_icon, null, false)
+            } else {
+                showBelow = false
+                inflater.inflate(R.layout.popup_window_above_info_icon, null, false)
+            }
+            contentView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+
+            val contentViewDimensions = Size(
+                contentView.measuredWidth,
+                contentView.measuredHeight
+            )
+            val infoTextView = contentView.findViewById<View>(R.id.infoTextView)
+            if (showBelow) {
+                showAtLocation(
+                    anchorView,
+                    Gravity.START or Gravity.TOP,
+                    anchorViewLocation[0] - contentViewDimensions.width
+                            +(contentViewDimensions.width - infoTextView.measuredWidth),
+                    anchorViewLocation[1] + triangleHeight)
+            } else {
+                showAtLocation(
+                    anchorView,
+                    Gravity.START or Gravity.TOP,
+                    anchorViewLocation[0] - contentViewDimensions.width
+                            +(contentViewDimensions.width - infoTextView.measuredWidth),
+                    anchorViewLocation[1] - contentViewDimensions.height + (contentViewDimensions.height - infoTextView.measuredHeight)/2 + triangleHeight )
+            }
+
+            contentView.setOnTouchListener { _, _ ->
+                this.dismiss()
+                true
+            }
+        }
     }
 }

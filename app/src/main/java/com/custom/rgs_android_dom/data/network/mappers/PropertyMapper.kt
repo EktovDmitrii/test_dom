@@ -6,10 +6,8 @@ import com.custom.rgs_android_dom.data.network.requests.PropertyDocumentRequest
 import com.custom.rgs_android_dom.data.network.requests.UpdatePropertyRequest
 import com.custom.rgs_android_dom.data.network.responses.PostPropertyDocumentResponse
 import com.custom.rgs_android_dom.data.network.responses.PropertyItemResponse
-import com.custom.rgs_android_dom.domain.property.models.PropertyAddressModel
-import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
-import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
-import com.custom.rgs_android_dom.domain.property.models.PostPropertyDocument
+import com.custom.rgs_android_dom.data.network.responses.TaskModificationsResponse
+import com.custom.rgs_android_dom.domain.property.models.*
 import java.io.File
 
 object PropertyMapper {
@@ -103,5 +101,15 @@ object PropertyMapper {
                )
         }
         return result
+    }
+
+    fun responseToModifications(response: TaskModificationsResponse): List<ModificationTask> {
+        return response.tasks?.map {
+            ModificationTask(
+                taskId = it.taskId,
+                status = it.status,
+                subStatus = it.subStatus,
+            )
+        } ?: emptyList()
     }
 }
