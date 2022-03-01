@@ -20,6 +20,6 @@
         android:layout_marginBottom="4dp"
         android:textColor="@color/secondary500"
         android:textSize="13sp"
-        app:translationTextKey="Понадобится для формирования страхового полиса" />
+        app:translationTextKey="Понадобится для наиболее точной оценки работ" />
 
 </FrameLayout>
