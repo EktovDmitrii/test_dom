@@ -25,7 +25,7 @@ val domainModule = module {
 
     factory { ChatInteractor(chatRepository = get(), authContentProviderManager = get()) }
 
-    factory { PropertyInteractor(propertyRepository = get(), context = androidContext()) }
+    factory { PropertyInteractor(propertyRepository = get(), filesRepository = get(), context = androidContext()) }
 
     factory { AddressInteractor(addressRepository = get()) }
 

@@ -21,6 +21,24 @@ interface PropertyRepository {
         isTemporary: String?,
         totalArea: Float?,
         comment: String?,
+        documents: List<PropertyDocument>,
+        floor: Int?,
+        entrance: Int?
+    ): Completable
+
+    fun updatePropertyInfo(
+        objectId: String,
+        name: String,
+        type: String,
+        address: AddressItemModel,
+        isOwn: String?,
+        isRent: String?,
+        isTemporary: String?,
+        photoLink: String?,
+        totalArea: Float?,
+        comment: String?,
+        floor: Int?,
+        entrance: Int?,
         documents: List<PropertyDocument>
     ): Completable
 
@@ -33,6 +51,10 @@ interface PropertyRepository {
     fun getPropertyDocumentUploadedSubject(): PublishSubject<List<Uri>>
 
     fun getPropertyDocumentDeletedSubject(): PublishSubject<PropertyItemModel>
+
+    fun getPropertyAvatarChangedSubject(): PublishSubject<String>
+
+    fun getPropertyAvatarRemovedSubject(): PublishSubject<Unit>
 
     fun onFileToDeleteSelected(documentList: PropertyItemModel)
 

@@ -3,8 +3,7 @@ package com.custom.rgs_android_dom.data.repositories.property
 import android.net.Uri
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.PropertyMapper
-import com.custom.rgs_android_dom.data.network.requests.AddPropertyRequest
-import com.custom.rgs_android_dom.data.network.requests.PropertyAddressRequest
+import com.custom.rgs_android_dom.data.network.requests.*
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
@@ -29,6 +28,8 @@ class PropertyRepositoryImpl(
     }
 
     private val propertyAddedSubject = PublishSubject.create<Unit>()
+    private val propertyAvatarChangedSubject = PublishSubject.create<String>()
+    private val propertyAvatarRemovedSubject = PublishSubject.create<Unit>()
     private val propertyDocumentsUploadedSubject = PublishSubject.create<List<Uri>>()
     private val propertyDocumentsDeletedSubject = PublishSubject.create<PropertyItemModel>()
 
@@ -42,7 +43,9 @@ class PropertyRepositoryImpl(
         isTemporary: String?,
         totalArea: Float?,
         comment: String?,
-        documents: List<PropertyDocument>
+        documents: List<PropertyDocument>,
+        floor: Int?,
+        entrance: Int?
     ): Completable {
         val addPropertyRequest = AddPropertyRequest(
             name = name,
@@ -53,7 +56,9 @@ class PropertyRepositoryImpl(
                 cityName = address.cityName,
                 fiasId = address.fiasId,
                 regionFiasId = address.regionFiasId,
-                regionName = address.regionName
+                regionName = address.regionName,
+                entrance = entrance,
+                floor = floor
             ),
             isOwn = isOwn,
             isRent = isRent,
@@ -65,6 +70,50 @@ class PropertyRepositoryImpl(
         return api.addProperty(addPropertyRequest).doOnComplete {
             propertyAddedSubject.onNext(Unit)
         }
+    }
+
+    override fun updatePropertyInfo(
+        objectId: String,
+        name: String,
+        type: String,
+        address: AddressItemModel,
+        isOwn: String?,
+        isRent: String?,
+        isTemporary: String?,
+        photoLink: String?,
+        totalArea: Float?,
+        comment: String?,
+        floor: Int?,
+        entrance: Int?,
+        documents: List<PropertyDocument>
+    ): Completable {
+        val updatePropertyRequest = UpdatePropertyRequest(
+            name = name,
+            address = PropertyAddressRequest(
+                address = address.addressString,
+                cityFiasId = address.cityFiasId,
+                cityName = address.cityName,
+                fiasId = address.fiasId,
+                regionFiasId = address.regionFiasId,
+                regionName = address.regionName,
+                entrance = entrance,
+                floor = floor
+            ),
+            isOwn = isOwn,
+            isRent = isRent,
+            isTemporary = isTemporary,
+            totalArea = totalArea,
+            comment = comment,
+            photoLink = photoLink,
+            id = objectId,
+            documents = PropertyMapper.propertyDocumentsToPropertyDocumentsRequest(documents)
+        )
+        return api.updatePropertyItem(
+            objectId,
+            updatePropertyRequest
+        ).doOnSuccess {
+            propertyAddedSubject.onNext(Unit)
+        }.ignoreElement()
     }
 
     override fun getAllProperty(): Single<List<PropertyItemModel>> {
@@ -89,6 +138,14 @@ class PropertyRepositoryImpl(
 
     override fun getPropertyDocumentDeletedSubject(): PublishSubject<PropertyItemModel> {
         return propertyDocumentsDeletedSubject
+    }
+
+    override fun getPropertyAvatarChangedSubject(): PublishSubject<String> {
+        return propertyAvatarChangedSubject
+    }
+
+    override fun getPropertyAvatarRemovedSubject(): PublishSubject<Unit> {
+        return propertyAvatarRemovedSubject
     }
 
     override fun onFileToDeleteSelected(propertyItemModel: PropertyItemModel) {

@@ -29,7 +29,9 @@ object PropertyMapper {
                     cityName = address.cityName ?: "",
                     fiasId = address.fiasId ?: "",
                     regionFiasId = address.regionFiasId ?: "",
-                    regionName = address.regionName ?: ""
+                    regionName = address.regionName ?: "",
+                    entrance = address.entrance,
+                    floor = address.floor
                 )
             },
             clientId = response.clientId,
@@ -44,7 +46,8 @@ object PropertyMapper {
             name = response.name,
             status = response.status ?: "",
             totalArea = response.totalArea,
-            type = response.type
+            type = response.type,
+            photoLink = response.photoLink?.let { "$STORE_PATH$it" }
         )
     }
 
@@ -58,7 +61,9 @@ object PropertyMapper {
             cityName = if (propertyItemModel.address!=null) propertyItemModel.address.cityName else "",
             fiasId = if (propertyItemModel.address!=null) propertyItemModel.address.fiasId else "",
             regionFiasId =  if (propertyItemModel.address!=null)propertyItemModel.address.regionFiasId else "",
-            regionName = if (propertyItemModel.address!=null) propertyItemModel.address.regionName else ""
+            regionName = if (propertyItemModel.address!=null) propertyItemModel.address.regionName else "",
+            entrance = propertyItemModel.address?.entrance,
+            floor = propertyItemModel.address?.floor,
         )
         return UpdatePropertyRequest(
             address = address,
@@ -69,8 +74,8 @@ object PropertyMapper {
             isRent = isRent,
             isTemporary = isTemporary,
             name = propertyItemModel.name,
-            totalArea = propertyItemModel.totalArea
-
+            totalArea = propertyItemModel.totalArea,
+            photoLink = propertyItemModel.photoLink
         )
     }
 

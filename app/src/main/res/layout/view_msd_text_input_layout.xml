@@ -29,7 +29,6 @@
             android:paddingStart="0dp"
             android:paddingEnd="0dp"
             android:fontFamily="@font/suisse_regular"
-            android:textColor="@color/secondary900"
             android:textCursorDrawable="@drawable/cursor_primary_500"
             android:textSize="16sp"
             android:overScrollMode="always"
