@@ -97,15 +97,13 @@ class EditPersonalDataFragment :
         }
 
         subscribe(viewModel.editPersonalDataObserver) { state ->
-            if (state.hasProducts){
-                binding.lastNameEditText.isEnabled = !state.isLastNameSaved
-                binding.firstNameEditText.isEnabled = !state.isFirstNameSaved
-                binding.middleNameEditText.isEnabled = !state.isMiddleNameSaved
-                binding.birthdayEditText.isEnabled = !state.isBirthdaySaved
-                binding.genderSelector.isEnabled = !state.isGenderSaved
-                binding.passportSeriesEditText.isEnabled = !state.isDocSerialSaved
-                binding.passportNumberEditText.isEnabled = !state.isDocNumberSaved
-            }
+            binding.lastNameEditText.setEnabledEditView(!state.isLastNameSaved, state.hasPolicies, state.hasProducts)
+            binding.firstNameEditText.setEnabledEditView(!state.isFirstNameSaved, state.hasPolicies, state.hasProducts)
+            binding.middleNameEditText.setEnabledEditView(!state.isMiddleNameSaved, state.hasPolicies, state.hasProducts)
+            binding.birthdayEditText.setEnabledIconEditView(!state.isBirthdaySaved, state.hasPolicies, state.hasProducts)
+            binding.genderSelector.setEnabledSelectView(!state.isGenderSaved, state.hasPolicies, state.hasProducts)
+            binding.passportSeriesEditText.setEnabledEditView(!state.isDocSerialSaved, state.hasPolicies, state.hasProducts)
+            binding.passportNumberEditText.setEnabledEditView(!state.isDocNumberSaved, state.hasPolicies, state.hasProducts)
 
             binding.lastNameEditText.setText(state.lastName)
             binding.firstNameEditText.setText(state.firstName)
