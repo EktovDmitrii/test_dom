@@ -34,21 +34,4 @@
         android:includeFontPadding="false"
         app:translationTextKey="Удалить недвижимость"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/secondary200"/>
-
-    <com.custom.rgs_android_dom.views.text.MSDTextView
-        android:id="@+id/cancelTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingVertical="18dp"
-        android:paddingHorizontal="20dp"
-        android:textSize="18sp"
-        android:textColor="@color/secondary900"
-        android:fontFamily="@font/suisse_bold"
-        android:includeFontPadding="false"
-        app:translationTextKey="Отмена"/>
-
 </androidx.appcompat.widget.LinearLayoutCompat>

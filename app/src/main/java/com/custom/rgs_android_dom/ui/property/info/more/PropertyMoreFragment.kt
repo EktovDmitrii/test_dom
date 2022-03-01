@@ -42,10 +42,6 @@ class PropertyMoreFragment() : BaseBottomSheetModalFragment<PropertyMoreViewMode
             viewModel.onDeletePropertyClick()
         }
 
-        binding.cancelTextView.setOnDebouncedClickListener {
-            dismissAllowingStateLoss()
-        }
-
         subscribe(viewModel.deletePropertyObserver){
             dismissAllowingStateLoss()
 

@@ -39,6 +39,7 @@ class DeletePropertyFragment : BaseBottomSheetModalFragment<DeletePropertyViewMo
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         binding.closeTextView.setOnDebouncedClickListener {
             viewModel.close()
         }
@@ -47,7 +48,12 @@ class DeletePropertyFragment : BaseBottomSheetModalFragment<DeletePropertyViewMo
             viewModel.onDeleteClick()
         }
 
+        binding.contactMasterOnlineTextView.setOnDebouncedClickListener {
+            viewModel.onContactMasterOnlineClick()
+        }
+
         subscribe(viewModel.propertyObserver){propertyItem->
+
             binding.nameTextView.text = propertyItem.name
             binding.addressTextView.text = propertyItem.address?.address
 
@@ -73,26 +79,46 @@ class DeletePropertyFragment : BaseBottomSheetModalFragment<DeletePropertyViewMo
                 }
             }
         }
+
+        subscribe(viewModel.cannotBeDeletedObserver){
+            binding.deletePropertyTextView.gone()
+            binding.contactMasterOnlineTextView.visible()
+
+            binding.propertyLogoImageView.visible()
+            binding.errorImageView.gone()
+
+            binding.titleTextView.text = "Невозможно удалить"
+
+            binding.subtitleTextView.text = "К этой недвижимости привязан ваш\nдействующий страховой полис, поэтому\nеё нельзя удалить самостоятельно."
+            binding.subtitleTextView.visible()
+
+            binding.closeTextView.visible()
+            binding.closeTextView.text = "Всё понятно"
+
+        }
     }
 
     override fun onLoading() {
         super.onLoading()
+
+        binding.propertyLogoImageView.visible()
+        binding.errorImageView.gone()
+
+        binding.titleTextView.text = "Удалить недвижимость?"
+
         binding.deletePropertyTextView.setLoading(true)
         binding.closeTextView.invisible()
+        binding.subtitleTextView.gone()
     }
 
     override fun onError() {
         super.onError()
 
+        binding.propertyLogoImageView.gone()
+        binding.errorImageView.visible()
+
+        binding.deletePropertyTextView.setText("Попробовать ещё раз")
         binding.deletePropertyTextView.setLoading(false)
         binding.closeTextView.visible()
     }
-
-    override fun onContent() {
-        super.onContent()
-
-        binding.deletePropertyTextView.setLoading(false)
-        binding.closeTextView.visible()
-    }
-
 }
