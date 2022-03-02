@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui.property.info
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
@@ -31,6 +32,11 @@ class PropertyInfoViewModel(
 
     private val internetConnectionController = MutableLiveData<Boolean>()
     val internetConnectionObserver: LiveData<Boolean> = internetConnectionController
+
+    private val propertyMoreController = MutableLiveData<PropertyItemModel>()
+    val propertyMoreObserver: LiveData<PropertyItemModel> = propertyMoreController
+
+    private var property: PropertyItemModel? = null
 
     init {
         getPropertyItem()
@@ -68,8 +74,8 @@ class PropertyInfoViewModel(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
-                onNext = { documentList ->
-                    propertyItemController.value = documentList
+                onNext = {
+                    propertyItemController.value = it
                 },
                 onError = {
                     logException(this, it)
@@ -97,6 +103,15 @@ class PropertyInfoViewModel(
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
+
+        propertyInteractor.getPropertyDeletedSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    close()
+                }
+            ).addTo(dataCompositeDisposable)
     }
 
     private fun getPropertyItem() {
@@ -112,6 +127,16 @@ class PropertyInfoViewModel(
                     networkErrorController.value = "Не удалось загрузить объект"
                 }
             ).addTo(dataCompositeDisposable)
+    }
+
+    fun onShowAllDocumentsClick() {
+        ScreenManager.showScreen(
+            DocumentListFragment.newInstance(objectId)
+        )
+    }
+
+    fun onMoreClick(){
+        propertyMoreController.value = propertyItemController.value
     }
 
     private fun updateDocuments(currentModel: PropertyItemModel, uri: List<Uri>) {
@@ -132,28 +157,4 @@ class PropertyInfoViewModel(
             ).addTo(dataCompositeDisposable)
     }
 
-    fun onShowAllDocumentsClick() {
-        ScreenManager.showScreen(
-            DocumentListFragment.newInstance(objectId)
-        )
-    }
-
-    fun navigateToEditProperty() {
-        clientInteractor.getOrdersHistory()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onSuccess = { orders ->
-                    val isObjectEditable = orders.firstOrNull { it.objectId == objectId && (it.status == OrderStatus.ACTIVE || it.status == OrderStatus.CONFIRMED) } == null
-                    ScreenManager.showScreenScope(
-                        EditPropertyInfoFragment.newInstance(objectId, isObjectEditable),
-                        UPDATE_PROPERTY
-                    )
-                },
-                onError = {
-                    logException(this, it)
-                    handleNetworkException(it)
-                }
-            ).addTo(dataCompositeDisposable)
-    }
 }

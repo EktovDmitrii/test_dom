@@ -80,6 +80,16 @@ class ClientViewModel(
                 }
             ).addTo(dataCompositeDisposable)
 
+        propertyInteractor.getPropertyDeletedSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    notificationController.value = "Недвижимость удалена"
+                    loadProperty()
+                }
+            ).addTo(dataCompositeDisposable)
+
         loadProperty()
     }
 

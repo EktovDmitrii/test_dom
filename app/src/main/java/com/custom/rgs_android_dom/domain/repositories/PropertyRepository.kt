@@ -74,4 +74,8 @@ interface PropertyRepository {
     fun requestEditProperty(objectId: String): Completable
 
     fun getModifications(objectId: String): Single<List<ModificationTask>>
+
+    fun deleteProperty(objectId: String): Completable
+
+    fun getPropertyDeletedSubject(): PublishSubject<String>
 }

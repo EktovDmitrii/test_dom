@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.ui.property.info
+package com.custom.rgs_android_dom.ui.property.info.edit.avatar
 
 import android.os.Bundle
 import android.view.View
@@ -31,7 +31,6 @@ class EditPropertyAvatarBottomSheetFragment : BaseBottomSheetModalFragment<EditP
         super.onViewCreated(view, savedInstanceState)
         val isExistAvatar = requireArguments().getBoolean(ARG_AVATAR_IS_EXIST, false)
         binding.deletePropertyAvatarTextView.goneIf(!isExistAvatar)
-        binding.dividerView1.goneIf(!isExistAvatar)
 
         binding.editPropertyAvatarTextView.setOnDebouncedClickListener {
             getPhotoFromGalleryAction.launch("image/*")

@@ -29,7 +29,7 @@ val domainModule = module {
 
     factory { AddressInteractor(addressRepository = get()) }
 
-    factory { CatalogInteractor(catalogRepository = get()) }
+    factory { CatalogInteractor(catalogRepository = get(), policiesRepository = get()) }
 
     factory { PurchaseInteractor(purchaseRepository = get(), catalogRepository = get()) }
 

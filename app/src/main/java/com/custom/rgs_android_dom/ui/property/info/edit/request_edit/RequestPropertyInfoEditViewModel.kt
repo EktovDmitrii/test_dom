@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.ui.property.info
+package com.custom.rgs_android_dom.ui.property.info.edit.request_edit
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

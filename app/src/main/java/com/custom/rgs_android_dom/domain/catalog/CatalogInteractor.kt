@@ -1,13 +1,16 @@
 package com.custom.rgs_android_dom.domain.catalog
 
-import android.util.Log
 import com.custom.rgs_android_dom.domain.catalog.models.*
 import com.custom.rgs_android_dom.domain.main.CommentModel
 import com.custom.rgs_android_dom.domain.repositories.CatalogRepository
+import com.custom.rgs_android_dom.domain.repositories.PoliciesRepository
 import io.reactivex.Single
 import org.joda.time.DateTime
 
-class CatalogInteractor(private val catalogRepository: CatalogRepository) {
+class CatalogInteractor(
+    private val catalogRepository: CatalogRepository,
+    private val policiesRepository: PoliciesRepository
+) {
 
     companion object {
         private const val TAG_POPULAR_SEARCH_PRODUCTS = "ВыводитьВПоиске"
@@ -113,7 +116,7 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
     }
 
     fun getAvailableServices(): Single<List<AvailableServiceModel>>{
-        return Single.zip(catalogRepository.getClientProducts(), catalogRepository.getAvailableServices()){products, services->
+        return Single.zip(catalogRepository.getClientProducts(null), catalogRepository.getAvailableServices()){products, services->
            return@zip services.filter { service->
                val product = products.find { it.productId == service.productId && it.defaultProduct }
                return@filter product == null
@@ -121,8 +124,10 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
         }
     }
 
-    fun getClientProducts(): Single<List<ClientProductModel>>{
-        return catalogRepository.getClientProducts()
+    fun getProductsOnBalance(): Single<List<ClientProductModel>>{
+        return catalogRepository.getClientProducts(null).map {products->
+            products.filter { !it.defaultProduct }
+        }
     }
 
     fun getComments(): Single<List<CommentModel>> {
@@ -164,5 +169,12 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
 
     fun getAvailableServiceInProduct(productId: String, serviceId: String): Single<AvailableServiceModel> {
         return catalogRepository.getAvailableServiceInProduct(productId, serviceId)
+    }
+
+    fun getProductsByContracts(): Single<List<ClientProductModel>> {
+        return policiesRepository.getPoliciesSingle().flatMap {policies->
+            val contractIds = policies.joinToString(",") { it.contractId }
+            catalogRepository.getClientProducts(contractIds)
+        }
     }
 }

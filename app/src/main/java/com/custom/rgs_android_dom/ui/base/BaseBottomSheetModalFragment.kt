@@ -94,7 +94,7 @@ abstract class BaseBottomSheetModalFragment<VM : BaseViewModel, VB : ViewBinding
     }
 
     open fun onClose() {
-        requireActivity().hideKeyboardForced()
+        hideSoftwareKeyboard()
         dismissAllowingStateLoss()
     }
 
