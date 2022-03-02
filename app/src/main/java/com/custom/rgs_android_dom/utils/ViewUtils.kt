@@ -9,6 +9,9 @@ import androidx.core.widget.NestedScrollView
 import androidx.transition.Fade
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
+import com.custom.rgs_android_dom.views.MSDGenderSelector
+import com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
+import com.custom.rgs_android_dom.views.edit_text.MSDLabelIconEditText
 
 fun View.gone() {
     visibility = View.GONE
@@ -92,4 +95,43 @@ fun View.fadeVisibility(visibility: Int, duration: Long = 400) {
     transition.addTarget(this)
     TransitionManager.beginDelayedTransition(this as ViewGroup, transition)
     this.visibility = visibility
+}
+
+fun MSDLabelEditText.setEnabledEditView(
+    isNotSaved: Boolean,
+    hasPolicies: Boolean,
+    hasProducts: Boolean
+) {
+    val isEnabled = when {
+        hasPolicies -> false
+        hasProducts -> isNotSaved
+        else -> true
+    }
+    this.isEnabled = isEnabled
+}
+
+fun MSDLabelIconEditText.setEnabledIconEditView(
+    isNotSaved: Boolean,
+    hasPolicies: Boolean,
+    hasProducts: Boolean
+) {
+    val isEnabled = when {
+        hasPolicies -> false
+        hasProducts -> isNotSaved
+        else -> true
+    }
+    this.isEnabled = isEnabled
+}
+
+fun MSDGenderSelector.setEnabledSelectView(
+    isNotSaved: Boolean,
+    hasPolicies: Boolean,
+    hasProducts: Boolean
+) {
+    val isEnabled = when {
+        hasPolicies -> false
+        hasProducts -> isNotSaved
+        else -> true
+    }
+    this.isEnabled = isEnabled
 }
