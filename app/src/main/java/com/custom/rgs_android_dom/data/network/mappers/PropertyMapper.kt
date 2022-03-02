@@ -6,10 +6,8 @@ import com.custom.rgs_android_dom.data.network.requests.PropertyDocumentRequest
 import com.custom.rgs_android_dom.data.network.requests.UpdatePropertyRequest
 import com.custom.rgs_android_dom.data.network.responses.PostPropertyDocumentResponse
 import com.custom.rgs_android_dom.data.network.responses.PropertyItemResponse
-import com.custom.rgs_android_dom.domain.property.models.PropertyAddressModel
-import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
-import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
-import com.custom.rgs_android_dom.domain.property.models.PostPropertyDocument
+import com.custom.rgs_android_dom.data.network.responses.TaskModificationsResponse
+import com.custom.rgs_android_dom.domain.property.models.*
 import java.io.File
 
 object PropertyMapper {
@@ -29,7 +27,9 @@ object PropertyMapper {
                     cityName = address.cityName ?: "",
                     fiasId = address.fiasId ?: "",
                     regionFiasId = address.regionFiasId ?: "",
-                    regionName = address.regionName ?: ""
+                    regionName = address.regionName ?: "",
+                    entrance = address.entrance,
+                    floor = address.floor
                 )
             },
             clientId = response.clientId,
@@ -44,7 +44,8 @@ object PropertyMapper {
             name = response.name,
             status = response.status ?: "",
             totalArea = response.totalArea,
-            type = response.type
+            type = response.type,
+            photoLink = response.photoLink?.let { "$STORE_PATH$it" }
         )
     }
 
@@ -58,7 +59,9 @@ object PropertyMapper {
             cityName = if (propertyItemModel.address!=null) propertyItemModel.address.cityName else "",
             fiasId = if (propertyItemModel.address!=null) propertyItemModel.address.fiasId else "",
             regionFiasId =  if (propertyItemModel.address!=null)propertyItemModel.address.regionFiasId else "",
-            regionName = if (propertyItemModel.address!=null) propertyItemModel.address.regionName else ""
+            regionName = if (propertyItemModel.address!=null) propertyItemModel.address.regionName else "",
+            entrance = propertyItemModel.address?.entrance,
+            floor = propertyItemModel.address?.floor,
         )
         return UpdatePropertyRequest(
             address = address,
@@ -69,8 +72,8 @@ object PropertyMapper {
             isRent = isRent,
             isTemporary = isTemporary,
             name = propertyItemModel.name,
-            totalArea = propertyItemModel.totalArea
-
+            totalArea = propertyItemModel.totalArea,
+            photoLink = propertyItemModel.photoLink
         )
     }
 
@@ -98,5 +101,15 @@ object PropertyMapper {
                )
         }
         return result
+    }
+
+    fun responseToModifications(response: TaskModificationsResponse): List<ModificationTask> {
+        return response.tasks?.map {
+            ModificationTask(
+                taskId = it.taskId,
+                status = it.status,
+                subStatus = it.subStatus,
+            )
+        } ?: emptyList()
     }
 }

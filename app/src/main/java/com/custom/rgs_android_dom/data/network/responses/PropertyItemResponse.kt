@@ -31,6 +31,9 @@ data class PropertyItemResponse(
     @SerializedName("name")
     val name: String,
 
+    @SerializedName("photoLink")
+    val photoLink: String?,
+
     @SerializedName("status")
     val status: String?,
 
@@ -38,5 +41,11 @@ data class PropertyItemResponse(
     val totalArea: Float?,
 
     @SerializedName("type")
-    val type: PropertyType
+    val type: PropertyType,
+
+    @SerializedName("entrance")
+    val entrance: Int? = null,
+
+    @SerializedName("floor")
+    val floor: Int? = null
 )

@@ -20,6 +20,7 @@ object OrdersMapper {
     fun responseToOrder(generalInvoices: List<GeneralInvoice>? = null, orderResponse: OrderResponse): Order {
         return Order(
             id = orderResponse.id,
+            objectId = orderResponse.orderObject?.objectId,
             address = OrderAddress(
                 objectName = orderResponse.orderObject?.objectName,
                 address = orderResponse.address?.address,

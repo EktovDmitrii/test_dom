@@ -32,6 +32,7 @@
     <color name="secondary900_alpha30">#4D20201F</color>
     <color name="secondary900_alpha48">#7A20201F</color>
     <color name="secondary900_alpha6">#0F20201F</color>
+    <color name="secondary900_alpha2">#0520201F</color>
     <color name="error600_alpha12">#1FD45054</color>
     <color name="secondary_default">#7D7E7E</color>
     <color name="primary500_alpha12">#1FEEA641</color>

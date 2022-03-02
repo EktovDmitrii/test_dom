@@ -40,14 +40,14 @@ class TabMyProductsViewModel(
     private var requestedScreen = TargetScreen.UNSPECIFIED
 
     init {
-        loadClientProducts()
+        getProductsOnBalance()
 
         registrationInteractor.getLoginSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    loadClientProducts()
+                    getProductsOnBalance()
                 },
                 onError = {
                     logException(this, it)
@@ -59,7 +59,7 @@ class TabMyProductsViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    loadClientProducts()
+                    getProductsOnBalance()
                 },
                 onError = {
                     logException(this, it)
@@ -71,7 +71,7 @@ class TabMyProductsViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    loadClientProducts()
+                    getProductsOnBalance()
                 },
                 onError = {
                     logException(this, it)
@@ -129,9 +129,9 @@ class TabMyProductsViewModel(
         }
     }
 
-    private fun loadClientProducts(){
+    private fun getProductsOnBalance(){
         if (registrationInteractor.isAuthorized()){
-            catalogInteractor.getClientProducts()
+            catalogInteractor.getProductsOnBalance()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(

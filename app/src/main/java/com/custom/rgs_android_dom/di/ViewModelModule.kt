@@ -60,8 +60,13 @@ import com.custom.rgs_android_dom.ui.policies.insurant.dialogs.PolicyDialogsView
 import com.custom.rgs_android_dom.ui.policies.policy.PolicyViewModel
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsViewModel
 import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressViewModel
+import com.custom.rgs_android_dom.ui.property.delete.DeletePropertyViewModel
 import com.custom.rgs_android_dom.ui.property.document.DocumentViewModel
 import com.custom.rgs_android_dom.ui.property.document.detail_document.DetailDocumentViewModel
+import com.custom.rgs_android_dom.ui.property.info.more.PropertyMoreViewModel
+import com.custom.rgs_android_dom.ui.property.info.edit.avatar.EditPropertyAvatarBottomSheetViewModel
+import com.custom.rgs_android_dom.ui.property.info.edit.EditPropertyInfoViewModel
+import com.custom.rgs_android_dom.ui.property.info.edit.request_edit.RequestPropertyInfoEditViewModel
 import com.custom.rgs_android_dom.ui.purchase.*
 import com.custom.rgs_android_dom.ui.purchase.add.agent.AddAgentViewModel
 import com.custom.rgs_android_dom.ui.purchase.add.comment.AddCommentViewModel
@@ -101,8 +106,11 @@ val viewModelModule = module {
     viewModel { parameters -> ChatViewModel(case = parameters[0], chatInteractor = get(), clientInteractor = get()) }
     viewModel { parameters-> SelectPropertyTypeViewModel(propertyName = parameters[0], propertyAddress = parameters[1], propertyInteractor = get()) }
     viewModel { parameters-> PropertyDetailsViewModel(propertyName = parameters[0], propertyAddress = parameters[1], propertyType = parameters[2], propertyInteractor = get(), connectivityManager = get()) }
-    viewModel { parameters-> PropertyInfoViewModel(objectId = parameters.get(), propertyInteractor = get(), connectivityManager = get()) }
-    viewModel { parameters-> DocumentViewModel(objectId = parameters[0], propertyItemModel = parameters[1], propertyInteractor = get()) }
+    viewModel { parameters-> PropertyInfoViewModel(objectId = parameters.get(), propertyInteractor = get(), clientInteractor = get(), connectivityManager = get()) }
+    viewModel { parameters-> EditPropertyInfoViewModel(objectId = parameters[0], isEditable = parameters[1], propertyInteractor = get(), addressInteractor = get()) }
+    viewModel { parameters-> EditPropertyAvatarBottomSheetViewModel(propertyInteractor = get()) }
+    viewModel { parameters-> RequestPropertyInfoEditViewModel(objectId = parameters.get(), propertyInteractor = get()) }
+    viewModel { parameters-> DocumentViewModel(objectId = parameters.get(), propertyInteractor = get()) }
     viewModel { parameters-> DetailDocumentViewModel( objectId = parameters[0], documentIndex = parameters[1], propertyItemModel = parameters[2], propertyInteractor = get()) }
     viewModel { ScreenStubViewModel() }
     viewModel { RequestEditAgentViewModel(clientInteractor = get()) }
@@ -156,4 +164,6 @@ val viewModelModule = module {
     viewModel { parameters -> PolicyViewModel(contractId = parameters.get(),policiesInteractor = get()) }
     viewModel { ChatsViewModel(chatInteractor = get(), registrationInteractor = get()) }
     viewModel { parameters -> CancelOrderViewModel(order = parameters[0], clientInteractor = get()) }
+    viewModel { parameters -> PropertyMoreViewModel(property = parameters[0], clientInteractor = get())}
+    viewModel { parameters -> DeletePropertyViewModel(property = parameters.get(), propertyInteractor = get(), clientInteractor = get(), chatInteractor = get(), catalogInteractor = get())}
 }

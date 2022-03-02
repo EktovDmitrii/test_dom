@@ -4,6 +4,7 @@ import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
 import com.custom.rgs_android_dom.domain.client.models.ClientModel
 import com.custom.rgs_android_dom.domain.catalog.models.ClientProductModel
 import com.custom.rgs_android_dom.domain.client.view_states.EditPersonalDataViewState
+import com.custom.rgs_android_dom.domain.policies.models.PolicyShortModel
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_ONLY
 import com.custom.rgs_android_dom.utils.PhoneMaskHelper
 import com.custom.rgs_android_dom.utils.formatPhoneByMask
@@ -11,7 +12,11 @@ import com.custom.rgs_android_dom.utils.formatTo
 
 object EditPersonalDataViewStateMapper {
 
-    fun from(client: ClientModel, clientProducts: List<ClientProductModel>): EditPersonalDataViewState {
+    fun from(
+        client: ClientModel,
+        clientProducts: List<ClientProductModel>,
+        policies: List<PolicyShortModel>
+    ): EditPersonalDataViewState {
 
         val phoneMask = PhoneMaskHelper.getMaskForPhone(client.phone)
 
@@ -59,7 +64,8 @@ object EditPersonalDataViewStateMapper {
             emailId = emailId,
             agentCode = client.agent?.code,
             agentPhone = client.agent?.phone,
-            hasProducts = clientProducts.isNotEmpty()
+            hasProducts = clientProducts.isNotEmpty(),
+            hasPolicies = policies.isNotEmpty()
         )
     }
 
