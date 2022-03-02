@@ -60,7 +60,7 @@
                 android:ellipsize="end"
                 android:drawableEnd="@drawable/ic_dropdown_16dp"
                 android:drawablePadding="8dp"
-                tools:text="Мастер онлайн" />
+                tools:text="Онлайн Мастер" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

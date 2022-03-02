@@ -87,7 +87,7 @@
                     android:gravity="center"
                     android:textColor="@color/secondary400"
                     android:textSize="16sp"
-                    app:translationTextKey="По вашему запросу ничего не найдено.\nПопробуйте новый поиск или напишите Мастеру онлайн." />
+                    app:translationTextKey="По вашему запросу ничего не найдено.\nПопробуйте новый поиск или напишите Онлайн Мастеру." />
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:id="@+id/openChatTextView"
@@ -102,7 +102,7 @@
                     android:fontFamily="@font/suisse_regular"
                     android:textColor="@color/secondary900"
                     android:textSize="14sp"
-                    app:translationTextKey="Чат с Мастером онлайн" />
+                    app:translationTextKey="Чат с Онлайн Мастером" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 

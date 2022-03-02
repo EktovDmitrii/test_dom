@@ -54,6 +54,18 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp" />
 
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/suisse_regular"
+            android:textSize="13sp"
+            android:textColor="@color/secondary600"
+            android:layout_marginTop="16dp"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="24dp"
+            android:lineSpacingMultiplier="0"
+            app:translationTextKey="Введите номер телефона — получите доступ\nк вашему профилю и полному функционалу\nприложения" />
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <com.custom.rgs_android_dom.views.text.MSDTextViewLoader
