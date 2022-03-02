@@ -251,7 +251,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         }
 
         subscribe(viewModel.callTimeObserver){
-            binding.titleTextView.text = "Мастер онлайн"
+            binding.titleTextView.text = "Онлайн мастер"
             binding.subtitleTextView.text = it
         }
 

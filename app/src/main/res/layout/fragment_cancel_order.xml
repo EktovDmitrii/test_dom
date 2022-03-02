@@ -46,7 +46,7 @@
             android:paddingHorizontal="20dp"
             android:layout_gravity="center"
             android:textAlignment="center"
-            app:translationTextKey="Мастер онлайн свяжется с вами в чате,\nчтобы уточнить несколько вопросов"/>
+            app:translationTextKey="Онлайн мастер свяжется с вами в чате,\nчтобы уточнить несколько вопросов"/>
 
         <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullWidth
             android:id="@+id/cancelOrderTextView"

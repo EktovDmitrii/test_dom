@@ -75,7 +75,7 @@
                     android:lineHeight="26dp"
                     android:textColor="@color/secondary800"
                     android:textSize="16sp"
-                    app:translationTextKey="Свяжитесь с Мастером онлайн для быстрой помощи по любым вопросам." />
+                    app:translationTextKey="Свяжитесь с Онлайн мастером для быстрой помощи по любым вопросам." />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -22,7 +22,7 @@ object ChatsDbMapper {
             add(
                 CaseDbModel(
                     channelId = masterOnlineChannelId,
-                    name = "Мастер онлайн",
+                    name = "Онлайн мастер",
                     subtype = null,
                     taskId = "",
                     unreadPosts = masterOnlineUnreadPosts,
