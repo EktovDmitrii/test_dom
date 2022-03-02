@@ -22,7 +22,6 @@
             android:paddingStart="24dp"
             android:fontFamily="@font/my_service_bold"
             android:gravity="start|center_vertical"
-            app:translationTextKey="Оформить продукт"
             android:lines="1"
             android:textColor="@color/button_filled_primary_text_color"
             android:textSize="14sp"
