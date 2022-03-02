@@ -32,7 +32,7 @@ class TabOnboardingFragment :
         binding.tabTitleTextView.text = when (curr) {
             0 -> "Удобный сервис\nдля домашних дел"
             1 -> "Сотни услуг для дома\nв одном месте"
-            2 -> "Управление\nстраховыми\nполисами"
+            2 -> "Привязка страховых\nполисов"
             3 -> "Мастер онлайн\n24/7 для помощи\nпо любым вопросам"
             4 -> "Добро пожаловать\nв Мой_Сервис Дом!"
             else -> throw IllegalArgumentException("Wrong argument value: $curr")
