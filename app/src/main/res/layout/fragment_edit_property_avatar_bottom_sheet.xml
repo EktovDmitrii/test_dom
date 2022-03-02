@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.property.info.EditPropertyBottomSheetFragment">
+    android:orientation="vertical">
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/editPropertyAvatarTextView"
@@ -15,7 +14,7 @@
         android:paddingVertical="16dp"
         android:paddingStart="20dp"
         android:textColor="@color/secondary900"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:translationTextKey="Загрузить фотографию" />
 
     <View
@@ -32,25 +31,7 @@
         android:fontFamily="@font/suisse_regular"
         android:paddingStart="20dp"
         android:textColor="@color/error500"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:translationTextKey="Удалить фотографию" />
-
-    <View
-        android:id="@+id/dividerView1"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/secondary200" />
-
-    <com.custom.rgs_android_dom.views.text.MSDTextView
-        android:id="@+id/cancelPropertyAvatarTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingVertical="16dp"
-        android:fontFamily="@font/suisse_semi_bold"
-        android:textStyle="bold"
-        android:paddingStart="20dp"
-        android:textColor="@color/secondary900"
-        android:textSize="20sp"
-        app:translationTextKey="Отмена" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

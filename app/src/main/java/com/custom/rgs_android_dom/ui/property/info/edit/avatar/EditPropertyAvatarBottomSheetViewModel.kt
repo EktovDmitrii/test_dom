@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.ui.property.info
+package com.custom.rgs_android_dom.ui.property.info.edit.avatar
 
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel

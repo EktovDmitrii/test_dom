@@ -35,6 +35,7 @@ class PropertyRepositoryImpl(
     private val propertyDocumentsUploadedSubject = PublishSubject.create<List<Uri>>()
     private val propertyDocumentsDeletedSubject = PublishSubject.create<PropertyItemModel>()
     private val editPropertyRequestedSubject: BehaviorSubject<Boolean> = BehaviorSubject.create()
+    private val propertyDeletedSubject = PublishSubject.create<String>()
 
     override fun addProperty(
         name: String,
@@ -192,6 +193,16 @@ class PropertyRepositoryImpl(
         return api.getObjectModifications(objectId).map {
             editPropertyRequestedSubject.onNext(!it.tasks.isNullOrEmpty())
             PropertyMapper.responseToModifications(it)
+        }
+    }
+
+    override fun getPropertyDeletedSubject(): PublishSubject<String> {
+        return propertyDeletedSubject
+    }
+
+    override fun deleteProperty(objectId: String): Completable {
+        return api.deleteProperty(objectId).andThen {
+            propertyDeletedSubject.onNext(objectId)
         }
     }
 }

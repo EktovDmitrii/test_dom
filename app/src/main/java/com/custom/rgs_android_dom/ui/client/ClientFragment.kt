@@ -71,18 +71,6 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
             viewModel.onOrdersHistoryClick()
         }
 
-        binding.myCardsLinearLayout.setOnDebouncedClickListener {
-            viewModel.onNotCreatedScreenClick()
-        }
-
-        binding.notificationSettingsLinearLayout.setOnDebouncedClickListener {
-            viewModel.onNotCreatedScreenClick()
-        }
-
-        binding.feedbackLinearLayout.setOnDebouncedClickListener {
-            viewModel.onNotCreatedScreenClick()
-        }
-
         binding.openMedAppLinearLayout.setOnDebouncedClickListener {
             viewModel.onOpenMedAppClick()
         }
@@ -134,6 +122,10 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
 
         subscribe(viewModel.swipeRefreshingObserver){
             binding.swipeRefreshLayout.isRefreshing = it
+        }
+
+        subscribe(viewModel.notificationObserver){
+            notification(it)
         }
     }
 

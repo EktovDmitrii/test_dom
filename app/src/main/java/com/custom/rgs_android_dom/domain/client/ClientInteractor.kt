@@ -240,7 +240,7 @@ ClientInteractor(
     fun getEditPersonalDataViewState(): Single<EditPersonalDataViewState> {
         return Single.zip(
             clientRepository.getClient(),
-            catalogRepository.getClientProducts(),
+            catalogRepository.getClientProducts(null),
             policiesRepository.getPoliciesSingle()
         ) { clientModel, clientProducts, policies ->
             editPersonalDataViewState =

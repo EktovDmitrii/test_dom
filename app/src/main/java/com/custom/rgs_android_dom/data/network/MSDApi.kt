@@ -281,4 +281,8 @@ interface MSDApi {
 
     @GET("clients/me/orders/{orderId}/tasks/requests/cancellations")
     fun getCancelledTasks(@Path("orderId") orderId: String): Single<CancelledTasksResponse>
+
+    @DELETE("property/clients/me/objects/{objectId}")
+    fun deleteProperty(@Path("objectId") objectId: String): Completable
+
 }

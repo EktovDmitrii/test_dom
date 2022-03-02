@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.ui.property.info
+package com.custom.rgs_android_dom.ui.property.info.edit.request_edit
 
 import android.os.Bundle
 import android.view.View

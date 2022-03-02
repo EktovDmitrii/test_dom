@@ -521,4 +521,12 @@ class PropertyInteractor(
     fun getModifications(objectId: String): Single<List<ModificationTask>> {
         return propertyRepository.getModifications(objectId)
     }
+
+    fun getPropertyDeletedSubject(): PublishSubject<String>{
+        return propertyRepository.getPropertyDeletedSubject()
+    }
+
+    fun deleteProperty(objectId: String): Completable {
+        return propertyRepository.deleteProperty(objectId)
+    }
 }

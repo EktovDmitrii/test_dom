@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.ui.property.info
+package com.custom.rgs_android_dom.ui.property.info.edit
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -17,6 +17,8 @@ import com.custom.rgs_android_dom.databinding.FragmentEditPropertyInfoBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.ui.address.suggestions.AddressSuggestionsFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.property.info.edit.avatar.EditPropertyAvatarBottomSheetFragment
+import com.custom.rgs_android_dom.ui.property.info.edit.request_edit.RequestPropertyInfoEditFragment
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.views.MSDYesNoSelector
 import org.koin.core.parameter.ParametersDefinition
@@ -54,9 +56,10 @@ class EditPropertyInfoFragment :
             hideSoftwareKeyboard(true)
         }
         binding.editImagePropertyTextView.setOnDebouncedClickListener {
-            val editPropertyAvatarBottomSheetFragment = EditPropertyAvatarBottomSheetFragment.newInstance(
-                viewModel.isExistAvatarObserver.value == true
-            )
+            val editPropertyAvatarBottomSheetFragment =
+                EditPropertyAvatarBottomSheetFragment.newInstance(
+                    viewModel.isExistAvatarObserver.value == true
+                )
             editPropertyAvatarBottomSheetFragment.show(childFragmentManager, editPropertyAvatarBottomSheetFragment.TAG)
         }
         binding.addressApartmentClickView.setOnDebouncedClickListener {
@@ -189,7 +192,8 @@ class EditPropertyInfoFragment :
                 "оставьте заявку",
                 View.OnClickListener {
                     viewModel.objectIdObserver.value?.let { objectId ->
-                        val requestPropertyInfoEditFragment = RequestPropertyInfoEditFragment.newInstance(objectId)
+                        val requestPropertyInfoEditFragment =
+                            RequestPropertyInfoEditFragment.newInstance(objectId)
                         requestPropertyInfoEditFragment.show(
                             childFragmentManager,
                             requestPropertyInfoEditFragment.TAG

@@ -8,13 +8,16 @@ import com.custom.rgs_android_dom.databinding.FragmentPropertyInfoBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsFragment
-import com.custom.rgs_android_dom.utils.*
+import com.custom.rgs_android_dom.ui.property.info.more.PropertyMoreFragment
+import com.custom.rgs_android_dom.utils.GlideApp
+import com.custom.rgs_android_dom.utils.args
+import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
+import com.custom.rgs_android_dom.utils.subscribe
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
 class PropertyInfoFragment :
-    BaseBottomSheetFragment<PropertyInfoViewModel, FragmentPropertyInfoBinding>(),
-    EditPropertyBottomSheetFragment.EditPropertyInfoListener {
+    BaseBottomSheetFragment<PropertyInfoViewModel, FragmentPropertyInfoBinding>() {
 
     override val TAG: String = "PROPERTY_INFO_FRAGMENT"
 
@@ -49,8 +52,7 @@ class PropertyInfoFragment :
         }
 
         binding.moreImageView.setOnDebouncedClickListener {
-            val editPropertyInfoBottomSheetFragment = EditPropertyBottomSheetFragment.newInstance()
-            editPropertyInfoBottomSheetFragment.show(childFragmentManager, EditPropertyBottomSheetFragment.TAG)
+            viewModel.onMoreClick()
         }
 
         subscribe(viewModel.propertyItemObserver) { propertyItem ->
@@ -100,6 +102,11 @@ class PropertyInfoFragment :
         subscribe(viewModel.internetConnectionObserver) {
             adapter.onInternetConnectionChanged(it)
         }
+
+        subscribe(viewModel.propertyMoreObserver){
+            val propertyMoreFragment = PropertyMoreFragment.newInstance(it)
+            propertyMoreFragment.show(childFragmentManager, propertyMoreFragment.TAG)
+        }
     }
 
     override fun getThemeResource(): Int {
@@ -108,14 +115,6 @@ class PropertyInfoFragment :
 
     override fun isNavigationViewVisible(): Boolean {
         return false
-    }
-
-    override fun onEditPropertyClicked() {
-        viewModel.navigateToEditProperty()
-    }
-
-    override fun onDeletePropertyClicked() {
-        // TODO не в этой задаче
     }
 
 }
