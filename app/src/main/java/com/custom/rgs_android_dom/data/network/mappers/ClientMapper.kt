@@ -146,7 +146,7 @@ object ClientMapper {
             id = response.id ?: "",
             contractId = response.contractId ?: "",
             name = response.productName ?: "",
-            logo = response.logoSmall,
+            logo = "${BuildConfig.BASE_URL}/api/store/${response.logoSmall}",
             startsAt = contracts.contracts?.find { response.contractId == it.id }?.startDate,
             expiresAt = contracts.contracts?.find { response.contractId == it.id }?.endDate
         )
@@ -157,10 +157,10 @@ object ClientMapper {
         return PolicyModel(
             id= clientProductResponse?.productId ?: "",
             productId = clientProductResponse?.productId ?: "",
-            logo = clientProductResponse?.productIcon ?: "",
-            productTitle= clientProductResponse?.productTitle ?: "",
-            productDescription = clientProductResponse?.productDescription ?: "",
-            address = propertyItemResponse?.address?.address ?: "",
+            logo = "${BuildConfig.BASE_URL}/api/store/${clientProductResponse?.productIcon}",
+            productTitle= clientProductResponse?.productName ?: "",
+            productDescription = clientProductResponse?.productTitle ?: "",
+            address = propertyItemResponse?.address?.address,
             includedProducts = productServicesResponse?.items?.map {
                 ServiceShortModel(
                     priceAmount = it.priceAmount,
