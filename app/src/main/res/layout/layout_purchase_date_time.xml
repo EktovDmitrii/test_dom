@@ -41,7 +41,7 @@
             app:layout_constraintStart_toEndOf="@id/dateTimeImageView"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/dateTimeImageView"
-            app:translationTextKey="Выберите дату и время " />
+            app:translationTextKey="Выберите желаемую дату и время" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/timesOfDayTextView"
