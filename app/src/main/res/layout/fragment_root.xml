@@ -281,7 +281,7 @@
                         android:fontFamily="@font/my_service_bold"
                         android:textSize="16sp"
                         android:gravity="center_vertical"
-                        app:translationTextKey="Мастер"/>
+                        app:translationTextKey="Онлайн"/>
                     
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="46dp"
@@ -297,7 +297,7 @@
                         android:textSize="16sp"
                         android:gravity="center_vertical"
                         android:layout_marginStart="4dp"
-                        app:translationTextKey="онлайн"/>
+                        app:translationTextKey="Мастер"/>
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="46dp"
