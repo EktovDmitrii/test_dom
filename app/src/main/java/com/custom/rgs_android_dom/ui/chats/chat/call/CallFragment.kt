@@ -237,7 +237,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         }
 
         subscribe(viewModel.consultantObserver){consultant->
-            binding.consultantNameTextView.text = "${consultant.lastName} ${consultant.firstName}, консультант"
+            binding.consultantNameTextView.text = "${consultant.lastName} ${consultant.firstName}, Онлайн мастер"
 
             if (consultant.avatar.isNotEmpty()) {
                 GlideApp.with(binding.avatarImageView)
@@ -251,7 +251,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         }
 
         subscribe(viewModel.callTimeObserver){
-            binding.titleTextView.text = "Онлайн мастер"
+            binding.titleTextView.text = "Онлайн Мастер"
             binding.subtitleTextView.text = it
         }
 

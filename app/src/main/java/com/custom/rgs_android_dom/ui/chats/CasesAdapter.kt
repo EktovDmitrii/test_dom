@@ -64,7 +64,7 @@ class CasesAdapter(private val onCaseClick: (CaseModel) -> Unit) : RecyclerView.
 
             binding.statusTextView.gone()
 
-            if (model.name == "Онлайн мастер"){
+            if (model.name == "Онлайн Мастер"){
                 GlideApp.with(binding.root.context)
                     .load(R.drawable.ic_call_consultant)
                     .apply(RequestOptions().transform( CenterCrop(), RoundedCorners(16.dp(binding.root.context))))

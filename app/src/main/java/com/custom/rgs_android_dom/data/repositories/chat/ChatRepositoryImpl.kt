@@ -511,7 +511,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
         return CaseModel(
             channelId = channelId,
-            name = "Онлайн мастер",
+            name = "Онлайн Мастер",
             subtype = null,
             taskId = "",
             unreadPosts = 0,

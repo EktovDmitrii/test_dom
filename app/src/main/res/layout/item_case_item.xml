@@ -36,7 +36,7 @@
             android:ellipsize="end"
             android:singleLine="false"
             android:includeFontPadding="false"
-            tools:text="Онлайн мастер"/>
+            tools:text="Онлайн Мастер"/>
 
         <TextView
             android:id="@+id/statusTextView"

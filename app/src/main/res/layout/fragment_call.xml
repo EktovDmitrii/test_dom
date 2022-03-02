@@ -110,7 +110,7 @@
                 android:fontFamily="@font/suisse_book"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                app:translationTextKey="Онлайн мастер" />
+                app:translationTextKey="Онлайн Мастер" />
 
             <FrameLayout
                 android:layout_width="match_parent"
