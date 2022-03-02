@@ -7,18 +7,15 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
-import com.custom.rgs_android_dom.databinding.FragmentCancelOrderBinding
 import com.custom.rgs_android_dom.databinding.FragmentDeletePropertyBinding
-import com.custom.rgs_android_dom.domain.client.models.Order
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
-import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-class DeletePropertyFragment : BaseBottomSheetModalFragment<DeletePropertyViewModel, FragmentDeletePropertyBinding>() {
+class DeletePropertyFragment : BaseBottomSheetFragment<DeletePropertyViewModel, FragmentDeletePropertyBinding>() {
 
     companion object {
         private const val ARG_PROPERTY = "ARG_PROPERTY"
@@ -36,15 +33,22 @@ class DeletePropertyFragment : BaseBottomSheetModalFragment<DeletePropertyViewMo
         parametersOf(requireArguments().getSerializable(ARG_PROPERTY) as PropertyItemModel)
     }
 
+    override fun getThemeResource(): Int {
+        return R.style.BottomSheet
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         binding.closeTextView.setOnDebouncedClickListener {
             viewModel.close()
         }
 
         binding.deletePropertyTextView.setOnDebouncedClickListener {
+            viewModel.onDeleteClick()
+        }
+
+        binding.tryAgainTextView.setOnDebouncedClickListener {
             viewModel.onDeleteClick()
         }
 
@@ -82,6 +86,7 @@ class DeletePropertyFragment : BaseBottomSheetModalFragment<DeletePropertyViewMo
 
         subscribe(viewModel.cannotBeDeletedObserver){
             binding.deletePropertyTextView.gone()
+            binding.tryAgainTextView.gone()
             binding.contactMasterOnlineTextView.visible()
 
             binding.propertyLogoImageView.visible()
@@ -100,13 +105,13 @@ class DeletePropertyFragment : BaseBottomSheetModalFragment<DeletePropertyViewMo
 
     override fun onLoading() {
         super.onLoading()
-
         binding.propertyLogoImageView.visible()
         binding.errorImageView.gone()
 
         binding.titleTextView.text = "Удалить недвижимость?"
 
         binding.deletePropertyTextView.setLoading(true)
+        binding.tryAgainTextView.gone()
         binding.closeTextView.invisible()
         binding.subtitleTextView.gone()
     }
@@ -117,8 +122,20 @@ class DeletePropertyFragment : BaseBottomSheetModalFragment<DeletePropertyViewMo
         binding.propertyLogoImageView.gone()
         binding.errorImageView.visible()
 
-        binding.deletePropertyTextView.setText("Попробовать ещё раз")
+        binding.titleTextView.text = "Невозможно обработать"
+        binding.subtitleTextView.text = "К сожалению, мы не смогли обработать\nваш запрос. Пожалуйста, попробуйте\nеще раз"
+        binding.subtitleTextView.visible()
+
+        binding.deletePropertyTextView.gone()
         binding.deletePropertyTextView.setLoading(false)
+
+        binding.tryAgainTextView.visible()
         binding.closeTextView.visible()
     }
+
+    override fun onClose() {
+        hideSoftwareKeyboard()
+        dismissAllowingStateLoss()
+    }
+
 }

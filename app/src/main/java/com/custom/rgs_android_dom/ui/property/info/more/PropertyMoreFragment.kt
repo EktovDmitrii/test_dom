@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.databinding.FragmentPropertyMoreBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.ui.property.delete.DeletePropertyFragment
+import com.custom.rgs_android_dom.utils.activity.hideKeyboardForced
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
@@ -44,7 +45,6 @@ class PropertyMoreFragment() : BaseBottomSheetModalFragment<PropertyMoreViewMode
 
         subscribe(viewModel.deletePropertyObserver){
             dismissAllowingStateLoss()
-
             val deletePropertyFragment = DeletePropertyFragment.newInstance(it)
             deletePropertyFragment.show(parentFragmentManager, deletePropertyFragment.TAG)
         }

@@ -31,7 +31,6 @@ class EditPropertyAvatarBottomSheetFragment : BaseBottomSheetModalFragment<EditP
         super.onViewCreated(view, savedInstanceState)
         val isExistAvatar = requireArguments().getBoolean(ARG_AVATAR_IS_EXIST, false)
         binding.deletePropertyAvatarTextView.goneIf(!isExistAvatar)
-        binding.dividerView1.goneIf(!isExistAvatar)
 
         binding.editPropertyAvatarTextView.setOnDebouncedClickListener {
             getPhotoFromGalleryAction.launch("image/*")

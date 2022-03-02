@@ -2,6 +2,8 @@ package com.custom.rgs_android_dom.ui.property.delete
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
+import com.custom.rgs_android_dom.domain.catalog.models.ClientProductModel
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.client.models.Order
@@ -24,8 +26,8 @@ class DeletePropertyViewModel(
     private val property: PropertyItemModel,
     private val propertyInteractor: PropertyInteractor,
     private val clientInteractor: ClientInteractor,
-    private val policiesInteractor: PoliciesInteractor,
-    private val chatInteractor: ChatInteractor
+    private val chatInteractor: ChatInteractor,
+    private val catalogInteractor: CatalogInteractor
 ) : BaseViewModel() {
 
     private val propertyController = MutableLiveData<PropertyItemModel>()
@@ -39,10 +41,13 @@ class DeletePropertyViewModel(
     }
 
     fun onDeleteClick(){
-        loadingStateController.value = LoadingState.LOADING
-        Single.zip(clientInteractor.getOrdersHistory(), policiesInteractor.getPoliciesSingle()){orders, policies->
+        Single.zip(clientInteractor.getOrdersHistory(), catalogInteractor.getProductsByContracts()){orders, products->
             val hasActiveOrders = orders.firstOrNull { it.status == OrderStatus.ACTIVE && it.objectId == property.id } != null
-            hasActiveOrders
+            val hasProducts = products.firstOrNull { it.objectId == property.id } != null
+            hasActiveOrders || hasProducts
+        }
+        .doOnSubscribe {
+            loadingStateController.postValue(LoadingState.LOADING)
         }
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
@@ -62,6 +67,7 @@ class DeletePropertyViewModel(
     }
 
     fun onContactMasterOnlineClick(){
+        close()
         ScreenManager.showBottomScreen(ChatFragment.newInstance(chatInteractor.getMasterOnlineCase()))
     }
 
@@ -79,5 +85,4 @@ class DeletePropertyViewModel(
                 }
             ).addTo(dataCompositeDisposable)
     }
-
 }
