@@ -33,25 +33,6 @@ object ChatMapper{
         }
     }
 
-    /*fun responseToChatMessages(response: List<JSONObject>, userId: String): List<ChatMessageModel> {
-        return response.map { messageResponse->
-            ChatMessageModel(
-                channelId = messageResponse.getString("channelId")  *//*.channelId*//*,
-                files = messageResponse.getString("files")*//*.files*//*?.map { fileResponse->
-                    responseToChatFile(Gson().fromJson(fileResponse,ChatFileResponse::class.java)*//*fileResponse*//*, messageResponse.userId, messageResponse.createdAt.withZone(DateTimeZone.getDefault()).toLocalDateTime())
-                },
-                id = messageResponse.id ?: "",
-                message = messageResponse.message.replace("\\n", "\n"),
-                userId = messageResponse.userId,
-                sender = if (messageResponse.userId == userId) Sender.ME else Sender.OPPONENT,
-                createdAt = messageResponse.createdAt.withZone(DateTimeZone.getDefault()).toLocalDateTime(),
-                type = messageResponse.type,
-                member = null,
-                widget = widgetModel(messageResponse.details)
-            )
-        }
-    }*/
-
     fun responseToChatMessage(messageResponse: ChatMessageResponse, userId: String): ChatMessageModel {
         return ChatMessageModel(
             channelId = messageResponse.channelId,
@@ -123,7 +104,7 @@ object ChatMapper{
 
     private fun widgetModel(details: WidgetResponse): WidgetModel {
         return when (details.widgetType) {
-            "GeneralInvoicePayment" -> WidgetModel.WidgetAdditionalInvoiceModel(
+            WidgetType.GeneralInvoicePayment.name -> WidgetModel.WidgetAdditionalInvoiceModel(
                 amount = details.amount,
                 invoiceId = details.invoiceId,
                 items = details.items?.map { WidgetAdditionalInvoiceItemModel(
@@ -136,9 +117,9 @@ object ChatMapper{
                 paymentUrl = details.paymentUrl,
                 serviceLogo = "$STORE_ENDPOINT/${details.serviceLogo}",
                 serviceName = details.serviceName,
-                widgetType = details.widgetType
+                widgetType = WidgetType.GeneralInvoicePayment
             )
-            "OrderComplexProduct" -> WidgetModel.WidgetOrderComplexProductModel(
+            WidgetType.OrderComplexProduct.name -> WidgetModel.WidgetOrderComplexProductModel(
                 clientServiceId = details.clientServiceId,
                 deliveryTime = details.deliveryTime,
                 icon = "$STORE_ENDPOINT/${details.icon}",
@@ -150,9 +131,9 @@ object ChatMapper{
                 objPhotoLink = details.objPhotoLink,
                 orderDate = details.orderDate,
                 orderTime = details.orderTime.let { OrderTimeModel(from = it?.from, to = it?.to) },
-                widgetType = details.widgetType
+                widgetType = WidgetType.OrderComplexProduct
             )
-            "OrderDefaultProduct" -> WidgetModel.WidgetOrderDefaultProductModel(
+            WidgetType.OrderDefaultProduct.name -> WidgetModel.WidgetOrderDefaultProductModel(
                 deliveryTime = details.deliveryTime,
                 icon = "$STORE_ENDPOINT/${details.icon}",
                 name = details.name,
@@ -164,19 +145,18 @@ object ChatMapper{
                 orderDate = details.orderDate,
                 orderTime = details.orderTime.let { OrderTimeModel(from = it?.from, to = it?.to) },
                 productId = details.productId,
-                widgetType = details.widgetType,
+                widgetType = WidgetType.OrderDefaultProduct,
                 price = if (details.price is Double) details.price.toInt() else null
             )
-            "Product" -> WidgetModel.WidgetOrderProductModel(
+            WidgetType.Product.name -> WidgetModel.WidgetOrderProductModel(
                 avatar = "$STORE_ENDPOINT/${details.avatar}",
                 description = details.description,
                 name = details.name,
                 price = if (details.price != null && details.price !is Double) WidgetPriceModel(amount = ((details.price as LinkedTreeMap<*, *>)["Amount"] as Double?)?.toInt(), vatType = details.price["VatType"].toString(), fix = details.price["Fix"] == true) else null,
                 productId = details.productId,
-                widgetType = details.widgetType
+                widgetType = WidgetType.Product
             )
             else -> throw IllegalArgumentException("wrong type widget type: ${details.widgetType}")
         }
     }
-
 }

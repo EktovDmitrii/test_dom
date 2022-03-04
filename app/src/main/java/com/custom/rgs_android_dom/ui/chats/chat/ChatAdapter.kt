@@ -36,11 +36,6 @@ class ChatAdapter(
         private const val ITEM_TYPE_WIDGET_ORDER_DEFAULT_PRODUCT = 6
         private const val ITEM_TYPE_WIDGET_ORDER_COMPLEX_PRODUCT = 7
 
-        private const val WIDGET_TYPE_ADDITIONAL_INVOICE = "GeneralInvoicePayment"
-        private const val WIDGET_TYPE_PRODUCT = "Product"
-        private const val WIDGET_TYPE_ORDER_DEFAULT_PRODUCT = "OrderDefaultProduct"
-        private const val WIDGET_TYPE_ORDER_COMPLEX_PRODUCT = "OrderComplexProduct"
-
         private const val OBJECT_TYPE_APARTMENT = "apartment"
 
     }
@@ -80,26 +75,20 @@ class ChatAdapter(
                 if (model.sender == Sender.ME) {
                     ITEM_TYPE_MY_MESSAGE
                 } else {
-                    if (model.widget != null) {
-                        when (model.widget.widgetType) {
-                            WIDGET_TYPE_ADDITIONAL_INVOICE -> ITEM_TYPE_WIDGET_ADDITIONAL_INVOICE
-                            WIDGET_TYPE_PRODUCT -> ITEM_TYPE_WIDGET_PRODUCT
-                            WIDGET_TYPE_ORDER_DEFAULT_PRODUCT -> ITEM_TYPE_WIDGET_ORDER_DEFAULT_PRODUCT
-                            WIDGET_TYPE_ORDER_COMPLEX_PRODUCT -> ITEM_TYPE_WIDGET_ORDER_COMPLEX_PRODUCT
-                            else -> -1
-                        }
-
-                    } else {
+                    if (model.widget == null) {
                         ITEM_TYPE_OPPONENT_MESSAGE
+                    } else {
+                        when (model.widget.widgetType) {
+                            WidgetType.GeneralInvoicePayment -> ITEM_TYPE_WIDGET_ADDITIONAL_INVOICE
+                            WidgetType.Product -> ITEM_TYPE_WIDGET_PRODUCT
+                            WidgetType.OrderDefaultProduct -> ITEM_TYPE_WIDGET_ORDER_DEFAULT_PRODUCT
+                            WidgetType.OrderComplexProduct -> ITEM_TYPE_WIDGET_ORDER_COMPLEX_PRODUCT
+                        }
                     }
                 }
             }
-            is ChatDateDividerModel -> {
-                ITEM_TYPE_DATE_DIVIDER
-            }
-            else -> {
-                ITEM_TYPE_MY_MESSAGE
-            }
+            is ChatDateDividerModel -> ITEM_TYPE_DATE_DIVIDER
+            else -> ITEM_TYPE_MY_MESSAGE
         }
     }
 
@@ -498,7 +487,6 @@ class ChatAdapter(
             binding.serviceNameTextView.text = widget.name
             binding.durationTextView.text = widget.deliveryTime?.formatDeliveryTime()
             binding.priceTextView.text = 0.simplePriceFormat()
-            binding.amountToPayTextView.text = 0.simplePriceFormat()
 
             if (widget.objId != null) {
                 binding.propertyLinearLayout.visible()

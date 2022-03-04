@@ -246,39 +246,13 @@
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:layout_width="wrap_content"
             android:layout_height="24dp"
-            android:layout_gravity="start"
+            android:layout_gravity="center"
             android:fontFamily="@font/my_service_medium"
             android:gravity="center_vertical"
             android:includeFontPadding="false"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:translationTextKey="Перейти к заказу" />
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="20dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/rectangle_filled_white_alpha_20_radius_4px" />
-
-            <com.custom.rgs_android_dom.views.text.MSDTextView
-                android:id="@+id/amountToPayTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="24dp"
-                android:fontFamily="@font/my_service_medium"
-                android:gravity="center_vertical"
-                android:includeFontPadding="false"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                tools:text="1 500 ₽" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </FrameLayout>
 

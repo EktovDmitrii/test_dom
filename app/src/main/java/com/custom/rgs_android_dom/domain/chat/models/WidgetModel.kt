@@ -2,7 +2,7 @@ package com.custom.rgs_android_dom.domain.chat.models
 
 import org.joda.time.DateTime
 
-sealed class WidgetModel(open val widgetType: String?) {
+sealed class WidgetModel(open val widgetType: WidgetType) {
 
     data class WidgetOrderProductModel(
         val avatar: String?,
@@ -10,7 +10,7 @@ sealed class WidgetModel(open val widgetType: String?) {
         val name: String?,
         val price: WidgetPriceModel?,
         val productId: String?,
-        override val widgetType: String?
+        override val widgetType: WidgetType
     ) : WidgetModel(widgetType)
 
     data class WidgetOrderDefaultProductModel(
@@ -25,7 +25,7 @@ sealed class WidgetModel(open val widgetType: String?) {
         val orderDate: DateTime?,
         val orderTime: OrderTimeModel?,
         val productId: String?,
-        override val widgetType: String?,
+        override val widgetType: WidgetType,
         val price: Int?
     ) : WidgetModel(widgetType)
 
@@ -37,7 +37,7 @@ sealed class WidgetModel(open val widgetType: String?) {
         val paymentUrl: String?,
         val serviceLogo: String?,
         val serviceName: String?,
-        override val widgetType: String?
+        override val widgetType: WidgetType
     ) : WidgetModel(widgetType)
 
     data class WidgetOrderComplexProductModel(
@@ -52,7 +52,14 @@ sealed class WidgetModel(open val widgetType: String?) {
         val objType: String?,
         val orderDate: DateTime?,
         val orderTime: OrderTimeModel?,
-        override val widgetType: String?
+        override val widgetType: WidgetType
     ) : WidgetModel(widgetType)
 
+}
+
+enum class WidgetType {
+    GeneralInvoicePayment,
+    OrderComplexProduct,
+    OrderDefaultProduct,
+    Product
 }

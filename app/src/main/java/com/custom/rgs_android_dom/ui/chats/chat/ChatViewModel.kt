@@ -29,6 +29,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import org.joda.time.DateTime
 import java.io.File
 
 class ChatViewModel(
@@ -70,7 +71,7 @@ class ChatViewModel(
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
             .subscribeBy(
                 onNext = {
-                    if (it.isNotEmpty() && it[0].channelId == case.channelId){
+                    if (it.isNotEmpty() && it[0].channelId == case.channelId) {
                         newItemsController.value = it
                         viewChannel()
                     }
@@ -97,7 +98,7 @@ class ChatViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = { personalData ->
-                        email = personalData.email.ifEmpty { null }
+                    email = personalData.email.ifEmpty { null }
                 },
                 onError = {
                     logException(this, it)
@@ -109,7 +110,7 @@ class ChatViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    when (it.event){
+                    when (it.event) {
                         WsEvent.SOCKET_CONNECTED -> {
                             loadChatHistory()
                         }
@@ -122,11 +123,11 @@ class ChatViewModel(
 
     }
 
-    fun onBackClick(){
+    fun onBackClick() {
         closeController.value = Unit
     }
 
-    fun onSendMessageClick(newMessage: String){
+    fun onSendMessageClick(newMessage: String) {
         chatInteractor.sendMessage(channelId = case.channelId, message = newMessage)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -139,7 +140,7 @@ class ChatViewModel(
             .addTo(dataCompositeDisposable)
     }
 
-    fun onFileClick(chatFile: ChatFileModel){
+    fun onFileClick(chatFile: ChatFileModel) {
         when {
             chatFile.mimeType.contains("image") -> {
                 val imageViewerFragment = ImageViewerFragment.newInstance(chatFile)
@@ -157,40 +158,54 @@ class ChatViewModel(
     }
 
     fun onAudioCallClick() {
-        val callFragment = CallFragment.newInstance(chatInteractor.getMasterOnlineCase().channelId, CallType.AUDIO_CALL, chatInteractor.getCurrentConsultant())
+        val callFragment = CallFragment.newInstance(
+            chatInteractor.getMasterOnlineCase().channelId,
+            CallType.AUDIO_CALL,
+            chatInteractor.getCurrentConsultant()
+        )
         ScreenManager.showScreen(callFragment)
     }
 
     fun onVideoCallClick() {
-        val callFragment = CallFragment.newInstance(chatInteractor.getMasterOnlineCase().channelId, CallType.VIDEO_CALL, chatInteractor.getCurrentConsultant())
+        val callFragment = CallFragment.newInstance(
+            chatInteractor.getMasterOnlineCase().channelId,
+            CallType.VIDEO_CALL,
+            chatInteractor.getCurrentConsultant()
+        )
         ScreenManager.showScreen(callFragment)
     }
 
     fun onProductClick(widget: WidgetModel.WidgetOrderProductModel) {
-        ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(productId = widget.productId ?: "")))
+        ScreenManager.showBottomScreen(
+            ProductFragment.newInstance(
+                ProductLauncher(
+                    productId = widget.productId ?: ""
+                )
+            )
+        )
     }
 
-    fun onChatClose(){
+    fun onChatClose() {
         viewChannel()
     }
 
-    fun onUserTyping(){
+    fun onUserTyping() {
         chatInteractor.notifyTyping(case.channelId)
     }
 
     fun onPayClick(paymentUrl: String, productId: String, amount: Int) {
         ScreenManager.showScreenScope(
             PaymentWebViewFragment.newInstance(
-                url = paymentUrl ,
+                url = paymentUrl,
                 productId = productId,
-                email =  email ?: "",
+                email = email ?: "",
                 price = amount.toString(),
                 orderId = ""
             ), PAYMENT
         )
     }
 
-    private fun loadChatHistory(){
+    private fun loadChatHistory() {
         chatInteractor.getChatHistory(case.channelId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -212,7 +227,7 @@ class ChatViewModel(
             ).addTo(dataCompositeDisposable)
     }
 
-    private fun postFilesInChat(files: List<File>){
+    private fun postFilesInChat(files: List<File>) {
         chatInteractor.postFilesToChat(case.channelId, files)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -223,7 +238,7 @@ class ChatViewModel(
             ).addTo(dataCompositeDisposable)
     }
 
-    private fun viewChannel(){
+    private fun viewChannel() {
         chatInteractor.viewChannel(case.channelId)
             .andThen(chatInteractor.loadCases())
             .subscribeOn(Schedulers.io())
@@ -240,7 +255,7 @@ class ChatViewModel(
             PaymentWebViewFragment.newInstance(
                 url = widget.paymentUrl ?: "",
                 productId = /*widget.productId*/"",
-                email =  email ?: "",
+                email = email ?: "",
                 price = widget.amount.toString(),
                 orderId = ""
             ), PAYMENT
@@ -251,46 +266,22 @@ class ChatViewModel(
         val propertyRequest: Single<PropertyItemModel> = if (widget.objId != null) {
             propertyInteractor.getPropertyItem(widget.objId)
         } else {
-            Single.just(null)
+            Single.just(PropertyItemModel.empty())
         }
         widget.productId?.let { id ->
             Single.zip(
                 catalogInteractor.getProduct(id),
                 catalogInteractor.getProductServices(id, false, null),
                 propertyRequest
-            ){ product, services, property ->
+            ) { product, services, property ->
                 PurchaseModel(
                     id = id,
                     defaultProduct = product.defaultProduct,
                     duration = product.duration,
                     deliveryTime = product.deliveryTime,
                     deliveryType = services[0].serviceDeliveryType,
-                    propertyItemModel = property,
-                    purchaseDateTimeModel = PurchaseDateTimeModel(
-                        selectedDate = widget.orderDate?.toLocalDateTime() ?: throw NullPointerException("orderDate is null"),
-                        selectedPeriodModel = PurchaseTimePeriodModel(
-                            id =  when (widget.orderTime?.from.toString())
-                            {
-                                "6:00" -> 0
-                                "9:00" -> 1
-                                "12:00" -> 2
-                                "15:00" -> 3
-                                else -> throw IllegalArgumentException("wrong argument timeOfDay")
-                            },
-                            timeOfDay = when (widget.orderTime?.from.toString())
-                            {
-                                "6:00" -> "Утро"
-                                "9:00" -> "До полудня"
-                                "12:00" -> "День"
-                                "15:00" -> "Вечер"
-                                else -> throw IllegalArgumentException("wrong argument timeOfDay")
-                            },
-                            timeFrom = widget.orderTime?.from.toString(),
-                            timeTo = widget.orderTime?.to.toString(),
-                            isSelectable = true,
-                            isSelected = true
-                        )
-                    ),
+                    propertyItemModel = if (!property.isEmpty) property else null,
+                    purchaseDateTimeModel = getPurchaseDate(widget.orderDate, widget.orderTime),
                     logoSmall = product.logoSmall,
                     name = product.name,
                     price = product.price
@@ -313,7 +304,7 @@ class ChatViewModel(
         val propertyRequest: Single<PropertyItemModel> = if (widget.objId != null) {
             propertyInteractor.getPropertyItem(widget.objId)
         } else {
-            Single.just(null)
+            Single.just(PropertyItemModel.empty())
         }
         widget.clientServiceId?.let { id ->
             Single.zip(
@@ -323,32 +314,8 @@ class ChatViewModel(
                 ServiceOrderLauncher(
                     serviceId = service.serviceId,
                     productId = service.productId,
-                    property = property,
-                    dateTime = PurchaseDateTimeModel(
-                        selectedDate = widget.orderDate?.toLocalDateTime() ?: throw NullPointerException("orderDate is null"),
-                        selectedPeriodModel = PurchaseTimePeriodModel(
-                            id =  when (widget.orderTime?.from.toString())
-                            {
-                                "6:00" -> 0
-                                "9:00" -> 1
-                                "12:00" -> 2
-                                "15:00" -> 3
-                                else -> throw IllegalArgumentException("wrong argument timeOfDay")
-                            },
-                            timeOfDay = when (widget.orderTime?.from.toString())
-                            {
-                                "6:00" -> "Утро"
-                                "9:00" -> "До полудня"
-                                "12:00" -> "День"
-                                "15:00" -> "Вечер"
-                                else -> throw IllegalArgumentException("wrong argument timeOfDay")
-                            },
-                            timeFrom = widget.orderTime?.from.toString(),
-                            timeTo = widget.orderTime?.to.toString(),
-                            isSelectable = true,
-                            isSelected = true
-                        )
-                    ),
+                    property = if (!property.isEmpty) property else null,
+                    dateTime = getPurchaseDate(widget.orderDate, widget.orderTime),
                 )
             }
                 .subscribeOn(Schedulers.io())
@@ -365,4 +332,35 @@ class ChatViewModel(
         }
     }
 
+    private fun getPurchaseDate(orderDate: DateTime?, orderTime: OrderTimeModel?): PurchaseDateTimeModel? {
+        return if (orderDate != null && orderTime != null) {
+            PurchaseDateTimeModel(
+                selectedDate = orderDate.toLocalDateTime(),
+                selectedPeriodModel = getPurchaseTime(orderTime),
+            )
+        } else {
+            null
+        }
+    }
+
+    private fun getPurchaseTime(orderTime: OrderTimeModel?) = PurchaseTimePeriodModel(
+        id = when (orderTime?.from.toString()) {
+            "6:00" -> 0
+            "9:00" -> 1
+            "12:00" -> 2
+            "15:00" -> 3
+            else -> throw IllegalArgumentException("wrong argument timeOfDay")
+        },
+        timeOfDay = when (orderTime?.from.toString()) {
+            "6:00" -> "Утро"
+            "9:00" -> "До полудня"
+            "12:00" -> "День"
+            "15:00" -> "Вечер"
+            else -> throw IllegalArgumentException("wrong argument timeOfDay")
+        },
+        timeFrom = orderTime?.from.toString(),
+        timeTo = orderTime?.to.toString(),
+        isSelectable = true,
+        isSelected = true
+    )
 }
