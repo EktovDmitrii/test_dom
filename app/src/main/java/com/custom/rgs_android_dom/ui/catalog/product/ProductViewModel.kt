@@ -21,6 +21,7 @@ import io.reactivex.schedulers.Schedulers
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.purchase.PurchaseFragment
 import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderFragment
+import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderLauncher
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_FULL_MONTH
 import com.custom.rgs_android_dom.utils.formatTo
@@ -129,7 +130,9 @@ class ProductViewModel(
     }
 
     fun onServiceOrderClick(serviceShortModel: ServiceShortModel){
-        val serviceOrderFragment = ServiceOrderFragment.newInstance(serviceShortModel.serviceId, product.productId)
+        val serviceOrderFragment = ServiceOrderFragment.newInstance(
+            ServiceOrderLauncher(serviceShortModel.serviceId, product.productId)
+        )
         ScreenManager.showScreen(serviceOrderFragment)
     }
 

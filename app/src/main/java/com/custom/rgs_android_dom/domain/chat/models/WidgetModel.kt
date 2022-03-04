@@ -48,6 +48,8 @@ sealed class WidgetModel(open val widgetType: String?) {
         val objAddr: String?,
         val objId: String?,
         val objName: String?,
+        val objPhotoLink: String?,
+        val objType: String?,
         val orderDate: DateTime?,
         val orderTime: OrderTimeModel?,
         override val widgetType: String?

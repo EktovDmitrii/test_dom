@@ -16,7 +16,7 @@ open class WidgetResponse(
     val name: String?,
 
     @SerializedName("price")
-    val price: WidgetPriceResponse?,
+    val price: Any?,
 
     @SerializedName("productId")
     val productId: String?,
@@ -73,9 +73,6 @@ open class WidgetResponse(
 
     @SerializedName("orderTime")
     val orderTime: OrderTimeResponse?,
-
-    @SerializedName("price")
-    val price1: Int?,
 
     // specific to widget type OrderComplexProduct
 

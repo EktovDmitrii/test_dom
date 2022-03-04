@@ -11,6 +11,7 @@ import com.custom.rgs_android_dom.ui.catalog.product.service.ServiceFragment
 import com.custom.rgs_android_dom.ui.catalog.product.service.ServiceLauncher
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderFragment
+import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderLauncher
 
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -53,7 +54,13 @@ class PolicyViewModel(contractId: String, policiesInteractor: PoliciesInteractor
     }
 
     fun onServiceOrderClick(serviceShortModel: ServiceShortModel,product: ProductLauncher){
-        val serviceOrderFragment = ServiceOrderFragment.newInstance(serviceShortModel.serviceId, product.productId)
+        val serviceOrderFragment = ServiceOrderFragment.newInstance(
+            ServiceOrderLauncher(
+                serviceId = serviceShortModel.serviceId,
+                productId = product.productId,
+                deliveryType = serviceShortModel.serviceDeliveryType
+            )
+        )
         ScreenManager.showScreen(serviceOrderFragment)
     }
 

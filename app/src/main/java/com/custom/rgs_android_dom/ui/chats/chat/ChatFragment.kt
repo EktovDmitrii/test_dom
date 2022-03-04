@@ -94,7 +94,7 @@ class ChatFragment : BaseBottomSheetFragment<ChatViewModel, FragmentChatBinding>
                 hideSoftwareKeyboard()
             },
             {
-                viewModel.orderComplexProduct(it)
+                viewModel.orderProductService(it)
                 hideSoftwareKeyboard()
             }
         )

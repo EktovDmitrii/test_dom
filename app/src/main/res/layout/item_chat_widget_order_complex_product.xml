@@ -96,7 +96,7 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <!--<androidx.appcompat.widget.LinearLayoutCompat
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/propertyLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -225,8 +225,7 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>-->
-
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -247,7 +246,7 @@
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:layout_width="wrap_content"
             android:layout_height="24dp"
-            android:layout_gravity="center"
+            android:layout_gravity="start"
             android:fontFamily="@font/my_service_medium"
             android:gravity="center_vertical"
             android:includeFontPadding="false"
@@ -255,7 +254,7 @@
             android:textSize="14sp"
             app:translationTextKey="Перейти к заказу" />
 
-        <!--<androidx.appcompat.widget.LinearLayoutCompat
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end"
@@ -279,7 +278,7 @@
                 android:textSize="14sp"
                 tools:text="1 500 ₽" />
 
-        </androidx.appcompat.widget.LinearLayoutCompat>-->
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </FrameLayout>
 

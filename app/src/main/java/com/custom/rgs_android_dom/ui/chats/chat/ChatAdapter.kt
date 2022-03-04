@@ -458,7 +458,7 @@ class ChatAdapter(
             binding.timeTextView.text = widget.orderTime?.formatOrderTime()
             binding.dateTextView.text = widget.orderDate?.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
             binding.serviceNameTextView.text = widget.name
-            binding.durationTextView.text = widget.deliveryTime?.formatDeliveryTime()
+            binding.durationTextView.text = widget.deliveryTime
 
             val icon = widget.icon
             if (!icon.isNullOrEmpty()) {
@@ -498,6 +498,32 @@ class ChatAdapter(
             binding.serviceNameTextView.text = widget.name
             binding.durationTextView.text = widget.deliveryTime?.formatDeliveryTime()
             binding.priceTextView.text = 0.simplePriceFormat()
+            binding.amountToPayTextView.text = 0.simplePriceFormat()
+
+            if (widget.objId != null) {
+                binding.propertyLinearLayout.visible()
+                binding.propertyNameTextView.text = widget.objName
+                binding.addressTextView.text = widget.objAddr
+            } else {
+                binding.propertyLinearLayout.gone()
+            }
+            binding.timeTextView.text = widget.orderTime?.formatOrderTime()
+            binding.dateTextView.text = widget.orderDate?.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
+
+            val propertyIcon = widget.objPhotoLink
+            if (!propertyIcon.isNullOrEmpty()) {
+                GlideApp.with(binding.propertyImageView.context)
+                    .load(GlideUrlProvider.makeHeadersGlideUrl(propertyIcon))
+                    .transform(CenterCrop(), RoundedCorners(8.dp(binding.root.context)))
+                    .into(binding.propertyImageView)
+            } else {
+                var iconResId = R.drawable.ic_type_home
+                if (widget.objType == OBJECT_TYPE_APARTMENT) {
+                    iconResId = R.drawable.ic_apartment_240px
+                }
+                binding.propertyImageView.setImageDrawable(ContextCompat.getDrawable(binding.root.context,iconResId))
+            }
+
             val icon = widget.icon
             if (!icon.isNullOrEmpty()) {
                 GlideApp.with(binding.serviceImageView.context)
