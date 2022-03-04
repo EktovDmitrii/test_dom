@@ -33,7 +33,7 @@
             android:includeFontPadding="false"
             android:gravity="center"
             android:background="@drawable/rectangle_filled_secondary_900_alpha4_radius_12dp"
-            android:text="Помыть окна" />
+            android:text="Кондиционер" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -46,7 +46,7 @@
             android:includeFontPadding="false"
             android:gravity="center"
             android:background="@drawable/rectangle_filled_secondary_900_alpha4_radius_12dp"
-            android:text="Сантехника" />
+            android:text="Ремонт" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -59,7 +59,7 @@
             android:includeFontPadding="false"
             android:gravity="center"
             android:background="@drawable/rectangle_filled_secondary_900_alpha4_radius_12dp"
-            android:text="IKEA" />
+            android:text="Засор" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -72,7 +72,7 @@
             android:includeFontPadding="false"
             android:gravity="center"
             android:background="@drawable/rectangle_filled_secondary_900_alpha4_radius_12dp"
-            android:text="Отделочные работы" />
+            android:text="Сборка мебели" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -85,7 +85,7 @@
             android:includeFontPadding="false"
             android:gravity="center"
             android:background="@drawable/rectangle_filled_secondary_900_alpha4_radius_12dp"
-            android:text="Ремонт котлов" />
+            android:text="Вскрытие замка" />
 
     </com.nex3z.flowlayout.FlowLayout>
 
