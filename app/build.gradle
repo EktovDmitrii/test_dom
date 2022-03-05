@@ -17,7 +17,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.custom.rgs_android_dom"
+        applicationId "ru.rgs.dom"
         minSdkVersion 24
         targetSdkVersion 31
         versionCode 14
