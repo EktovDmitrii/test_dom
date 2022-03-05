@@ -164,6 +164,6 @@ val viewModelModule = module {
     viewModel { parameters -> PolicyViewModel(contractId = parameters.get(),policiesInteractor = get()) }
     viewModel { ChatsViewModel(chatInteractor = get(), registrationInteractor = get()) }
     viewModel { parameters -> CancelOrderViewModel(order = parameters[0], clientInteractor = get()) }
-    viewModel { parameters -> PropertyMoreViewModel(property = parameters[0], clientInteractor = get())}
+    viewModel { parameters -> PropertyMoreViewModel(property = parameters[0], clientInteractor = get(), catalogInteractor = get())}
     viewModel { parameters -> DeletePropertyViewModel(property = parameters.get(), propertyInteractor = get(), clientInteractor = get(), chatInteractor = get(), catalogInteractor = get())}
 }
