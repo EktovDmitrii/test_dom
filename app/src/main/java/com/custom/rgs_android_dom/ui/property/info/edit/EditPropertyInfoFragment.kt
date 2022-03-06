@@ -68,7 +68,7 @@ class EditPropertyInfoFragment :
         }
         binding.propertyTypeRadioGroup.setOnCheckedChangeListener { _, id ->
             setVisibleFlatFields(id == R.id.flatTypeRadioButton)
-
+            clearInputs()
             viewModel.onPropertyTypeChanged(
                 if (id == R.id.flatTypeRadioButton) PropertyType.APARTMENT.type
                 else PropertyType.HOUSE.type
@@ -208,6 +208,11 @@ class EditPropertyInfoFragment :
         binding.entranceTextInputLayout.toggleEnable(isVisible)
         binding.floorTextInputLayout.isEnabled = isVisible
         binding.entranceTextInputLayout.isEnabled = isVisible
+    }
+
+    private fun clearInputs() {
+        binding.floorTextInputLayout.setText("")
+        binding.entranceTextInputLayout.setText("")
     }
 
     @SuppressLint("ClickableViewAccessibility")
