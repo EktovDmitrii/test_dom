@@ -183,6 +183,9 @@ class EditPropertyInfoFragment :
             binding.notClickableView.visibleIf(!isPropertyEditable)
             binding.requestEditLinearLayout.visibleIf(!isPropertyEditable)
         }
+        subscribe(viewModel.notificationObserver){
+            notification(it)
+        }
     }
 
     private fun makeRequestLink() {
