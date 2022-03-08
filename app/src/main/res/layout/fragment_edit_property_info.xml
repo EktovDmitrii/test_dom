@@ -127,317 +127,327 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/avatarPropertyLayout" />
 
-            <com.custom.rgs_android_dom.views.text.MSDTextView
-                android:id="@+id/propertyTypeTitleTextView"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="8dp"
-                android:background="@color/secondary100"
-                android:fontFamily="@font/suisse_regular"
-                android:gravity="center_vertical"
-                android:includeFontPadding="false"
-                android:paddingHorizontal="20dp"
-                android:textColor="@color/secondary900_alpha64"
-                android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@+id/editImagePropertyTextView"
-                app:translationTextKey="Тип недвижимости" />
-
-            <RadioGroup
-                android:id="@+id/propertyTypeRadioGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="16dp"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/propertyTypeTitleTextView">
-
-                <RadioButton
-                    android:id="@+id/houseTypeRadioButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="6dp"
-                    android:background="@drawable/bg_selector_property_type_background"
-                    android:button="@android:color/transparent"
-                    android:gravity="center"
-                    android:paddingHorizontal="20dp"
-                    android:text="Дом"
-                    android:textColor="@color/selector_property_info" />
-
-                <RadioButton
-                    android:id="@+id/flatTypeRadioButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:background="@drawable/bg_selector_property_type_background"
-                    android:button="@android:color/transparent"
-                    android:gravity="center"
-                    android:paddingHorizontal="20dp"
-                    android:text="Квартира"
-                    android:textColor="@color/selector_property_info" />
-
-            </RadioGroup>
-
-            <com.custom.rgs_android_dom.views.text.MSDTextView
-                android:id="@+id/addressApartmentTitleTextView"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="16dp"
-                android:background="@color/secondary100"
-                android:fontFamily="@font/suisse_regular"
-                android:gravity="center_vertical"
-                android:includeFontPadding="false"
-                android:paddingHorizontal="16dp"
-                android:textColor="@color/secondary900_alpha64"
-                android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@id/propertyTypeRadioGroup"
-                app:translationTextKey="Адрес" />
-
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/addressApartmentLayout"
+                android:id="@+id/layoutTemp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/addressApartmentTitleTextView">
-
-                <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
-                    android:id="@+id/addressApartmentTextInputLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:inputType="textMultiLine"
-                    android:maxLength="250"
-                    android:paddingHorizontal="20dp"
-                    app:translationHintKey="Адрес" />
-
-                <View
-                    android:id="@+id/addressApartmentClickView"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:background="@android:color/transparent"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <View
-                android:id="@+id/notClickableView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:visibility="gone"
-                android:elevation="16dp"
-                android:focusableInTouchMode="true"
-                android:background="@color/secondary900_alpha2"
-                app:layout_constraintTop_toTopOf="@id/propertyTypeTitleTextView"
+                android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/commentInputTitleTextView"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/editImagePropertyTextView">
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/apartmentDataLinearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="visible"
-                app:layout_constraintTop_toBottomOf="@id/addressApartmentLayout">
-
-                <View
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/propertyTypeTitleTextView"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/secondary100" />
+                    android:layout_height="40dp"
+                    android:background="@color/secondary100"
+                    android:fontFamily="@font/suisse_regular"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:paddingHorizontal="20dp"
+                    android:textColor="@color/secondary900_alpha64"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:textSize="14sp"
+                    app:translationTextKey="Тип недвижимости" />
 
-                <androidx.appcompat.widget.LinearLayoutCompat
+                <RadioGroup
+                    android:id="@+id/propertyTypeRadioGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/propertyTypeTitleTextView">
+
+                    <RadioButton
+                        android:id="@+id/houseTypeRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:background="@drawable/bg_selector_property_type_background"
+                        android:button="@android:color/transparent"
+                        android:gravity="center"
+                        android:paddingHorizontal="20dp"
+                        android:text="Дом"
+                        android:textColor="@color/selector_property_info" />
+
+                    <RadioButton
+                        android:id="@+id/flatTypeRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:background="@drawable/bg_selector_property_type_background"
+                        android:button="@android:color/transparent"
+                        android:gravity="center"
+                        android:paddingHorizontal="20dp"
+                        android:text="Квартира"
+                        android:textColor="@color/selector_property_info" />
+
+                </RadioGroup>
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/addressApartmentTitleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@color/secondary100"
+                    android:fontFamily="@font/suisse_regular"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:paddingHorizontal="16dp"
+                    android:textColor="@color/secondary900_alpha64"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toBottomOf="@id/propertyTypeRadioGroup"
+                    app:translationTextKey="Адрес" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/addressApartmentLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    app:layout_constraintTop_toBottomOf="@id/addressApartmentTitleTextView">
 
-                    <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
-                            android:id="@+id/floorTextInputLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:background="@drawable/bg_property_info_edit_background"
-                            android:imeOptions="actionNext"
-                            android:inputType="number"
-                            android:paddingHorizontal="20dp"
-                            app:translationHintKey="Этаж" />
-
-                    </FrameLayout>
+                    <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
+                        android:id="@+id/addressApartmentTextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:inputType="textMultiLine"
+                        android:maxLength="250"
+                        android:paddingHorizontal="20dp"
+                        app:translationHintKey="Адрес" />
 
                     <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
+                        android:id="@+id/addressApartmentClickView"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:background="@android:color/transparent"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--                <View-->
+<!--                    android:id="@+id/notClickableView"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="0dp"-->
+<!--                    android:clickable="true"-->
+<!--                    android:focusable="true"-->
+<!--                    android:visibility="gone"-->
+<!--                    android:elevation="16dp"-->
+<!--                    android:focusableInTouchMode="true"-->
+<!--                    android:background="@color/secondary900_alpha2"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintBottom_toTopOf="@id/commentInputTitleTextView"-->
+<!--                    />-->
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/apartmentDataLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    app:layout_constraintTop_toBottomOf="@id/addressApartmentLayout">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
                         android:background="@color/secondary100" />
 
-                    <FrameLayout
-                        android:layout_width="0dp"
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
+                        android:orientation="horizontal">
 
-                        <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
-                            android:id="@+id/entranceTextInputLayout"
-                            android:layout_width="match_parent"
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
+                                android:id="@+id/floorTextInputLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:background="@drawable/bg_property_info_edit_background"
+                                android:imeOptions="actionNext"
+                                android:inputType="number"
+                                android:paddingHorizontal="20dp"
+                                app:translationHintKey="Этаж" />
+
+                        </FrameLayout>
+
+                        <View
+                            android:layout_width="1dp"
                             android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:background="@drawable/bg_property_info_edit_background"
-                            android:imeOptions="actionNext"
-                            android:inputType="number"
-                            android:paddingHorizontal="20dp"
-                            app:translationHintKey="Подъезд" />
+                            android:background="@color/secondary100" />
 
-                    </FrameLayout>
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
+                                android:id="@+id/entranceTextInputLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:background="@drawable/bg_property_info_edit_background"
+                                android:imeOptions="actionNext"
+                                android:inputType="number"
+                                android:paddingHorizontal="20dp"
+                                app:translationHintKey="Подъезд" />
+
+                        </FrameLayout>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/secondary100" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/secondary100" />
+
+                    <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
+                        android:id="@+id/cityApartmentTextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="none"
+                        android:maxLength="250"
+                        android:paddingHorizontal="20dp"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:enabled="false"
+                        app:translationHintKey="Населённый пункт" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
-                <View
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/totalAreaTitleTextView"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/secondary100" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/secondary100" />
+                    android:layout_height="40dp"
+                    android:background="@color/secondary100"
+                    android:fontFamily="@font/suisse_regular"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:paddingHorizontal="20dp"
+                    android:textColor="@color/secondary900_alpha64"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toBottomOf="@id/apartmentDataLinearLayout"
+                    app:translationTextKey="Информация о недвижимости" />
 
                 <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
-                    android:id="@+id/cityApartmentTextInputLayout"
+                    android:id="@+id/totalAreaInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="10dp"
                     android:imeOptions="actionNext"
-                    android:inputType="none"
-                    android:maxLength="250"
+                    android:inputType="numberDecimal"
                     android:paddingHorizontal="20dp"
-                    app:boxStrokeWidth="0dp"
-                    app:boxStrokeWidthFocused="0dp"
-                    app:enabled="false"
-                    app:translationHintKey="Населённый пункт" />
+                    app:decimalLimit="6.2"
+                    app:layout_constraintTop_toBottomOf="@id/totalAreaTitleTextView"
+                    app:translationHintKey="Площадь (м²)" />
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                <View
+                    android:id="@+id/dividerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/secondary100"
+                    app:layout_constraintTop_toBottomOf="@id/totalAreaInputLayout" />
 
-            <com.custom.rgs_android_dom.views.text.MSDTextView
-                android:id="@+id/totalAreaTitleTextView"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@color/secondary100"
-                android:fontFamily="@font/suisse_regular"
-                android:gravity="center_vertical"
-                android:includeFontPadding="false"
-                android:paddingHorizontal="20dp"
-                android:textColor="@color/secondary900_alpha64"
-                android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@id/apartmentDataLinearLayout"
-                app:translationTextKey="Информация о недвижимости" />
-
-            <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
-                android:id="@+id/totalAreaInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="10dp"
-                android:imeOptions="actionNext"
-                android:inputType="numberDecimal"
-                android:paddingHorizontal="20dp"
-                app:decimalLimit="6.2"
-                app:layout_constraintTop_toBottomOf="@id/totalAreaTitleTextView"
-                app:translationHintKey="Площадь (м²)" />
-
-            <View
-                android:id="@+id/dividerView"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/secondary100"
-                app:layout_constraintTop_toBottomOf="@id/totalAreaInputLayout" />
-
-            <com.custom.rgs_android_dom.views.MSDYesNoSelector
-                android:id="@+id/isOwnSelector"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:paddingHorizontal="20dp"
-                app:layout_constraintTop_toBottomOf="@id/dividerView"
-                app:translationLabelKey="Недвижимость в собственности?">
-
-                <com.custom.rgs_android_dom.views.MSDImageView
-                    android:id="@+id/isOwnInfoImageView"
-                    android:layout_width="wrap_content"
+                <com.custom.rgs_android_dom.views.MSDYesNoSelector
+                    android:id="@+id/isOwnSelector"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    app:srcCompat="@drawable/ic_info_24dp" />
+                    android:layout_marginTop="16dp"
+                    android:paddingHorizontal="20dp"
+                    app:layout_constraintTop_toBottomOf="@id/dividerView"
+                    app:translationLabelKey="Недвижимость в собственности?">
 
-            </com.custom.rgs_android_dom.views.MSDYesNoSelector>
+                    <com.custom.rgs_android_dom.views.MSDImageView
+                        android:id="@+id/isOwnInfoImageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        app:srcCompat="@drawable/ic_info_24dp" />
 
-            <View
-                android:id="@+id/dividerView1"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="19dp"
-                android:background="@color/secondary100"
-                app:layout_constraintTop_toBottomOf="@id/isOwnSelector" />
+                </com.custom.rgs_android_dom.views.MSDYesNoSelector>
 
-            <com.custom.rgs_android_dom.views.MSDYesNoSelector
-                android:id="@+id/isInRentSelector"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:paddingHorizontal="20dp"
-                app:layout_constraintTop_toBottomOf="@+id/dividerView1"
-                app:translationLabelKey="Сдаётся в аренду?">
+                <View
+                    android:id="@+id/dividerView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="19dp"
+                    android:background="@color/secondary100"
+                    app:layout_constraintTop_toBottomOf="@id/isOwnSelector" />
 
-                <com.custom.rgs_android_dom.views.MSDImageView
-                    android:id="@+id/isInRentInfoImageView"
-                    android:layout_width="wrap_content"
+                <com.custom.rgs_android_dom.views.MSDYesNoSelector
+                    android:id="@+id/isInRentSelector"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    app:srcCompat="@drawable/ic_info_24dp" />
+                    android:layout_marginTop="16dp"
+                    android:paddingHorizontal="20dp"
+                    app:layout_constraintTop_toBottomOf="@+id/dividerView1"
+                    app:translationLabelKey="Сдаётся в аренду?">
 
-            </com.custom.rgs_android_dom.views.MSDYesNoSelector>
+                    <com.custom.rgs_android_dom.views.MSDImageView
+                        android:id="@+id/isInRentInfoImageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        app:srcCompat="@drawable/ic_info_24dp" />
 
-            <View
-                android:id="@+id/dividerView2"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="19dp"
-                android:background="@color/secondary100"
-                app:layout_constraintTop_toBottomOf="@id/isInRentSelector" />
+                </com.custom.rgs_android_dom.views.MSDYesNoSelector>
 
-            <com.custom.rgs_android_dom.views.MSDYesNoSelector
-                android:id="@+id/isTemporarySelector"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:paddingHorizontal="20dp"
-                app:layout_constraintTop_toBottomOf="@+id/dividerView2"
-                app:translationLabelKey="Временное проживание?">
+                <View
+                    android:id="@+id/dividerView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="19dp"
+                    android:background="@color/secondary100"
+                    app:layout_constraintTop_toBottomOf="@id/isInRentSelector" />
 
-                <com.custom.rgs_android_dom.views.MSDImageView
-                    android:id="@+id/isTemporaryInfoImageView"
-                    android:layout_width="wrap_content"
+                <com.custom.rgs_android_dom.views.MSDYesNoSelector
+                    android:id="@+id/isTemporarySelector"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    app:srcCompat="@drawable/ic_info_24dp" />
+                    android:layout_marginTop="16dp"
+                    android:paddingHorizontal="20dp"
+                    app:layout_constraintTop_toBottomOf="@+id/dividerView2"
+                    app:translationLabelKey="Временное проживание?">
 
-            </com.custom.rgs_android_dom.views.MSDYesNoSelector>
+                    <com.custom.rgs_android_dom.views.MSDImageView
+                        android:id="@+id/isTemporaryInfoImageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        app:srcCompat="@drawable/ic_info_24dp" />
 
-            <View
-                android:id="@+id/dividerView3"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="19dp"
-                android:background="@color/secondary100"
-                app:layout_constraintTop_toBottomOf="@id/isTemporarySelector" />
+                </com.custom.rgs_android_dom.views.MSDYesNoSelector>
+
+                <View
+                    android:id="@+id/dividerView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="19dp"
+                    android:background="@color/secondary100"
+                    app:layout_constraintTop_toBottomOf="@id/isTemporarySelector" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/requestEditLinearLayout"
@@ -452,7 +462,7 @@
                 android:paddingTop="10dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/dividerView3">
+                app:layout_constraintTop_toBottomOf="@+id/layoutTemp">
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:id="@+id/descriptionTextView"
