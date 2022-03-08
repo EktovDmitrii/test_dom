@@ -179,7 +179,7 @@ class EditPropertyInfoFragment :
         }
         subscribe(viewModel.isPropertyEditableObserver) { isPropertyEditable ->
             binding.requestEditLinearLayout.visibleIf(!isPropertyEditable)
-            binding.layoutTemp.deepForEach { isEnabled = isPropertyEditable }
+            binding.notClickableLayout.deepForEach { isEnabled = isPropertyEditable }
         }
     }
 
