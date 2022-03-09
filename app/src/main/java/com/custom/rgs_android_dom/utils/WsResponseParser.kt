@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.utils
 
+import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.ChatMapper
 import com.custom.rgs_android_dom.data.network.responses.ChatMessageResponse
 import com.custom.rgs_android_dom.domain.chat.models.*

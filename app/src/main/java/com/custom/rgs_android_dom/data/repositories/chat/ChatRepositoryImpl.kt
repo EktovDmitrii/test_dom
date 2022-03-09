@@ -230,7 +230,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
         }
     }
 
-    override fun disconnectFromWebSocket(){
+    override fun disconnectFromWebSocket() {
         isConnected = false
         webSocket?.close(CLOSE_REASON_NORMAL, null)
         webSocket = null

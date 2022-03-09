@@ -1,6 +1,8 @@
 package com.custom.rgs_android_dom.utils
 
 import android.text.Editable
+import android.util.Log
+import com.custom.rgs_android_dom.domain.chat.models.OrderTimeModel
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
@@ -78,4 +80,22 @@ fun String.insertDate(startsAt: DateTime?, expiresAt: DateTime?): String {
 
 fun String.safeJSON(): String {
     return this.replace("{}", "null")
+}
+
+fun OrderTimeModel.formatOrderTime(): String {
+    return "${this.from} - ${this.to}"
+}
+
+fun String.formatDeliveryTime() : String {
+    var deliveryTime = 0
+    if (this.isNotEmpty()) {
+        val deliveryTimeString = this.substringBefore('h')
+        deliveryTime = Integer.valueOf(deliveryTimeString)
+    }
+    return when {
+        deliveryTime.toString().takeLast(2).toInt() in 11..19 -> "Работа займет $deliveryTime часов"
+        deliveryTime.toString().takeLast(1).toInt() == 1 -> "Работа займет $deliveryTime час"
+        deliveryTime.toString().takeLast(1).toInt() in 2..4 -> "Работа займет $deliveryTime часа"
+        else -> "Работа займет $deliveryTime часов"
+    }
 }

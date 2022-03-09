@@ -12,6 +12,7 @@ import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.purchase.PurchaseFragment
 import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderFragment
+import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderLauncher
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -63,9 +64,11 @@ class SingleProductViewModel(
                             if (it.isNotEmpty()) {
                                 if (product.isPurchased) { // TODO временно до новой другой задачи
                                     val serviceOrderFragment = ServiceOrderFragment.newInstance(
-                                        it[0].serviceId,
-                                        product.id,
-                                        it[0].serviceDeliveryType
+                                        ServiceOrderLauncher(
+                                            serviceId = it[0].serviceId,
+                                            productId = product.id,
+                                            deliveryType = it[0].serviceDeliveryType
+                                        )
                                     )
                                     ScreenManager.showScreen(serviceOrderFragment)
                                 } else {

@@ -175,4 +175,8 @@ class CatalogInteractor(
             catalogRepository.getClientProducts(contractIds)
         }
     }
+
+    fun getFromAvailableServices(serviceId: String): Single<AvailableServiceModel> {
+        return catalogRepository.getAvailableServices().map { it.firstOrNull { it.id == serviceId } }
+    }
 }

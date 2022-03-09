@@ -11,6 +11,7 @@ import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.domain.purchase.models.DeliveryType
 import com.custom.rgs_android_dom.domain.purchase.models.PurchaseDateTimeModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.catalog.product.service.ServiceLauncher
 import com.custom.rgs_android_dom.ui.purchase.add.comment.PurchaseCommentListener
 import com.custom.rgs_android_dom.ui.purchase.select.date_time.PurchaseDateTimeFragment
 import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressListener
@@ -24,15 +25,11 @@ class ServiceOrderFragment : BaseFragment<ServiceOrderViewModel, FragmentService
     PurchaseDateTimeFragment.PurchaseDateTimeListener {
 
     companion object {
-        private const val ARG_SERVICE_ID = "ARG_SERVICE_ID"
-        private const val ARG_PRODUCT_ID = "ARG_PRODUCT_ID"
-        private const val ARG_DELIVERY_TYPE = "ARG_DELIVERY_TYPE"
+        private const val ARG_SERVICE_ORDER_LAUNCHER = "ARG_SERVICE_ORDER_LAUNCHER"
 
-        fun newInstance(serviceId: String, productId: String, deliveryType: DeliveryType? = null): ServiceOrderFragment {
+        fun newInstance(serviceOrderLauncher: ServiceOrderLauncher): ServiceOrderFragment {
             return ServiceOrderFragment().args {
-                putString(ARG_SERVICE_ID, serviceId)
-                putString(ARG_PRODUCT_ID, productId)
-                putSerializable(ARG_DELIVERY_TYPE, deliveryType)
+                putSerializable(ARG_SERVICE_ORDER_LAUNCHER, serviceOrderLauncher)
             }
         }
     }
@@ -43,9 +40,7 @@ class ServiceOrderFragment : BaseFragment<ServiceOrderViewModel, FragmentService
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
-            requireArguments().getString(ARG_SERVICE_ID),
-            requireArguments().getString(ARG_PRODUCT_ID),
-            requireArguments().getSerializable(ARG_DELIVERY_TYPE)
+            requireArguments().getSerializable(ARG_SERVICE_ORDER_LAUNCHER)
         )
     }
 

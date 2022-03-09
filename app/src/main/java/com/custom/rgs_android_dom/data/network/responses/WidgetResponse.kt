@@ -1,8 +1,10 @@
 package com.custom.rgs_android_dom.data.network.responses
 
 import com.google.gson.annotations.SerializedName
+import org.joda.time.DateTime
 
-data class WidgetResponse(
+
+open class WidgetResponse(
 
     @SerializedName("avatar")
     val avatar: String?,
@@ -14,7 +16,7 @@ data class WidgetResponse(
     val name: String?,
 
     @SerializedName("price")
-    val price: WidgetPriceResponse?,
+    val price: Any?,
 
     @SerializedName("productId")
     val productId: String?,
@@ -41,6 +43,40 @@ data class WidgetResponse(
     val serviceLogo: String?,
 
     @SerializedName("serviceName")
-    val serviceName: String?
+    val serviceName: String?,
+
+    // specific to widget type OrderDefaultProduct
+
+    @SerializedName("deliveryTime")
+    val deliveryTime: String?,
+
+    @SerializedName("icon")
+    val icon: String?,
+
+    @SerializedName("objAddr")
+    val objAddr: String?,
+
+    @SerializedName("objId")
+    val objId: String?,
+
+    @SerializedName("objName")
+    val objName: String?,
+
+    @SerializedName("objPhotoLink")
+    val objPhotoLink: String?,
+
+    @SerializedName("objType")
+    val objType: String?,
+
+    @SerializedName("orderDate")
+    val orderDate: DateTime?,
+
+    @SerializedName("orderTime")
+    val orderTime: OrderTimeResponse?,
+
+    // specific to widget type OrderComplexProduct
+
+    @SerializedName("clientServiceId")
+    val clientServiceId: String?
 
 )

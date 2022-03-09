@@ -11,6 +11,7 @@ import com.custom.rgs_android_dom.domain.purchase.PurchaseInteractor
 import com.custom.rgs_android_dom.domain.purchase.models.*
 import com.custom.rgs_android_dom.domain.purchase.view_states.ServiceOrderViewState
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.catalog.product.service.ServiceLauncher
 import com.custom.rgs_android_dom.ui.client.order_detail.OrderDetailFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.purchase.add.comment.AddCommentFragment
@@ -25,9 +26,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
 class ServiceOrderViewModel(
-    private val serviceId: String,
-    private val productId: String,
-    private val deliveryType: DeliveryType?,
+    private val serviceOrderLauncher: ServiceOrderLauncher,
     private val propertyInteractor: PropertyInteractor,
     private val catalogInteractor: CatalogInteractor,
     private val purchaseInteractor: PurchaseInteractor
@@ -46,13 +45,13 @@ class ServiceOrderViewModel(
 
     init {
         Single.zip(
-            catalogInteractor.getProductServiceDetails(productId, serviceId),
+            catalogInteractor.getProductServiceDetails(serviceOrderLauncher.productId, serviceOrderLauncher.serviceId),
             propertyInteractor.getAllProperty()
         ){ service, propertyList ->
             propertyCount = propertyList.size
             serviceController.postValue(service)
 
-            purchaseInteractor.setPropertyOptional(deliveryType ?: service.deliveryType)
+            purchaseInteractor.setInitData(serviceOrderLauncher.property, serviceOrderLauncher.dateTime, serviceOrderLauncher.deliveryType ?: service.deliveryType)
         }
         .compose(
             ProgressTransformer(
@@ -117,7 +116,7 @@ class ServiceOrderViewModel(
     }
 
     fun onOrderClick(){
-        purchaseInteractor.orderServiceOnBalance(productId, serviceId)
+        purchaseInteractor.orderServiceOnBalance(serviceOrderLauncher.productId, serviceOrderLauncher.serviceId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {

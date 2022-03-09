@@ -2,9 +2,15 @@ package com.custom.rgs_android_dom.ui.chats.chat
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
+import com.custom.rgs_android_dom.domain.property.PropertyInteractor
+import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseDateTimeModel
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseTimePeriodModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
 import com.custom.rgs_android_dom.ui.catalog.product.ProductLauncher
@@ -13,18 +19,25 @@ import com.custom.rgs_android_dom.ui.chats.chat.files.viewers.image.ImageViewerF
 import com.custom.rgs_android_dom.ui.chats.chat.files.viewers.video.VideoPlayerFragment
 import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.purchase.PurchaseFragment
 import com.custom.rgs_android_dom.ui.purchase.payments.PaymentWebViewFragment
+import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderFragment
+import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderLauncher
 import com.custom.rgs_android_dom.utils.logException
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import org.joda.time.DateTime
 import java.io.File
 
 class ChatViewModel(
     private val case: CaseModel,
     private val chatInteractor: ChatInteractor,
-    clientInteractor: ClientInteractor
+    private val catalogInteractor: CatalogInteractor,
+    private val clientInteractor: ClientInteractor,
+    private val propertyInteractor: PropertyInteractor,
 ) : BaseViewModel() {
 
     private val caseController = MutableLiveData<CaseModel>()
@@ -42,6 +55,7 @@ class ChatViewModel(
     private var email: String? = null
 
     init {
+
         caseController.value = case
 
         chatInteractor.startListenNewMessageEvent()
@@ -57,7 +71,7 @@ class ChatViewModel(
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
             .subscribeBy(
                 onNext = {
-                    if (it.isNotEmpty() && it[0].channelId == case.channelId){
+                    if (it.isNotEmpty() && it[0].channelId == case.channelId) {
                         newItemsController.value = it
                         viewChannel()
                     }
@@ -84,7 +98,7 @@ class ChatViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = { personalData ->
-                        email = personalData.email.ifEmpty { null }
+                    email = personalData.email.ifEmpty { null }
                 },
                 onError = {
                     logException(this, it)
@@ -96,7 +110,7 @@ class ChatViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    when (it.event){
+                    when (it.event) {
                         WsEvent.SOCKET_CONNECTED -> {
                             loadChatHistory()
                         }
@@ -109,11 +123,11 @@ class ChatViewModel(
 
     }
 
-    fun onBackClick(){
+    fun onBackClick() {
         closeController.value = Unit
     }
 
-    fun onSendMessageClick(newMessage: String){
+    fun onSendMessageClick(newMessage: String) {
         chatInteractor.sendMessage(channelId = case.channelId, message = newMessage)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -126,7 +140,7 @@ class ChatViewModel(
             .addTo(dataCompositeDisposable)
     }
 
-    fun onFileClick(chatFile: ChatFileModel){
+    fun onFileClick(chatFile: ChatFileModel) {
         when {
             chatFile.mimeType.contains("image") -> {
                 val imageViewerFragment = ImageViewerFragment.newInstance(chatFile)
@@ -144,40 +158,54 @@ class ChatViewModel(
     }
 
     fun onAudioCallClick() {
-        val callFragment = CallFragment.newInstance(chatInteractor.getMasterOnlineCase().channelId, CallType.AUDIO_CALL, chatInteractor.getCurrentConsultant())
+        val callFragment = CallFragment.newInstance(
+            chatInteractor.getMasterOnlineCase().channelId,
+            CallType.AUDIO_CALL,
+            chatInteractor.getCurrentConsultant()
+        )
         ScreenManager.showScreen(callFragment)
     }
 
     fun onVideoCallClick() {
-        val callFragment = CallFragment.newInstance(chatInteractor.getMasterOnlineCase().channelId, CallType.VIDEO_CALL, chatInteractor.getCurrentConsultant())
+        val callFragment = CallFragment.newInstance(
+            chatInteractor.getMasterOnlineCase().channelId,
+            CallType.VIDEO_CALL,
+            chatInteractor.getCurrentConsultant()
+        )
         ScreenManager.showScreen(callFragment)
     }
 
-    fun onProductClick(productId: String) {
-        ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(productId = productId)))
+    fun onProductClick(widget: WidgetModel.WidgetOrderProductModel) {
+        ScreenManager.showBottomScreen(
+            ProductFragment.newInstance(
+                ProductLauncher(
+                    productId = widget.productId ?: ""
+                )
+            )
+        )
     }
 
-    fun onChatClose(){
+    fun onChatClose() {
         viewChannel()
     }
 
-    fun onUserTyping(){
+    fun onUserTyping() {
         chatInteractor.notifyTyping(case.channelId)
     }
 
     fun onPayClick(paymentUrl: String, productId: String, amount: Int) {
         ScreenManager.showScreenScope(
             PaymentWebViewFragment.newInstance(
-                url = paymentUrl ,
+                url = paymentUrl,
                 productId = productId,
-                email =  email ?: "",
+                email = email ?: "",
                 price = amount.toString(),
                 orderId = ""
             ), PAYMENT
         )
     }
 
-    private fun loadChatHistory(){
+    private fun loadChatHistory() {
         chatInteractor.getChatHistory(case.channelId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -199,7 +227,7 @@ class ChatViewModel(
             ).addTo(dataCompositeDisposable)
     }
 
-    private fun postFilesInChat(files: List<File>){
+    private fun postFilesInChat(files: List<File>) {
         chatInteractor.postFilesToChat(case.channelId, files)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -210,7 +238,7 @@ class ChatViewModel(
             ).addTo(dataCompositeDisposable)
     }
 
-    private fun viewChannel(){
+    private fun viewChannel() {
         chatInteractor.viewChannel(case.channelId)
             .andThen(chatInteractor.loadCases())
             .subscribeOn(Schedulers.io())
@@ -221,4 +249,118 @@ class ChatViewModel(
                 }
             ).addTo(dataCompositeDisposable)
     }
+
+    fun onWidgetPayClick(widget: WidgetModel.WidgetAdditionalInvoiceModel) {
+        ScreenManager.showScreenScope(
+            PaymentWebViewFragment.newInstance(
+                url = widget.paymentUrl ?: "",
+                productId = /*widget.productId*/"",
+                email = email ?: "",
+                price = widget.amount.toString(),
+                orderId = ""
+            ), PAYMENT
+        )
+    }
+
+    fun orderDefaultProduct(widget: WidgetModel.WidgetOrderDefaultProductModel) {
+        val propertyRequest: Single<PropertyItemModel> = if (widget.objId != null) {
+            propertyInteractor.getPropertyItem(widget.objId)
+        } else {
+            Single.just(PropertyItemModel.empty())
+        }
+        widget.productId?.let { id ->
+            Single.zip(
+                catalogInteractor.getProduct(id),
+                catalogInteractor.getProductServices(id, false, null),
+                propertyRequest
+            ) { product, services, property ->
+                PurchaseModel(
+                    id = id,
+                    defaultProduct = product.defaultProduct,
+                    duration = product.duration,
+                    deliveryTime = product.deliveryTime,
+                    deliveryType = services[0].serviceDeliveryType,
+                    propertyItemModel = if (!property.isEmpty) property else null,
+                    purchaseDateTimeModel = getPurchaseDate(widget.orderDate, widget.orderTime),
+                    logoSmall = product.logoSmall,
+                    name = product.name,
+                    price = product.price
+                )
+            }.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                    onSuccess = { purchaseModel ->
+                        val purchaseFragment = PurchaseFragment.newInstance(purchaseModel)
+                        ScreenManager.showScreenScope(purchaseFragment, PAYMENT)
+                    },
+                    onError = {
+                        logException(this, it)
+                    }
+                ).addTo(dataCompositeDisposable)
+        }
+    }
+
+    fun orderProductService(widget: WidgetModel.WidgetOrderComplexProductModel) {
+        val propertyRequest: Single<PropertyItemModel> = if (widget.objId != null) {
+            propertyInteractor.getPropertyItem(widget.objId)
+        } else {
+            Single.just(PropertyItemModel.empty())
+        }
+        widget.clientServiceId?.let { id ->
+            Single.zip(
+                propertyRequest,
+                catalogInteractor.getFromAvailableServices(id)
+            ) { property, service ->
+                ServiceOrderLauncher(
+                    serviceId = service.serviceId,
+                    productId = service.productId,
+                    property = if (!property.isEmpty) property else null,
+                    dateTime = getPurchaseDate(widget.orderDate, widget.orderTime),
+                )
+            }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                    onSuccess = {
+                        val serviceOrderFragment = ServiceOrderFragment.newInstance(it)
+                        ScreenManager.showScreen(serviceOrderFragment)
+                    },
+                    onError = {
+                        logException(this, it)
+                    }
+                ).addTo(dataCompositeDisposable)
+        }
+    }
+
+    private fun getPurchaseDate(orderDate: DateTime?, orderTime: OrderTimeModel?): PurchaseDateTimeModel? {
+        return if (orderDate != null && orderTime != null) {
+            PurchaseDateTimeModel(
+                selectedDate = orderDate.toLocalDateTime(),
+                selectedPeriodModel = getPurchaseTime(orderTime),
+            )
+        } else {
+            null
+        }
+    }
+
+    private fun getPurchaseTime(orderTime: OrderTimeModel?) = PurchaseTimePeriodModel(
+        id = when (orderTime?.from.toString()) {
+            "6:00" -> 0
+            "9:00" -> 1
+            "12:00" -> 2
+            "18:00" -> 3
+            else -> throw IllegalArgumentException("wrong argument timeOfDay")
+        },
+        timeOfDay = when (orderTime?.from.toString()) {
+            "6:00" -> "Утро"
+            "9:00" -> "До полудня"
+            "12:00" -> "День"
+            "18:00" -> "Вечер"
+            else -> throw IllegalArgumentException("wrong argument timeOfDay")
+        },
+        timeFrom = orderTime?.from.toString(),
+        timeTo = orderTime?.to.toString(),
+        isSelectable = true,
+        isSelected = true
+    )
 }
