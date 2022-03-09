@@ -124,6 +124,7 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
 
        binding.nextTextView.setOnDebouncedClickListener {
            YandexMetrica.reportEvent("profile_object_add_address")
+           YandexMetrica.reportEvent("profile_object_add_name")
 
            hideSoftwareKeyboard(true)
            viewModel.onNextClick()

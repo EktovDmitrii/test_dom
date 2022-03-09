@@ -8,6 +8,7 @@ import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.registration.fill_client.RegistrationFillClientFragment
 import com.custom.rgs_android_dom.utils.logException
+import com.yandex.metrica.YandexMetrica
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -36,9 +37,11 @@ class RegistrationAgreementViewModel(private val phone: String,
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                     onComplete = {
+                        YandexMetrica.reportEvent("session_start_offline")
                         callback.invoke(isAcceptedAgreement)
                     },
                     onError = {
+                        YandexMetrica.reportEvent("session_start_offline")
                         callback.invoke(isAcceptedAgreement)
                         logException(this, it)
                     }
@@ -59,6 +62,7 @@ class RegistrationAgreementViewModel(private val phone: String,
                 onComplete = {
                     isAcceptedAgreement = true
                     closeController.value = Unit
+                    YandexMetrica.reportEvent("session_start")
 
                     ScreenManager.showScreenScope(RegistrationFillClientFragment.newInstance(phone),REGISTRATION)
                 },

@@ -25,6 +25,7 @@ import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderLauncher
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_FULL_MONTH
 import com.custom.rgs_android_dom.utils.formatTo
+import com.yandex.metrica.YandexMetrica
 
 class ProductViewModel(
     private val product: ProductLauncher,
@@ -97,6 +98,8 @@ class ProductViewModel(
     fun onCheckoutClick() {
         if (registrationInteractor.isAuthorized()) {
             productController.value?.let {
+                YandexMetrica.reportEvent("product_order_start", "{\"product_item\":\"${it.name}\"}")
+
                 val purchaseServiceModel = PurchaseModel(
                     id = it.id,
                     defaultProduct = it.defaultProduct,

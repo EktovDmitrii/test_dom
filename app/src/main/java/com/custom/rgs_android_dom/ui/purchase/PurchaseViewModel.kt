@@ -21,6 +21,7 @@ import com.custom.rgs_android_dom.ui.purchase.payments.PaymentWebViewFragment
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_AND_TIME_FOR_PURCHASE
 import com.custom.rgs_android_dom.utils.formatTo
 import com.custom.rgs_android_dom.utils.logException
+import com.yandex.metrica.YandexMetrica
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -205,12 +206,16 @@ class PurchaseViewModel(
                 timeTo = purchase.purchaseDateTimeModel?.selectedPeriodModel?.timeTo,
                 withOrder = purchase.defaultProduct && purchase.price?.fix == false
             )
-                .doOnSubscribe { isEnableButtonController.postValue(false) }
+                .doOnSubscribe {
+                    isEnableButtonController.postValue(false)
+                }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doFinally { isEnableButtonController.value = true }
                 .subscribeBy(
                     onSuccess = {
+                        YandexMetrica.reportEvent("product_order_finish", "{\"order_id\":\"${it.orderId}\",\"product_item\":\"${purchase.name}\"}")
+
                         ScreenManager.showScreenScope(
                             PaymentWebViewFragment.newInstance(
                                 url = it.paymentUrl,

@@ -11,7 +11,6 @@ import com.custom.rgs_android_dom.domain.purchase.PurchaseInteractor
 import com.custom.rgs_android_dom.domain.purchase.models.*
 import com.custom.rgs_android_dom.domain.purchase.view_states.ServiceOrderViewState
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.ui.catalog.product.service.ServiceLauncher
 import com.custom.rgs_android_dom.ui.client.order_detail.OrderDetailFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.purchase.add.comment.AddCommentFragment
@@ -19,6 +18,7 @@ import com.custom.rgs_android_dom.ui.purchase.select.date_time.PurchaseDateTimeF
 import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressFragment
 import com.custom.rgs_android_dom.utils.ProgressTransformer
 import com.custom.rgs_android_dom.utils.logException
+import com.yandex.metrica.YandexMetrica
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -48,6 +48,8 @@ class ServiceOrderViewModel(
             catalogInteractor.getProductServiceDetails(serviceOrderLauncher.productId, serviceOrderLauncher.serviceId),
             propertyInteractor.getAllProperty()
         ){ service, propertyList ->
+            YandexMetrica.reportEvent("service_order_start", "{\"service\":\"${service.name}\"}")
+
             propertyCount = propertyList.size
             serviceController.postValue(service)
 
@@ -124,6 +126,8 @@ class ServiceOrderViewModel(
             }
             .subscribeBy(
                 onSuccess = {order->
+                    YandexMetrica.reportEvent("service_order_finish", "{\"order_id\":\"${order.id}\",\"service\":\"${order.services?.get(0)?.serviceName}\"}")
+
                     isOrderPerformingController.value = false
                     val orderFragment = OrderDetailFragment.newInstance(order)
                     ScreenManager.showScreen(orderFragment)

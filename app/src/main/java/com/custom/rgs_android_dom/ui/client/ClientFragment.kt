@@ -57,6 +57,8 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
 
         binding.logoutRelativeLayout.setOnDebouncedClickListener {
             viewModel.onLogoutClick()
+
+            YandexMetrica.reportEvent("session_start_offline")
         }
 
         binding.personalDataRelativeLayout.setOnDebouncedClickListener {

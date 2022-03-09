@@ -40,7 +40,11 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             PopularProductsAdapter { productId -> viewModel.onPopularProductClick(productId) }
 
         binding.popularCategoriesLayout.popularCategoriesRecyclerView.adapter =
-            PopularCategoriesAdapter { viewModel.onCategoryClick(it) }
+            PopularCategoriesAdapter {
+                viewModel.onCategoryClick(it)
+
+                YandexMetrica.reportEvent("mp_popular_category", "{\"category\":\"${it.name}\"}")
+            }
 
         binding.loginLinearLayout.setOnDebouncedClickListener {
             YandexMetrica.reportEvent("mp_action", "{\"action\":\"Войти\"}")
@@ -106,6 +110,8 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
 
         binding.popularProductsLayout.showAllTextView.setOnDebouncedClickListener {
             viewModel.onShowAllPopularProductsClick()
+
+            YandexMetrica.reportEvent("mp_popular_category_all")
         }
 
         GlideApp.with(requireContext())
@@ -118,7 +124,11 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
 
         binding.popularServicesLayout.popularServicesRecyclerView.adapter =
             GridPopularServicesAdapter(
-                onServiceClick = { viewModel.onServiceClick(it) }
+                onServiceClick = {
+                    viewModel.onServiceClick(it)
+
+                    YandexMetrica.reportEvent("mp_popular_service", "{\"service\":\"${it.name}\"}")
+                }
             )
 
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.dp_12)
@@ -128,6 +138,8 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
 
         binding.popularServicesLayout.allTextView.setOnDebouncedClickListener {
             viewModel.onAllCatalogClick()
+
+            YandexMetrica.reportEvent("mp_popular_service_all")
         }
         binding.mainShimmerLayout.horizontalScrollView.setOnTouchListener { _, _ -> true }
         binding.mainErrorLayout.reloadTextView.setOnDebouncedClickListener {

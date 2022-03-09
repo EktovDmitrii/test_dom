@@ -128,6 +128,7 @@ class RegistrationCodeViewModel(
                     YandexMetrica.reportEvent("login_success_reg")
                     ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(phone), REGISTRATION)
                 } else {
+                    YandexMetrica.reportEvent("session_start")
                     clientInteractor.finishAuth()
                 }
             }

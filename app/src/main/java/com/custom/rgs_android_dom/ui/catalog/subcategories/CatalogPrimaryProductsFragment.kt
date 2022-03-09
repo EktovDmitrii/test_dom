@@ -10,6 +10,7 @@ import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
 import com.custom.rgs_android_dom.views.NavigationScope
+import com.yandex.metrica.YandexMetrica
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -45,6 +46,8 @@ class CatalogPrimaryProductsFragment :
         super.onViewCreated(view, savedInstanceState)
         binding.productsRecyclerView.adapter = GridVerticalPrimaryProductsAdapter {
             viewModel.onProductClick(it)
+
+            YandexMetrica.reportEvent("prodlist_product_click", "{\"product_item\":\"${it.name}\"}")
         }
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()

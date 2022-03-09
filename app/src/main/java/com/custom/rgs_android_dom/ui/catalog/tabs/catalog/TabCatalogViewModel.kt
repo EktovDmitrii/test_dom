@@ -29,7 +29,6 @@ class TabCatalogViewModel(
     private val registrationInteractor: RegistrationInteractor
 ) : BaseViewModel() {
 
-
     private val catalogCategoriesController = MutableLiveData<List<CatalogCategoryModel>>()
     val catalogCategoriesObserver: LiveData<List<CatalogCategoryModel>> = catalogCategoriesController
 
