@@ -348,14 +348,14 @@ class ChatViewModel(
             "6:00" -> 0
             "9:00" -> 1
             "12:00" -> 2
-            "15:00" -> 3
+            "18:00" -> 3
             else -> throw IllegalArgumentException("wrong argument timeOfDay")
         },
         timeOfDay = when (orderTime?.from.toString()) {
             "6:00" -> "Утро"
             "9:00" -> "До полудня"
             "12:00" -> "День"
-            "15:00" -> "Вечер"
+            "18:00" -> "Вечер"
             else -> throw IllegalArgumentException("wrong argument timeOfDay")
         },
         timeFrom = orderTime?.from.toString(),
