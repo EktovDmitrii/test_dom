@@ -54,8 +54,8 @@ ClientInteractor(
 
     fun getOrdersHistory(): Single<List<Order>> {
         return clientRepository.getOrders(1000, 0)
-            .flatMap {
-                Single.just(sortOrderHistory(it))
+            .flatMap {orders->
+                Single.just(sortOrderHistory(orders.filter { it.status != OrderStatus.DRAFT }))
             }
     }
 
