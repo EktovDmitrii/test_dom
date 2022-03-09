@@ -169,7 +169,7 @@ class AuthContentProviderManager(private val context: Context) {
                 context.contentResolver.insert(uri, values)
                 context.contentResolver.notifyChange(uri, null)
             } catch (e: Exception){
-
+                e.printStackTrace()
             }
         }
     }
