@@ -76,7 +76,7 @@
                     android:fontFamily="@font/suisse_regular"
                     android:gravity="center_vertical"
                     android:includeFontPadding="false"
-                    android:textColor="@color/secondary600"
+                    android:textColor="@color/secondary800"
                     android:textSize="14sp"
                     app:lineHeight="20dp"
                     tools:text="1500 ₽" />

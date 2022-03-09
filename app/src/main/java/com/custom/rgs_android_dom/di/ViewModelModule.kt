@@ -103,7 +103,7 @@ val viewModelModule = module {
     viewModel { AgentViewModel(clientInteractor = get()) }
     viewModel { EditAgentViewModel(clientInteractor = get()) }
     viewModel { AboutAppViewModel() }
-    viewModel { parameters -> ChatViewModel(case = parameters[0], chatInteractor = get(), clientInteractor = get()) }
+    viewModel { parameters -> ChatViewModel(case = parameters[0], chatInteractor = get(), clientInteractor = get(), catalogInteractor = get(), propertyInteractor = get()) }
     viewModel { parameters-> SelectPropertyTypeViewModel(propertyName = parameters[0], propertyAddress = parameters[1], propertyInteractor = get()) }
     viewModel { parameters-> PropertyDetailsViewModel(propertyName = parameters[0], propertyAddress = parameters[1], propertyType = parameters[2], propertyInteractor = get(), connectivityManager = get()) }
     viewModel { parameters-> PropertyInfoViewModel(objectId = parameters.get(), propertyInteractor = get(), clientInteractor = get(), connectivityManager = get()) }
@@ -160,10 +160,10 @@ val viewModelModule = module {
     viewModel { InfoPolicyViewModel() }
     viewModel { InsurantViewModel(policiesInteractor = get()) }
     viewModel { parameters -> PolicyDialogsViewModel(policiesInteractor = get(), model = parameters.get(), chatInteractor = get()) }
-    viewModel { parameters -> ServiceOrderViewModel(serviceId = parameters[0], productId = parameters[1], deliveryType = parameters[2], propertyInteractor = get(), catalogInteractor = get(), purchaseInteractor = get()) }
+    viewModel { parameters -> ServiceOrderViewModel(serviceOrderLauncher = parameters.get(), propertyInteractor = get(), catalogInteractor = get(), purchaseInteractor = get()) }
     viewModel { parameters -> PolicyViewModel(contractId = parameters.get(),policiesInteractor = get()) }
     viewModel { ChatsViewModel(chatInteractor = get(), registrationInteractor = get()) }
     viewModel { parameters -> CancelOrderViewModel(order = parameters[0], clientInteractor = get()) }
-    viewModel { parameters -> PropertyMoreViewModel(property = parameters[0], clientInteractor = get())}
+    viewModel { parameters -> PropertyMoreViewModel(property = parameters[0], clientInteractor = get(), catalogInteractor = get())}
     viewModel { parameters -> DeletePropertyViewModel(property = parameters.get(), propertyInteractor = get(), clientInteractor = get(), chatInteractor = get(), catalogInteractor = get())}
 }

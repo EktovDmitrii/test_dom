@@ -178,7 +178,15 @@ class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding
                     }
                 }
             }
+            purchase.purchaseDateTimeModel?.let {
+                binding.layoutDateTime.filledDateTimeGroup.visible()
+                binding.layoutDateTime.chooseDateTimeTextView.gone()
 
+                it.selectedPeriodModel?.let {
+                    binding.layoutDateTime.timesOfDayTextView.text = "${it.timeFrom} – ${it.timeTo}"
+                }
+                binding.layoutDateTime.timeIntervalTextView.text = it.selectedDate.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
+            }
         }
 
         subscribe(viewModel.hasCodeAgentObserver) {
@@ -208,14 +216,6 @@ class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding
     }
 
     override fun onSelectDateTimeClick(purchaseDateTimeModel: PurchaseDateTimeModel) {
-        binding.layoutDateTime.filledDateTimeGroup.visible()
-        binding.layoutDateTime.chooseDateTimeTextView.gone()
-
-        purchaseDateTimeModel.selectedPeriodModel?.let {
-            binding.layoutDateTime.timesOfDayTextView.text = "${it.timeFrom} – ${it.timeTo}"
-        }
-        binding.layoutDateTime.timeIntervalTextView.text = purchaseDateTimeModel.selectedDate.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
-
         viewModel.updateDateTime(purchaseDateTimeModel)
     }
 

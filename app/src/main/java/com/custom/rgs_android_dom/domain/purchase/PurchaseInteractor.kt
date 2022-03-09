@@ -22,6 +22,20 @@ class PurchaseInteractor(
     val serviceOrderViewStateSubject = PublishSubject.create<ServiceOrderViewState>()
     private var isPropertyOptional = false
 
+    fun setInitData(
+        property: PropertyItemModel?,
+        dateTime: PurchaseDateTimeModel?,
+        deliveryType: DeliveryType?
+    ) {
+        setPropertyOptional(deliveryType)
+
+        serviceOrderViewState = serviceOrderViewState.copy(
+            property = property,
+            orderDate = dateTime
+        )
+        validateServiceOrderViewState()
+    }
+
     fun getSavedCards(): Single<List<CardModel>> {
         return purchaseRepository.getSavedCards()
     }
@@ -96,7 +110,7 @@ class PurchaseInteractor(
         purchaseRepository.notifyProductPurchased(productId)
     }
 
-    fun setPropertyOptional(deliveryType: DeliveryType?) {
+    private fun setPropertyOptional(deliveryType: DeliveryType?) {
         isPropertyOptional = deliveryType == DeliveryType.ONLINE
     }
 

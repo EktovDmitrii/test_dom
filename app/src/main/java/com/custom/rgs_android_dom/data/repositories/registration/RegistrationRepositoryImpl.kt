@@ -47,12 +47,12 @@ class RegistrationRepositoryImpl(
             "$HEADER_BEARER $token",
             LoginRequest(phone = phone.formatPhoneForApi(), code = code)
         )
-            .map { authResponse ->
-                authContentProviderManager.saveAuth(authResponse.token)
-                chatRepository.connectToWebSocket()
-                loginSubject.onNext(Unit)
-                return@map authResponse.isNewUser
-            }
+        .map { authResponse ->
+            authContentProviderManager.saveAuth(authResponse.token)
+            chatRepository.connectToWebSocket()
+            loginSubject.onNext(Unit)
+            return@map authResponse.isNewUser
+        }
     }
 
     override fun getAccessToken(): String? {

@@ -9,6 +9,7 @@ import com.custom.rgs_android_dom.domain.purchase.PurchaseInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderFragment
+import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderLauncher
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_FULL_MONTH
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_ONLY
 import com.custom.rgs_android_dom.utils.formatTo
@@ -97,7 +98,9 @@ class ServiceViewModel(
     }
 
     fun onServiceOrderClick(){
-        val serviceOrderFragment = ServiceOrderFragment.newInstance(service.serviceId, service.productId)
+        val serviceOrderFragment = ServiceOrderFragment.newInstance(
+            ServiceOrderLauncher(service.serviceId, service.productId)
+        )
         ScreenManager.showScreen(serviceOrderFragment)
     }
 

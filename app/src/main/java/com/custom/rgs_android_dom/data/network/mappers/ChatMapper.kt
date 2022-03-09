@@ -5,12 +5,14 @@ import android.util.Base64
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.responses.*
 import com.custom.rgs_android_dom.domain.chat.models.*
+import com.google.gson.internal.LinkedTreeMap
 import org.joda.time.DateTimeZone
 import org.joda.time.LocalDateTime
+import java.lang.IllegalArgumentException
 
 object ChatMapper{
 
-    private const val AVATAR_ENDPOINT = "${BuildConfig.BASE_URL}/api/store"
+    private const val STORE_ENDPOINT = "${BuildConfig.BASE_URL}/api/store"
 
     fun responseToChatMessages(response: List<ChatMessageResponse>, userId: String): List<ChatMessageModel> {
         return response.map { messageResponse->
@@ -26,33 +28,7 @@ object ChatMapper{
                 createdAt = messageResponse.createdAt.withZone(DateTimeZone.getDefault()).toLocalDateTime(),
                 type = messageResponse.type,
                 member = null,
-                widget = messageResponse.details?.let {
-                    val avatar = if (!it.avatar.isNullOrEmpty()) {
-                        "${AVATAR_ENDPOINT}/${it.avatar}"
-                    } else {
-                        ""
-                    }
-                    WidgetModel(
-                        avatar = avatar,
-                        description = it.description ?: "",
-                        name = it.name ?: "",
-                        price = WidgetPriceModel(amount = it.price?.amount,vatType = it.price?.vatType),
-                        productId = it.productId ?: "",
-                        widgetType = it.widgetType,
-                        amount = it.amount,
-                        invoiceId = it.invoiceId,
-                        items = it.items?.map { WidgetAdditionalInvoiceItemModel(
-                            amount = it.amount,
-                            name = it.name,
-                            price = it.price,
-                            quantity = it.quantity
-                        )} ?: listOf(),
-                        orderId = it.orderId,
-                        paymentUrl = it.paymentUrl,
-                        serviceLogo = it.serviceLogo,
-                        serviceName = it.serviceName,
-                    )
-                }
+                widget = messageResponse.details?.let { widgetModel(it) }
             )
         }
     }
@@ -70,40 +46,14 @@ object ChatMapper{
             createdAt = messageResponse.createdAt.withZone(DateTimeZone.getDefault()).toLocalDateTime(),
             type = messageResponse.type,
             member = null,
-            widget = messageResponse.details?.let {
-                val avatar = if (!it.avatar.isNullOrEmpty()) {
-                    "${AVATAR_ENDPOINT}/${it.avatar}"
-                } else {
-                    ""
-                }
-                WidgetModel(
-                    avatar = avatar,
-                    description = it.description ?: "",
-                    name = it.name ?: "",
-                    price = WidgetPriceModel(amount = it.price?.amount,vatType = it.price?.vatType),
-                    productId = it.productId ?: "",
-                    widgetType = it.widgetType,
-                    amount = it.amount,
-                    invoiceId = it.invoiceId,
-                    items = it.items?.reversed()?.map { WidgetAdditionalInvoiceItemModel(
-                        amount = it.amount,
-                        name = it.name,
-                        price = it.price,
-                        quantity = it.quantity
-                    )} ?: listOf(),
-                    orderId = it.orderId,
-                    paymentUrl = it.paymentUrl,
-                    serviceLogo = it.serviceLogo,
-                    serviceName = it.serviceName,
-                )
-            }
+            widget = messageResponse.details?.let { widgetModel(it) }
         )
     }
 
     fun responseToChannelMembers(response: List<ChannelMemberResponse>): List<ChannelMemberModel> {
         return response.map {
             val avatar = if (it.avatar?.isNotEmpty() == true) {
-                "${AVATAR_ENDPOINT}/${it.avatar}"
+                "${STORE_ENDPOINT}/${it.avatar}"
             } else {
                 ""
             }
@@ -152,4 +102,61 @@ object ChatMapper{
         )
     }
 
+    private fun widgetModel(details: WidgetResponse): WidgetModel {
+        return when (details.widgetType) {
+            WidgetType.GeneralInvoicePayment.name -> WidgetModel.WidgetAdditionalInvoiceModel(
+                amount = details.amount,
+                invoiceId = details.invoiceId,
+                items = details.items?.map { WidgetAdditionalInvoiceItemModel(
+                    amount = it.amount,
+                    name = it.name,
+                    price = it.price,
+                    quantity = it.quantity
+                ) },
+                orderId = details.orderId,
+                paymentUrl = details.paymentUrl,
+                serviceLogo = "$STORE_ENDPOINT/${details.serviceLogo}",
+                serviceName = details.serviceName,
+                widgetType = WidgetType.GeneralInvoicePayment
+            )
+            WidgetType.OrderComplexProduct.name -> WidgetModel.WidgetOrderComplexProductModel(
+                clientServiceId = details.clientServiceId,
+                deliveryTime = details.deliveryTime,
+                icon = "$STORE_ENDPOINT/${details.icon}",
+                name = details.name,
+                objAddr = details.objAddr,
+                objId = details.objId,
+                objName = details.objName,
+                objType = details.objType,
+                objPhotoLink = details.objPhotoLink,
+                orderDate = details.orderDate,
+                orderTime = details.orderTime.let { OrderTimeModel(from = it?.from, to = it?.to) },
+                widgetType = WidgetType.OrderComplexProduct
+            )
+            WidgetType.OrderDefaultProduct.name -> WidgetModel.WidgetOrderDefaultProductModel(
+                deliveryTime = details.deliveryTime,
+                icon = "$STORE_ENDPOINT/${details.icon}",
+                name = details.name,
+                objAddr = details.objAddr,
+                objId = details.objId,
+                objName = details.objName,
+                objPhotoLink = details.objPhotoLink,
+                objType = details.objType,
+                orderDate = details.orderDate,
+                orderTime = details.orderTime.let { OrderTimeModel(from = it?.from, to = it?.to) },
+                productId = details.productId,
+                widgetType = WidgetType.OrderDefaultProduct,
+                price = if (details.price is Double) details.price.toInt() else null
+            )
+            WidgetType.Product.name -> WidgetModel.WidgetOrderProductModel(
+                avatar = "$STORE_ENDPOINT/${details.avatar}",
+                description = details.description,
+                name = details.name,
+                price = if (details.price != null && details.price !is Double) WidgetPriceModel(amount = ((details.price as LinkedTreeMap<*, *>)["Amount"] as Double?)?.toInt(), vatType = details.price["VatType"].toString(), fix = details.price["Fix"] == true) else null,
+                productId = details.productId,
+                widgetType = WidgetType.Product
+            )
+            else -> throw IllegalArgumentException("wrong type widget type: ${details.widgetType}")
+        }
+    }
 }

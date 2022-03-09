@@ -416,7 +416,9 @@ class PropertyInteractor(
     }
 
     fun onFilesToUploadSelected(files: List<Uri>) {
-        propertyRepository.onFilesToUploadSelected(files)
+        if (files.isNotEmpty()){
+            propertyRepository.onFilesToUploadSelected(files)
+        }
     }
 
     fun onFilesToDeleteSelected(propertyItemModel: PropertyItemModel){
