@@ -67,6 +67,7 @@ class EditPropertyInfoFragment :
             val isFlatSelected = id == R.id.flatTypeRadioButton
             toggleFlatFields(isFlatSelected, isFlatSelected && viewModel.isPropertyEditableObserver.value ?: true)
 
+            clearInputs()
             viewModel.onPropertyTypeChanged(
                 if (id == R.id.flatTypeRadioButton) PropertyType.APARTMENT.type
                 else PropertyType.HOUSE.type
@@ -210,6 +211,11 @@ class EditPropertyInfoFragment :
 
         binding.floorTextInputLayout.toggleEnable(isEnabled)
         binding.entranceTextInputLayout.toggleEnable(isEnabled)
+    }
+
+    private fun clearInputs() {
+        binding.floorTextInputLayout.setText("")
+        binding.entranceTextInputLayout.setText("")
     }
 
     @SuppressLint("ClickableViewAccessibility")
