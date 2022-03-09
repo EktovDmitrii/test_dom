@@ -28,6 +28,7 @@
             android:includeFontPadding="false"
             android:paddingStart="0dp"
             android:paddingEnd="0dp"
+            android:textColor="@color/secondary_900_secondary_400_text_color"
             android:fontFamily="@font/suisse_regular"
             android:textCursorDrawable="@drawable/cursor_primary_500"
             android:textSize="16sp"
