@@ -19,11 +19,10 @@ import java.io.File
 
 class DocumentViewModel(
     private val objectId: String,
-    propertyItemModel: PropertyItemModel,
     private val propertyInteractor: PropertyInteractor
 ) : BaseViewModel() {
 
-    private val isDeleteButtonVisibleController = MutableLiveData<Boolean>()
+    private val isDeleteButtonVisibleController = MutableLiveData<Boolean>(false)
     val isDeleteButtonVisibleObserver: LiveData<Boolean> = isDeleteButtonVisibleController
 
     private val propertyItemController = MutableLiveData<PropertyItemModel>()
@@ -36,9 +35,18 @@ class DocumentViewModel(
     val openFileObserver: LiveData<Uri> = openFileController
 
     init {
-        isDeleteButtonVisibleController.value = false
-
-        propertyItemController.postValue(propertyItemModel)
+        propertyInteractor.getPropertyItem(objectId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    propertyInteractor.propertyInfoStateSubject.onNext(it)
+                },
+                onError = {
+                    logException(this, it)
+                    networkErrorController.value = "Не удалось загрузить объект"
+                }
+            ).addTo(dataCompositeDisposable)
 
         propertyInteractor.propertyInfoStateSubject
             .subscribeOn(Schedulers.io())
@@ -58,7 +66,9 @@ class DocumentViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = { uri ->
-                    updateDocuments(uri)
+                    propertyItemController.value?.let {
+                        updateDocuments(it, uri)
+                    }
                 },
                 onError = {
                     logException(this, it)
@@ -81,25 +91,22 @@ class DocumentViewModel(
 
     }
 
-    private fun updateDocuments(uri: List<Uri>) {
-
-        propertyItemController.value?.let {
-            propertyInteractor.updatePropertyItem(
-                objectId = objectId,
-                propertyItemModel = it,
-                filesUri = uri,
-            ).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                    onSuccess = {
-                        propertyInteractor.propertyInfoStateSubject.onNext(it)
-                    },
-                    onError = {
-                        logException(this, it)
-                        networkErrorController.value = "Не удалось загрузить объект"
-                    }
-                ).addTo(dataCompositeDisposable)
-        }
+    private fun updateDocuments(currentModel: PropertyItemModel, uri: List<Uri>) {
+        propertyInteractor.updatePropertyDocuments(
+            objectId = objectId,
+            propertyItemModel = currentModel,
+            filesUri = uri,
+        ).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    propertyInteractor.propertyInfoStateSubject.onNext(it)
+                },
+                onError = {
+                    logException(this, it)
+                    networkErrorController.value = "Не удалось загрузить объект"
+                }
+            ).addTo(dataCompositeDisposable)
     }
 
     fun onFileClick(propertyDocument: PropertyDocument) {

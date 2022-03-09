@@ -3,7 +3,7 @@ package com.custom.rgs_android_dom.ui.property.add.details
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.custom.rgs_android_dom.MSDConnectivityManager
+import com.custom.rgs_android_dom.ui.managers.MSDConnectivityManager
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyDocumentValidationException
@@ -118,10 +118,6 @@ class PropertyDetailsViewModel(
             loadingStateController.value = LoadingState.CONTENT
         }
 
-    }
-
-    fun onAddressChanged(address: String) {
-        propertyInteractor.updatePropertyAddress(address)
     }
 
     fun onEntranceChanged(entrance: String) {

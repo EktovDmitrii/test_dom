@@ -1,15 +1,15 @@
 package com.custom.rgs_android_dom.ui.policies
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.policies.PoliciesInteractor
-import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
+import com.custom.rgs_android_dom.domain.policies.models.PolicyShortModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.POLICY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.policies.add.AddPolicyFragment
+import com.custom.rgs_android_dom.ui.policies.policy.PolicyFragment
 import com.custom.rgs_android_dom.utils.CacheHelper.compositeDisposable
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -20,8 +20,8 @@ import io.reactivex.schedulers.Schedulers
 class PoliciesViewModel(private val policiesInteractor: PoliciesInteractor, clientInteractor: ClientInteractor) :
     BaseViewModel() {
 
-    private val policiesController = MutableLiveData<List<PolicyModel>>()
-    val policiesObserver: LiveData<List<PolicyModel>> = policiesController
+    private val policiesController = MutableLiveData<List<PolicyShortModel>>()
+    val policiesObserver: LiveData<List<PolicyShortModel>> = policiesController
 
     private val promptSaveController = MutableLiveData<Boolean>()
     val promptSaveObserver: LiveData<Boolean> = promptSaveController
@@ -37,9 +37,9 @@ class PoliciesViewModel(private val policiesInteractor: PoliciesInteractor, clie
             .subscribeBy(
                 onError = { logException(this, it) },
                 onSuccess = {
-                    if (it.birthDate != null &&
-                        it.firstName.isNotEmpty() &&
-                        it.middleName != null &&
+                    if (it.birthDate != null ||
+                        it.firstName.isNotEmpty() ||
+                        !it.middleName.isNullOrEmpty() ||
                         it.lastName.isNotEmpty()
                     ) {
                         isPersonalDataFilled = true
@@ -85,8 +85,8 @@ class PoliciesViewModel(private val policiesInteractor: PoliciesInteractor, clie
         ScreenManager.showScreenScope(AddPolicyFragment.newInstance(fragmentId), POLICY)
     }
 
-    fun onPolicyClick(it: String) {
-        //ScreenManager.showScreen(PolicyFragment.newInstance(it))
+    fun onPolicyClick(contractId: String) {
+        ScreenManager.showScreen(PolicyFragment.newInstance(contractId))
     }
 
     private fun getPolicies() {

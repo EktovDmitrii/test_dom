@@ -40,14 +40,14 @@ class TabMyProductsViewModel(
     private var requestedScreen = TargetScreen.UNSPECIFIED
 
     init {
-        loadClientProducts()
+        getProductsOnBalance()
 
         registrationInteractor.getLoginSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    loadClientProducts()
+                    getProductsOnBalance()
                 },
                 onError = {
                     logException(this, it)
@@ -59,7 +59,7 @@ class TabMyProductsViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    loadClientProducts()
+                    getProductsOnBalance()
                 },
                 onError = {
                     logException(this, it)
@@ -71,14 +71,14 @@ class TabMyProductsViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    loadClientProducts()
+                    getProductsOnBalance()
                 },
                 onError = {
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
 
-        clientInteractor.getClientSavedSubject()
+        registrationInteractor.getAuthFlowEndedSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy (
@@ -111,6 +111,7 @@ class TabMyProductsViewModel(
                     ProductLauncher(
                         productId = product.productId,
                         isPurchased = true,
+                        purchaseValidFrom = product.validityFrom,
                         purchaseValidTo = product.validityTo,
                         purchaseObjectId = product.objectId
                     )
@@ -128,9 +129,9 @@ class TabMyProductsViewModel(
         }
     }
 
-    private fun loadClientProducts(){
+    private fun getProductsOnBalance(){
         if (registrationInteractor.isAuthorized()){
-            catalogInteractor.getClientProducts()
+            catalogInteractor.getProductsOnBalance()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(

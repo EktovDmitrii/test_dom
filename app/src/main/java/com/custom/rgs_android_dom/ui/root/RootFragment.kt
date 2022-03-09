@@ -9,6 +9,7 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentRootBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.chats.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.main.MainFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.*
@@ -63,7 +64,6 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
         super.onViewCreated(view, savedInstanceState)
 
         ScreenManager.initBottomSheet(R.id.bottomContainer)
-
         ScreenManager.onBottomSheetChanged = {fragment->
             bottomSheetMainFragment = fragment
             measureAndShowFragment()
@@ -86,10 +86,10 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
 
                     viewModel.onCatalogueClick()
                 }
-                NavigationScope.NAV_CHAT -> {
+                NavigationScope.NAV_CHATS -> {
                     YandexMetrica.reportEvent("mp_menu", "{\"menu_item\":\"Чат\"}")
 
-                    viewModel.onChatClick()
+                    viewModel.onChatsClick()
                 }
                 NavigationScope.NAV_LOGIN -> {
                     YandexMetrica.reportEvent("mp_menu", "{\"menu_item\":\"Войти\"}")
@@ -131,14 +131,14 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
             viewModel.onChatVideoCallClick()
         }
 
+        binding.actionsChatsTextView.setOnDebouncedClickListener {
+            viewModel.onChatsClick()
+        }
+
         subscribe(viewModel.navScopesVisibilityObserver){ scopes->
             scopes.forEach {
                 binding.bottomNavigationView.setNavigationScopeVisible(it.first, it.second)
             }
-        }
-
-        subscribe(viewModel.navScopeEnabledObserver){
-            binding.bottomNavigationView.setNavigationScopeEnabled(it.first, it.second)
         }
 
         subscribe(viewModel.isUserAuthorizedObserver){
@@ -152,16 +152,10 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
             binding.phoneCallLinearLayout.visibleIf(it)
         }
 
-    }
+        subscribe(viewModel.unreadPostsObserver){
+            binding.bottomNavigationView.updateUnreadPostsCount(it)
+        }
 
-    override fun onStart() {
-        super.onStart()
-        viewModel.subscribeLogout()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        viewModel.unsubscribeLogout()
     }
 
     override fun setStatusBarColor() {
@@ -185,31 +179,37 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
     }
 
     private fun measureAndShowFragment() {
+        try {
+            binding.root.afterMeasured {
+                bottomSheetBehavior = from<View>(binding.bottomContainer)
+                scroller = bottomSheetBehavior?.getViewDragHelper()?.getScroller()
 
-        binding.root.afterMeasured {
-            bottomSheetBehavior = from<View>(binding.bottomContainer)
-            scroller = bottomSheetBehavior?.getViewDragHelper()?.getScroller()
+                bottomSheetBehavior?.addBottomSheetCallback(bottomSheetCallback)
 
-            bottomSheetBehavior?.addBottomSheetCallback(bottomSheetCallback)
+                val bottomSheetTopPadding = if (bottomSheetMainFragment is ChatFragment){ 0 } else { binding.toolbarLinearLayout.height }
 
-            val bottomSheetTopPadding = binding.toolbarLinearLayout.height
+                if (peekHeight == null){
+                    peekHeight = binding.root.getLocationOnScreen().y - binding.actionsLinearLayout.getLocationOnScreen().y + bottomSheetTopPadding
+                }
 
-            peekHeight = binding.root.getLocationOnScreen().y - binding.actionsLinearLayout.getLocationOnScreen().y + bottomSheetTopPadding
-            binding.bottomContainer.setPadding(0, bottomSheetTopPadding, 0, 0)
+                binding.bottomContainer.setPadding(0, bottomSheetTopPadding, 0, 0)
 
-            beforeBottomSheetInit()
+                beforeBottomSheetInit()
 
-            binding.toolbarLinearLayout.setOnDebouncedClickListener {
-                bottomSheetBehavior?.state = STATE_COLLAPSED
+                binding.toolbarLinearLayout.setOnDebouncedClickListener {
+                    bottomSheetBehavior?.state = STATE_COLLAPSED
+                }
+
+                if (bottomSheetBehavior?.state == STATE_EXPANDED) {
+                    afterBottomSheetInit()
+                } else {
+                    bottomSheetBehavior?.state = STATE_EXPANDED
+                }
             }
-
-            if (bottomSheetBehavior?.state == STATE_EXPANDED) {
-                afterBottomSheetInit()
-            } else {
-                bottomSheetBehavior?.state = STATE_EXPANDED
-            }
-
+        } catch (e: Exception){
+            logException(this, e)
         }
+
     }
 
     private fun onSlideStateChanged(newState: SlideState) {

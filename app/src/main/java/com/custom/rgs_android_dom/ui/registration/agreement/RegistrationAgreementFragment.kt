@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.databinding.FragmentRegistrationAgreementBindi
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.ui.web_view.WebViewFragment
 import com.custom.rgs_android_dom.utils.*
 import com.yandex.metrica.YandexMetrica
@@ -20,23 +21,17 @@ class RegistrationAgreementFragment :
 
     companion object {
         private const val ARG_PHONE = "ARG_PHONE"
-        private const val ARG_CLOSE_AFTER_ACCEPT = "ARG_CLOSE_AFTER_ACCEPT"
 
-        fun newInstance(
-            phone: String,
-            closeAfterAccept: Boolean = false
-        ): RegistrationAgreementFragment {
+        fun newInstance(phone: String): RegistrationAgreementFragment {
             return RegistrationAgreementFragment().args {
                 putString(ARG_PHONE, phone)
-                putBoolean(ARG_CLOSE_AFTER_ACCEPT, closeAfterAccept)
             }
         }
     }
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
-            requireArguments().getString(ARG_PHONE),
-            requireArguments().getBoolean(ARG_CLOSE_AFTER_ACCEPT)
+            requireArguments().getString(ARG_PHONE)
         )
     }
 
@@ -55,12 +50,8 @@ class RegistrationAgreementFragment :
             viewModel.onNextClick()
         }
 
-        binding.closeImageView.setOnDebouncedClickListener {
-            viewModel.onCloseClick()
-        }
-
         binding.backImageView.setOnDebouncedClickListener {
-            viewModel.onBackClick()
+            onClose()
         }
 
         subscribe(viewModel.isNextTextViewEnabledObserver) {
@@ -73,8 +64,16 @@ class RegistrationAgreementFragment :
     }
 
     override fun onClose() {
-        hideSoftwareKeyboard()
-        ScreenManager.closeScope(REGISTRATION)
+        viewModel.onBackClick { isAccepted ->
+            hideSoftwareKeyboard()
+            viewModel.disposeAll()
+            if (isAccepted) {
+                ScreenManager.closeScope(REGISTRATION)
+            } else {
+                super.onClose()
+                ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+            }
+        }
     }
 
     override fun onLoading() {
@@ -97,7 +96,7 @@ class RegistrationAgreementFragment :
             resources.getColor(R.color.primary500,null),
             Pair("пользовательского соглашения,", View.OnClickListener {
                 val webViewFragment =
-                    WebViewFragment.newInstance("https://moi-service.ru/legal/moi-servis-med/polzovatelskoe-soglashenie")
+                    WebViewFragment.newInstance("https://moi-service.ru/legal/moi-service-dom/polzovatelskoe-soglashenie")
                 ScreenManager.showScreen(webViewFragment)
             }),
             Pair("политику обработки персональных данных", View.OnClickListener {

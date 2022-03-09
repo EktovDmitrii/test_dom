@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class PurchaseResponse(
     @SerializedName("clientProductId")
-    val email: String?,
+    val clientProductId: String?,
 
     @SerializedName("paymentUrl")
     val paymentUrl: String?,
@@ -17,4 +17,7 @@ data class PurchaseResponse(
 
     @SerializedName("bankOrderId")
     val bankOrderId: String?,
+
+    @SerializedName("orderId")
+    val orderId: String?
 )

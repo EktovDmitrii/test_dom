@@ -9,26 +9,27 @@ import com.custom.rgs_android_dom.domain.policies.models.Failure
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
 import com.custom.rgs_android_dom.domain.policies.models.ShowPromptModel
+import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
 class PolicyDialogsFragment :
-    BaseBottomSheetFragment<PolicyDialogsViewModel, FragmentPolicyDialogsBinding>() {
+    BaseBottomSheetModalFragment<PolicyDialogsViewModel, FragmentPolicyDialogsBinding>() {
 
     override val TAG: String = "POLICY_DIALOGS_FRAGMENT"
 
     companion object {
 
         const val MESSAGE_NOT_FOUND =
-            "К сожалению, мы не смогли найти указанный полис. Пожалуйста, обратитесь к Мастеру онлайн"
+            "К сожалению, мы не смогли найти указанный полис. Пожалуйста, обратитесь к Онлайн Мастеру"
         const val MESSAGE_BOUND_TO_YOUR_PROFILE =
-            "Данный полис уже привязан к вашему профилю. Пожалуйста, обратитесь к Мастеру онлайн"
+            "Данный полис уже привязан к вашему профилю. Пожалуйста, обратитесь к Онлайн Мастеру"
         const val MESSAGE_BOUND_TO_ANOTHER_PROFILE =
-            "Данный полис уже привязан к другому профилю. Пожалуйста, обратитесь к Мастеру онлайн"
+            "Данный полис уже привязан к другому профилю. Пожалуйста, обратитесь к Онлайн Мастеру"
         const val MESSAGE_DATA_NOT_MATCH =
-            "Введенные данные страхователя не соответствуют полису. Пожалуйста, обратитесь к Мастеру онлайн"
-        const val MESSAGE_EXPIRED = "У данного полиса закончился срок действия. Пожалуйста, обратитесь к Мастеру онлайн"
+            "Введенные данные страхователя не соответствуют полису. Пожалуйста, обратитесь к Онлайн Мастеру"
+        const val MESSAGE_EXPIRED = "У данного полиса закончился срок действия. Пожалуйста, обратитесь к Онлайн Мастеру"
 
         const val KEY_POLICY_DIALOG_MODEL = "KEY_POLICY_DIALOG_MODEL"
         const val KEY_FRAGMENT_ID = "KEY_FRAGMENT_ID"
@@ -153,10 +154,6 @@ class PolicyDialogsFragment :
 
     override fun onClose() {
         dismissAllowingStateLoss()
-    }
-
-    override fun getThemeResource(): Int {
-        return R.style.BottomSheet
     }
 
 }

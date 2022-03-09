@@ -14,11 +14,12 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
 class RegistrationAgreementViewModel(private val phone: String,
-                                     private val closeAfterAccept: Boolean,
                                      private val registrationInteractor: RegistrationInteractor) : BaseViewModel() {
 
     private val isNextTextViewEnabledController = MutableLiveData<Boolean>()
     val isNextTextViewEnabledObserver: LiveData<Boolean> = isNextTextViewEnabledController
+
+    private var isAcceptedAgreement = false
 
     fun onAcceptAgreementCheckedChanged(isChecked: Boolean){
         isNextTextViewEnabledController.value = isChecked
@@ -28,16 +29,23 @@ class RegistrationAgreementViewModel(private val phone: String,
        acceptAgreement()
     }
 
-    fun onCloseClick(){
-        closeController.value = Unit
-        //ScreenManager.showScreen(MainFragment())
-    }
-
-    fun onBackClick(){
-        closeController.value = Unit
-        /*if (!closeAfterAccept){
-            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
-        }*/
+    fun onBackClick(callback: (Boolean) -> Unit){
+        if (!isAcceptedAgreement) {
+            registrationInteractor.logout()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                    onComplete = {
+                        callback.invoke(isAcceptedAgreement)
+                    },
+                    onError = {
+                        callback.invoke(isAcceptedAgreement)
+                        logException(this, it)
+                    }
+                ).addTo(dataCompositeDisposable)
+        } else {
+            callback.invoke(isAcceptedAgreement)
+        }
     }
 
     private fun acceptAgreement(){
@@ -49,10 +57,10 @@ class RegistrationAgreementViewModel(private val phone: String,
             .doOnError { loadingStateController.value = LoadingState.ERROR }
             .subscribeBy(
                 onComplete = {
+                    isAcceptedAgreement = true
                     closeController.value = Unit
-                    if (!closeAfterAccept){
-                        ScreenManager.showScreenScope(RegistrationFillClientFragment.newInstance(phone),REGISTRATION)
-                    }
+
+                    ScreenManager.showScreenScope(RegistrationFillClientFragment.newInstance(phone),REGISTRATION)
                 },
                 onError = {
                     logException(this, it)

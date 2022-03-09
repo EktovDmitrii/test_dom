@@ -4,7 +4,6 @@ import com.custom.rgs_android_dom.data.network.data_adapters.NetworkException
 import com.custom.rgs_android_dom.data.network.error.MSDNetworkErrorResponse
 import com.custom.rgs_android_dom.data.network.responses.*
 import com.custom.rgs_android_dom.data.network.requests.*
-import com.custom.rgs_android_dom.domain.client.models.Order
 import com.custom.rgs_android_dom.domain.error.model.MSDErrorModel
 import io.reactivex.Completable
 import io.reactivex.Maybe
@@ -89,6 +88,14 @@ interface MSDApi {
     @PUT("property/clients/me/objects/{objectId}")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun updatePropertyItem(@Path("objectId") objectId: String ,@Body body: UpdatePropertyRequest): Single<PropertyItemResponse>
+
+    @POST("property/clients/me/objects/{objectId}/tasks/requests/modifications")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun requestModification(@Path("objectId") objectId: String ): Single<Unit>
+
+    @GET("property/clients/me/objects/{objectId}/tasks/requests/modifications")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getObjectModifications(@Path("objectId") objectId: String ): Single<TaskModificationsResponse>
 
     @GET("property/clients/me/objects")
     @ErrorType(MSDNetworkErrorResponse::class)
@@ -229,9 +236,8 @@ interface MSDApi {
     @ErrorType(MSDNetworkErrorResponse::class)
     fun orderServiceOnBalance(@Body body: OrderServiceRequest, @Query("confirm") confirmOrder: Boolean): Single<OrderResponse>
 
-
-    @GET("clients/{clientId}/orders")
-    fun getOrders(@Path("clientId") clientId: String, @Query("size") size: Long, @Query("index") index: Long): Single<OrdersResponse>
+    @GET("clients/me/orders")
+    fun getOrders(@Query("size") size: Long, @Query("index") index: Long): Single<OrdersResponse>
 
     @GET("clients/me/orders")
     fun getOrders(): Single<OrdersResponse>
@@ -247,6 +253,36 @@ interface MSDApi {
         @Query("withPayments") withPayments: Boolean? = null
     ): Single<GeneralInvoicesResponse>
 
-    @GET("clients/{clientId}/orders/{orderId}")
-    fun getOrderDetail(@Path("clientId") clientId: String, @Path("orderId") orderId: String): Single<OrderResponse>
+    @GET("clients/me/orders/{orderId}")
+    fun getOrderDetail(@Path("orderId") orderId: String): Single<OrderResponse>
+
+    @GET("clients/me/crm/tasks/client-cases")
+    fun getCases(@Query("size") size: Long, @Query("index") index: Long): Single<ClientCasesResponse>
+
+    @GET("crm/tasks/subtypes/search/query")
+    fun getSubtypes(
+        @Query("size") size: Long,
+        @Query("index") index: Long,
+        @Query("withArchived") withArchived: Boolean,
+        @Query("withInternal") withInternal: Boolean
+    ): Single<SubtypesResponse>
+
+    @GET("chat/users/me/channels/{channelId}/posts/unread-count")
+    fun getUnreadPostsCount(@Path("channelId") channelId: String): Single<UnreadPostsCountResponse>
+
+    @PUT("chat/users/me/channels/{channelId}/view")
+    fun viewChannel(@Path("channelId") channelId: String): Completable
+
+    @PUT("chat/users/me/channels/{channelId}/typing")
+    fun notifyTyping(@Path("channelId") channelId: String): Completable
+
+    @POST("clients/me/orders/{orderId}/tasks/requests/cancellations")
+    fun cancelTask(@Path("orderId") orderId: String): Single<CancelledTaskResponse>
+
+    @GET("clients/me/orders/{orderId}/tasks/requests/cancellations")
+    fun getCancelledTasks(@Path("orderId") orderId: String): Single<CancelledTasksResponse>
+
+    @DELETE("property/clients/me/objects/{objectId}")
+    fun deleteProperty(@Path("objectId") objectId: String): Completable
+
 }

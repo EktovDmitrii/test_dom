@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui.catalog.product.service
 
 import android.os.Bundle
+import android.text.Html
 import android.view.Gravity
 import android.view.View
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -40,6 +41,8 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.detailButton.btnTitle.text = "Заказать"
+
         binding.advantagesLayout.advantagesRecycler.adapter = ProductAdvantagesAdapter()
 
         binding.backImageView.setOnDebouncedClickListener {
@@ -56,7 +59,7 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
                 .transform(RoundedCorners(6.dp(requireContext())))
                 .into(binding.header.iconImageView)
             GlideApp.with(requireContext())
-                .load(GlideUrlProvider.makeHeadersGlideUrl(service.logoLarge))
+                .load(GlideUrlProvider.makeHeadersGlideUrl(service.logoMiddle))
                 .transform(RoundedCorners(16.dp(requireContext())))
                 .into(binding.header.logoImageView)
 
@@ -67,7 +70,12 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
             }
             binding.header.headerTitle.text = service.name
             binding.header.headerDescription.text = service.title
-            binding.about.aboutValue.text = service.description
+            binding.about.aboutValue.text = service.description?.let { descr ->
+                Html.fromHtml(
+                    descr,
+                    Html.FROM_HTML_MODE_LEGACY
+                )
+            }
 
             binding.priceView.setIcon(service.iconLink)
             binding.priceView.type = MSDProductPriceView.PriceType.Included
@@ -75,7 +83,7 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
                 binding.longness.longnessValue.text = "$it"
             }
 
-            binding.detailButton.btnTitle.text = "Заказать"
+
             binding.detailButton.btnTitle.gravity = Gravity.CENTER
             binding.detailButton.btnPriceGroup.gone()
         }
@@ -99,6 +107,12 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
                 binding.validityUntill.validityTillValue.text = it
                 binding.validityUntill.root.visible()
             }
+        }
+
+        subscribe(viewModel.isOrderTextViewEnabledObserver){
+            binding.detailButton.root.isEnabled = it
+            binding.detailButton.productArrangeBtn.isEnabled = it
+            binding.detailButton.btnTitle.isEnabled = it
         }
     }
 

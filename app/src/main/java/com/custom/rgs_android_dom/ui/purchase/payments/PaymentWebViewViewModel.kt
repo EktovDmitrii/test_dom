@@ -9,4 +9,7 @@ class PaymentWebViewViewModel(url: String) : BaseViewModel() {
     private val paymentUrlController = MutableLiveData(url)
     val paymentUrlObserver: LiveData<String> = paymentUrlController
 
+    fun onBack() {
+        closeController.value = Unit
+    }
 }

@@ -1,6 +1,8 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
 import com.custom.rgs_android_dom.BuildConfig
+import com.custom.rgs_android_dom.data.network.responses.CancelledTaskResponse
+import com.custom.rgs_android_dom.data.network.responses.CancelledTasksResponse
 import com.custom.rgs_android_dom.data.network.responses.OrderResponse
 import com.custom.rgs_android_dom.data.network.responses.OrdersResponse
 import com.custom.rgs_android_dom.domain.client.models.*
@@ -18,7 +20,9 @@ object OrdersMapper {
     fun responseToOrder(generalInvoices: List<GeneralInvoice>? = null, orderResponse: OrderResponse): Order {
         return Order(
             id = orderResponse.id,
+            objectId = orderResponse.orderObject?.objectId,
             address = OrderAddress(
+                objectName = orderResponse.orderObject?.objectName,
                 address = orderResponse.address?.address,
                 cityFiasId = orderResponse.address?.cityFiasId,
                 cityName = orderResponse.address?.cityName,
@@ -69,6 +73,20 @@ object OrdersMapper {
             generalInvoice = generalInvoices?.filter { invoice ->
                 invoice.details?.orderId == orderResponse.id
             }
+        )
+    }
+
+    fun responseToCancelledTasks(response: CancelledTasksResponse): List<CancelledTaskModel>{
+        return response.tasks?.map {
+            responseToCancelledTask(it)
+        } ?: listOf()
+    }
+
+    fun responseToCancelledTask(response: CancelledTaskResponse): CancelledTaskModel {
+        return CancelledTaskModel(
+            status = response.status,
+            subStatus = response.subStatus,
+            taskId = response.taskId
         )
     }
 

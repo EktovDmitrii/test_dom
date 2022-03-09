@@ -23,32 +23,37 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
         }
     }
 
+    private var shouldShowDialog = false
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.requireViewState(binding.birthdayEditText.isMaskFilled())
 
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
         }
 
         binding.nextTextView.setOnDebouncedClickListener {
+            shouldShowDialog = true
             viewModel.onNextClick()
         }
 
         binding.firstNameEditText.addTextWatcher {
-            viewModel.firstNameChanged(it , binding.birthdayEditText.isMaskFiled())
+            viewModel.firstNameChanged(it , binding.birthdayEditText.isMaskFilled())
         }
 
         binding.lastNameEditText.addTextWatcher {
-            viewModel.lastNameChanged(it, binding.birthdayEditText.isMaskFiled())
+            viewModel.lastNameChanged(it, binding.birthdayEditText.isMaskFilled())
         }
 
         binding.middleNameEditText.addTextWatcher {
-            viewModel.middleNameChanged(it, binding.birthdayEditText.isMaskFiled())
+            viewModel.middleNameChanged(it, binding.birthdayEditText.isMaskFilled())
         }
 
         binding.birthdayEditText.addTextWatcher {
-            binding.birthdayEditText.isMaskFiled()
-            viewModel.birthdayChanged(it, binding.birthdayEditText.isMaskFiled())
+            viewModel.birthdayChanged(it, binding.birthdayEditText.isMaskFilled())
             binding.birthdayEditText.setState(MSDLabelIconEditText.State.NORMAL)
         }
 
@@ -65,12 +70,13 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
         }
 
         subscribe(viewModel.insurantViewStateObserver) {
-          binding.nextTextView.isEnabled = it.isNextEnabled
-            if (it.isValidationPassed) {
+            binding.nextTextView.isEnabled = it.isNextEnabled
+
+            if (it.isValidationPassed && shouldShowDialog) {
+                shouldShowDialog = false
                 val dialog = PolicyDialogsFragment.newInstance(
                     PolicyDialogModel(showLoader = true),
-                    requireArguments().getInt(KEY_FRAGMENT_ID)
-                )
+                    requireArguments().getInt(KEY_FRAGMENT_ID))
                 dialog.show(childFragmentManager, dialog.TAG)
                 hideSoftwareKeyboard()
             }
@@ -85,4 +91,6 @@ class InsurantFragment : BaseFragment<InsurantViewModel, FragmentInsurantBinding
         }
 
     }
+
+
 }

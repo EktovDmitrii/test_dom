@@ -3,10 +3,13 @@ package com.custom.rgs_android_dom.ui.property.info
 import android.os.Bundle
 import android.view.View
 import com.custom.rgs_android_dom.R
+import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentPropertyInfoBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsFragment
+import com.custom.rgs_android_dom.ui.property.info.more.PropertyMoreFragment
+import com.custom.rgs_android_dom.utils.GlideApp
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
@@ -44,11 +47,12 @@ class PropertyInfoFragment :
         }
 
         binding.backImageView.setOnDebouncedClickListener {
+            viewModel.disposeAll()
             onClose()
         }
 
         binding.moreImageView.setOnDebouncedClickListener {
-
+            viewModel.onMoreClick()
         }
 
         subscribe(viewModel.propertyItemObserver) { propertyItem ->
@@ -65,6 +69,11 @@ class PropertyInfoFragment :
             binding.titleTextView.text = propertyItem.name
             binding.subtitleTextView.text = propertyItem.address?.address ?: ""
             binding.addressTextView.setValue(propertyItem.address?.address ?: "")
+            propertyItem.photoLink?.let{
+                GlideApp.with(requireContext())
+                    .load(GlideUrlProvider.makeHeadersGlideUrl(it))
+                    .into(binding.propertyImageView)
+            }
 
             propertyItem.isOwn?.let { isOwn ->
                 binding.isOwnTextView.setValue(if (isOwn) "Да" else "Нет")
@@ -92,6 +101,11 @@ class PropertyInfoFragment :
 
         subscribe(viewModel.internetConnectionObserver) {
             adapter.onInternetConnectionChanged(it)
+        }
+
+        subscribe(viewModel.propertyMoreObserver){
+            val propertyMoreFragment = PropertyMoreFragment.newInstance(it)
+            propertyMoreFragment.show(childFragmentManager, propertyMoreFragment.TAG)
         }
     }
 

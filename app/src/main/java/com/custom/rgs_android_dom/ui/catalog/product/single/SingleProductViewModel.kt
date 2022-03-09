@@ -11,6 +11,7 @@ import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.purchase.PurchaseFragment
+import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderFragment
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -50,18 +51,44 @@ class SingleProductViewModel(
     fun onCheckoutClick() {
         productController.value?.let { product ->
             if (registrationInteractor.isAuthorized()) {
-                val purchaseServiceModel = PurchaseModel(
-                    id = product.id,
-                    defaultProduct = product.defaultProduct,
-                    duration = product.duration,
-                    deliveryTime = product.deliveryTime,
-                    logoSmall = product.logoSmall,
-                    name = product.name,
-                    price = product.price
+                catalogInteractor.getProductServices(
+                    product.id,
+                    product.isPurchased,
+                    product.validityFrom
                 )
-                val purchaseFragment = PurchaseFragment.newInstance(purchaseServiceModel)
-                ScreenManager.showScreenScope(purchaseFragment, PAYMENT)
-
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeBy(
+                        onSuccess = {
+                            if (it.isNotEmpty()) {
+                                if (product.isPurchased) { // TODO временно до новой другой задачи
+                                    val serviceOrderFragment = ServiceOrderFragment.newInstance(
+                                        it[0].serviceId,
+                                        product.id,
+                                        it[0].serviceDeliveryType
+                                    )
+                                    ScreenManager.showScreen(serviceOrderFragment)
+                                } else {
+                                    val purchaseServiceModel = PurchaseModel(
+                                        id = product.id,
+                                        defaultProduct = product.defaultProduct,
+                                        duration = product.duration,
+                                        deliveryTime = product.deliveryTime,
+                                        deliveryType = it[0].serviceDeliveryType,
+                                        logoSmall = product.logoSmall,
+                                        name = product.name,
+                                        price = product.price
+                                    )
+                                    val purchaseFragment =
+                                        PurchaseFragment.newInstance(purchaseServiceModel)
+                                    ScreenManager.showScreenScope(purchaseFragment, PAYMENT)
+                                }
+                            }
+                        },
+                        onError = {
+                            logException(this, it)
+                        }
+                    ).addTo(dataCompositeDisposable)
             } else {
                 ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
             }

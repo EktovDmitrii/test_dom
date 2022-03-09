@@ -22,15 +22,6 @@ class InsurantViewModel(private val policiesInteractor: PoliciesInteractor) : Ba
     private val validateExceptionController = MutableLiveData<SpecificValidateClientExceptions>()
     val validateExceptionObserver: LiveData<SpecificValidateClientExceptions> = validateExceptionController
 
-    init {
-        policiesInteractor.getInsurantViewStateSubject()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onNext = { insurantViewStateController.value = it },
-                onError = { logException(this, it) })
-            .addTo(dataCompositeDisposable)
-    }
 
     fun onBackClick() {
         close()
@@ -77,6 +68,17 @@ class InsurantViewModel(private val policiesInteractor: PoliciesInteractor) : Ba
                         logException(this, it)
                     }
                 })
+            .addTo(dataCompositeDisposable)
+    }
+
+    fun requireViewState(isMaskFilled: Boolean) {
+        policiesInteractor.getInsurantViewStateSubject(isMaskFilled)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    insurantViewStateController.value = it },
+                onError = { logException(this, it) })
             .addTo(dataCompositeDisposable)
     }
 

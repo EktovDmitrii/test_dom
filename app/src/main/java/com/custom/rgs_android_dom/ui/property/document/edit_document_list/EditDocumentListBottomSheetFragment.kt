@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentEditDocumentListBottomSheetBinding
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -23,6 +24,10 @@ class EditDocumentListBottomSheetFragment : BottomSheetDialogFragment() {
 
         fun newInstance(): EditDocumentListBottomSheetFragment =
             EditDocumentListBottomSheetFragment()
+    }
+
+    override fun getTheme(): Int {
+        return R.style.BottomSheet
     }
 
     override fun onCreateView(

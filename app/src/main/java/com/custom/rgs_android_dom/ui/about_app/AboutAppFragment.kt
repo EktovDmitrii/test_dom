@@ -20,7 +20,7 @@ class AboutAppFragment : BaseFragment<AboutAppViewModel, FragmentAboutAppBinding
         }
 
         binding.licenseAgreementsLinearLayout.setOnDebouncedClickListener {
-            ScreenManager.showScreen(WebViewFragment.newInstance("https://moi-service.ru/legal/moi-servis-med/polzovatelskoe-soglashenie"))
+            ScreenManager.showScreen(WebViewFragment.newInstance("https://moi-service.ru/legal/moi-service-dom/polzovatelskoe-soglashenie"))
         }
 
         binding.privacyPolicyLinearLayout.setOnDebouncedClickListener {

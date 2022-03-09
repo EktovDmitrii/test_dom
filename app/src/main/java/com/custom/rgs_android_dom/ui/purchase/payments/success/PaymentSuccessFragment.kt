@@ -21,18 +21,21 @@ class PaymentSuccessFragment :
 
         private const val ARG_PRODUCT_ID = "ARG_PRODUCT_ID"
         private const val ARG_EMAIL = "ARG_EMAIL"
+        private const val ARG_ORDER_ID = "ARG_ORDER_ID"
 
-        fun newInstance(productId: String, email: String) =
+        fun newInstance(productId: String, email: String, orderId: String) =
             PaymentSuccessFragment().args {
                 putString(ARG_PRODUCT_ID, productId)
                 putString(ARG_EMAIL, email)
+                putString(ARG_ORDER_ID, orderId)
             }
     }
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
             requireArguments().getString(ARG_PRODUCT_ID),
-            requireArguments().getString(ARG_EMAIL)
+            requireArguments().getString(ARG_EMAIL),
+            requireArguments().getString(ARG_ORDER_ID)
         )
     }
 

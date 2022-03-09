@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
+import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
@@ -11,7 +12,7 @@ import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
 import com.custom.rgs_android_dom.ui.catalog.product.ProductLauncher
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductLauncher
-import com.custom.rgs_android_dom.ui.chat.ChatFragment
+import com.custom.rgs_android_dom.ui.chats.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.navigation.TargetScreen
@@ -27,6 +28,7 @@ import java.util.concurrent.TimeUnit
 
 class CatalogSearchViewModel(
     tag: String?,
+    private val chatInteractor: ChatInteractor,
     private val catalogInteractor: CatalogInteractor,
     private val registrationInteractor: RegistrationInteractor,
     private val clientInteractor: ClientInteractor
@@ -81,13 +83,13 @@ class CatalogSearchViewModel(
                 }
             ).addTo(dataCompositeDisposable)
 
-        clientInteractor.getClientSavedSubject()
+        registrationInteractor.getAuthFlowEndedSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy (
                 onNext = {
                     when (screenToOpenOnLogin) {
-                        TargetScreen.CHAT -> { ScreenManager.showScreen(ChatFragment()) }
+                        TargetScreen.CHAT -> { ScreenManager.showBottomScreen(ChatFragment.newInstance(chatInteractor.getMasterOnlineCase())) }
                     }
                     screenToOpenOnLogin = TargetScreen.UNSPECIFIED
                 },
@@ -120,7 +122,6 @@ class CatalogSearchViewModel(
         } else {
             ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(product.id)))
         }
-        closeController.value = Unit
     }
 
     fun onCancelClick(){
@@ -129,7 +130,7 @@ class CatalogSearchViewModel(
 
     fun onOpenChatClick(){
         if (registrationInteractor.isAuthorized()){
-            ScreenManager.showScreen(ChatFragment())
+            ScreenManager.showBottomScreen(ChatFragment.newInstance(chatInteractor.getMasterOnlineCase()))
         } else {
             screenToOpenOnLogin = TargetScreen.CHAT
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)

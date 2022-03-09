@@ -2,7 +2,6 @@ package com.custom.rgs_android_dom.data.repositories.client
 
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
-import com.custom.rgs_android_dom.data.network.mappers.ClientOrdersMapper
 import com.custom.rgs_android_dom.data.network.mappers.GeneralInvoiceMapper
 import com.custom.rgs_android_dom.data.network.mappers.OrdersMapper
 import com.custom.rgs_android_dom.data.network.requests.DeleteContactsRequest
@@ -14,7 +13,6 @@ import com.custom.rgs_android_dom.utils.PATTERN_DATE_TIME_MILLIS
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
 import com.custom.rgs_android_dom.utils.formatTo
 import io.reactivex.Completable
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
@@ -28,6 +26,7 @@ class ClientRepositoryImpl(
     private val clientUpdatedSubject: PublishSubject<ClientModel> = PublishSubject.create()
     private val editAgentRequestedSubject: PublishSubject<Boolean> = PublishSubject.create()
     private val editPersonalDataRequestedSubject: BehaviorSubject<Boolean> = BehaviorSubject.create()
+    private val orderCancelledSubject: PublishSubject<Unit> = PublishSubject.create()
 
     override fun updateClient(
         firstName: String?,
@@ -70,6 +69,7 @@ class ClientRepositoryImpl(
             clientSharedPreferences.saveClient(client)
             val agent = ClientMapper.responseToAgent(api.getAgent().blockingGet())
             clientSharedPreferences.saveAgent(agent)
+            clientUpdatedSubject.onNext(client)
             return@map clientSharedPreferences.getClient()
         }
     }
@@ -80,7 +80,6 @@ class ClientRepositoryImpl(
             val agentResponse = api.getAgent().blockingGet()
             val agent = ClientMapper.responseToAgent(agentResponse)
             client.agent = agent
-
             val cachedClient = clientSharedPreferences.getClient()
             if (cachedClient != null && cachedClient != client || cachedClient == null) {
                 clientSharedPreferences.saveClient(client)
@@ -92,8 +91,8 @@ class ClientRepositoryImpl(
         }
     }
 
-    override fun getClientUpdatedSubject(): Observable<ClientModel> {
-        return clientUpdatedSubject.hide()
+    override fun getClientUpdatedSubject(): PublishSubject<ClientModel> {
+        return clientUpdatedSubject
     }
 
     override fun saveTextToAgent(saveText: Boolean) {
@@ -235,6 +234,33 @@ class ClientRepositoryImpl(
             .flatMap {
                 Single.just(GeneralInvoiceMapper.responseToDomainModel(it))
             }
+    }
+
+    override fun getOrder(orderId: String): Single<Order> {
+        return api.getOrderDetail(orderId).flatMap {orderResponse->
+            val orderIds = listOf(orderResponse.id)
+            return@flatMap getGeneralInvoices(size = 1000, index = 0, orderIds = orderIds.joinToString(","), withPayments = true)
+                .flatMap {
+                    Single.just(OrdersMapper.responseToOrder(it, orderResponse))
+                }
+        }
+    }
+
+    override fun cancelOrder(orderId: String): Completable {
+        return api.cancelTask(orderId).flatMapCompletable {
+            orderCancelledSubject.onNext(Unit)
+            Completable.complete()
+        }
+    }
+
+    override fun getOrderCancelledSubject(): PublishSubject<Unit> {
+        return orderCancelledSubject
+    }
+
+    override fun getCancelledTasks(orderId: String): Single<List<CancelledTaskModel>> {
+        return api.getCancelledTasks(orderId).map { response->
+            OrdersMapper.responseToCancelledTasks(response)
+        }
     }
 
 }

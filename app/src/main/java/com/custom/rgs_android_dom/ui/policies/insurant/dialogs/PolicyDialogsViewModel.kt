@@ -2,9 +2,10 @@ package com.custom.rgs_android_dom.ui.policies.insurant.dialogs
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.policies.PoliciesInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.ui.chat.ChatFragment
+import com.custom.rgs_android_dom.ui.chats.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
 import com.custom.rgs_android_dom.domain.policies.models.ShowPromptModel
@@ -15,7 +16,10 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
-class PolicyDialogsViewModel(val policiesInteractor: PoliciesInteractor, model: PolicyDialogModel) : BaseViewModel() {
+class PolicyDialogsViewModel(private val chatInteractor: ChatInteractor,
+                             private val policiesInteractor: PoliciesInteractor,
+                             model: PolicyDialogModel
+) : BaseViewModel() {
 
     private val dialogModelController = MutableLiveData<PolicyDialogModel>()
     val dialogModelObserver: LiveData<PolicyDialogModel> = dialogModelController
@@ -63,7 +67,7 @@ class PolicyDialogsViewModel(val policiesInteractor: PoliciesInteractor, model: 
 
     fun onChatClick() {
         close()
-        ScreenManager.showScreen(ChatFragment())
+        ScreenManager.showBottomScreen(ChatFragment.newInstance(chatInteractor.getMasterOnlineCase()))
     }
 
     fun onChangeDataClick() {

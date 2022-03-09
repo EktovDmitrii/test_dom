@@ -96,7 +96,7 @@ class PurchaseViewModel(
         if (purchaseObserver.value?.defaultProduct == true){
             isEnableButtonController.value = purchaseObserver.value?.email != null &&
                     purchaseObserver.value?.card != null &&
-                    purchaseObserver.value?.propertyItemModel != null &&
+                    (purchaseObserver.value?.deliveryType == DeliveryType.ONLINE || purchaseObserver.value?.propertyItemModel != null) &&
                     purchaseObserver.value?.purchaseDateTimeModel != null
         } else {
             isEnableButtonController.value = purchaseObserver.value?.email != null &&
@@ -202,7 +202,8 @@ class PurchaseViewModel(
                     DATE_PATTERN_DATE_AND_TIME_FOR_PURCHASE
                 ) + TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT).removePrefix("GMT"),
                 timeFrom = purchase.purchaseDateTimeModel?.selectedPeriodModel?.timeFrom,
-                timeTo = purchase.purchaseDateTimeModel?.selectedPeriodModel?.timeTo
+                timeTo = purchase.purchaseDateTimeModel?.selectedPeriodModel?.timeTo,
+                withOrder = purchase.defaultProduct && purchase.price?.fix == false
             )
                 .doOnSubscribe { isEnableButtonController.postValue(false) }
                 .subscribeOn(Schedulers.io())
@@ -212,10 +213,11 @@ class PurchaseViewModel(
                     onSuccess = {
                         ScreenManager.showScreenScope(
                             PaymentWebViewFragment.newInstance(
-                                url = it,
+                                url = it.paymentUrl,
                                 productId = purchase.id,
                                 email = purchase.email,
                                 price = purchase.price?.amount.toString(),
+                                orderId = it.orderId,
                                 fragmentId = navigateId
                             ), PAYMENT
                         )

@@ -67,7 +67,7 @@ class OrdersAdapter(
                     item.getOrderDescription(),
                     Html.FROM_HTML_MODE_LEGACY
                 )
-                initBillItems(billContainer, item)
+                initInvoiceItems(invoiceContainer, item)
 
                 root.setOnDebouncedClickListener {
                     onOrderClick(item)
@@ -76,13 +76,13 @@ class OrdersAdapter(
         }
 
         @SuppressLint("SetTextI18n")
-        private fun initBillItems(billContainer: LinearLayout, item: Order) {
-            val context = billContainer.context
-            billContainer.removeAllViews()
+        private fun initInvoiceItems(invoiceContainer: LinearLayout, item: Order) {
+            val context = invoiceContainer.context
+            invoiceContainer.removeAllViews()
             val invoices = item.generalInvoice ?: emptyList()
             val service = if (item.services?.isNotEmpty() == true) item.services[0] else null
             val status = item.status
-            if (status == OrderStatus.DRAFT || status == OrderStatus.CONFIRMED) {
+            if (status == OrderStatus.DRAFT) {
                 val purchaseModel = PurchaseModel(
                     id = item.id,
                     defaultProduct = service?.defaultProduct ?: false,
@@ -96,21 +96,23 @@ class OrdersAdapter(
                         vatType = null
                     )
                 )
-                if (invoices.isNotEmpty()) {
-                    ItemOrderMainBillBinding.inflate(LayoutInflater.from(context), billContainer, false).apply {
-                        root.setOnDebouncedClickListener {
-                            onPayClick.invoke(purchaseModel)
+                if (service?.defaultProduct == true) {
+                    if (invoices.isNotEmpty()) {
+                        ItemOrderMainBillBinding.inflate(LayoutInflater.from(context), invoiceContainer, false).apply {
+                            root.setOnDebouncedClickListener {
+                                onPayClick.invoke(purchaseModel)
+                            }
+                            billPayTextView.setBackgroundResource(R.drawable.rectangle_stroke_1dp_primary_500_radius_8dp)
+                            billPayTextView.setTextColor(ContextCompat.getColor(context, R.color.primary500))
+                            invoiceContainer.addView(root)
                         }
-                        billPayTextView.setBackgroundResource(R.drawable.rectangle_stroke_1dp_primary_500_radius_8dp)
-                        billPayTextView.setTextColor(ContextCompat.getColor(context, R.color.primary500))
-                        billContainer.addView(root)
-                    }
-                } else {
-                    ItemOrderMainBillBinding.inflate(LayoutInflater.from(context), billContainer, false).apply {
-                        root.setOnDebouncedClickListener {
-                            onPayClick.invoke(purchaseModel)
+                    } else {
+                        ItemOrderMainBillBinding.inflate(LayoutInflater.from(context), invoiceContainer, false).apply {
+                            root.setOnDebouncedClickListener {
+                                onPayClick.invoke(purchaseModel)
+                            }
+                            invoiceContainer.addView(root)
                         }
-                        billContainer.addView(root)
                     }
                 }
             }
@@ -130,12 +132,12 @@ class OrdersAdapter(
                     )
                 )
 
-                ItemOrderAdditionalBillBinding.inflate(LayoutInflater.from(context), billContainer, false).apply {
+                ItemOrderAdditionalBillBinding.inflate(LayoutInflater.from(context), invoiceContainer, false).apply {
                     billPayTextView.setOnDebouncedClickListener {
                         onPayClick.invoke(purchaseModel)
                     }
                     descriptionTextView.text = "Дополнительный счёт  ∙  ${it.getFullPrice().formatPrice()}"
-                    billContainer.addView(root)
+                    invoiceContainer.addView(root)
                 }
             }
         }

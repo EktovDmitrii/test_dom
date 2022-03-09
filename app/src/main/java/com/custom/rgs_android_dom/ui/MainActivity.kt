@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadTranslation(){
         translationInteractor.loadTranslation()
-            .retryWhen{throwables -> throwables.delay(5, TimeUnit.SECONDS)}
+            //.retryWhen{throwables -> throwables.delay(5, TimeUnit.SECONDS)}
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(

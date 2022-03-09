@@ -47,4 +47,8 @@ class RegistrationInteractor(private val registrationRepository: RegistrationRep
     fun isFirstRun(): Boolean {
         return registrationRepository.isFirstRun()
     }
+
+    fun getAuthFlowEndedSubject(): PublishSubject<Unit>{
+        return registrationRepository.getAuthFlowEndedSubject()
+    }
 }

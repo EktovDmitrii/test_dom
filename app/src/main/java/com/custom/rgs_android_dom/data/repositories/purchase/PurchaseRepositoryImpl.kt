@@ -7,9 +7,9 @@ import com.custom.rgs_android_dom.data.network.requests.*
 import com.custom.rgs_android_dom.domain.client.models.Order
 import com.custom.rgs_android_dom.domain.purchase.models.CardModel
 import com.custom.rgs_android_dom.domain.purchase.models.NewCardModel
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseInfoModel
 import com.custom.rgs_android_dom.domain.repositories.PurchaseRepository
 import com.custom.rgs_android_dom.utils.safeLet
-import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 
@@ -35,8 +35,9 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
         comment: String?,
         deliveryDate: String?,
         timeFrom: String?,
-        timeTo: String?
-    ): Single<String> {
+        timeTo: String?,
+        withOrder: Boolean
+    ): Single<PurchaseInfoModel> {
 
         var orderRequest: OrderRequest? = null
         if (comment != null){
@@ -52,7 +53,8 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
                     deliveryTime = OrderTimeRequest(
                         timeFrom = timeFrom,
                         timeTo = timeTo
-                    )
+                    ),
+                    withOrder = true
                 )
             } else {
                 orderRequest = orderRequest?.copy(
@@ -60,9 +62,16 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
                     deliveryTime = OrderTimeRequest(
                         timeFrom = timeFrom,
                         timeTo = timeTo
-                    )
+                    ),
+                    withOrder = true
                 )
             }
+        }
+
+        if (orderRequest != null) {
+            orderRequest = orderRequest!!.copy(
+                withOrder = withOrder
+            )
         }
 
         val purchaseRequest = PurchaseProductRequest(
@@ -72,12 +81,11 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
             objectId = objectId,
             order = orderRequest
         )
-
         return api.makeProductPurchase(
             productId = productId,
             order = purchaseRequest
         ).map {
-            PurchaseMapper.responseToPaymentUrl(it)
+            PurchaseMapper.responseToPurchaseInfo(it)
         }
     }
 

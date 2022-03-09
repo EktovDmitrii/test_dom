@@ -84,24 +84,6 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
             viewModel.onOrdersHistoryClick()
         }
 
-        binding.myCardsLinearLayout.setOnDebouncedClickListener {
-            YandexMetrica.reportEvent("profile_menu", "{\"profile_menu_item\":\"Способы оплаты\"}")
-
-            viewModel.onNotCreatedScreenClick()
-        }
-
-        binding.notificationSettingsLinearLayout.setOnDebouncedClickListener {
-            YandexMetrica.reportEvent("profile_menu", "{\"profile_menu_item\":\"Настройки уведомлений\"}")
-
-            viewModel.onNotCreatedScreenClick()
-        }
-
-        binding.feedbackLinearLayout.setOnDebouncedClickListener {
-            YandexMetrica.reportEvent("profile_menu", "{\"profile_menu_item\":\"Способы связи\"}")
-
-            viewModel.onNotCreatedScreenClick()
-        }
-
         binding.openMedAppLinearLayout.setOnDebouncedClickListener {
             YandexMetrica.reportEvent("profile_menu", "{\"profile_menu_item\":\"Перейти в Мой_Сервис Мед\"}")
 
@@ -157,6 +139,10 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
 
         subscribe(viewModel.swipeRefreshingObserver){
             binding.swipeRefreshLayout.isRefreshing = it
+        }
+
+        subscribe(viewModel.notificationObserver){
+            notification(it)
         }
     }
 

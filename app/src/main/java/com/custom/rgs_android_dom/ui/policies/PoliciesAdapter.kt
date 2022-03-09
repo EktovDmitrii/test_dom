@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.ItemPolicyBinding
-import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
+import com.custom.rgs_android_dom.domain.policies.models.PolicyShortModel
 import com.custom.rgs_android_dom.utils.GlideApp
 import com.custom.rgs_android_dom.utils.dp
 import com.custom.rgs_android_dom.utils.insertDate
@@ -15,7 +15,7 @@ import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 class PoliciesAdapter(private val onPolicyClick: (String) -> Unit) :
     RecyclerView.Adapter<PoliciesAdapter.PoliciesViewHolder>() {
 
-    private val policies = mutableListOf<PolicyModel>()
+    private val policies = mutableListOf<PolicyShortModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PoliciesViewHolder {
         val binding = ItemPolicyBinding.inflate(
@@ -34,7 +34,7 @@ class PoliciesAdapter(private val onPolicyClick: (String) -> Unit) :
         return policies.size
     }
 
-    fun setItems(policies: List<PolicyModel>) {
+    fun setItems(policies: List<PolicyShortModel>) {
         this.policies.clear()
         this.policies.addAll(policies)
         notifyDataSetChanged()
@@ -48,7 +48,7 @@ class PoliciesAdapter(private val onPolicyClick: (String) -> Unit) :
         //todo replace with translation value
         private val translationTextKey = binding.durationTextView.text.toString()
 
-        fun bind(model: PolicyModel) {
+        fun bind(model: PolicyShortModel) {
             binding.titleTextView.text = model.name
             binding.durationTextView.text = translationTextKey.insertDate(model.startsAt,model.expiresAt)
 
@@ -58,7 +58,7 @@ class PoliciesAdapter(private val onPolicyClick: (String) -> Unit) :
                 .into(binding.iconImageView)
 
             binding.root.setOnDebouncedClickListener {
-                onPolicyClick(model.id)
+                onPolicyClick(model.contractId)
             }
         }
 

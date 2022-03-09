@@ -8,7 +8,6 @@ import com.custom.rgs_android_dom.domain.repositories.CatalogRepository
 import com.custom.rgs_android_dom.domain.repositories.PurchaseRepository
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_AND_TIME_FOR_PURCHASE
 import com.custom.rgs_android_dom.utils.formatTo
-import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 import java.util.*
@@ -21,6 +20,7 @@ class PurchaseInteractor(
     private var serviceOrderViewState = ServiceOrderViewState()
 
     val serviceOrderViewStateSubject = PublishSubject.create<ServiceOrderViewState>()
+    private var isPropertyOptional = false
 
     fun getSavedCards(): Single<List<CardModel>> {
         return purchaseRepository.getSavedCards()
@@ -36,7 +36,8 @@ class PurchaseInteractor(
         deliveryDate: String?,
         timeFrom: String?,
         timeTo: String?,
-    ): Single<String> {
+        withOrder: Boolean
+    ): Single<PurchaseInfoModel> {
         return purchaseRepository.makeProductPurchase(
             productId = productId,
             bindingId = bindingId,
@@ -46,7 +47,8 @@ class PurchaseInteractor(
             comment = comment,
             deliveryDate = deliveryDate,
             timeFrom = timeFrom,
-            timeTo = timeTo
+            timeTo = timeTo,
+            withOrder = withOrder
         )
     }
 
@@ -94,8 +96,14 @@ class PurchaseInteractor(
         purchaseRepository.notifyProductPurchased(productId)
     }
 
+    fun setPropertyOptional(deliveryType: DeliveryType?) {
+        isPropertyOptional = deliveryType == DeliveryType.ONLINE
+    }
+
     private fun validateServiceOrderViewState(){
-        val isServiceOrderTextViewEnabled = (serviceOrderViewState.property != null && serviceOrderViewState.orderDate != null)
+        val isServiceOrderTextViewEnabled = (serviceOrderViewState.orderDate != null &&
+                ((!isPropertyOptional && serviceOrderViewState.property != null) || isPropertyOptional)
+                )
         serviceOrderViewState = serviceOrderViewState.copy(isServiceOrderTextViewEnabled = isServiceOrderTextViewEnabled)
         serviceOrderViewStateSubject.onNext(serviceOrderViewState)
     }

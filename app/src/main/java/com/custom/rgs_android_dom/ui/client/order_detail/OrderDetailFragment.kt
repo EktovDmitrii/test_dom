@@ -7,19 +7,20 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
+import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentOrderDetailBinding
 import com.custom.rgs_android_dom.databinding.ItemOrderGeneralInvoiceBinding
 import com.custom.rgs_android_dom.databinding.ItemOrderGeneralInvoiceServiceBinding
 import com.custom.rgs_android_dom.domain.client.models.*
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.client.order_detail.cancel_order.CancelOrderFragment
 import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-class OrderDetailFragment :
-    BaseFragment<OrderDetailViewModel, FragmentOrderDetailBinding>(R.layout.fragment_order_detail),
-    CancelOrderBottomFragment.CancelOrderListener {
+class OrderDetailFragment : BaseFragment<OrderDetailViewModel, FragmentOrderDetailBinding>(R.layout.fragment_order_detail) {
 
     companion object {
         private const val ARG_ORDER_ID = "ARG_ORDER_ID"
@@ -33,10 +34,6 @@ class OrderDetailFragment :
 
     override fun setStatusBarColor() {
         setStatusBarColor(R.color.primary400)
-    }
-
-    override fun onCancelOrderClick() {
-        viewModel.onCancelOrderClick()
     }
 
     override fun getParameters(): ParametersDefinition = {
@@ -55,11 +52,7 @@ class OrderDetailFragment :
             viewModel.onFeedbackClick()
         }
         binding.cancelOrderTextView.setOnDebouncedClickListener {
-            val cancelOrderBottomSheetFragment = CancelOrderBottomFragment.newInstance()
-            cancelOrderBottomSheetFragment.show(
-                childFragmentManager,
-                CancelOrderBottomFragment.TAG
-            )
+            viewModel.onCancelOrderClick()
         }
 
         subscribe(viewModel.orderViewStateObserver) { state ->
@@ -68,21 +61,50 @@ class OrderDetailFragment :
             initStaticProgressView(state.status)
             binding.topPaymentStateTextView.text = state.getPaymentState()
             binding.serviceNameTextView.text = service?.serviceName
-            binding.addressTextView.text = state.address?.address
+            binding.addressTextView.text = "${state.address?.objectName} (${state.address?.address})"
+            binding.addressTitleTextView.visibleIf(state.address?.address?.isNotBlank() == true)
+            binding.addressTextView.visibleIf(state.address?.address?.isNotBlank() == true)
             binding.dateTimeTextView.text = state.getDateTime()
             binding.commentTextView.text = state.comment
             binding.commentTitleTextView.visibleIf(state.comment?.isNotBlank() == true)
             binding.commentTextView.visibleIf(state.comment?.isNotBlank() == true)
-
+            binding.productTitleTextView.text = service?.productName
+            service?.productIcon?.let { logo ->
+                GlideApp.with(requireContext())
+                    .load(GlideUrlProvider.makeHeadersGlideUrl(logo))
+                    .transform(RoundedCorners(4.dp(requireContext())))
+                    .into(binding.productIconImageView)
+            }
             binding.priceTextView.text = (service?.productPrice ?: 0).formatPrice()
             binding.paymentStateTextView.text = Html.fromHtml(
                 state.getPaymentStateWithDate(),
                 Html.FROM_HTML_MODE_LEGACY
             )
-            binding.billPayTextView.visibleIf(state.status == OrderStatus.DRAFT || state.status == OrderStatus.CONFIRMED)
+            val isDefaultProduct = service?.defaultProduct ?: false
+            val orderStateForPay = state.status == OrderStatus.DRAFT
+            binding.billPayTextView.visibleIf(isDefaultProduct && orderStateForPay)
+            binding.productContainer.visibleIf(!isDefaultProduct)
+            binding.paymentTypeTitleTextView.visibleIf(!isDefaultProduct)
+            binding.priceContainer.goneIf(!isDefaultProduct)
+            binding.priceTitleTextView.goneIf(!isDefaultProduct)
             initGeneralInvoices(state.status, state.generalInvoice)
-
             initCancelOrderButton(state.status)
+            binding.feedbackImageView.setOnDebouncedClickListener {
+                viewModel.onFeedbackClick()
+            }
+
+            // TODO Make visible, when we will have payment info
+            binding.paymentTitleTextView.gone()
+        }
+
+        subscribe(viewModel.showCancelOrderScreenObserver){
+            val cancelOrderFragment = CancelOrderFragment.newInstance(it)
+            cancelOrderFragment.show(childFragmentManager, cancelOrderFragment.TAG)
+        }
+
+        subscribe(viewModel.orderCancelledObserver){
+            binding.cancelOrderTextView.gone()
+            binding.cancelRequestedLinerLayout.visible()
         }
     }
 
@@ -113,8 +135,7 @@ class OrderDetailFragment :
 
     private fun initCancelOrderButton(orderStatus: OrderStatus) {
          when (orderStatus) {
-             OrderStatus.DRAFT -> binding.cancelOrderTextView.visible()
-             OrderStatus.CONFIRMED -> binding.cancelOrderTextView.visible()
+             OrderStatus.DRAFT, OrderStatus.CONFIRMED, OrderStatus.ACTIVE -> binding.cancelOrderTextView.visible()
              else -> binding.cancelOrderTextView.gone()
          }
     }
@@ -165,6 +186,8 @@ class OrderDetailFragment :
                 changeSecondLineColor(canceledColor)
                 changeThirdLineColor(canceledColor)
                 changeFourthLineColor(canceledColor)
+
+                binding.topPaymentStateTextView.setTextColor(canceledColor)
             }
         }
     }

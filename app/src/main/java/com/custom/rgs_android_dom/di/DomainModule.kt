@@ -19,17 +19,17 @@ val domainModule = module {
 
     factory { RegistrationInteractor(registrationRepository = get()) }
 
-    factory { ClientInteractor(clientRepository = get(), registrationRepository = get(), catalogRepository = get(), filesRepository = get()) }
+    factory { ClientInteractor(clientRepository = get(), registrationRepository = get(), catalogRepository = get(), policiesRepository = get(), filesRepository = get()) }
 
     factory { TranslationInteractor(translationRepository = get()) }
 
     factory { ChatInteractor(chatRepository = get(), authContentProviderManager = get()) }
 
-    factory { PropertyInteractor(propertyRepository = get(), context = androidContext()) }
+    factory { PropertyInteractor(propertyRepository = get(), filesRepository = get(), context = androidContext()) }
 
     factory { AddressInteractor(addressRepository = get()) }
 
-    factory { CatalogInteractor(catalogRepository = get()) }
+    factory { CatalogInteractor(catalogRepository = get(), policiesRepository = get()) }
 
     factory { PurchaseInteractor(purchaseRepository = get(), catalogRepository = get()) }
 

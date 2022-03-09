@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui.catalog.product
 
 import android.os.Bundle
+import android.text.Html
 import android.view.Gravity
 import android.view.View
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -47,6 +48,8 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.detailButton.btnTitle.text = "Купить"
+
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
         }
@@ -71,14 +74,19 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
                 .transform(RoundedCorners(6.dp(requireContext())))
                 .into(binding.header.iconImageView)
             GlideApp.with(requireContext())
-                .load(GlideUrlProvider.makeHeadersGlideUrl(product.logoLarge))
+                .load(GlideUrlProvider.makeHeadersGlideUrl(product.logoMiddle))
                 .transform(RoundedCorners(16.dp(requireContext())))
                 .into(binding.header.logoImageView)
 
             binding.validity.validityValue.text = product.duration.toString() + " после покупки"
             binding.header.headerTitle.text = product.name
             binding.header.headerDescription.text = product.title
-            binding.about.aboutValue.text = product.description
+            binding.about.aboutValue.text = product.description?.let { descr ->
+                Html.fromHtml(
+                    descr,
+                    Html.FROM_HTML_MODE_LEGACY
+                )
+            }
 
             binding.priceView.goneIf(product.isPurchased)
             binding.priceView.type = if (product.price?.fix == true) {

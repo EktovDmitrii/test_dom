@@ -117,7 +117,7 @@ class MainViewModel(
                 }
             ).addTo(dataCompositeDisposable)
 
-        clientInteractor.getClientSavedSubject()
+        registrationInteractor.getAuthFlowEndedSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy (
@@ -181,7 +181,11 @@ class MainViewModel(
                         }
                     )
                 )
-                .subscribe()
+                .subscribeBy(
+                    onError = {
+                        logException(this, it)
+                    }
+                )
                 .addTo(dataCompositeDisposable)
         } else {
             loadingStateController.value = LoadingState.ERROR

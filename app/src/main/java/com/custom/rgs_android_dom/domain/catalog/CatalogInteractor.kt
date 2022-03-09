@@ -3,15 +3,20 @@ package com.custom.rgs_android_dom.domain.catalog
 import com.custom.rgs_android_dom.domain.catalog.models.*
 import com.custom.rgs_android_dom.domain.main.CommentModel
 import com.custom.rgs_android_dom.domain.repositories.CatalogRepository
+import com.custom.rgs_android_dom.domain.repositories.PoliciesRepository
 import io.reactivex.Single
+import org.joda.time.DateTime
 
-class CatalogInteractor(private val catalogRepository: CatalogRepository) {
+class CatalogInteractor(
+    private val catalogRepository: CatalogRepository,
+    private val policiesRepository: PoliciesRepository
+) {
 
     companion object {
         private const val TAG_POPULAR_SEARCH_PRODUCTS = "ВыводитьВПоиске"
-        private const val TAG_POPULAR_PRODUCTS = "ВыводитьНаГлавной"
-        private const val TAG_POPULAR_CATEGORIES = "ВыводитьНаГлавной"
-        private const val TAG_POPULAR_SERVICES = "ВыводитьНаГлавной"
+        private const val TAG_POPULAR_PRODUCTS = "ВыводитьПродуктНаГлавной"
+        private const val TAG_POPULAR_CATEGORIES = "ВыводитьУзелНаГлавной"
+        private const val TAG_POPULAR_SERVICES = "ВыводитьУслугуНаГлавной"
         private const val CNT_POPULAR_SERVICES_IN_MAIN = 9
         private const val CNT_POPULAR_CATEGORIES_IN_MAIN = 6
         private const val CNT_POPULAR_PRODUCTS_IN_MAIN = 13
@@ -56,13 +61,24 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
         return catalogRepository.getProduct(productId)
     }
 
-    fun getProductServices(productId: String): Single<List<ServiceShortModel>> {
+    fun getProductServices(productId: String, isPurchased: Boolean, validityFrom: DateTime?): Single<List<ServiceShortModel>> {
         return catalogRepository.getProductServices(productId).map { services->
-            /*services.forEach { service->
-                val availableService = catalogRepository.getAvailableServiceInProduct(productId, service.serviceId).blockingGet()
-                service.quantity = availableService.available.toLong()
-            }*/
-            services
+            if (isPurchased){
+                services.forEach { service->
+                    val availableService = catalogRepository.getAvailableServiceInProduct(productId, service.serviceId).blockingGet()
+                    service.quantity = availableService.available.toLong()
+                }
+            }
+            if (validityFrom !=null && validityFrom.isAfterNow){
+                services.forEach { service->
+                    service.canBeOrdered = false
+                }
+            } else{
+                services.forEach{service->
+                    service.canBeOrdered = service.quantity > 0
+                }
+            }
+            return@map services.map { it.copy(isPurchased = isPurchased) }
         }
     }
 
@@ -93,18 +109,23 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
 
     fun getPopularCategories(): Single<List<CatalogCategoryModel>>{
         return getCatalogCategories().map {
-            it.filter {
-                it.subCategories.isNotEmpty() && it.productTags.contains(TAG_POPULAR_CATEGORIES)
-            }.take(CNT_POPULAR_CATEGORIES_IN_MAIN)
+            it.filter { it.productTags.contains(TAG_POPULAR_CATEGORIES)}.take(CNT_POPULAR_CATEGORIES_IN_MAIN)
         }
     }
 
     fun getAvailableServices(): Single<List<AvailableServiceModel>>{
-        return catalogRepository.getAvailableServices()
+        return Single.zip(catalogRepository.getClientProducts(null), catalogRepository.getAvailableServices()){products, services->
+           return@zip services.filter { service->
+               val product = products.find { it.productId == service.productId && it.defaultProduct }
+               return@filter product == null
+           }
+        }
     }
 
-    fun getClientProducts(): Single<List<ClientProductModel>>{
-        return catalogRepository.getClientProducts()
+    fun getProductsOnBalance(): Single<List<ClientProductModel>>{
+        return catalogRepository.getClientProducts(null).map {products->
+            products.filter { !it.defaultProduct }
+        }
     }
 
     fun getComments(): Single<List<CommentModel>> {
@@ -146,5 +167,12 @@ class CatalogInteractor(private val catalogRepository: CatalogRepository) {
 
     fun getAvailableServiceInProduct(productId: String, serviceId: String): Single<AvailableServiceModel> {
         return catalogRepository.getAvailableServiceInProduct(productId, serviceId)
+    }
+
+    fun getProductsByContracts(): Single<List<ClientProductModel>> {
+        return policiesRepository.getPoliciesSingle().flatMap {policies->
+            val contractIds = policies.joinToString(",") { it.contractId }
+            catalogRepository.getClientProducts(contractIds)
+        }
     }
 }

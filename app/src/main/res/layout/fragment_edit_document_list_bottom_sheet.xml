@@ -15,7 +15,7 @@
         android:paddingVertical="18dp"
         android:textColor="@color/secondary900"
         android:textSize="20sp"
-        app:translationTextKey="Добавить контент" />
+        app:translationTextKey="Добавить документ" />
 
     <View
         android:id="@+id/dividerView"

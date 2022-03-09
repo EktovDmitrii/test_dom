@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.data.repositories.registration
 
+import com.custom.rgs_android_dom.data.db.MSDDatabase
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.requests.GetCodeRequest
 import com.custom.rgs_android_dom.data.network.requests.LoginRequest
@@ -18,7 +19,8 @@ class RegistrationRepositoryImpl(
     private val api: MSDApi,
     private val clientSharedPreferences: ClientSharedPreferences,
     private val chatRepository: ChatRepository,
-    private val authContentProviderManager: AuthContentProviderManager
+    private val authContentProviderManager: AuthContentProviderManager,
+    private val database: MSDDatabase
 ) : RegistrationRepository {
 
     companion object {
@@ -27,6 +29,7 @@ class RegistrationRepositoryImpl(
 
     private val logout = PublishSubject.create<Unit>()
     private val loginSubject = PublishSubject.create<Unit>()
+    private val authFlowEnded = PublishSubject.create<Unit>()
 
     override fun getCurrentPhone(): String {
         return clientSharedPreferences.getPhone() ?: ""
@@ -58,6 +61,7 @@ class RegistrationRepositoryImpl(
 
     override fun logout(): Completable {
         return api.postLogout().doFinally {
+            database.chatsDao.clearCases()
             if (isAuthorized()){
                 chatRepository.disconnectFromWebSocket()
                 authContentProviderManager.clear()
@@ -129,5 +133,13 @@ class RegistrationRepositoryImpl(
             clientSharedPreferences.onFirstRun()
         }
         return result
+    }
+
+    override fun getAuthFlowEndedSubject(): PublishSubject<Unit> {
+        return authFlowEnded
+    }
+
+    override fun finishAuth() {
+        authFlowEnded.onNext(Unit)
     }
 }

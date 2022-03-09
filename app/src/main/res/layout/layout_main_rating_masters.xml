@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:fontFamily="@font/suisse_regular"
-            android:text="Всего 345 678 работ, выполненных нашими мастерами"
+            android:text="Более 10 тысяч работ, выполненных нашими мастерами"
             android:textColor="@color/secondary600"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@id/ratingTitleTextView"

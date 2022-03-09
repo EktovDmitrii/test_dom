@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui.purchase.payments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.webkit.*
 import androidx.core.content.ContextCompat
@@ -12,6 +13,7 @@ import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.purchase.payments.error.PaymentErrorFragment
 import com.custom.rgs_android_dom.ui.purchase.payments.success.PaymentSuccessFragment
 import com.custom.rgs_android_dom.utils.args
+import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.setStatusBarColor
 import com.custom.rgs_android_dom.utils.subscribe
 import org.koin.core.parameter.ParametersDefinition
@@ -26,19 +28,22 @@ class PaymentWebViewFragment :
         private const val ARG_EMAIL = "ARG_EMAIL"
         private const val ARG_PRICE = "ARG_PRICE"
         private const val ARG_PURCHASE_PAGE_ID = "ARG_PURCHASE_PAGE_ID"
+        private const val ARG_ORDER_ID = "ARG_ORDER_ID"
 
         fun newInstance(
             url: String,
             productId: String,
             email: String,
             price: String,
-            fragmentId: Int
+            orderId: String,
+            fragmentId: Int = 0
         ): PaymentWebViewFragment {
             return PaymentWebViewFragment().args {
                 putString(ARG_PAYMENT_URL, url)
                 putString(ARG_PRODUCT_ID, productId)
                 putString(ARG_EMAIL, email)
                 putString(ARG_PRICE, price)
+                putString(ARG_ORDER_ID, orderId)
                 putInt(ARG_PURCHASE_PAGE_ID, fragmentId)
             }
         }
@@ -54,12 +59,16 @@ class PaymentWebViewFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.closeImageView.setOnDebouncedClickListener {
+            viewModel.onBack()
+        }
         binding.paymentWebView.webChromeClient = WebChromeClient()
 
         val email = requireArguments().getString(ARG_EMAIL) ?: ""
         val productId = requireArguments().getString(ARG_PRODUCT_ID) ?: ""
         val price = requireArguments().getString(ARG_PRICE) ?: ""
         val fragmentId = requireArguments().getInt(ARG_PURCHASE_PAGE_ID)
+        val orderId = requireArguments().getString(ARG_ORDER_ID, "")
 
         val webClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(
@@ -78,7 +87,8 @@ class PaymentWebViewFragment :
                         ScreenManager.showScreenScope(
                             PaymentSuccessFragment.newInstance(
                                 productId,
-                                email
+                                email,
+                                orderId
                             ), PAYMENT
                         )
                         true

@@ -1,7 +1,7 @@
 package com.custom.rgs_android_dom.di
 
 import com.custom.rgs_android_dom.ui.about_app.AboutAppViewModel
-import com.custom.rgs_android_dom.ui.chat.ChatViewModel
+import com.custom.rgs_android_dom.ui.chats.chat.ChatViewModel
 import com.custom.rgs_android_dom.ui.countries.CountriesViewModel
 import com.custom.rgs_android_dom.ui.demo.DemoViewModel
 import com.custom.rgs_android_dom.ui.root.RootViewModel
@@ -24,14 +24,16 @@ import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogPrimaryProduct
 import com.custom.rgs_android_dom.ui.catalog.tabs.availableservices.TabAvailableServicesViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.catalog.TabCatalogViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.products.TabMyProductsViewModel
-import com.custom.rgs_android_dom.ui.chat.call.CallViewModel
-import com.custom.rgs_android_dom.ui.chat.call.media_output_chooser.MediaOutputChooserViewModel
+import com.custom.rgs_android_dom.ui.chats.chat.call.CallViewModel
+import com.custom.rgs_android_dom.ui.chats.chat.call.media_output_chooser.MediaOutputChooserViewModel
 import com.custom.rgs_android_dom.ui.rationale.RequestRationaleViewModel
-import com.custom.rgs_android_dom.ui.chat.files.manage.ManageFileViewModel
-import com.custom.rgs_android_dom.ui.chat.files.upload.UploadFilesViewModel
-import com.custom.rgs_android_dom.ui.chat.files.viewers.image.ImageViewerViewModel
-import com.custom.rgs_android_dom.ui.chat.files.viewers.video.VideoPlayerViewModel
+import com.custom.rgs_android_dom.ui.chats.chat.files.manage.ManageFileViewModel
+import com.custom.rgs_android_dom.ui.chats.chat.files.upload.UploadFilesViewModel
+import com.custom.rgs_android_dom.ui.chats.chat.files.viewers.image.ImageViewerViewModel
+import com.custom.rgs_android_dom.ui.chats.chat.files.viewers.video.VideoPlayerViewModel
+import com.custom.rgs_android_dom.ui.chats.ChatsViewModel
 import com.custom.rgs_android_dom.ui.client.order_detail.OrderDetailViewModel
+import com.custom.rgs_android_dom.ui.client.order_detail.cancel_order.CancelOrderViewModel
 import com.custom.rgs_android_dom.ui.client.orders.OrdersViewModel
 import com.custom.rgs_android_dom.ui.main.MainViewModel
 import com.custom.rgs_android_dom.ui.client.personal_data.add_photo.AddPhotoViewModel
@@ -55,10 +57,16 @@ import com.custom.rgs_android_dom.ui.policies.add.AddPolicyViewModel
 import com.custom.rgs_android_dom.ui.policies.add.info.InfoPolicyViewModel
 import com.custom.rgs_android_dom.ui.policies.insurant.InsurantViewModel
 import com.custom.rgs_android_dom.ui.policies.insurant.dialogs.PolicyDialogsViewModel
+import com.custom.rgs_android_dom.ui.policies.policy.PolicyViewModel
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsViewModel
 import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressViewModel
+import com.custom.rgs_android_dom.ui.property.delete.DeletePropertyViewModel
 import com.custom.rgs_android_dom.ui.property.document.DocumentViewModel
 import com.custom.rgs_android_dom.ui.property.document.detail_document.DetailDocumentViewModel
+import com.custom.rgs_android_dom.ui.property.info.more.PropertyMoreViewModel
+import com.custom.rgs_android_dom.ui.property.info.edit.avatar.EditPropertyAvatarBottomSheetViewModel
+import com.custom.rgs_android_dom.ui.property.info.edit.EditPropertyInfoViewModel
+import com.custom.rgs_android_dom.ui.property.info.edit.request_edit.RequestPropertyInfoEditViewModel
 import com.custom.rgs_android_dom.ui.purchase.*
 import com.custom.rgs_android_dom.ui.purchase.add.agent.AddAgentViewModel
 import com.custom.rgs_android_dom.ui.purchase.add.comment.AddCommentViewModel
@@ -83,23 +91,26 @@ val viewModelModule = module {
     viewModel { OnboardingViewModel() }
     viewModel { TabOnboardingViewModel() }
     viewModel { DemoViewModel() }
-    viewModel { parameters-> RegistrationAgreementViewModel(phone = parameters[0], closeAfterAccept = parameters[1], registrationInteractor = get()) }
+    viewModel { parameters-> RegistrationAgreementViewModel(phone = parameters[0], registrationInteractor = get()) }
     viewModel { parameters-> RegistrationFillClientViewModel(phone = parameters.get(), clientInteractor= get()) }
     viewModel { parameters-> CountriesViewModel(selectedCountryLetterCode = parameters.get(), countriesInteractor = get())}
     viewModel { ClientViewModel(clientInteractor = get(), registrationInteractor = get(), propertyInteractor = get()) }
     viewModel { OrdersViewModel(clientInteractor = get(), purchaseInteractor = get()) }
-    viewModel { parameters -> OrderDetailViewModel(clientInteractor = get(), order = parameters.get()) }
+    viewModel { parameters -> OrderDetailViewModel(chatInteractor = get(), order = parameters.get(), clientInteractor = get()) }
     viewModel { RootViewModel(registrationInteractor = get(), clientInteractor = get(), chatInteractor = get()) }
     viewModel { PersonalDataViewModel(clientInteractor = get()) }
     viewModel { EditPersonalDataViewModel(clientInteractor = get()) }
     viewModel { AgentViewModel(clientInteractor = get()) }
     viewModel { EditAgentViewModel(clientInteractor = get()) }
     viewModel { AboutAppViewModel() }
-    viewModel { ChatViewModel(chatInteractor = get()) }
+    viewModel { parameters -> ChatViewModel(case = parameters[0], chatInteractor = get(), clientInteractor = get()) }
     viewModel { parameters-> SelectPropertyTypeViewModel(propertyName = parameters[0], propertyAddress = parameters[1], propertyInteractor = get()) }
     viewModel { parameters-> PropertyDetailsViewModel(propertyName = parameters[0], propertyAddress = parameters[1], propertyType = parameters[2], propertyInteractor = get(), connectivityManager = get()) }
-    viewModel { parameters-> PropertyInfoViewModel(objectId = parameters.get(), propertyInteractor = get(), connectivityManager = get()) }
-    viewModel { parameters-> DocumentViewModel(objectId = parameters[0], propertyItemModel = parameters[1], propertyInteractor = get()) }
+    viewModel { parameters-> PropertyInfoViewModel(objectId = parameters.get(), propertyInteractor = get(), clientInteractor = get(), connectivityManager = get()) }
+    viewModel { parameters-> EditPropertyInfoViewModel(objectId = parameters[0], isEditable = parameters[1], propertyInteractor = get(), addressInteractor = get()) }
+    viewModel { parameters-> EditPropertyAvatarBottomSheetViewModel(propertyInteractor = get()) }
+    viewModel { parameters-> RequestPropertyInfoEditViewModel(objectId = parameters.get(), propertyInteractor = get()) }
+    viewModel { parameters-> DocumentViewModel(objectId = parameters.get(), propertyInteractor = get()) }
     viewModel { parameters-> DetailDocumentViewModel( objectId = parameters[0], documentIndex = parameters[1], propertyItemModel = parameters[2], propertyInteractor = get()) }
     viewModel { ScreenStubViewModel() }
     viewModel { RequestEditAgentViewModel(clientInteractor = get()) }
@@ -113,7 +124,7 @@ val viewModelModule = module {
     viewModel { parameters-> ImageViewerViewModel(chatFile = parameters.get()) }
     viewModel { parameters-> ManageFileViewModel(chatFile = parameters.get()) }
     viewModel { parameters -> VideoPlayerViewModel(chatFile = parameters.get()) }
-    viewModel { parameters -> CallViewModel(callType = parameters[0], consultant = parameters[1], chatInteractor = get(), mediaOutputManager = get()) }
+    viewModel { parameters -> CallViewModel(channelId = parameters[0], callType = parameters[1], consultant = parameters[2], chatInteractor = get(), mediaOutputManager = get()) }
     viewModel { PropertyUploadDocumentsViewModel(propertyInteractor = get()) }
     viewModel { MediaOutputChooserViewModel(mediaOutputManager = get()) }
     viewModel { RequestRationaleViewModel() }
@@ -126,7 +137,7 @@ val viewModelModule = module {
     viewModel { parameters -> SingleProductViewModel(product = parameters.get(), registrationInteractor = get(), catalogInteractor = get()) }
     viewModel { parameters -> ServiceViewModel(service = parameters.get(), catalogInteractor = get(), propertyInteractor = get(), purchaseInteractor = get()) }
     viewModel { MoreSingleProductViewModel() }
-    viewModel { parameters -> CatalogSearchViewModel(tag = parameters[0], catalogInteractor = get(), registrationInteractor = get(), clientInteractor = get()) }
+    viewModel { parameters -> CatalogSearchViewModel(tag = parameters[0], catalogInteractor = get(), registrationInteractor = get(), clientInteractor = get(), chatInteractor = get()) }
     viewModel { parameters -> ProductViewModel(product = parameters.get(), registrationInteractor = get(), catalogInteractor = get(), propertyInteractor = get(), purchaseInteractor = get()) }
     viewModel { parameters -> CatalogPrimaryProductsViewModel(category = parameters.get()) }
     viewModel { parameters -> PurchaseViewModel(parameters.get(), propertyInteractor = get(), clientInteractor = get(), purchaseInteractor = get()) }
@@ -139,7 +150,7 @@ val viewModelModule = module {
     viewModel { SOSViewModel(chatInteractor = get(), registrationInteractor = get(), clientInteractor = get(), context = get()) }
     viewModel { parameters -> PaymentWebViewViewModel(url = parameters.get()) }
     viewModel { parameters -> PaymentErrorViewModel(firstFragmentId = parameters[0]) }
-    viewModel { parameters -> PaymentSuccessViewModel(productId = parameters[0], email = parameters[1], purchaseInteractor = get(), catalogInteractor = get()) }
+    viewModel { parameters -> PaymentSuccessViewModel(productId = parameters[0], email = parameters[1], orderId = parameters[2], purchaseInteractor = get(), catalogInteractor = get(), clientInteractor = get()) }
     viewModel { parameters -> StoriesViewModel(tab = parameters.get()) }
     viewModel { TabNewServiceViewModel() }
     viewModel { TabGuaranteeViewModel() }
@@ -148,6 +159,11 @@ val viewModelModule = module {
     viewModel { AddPolicyViewModel(policiesInteractor = get()) }
     viewModel { InfoPolicyViewModel() }
     viewModel { InsurantViewModel(policiesInteractor = get()) }
-    viewModel { parameters -> PolicyDialogsViewModel(policiesInteractor = get(), model = parameters.get()) }
-    viewModel { parameters -> ServiceOrderViewModel(serviceId = parameters[0], productId = parameters[1], propertyInteractor = get(), catalogInteractor = get(), purchaseInteractor = get()) }
+    viewModel { parameters -> PolicyDialogsViewModel(policiesInteractor = get(), model = parameters.get(), chatInteractor = get()) }
+    viewModel { parameters -> ServiceOrderViewModel(serviceId = parameters[0], productId = parameters[1], deliveryType = parameters[2], propertyInteractor = get(), catalogInteractor = get(), purchaseInteractor = get()) }
+    viewModel { parameters -> PolicyViewModel(contractId = parameters.get(),policiesInteractor = get()) }
+    viewModel { ChatsViewModel(chatInteractor = get(), registrationInteractor = get()) }
+    viewModel { parameters -> CancelOrderViewModel(order = parameters[0], clientInteractor = get()) }
+    viewModel { parameters -> PropertyMoreViewModel(property = parameters[0], clientInteractor = get())}
+    viewModel { parameters -> DeletePropertyViewModel(property = parameters.get(), propertyInteractor = get(), clientInteractor = get(), chatInteractor = get(), catalogInteractor = get())}
 }

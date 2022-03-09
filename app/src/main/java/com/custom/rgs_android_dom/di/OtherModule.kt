@@ -1,6 +1,6 @@
 package com.custom.rgs_android_dom.di
 
-import com.custom.rgs_android_dom.MSDConnectivityManager
+import com.custom.rgs_android_dom.ui.managers.MSDConnectivityManager
 import com.custom.rgs_android_dom.ui.managers.MediaOutputManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module

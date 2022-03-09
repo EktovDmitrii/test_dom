@@ -58,24 +58,18 @@ class DocumentListFragment :
 
     companion object {
         private const val ARG_OBJECT_ID = "ARG_OBJECT_ID"
-        private const val ARG_PROPERTY_MODEL = "ARG_PROPERTY_MODEL"
 
         fun newInstance(
-            objectId: String,
-            propertyItemModel: PropertyItemModel,
+            objectId: String
         ): DocumentListFragment {
             return DocumentListFragment().args {
                 putString(ARG_OBJECT_ID, objectId)
-                putSerializable(ARG_PROPERTY_MODEL, propertyItemModel)
             }
         }
     }
 
     override fun getParameters(): ParametersDefinition = {
-        parametersOf(
-            requireArguments().getString(ARG_OBJECT_ID),
-            requireArguments().getSerializable(ARG_PROPERTY_MODEL) as PropertyItemModel
-        )
+        parametersOf(requireArguments().getString(ARG_OBJECT_ID))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -84,6 +78,7 @@ class DocumentListFragment :
         downloadManager = requireContext().getDownloadManager()
 
         binding.backImageView.setOnDebouncedClickListener {
+            viewModel.disposeAll()
             onClose()
         }
 

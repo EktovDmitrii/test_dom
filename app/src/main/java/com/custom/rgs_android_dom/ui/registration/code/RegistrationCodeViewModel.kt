@@ -72,13 +72,14 @@ class RegistrationCodeViewModel(
 
     fun onCodeComplete(code: String){
         registrationInteractor.login(phone, code, token)
+            .flatMap { clientInteractor.getClient() }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
             .doOnSuccess { loadingStateController.value = LoadingState.CONTENT }
             .subscribeBy(
-                onSuccess = {isNewUser->
-                    saveClientAndClose(isNewUser)
+                onSuccess = {
+                    saveClientAndClose(it.isOpdSigned)
                     /*else {
                         ScreenManager.showScreen(MainFragment())
                     }*/
@@ -117,18 +118,17 @@ class RegistrationCodeViewModel(
         showResendCodeController.value = Unit
     }
 
-    private fun saveClientAndClose(isNewUser: Boolean){
+    private fun saveClientAndClose(isOpdSigned: Boolean){
         clientInteractor.loadAndSaveClient()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doFinally {
                 closeController.value = Unit
-                if (isNewUser){
+                if (!isOpdSigned){
                     YandexMetrica.reportEvent("login_success_reg")
-
                     ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(phone), REGISTRATION)
                 } else {
-                    YandexMetrica.reportEvent("login_success_auth")
+                    clientInteractor.finishAuth()
                 }
             }
             .subscribeBy(

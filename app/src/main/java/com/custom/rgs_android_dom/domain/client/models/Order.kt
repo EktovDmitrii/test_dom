@@ -10,6 +10,7 @@ import java.io.Serializable
 data class Order(
     val id: String,
     val address: OrderAddress? = null,
+    val objectId: String? = null,
     val client: OrderClient? = null,
     val closedAt: String? = null,
     val code: String? = null,
@@ -25,7 +26,7 @@ data class Order(
 ) : Serializable {
 
     fun getOrderDescription(): String {
-        val localDate = LocalDate.parse(deliveryDate, DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZZ"))
+        val localDate = LocalDate.parse(createdAt, DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"))
         val onlyDate = localDate.toString(DATE_PATTERN_DATE_ONLY)
         val service = if (services?.isNotEmpty() == true) services[0] else null
         val price = (service?.productPrice ?: 0).formatPrice()
@@ -45,20 +46,32 @@ data class Order(
     }
 
     fun getPaymentState(): String {
-        return if (status == OrderStatus.DRAFT || status == OrderStatus.CONFIRMED) {
-            "Ожидает оплату"
-        } else {
-            "Оплачен"
+        return when (status) {
+            OrderStatus.DRAFT -> {
+                "Ожидает оплату"
+            }
+            OrderStatus.CANCELLED -> {
+                "Счёт аннулирован"
+            }
+            else -> {
+                "Оплачен"
+            }
         }
     }
 
     fun getPaymentStateWithDate(): String {
-        return if (status == OrderStatus.DRAFT || status == OrderStatus.CONFIRMED) {
-            "<font color=\"${"#8E8F8F"}\">Ожидает оплату</font>"
-        } else if (status == OrderStatus.CANCELLED) {
-            "Счёт аннулирован"
-        } else {
-            "<font color=\"${"#EEA641"}\">Оплачено</font>"
+        val localDate = LocalDate.parse(createdAt, DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"))
+        val date = localDate.toString(DATE_PATTERN_DATE_ONLY)
+        return when (status) {
+            OrderStatus.DRAFT -> {
+                "<font color=\"${"#8E8F8F"}\">Ожидает оплату</font>"
+            }
+            OrderStatus.CANCELLED -> {
+                "Счёт аннулирован"
+            }
+            else -> {
+                "<font color=\"${"#EEA641"}\">Оплачен $date</font>"
+            }
         }
     }
 }

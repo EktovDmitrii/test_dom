@@ -17,7 +17,7 @@ data class GeneralInvoiceItem(
 ) : Serializable {
 
     fun getNameWithAmount(): String {
-        val amountText = if (quantity != null && quantity > 1) ", $quantity" else ""
+        val amountText = if (quantity != null && quantity > 1) ", $quantity шт" else ""
         return "$name$amountText"
     }
 

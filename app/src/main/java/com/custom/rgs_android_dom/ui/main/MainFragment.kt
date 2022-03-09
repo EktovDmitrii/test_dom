@@ -175,10 +175,12 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
         }
 
         subscribe(viewModel.popularProductsObserver) {
+            binding.popularProductsLayout.root.goneIf(it.isEmpty())
             popularProductsAdapter.setItems(it)
         }
 
         subscribe(viewModel.popularCategoriesObserver){
+            binding.popularCategoriesLayout.root.goneIf(it.isEmpty())
             popularCategoriesAdapter.setItems(it)
         }
 

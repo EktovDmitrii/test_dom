@@ -58,7 +58,7 @@ class RegistrationFillClientFragment : BaseFragment<RegistrationFillClientViewMo
         binding.skipTextView.setOnDebouncedClickListener {
             YandexMetrica.reportEvent("login_step_5_reg_abort")
 
-            viewModel.onSkipClick()
+            viewModel.onCloseClick()
         }
 
         binding.closeImageView.setOnDebouncedClickListener {
