@@ -4,10 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Size
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.WindowManager
+import android.view.*
 import android.widget.PopupWindow
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -67,7 +64,9 @@ class EditPropertyInfoFragment :
             addressSuggestionsFragment.show(childFragmentManager, addressSuggestionsFragment.TAG)
         }
         binding.propertyTypeRadioGroup.setOnCheckedChangeListener { _, id ->
-            setVisibleFlatFields(id == R.id.flatTypeRadioButton)
+            val isFlatSelected = id == R.id.flatTypeRadioButton
+            toggleFlatFields(isFlatSelected, isFlatSelected && viewModel.isPropertyEditableObserver.value ?: true)
+
             clearInputs()
             viewModel.onPropertyTypeChanged(
                 if (id == R.id.flatTypeRadioButton) PropertyType.APARTMENT.type
@@ -146,7 +145,7 @@ class EditPropertyInfoFragment :
 
             binding.cityApartmentTextInputLayout.setText(propertyViewState.address.cityName.ifEmpty { "Не определено" })
             binding.addressApartmentTextInputLayout.setText(propertyViewState.address.addressString)
-            binding.totalAreaInputLayout.setText(if (propertyViewState.totalArea.isNotEmpty()) "${propertyViewState.totalArea} м²" else "")
+            binding.totalAreaInputLayout.setText(propertyViewState.totalArea)
             binding.floorTextInputLayout.setText(propertyViewState.floor)
             binding.entranceTextInputLayout.setText(propertyViewState.entrance)
             binding.commentInputLayout.setText(propertyViewState.comment)
@@ -180,8 +179,11 @@ class EditPropertyInfoFragment :
             }
         }
         subscribe(viewModel.isPropertyEditableObserver) { isPropertyEditable ->
-            binding.notClickableView.visibleIf(!isPropertyEditable)
             binding.requestEditLinearLayout.visibleIf(!isPropertyEditable)
+            binding.notClickableLayout.deepForEach { isEnabled = isPropertyEditable }
+        }
+        subscribe(viewModel.notificationObserver){
+            notification(it)
         }
     }
 
@@ -203,11 +205,12 @@ class EditPropertyInfoFragment :
         )
     }
 
-    private fun setVisibleFlatFields(isVisible: Boolean) {
-        binding.floorTextInputLayout.toggleEnable(isVisible)
-        binding.entranceTextInputLayout.toggleEnable(isVisible)
-        binding.floorTextInputLayout.isEnabled = isVisible
-        binding.entranceTextInputLayout.isEnabled = isVisible
+    private fun toggleFlatFields(isFlatSelected: Boolean, isEnabled: Boolean) {
+        binding.floorTextInputLayout.isSelected = isFlatSelected
+        binding.entranceTextInputLayout.isSelected = isFlatSelected
+
+        binding.floorTextInputLayout.toggleEnable(isEnabled)
+        binding.entranceTextInputLayout.toggleEnable(isEnabled)
     }
 
     private fun clearInputs() {

@@ -17,7 +17,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.custom.rgs_android_dom"
+        applicationId "ru.rgs.dom"
         minSdkVersion 24
         targetSdkVersion 31
         versionCode 14
@@ -66,7 +66,7 @@ android {
     productFlavors {
 
         production {
-            applicationId 'com.custom.rgs_android_dom'
+            applicationId 'ru.rgs.dom'
             resValue "string", "app_name", "Мой_Сервис Дом"
             buildConfigField "String", "BASE_URL", '"https://ddom.moi-service.ru"'
             buildConfigField "String", "WS_URL", '"wss://ddom.moi-service.ru/ws/?token=%s"'
@@ -77,7 +77,7 @@ android {
         }
 
         stage {
-            applicationId 'com.custom.rgs_android_dom.test'
+            applicationId 'ru.rgs.dom.test'
             versionNameSuffix 't'
             resValue "string", "app_name", "Мой_Сервис Дом"
             buildConfigField "String", "BASE_URL", '"https://ddom.moi-service.ru"'
@@ -89,7 +89,7 @@ android {
         }
 
         dev {
-            applicationId 'com.custom.rgs_android_dom.dev'
+            applicationId 'ru.rgs.dom.dev'
             versionNameSuffix 'd'
             resValue "string", "app_name", "Мой_Сервис Дом"
             buildConfigField "String", "BASE_URL", '"https://ddom.moi-service.ru"'
