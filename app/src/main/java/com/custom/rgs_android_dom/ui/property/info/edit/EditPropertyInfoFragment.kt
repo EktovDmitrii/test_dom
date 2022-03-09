@@ -181,6 +181,9 @@ class EditPropertyInfoFragment :
             binding.requestEditLinearLayout.visibleIf(!isPropertyEditable)
             binding.notClickableLayout.deepForEach { isEnabled = isPropertyEditable }
         }
+        subscribe(viewModel.notificationObserver){
+            notification(it)
+        }
     }
 
     private fun makeRequestLink() {
