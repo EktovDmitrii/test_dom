@@ -5,6 +5,7 @@ import android.graphics.Rect
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import androidx.core.view.forEach
 import androidx.core.widget.NestedScrollView
 import androidx.transition.Fade
 import androidx.transition.Transition
@@ -134,4 +135,13 @@ fun MSDGenderSelector.setEnabledSelectView(
         else -> true
     }
     this.isEnabled = isEnabled
+}
+
+fun ViewGroup.deepForEach(function: View.() -> Unit) {
+    this.forEach { child ->
+        child.function()
+        if (child is ViewGroup) {
+            child.deepForEach(function)
+        }
+    }
 }

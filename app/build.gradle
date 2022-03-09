@@ -17,7 +17,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.custom.rgs_android_dom"
+        applicationId "ru.rgs.dom"
         minSdkVersion 24
         targetSdkVersion 31
         versionCode 14
@@ -66,8 +66,8 @@ android {
     productFlavors {
 
         production {
-            applicationId 'com.custom.rgs_android_dom'
-            resValue "string", "app_name", "Мой_Сервис.Дом"
+            applicationId 'ru.rgs.dom'
+            resValue "string", "app_name", "Мой_Сервис Дом"
             buildConfigField "String", "BASE_URL", '"https://ddom.moi-service.ru"'
             buildConfigField "String", "WS_URL", '"wss://ddom.moi-service.ru/ws/?token=%s"'
             buildConfigField "String", "YANDEX_MAPS_KEY", '"8472a02b-fba9-4544-9b23-3b2f8944f584"'
@@ -77,9 +77,9 @@ android {
         }
 
         stage {
-            applicationId 'com.custom.rgs_android_dom.test'
+            applicationId 'ru.rgs.dom.test'
             versionNameSuffix 't'
-            resValue "string", "app_name", "Дом test"
+            resValue "string", "app_name", "Мой_Сервис Дом"
             buildConfigField "String", "BASE_URL", '"https://ddom.moi-service.ru"'
             buildConfigField "String", "WS_URL", '"wss://ddom.moi-service.ru/ws/?token=%s"'
             buildConfigField "String", "YANDEX_MAPS_KEY", '"8472a02b-fba9-4544-9b23-3b2f8944f584"'
@@ -89,9 +89,9 @@ android {
         }
 
         dev {
-            applicationId 'com.custom.rgs_android_dom.dev'
+            applicationId 'ru.rgs.dom.dev'
             versionNameSuffix 'd'
-            resValue "string", "app_name", "Дом DEV"
+            resValue "string", "app_name", "Мой_Сервис Дом"
             buildConfigField "String", "BASE_URL", '"https://ddom.moi-service.ru"'
             buildConfigField "String", "WS_URL", '"wss://ddom.moi-service.ru/ws/?token=%s"'
             buildConfigField "String", "YANDEX_MAPS_KEY", '"8472a02b-fba9-4544-9b23-3b2f8944f584"'

@@ -20,8 +20,8 @@ class PurchasePeriodAdapter(
     private val periodList = listOf(
         PurchaseTimePeriodModel(0, timeOfDay = "Утро", timeFrom = "6:00", timeTo = "9:00"),
         PurchaseTimePeriodModel(1, timeOfDay = "До полудня", timeFrom = "9:00", timeTo = "12:00"),
-        PurchaseTimePeriodModel(2, timeOfDay = "День", timeFrom = "12:00", timeTo = "15:00"),
-        PurchaseTimePeriodModel(3, timeOfDay = "Вечер", timeFrom = "15:00", timeTo = "18:00")
+        PurchaseTimePeriodModel(2, timeOfDay = "День", timeFrom = "12:00", timeTo = "18:00"),
+        PurchaseTimePeriodModel(3, timeOfDay = "Вечер", timeFrom = "18:00", timeTo = "00:00")
     )
 
     override fun onBindViewHolder(holder: PurchasePeriodViewHolder, position: Int) {
@@ -50,8 +50,8 @@ class PurchasePeriodAdapter(
             it.isSelectable = when (it.timeFrom) {
                 "6:00" -> LocalTime("9:00") >= dateTimeModel.selectedDate.toLocalTime()
                 "9:00" -> LocalTime("12:00") >= dateTimeModel.selectedDate.toLocalTime()
-                "12:00" -> LocalTime("15:00") >= dateTimeModel.selectedDate.toLocalTime()
-                "15:00" -> LocalTime("18:00") >= dateTimeModel.selectedDate.toLocalTime()
+                "12:00" -> LocalTime("18:00") >= dateTimeModel.selectedDate.toLocalTime()
+                "18:00" -> LocalTime("23:59") >= dateTimeModel.selectedDate.toLocalTime()
                 else -> throw IllegalArgumentException("Wrong argument: ${it.timeFrom}")
             }
             it.isSelected = dateTimeModel.selectedPeriodModel?.id == it.id

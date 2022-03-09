@@ -109,9 +109,7 @@ class CatalogInteractor(
 
     fun getPopularCategories(): Single<List<CatalogCategoryModel>>{
         return getCatalogCategories().map {
-            it.filter {
-                it.subCategories.isNotEmpty() && it.productTags.contains(TAG_POPULAR_CATEGORIES)
-            }.take(CNT_POPULAR_CATEGORIES_IN_MAIN)
+            it.filter { it.productTags.contains(TAG_POPULAR_CATEGORIES)}.take(CNT_POPULAR_CATEGORIES_IN_MAIN)
         }
     }
 

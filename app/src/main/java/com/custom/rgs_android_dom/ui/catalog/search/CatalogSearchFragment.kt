@@ -91,11 +91,4 @@ class CatalogSearchFragment : BaseFragment<CatalogSearchViewModel, FragmentCatal
             binding.noSearchResultsLinearLayout.visibleIf(it)
         }
     }
-
-
-    override fun onClose() {
-        hideSoftwareKeyboard()
-        ScreenManager.back(getNavigateId())
-    }
-
 }

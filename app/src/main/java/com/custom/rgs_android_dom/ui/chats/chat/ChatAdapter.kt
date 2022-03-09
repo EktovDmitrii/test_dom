@@ -278,7 +278,7 @@ class ChatAdapter(
                 )
             } else {
                 // TODO Replace with real position key (${member.type})
-                binding.nameTextView.text = "${member.lastName} ${member.firstName}, консультант"
+                binding.nameTextView.text = "${member.lastName} ${member.firstName}, Онлайн мастер"
 
                 if (member.avatar.isNotEmpty()) {
                     GlideApp.with(binding.avatarImageView)

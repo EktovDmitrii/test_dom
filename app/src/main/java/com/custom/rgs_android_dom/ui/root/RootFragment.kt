@@ -171,7 +171,10 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
 
                 val bottomSheetTopPadding = if (bottomSheetMainFragment is ChatFragment){ 0 } else { binding.toolbarLinearLayout.height }
 
-                peekHeight = binding.root.getLocationOnScreen().y - binding.actionsLinearLayout.getLocationOnScreen().y + bottomSheetTopPadding
+                if (peekHeight == null){
+                    peekHeight = binding.root.getLocationOnScreen().y - binding.actionsLinearLayout.getLocationOnScreen().y + bottomSheetTopPadding
+                }
+
                 binding.bottomContainer.setPadding(0, bottomSheetTopPadding, 0, 0)
 
                 beforeBottomSheetInit()

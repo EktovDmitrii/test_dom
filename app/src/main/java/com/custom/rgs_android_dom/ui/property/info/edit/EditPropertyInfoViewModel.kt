@@ -204,9 +204,9 @@ class EditPropertyInfoViewModel(
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
             .subscribeBy(
                 onComplete = {
-                    loadingStateController.value = LoadingState.CONTENT
                     notificationController.value = "Недвижимость изменена"
-                    ScreenManager.closeScope(UPDATE_PROPERTY)
+                    loadingStateController.value = LoadingState.CONTENT
+                    close()
                 },
                 onError = {
                     when (it) {

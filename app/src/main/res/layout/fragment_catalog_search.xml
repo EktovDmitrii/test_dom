@@ -77,7 +77,7 @@
                     android:gravity="center"
                     android:textColor="@color/secondary500"
                     android:textSize="20sp"
-                    app:translationTextKey="Нет результатов" />
+                    app:translationTextKey="Не смогли что-то найти?" />
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:layout_width="match_parent"
@@ -87,7 +87,7 @@
                     android:gravity="center"
                     android:textColor="@color/secondary400"
                     android:textSize="16sp"
-                    app:translationTextKey="По вашему запросу ничего не найдено.\nПопробуйте новый поиск или напишите Мастеру онлайн." />
+                    app:translationTextKey="Попробуйте новый поиск или напишите Онлайн Мастеру, мы поможем подобрать нужный сервис под любой запрос!" />
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:id="@+id/openChatTextView"
@@ -102,7 +102,7 @@
                     android:fontFamily="@font/suisse_regular"
                     android:textColor="@color/secondary900"
                     android:textSize="14sp"
-                    app:translationTextKey="Чат с Мастером онлайн" />
+                    app:translationTextKey="Чат с Онлайн Мастером" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 

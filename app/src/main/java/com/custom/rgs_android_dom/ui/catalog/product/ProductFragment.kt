@@ -48,6 +48,8 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.detailButton.btnTitle.text = "Купить"
+
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
         }
