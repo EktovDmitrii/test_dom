@@ -14,6 +14,7 @@ import com.custom.rgs_android_dom.domain.purchase.models.PurchaseDateTimeModel
 import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.domain.purchase.models.*
+import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
 import com.custom.rgs_android_dom.ui.purchase.add.agent.AddAgentFragment
 import com.custom.rgs_android_dom.ui.purchase.add.agent.PurchaseAgentListener
@@ -26,7 +27,7 @@ import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding>(R.layout.fragment_purchase),
+class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurchaseBinding>(),
     SelectPurchaseAddressListener,
     PurchaseCommentListener,
     PurchaseDateTimeFragment.PurchaseDateTimeListener,
@@ -45,12 +46,14 @@ class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding
         }
     }
 
-    override fun setStatusBarColor() {
-        setStatusBarColor(R.color.primary500)
-    }
+    override val TAG = "PURCHASE_FRAGMENT"
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(requireArguments().getSerializable(ARG_PURCHASE_SERVICE_MODEL) as PurchaseModel)
+    }
+
+    override fun getThemeResource(): Int {
+        return R.style.BottomSheetNoDim
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -89,7 +92,7 @@ class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding
         }
 
         binding.makeOrderButton.productArrangeBtn.setOnDebouncedClickListener {
-            viewModel.makeOrder(getNavigateId())
+            viewModel.makeOrder()
         }
 
         subscribe(viewModel.purchaseObserver) { purchase ->
@@ -245,5 +248,9 @@ class PurchaseFragment : BaseFragment<PurchaseViewModel, FragmentPurchaseBinding
     override fun onConfirmClick() {
         val addAgentBottomFragment = AddAgentFragment()
         addAgentBottomFragment.show(childFragmentManager, addAgentBottomFragment.TAG)
+    }
+
+    override fun isNavigationViewVisible(): Boolean {
+        return false
     }
 }
