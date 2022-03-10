@@ -39,17 +39,14 @@ class PaymentErrorFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.orderBtn.btnTitle.text = "Заказать"
-        binding.orderBtn.btnPrice.text = "${requireArguments().getString(ARG_PRICE)} ₽"
-
         binding.closeImageView.setOnDebouncedClickListener {
             viewModel.onCloseScope()
         }
-        binding.orderBtn.root.setOnDebouncedClickListener {
-            viewModel.navigatePurchase()
+        binding.writeChatMaster.setOnDebouncedClickListener {
+            viewModel.navigateChat()
         }
         binding.cancelPaymentTextView.setOnDebouncedClickListener {
-            viewModel.onCloseScope()
+            viewModel.navigatePurchase()
         }
     }
 

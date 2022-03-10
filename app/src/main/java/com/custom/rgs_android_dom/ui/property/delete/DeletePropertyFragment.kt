@@ -109,6 +109,9 @@ class DeletePropertyFragment : BaseBottomSheetModalFragment<DeletePropertyViewMo
 
             binding.closeTextView.visible()
             binding.closeTextView.text = "Всё понятно"
+            binding.closeTextView.setOnDebouncedClickListener {
+                viewModel.close()
+            }
 
             dialog?.setCancelable(true)
             dialog?.setCanceledOnTouchOutside(true)
@@ -147,6 +150,10 @@ class DeletePropertyFragment : BaseBottomSheetModalFragment<DeletePropertyViewMo
 
         binding.tryAgainTextView.visible()
         binding.closeTextView.visible()
+        binding.closeTextView.text = "Написать онлайн мастеру"
+        binding.closeTextView.setOnDebouncedClickListener {
+            viewModel.onContactMasterOnlineClick()
+        }
 
         dialog?.setCancelable(true)
         dialog?.setCanceledOnTouchOutside(true)
