@@ -70,7 +70,6 @@ class ChatFragment : BaseBottomSheetFragment<ChatViewModel, FragmentChatBinding>
         super.onViewCreated(view, savedInstanceState)
 
         downloadManager = requireContext().getDownloadManager()
-        YandexMetrica.reportEvent("chat_start")
 
         val layoutManager = binding.messagesRecyclerView.layoutManager as LinearLayoutManager
         layoutManager.stackFromEnd = true

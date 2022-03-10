@@ -24,6 +24,7 @@ import com.custom.rgs_android_dom.ui.purchase.payments.PaymentWebViewFragment
 import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderFragment
 import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderLauncher
 import com.custom.rgs_android_dom.utils.logException
+import com.yandex.metrica.YandexMetrica
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -121,6 +122,7 @@ class ChatViewModel(
                 }
             ).addTo(dataCompositeDisposable)
 
+        YandexMetrica.reportEvent("chat_start", "{\"chatID\":\"${chatInteractor.getMasterOnlineCase().channelId}\"}")
     }
 
     fun onBackClick() {
