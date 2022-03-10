@@ -194,14 +194,14 @@ class ChatViewModel(
     }
 
     fun onPayClick(paymentUrl: String, productId: String, amount: Int) {
-        ScreenManager.showScreenScope(
+        ScreenManager.showBottomScreen(
             PaymentWebViewFragment.newInstance(
                 url = paymentUrl,
                 productId = productId,
                 email = email ?: "",
                 price = amount.toString(),
                 orderId = ""
-            ), PAYMENT
+            )
         )
     }
 
@@ -251,14 +251,14 @@ class ChatViewModel(
     }
 
     fun onWidgetPayClick(widget: WidgetModel.WidgetAdditionalInvoiceModel) {
-        ScreenManager.showScreenScope(
+        ScreenManager.showBottomScreen(
             PaymentWebViewFragment.newInstance(
                 url = widget.paymentUrl ?: "",
                 productId = /*widget.productId*/"",
                 email = email ?: "",
                 price = widget.amount.toString(),
                 orderId = ""
-            ), PAYMENT
+            )
         )
     }
 
@@ -291,7 +291,8 @@ class ChatViewModel(
                 .subscribeBy(
                     onSuccess = { purchaseModel ->
                         val purchaseFragment = PurchaseFragment.newInstance(purchaseModel)
-                        ScreenManager.showScreenScope(purchaseFragment, PAYMENT)
+                        //ScreenManager.showScreenScope(purchaseFragment, PAYMENT)
+                        ScreenManager.showBottomScreen(purchaseFragment)
                     },
                     onError = {
                         logException(this, it)

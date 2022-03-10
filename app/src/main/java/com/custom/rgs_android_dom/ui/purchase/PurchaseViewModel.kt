@@ -86,6 +86,18 @@ class PurchaseViewModel(
                 }
             )
             .addTo(dataCompositeDisposable)
+
+        purchaseInteractor.getProductPurchasedSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    close()
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
     }
 
     fun onBackClick() {
@@ -181,7 +193,7 @@ class PurchaseViewModel(
         }
     }
 
-    fun makeOrder(navigateId: Int) {
+    fun makeOrder() {
         purchaseObserver.value?.let { purchase ->
             purchaseInteractor.makeProductPurchase(
                 productId = purchase.id,
@@ -211,15 +223,16 @@ class PurchaseViewModel(
                 .doFinally { isEnableButtonController.value = true }
                 .subscribeBy(
                     onSuccess = {
-                        ScreenManager.showScreenScope(
+                        ScreenManager.showBottomScreen(
                             PaymentWebViewFragment.newInstance(
                                 url = it.paymentUrl,
                                 productId = purchase.id,
                                 email = purchase.email,
                                 price = purchase.price?.amount.toString(),
                                 orderId = it.orderId,
-                                fragmentId = navigateId
-                            ), PAYMENT
+                                //fragmentId = navigateId
+                                fragmentId = -1
+                            )
                         )
                     },
                     onError = {

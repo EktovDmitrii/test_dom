@@ -7,6 +7,7 @@ import android.webkit.*
 import androidx.core.content.ContextCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPaymentWebviewBinding
+import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -19,8 +20,7 @@ import com.custom.rgs_android_dom.utils.subscribe
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-class PaymentWebViewFragment :
-    BaseFragment<PaymentWebViewViewModel, FragmentPaymentWebviewBinding>(R.layout.fragment_payment_webview) {
+class PaymentWebViewFragment : BaseBottomSheetFragment<PaymentWebViewViewModel, FragmentPaymentWebviewBinding>() {
 
     companion object {
         private const val ARG_PAYMENT_URL = "ARG_PAYMENT_URL"
@@ -53,8 +53,10 @@ class PaymentWebViewFragment :
         parametersOf(requireArguments().getString(ARG_PAYMENT_URL))
     }
 
-    override fun setStatusBarColor() {
-        setStatusBarColor(R.color.primary400)
+    override val TAG = "PAYMENT_WEB_VIEW_FRAGMENT"
+
+    override fun getThemeResource(): Int {
+        return R.style.BottomSheetNoDim
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -77,6 +79,7 @@ class PaymentWebViewFragment :
             ): Boolean {
                 return when {
                     request?.url.toString().contains("/billing/fail") -> {
+                        viewModel.onBack()
                         ScreenManager.showScreenScope(
                             PaymentErrorFragment.newInstance(fragmentId, price),
                             PAYMENT
@@ -84,6 +87,7 @@ class PaymentWebViewFragment :
                         true
                     }
                     request?.url.toString().contains("/billing/success") -> {
+                        viewModel.onBack()
                         ScreenManager.showScreenScope(
                             PaymentSuccessFragment.newInstance(
                                 productId,
@@ -132,5 +136,9 @@ class PaymentWebViewFragment :
         } else {
             super.onClose()
         }
+    }
+
+    override fun isNavigationViewVisible(): Boolean {
+        return false
     }
 }
