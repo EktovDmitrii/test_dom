@@ -70,11 +70,11 @@ android {
         production {
             applicationId 'ru.rgs.dom'
             resValue "string", "app_name", "Мой_Сервис Дом"
-            buildConfigField "String", "BASE_URL", '"https://ddom.moi-service.ru"'
-            buildConfigField "String", "WS_URL", '"wss://ddom.moi-service.ru/ws/?token=%s"'
+            buildConfigField "String", "BASE_URL", '"https://pdom.moi-service.ru"'
+            buildConfigField "String", "WS_URL", '"wss://pdom.moi-service.ru/ws/?token=%s"'
             buildConfigField "String", "YANDEX_MAPS_KEY", '"8472a02b-fba9-4544-9b23-3b2f8944f584"'
             buildConfigField "String", "RME_APP_ID", '"com.custom.my_service_android_client"'
-            buildConfigField "String", "LIVEKIT_URL", '"wss://dlivekit.moi-service.ru"'
+            buildConfigField "String", "LIVEKIT_URL", '"wss://livekit.moi-service.ru"'
             manifestPlaceholders = [ authProviderAuthority:"ru.rgs.dom.data.providers" ]
         }
 
