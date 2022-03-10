@@ -26,14 +26,14 @@ class PropertyMoreViewModel(
     private val deletePropertyController = MutableLiveData<PropertyItemModel>()
     val deletePropertyObserver: LiveData<PropertyItemModel> = deletePropertyController
 
-    fun onEditPropertyClick(){
+    fun onEditPropertyClick() {
         Single.zip(
             clientInteractor.getOrdersHistory(),
             catalogInteractor.getAvailableServices(),
             catalogInteractor.getProductsOnBalance(),
             catalogInteractor.getProductsByContracts()
         ) { orders, services, balanceProducts, contractProducts ->
-            val hasActiveOrders = orders.firstOrNull { it.objectId == property.id && (it.status == OrderStatus.ACTIVE || it.status == OrderStatus.CONFIRMED) } == null
+            val hasActiveOrders = orders.firstOrNull { it.objectId == property.id && (it.status == OrderStatus.ACTIVE || it.status == OrderStatus.CONFIRMED) } != null
             val hasProducts = contractProducts.firstOrNull { it.objectId == property.id } != null
             val hasBalanceProducts = balanceProducts.firstOrNull { it.objectId == property.id } != null
             val hasServices = services.firstOrNull { it.objectId == property.id } != null
