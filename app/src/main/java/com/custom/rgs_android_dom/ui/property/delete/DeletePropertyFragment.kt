@@ -11,11 +11,12 @@ import com.custom.rgs_android_dom.databinding.FragmentDeletePropertyBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
+import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-class DeletePropertyFragment : BaseBottomSheetFragment<DeletePropertyViewModel, FragmentDeletePropertyBinding>() {
+class DeletePropertyFragment : BaseBottomSheetModalFragment<DeletePropertyViewModel, FragmentDeletePropertyBinding>() {
 
     companion object {
         private const val ARG_PROPERTY = "ARG_PROPERTY"
@@ -29,12 +30,10 @@ class DeletePropertyFragment : BaseBottomSheetFragment<DeletePropertyViewModel, 
 
     override val TAG = "DELETE_PROPERTY_FRAGMENT"
 
+    private var canBeClosed: Boolean = false
+
     override fun getParameters(): ParametersDefinition = {
         parametersOf(requireArguments().getSerializable(ARG_PROPERTY) as PropertyItemModel)
-    }
-
-    override fun getThemeResource(): Int {
-        return R.style.BottomSheet
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -73,14 +72,25 @@ class DeletePropertyFragment : BaseBottomSheetFragment<DeletePropertyViewModel, 
                 .error(R.drawable.rectangle_filled_secondary_100_radius_16dp)
                 .into(binding.propertyLogoImageView)
             } else {
-                when (propertyItem.type) {
+                val propertyLogo = when (propertyItem.type) {
                     PropertyType.HOUSE -> {
-                        binding.propertyLogoImageView.setImageResource(R.drawable.ic_type_home)
+                        R.drawable.ic_type_home
                     }
                     PropertyType.APARTMENT -> {
-                        binding.propertyLogoImageView.setImageResource(R.drawable.ic_type_apartment_334px)
+                        R.drawable.ic_type_apartment_334px
                     }
+                    else -> null
                 }
+                GlideApp.with(binding.root.context)
+                    .load(propertyLogo)
+                    .apply(
+                        RequestOptions().transform(
+                            CenterCrop(),
+                            RoundedCorners(16.dp(binding.root.context))
+                        )
+                    )
+                    .error(R.drawable.rectangle_filled_secondary_100_radius_16dp)
+                    .into(binding.propertyLogoImageView)
             }
         }
 
@@ -100,6 +110,9 @@ class DeletePropertyFragment : BaseBottomSheetFragment<DeletePropertyViewModel, 
             binding.closeTextView.visible()
             binding.closeTextView.text = "Всё понятно"
 
+            dialog?.setCancelable(true)
+            dialog?.setCanceledOnTouchOutside(true)
+
         }
     }
 
@@ -114,6 +127,9 @@ class DeletePropertyFragment : BaseBottomSheetFragment<DeletePropertyViewModel, 
         binding.tryAgainTextView.gone()
         binding.closeTextView.invisible()
         binding.subtitleTextView.gone()
+
+        dialog?.setCancelable(false)
+        dialog?.setCanceledOnTouchOutside(false)
     }
 
     override fun onError() {
@@ -131,11 +147,8 @@ class DeletePropertyFragment : BaseBottomSheetFragment<DeletePropertyViewModel, 
 
         binding.tryAgainTextView.visible()
         binding.closeTextView.visible()
-    }
 
-    override fun onClose() {
-        hideSoftwareKeyboard()
-        dismissAllowingStateLoss()
+        dialog?.setCancelable(true)
+        dialog?.setCanceledOnTouchOutside(true)
     }
-
 }
