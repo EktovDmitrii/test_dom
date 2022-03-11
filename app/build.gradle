@@ -3,12 +3,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
-apply plugin: 'appmetrica-plugin'
+//apply plugin: 'appmetrica-plugin'
 
-appmetrica {
+/*appmetrica {
     postApiKey = "2da0597d-8366-49fd-a320-86c6f3c92825"
     enableAnalytics = true
-}
+}*/
 
 android {
     testOptions {
@@ -59,7 +59,7 @@ android {
 
             debuggable false
 
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
@@ -148,7 +148,6 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:29.1.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
-
 
     // Joda
     implementation "net.danlew:android.joda:2.10.3"
