@@ -9,6 +9,7 @@ import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
 import com.custom.rgs_android_dom.utils.*
+import com.yandex.metrica.YandexMetrica
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -44,6 +45,8 @@ class SelectPropertyTypeFragment : BaseFragment<SelectPropertyTypeViewModel, Fra
         }
 
         binding.nextTextView.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("profile_object_add_type", "{\"object_type\":\"${viewModel.getSelectedType()}\"}")
+
             viewModel.onNextClick()
         }
 

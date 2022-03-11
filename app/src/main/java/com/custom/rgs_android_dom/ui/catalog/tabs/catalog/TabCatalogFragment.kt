@@ -11,6 +11,7 @@ import com.custom.rgs_android_dom.utils.recycler_view.VerticalItemDecoration
 import com.custom.rgs_android_dom.utils.setStatusBarColor
 import com.custom.rgs_android_dom.utils.subscribe
 import com.custom.rgs_android_dom.utils.visibleIf
+import com.yandex.metrica.YandexMetrica
 
 class TabCatalogFragment : BaseFragment<TabCatalogViewModel, FragmentTabCatalogBinding>(R.layout.fragment_tab_catalog) {
 
@@ -28,9 +29,13 @@ class TabCatalogFragment : BaseFragment<TabCatalogViewModel, FragmentTabCatalogB
         binding.catalogCategoriesRecyclerView.adapter = CatalogCategoriesAdapter(
             onSubCategoryClick = {
                 viewModel.onSubCategoryClick(it)
+
+                YandexMetrica.reportEvent("catalog_catalog_service_click", "{\"subcategory\":\"${it.name}\"}")
             },
             onProductClick = {
                 viewModel.onProductClick(it)
+
+                YandexMetrica.reportEvent("catalog_catalog_service_click", "{\"service\":\"${it.name}\"}")
             },
             onAllProductsClick = {
                 viewModel.onAllProductsClick(it)

@@ -13,6 +13,7 @@ import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.utils.recycler_view.HorizontalItemDecoration
 import com.custom.rgs_android_dom.views.NavigationScope
+import com.yandex.metrica.YandexMetrica
 
 class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClientBinding>() {
 
@@ -33,9 +34,13 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
 
         binding.propertyItemsRecycler.adapter = PropertyItemsAdapter(
             onAddPropertyClick = {
+                YandexMetrica.reportEvent("profile_object_add_start")
+
                 viewModel.onAddPropertyClick()
             },
             onPropertyItemClick = {
+                YandexMetrica.reportEvent("profile_object_view")
+
                 viewModel.onPropertyItemClick(it)
             }
         )
@@ -52,30 +57,44 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
 
         binding.logoutRelativeLayout.setOnDebouncedClickListener {
             viewModel.onLogoutClick()
+
+            YandexMetrica.reportEvent("session_start_offline")
         }
 
         binding.personalDataRelativeLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("profile_menu", "{\"profile_menu_item\":\"Личные данные\"}")
+
             viewModel.onPersonalDataClick()
         }
 
 
         binding.agentInfoLinearLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("profile_menu", "{\"profile_menu_item\":\"Данные об агенте\"}")
+
             viewModel.onAgentInfoClick()
         }
 
         binding.aboutAppLinearLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("profile_menu", "{\"profile_menu_item\":\"О приложении\"}")
+
             viewModel.onAboutAppClick()
         }
 
         binding.ordersHistoryLinearLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("profile_menu", "{\"profile_menu_item\":\"История заказов\"}")
+
             viewModel.onOrdersHistoryClick()
         }
 
         binding.openMedAppLinearLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("profile_menu", "{\"profile_menu_item\":\"Перейти в Мой_Сервис Мед\"}")
+
             viewModel.onOpenMedAppClick()
         }
 
         binding.policiesLinearLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("profile_menu", "{\"profile_menu_item\":\"Полисы\"}")
+
             viewModel.onPoliciesClick()
         }
 

@@ -13,6 +13,7 @@ import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragmen
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductLauncher
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.logException
+import com.yandex.metrica.YandexMetrica
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -88,6 +89,8 @@ class TabAvailableServicesViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = { product ->
+                    YandexMetrica.reportEvent("catalog_available_service", "{\"my_products\":\"${product.name}\",\"available_service\":\"${service.serviceName}\"}")
+
                     if (product.defaultProduct) {
                         ScreenManager.showBottomScreen(
                             SingleProductFragment.newInstance(

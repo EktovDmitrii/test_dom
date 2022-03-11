@@ -7,7 +7,6 @@ import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
 import com.custom.rgs_android_dom.domain.client.exceptions.ValidateFieldModel
-import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers

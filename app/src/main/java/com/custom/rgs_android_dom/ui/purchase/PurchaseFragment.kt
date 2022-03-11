@@ -24,6 +24,7 @@ import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddre
 import com.custom.rgs_android_dom.ui.purchase.select.card.SelectCardFragment
 import com.custom.rgs_android_dom.ui.purchase.add.email.PurchaseEmailListener
 import com.custom.rgs_android_dom.utils.*
+import com.yandex.metrica.YandexMetrica
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -85,6 +86,8 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
 
         binding.layoutEmail.root.setOnDebouncedClickListener {
             viewModel.onEmailClick(childFragmentManager)
+
+            YandexMetrica.reportEvent("product_order_progress_email")
         }
 
         binding.layoutCodeAgent.root.setOnDebouncedClickListener {
@@ -212,6 +215,11 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
 
     override fun onPropertySelected(propertyItemModel: PropertyItemModel) {
         viewModel.updateAddress(propertyItemModel)
+
+        if (viewModel.purchaseObserver.value?.defaultProduct == true)
+            YandexMetrica.reportEvent("service_order_progress_address")
+        else
+            YandexMetrica.reportEvent("product_order_progress_address")
     }
 
     override fun onCommentSelected(comment: String) {
@@ -220,14 +228,26 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
 
     override fun onSelectDateTimeClick(purchaseDateTimeModel: PurchaseDateTimeModel) {
         viewModel.updateDateTime(purchaseDateTimeModel)
+
+        YandexMetrica.reportEvent("service_order_progress_date")
     }
 
     override fun onSaveEmailClick(email: String) {
         viewModel.updateEmail(email)
+
+        if (viewModel.purchaseObserver.value?.defaultProduct == true)
+            YandexMetrica.reportEvent("service_order_progress_email")
+        else
+            YandexMetrica.reportEvent("product_order_progress_email")
     }
 
     override fun onSaveCardClick(card: CardModel) {
         viewModel.updateCard(card)
+
+        if (viewModel.purchaseObserver.value?.defaultProduct == true)
+            YandexMetrica.reportEvent("service_order_progress_payment_method")
+        else
+            YandexMetrica.reportEvent("product_order_progress_payment_method")
     }
 
     override fun onSaveCodeError() {
@@ -243,6 +263,8 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
 
     override fun onSaveCodeSuccess(code: String) {
         viewModel.updateAgentCode(code)
+
+        YandexMetrica.reportEvent("service_order_progress_agent")
     }
 
     override fun onConfirmClick() {

@@ -3,6 +3,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'appmetrica-plugin'
+
+appmetrica {
+    postApiKey = "2da0597d-8366-49fd-a320-86c6f3c92825"
+    enableAnalytics = true
+}
 
 android {
 
@@ -73,6 +79,7 @@ android {
             buildConfigField "String", "BASE_URL", '"https://pdom.moi-service.ru"'
             buildConfigField "String", "WS_URL", '"wss://pdom.moi-service.ru/ws/?token=%s"'
             buildConfigField "String", "YANDEX_MAPS_KEY", '"8472a02b-fba9-4544-9b23-3b2f8944f584"'
+            buildConfigField "String", "YANDEX_APPMETRICA_KEY", '"20d8663f-8e7f-473d-ad7b-b6384a8a76bd"'
             buildConfigField "String", "RME_APP_ID", '"com.custom.my_service_android_client"'
             buildConfigField "String", "LIVEKIT_URL", '"wss://livekit.moi-service.ru"'
             manifestPlaceholders = [ authProviderAuthority:"ru.rgs.dom.data.providers" ]
@@ -85,6 +92,7 @@ android {
             buildConfigField "String", "BASE_URL", '"https://ddom.moi-service.ru"'
             buildConfigField "String", "WS_URL", '"wss://ddom.moi-service.ru/ws/?token=%s"'
             buildConfigField "String", "YANDEX_MAPS_KEY", '"8472a02b-fba9-4544-9b23-3b2f8944f584"'
+            buildConfigField "String", "YANDEX_APPMETRICA_KEY", '"20d8663f-8e7f-473d-ad7b-b6384a8a76bd"'
             buildConfigField "String", "RME_APP_ID", '"com.custom.my_service_android_client.beta"'
             buildConfigField "String", "LIVEKIT_URL", '"wss://dlivekit.moi-service.ru"'
             manifestPlaceholders = [ authProviderAuthority:"ru.rgs.dom.test.data.providers" ]
@@ -97,6 +105,7 @@ android {
             buildConfigField "String", "BASE_URL", '"https://ddom.moi-service.ru"'
             buildConfigField "String", "WS_URL", '"wss://ddom.moi-service.ru/ws/?token=%s"'
             buildConfigField "String", "YANDEX_MAPS_KEY", '"8472a02b-fba9-4544-9b23-3b2f8944f584"'
+            buildConfigField "String", "YANDEX_APPMETRICA_KEY", '"20d8663f-8e7f-473d-ad7b-b6384a8a76bd"'
             buildConfigField "String", "RME_APP_ID", '"com.custom.my_service_android_client.dev"'
             buildConfigField "String", "LIVEKIT_URL", '"wss://dlivekit.moi-service.ru"'
             manifestPlaceholders = [ authProviderAuthority:"ru.rgs.dom.dev.data.providers" ]
@@ -211,6 +220,9 @@ dependencies {
 
     //Yandex maps
     implementation 'com.yandex.android:maps.mobile:4.0.0-full'
+
+    //Yandex AppMetrica
+    implementation 'com.yandex.android:mobmetricalib:4.1.1'
 
     //Shimmer
     implementation "com.github.skydoves:androidveil:1.1.1"

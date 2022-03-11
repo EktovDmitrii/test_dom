@@ -21,6 +21,7 @@ import com.custom.rgs_android_dom.domain.chat.models.ChatFileModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.chats.chat.files.upload.UploadFilesFragment
 import com.custom.rgs_android_dom.utils.*
+import com.yandex.metrica.YandexMetrica
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -207,9 +208,9 @@ class ChatFragment : BaseBottomSheetFragment<ChatViewModel, FragmentChatBinding>
 
     override fun onClose() {
         super.onClose()
+        YandexMetrica.reportEvent("chat_end")
         viewModel.onChatClose()
     }
-
 
     private fun downloadFile(chatFile: ChatFileModel) {
         val url = "${BuildConfig.BASE_URL}/api/chat/users/me/files/${chatFile.id}"

@@ -13,6 +13,7 @@ import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.views.NavigationScope
 import com.custom.rgs_android_dom.utils.recycler_view.GridThreeSpanItemDecoration
 import com.skydoves.androidveil.VeilLayout
+import com.yandex.metrica.YandexMetrica
 
 class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>() {
 
@@ -39,45 +40,67 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             PopularProductsAdapter { productId -> viewModel.onPopularProductClick(productId) }
 
         binding.popularCategoriesLayout.popularCategoriesRecyclerView.adapter =
-            PopularCategoriesAdapter { viewModel.onCategoryClick(it) }
+            PopularCategoriesAdapter {
+                viewModel.onCategoryClick(it)
+
+                YandexMetrica.reportEvent("mp_popular_category", "{\"category\":\"${it.name}\"}")
+            }
 
         binding.loginLinearLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("mp_action", "{\"action\":\"Войти\"}")
+
             viewModel.onLoginClick()
         }
 
         binding.noPropertyLinearLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("mp_action", "{\"action\":\"Добавить\"}")
+
             viewModel.onNoPropertyClick()
         }
 
         binding.propertyAvailableLinearLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("mp_action", "{\"action\":\"Мой дом\"}")
+
             viewModel.onPropertyAvailableClick()
         }
 
         binding.sosLinearLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("mp_action", "{\"action\":\"SOS\"}")
+
             viewModel.onSOSClick()
         }
 
         binding.policiesLinearLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("mp_action", "{\"action\":\"Полисы\"}")
+
             viewModel.onPoliciesClick()
         }
 
         binding.productsLinearLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("mp_action", "{\"action\":\"Продукты\"}")
+
             viewModel.onProductsClick()
         }
 
         binding.ordersLinearLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("mp_action", "{\"action\":\"Заказы\"}")
+
             viewModel.onOrdersClick()
         }
 
         binding.searchTagsLayout.tagsFlowLayout.children.forEach { view ->
             (view as TextView).let {
                 it.setOnDebouncedClickListener {
+                    YandexMetrica.reportEvent("mp_tag_service", "{\"service\":\"${it.text}\"}")
+
                     viewModel.onTagClick(it.text.toString())
                 }
             }
         }
 
         binding.aboutApplicationLayout.aboutServiceTextView.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("mp_about")
+
             viewModel.onAboutServiceClick()
         }
 
@@ -87,17 +110,25 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
 
         binding.popularProductsLayout.showAllTextView.setOnDebouncedClickListener {
             viewModel.onShowAllPopularProductsClick()
+
+            YandexMetrica.reportEvent("mp_popular_category_all")
         }
 
         GlideApp.with(requireContext())
             .load(R.mipmap.master_male_2)
             .transform(GranularRoundedCorners(0f,0f, 16f.dp(requireContext()), 0f))
             .into(binding.ratingLayout.ratingMasterMale)
-        binding.ratingLayout.ratingRecyclerView.adapter = RatingCommentsAdapter()
+        binding.ratingLayout.ratingRecyclerView.adapter = RatingCommentsAdapter(
+            onCommentClick = { YandexMetrica.reportEvent("mp_rating") }
+        )
 
         binding.popularServicesLayout.popularServicesRecyclerView.adapter =
             GridPopularServicesAdapter(
-                onServiceClick = { viewModel.onServiceClick(it) }
+                onServiceClick = {
+                    viewModel.onServiceClick(it)
+
+                    YandexMetrica.reportEvent("mp_popular_service", "{\"service\":\"${it.name}\"}")
+                }
             )
 
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.dp_12)
@@ -107,6 +138,8 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
 
         binding.popularServicesLayout.allTextView.setOnDebouncedClickListener {
             viewModel.onAllCatalogClick()
+
+            YandexMetrica.reportEvent("mp_popular_service_all")
         }
         binding.mainShimmerLayout.horizontalScrollView.setOnTouchListener { _, _ -> true }
         binding.mainErrorLayout.reloadTextView.setOnDebouncedClickListener {

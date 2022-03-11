@@ -97,12 +97,12 @@
             <com.custom.rgs_android_dom.views.MSDImageView
                 android:id="@+id/myLocationImageView"
                 style="@style/Icon.Filled.White"
-                android:tint="@color/secondary600"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="top|end"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="20dp"
+                android:tint="@color/secondary600"
                 app:srcCompat="@drawable/ic_send_20px" />
 
         </FrameLayout>
@@ -111,12 +111,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
+            android:clickable="true"
+            android:focusable="true"
             android:orientation="vertical"
             android:paddingHorizontal="20dp"
             android:paddingTop="24dp"
-            android:paddingBottom="18dp"
-            android:clickable="true"
-            android:focusable="true">
+            android:paddingBottom="18dp">
 
             <include
                 android:id="@+id/veilContainer"
@@ -146,9 +146,9 @@
                     android:layout_marginEnd="16dp"
                     android:ellipsize="end"
                     android:fontFamily="@font/suisse_book"
+                    android:maxLines="2"
                     android:textColor="@color/secondary900"
                     android:textSize="16sp"
-                    android:maxLines="2"
                     app:layout_constraintEnd_toStartOf="@+id/editAddressTextView"
                     app:layout_constraintStart_toEndOf="@+id/destinationImageView"
                     app:layout_constraintTop_toTopOf="parent"

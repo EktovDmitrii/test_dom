@@ -9,6 +9,7 @@ import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.managers.MediaOutputManager
 import com.custom.rgs_android_dom.utils.logException
+import com.yandex.metrica.YandexMetrica
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -22,7 +23,7 @@ class CallViewModel(private val channelId: String,
                     private val mediaOutputManager: MediaOutputManager
 ) : BaseViewModel() {
 
-    private val callTypeController = MutableLiveData<CallType>()
+    private val callTypeController = MutableLiveData(callType)
     val callTypeObserver: LiveData<CallType> = callTypeController
 
     private val roomInfoController = MutableLiveData<RoomInfoModel>()
@@ -116,7 +117,11 @@ class CallViewModel(private val channelId: String,
 
         mediaOutputController.value = mediaOutputManager.getInitialMediaOutput()
 
-        callTypeController.value = callType
+        if (callType == CallType.AUDIO_CALL) {
+            YandexMetrica.reportEvent("audio_start", "{\"audioID\":\"${chatInteractor.getMasterOnlineCase().channelId}\"}")
+        } else {
+            YandexMetrica.reportEvent("video_start", "{\"videoID\":\"${chatInteractor.getMasterOnlineCase().channelId}\"}")
+        }
 
         consultant?.let {
             consultantController.value = it
@@ -194,4 +199,12 @@ class CallViewModel(private val channelId: String,
         }
     }
 
+    override fun onCleared() {
+        if (callType == CallType.AUDIO_CALL) {
+            YandexMetrica.reportEvent("audio_end", "{\"audioID\":\"${chatInteractor.getMasterOnlineCase().channelId}\"}")
+        } else {
+            YandexMetrica.reportEvent("video_end", "{\"videoID\":\"${chatInteractor.getMasterOnlineCase().channelId}\"}")
+        }
+        super.onCleared()
+    }
 }

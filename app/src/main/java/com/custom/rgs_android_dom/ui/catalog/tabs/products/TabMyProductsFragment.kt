@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentTabMyProductsBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.utils.*
+import com.yandex.metrica.YandexMetrica
 
 class TabMyProductsFragment : BaseFragment<TabMyProductsViewModel, FragmentTabMyProductsBinding>(R.layout.fragment_tab_my_products) {
 
@@ -21,6 +22,8 @@ class TabMyProductsFragment : BaseFragment<TabMyProductsViewModel, FragmentTabMy
 
         binding.myProductsRecyclerView.adapter = ClientProductsAdapter {
             viewModel.onProductClick(it)
+
+            YandexMetrica.reportEvent("catalog_my_products", "{\"my_products\":\"${it.productName}\"}")
         }
 
         binding.addPolicyTextView.setOnDebouncedClickListener {

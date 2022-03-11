@@ -16,6 +16,7 @@ import com.custom.rgs_android_dom.ui.purchase.add.comment.PurchaseCommentListene
 import com.custom.rgs_android_dom.ui.purchase.select.date_time.PurchaseDateTimeFragment
 import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressListener
 import com.custom.rgs_android_dom.utils.*
+import com.yandex.metrica.YandexMetrica
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -48,6 +49,7 @@ class ServiceOrderFragment : BaseFragment<ServiceOrderViewModel, FragmentService
         super.onViewCreated(view, savedInstanceState)
 
         binding.layoutPurchaseServiceHeader.orderTitleTextView.text = "Ваш заказ"
+        YandexMetrica.reportEvent("service_order_paid_in_pack")
 
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
@@ -132,6 +134,8 @@ class ServiceOrderFragment : BaseFragment<ServiceOrderViewModel, FragmentService
 
     override fun onPropertySelected(propertyItemModel: PropertyItemModel) {
         viewModel.onPropertySelected(propertyItemModel)
+
+        YandexMetrica.reportEvent("service_order_progress_address")
     }
 
     override fun onCommentSelected(comment: String) {
@@ -140,6 +144,8 @@ class ServiceOrderFragment : BaseFragment<ServiceOrderViewModel, FragmentService
 
     override fun onSelectDateTimeClick(purchaseDateTimeModel: PurchaseDateTimeModel) {
         viewModel.onOrderDateSelected(purchaseDateTimeModel)
+
+        YandexMetrica.reportEvent("service_order_progress_date")
     }
 
 }

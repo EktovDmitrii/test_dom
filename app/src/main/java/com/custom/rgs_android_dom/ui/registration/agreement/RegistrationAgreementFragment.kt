@@ -10,6 +10,7 @@ import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.ui.web_view.WebViewFragment
 import com.custom.rgs_android_dom.utils.*
+import com.yandex.metrica.YandexMetrica
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -44,6 +45,8 @@ class RegistrationAgreementFragment :
         }
 
         binding.nextTextView.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("login_step_3_reg")
+
             viewModel.onNextClick()
         }
 

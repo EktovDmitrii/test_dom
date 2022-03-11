@@ -13,7 +13,9 @@ import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
 import com.custom.rgs_android_dom.views.NavigationScope
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.yandex.metrica.YandexMetrica
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -70,8 +72,14 @@ class MainCatalogFragment :
 
                 tab.customView = tabCatalogBinding.root
             }
-
         mediator.attach()
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                YandexMetrica.reportEvent("catalog_section", "{\"catalog_section_item\":\"${tabs[tab.position]}\"}")
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
 
         subscribe(viewModel.tabObserver) {
             when(it) {
