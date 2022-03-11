@@ -53,6 +53,7 @@ android {
         debug {
             debuggable true
             signingConfig signingConfigs.debug
+            minifyEnabled false
         }
 
         release {
