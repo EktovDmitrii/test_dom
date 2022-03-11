@@ -36,7 +36,7 @@ class CatalogInteractor(
             }
 
             tags = tags.distinct().toMutableList()
-            val availableProducts = catalogRepository.getShowcase(tags, null).blockingGet()
+            val availableProducts = catalogRepository.getShowcase(tags).blockingGet()
 
             for (catalogCategory in catalogCategories){
                 for (subCategory in catalogCategory.subCategories){
@@ -87,22 +87,22 @@ class CatalogInteractor(
     }
 
     fun findProducts(query: String): Single<List<ProductShortModel>>{
-        return catalogRepository.getShowcase(null, query)
+        return catalogRepository.findProducts(query)
     }
 
     fun getPopularSearchProducts(): Single<List<ProductShortModel>>{
-        return catalogRepository.getShowcase(listOf(TAG_POPULAR_SEARCH_PRODUCTS), null)
+        return catalogRepository.getShowcase(listOf(TAG_POPULAR_SEARCH_PRODUCTS))
     }
 
     fun getPopularProducts(): Single<List<ProductShortModel>>{
-        return catalogRepository.getShowcase(listOf(TAG_POPULAR_PRODUCTS), null).map{
+        return catalogRepository.getShowcase(listOf(TAG_POPULAR_PRODUCTS)).map{
             it.filter { !it.defaultProduct }.take(CNT_POPULAR_PRODUCTS_IN_MAIN)
         }
     }
 
 
     fun getPopularServices(): Single<List<ProductShortModel>>{
-        return catalogRepository.getShowcase(listOf(TAG_POPULAR_SERVICES), null).map {
+        return catalogRepository.getShowcase(listOf(TAG_POPULAR_SERVICES)).map {
             it.filter { it.defaultProduct }.take(CNT_POPULAR_SERVICES_IN_MAIN)
         }
     }

@@ -38,11 +38,29 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
         }
     }
 
-    override fun getShowcase(tags: List<String>?, name: String?): Single<List<ProductShortModel>> {
+    override fun getShowcase(tags: List<String>?): Single<List<ProductShortModel>> {
         val showcaseSingle = if (authContentProviderManager.isAuthorized()){
-            api.getShowcase(tags?.joinToString(","), name, 0, 5000)
+            api.getShowcase(tags = tags?.joinToString(","), index = 0, size = 5000)
         } else {
-            api.getGuestShowcase(tags?.joinToString(","), name, 0, 5000)
+            api.getGuestShowcase(tags = tags?.joinToString(","), index = 0, size = 5000)
+        }
+
+        return showcaseSingle.map { response->
+            return@map if (response.products != null) {
+                response.products.map {
+                    CatalogMapper.responseToProductShort(it)
+                }
+            } else {
+                listOf()
+            }
+        }
+    }
+
+    override fun findProducts(query: String): Single<List<ProductShortModel>> {
+        val showcaseSingle = if (authContentProviderManager.isAuthorized()){
+            api.getShowcase(nameOrTag = query, index = 0, size = 5000)
+        } else {
+            api.getGuestShowcase(nameOrTag = query, index = 0, size = 5000)
         }
 
         return showcaseSingle.map { response->
