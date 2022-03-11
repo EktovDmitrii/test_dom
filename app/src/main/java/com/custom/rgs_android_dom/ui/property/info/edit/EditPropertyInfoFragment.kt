@@ -52,12 +52,11 @@ class EditPropertyInfoFragment :
         binding.saveTextView.setOnDebouncedClickListener {
             hideSoftwareKeyboard(true)
         }
+        binding.avatarPropertyLayout.setOnDebouncedClickListener {
+            navigateSelectAvatar()
+        }
         binding.editImagePropertyTextView.setOnDebouncedClickListener {
-            val editPropertyAvatarBottomSheetFragment =
-                EditPropertyAvatarBottomSheetFragment.newInstance(
-                    viewModel.isExistAvatarObserver.value == true
-                )
-            editPropertyAvatarBottomSheetFragment.show(childFragmentManager, editPropertyAvatarBottomSheetFragment.TAG)
+            navigateSelectAvatar()
         }
         binding.addressApartmentClickView.setOnDebouncedClickListener {
             val addressSuggestionsFragment = AddressSuggestionsFragment()
@@ -203,6 +202,14 @@ class EditPropertyInfoFragment :
                     }
                 })
         )
+    }
+
+    private fun navigateSelectAvatar() {
+        val editPropertyAvatarBottomSheetFragment =
+            EditPropertyAvatarBottomSheetFragment.newInstance(
+                viewModel.isExistAvatarObserver.value == true
+            )
+        editPropertyAvatarBottomSheetFragment.show(childFragmentManager, editPropertyAvatarBottomSheetFragment.TAG)
     }
 
     private fun toggleFlatFields(isFlatSelected: Boolean, isEnabled: Boolean) {

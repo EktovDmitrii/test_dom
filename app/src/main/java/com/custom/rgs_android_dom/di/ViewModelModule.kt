@@ -149,7 +149,7 @@ val viewModelModule = module {
     viewModel { AddAgentViewModel(clientInteractor = get()) }
     viewModel { SOSViewModel(chatInteractor = get(), registrationInteractor = get(), clientInteractor = get(), context = get()) }
     viewModel { parameters -> PaymentWebViewViewModel(url = parameters.get()) }
-    viewModel { parameters -> PaymentErrorViewModel(firstFragmentId = parameters[0]) }
+    viewModel { parameters -> PaymentErrorViewModel(firstFragmentId = parameters[0], chatInteractor = get()) }
     viewModel { parameters -> PaymentSuccessViewModel(productId = parameters[0], email = parameters[1], orderId = parameters[2], purchaseInteractor = get(), catalogInteractor = get(), clientInteractor = get()) }
     viewModel { parameters -> StoriesViewModel(tab = parameters.get()) }
     viewModel { TabNewServiceViewModel() }
