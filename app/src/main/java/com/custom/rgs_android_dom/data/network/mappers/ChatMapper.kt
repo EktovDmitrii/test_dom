@@ -115,7 +115,7 @@ object ChatMapper{
                 ) },
                 orderId = details.orderId,
                 paymentUrl = details.paymentUrl,
-                serviceLogo = "$STORE_ENDPOINT/${details.serviceLogo}",
+                serviceLogo = if (!details.serviceLogo.isNullOrEmpty()) "$STORE_ENDPOINT/${details.serviceLogo}" else "",
                 serviceName = details.serviceName,
                 widgetType = WidgetType.GeneralInvoicePayment
             )

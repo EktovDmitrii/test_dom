@@ -416,8 +416,8 @@ class ChatAdapter(
                     .into(binding.serviceImageView)
             }
 
-            binding.totalPriceTextView.text = widget.amount?.simplePriceFormat() ?: ""
-            binding.amountToPayTextView.text = widget.amount?.simplePriceFormat() ?: ""
+            binding.totalPriceTextView.text = widget.amount?.formatPrice() ?: ""
+            binding.amountToPayTextView.text = widget.amount?.formatPrice() ?: ""
             val adapter = WidgetAdditionalInvoiceItemsAdapter()
             binding.additionalItemsRecyclerView.adapter = adapter
             widget.items?.let { adapter.setItems(it) }
