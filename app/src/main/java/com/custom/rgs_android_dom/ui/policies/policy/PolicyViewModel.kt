@@ -47,7 +47,8 @@ class PolicyViewModel(contractId: String, policiesInteractor: PoliciesInteractor
                 isPurchased = product.isPurchased,
                 purchaseValidTo = product.purchaseValidTo,
                 purchaseObjectId = product.purchaseObjectId,
-                quantity = serviceShortModel.quantity
+                quantity = serviceShortModel.quantity,
+                canBeOrdered = serviceShortModel.canBeOrdered
             )
         )
         ScreenManager.showBottomScreen(serviceFragment)
