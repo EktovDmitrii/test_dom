@@ -1,21 +1,18 @@
 package com.custom.rgs_android_dom.ui.purchase.payments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.webkit.*
 import androidx.core.content.ContextCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPaymentWebviewBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
-import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.purchase.payments.error.PaymentErrorFragment
 import com.custom.rgs_android_dom.ui.purchase.payments.success.PaymentSuccessFragment
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
-import com.custom.rgs_android_dom.utils.setStatusBarColor
 import com.custom.rgs_android_dom.utils.subscribe
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
@@ -81,7 +78,7 @@ class PaymentWebViewFragment : BaseBottomSheetFragment<PaymentWebViewViewModel, 
                     request?.url.toString().contains("/billing/fail") -> {
                         viewModel.onBack()
                         ScreenManager.showScreenScope(
-                            PaymentErrorFragment.newInstance(fragmentId, price),
+                            PaymentErrorFragment(),
                             PAYMENT
                         )
                         true
