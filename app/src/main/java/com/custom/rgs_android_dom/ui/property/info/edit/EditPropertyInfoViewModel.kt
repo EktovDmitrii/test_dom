@@ -39,7 +39,7 @@ class EditPropertyInfoViewModel(
     val isEnabledSaveButtonObserver: LiveData<Boolean> = isEnabledSaveButtonController
 
     private val isExistAvatarController = MutableLiveData(false)
-    val isExistAvatarObserver: LiveData<Boolean> = isEnabledSaveButtonController
+    val isExistAvatarObserver: LiveData<Boolean> = isExistAvatarController
 
     private val uploadedLocallyAvatarController = MutableLiveData<String>()
     val uploadedLocallyAvatarObserver: LiveData<String> = uploadedLocallyAvatarController

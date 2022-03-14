@@ -1,14 +1,12 @@
 package com.custom.rgs_android_dom.ui.purchase.payments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.webkit.*
 import androidx.core.content.ContextCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPaymentWebviewBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
-import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.purchase.payments.error.PaymentErrorFragment
@@ -78,7 +76,7 @@ class PaymentWebViewFragment : BaseBottomSheetFragment<PaymentWebViewViewModel, 
                     request?.url.toString().contains("/billing/fail") -> {
                         viewModel.onBack()
                         ScreenManager.showScreenScope(
-                            PaymentErrorFragment.newInstance(fragmentId, price),
+                            PaymentErrorFragment(),
                             PAYMENT
                         )
                         true

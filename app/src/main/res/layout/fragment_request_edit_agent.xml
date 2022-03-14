@@ -48,7 +48,7 @@
             android:gravity="center"
             android:lineSpacingExtra="24dp"
             android:lineSpacingMultiplier="0"
-            app:translationTextKey="Консультант свяжется с вами в чате, чтобы уточнить несколько вопросов"/>
+            app:translationTextKey="Онлайн Мастер свяжется с вами в чате, чтобы уточнить несколько вопросов"/>
 
         <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullWidth
             android:id="@+id/confirmTextView"

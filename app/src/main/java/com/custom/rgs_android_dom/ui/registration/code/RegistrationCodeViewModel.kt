@@ -86,7 +86,7 @@ class RegistrationCodeViewModel(
                 },
                 onError = {
                     logException(this, it)
-                    codeErrorController.value = "Неправильный ко1д"
+                    codeErrorController.value = "Неправильный код"
                 }
             ).addTo(dataCompositeDisposable)
     }

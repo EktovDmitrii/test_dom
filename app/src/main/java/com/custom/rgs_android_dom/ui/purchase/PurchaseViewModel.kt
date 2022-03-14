@@ -18,6 +18,7 @@ import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddre
 import com.custom.rgs_android_dom.ui.purchase.select.card.SelectCardFragment
 import com.custom.rgs_android_dom.ui.purchase.add.email.AddEmailFragment
 import com.custom.rgs_android_dom.ui.purchase.payments.PaymentWebViewFragment
+import com.custom.rgs_android_dom.ui.purchase.payments.error.PaymentErrorFragment
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_AND_TIME_FOR_PURCHASE
 import com.custom.rgs_android_dom.utils.formatTo
 import com.custom.rgs_android_dom.utils.logException
@@ -113,8 +114,7 @@ class PurchaseViewModel(
                     purchaseObserver.value?.purchaseDateTimeModel != null
         } else {
             isEnableButtonController.value = purchaseObserver.value?.email != null &&
-                    purchaseObserver.value?.card != null &&
-                    purchaseObserver.value?.propertyItemModel != null
+                    purchaseObserver.value?.card != null
         }
 
     }
@@ -204,7 +204,7 @@ class PurchaseViewModel(
                     null
                 },
                 email = purchase.email!!,
-                objectId = purchase.propertyItemModel!!.id,
+                objectId = purchase.propertyItemModel?.id ?: "",
                 comment = purchase.comment,
                 saveCard = if (purchase.card is NewCardModel) {
                     purchase.card.doSave
@@ -242,7 +242,11 @@ class PurchaseViewModel(
                     },
                     onError = {
                         logException(this, it)
-                        handleNetworkException(it)
+
+                        ScreenManager.showScreenScope(
+                            PaymentErrorFragment(),
+                            PAYMENT
+                        )
                     }
                 ).addTo(dataCompositeDisposable)
         }
