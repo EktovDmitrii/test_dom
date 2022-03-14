@@ -13,10 +13,7 @@ import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.purchase.payments.error.PaymentErrorFragment
 import com.custom.rgs_android_dom.ui.purchase.payments.success.PaymentSuccessFragment
-import com.custom.rgs_android_dom.utils.args
-import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
-import com.custom.rgs_android_dom.utils.setStatusBarColor
-import com.custom.rgs_android_dom.utils.subscribe
+import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -104,16 +101,20 @@ class PaymentWebViewFragment : BaseBottomSheetFragment<PaymentWebViewViewModel, 
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
-                binding.layout.background = if (url?.contains("3dsec.sberbank.ru") == true) {
-                    ContextCompat.getDrawable(
-                        requireContext(),
-                        R.drawable.rectangle_filled_grey_top_radius_24dp
-                    )
-                } else {
-                    ContextCompat.getDrawable(
-                        requireContext(),
-                        R.drawable.rectangle_filled_white_top_radius_24dp
-                    )
+                try {
+                    binding.layout.background = if (url?.contains("3dsec.sberbank.ru") == true) {
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.rectangle_filled_grey_top_radius_24dp
+                        )
+                    } else {
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.rectangle_filled_white_top_radius_24dp
+                        )
+                    }
+                } catch (e: Exception) {
+                    logException(this, e)
                 }
                 super.onPageFinished(view, url)
             }
