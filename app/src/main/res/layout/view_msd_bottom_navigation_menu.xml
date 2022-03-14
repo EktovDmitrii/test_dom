@@ -101,9 +101,8 @@
             <FrameLayout
                 android:id="@+id/unreadPostsFrameLayout"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="16dp"
                 android:minWidth="16dp"
-                android:minHeight="16dp"
                 android:layout_marginTop="6dp"
                 android:layout_marginEnd="15dp"
                 android:background="@drawable/circle_stroke_1dp_white_solid_primary_500"

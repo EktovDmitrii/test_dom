@@ -18,7 +18,40 @@ object ChatsDbMapper {
         masterOnlineChannelId: String,
         masterOnlineUnreadPosts: Int
     ): List<CaseDbModel> {
-        val cases = arrayListOf<CaseDbModel>().apply {
+
+        val cases = arrayListOf<CaseDbModel>()
+
+        response.activeCases?.let { activeCases->
+            val activeCasesWithUnreadMessages = activeCases
+                .filter { it.unreadPosts >0 }
+                .sortedByDescending { it.reportedAt }
+                .map { fromCaseResponse(it, subtypes, false) }
+
+            val activeCasesWithNoNewMessages = activeCases
+                .filter { it.unreadPosts == 0 }
+                .sortedByDescending { it.reportedAt }
+                .map { fromCaseResponse(it, subtypes, false) }
+
+            cases.addAll(activeCasesWithUnreadMessages)
+            cases.addAll(activeCasesWithNoNewMessages)
+        }
+        cases.addAll(response.archivedCases?.map { fromCaseResponse(it, subtypes, true) } ?: listOf())
+
+        cases.add(0,
+            CaseDbModel(
+                channelId = masterOnlineChannelId,
+                name = "Онлайн Мастер",
+                subtype = null,
+                taskId = "",
+                unreadPosts = masterOnlineUnreadPosts,
+                isArchived = false,
+                status = CaseStatus.UNKNOWN,
+                subStatus = CaseSubStatus.UNKNOWN,
+                reportedAt = DateTime.now()
+            )
+        )
+
+        /*val cases = arrayListOf<CaseDbModel>().apply {
             add(
                 CaseDbModel(
                     channelId = masterOnlineChannelId,
@@ -34,9 +67,11 @@ object ChatsDbMapper {
             )
             if (response.activeCases != null){
                 addAll(response.activeCases.map { fromCaseResponse(it, subtypes, false) })
-            }
-        }
-        cases.addAll(response.archivedCases?.map { fromCaseResponse(it, subtypes, true) } ?: listOf())
+            }*9
+
+            addAll(response.archivedCases?.map { fromCaseResponse(it, subtypes, true) } ?: listOf())
+        }*/
+
         return cases
     }
 
