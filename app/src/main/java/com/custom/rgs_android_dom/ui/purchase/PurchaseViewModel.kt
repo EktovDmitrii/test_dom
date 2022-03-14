@@ -113,8 +113,7 @@ class PurchaseViewModel(
                     purchaseObserver.value?.purchaseDateTimeModel != null
         } else {
             isEnableButtonController.value = purchaseObserver.value?.email != null &&
-                    purchaseObserver.value?.card != null &&
-                    purchaseObserver.value?.propertyItemModel != null
+                    purchaseObserver.value?.card != null
         }
 
     }
