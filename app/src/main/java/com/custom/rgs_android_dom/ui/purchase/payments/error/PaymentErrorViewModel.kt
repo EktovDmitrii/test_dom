@@ -7,7 +7,6 @@ import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 
 class PaymentErrorViewModel(
-    private val firstFragmentId: Int,
     private val chatInteractor: ChatInteractor
     ) : BaseViewModel() {
 
@@ -16,7 +15,7 @@ class PaymentErrorViewModel(
     }
 
     fun navigatePurchase() {
-        ScreenManager.closeScreenToId(PAYMENT, firstFragmentId)
+        ScreenManager.closeScope(PAYMENT)
     }
 
     fun navigateChat() {
