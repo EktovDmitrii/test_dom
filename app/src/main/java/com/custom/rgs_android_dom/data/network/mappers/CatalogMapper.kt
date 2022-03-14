@@ -255,6 +255,8 @@ object CatalogMapper {
                         total = serviceBalance?.total ?: 0,
                         validityFrom = serviceDetails.validityFrom,
                         validityTo = serviceDetails.validityTo,
+                        canBeOrdered = serviceDetails.validityFrom?.isBeforeNow ?: false &&
+                                serviceDetails.validityTo?.isAfterNow ?: false,
                         objectId = serviceDetails.objectId
                     )
                 )

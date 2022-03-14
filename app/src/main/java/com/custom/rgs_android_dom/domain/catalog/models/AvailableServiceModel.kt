@@ -13,5 +13,6 @@ data class AvailableServiceModel(
     val objectId: String?,
     val validityFrom: DateTime?,
     val validityTo: DateTime?,
+    val canBeOrdered: Boolean = false,
     val total: Int
 )
