@@ -203,7 +203,7 @@ class PurchaseViewModel(
                     null
                 },
                 email = purchase.email!!,
-                objectId = purchase.propertyItemModel!!.id,
+                objectId = purchase.propertyItemModel?.id ?: "",
                 comment = purchase.comment,
                 saveCard = if (purchase.card is NewCardModel) {
                     purchase.card.doSave
