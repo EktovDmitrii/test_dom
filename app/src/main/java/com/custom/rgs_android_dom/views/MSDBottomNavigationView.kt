@@ -8,6 +8,7 @@ import androidx.core.view.children
 import androidx.core.view.isVisible
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ViewMsdBottomNavigationMenuBinding
+import com.custom.rgs_android_dom.utils.dp
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.visible
 import com.custom.rgs_android_dom.utils.visibleIf
@@ -60,12 +61,28 @@ class MSDBottomNavigationView @JvmOverloads constructor(
     }
 
     fun updateUnreadPostsCount(unreadMessages: Int){
+        if (unreadMessages in 1..9){
+            binding.unreadPostsFrameLayout.setBackgroundResource(R.drawable.circle_stroke_1dp_white_solid_primary_500)
+            binding.unreadPostsFrameLayout.setPadding(
+                2.dp(binding.unreadPostsFrameLayout.context),
+                0,
+                2.dp(binding.unreadPostsFrameLayout.context),
+                0
+            )
+        } else {
+            binding.unreadPostsFrameLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_white_radius_32px_solid_primary_500)
+            binding.unreadPostsFrameLayout.setPadding(
+                4.dp(binding.unreadPostsFrameLayout.context),
+                0,
+                4.dp(binding.unreadPostsFrameLayout.context),
+                0
+            )
+        }
+
         if (unreadMessages < 100){
             binding.unreadPostsTextView.text = unreadMessages.toString()
-            binding.unreadPostsFrameLayout.setBackgroundResource(R.drawable.circle_stroke_1dp_white_solid_primary_500)
         } else {
             binding.unreadPostsTextView.text = "99+"
-            binding.unreadPostsFrameLayout.setBackgroundResource(R.drawable.rectangle_stroke_1dp_white_radius_32px_solid_primary_500)
         }
         binding.unreadPostsFrameLayout.visibleIf(unreadMessages > 0)
     }
