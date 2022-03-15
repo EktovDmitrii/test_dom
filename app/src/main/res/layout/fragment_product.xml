@@ -67,8 +67,8 @@
                 android:paddingHorizontal="20dp" />
 
             <include
-                android:id="@+id/validityUntill"
-                layout="@layout/layout_catalog_validity_till_info"
+                android:id="@+id/validityFromTo"
+                layout="@layout/layout_catalog_validity_from_to_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"

@@ -102,13 +102,13 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
             binding.detailButton.root.visibleIf(it)
         }
 
-        subscribe(viewModel.productValidToObserver) { validTo ->
-            validTo?.let {
-                binding.validityUntill.validityTillValue.text = it
-                binding.validityUntill.root.visible()
+        subscribe(viewModel.productValidityFromToObserver) { validityPair ->
+            validityPair?.let { pair ->
+                binding.validityFromTo.validityTitle.text = pair.first
+                binding.validityFromTo.validityValue.text = pair.second
+                binding.validityFromTo.root.visible()
             }
         }
-
         subscribe(viewModel.isOrderTextViewEnabledObserver){
             binding.detailButton.root.isEnabled = it
             binding.detailButton.productArrangeBtn.isEnabled = it

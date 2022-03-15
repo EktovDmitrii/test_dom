@@ -8,6 +8,7 @@ data class ServiceLauncher(
     val serviceId: String,
     val quantity: Long,
     val isPurchased: Boolean = false,
+    val purchaseValidFrom: DateTime? = null,
     val purchaseValidTo: DateTime? = null,
     val purchaseObjectId: String? = null,
     val canBeOrdered: Boolean = false

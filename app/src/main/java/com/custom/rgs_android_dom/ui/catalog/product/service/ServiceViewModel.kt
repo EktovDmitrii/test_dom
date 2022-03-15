@@ -11,7 +11,6 @@ import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderFragment
 import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderLauncher
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_FULL_MONTH
-import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_ONLY
 import com.custom.rgs_android_dom.utils.formatTo
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -32,8 +31,8 @@ class ServiceViewModel(
     private val productAddressController = MutableLiveData<String?>()
     val productAddressObserver: LiveData<String?> = productAddressController
 
-    private val productValidToController = MutableLiveData<String?>()
-    val productValidToObserver: LiveData<String?> = productValidToController
+    private val productValidityFromToController = MutableLiveData<Pair<String, String>?>()
+    val productValidityFromToObserver: LiveData<Pair<String, String>?> = productValidityFromToController
 
     private val orderTextViewVisibleController = MutableLiveData<Boolean>()
     val orderTextViewVisibleObserver: LiveData<Boolean> = orderTextViewVisibleController
@@ -45,9 +44,7 @@ class ServiceViewModel(
     val isOrderTextViewEnabledObserver: LiveData<Boolean> = isOrderTextViewEnabledController
 
     init {
-        productValidToController.value = service.purchaseValidTo?.formatTo(
-            DATE_PATTERN_DATE_FULL_MONTH
-        )
+        setValidityDate()
 
         isOrderTextViewEnabledController.value = service.canBeOrdered
 
@@ -95,6 +92,14 @@ class ServiceViewModel(
 
     fun onBackClick(){
         closeController.value = Unit
+    }
+
+    private fun setValidityDate() {
+        productValidityFromToController.value = if (service.purchaseValidFrom != null && service.purchaseValidFrom.isAfterNow){
+            "Действует с" to service.purchaseValidFrom.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
+        } else if (service.purchaseValidTo != null && service.purchaseValidTo.isAfterNow){
+            "Действует до" to service.purchaseValidTo.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
+        } else null
     }
 
     fun onServiceOrderClick(){
