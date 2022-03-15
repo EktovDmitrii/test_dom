@@ -27,8 +27,8 @@ android {
         applicationId "ru.rgs.dom"
         minSdkVersion 24
         targetSdkVersion 31
-        versionCode 14
-        versionName "0.0.3.8"
+        versionCode 1
+        versionName "0.0.1"
     }
 
     signingConfigs {
