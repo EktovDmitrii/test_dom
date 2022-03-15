@@ -2,7 +2,6 @@ package com.custom.rgs_android_dom.ui.catalog.product
 
 import android.os.Bundle
 import android.text.Html
-import android.view.Gravity
 import android.view.View
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
@@ -116,10 +115,11 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
                 binding.address.root.visible()
             }
         }
-        subscribe(viewModel.productValidToObserver) { validTo ->
-            validTo?.let {
-                binding.validityUntill.validityTillValue.text = it
-                binding.validityUntill.root.visible()
+        subscribe(viewModel.productValidityFromToObserver) { validityPair ->
+            validityPair?.let { pair ->
+                binding.validityFromTo.validityTitle.text = pair.first
+                binding.validityFromTo.validityValue.text = pair.second
+                binding.validityFromTo.root.visible()
             }
         }
     }

@@ -45,6 +45,7 @@ class PolicyViewModel(contractId: String, policiesInteractor: PoliciesInteractor
                 productId = product.productId,
                 serviceId = serviceShortModel.serviceId,
                 isPurchased = product.isPurchased,
+                purchaseValidFrom = product.purchaseValidFrom,
                 purchaseValidTo = product.purchaseValidTo,
                 purchaseObjectId = product.purchaseObjectId,
                 quantity = serviceShortModel.quantity,
