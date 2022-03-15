@@ -11,7 +11,6 @@ import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.service.ServiceFragment
 import com.custom.rgs_android_dom.ui.catalog.product.service.ServiceLauncher
-import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -44,11 +43,11 @@ class ProductViewModel(
     private val productAddressController = MutableLiveData<String?>()
     val productAddressObserver: LiveData<String?> = productAddressController
 
-    private val productValidToController = MutableLiveData<String?>()
-    val productValidToObserver: LiveData<String?> = productValidToController
+    private val productValidityFromToController = MutableLiveData<Pair<String, String>?>()
+    val productValidityFromToObserver: LiveData<Pair<String, String>?> = productValidityFromToController
 
     init {
-        productValidToController.value = product.purchaseValidTo?.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
+        setValidityDate()
 
         catalogInteractor.getProduct(product.productId)
             .subscribeOn(Schedulers.io())
@@ -95,6 +94,14 @@ class ProductViewModel(
         closeController.value = Unit
     }
 
+    private fun setValidityDate() {
+        productValidityFromToController.value = if (product.purchaseValidFrom != null && product.purchaseValidFrom.isAfterNow){
+            "Действует с" to product.purchaseValidFrom.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
+        } else if (product.purchaseValidTo != null && product.purchaseValidTo.isAfterNow){
+            "Действует до" to product.purchaseValidTo.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
+        } else null
+    }
+
     fun onCheckoutClick() {
         if (registrationInteractor.isAuthorized()) {
             productController.value?.let {
@@ -124,6 +131,7 @@ class ProductViewModel(
                 productId = product.productId,
                 serviceId = serviceShortModel.serviceId,
                 isPurchased = product.isPurchased,
+                purchaseValidFrom = product.purchaseValidFrom,
                 purchaseValidTo = product.purchaseValidTo,
                 purchaseObjectId = product.purchaseObjectId,
                 quantity = serviceShortModel.quantity,
