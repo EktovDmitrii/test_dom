@@ -6,11 +6,14 @@ import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProvide
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthState
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.chat.models.CallType
+import com.custom.rgs_android_dom.domain.chat.models.Sender
+import com.custom.rgs_android_dom.domain.chat.models.WsCallAcceptModel
 import com.custom.rgs_android_dom.domain.chat.models.WsEvent
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
+import com.custom.rgs_android_dom.ui.chats.CallRequestFragment
 import com.custom.rgs_android_dom.ui.chats.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.chats.chat.call.CallFragment
 import com.custom.rgs_android_dom.ui.chats.ChatsFragment
@@ -23,13 +26,7 @@ import com.custom.rgs_android_dom.ui.main.MainFragment
 import com.custom.rgs_android_dom.ui.navigation.TargetScreen
 import com.custom.rgs_android_dom.utils.logException
 import com.custom.rgs_android_dom.views.NavigationScope
-import com.yandex.metrica.YandexMetrica
-import com.yandex.metrica.profile.Attribute
-import com.yandex.metrica.profile.BirthDateAttribute
-import com.yandex.metrica.profile.GenderAttribute
-import com.yandex.metrica.profile.UserProfile
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
@@ -139,6 +136,11 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                         WsEvent.POSTED -> {
                             loadCases()
                         }
+                        WsEvent.CALL_ACCEPT -> {
+                            val acceptModel = it as WsCallAcceptModel
+                            if (acceptModel.caller == Sender.OPPONENT)
+                                showRequestingCall(acceptModel)
+                        }
                     }
                 },
                 onError = {
@@ -167,6 +169,10 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
         if (registrationInteractor.isAuthorized()){
             loadCases()
         }
+    }
+
+    private fun showRequestingCall(wsModel: WsCallAcceptModel) {
+        ScreenManager.showScreen(CallRequestFragment.newInstance(wsModel.callerId, wsModel.callId))
     }
 
     fun onChatClick() {

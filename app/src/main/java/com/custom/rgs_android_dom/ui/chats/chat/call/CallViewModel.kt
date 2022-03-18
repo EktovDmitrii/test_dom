@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.ui.chats.chat.call
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -19,6 +18,7 @@ import kotlinx.coroutines.launch
 class CallViewModel(private val channelId: String,
                     private val callType: CallType,
                     private val consultant: ChannelMemberModel?,
+                    private val callId: String?,
                     private val chatInteractor: ChatInteractor,
                     private val mediaOutputManager: MediaOutputManager
 ) : BaseViewModel() {
@@ -42,7 +42,6 @@ class CallViewModel(private val channelId: String,
     private var cameraEnabled = false
 
     init {
-
         chatInteractor.getWsEventsSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -129,6 +128,17 @@ class CallViewModel(private val channelId: String,
 
     }
 
+    fun acceptCall(id: String) {
+        chatInteractor.acceptCall(
+            channelId = chatInteractor.getMasterOnlineCase().channelId,
+            callId = id
+        )
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
+            .addTo(dataCompositeDisposable)
+    }
+
     fun onBackClick(){
         closeController.value = Unit
     }
@@ -170,20 +180,24 @@ class CallViewModel(private val channelId: String,
     }
 
     private fun requestLiveKitToken(){
-        val actualRoomInfo = chatInteractor.getActualRoomInfo()
-        if (actualRoomInfo != null){
-            actualRoomInfo.let {
-                roomInfoController.value = it
+        if (callId == null) {
+            val actualRoomInfo = chatInteractor.getActualRoomInfo()
+            if (actualRoomInfo != null) {
+                actualRoomInfo.let {
+                    roomInfoController.value = it
+                }
+            } else {
+                chatInteractor.requestLiveKitToken(channelId)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeBy(
+                        onError = {
+                            logException(this, it)
+                        }
+                    ).addTo(dataCompositeDisposable)
             }
         } else {
-            chatInteractor.requestLiveKitToken(channelId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                    onError = {
-                        logException(this, it)
-                    }
-                ).addTo(dataCompositeDisposable)
+            acceptCall(callId)
         }
     }
 

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:fontFamily="@font/my_service_bold"
+        android:gravity="center"
+        android:text="Входящий звонок"
+        android:textColor="@color/secondary900"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/consultantDataFrameLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/avatarImageView"
+            android:layout_width="136dp"
+            android:layout_height="136dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/ic_call_consultant" />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/consultantTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/suisse_regular"
+            android:textColor="@color/secondary900"
+            android:textSize="16sp"
+            app:translationTextKey="Онлайн Мастер" />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/consultantNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/my_service_bold"
+            android:textColor="@color/secondary900"
+            android:textSize="16sp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/declineCallImageView"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="64dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintEnd_toStartOf="@id/chatImageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_call_decline" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/chatImageView"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="64dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/acceptCallImageView"
+        app:layout_constraintStart_toEndOf="@id/declineCallImageView"
+        app:srcCompat="@drawable/ic_open_chat" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/acceptCallImageView"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="64dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/chatImageView"
+        app:srcCompat="@drawable/ic_call_accept" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -64,4 +64,8 @@ interface ChatRepository {
 
     fun notifyTyping(channelId: String): Completable
 
+    fun acceptCall(channelId: String, callId: String): Completable
+
+    fun declineCall(channelId: String, callId: String): Completable
+
 }

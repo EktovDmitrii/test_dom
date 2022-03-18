@@ -30,14 +30,18 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         private const val ARC_CHANNEL_ID = "ARG_CHANNEL_ID"
         private const val ARG_CALL_TYPE = "ARG_CALL_TYPE"
         private const val ARG_CONSULTANT = "ARG_CHANNEL_MEMBER"
+        private const val ARG_CHAT_CALL_ID = "ARG_CHAT_CALL_ID"
 
         private const val REQUEST_CODE_MIC = 1
         private const val REQUEST_CODE_MIC_AND_CAMERA = 2
 
-        fun newInstance(channelId: String, callType: CallType, consultant: ChannelMemberModel?): CallFragment {
+        fun newInstance(channelId: String, callType: CallType, consultant: ChannelMemberModel?, callId: String? = null): CallFragment {
             return CallFragment().args {
                 putString(ARC_CHANNEL_ID, channelId)
                 putSerializable(ARG_CALL_TYPE, callType)
+                if (callId != null){
+                    putString(ARG_CHAT_CALL_ID, callId)
+                }
                 if (consultant != null){
                     putSerializable(ARG_CONSULTANT, consultant)
                 }
@@ -106,7 +110,8 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         parametersOf(
             requireArguments().getString(ARC_CHANNEL_ID),
             requireArguments().getSerializable(ARG_CALL_TYPE) as CallType,
-            if (requireArguments().containsKey(ARG_CONSULTANT)) requireArguments().getSerializable(ARG_CONSULTANT) as ChannelMemberModel else null
+            if (requireArguments().containsKey(ARG_CONSULTANT)) requireArguments().getSerializable(ARG_CONSULTANT) as ChannelMemberModel else null,
+            if (requireArguments().containsKey(ARG_CHAT_CALL_ID)) requireArguments().getString(ARG_CHAT_CALL_ID) else null,
         )
     }
 
