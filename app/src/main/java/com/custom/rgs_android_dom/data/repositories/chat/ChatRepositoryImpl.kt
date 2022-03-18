@@ -423,26 +423,29 @@ class ChatRepositoryImpl(private val api: MSDApi,
         stopCallTimer()
         mediaOutputManager.onCallEnded()
 
-        callInfo = callInfo.copy(
-            state = CallState.ENDED,
-            duration = null,
-            consultant = null,
-            error = null
-        )
-        callInfoSubject.onNext(callInfo)
-
-        callStateIdleDisposable?.dispose()
-        callStateIdleDisposable = Observable.fromCallable {  }
-        .delay(1, TimeUnit.SECONDS)
-        .subscribe {
+        if (callInfo.state != CallState.IDLE){
             callInfo = callInfo.copy(
-                state = CallState.IDLE,
+                state = CallState.ENDED,
                 duration = null,
                 consultant = null,
                 error = null
             )
             callInfoSubject.onNext(callInfo)
+
+            callStateIdleDisposable?.dispose()
+            callStateIdleDisposable = Observable.fromCallable {  }
+                .delay(1, TimeUnit.SECONDS)
+                .subscribe {
+                    callInfo = callInfo.copy(
+                        state = CallState.IDLE,
+                        duration = null,
+                        consultant = null,
+                        error = null
+                    )
+                    callInfoSubject.onNext(callInfo)
+                }
         }
+
     }
 
     private fun startCallTimer(){
