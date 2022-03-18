@@ -5,11 +5,17 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.OverScroller
+import androidx.core.content.ContextCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentRootBinding
+import com.custom.rgs_android_dom.domain.chat.models.CallState
+import com.custom.rgs_android_dom.domain.chat.models.CallInfoModel
+import com.custom.rgs_android_dom.domain.chat.models.MediaOutputType
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.chats.chat.ChatFragment
+import com.custom.rgs_android_dom.ui.chats.chat.call.media_output_chooser.MediaOutputChooserFragment
 import com.custom.rgs_android_dom.ui.main.MainFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.*
@@ -30,6 +36,8 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
     private var canTransit = true
     private var canTransitReverse = false
     private var isChatEventLogged = false
+
+    private var callInfo: CallInfoModel? = null
 
     private val bottomSheetCallback = object : BottomSheetCallback() {
         override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -135,6 +143,25 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
             viewModel.onChatsClick()
         }
 
+        binding.maximizeImageView.setOnDebouncedClickListener {
+            if (callInfo != null && callInfo?.state != CallState.ENDED ){
+                viewModel.onMaximizeCallClick()
+            }
+        }
+
+        binding.callInfoFrameLayout.setOnDebouncedClickListener {
+            if (callInfo != null && callInfo?.state != CallState.ENDED ){
+                viewModel.onMaximizeCallClick()
+            }
+        }
+
+        binding.mediaOutputImageView.setOnDebouncedClickListener {
+            if (callInfo != null && callInfo?.state != CallState.ENDED ){
+                val mediaOutputChooserFragment = MediaOutputChooserFragment()
+                mediaOutputChooserFragment.show(childFragmentManager, mediaOutputChooserFragment.TAG)
+            }
+        }
+
         subscribe(viewModel.navScopesVisibilityObserver){ scopes->
             scopes.forEach {
                 binding.bottomNavigationView.setNavigationScopeVisible(it.first, it.second)
@@ -156,10 +183,50 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
             binding.bottomNavigationView.updateUnreadPostsCount(it)
         }
 
+        subscribe(viewModel.callInfoObserver) { callInfo ->
+            updateCallInfoUI(callInfo)
+        }
+
+        subscribe(viewModel.mediaOutputObserver){
+            when (it){
+                MediaOutputType.PHONE,
+                MediaOutputType.WIRED_HEADPHONE -> {
+                    binding.mediaOutputImageView.setImageResource(R.drawable.ic_phone_call_24px)
+                }
+                MediaOutputType.SPEAKERPHONE -> {
+                    binding.mediaOutputImageView.setImageResource(R.drawable.ic_speaker_24px)
+                }
+                MediaOutputType.BLUETOOTH -> {
+                    binding.mediaOutputImageView.setImageResource(R.drawable.ic_bluetooth_24px)
+                }
+            }
+        }
+
     }
 
     override fun setStatusBarColor() {
-        setStatusBarColor(R.color.primary400)
+        val statusBarColor = if (callInfo != null){
+            when (callInfo?.state){
+                CallState.CONNECTING -> {
+                    R.color.secondary900
+                }
+                CallState.ACTIVE -> {
+                    R.color.success500
+                }
+                CallState.ENDED -> {
+                    R.color.error500
+                }
+                CallState.ERROR -> {
+                    R.color.secondary900
+                }
+                else -> {
+                    R.color.primary400
+                }
+            }
+        } else {
+            R.color.primary400
+        }
+        setStatusBarColor(statusBarColor)
     }
 
     override fun onVisibleToUser() {
@@ -182,11 +249,22 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
         try {
             binding.root.afterMeasured {
                 bottomSheetBehavior = from<View>(binding.bottomContainer)
+
+                if (bottomSheetMainFragment is ChatFragment) {
+                    bottomSheetBehavior?.isDraggable = false
+                } else {
+                    bottomSheetBehavior?.isDraggable = callInfo == null || callInfo?.state == CallState.IDLE
+                }
+
                 scroller = bottomSheetBehavior?.getViewDragHelper()?.getScroller()
 
                 bottomSheetBehavior?.addBottomSheetCallback(bottomSheetCallback)
 
-                val bottomSheetTopPadding = if (bottomSheetMainFragment is ChatFragment){ 0 } else { binding.toolbarLinearLayout.height }
+                val bottomSheetTopPadding = if (callInfo != null){
+                    binding.toolbarLinearLayout.height
+                } else {
+                    if (bottomSheetMainFragment is ChatFragment){ 8.dp(requireContext()) } else { binding.toolbarLinearLayout.height }
+                }
 
                 if (peekHeight == null){
                     peekHeight = binding.root.getLocationOnScreen().y - binding.actionsLinearLayout.getLocationOnScreen().y + bottomSheetTopPadding
@@ -273,7 +351,76 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
     private fun updateToolbarState(){
         if (canTransitReverse){
             binding.actionsLinearLayout.invisible()
-            binding.toolbarLinearLayout.visible()
+            binding.toolbarLinearLayout.visibleIf(callInfo == null)
+            binding.callInfoFrameLayout.visibleIf(callInfo != null)
+        }
+    }
+
+    private fun updateCallInfoUI(callInfo: CallInfoModel){
+        if (callInfo.state == CallState.IDLE){
+            this.callInfo = null
+        } else {
+            this.callInfo = callInfo
+        }
+
+        binding.actionsLinearLayout.gone()
+        binding.toolbarLinearLayout.gone()
+        binding.callInfoFrameLayout.visible()
+        binding.signalImageView.gone()
+
+        when (callInfo.state){
+            CallState.CONNECTING -> {
+                binding.contentFrameLauout.setBackgroundColor(
+                    ContextCompat.getColor(requireContext(), R.color.secondary900)
+                )
+                setStatusBarColor(R.color.secondary900)
+                binding.callSubtitleTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary400))
+
+                binding.callTitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.connecting")
+                binding.callSubtitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.waiting_operator")
+            }
+            CallState.ACTIVE -> {
+                binding.contentFrameLauout.setBackgroundColor(
+                    ContextCompat.getColor(requireContext(), R.color.success500)
+                )
+                setStatusBarColor(R.color.success500)
+                binding.callSubtitleTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white_alpha80))
+
+                binding.callTitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.online_master")
+                binding.callSubtitleTextView.text = callInfo.duration?.toReadableTime()
+            }
+            CallState.ENDED -> {
+                binding.contentFrameLauout.setBackgroundColor(
+                    ContextCompat.getColor(requireContext(), R.color.error500)
+                )
+                setStatusBarColor(R.color.error500)
+                binding.callSubtitleTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white_alpha80))
+
+                binding.callTitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.online_master")
+                binding.callSubtitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.call_ended")
+            }
+            CallState.ERROR -> {
+                binding.contentFrameLauout.setBackgroundColor(
+                    ContextCompat.getColor(requireContext(), R.color.secondary900)
+                )
+                setStatusBarColor(R.color.secondary900)
+                binding.callSubtitleTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary400))
+
+                binding.callTitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.connecting")
+                binding.callSubtitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.online_master")
+                binding.signalImageView.visible()
+            }
+            CallState.IDLE -> {
+                binding.toolbarLinearLayout.visible()
+                binding.callInfoFrameLayout.gone()
+
+                binding.contentFrameLauout.setBackgroundColor(
+                    ContextCompat.getColor(requireContext(), R.color.primary400)
+                )
+                setStatusBarColor(R.color.primary400)
+
+                measureAndShowFragment()
+            }
         }
     }
 

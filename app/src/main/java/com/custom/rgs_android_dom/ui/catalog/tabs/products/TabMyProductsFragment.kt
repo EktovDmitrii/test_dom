@@ -14,7 +14,7 @@ class TabMyProductsFragment : BaseFragment<TabMyProductsViewModel, FragmentTabMy
         get() = binding.myProductsRecyclerView.adapter as ClientProductsAdapter
 
     override fun setStatusBarColor() {
-        setStatusBarColor(R.color.primary400)
+        //setStatusBarColor(R.color.primary400)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

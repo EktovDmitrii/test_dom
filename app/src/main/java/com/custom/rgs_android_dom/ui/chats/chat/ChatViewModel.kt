@@ -161,7 +161,7 @@ class ChatViewModel(
 
     fun onAudioCallClick() {
         val callFragment = CallFragment.newInstance(
-            chatInteractor.getMasterOnlineCase().channelId,
+            case.channelId,
             CallType.AUDIO_CALL,
             chatInteractor.getCurrentConsultant()
         )
@@ -170,7 +170,7 @@ class ChatViewModel(
 
     fun onVideoCallClick() {
         val callFragment = CallFragment.newInstance(
-            chatInteractor.getMasterOnlineCase().channelId,
+            case.channelId,
             CallType.VIDEO_CALL,
             chatInteractor.getCurrentConsultant()
         )
