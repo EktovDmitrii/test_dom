@@ -573,4 +573,12 @@ class ChatRepositoryImpl(private val api: MSDApi,
                 connectToWebSocket()
             }
     }
+
+    override fun acceptCall(channelId: String, callId: String): Completable {
+        return api.acceptCall(channelId, callId)
+    }
+
+    override fun declineCall(channelId: String, callId: String): Completable {
+        return api.declineCall(channelId, callId)
+    }
 }

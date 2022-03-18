@@ -8,11 +8,14 @@ import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.chat.models.CallInfoModel
 import com.custom.rgs_android_dom.domain.chat.models.CallType
 import com.custom.rgs_android_dom.domain.chat.models.MediaOutputType
+import com.custom.rgs_android_dom.domain.chat.models.Sender
+import com.custom.rgs_android_dom.domain.chat.models.WsCallAcceptModel
 import com.custom.rgs_android_dom.domain.chat.models.WsEvent
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
+import com.custom.rgs_android_dom.ui.chats.CallRequestFragment
 import com.custom.rgs_android_dom.ui.chats.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.chats.chat.call.CallFragment
 import com.custom.rgs_android_dom.ui.chats.ChatsFragment
@@ -144,6 +147,11 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                         WsEvent.POSTED -> {
                             loadCases()
                         }
+                        WsEvent.CALL_ACCEPT -> {
+                            val acceptModel = it as WsCallAcceptModel
+                            if (acceptModel.caller == Sender.OPPONENT)
+                                showRequestingCall(acceptModel)
+                        }
                     }
                 },
                 onError = {
@@ -199,6 +207,10 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
         if (registrationInteractor.isAuthorized()){
             loadCases()
         }
+    }
+
+    private fun showRequestingCall(wsModel: WsCallAcceptModel) {
+        ScreenManager.showScreen(CallRequestFragment.newInstance(wsModel.callerId, wsModel.callId))
     }
 
     fun onChatClick() {

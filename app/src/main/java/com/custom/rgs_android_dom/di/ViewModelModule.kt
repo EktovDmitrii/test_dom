@@ -24,6 +24,7 @@ import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogPrimaryProduct
 import com.custom.rgs_android_dom.ui.catalog.tabs.availableservices.TabAvailableServicesViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.catalog.TabCatalogViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.products.TabMyProductsViewModel
+import com.custom.rgs_android_dom.ui.chats.CallRequestViewModel
 import com.custom.rgs_android_dom.ui.chats.chat.call.CallViewModel
 import com.custom.rgs_android_dom.ui.chats.chat.call.media_output_chooser.MediaOutputChooserViewModel
 import com.custom.rgs_android_dom.ui.rationale.RequestRationaleViewModel
@@ -124,7 +125,8 @@ val viewModelModule = module {
     viewModel { parameters-> ImageViewerViewModel(chatFile = parameters.get()) }
     viewModel { parameters-> ManageFileViewModel(chatFile = parameters.get()) }
     viewModel { parameters -> VideoPlayerViewModel(chatFile = parameters.get()) }
-    viewModel { parameters -> CallViewModel(channelId = parameters[0], callType = parameters[1], consultant = parameters[2], chatInteractor = get(), mediaOutputManager = get()) }
+    viewModel { parameters -> CallViewModel(channelId = parameters[0], callType = parameters[1], consultant = parameters[2], callId = parameters[3] ,chatInteractor = get(), mediaOutputManager = get()) }
+    viewModel { parameters -> CallRequestViewModel(callerId = parameters[0], callId = parameters[1], chatInteractor = get()) }
     viewModel { PropertyUploadDocumentsViewModel(propertyInteractor = get()) }
     viewModel { MediaOutputChooserViewModel(mediaOutputManager = get()) }
     viewModel { RequestRationaleViewModel() }
