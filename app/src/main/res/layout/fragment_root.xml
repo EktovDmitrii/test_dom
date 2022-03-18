@@ -6,10 +6,80 @@
     android:layout_height="match_parent">
 
     <FrameLayout
+        android:id="@+id/contentFrameLauout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/primary400"
         android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/callInfoFrameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height_chat"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="16dp"
+            android:paddingTop="8dp"
+            android:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/maximizeImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_maximize_24px"
+                android:layout_gravity="start"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_horizontal">
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/callTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/my_service_bold"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:layout_gravity="center_horizontal"
+                    app:translationTextKey="Подключаемся..." />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_horizontal">
+
+                    <com.custom.rgs_android_dom.views.text.MSDTextView
+                        android:id="@+id/callSubtitleTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/suisse_regular"
+                        android:textColor="@color/secondary400"
+                        android:textSize="13sp"
+                        android:layout_gravity="center_horizontal"
+                        app:translationTextKey="Ищем свободного оператора" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/signalImageView"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ic_signal_20px"
+                        android:visibility="gone"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/mediaOutputImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_phone_call_24px"
+                android:layout_gravity="end"/>
+
+        </FrameLayout>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/actionsLinearLayout"
@@ -257,9 +327,10 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/toolbarLinearLayout"
             android:layout_width="match_parent"
-            android:layout_height="69dp"
+            android:layout_height="@dimen/toolbar_height_chat"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            android:visibility="visible">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/toolbarContentLinearLayout"
@@ -282,7 +353,7 @@
                         android:textSize="16sp"
                         android:gravity="center_vertical"
                         app:translationTextKey="Онлайн"/>
-                    
+
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="46dp"
                         android:layout_height="match_parent"

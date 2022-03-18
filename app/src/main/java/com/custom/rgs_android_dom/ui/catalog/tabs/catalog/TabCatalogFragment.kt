@@ -57,6 +57,6 @@ class TabCatalogFragment : BaseFragment<TabCatalogViewModel, FragmentTabCatalogB
     }
 
     override fun setStatusBarColor(){
-        setStatusBarColor(R.color.primary400)
+        //setStatusBarColor(R.color.primary400)
     }
 }
