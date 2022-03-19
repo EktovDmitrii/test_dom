@@ -35,7 +35,7 @@ class EditPropertyInfoViewModel(
     private val selectAddressItemModelController = MutableLiveData<AddressItemModel>()
     val selectAddressItemModelObserver: LiveData<AddressItemModel> = selectAddressItemModelController
 
-    private val isEnabledSaveButtonController = MutableLiveData(true)
+    private val isEnabledSaveButtonController = MutableLiveData(false)
     val isEnabledSaveButtonObserver: LiveData<Boolean> = isEnabledSaveButtonController
 
     private val isExistAvatarController = MutableLiveData(false)
@@ -86,6 +86,7 @@ class EditPropertyInfoViewModel(
                 onNext = {
                     selectAddressItemModelController.value = it
                     propertyInteractor.updatePropertyAddress(it)
+                    enableSaveButton()
                 },
                 onError = {
                     propertyInteractor.onPropertyAddressChanged(AddressItemModel.createEmpty())
@@ -126,6 +127,7 @@ class EditPropertyInfoViewModel(
                 onNext = {
                     uploadedLocallyAvatarController.value = it
                     isExistAvatarController.value = !it.isNullOrEmpty()
+                    enableSaveButton()
                 },
                 onError = {
                     logException(this, it)
@@ -159,6 +161,7 @@ class EditPropertyInfoViewModel(
 
     fun onPropertyNameChanged(name: String){
         propertyInteractor.updatePropertyName(name)
+        enableSaveButton()
     }
 
     fun onPropertyTypeChanged(type: String){
@@ -171,30 +174,41 @@ class EditPropertyInfoViewModel(
 
     fun onEntranceChanged(entrance: String) {
         propertyInteractor.updatePropertyEntrance(entrance)
+        enableSaveButton()
     }
 
     fun onFloorChanged(floor: String) {
         propertyInteractor.updatePropertyFloor(floor)
+        enableSaveButton()
     }
 
     fun onIsOwnSelected(selection: MSDYesNoSelector.Selection) {
         propertyInteractor.updatePropertyIsOwn(selection.selectionString)
+        enableSaveButton()
     }
 
     fun onIsInRentSelected(selection: MSDYesNoSelector.Selection) {
         propertyInteractor.updatePropertyIsRent(selection.selectionString)
+        enableSaveButton()
     }
 
     fun onIsTemporarySelected(selection: MSDYesNoSelector.Selection) {
         propertyInteractor.updatePropertyIsTemporary(selection.selectionString)
+        enableSaveButton()
     }
 
     fun onTotalAreaChanged(totalArea: String) {
         propertyInteractor.updatePropertyTotalArea(totalArea)
+        enableSaveButton()
     }
 
     fun onCommentChanged(comment: String) {
         propertyInteractor.updatePropertyComment(comment)
+        enableSaveButton()
+    }
+
+    private fun enableSaveButton() {
+        isEnabledSaveButtonController.value = true
     }
 
     fun onSaveClicked() {
