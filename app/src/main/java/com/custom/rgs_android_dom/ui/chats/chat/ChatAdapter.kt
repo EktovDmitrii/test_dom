@@ -384,7 +384,7 @@ class ChatAdapter(
         fun bind(model: ChatMessageModel) {
             val widget = model.widget as WidgetModel.WidgetOrderProductModel
             binding.productNameTextView.text = widget.name
-            binding.priceTextView.text = widget.price?.amount?.simplePriceFormat()
+            binding.priceTextView.text = widget.price?.amount?.formatPrice()
 
             val avatar = widget.avatar
             if (!avatar.isNullOrEmpty()) {
@@ -442,8 +442,8 @@ class ChatAdapter(
             } else {
                 binding.propertyLinearLayout.gone()
             }
-            binding.priceTextView.text = widget.price?.formatPriceGroupedByThousands()
-            binding.amountToPayTextView.text = widget.price?.formatPriceGroupedByThousands()
+            binding.priceTextView.text = widget.price?.formatPrice()
+            binding.amountToPayTextView.text = widget.price?.formatPrice()
             binding.timeTextView.text = widget.orderTime?.formatOrderTime()
             binding.dateTextView.text = widget.orderDate?.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
             binding.serviceNameTextView.text = widget.name
