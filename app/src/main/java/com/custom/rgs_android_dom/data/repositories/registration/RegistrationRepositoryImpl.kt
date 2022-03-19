@@ -60,7 +60,7 @@ class RegistrationRepositoryImpl(
     }
 
     override fun logout(): Completable {
-        return api.postLogout().doFinally {
+        return api.postLogout().andThen {
             database.chatsDao.clearCases()
             if (isAuthorized()){
                 chatRepository.disconnectFromWebSocket()
