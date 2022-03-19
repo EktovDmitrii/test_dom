@@ -296,4 +296,9 @@ interface MSDApi {
     @DELETE("property/clients/me/objects/{objectId}")
     fun deleteProperty(@Path("objectId") objectId: String): Completable
 
+    @POST("chat/users/me/channels/{channelId}/webrtc/calls/{callId}/accept")
+    fun acceptCall(@Path("channelId") channelId: String, @Path("callId") callId: String): Completable
+
+    @POST("chat/users/me/channels/{channelId}/webrtc/calls/{callId}/decline")
+    fun declineCall(@Path("channelId") channelId: String, @Path("callId") callId: String): Completable
 }

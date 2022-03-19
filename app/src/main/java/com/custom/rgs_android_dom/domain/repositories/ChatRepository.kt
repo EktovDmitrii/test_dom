@@ -61,4 +61,8 @@ interface ChatRepository {
 
     fun getCallInfoSubject(): PublishSubject<CallInfoModel>
 
+    fun acceptCall(channelId: String, callId: String): Completable
+
+    fun declineCall(channelId: String, callId: String): Completable
+
 }

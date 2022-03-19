@@ -15,6 +15,7 @@ class WsResponseParser(private val gson: Gson) {
         const val FIELD_CALL_ID = "callId"
         const val FIELD_TOKEN = "token"
         const val FIELD_DECLINE_USER_ID = "declineUserId"
+        const val FIELD_INITIATOR_USER_ID = "initiatorUserId"
         const val FIELD_ROOM_ID = "roomId"
 
         const val EVENT_POSTED = "posted"
@@ -52,7 +53,14 @@ class WsResponseParser(private val gson: Gson) {
                     WsRoomClosedModel(event = WsEvent.ROOM_CLOSED)
                 }
                 EVENT_ACCEPT_OFFER -> {
-                    WsCallAcceptModel(event =  WsEvent.CALL_ACCEPT)
+                    val callId = jsonResponse.getString(FIELD_CALL_ID)
+                    val callerId = jsonResponse.getJSONObject(FIELD_DATA).getString(FIELD_INITIATOR_USER_ID)
+                    WsCallAcceptModel(
+                        event =  WsEvent.CALL_ACCEPT,
+                        callerId = callerId,
+                        callId = callId,
+                        caller = if (callerId == userId) Sender.ME else Sender.OPPONENT,
+                    )
                 }
                 EVENT_CALL_MISSED -> {
                     WsCallMissedModel(event = WsEvent.CALL_MISSED)

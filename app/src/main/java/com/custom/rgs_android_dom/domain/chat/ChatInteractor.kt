@@ -164,6 +164,14 @@ class ChatInteractor(
         chatRepository.enableMic(enable)
     }
 
+    fun getMembersFromRemote(channelId: String): Single<List<ChannelMemberModel>> {
+        return chatRepository.getChannelMembers(channelId).map {
+            cachedChannelMembers.clear()
+            cachedChannelMembers.addAll(it)
+            it
+        }
+    }
+
     fun getCurrentConsultant(): ChannelMemberModel? {
         return cachedChannelMembers.find { it.type == TYPE_MEMBER_CONSULTANT }
     }
@@ -266,4 +274,11 @@ class ChatInteractor(
         return chatRepository.getCallInfoSubject()
     }
 
+    fun acceptCall(channelId: String, callId: String): Completable {
+        return chatRepository.acceptCall(channelId, callId)
+    }
+
+    fun declineCall(channelId: String, callId: String): Completable {
+        return chatRepository.declineCall(channelId, callId)
+    }
 }
