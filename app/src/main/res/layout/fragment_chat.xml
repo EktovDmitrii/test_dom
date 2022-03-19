@@ -11,6 +11,8 @@
         android:id="@+id/toolbarConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="72dp"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -58,8 +60,6 @@
                 android:gravity="center"
                 android:lines="1"
                 android:ellipsize="end"
-                android:drawableEnd="@drawable/ic_dropdown_16dp"
-                android:drawablePadding="8dp"
                 tools:text="Онлайн Мастер" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>

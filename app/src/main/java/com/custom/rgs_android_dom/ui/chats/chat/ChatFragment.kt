@@ -168,9 +168,6 @@ class ChatFragment : BaseBottomSheetFragment<ChatViewModel, FragmentChatBinding>
         subscribe(viewModel.caseObserver){
             binding.titleTextView.text = it.name
 
-            if (it.isArchived) {
-                binding.titleTextView.setCompoundDrawables(null,null,null,null )
-            }
             binding.audioCallImageView.goneIf(it.isArchived)
             binding.videoCallImageView.goneIf(it.isArchived)
             binding.sendMessageBottomAppBar.goneIf(it.isArchived)
