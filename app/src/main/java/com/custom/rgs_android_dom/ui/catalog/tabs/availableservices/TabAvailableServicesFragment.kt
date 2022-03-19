@@ -43,6 +43,6 @@ class TabAvailableServicesFragment :
     }
 
     override fun setStatusBarColor() {
-        setStatusBarColor(R.color.primary400)
+        //setStatusBarColor(R.color.primary400)
     }
 }

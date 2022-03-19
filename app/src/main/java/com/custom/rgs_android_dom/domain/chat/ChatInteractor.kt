@@ -147,10 +147,6 @@ class ChatInteractor(
         return chatRepository.getRoomInfoSubject()
     }
 
-    fun getRoomDisconnectedSubject(): PublishSubject<Unit>{
-        return chatRepository.getRoomDisconnectedSubject()
-    }
-
     fun leaveLiveKitRoom(){
         chatRepository.leaveLiveKitRoom()
     }
@@ -159,12 +155,6 @@ class ChatInteractor(
         return chatRepository.getActualRoomInfo()
     }
 
-    fun getCallTimeSubject(): Observable<String>{
-        return chatRepository.getCallDurationSubject()
-            .map {duration->
-                return@map duration.toReadableTime()
-            }
-    }
 
     suspend fun enableCamera(enable: Boolean){
         chatRepository.enableCamera(enable)
@@ -278,6 +268,10 @@ class ChatInteractor(
 
     fun getWsEventsSubject(): PublishSubject<WsMessageModel<*>>{
         return chatRepository.getWsEventsSubject()
+    }
+
+    fun getCallInfoSubject(): PublishSubject<CallInfoModel>{
+        return chatRepository.getCallInfoSubject()
     }
 
     fun acceptCall(channelId: String, callId: String): Completable {

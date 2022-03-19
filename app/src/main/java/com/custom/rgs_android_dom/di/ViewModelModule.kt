@@ -98,7 +98,7 @@ val viewModelModule = module {
     viewModel { ClientViewModel(clientInteractor = get(), registrationInteractor = get(), propertyInteractor = get()) }
     viewModel { OrdersViewModel(clientInteractor = get(), purchaseInteractor = get()) }
     viewModel { parameters -> OrderDetailViewModel(chatInteractor = get(), order = parameters.get(), clientInteractor = get()) }
-    viewModel { RootViewModel(registrationInteractor = get(), clientInteractor = get(), chatInteractor = get()) }
+    viewModel { RootViewModel(registrationInteractor = get(), clientInteractor = get(), chatInteractor = get(), mediaOutputManager = get()) }
     viewModel { PersonalDataViewModel(clientInteractor = get()) }
     viewModel { EditPersonalDataViewModel(clientInteractor = get()) }
     viewModel { AgentViewModel(clientInteractor = get()) }

@@ -8,6 +8,7 @@ import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.managers.MediaOutputManager
 import com.custom.rgs_android_dom.utils.logException
+import com.custom.rgs_android_dom.utils.toReadableTime
 import com.yandex.metrica.YandexMetrica
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -78,24 +79,20 @@ class CallViewModel(private val channelId: String,
                 }
             ).addTo(dataCompositeDisposable)
 
-        chatInteractor.getRoomDisconnectedSubject()
+        chatInteractor.getCallInfoSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
-                onNext = {
-                    closeController.value = Unit
-                },
-                onError = {
-                    logException(this, it)
-                }
-            ).addTo(dataCompositeDisposable)
+                onNext = {callStatus->
+                    when (callStatus.state){
+                        CallState.ENDED -> {
+                            closeController.value = Unit
+                        }
+                        CallState.ACTIVE -> {
+                            callTimeController.value = callStatus.duration?.toReadableTime()
+                        }
+                    }
 
-        chatInteractor.getCallTimeSubject()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onNext = {
-                    callTimeController.value = it
                 },
                 onError = {
                     logException(this, it)

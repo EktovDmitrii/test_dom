@@ -9,8 +9,6 @@ import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Single
 import okhttp3.MultipartBody
-import org.json.JSONObject
-import retrofit2.Call
 import retrofit2.http.*
 import kotlin.reflect.KClass
 
@@ -139,7 +137,7 @@ interface MSDApi {
 
     @POST("chat/users/me/channels/{channelId}/webrtc/calls")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun startCall(@Path("channelId") channelId: String): Single<CallInfoResponse>
+    fun startCall(@Path("channelId") channelId: String): Single<CallConnectionResponse>
 
     @POST("insurance/clients/me/agents")
     @ErrorType(MSDNetworkErrorResponse::class)

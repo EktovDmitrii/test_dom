@@ -5,9 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthState
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
+import com.custom.rgs_android_dom.domain.chat.models.CallInfoModel
 import com.custom.rgs_android_dom.domain.chat.models.CallType
 import com.custom.rgs_android_dom.domain.chat.models.Sender
 import com.custom.rgs_android_dom.domain.chat.models.WsCallAcceptModel
+import com.custom.rgs_android_dom.domain.chat.models.MediaOutputType
 import com.custom.rgs_android_dom.domain.chat.models.WsEvent
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
@@ -23,8 +25,10 @@ import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.registration.agreement.RegistrationAgreementFragment
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.ui.main.MainFragment
+import com.custom.rgs_android_dom.ui.managers.MediaOutputManager
 import com.custom.rgs_android_dom.ui.navigation.TargetScreen
 import com.custom.rgs_android_dom.utils.logException
+import com.custom.rgs_android_dom.utils.safeLet
 import com.custom.rgs_android_dom.views.NavigationScope
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -34,7 +38,8 @@ import org.koin.core.component.inject
 
 class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                     private val clientInteractor: ClientInteractor,
-                    private val chatInteractor: ChatInteractor
+                    private val chatInteractor: ChatInteractor,
+                    private val mediaOutputManager: MediaOutputManager
 ) : BaseViewModel() {
 
     private val navScopesVisibilityController = MutableLiveData<List<Pair<NavigationScope, Boolean>>>()
@@ -45,6 +50,12 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
 
     private val unreadPostsController = MutableLiveData<Int>()
     val unreadPostsObserver: LiveData<Int> = unreadPostsController
+
+    private val callInfoController = MutableLiveData<CallInfoModel>()
+    val callInfoObserver: LiveData<CallInfoModel> = callInfoController
+
+    private val mediaOutputController = MutableLiveData<MediaOutputType>()
+    val mediaOutputObserver: LiveData<MediaOutputType> = mediaOutputController
 
     private val authContentProviderManager: AuthContentProviderManager by inject()
     private var requestedScreen = TargetScreen.UNSPECIFIED
@@ -166,6 +177,33 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                 }
             ).addTo(dataCompositeDisposable)
 
+        chatInteractor.getCallInfoSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    callInfoController.value = it
+                },
+                onError = {
+                    logException(this, it)
+                }
+            )
+            .addTo(dataCompositeDisposable)
+
+        mediaOutputManager.selectedMediaOutputSubject
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    mediaOutputController.value = it
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
+        mediaOutputController.value = mediaOutputManager.getInitialMediaOutput()
+
         if (registrationInteractor.isAuthorized()){
             loadCases()
         }
@@ -198,21 +236,6 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
 
     fun onLoginClick(){
         ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
-//        // Creating the UserProfile instance.
-//        val userProfile = UserProfile.newBuilder() // Updating predefined attributes.
-//            .apply(Attribute.name().withValue("John"))
-//            .apply(Attribute.gender().withValue(GenderAttribute.Gender.MALE))
-//            .apply(Attribute.birthDate().withAge(24))
-//            .apply(Attribute.notificationsEnabled().withValue(false)) // Updating custom attributes.
-//            .apply(Attribute.customString("backend_id").withValue("string"))
-//            .apply(Attribute.customNumber("rgs_client").withValue(55.0))
-//            .apply(Attribute.customCounter("user_id").withDelta(1.0))
-//            .build()
-//        // Setting the ProfileID using the method of the YandexMetrica class.
-//        YandexMetrica.setUserProfileID("id")
-//
-//        // Sending the UserProfile instance.
-//        YandexMetrica.reportUserProfile(userProfile)
     }
 
     fun onChatCallClick(){
@@ -251,6 +274,17 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
         } else {
             requestedScreen = TargetScreen.CHATS
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+        }
+    }
+
+    fun onMaximizeCallClick(){
+        callInfoController.value?.let { callInfo->
+            val callFragment = CallFragment.newInstance(
+                callInfo.channelId ?: "",
+                callInfo.callType ?: CallType.AUDIO_CALL,
+                chatInteractor.getCurrentConsultant()
+            )
+            ScreenManager.showScreen(callFragment)
         }
     }
 

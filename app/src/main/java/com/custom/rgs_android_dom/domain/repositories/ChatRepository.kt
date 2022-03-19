@@ -5,7 +5,6 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
-import org.joda.time.Duration
 import java.io.File
 
 interface ChatRepository {
@@ -22,7 +21,7 @@ interface ChatRepository {
 
     fun getFilesToUploadSubject(): PublishSubject<List<File>>
 
-    fun requestLiveKitToken(channelId: String): Single<CallInfoModel>
+    fun requestLiveKitToken(channelId: String): Single<CallConnectionModel>
 
     fun connectToWebSocket()
 
@@ -36,13 +35,9 @@ interface ChatRepository {
 
     fun leaveLiveKitRoom()
 
-    fun getRoomDisconnectedSubject(): PublishSubject<Unit>
-
     fun getActualRoomInfo(): RoomInfoModel?
 
     fun clearRoomDataOnOpponentDeclined()
-
-    fun getCallDurationSubject(): PublishSubject<Duration>
 
     suspend fun enableMic(enable: Boolean)
 
@@ -63,6 +58,8 @@ interface ChatRepository {
     fun viewChannel(channelId: String): Completable
 
     fun notifyTyping(channelId: String): Completable
+
+    fun getCallInfoSubject(): PublishSubject<CallInfoModel>
 
     fun acceptCall(channelId: String, callId: String): Completable
 

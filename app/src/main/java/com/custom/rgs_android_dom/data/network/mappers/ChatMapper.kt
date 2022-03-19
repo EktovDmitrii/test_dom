@@ -92,8 +92,8 @@ object ChatMapper{
         )
     }
 
-    fun responseToCallInfo(response: CallInfoResponse): CallInfoModel {
-        return CallInfoModel(
+    fun responseToCallConnection(response: CallConnectionResponse): CallConnectionModel {
+        return CallConnectionModel(
             channelId = response.channelId ?: "",
             id = response.id ?: "",
             initiatorUserId = response.initiatorUserId ?: "",

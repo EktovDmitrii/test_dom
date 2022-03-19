@@ -3,7 +3,7 @@ package com.custom.rgs_android_dom.data.network.responses
 import com.google.gson.annotations.SerializedName
 import org.joda.time.LocalDateTime
 
-data class CallInfoResponse(
+data class CallConnectionResponse(
 
     @SerializedName("channelId")
     val channelId: String?,
