@@ -37,6 +37,8 @@ class PropertyRepositoryImpl(
     private val editPropertyRequestedSubject: BehaviorSubject<Boolean> = BehaviorSubject.create()
     private val propertyDeletedSubject = PublishSubject.create<String>()
 
+    private val closePropertyPageSubject = PublishSubject.create<Unit>()
+
     override fun addProperty(
         name: String,
         type: String,
@@ -204,5 +206,9 @@ class PropertyRepositoryImpl(
         return api.deleteProperty(objectId).andThen {
             propertyDeletedSubject.onNext(objectId)
         }
+    }
+
+    override fun getClosePropertyPageSubject(): PublishSubject<Unit> {
+        return closePropertyPageSubject
     }
 }

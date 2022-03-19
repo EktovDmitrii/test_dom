@@ -112,6 +112,15 @@ class PropertyInfoViewModel(
                     close()
                 }
             ).addTo(dataCompositeDisposable)
+
+        propertyInteractor.closePropertyPageSubject
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = { close() },
+                onError = { logException(this, it) }
+            )
+            .addTo(dataCompositeDisposable)
     }
 
     private fun getPropertyItem() {
