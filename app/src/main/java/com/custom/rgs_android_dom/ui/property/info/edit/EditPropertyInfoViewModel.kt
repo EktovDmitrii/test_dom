@@ -207,6 +207,7 @@ class EditPropertyInfoViewModel(
                     notificationController.value = "Недвижимость изменена"
                     loadingStateController.value = LoadingState.CONTENT
                     close()
+                    propertyInteractor.closePropertyPage()
                 },
                 onError = {
                     when (it) {

@@ -50,6 +50,7 @@ class PropertyInteractor(
     val propertyDetailsViewStateSubject = PublishSubject.create<PropertyDetailsViewState>()
     val propertyInfoStateSubject = PublishSubject.create<PropertyItemModel>()
     val propertyAvatarSubject = PublishSubject.create<String>()
+    val closePropertyPageSubject = propertyRepository.getClosePropertyPageSubject()
     val propertyAvatarUrlChangedSubject = propertyRepository.getPropertyAvatarChangedSubject()
     val propertyAvatarUrlRemovedSubject = propertyRepository.getPropertyAvatarRemovedSubject()
     val propertyDocumentUploadedSubject = propertyRepository.getPropertyDocumentUploadedSubject()
@@ -530,5 +531,9 @@ class PropertyInteractor(
 
     fun deleteProperty(objectId: String): Completable {
         return propertyRepository.deleteProperty(objectId)
+    }
+
+    fun closePropertyPage() {
+        closePropertyPageSubject.onNext(Unit)
     }
 }

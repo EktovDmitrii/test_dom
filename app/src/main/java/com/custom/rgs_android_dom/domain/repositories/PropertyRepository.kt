@@ -78,4 +78,6 @@ interface PropertyRepository {
     fun deleteProperty(objectId: String): Completable
 
     fun getPropertyDeletedSubject(): PublishSubject<String>
+
+    fun getClosePropertyPageSubject(): PublishSubject<Unit>
 }

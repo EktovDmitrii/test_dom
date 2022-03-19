@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
@@ -117,6 +118,7 @@ fun Fragment.notification(message: String, duration: Long = 2000){
 
     val myToast = Toast(requireContext())
     myToast.duration = Toast.LENGTH_LONG
+    myToast.setGravity(Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL, 0, 88.dp(requireContext()))
     myToast.view = popupBinding.root
 
     myToast.show()
