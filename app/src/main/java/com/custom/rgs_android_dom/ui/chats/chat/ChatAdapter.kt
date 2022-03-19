@@ -384,7 +384,7 @@ class ChatAdapter(
         fun bind(model: ChatMessageModel) {
             val widget = model.widget as WidgetModel.WidgetOrderProductModel
             binding.productNameTextView.text = widget.name
-            binding.priceTextView.text = widget.price?.amount?.simplePriceFormat()
+            binding.priceTextView.text = widget.price?.amount?.formatPrice()
 
             val avatar = widget.avatar
             if (!avatar.isNullOrEmpty()) {
