@@ -81,6 +81,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
     private val filesToUploadSubject = PublishSubject.create<List<File>>()
 
     var isConnected = false
+    var isConnecting = false
 
     private val wsMessageSubject: PublishSubject<WsMessageModel<*>> = PublishSubject.create()
     private val wsResponseParser = WsResponseParser(gson)
@@ -104,6 +105,8 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
         override fun onOpen(webSocket: WebSocket, response: Response) {
             Log.d(TAG, "ON OPEN")
+            isConnected = true
+            isConnecting = false
             wsMessageSubject.onNext(WsConnectionModel(WsEvent.SOCKET_CONNECTED))
         }
 
@@ -127,10 +130,11 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
         override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
             Log.d(TAG, "ON CLOSED " + reason)
+            isConnecting = false
         }
 
         override fun onFailure(webSocket: WebSocket, throwable: Throwable, response: Response?) {
-            Log.d(TAG, "ON failure")
+            Log.d(TAG, "ON failure " + connectivityManager.isInternetConnected())
             wsMessageSubject.onNext(WsConnectionModel(WsEvent.SOCKET_DISCONNECTED))
             logException(this, throwable)
             disconnectFromWebSocket()
@@ -207,6 +211,10 @@ class ChatRepositoryImpl(private val api: MSDApi,
     }
 
     override fun connectToWebSocket(){
+        if (isConnecting){
+            return
+        }
+        isConnecting = true
         val token = authContentProviderManager.getAccessToken()
         Log.d(TAG, "CONNECTING TO SOCKET " + token)
         if (token != null){
@@ -218,7 +226,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
                     level = HttpLoggingInterceptor.Level.BODY
                 })
             }
-
+            webSocket = null
             webSocket = clientBuilder
                 //.pingInterval(10, TimeUnit.SECONDS)
                 .build()
@@ -226,13 +234,12 @@ class ChatRepositoryImpl(private val api: MSDApi,
                     Request.Builder().url(wsUrl).build(),
                     webSocketListener
                 )
-
-            isConnected = true
         }
     }
 
     override fun disconnectFromWebSocket() {
         isConnected = false
+        isConnecting = false
         webSocket?.close(CLOSE_REASON_NORMAL, null)
         webSocket = null
     }
@@ -580,5 +587,18 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
     override fun declineCall(channelId: String, callId: String): Completable {
         return api.declineCall(channelId, callId)
+    }
+
+    override fun initCallInfo(consultant: ChannelMemberModel?, callType: CallType) {
+        callInfo = callInfo.copy(
+            state = CallState.CONNECTING,
+            consultant = consultant,
+            callType = callType
+        )
+        callInfoSubject.onNext(callInfo)
+    }
+
+    override fun getCallInfo(): CallInfoModel {
+        return callInfo
     }
 }

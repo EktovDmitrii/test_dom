@@ -65,4 +65,8 @@ interface ChatRepository {
 
     fun declineCall(channelId: String, callId: String): Completable
 
+    fun initCallInfo(consultant: ChannelMemberModel?, callType: CallType)
+
+    fun getCallInfo(): CallInfoModel
+
 }

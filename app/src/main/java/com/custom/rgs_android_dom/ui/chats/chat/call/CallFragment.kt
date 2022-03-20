@@ -11,10 +11,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentCallBinding
-import com.custom.rgs_android_dom.domain.chat.models.CallType
-import com.custom.rgs_android_dom.domain.chat.models.ChannelMemberModel
-import com.custom.rgs_android_dom.domain.chat.models.MediaOutputType
-import com.custom.rgs_android_dom.domain.chat.models.RoomInfoModel
+import com.custom.rgs_android_dom.domain.chat.models.*
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.chats.chat.call.media_output_chooser.MediaOutputChooserFragment
 import com.custom.rgs_android_dom.ui.rationale.RequestRationaleFragment
@@ -105,6 +103,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         }
 
     private var renderersInited = false
+    private var consultantInfoShown = false
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
@@ -241,23 +240,35 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
 
         }
 
-        subscribe(viewModel.consultantObserver){consultant->
-            binding.consultantNameTextView.text = "${consultant.lastName} ${consultant.firstName}, Онлайн мастер"
+        subscribe(viewModel.callInfoObserver){callInfo->
+            binding.signalImageView.gone()
+            when (callInfo.state){
+                CallState.CONNECTING -> {
+                    binding.titleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.connecting")
+                    binding.subtitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.waiting_operator")
 
-            if (consultant.avatar.isNotEmpty()) {
-                GlideApp.with(binding.avatarImageView)
-                    .load(GlideUrlProvider.makeHeadersGlideUrl(consultant.avatar))
-                    .transform(RoundedCorners(32.dp(requireContext())))
-                    .error(R.drawable.ic_call_consultant)
-                    .into(binding.avatarImageView)
-            } else {
-                binding.avatarImageView.setImageResource(R.drawable.ic_call_consultant)
+                    callInfo.consultant?.let {consultant->
+                        showConsultantInfo(consultant)
+                    }
+                }
+                CallState.ACTIVE -> {
+                    binding.titleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.online_master")
+                    binding.subtitleTextView.text = callInfo.duration?.toReadableTime()
+
+                    callInfo.consultant?.let {consultant->
+                        showConsultantInfo(consultant)
+                    }
+                }
+                CallState.ERROR -> {
+                    binding.titleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.connecting")
+                    binding.subtitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.connection_error")
+                    binding.signalImageView.visible()
+
+                    callInfo.consultant?.let {consultant->
+                        showConsultantInfo(consultant)
+                    }
+                }
             }
-        }
-
-        subscribe(viewModel.callTimeObserver){
-            binding.titleTextView.text = "Онлайн Мастер"
-            binding.subtitleTextView.text = it
         }
 
         subscribe(viewModel.mediaOutputObserver){
@@ -302,6 +313,53 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         }
 
         binding.mySurfaceContainer.setOnDebouncedClickListener { }
+    }
+
+    override fun onDestroyView() {
+        binding.consultantSurfaceRenderer.release()
+        binding.mySurfaceRenderer.release()
+        super.onDestroyView()
+    }
+
+    override fun setStatusBarColor() {
+        setStatusBarColor(R.color.secondary900)
+        requireActivity().clearLightStatusBar()
+    }
+
+    override fun onRequestRationaleDismiss(requestCode: Int?) {
+        when (requestCode){
+            REQUEST_CODE_MIC -> {
+                if (hasPermissions(Manifest.permission.RECORD_AUDIO)){
+                    viewModel.onEnableMicClick(true)
+                    binding.micOnOffImageView.isActivated = false
+                }
+            }
+            REQUEST_CODE_MIC_AND_CAMERA -> {
+                if (hasPermissions(Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA)){
+                    viewModel.onEnableMicClick(true)
+                    viewModel.onEnableCameraClick(true)
+                }
+            }
+        }
+    }
+
+
+    private fun showRequestRecordAudioRationaleDialog(){
+        val requestRationaleFragment = RequestRationaleFragment.newInstance(
+            requestCode = REQUEST_CODE_MIC,
+            description = "Разрешите доступ, чтобы консультант или мастер могли слышать вас",
+            icon = R.drawable.device_microphone
+        )
+        requestRationaleFragment.show(childFragmentManager, requestRationaleFragment.TAG)
+    }
+
+    private fun showRequestRecordVideoRationaleDialog(){
+        val requestRationaleFragment = RequestRationaleFragment.newInstance(
+            requestCode = REQUEST_CODE_MIC_AND_CAMERA,
+            description = "Разрешите доступ, чтобы консультант или мастер могли видеть вас",
+            icon = R.drawable.device_microphone
+        )
+        requestRationaleFragment.show(childFragmentManager, requestRationaleFragment.TAG)
     }
 
     private fun expandConsultantVideoScreen(){
@@ -350,52 +408,22 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
                 setConsultantVideoFullScreen(roomInfoModel)
             }
         }
-
     }
 
-    override fun onDestroyView() {
-        binding.consultantSurfaceRenderer.release()
-        binding.mySurfaceRenderer.release()
-        super.onDestroyView()
-    }
 
-    override fun setStatusBarColor() {
-        setStatusBarColor(R.color.secondary900)
-        requireActivity().clearLightStatusBar()
-    }
+    private fun showConsultantInfo(consultant: ChannelMemberModel){
+        consultantInfoShown = true
 
-    private fun showRequestRecordAudioRationaleDialog(){
-        val requestRationaleFragment = RequestRationaleFragment.newInstance(
-            requestCode = REQUEST_CODE_MIC,
-            description = "Разрешите доступ, чтобы консультант или мастер могли слышать вас",
-            icon = R.drawable.device_microphone
-        )
-        requestRationaleFragment.show(childFragmentManager, requestRationaleFragment.TAG)
-    }
+        binding.consultantNameTextView.text = "${consultant.lastName} ${consultant.firstName}, Онлайн мастер"
 
-    private fun showRequestRecordVideoRationaleDialog(){
-        val requestRationaleFragment = RequestRationaleFragment.newInstance(
-            requestCode = REQUEST_CODE_MIC_AND_CAMERA,
-            description = "Разрешите доступ, чтобы консультант или мастер могли видеть вас",
-            icon = R.drawable.device_microphone
-        )
-        requestRationaleFragment.show(childFragmentManager, requestRationaleFragment.TAG)
-    }
-
-    override fun onRequestRationaleDismiss(requestCode: Int?) {
-        when (requestCode){
-            REQUEST_CODE_MIC -> {
-                if (hasPermissions(Manifest.permission.RECORD_AUDIO)){
-                    viewModel.onEnableMicClick(true)
-                    binding.micOnOffImageView.isActivated = false
-                }
-            }
-            REQUEST_CODE_MIC_AND_CAMERA -> {
-                if (hasPermissions(Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA)){
-                    viewModel.onEnableMicClick(true)
-                    viewModel.onEnableCameraClick(true)
-                }
-            }
+        if (consultant.avatar.isNotEmpty()) {
+            GlideApp.with(binding.avatarImageView)
+                .load(GlideUrlProvider.makeHeadersGlideUrl(consultant.avatar))
+                .transform(RoundedCorners(32.dp(requireContext())))
+                .error(R.drawable.ic_call_consultant)
+                .into(binding.avatarImageView)
+        } else {
+            binding.avatarImageView.setImageResource(R.drawable.ic_call_consultant)
         }
     }
 

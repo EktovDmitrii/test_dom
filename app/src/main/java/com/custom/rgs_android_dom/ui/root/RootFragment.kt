@@ -291,6 +291,9 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
     }
 
     private fun onSlideStateChanged(newState: SlideState) {
+        if (bottomSheetBehavior?.isDraggable == false){
+            return
+        }
         when (newState) {
             SlideState.TOP -> {
                 updateToolbarState()
@@ -373,9 +376,10 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
                 binding.contentFrameLauout.setBackgroundColor(
                     ContextCompat.getColor(requireContext(), R.color.secondary900)
                 )
-                setStatusBarColor(R.color.secondary900)
+                if (isVisible){
+                    setStatusBarColor(R.color.secondary900)
+                }
                 binding.callSubtitleTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary400))
-
                 binding.callTitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.connecting")
                 binding.callSubtitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.waiting_operator")
             }
@@ -383,7 +387,10 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
                 binding.contentFrameLauout.setBackgroundColor(
                     ContextCompat.getColor(requireContext(), R.color.success500)
                 )
-                setStatusBarColor(R.color.success500)
+                if (isVisible){
+                    setStatusBarColor(R.color.success500)
+                }
+
                 binding.callSubtitleTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white_alpha80))
 
                 binding.callTitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.online_master")
@@ -393,7 +400,10 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
                 binding.contentFrameLauout.setBackgroundColor(
                     ContextCompat.getColor(requireContext(), R.color.error500)
                 )
-                setStatusBarColor(R.color.error500)
+                if (isVisible){
+                    setStatusBarColor(R.color.error500)
+                }
+
                 binding.callSubtitleTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white_alpha80))
 
                 binding.callTitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.online_master")
@@ -403,11 +413,14 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
                 binding.contentFrameLauout.setBackgroundColor(
                     ContextCompat.getColor(requireContext(), R.color.secondary900)
                 )
-                setStatusBarColor(R.color.secondary900)
+                if (isVisible){
+                    setStatusBarColor(R.color.secondary900)
+                }
+
                 binding.callSubtitleTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary400))
 
                 binding.callTitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.connecting")
-                binding.callSubtitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.online_master")
+                binding.callSubtitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.connection_error")
                 binding.signalImageView.visible()
             }
             CallState.IDLE -> {
@@ -417,8 +430,9 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
                 binding.contentFrameLauout.setBackgroundColor(
                     ContextCompat.getColor(requireContext(), R.color.primary400)
                 )
-                setStatusBarColor(R.color.primary400)
-
+                if (isVisible){
+                    setStatusBarColor(R.color.primary400)
+                }
                 measureAndShowFragment()
             }
         }

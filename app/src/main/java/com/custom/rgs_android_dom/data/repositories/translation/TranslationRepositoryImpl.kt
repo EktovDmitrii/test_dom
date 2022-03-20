@@ -121,7 +121,7 @@ class TranslationRepositoryImpl(private val api: MSDApi) :
             "app.personal_info.email.placeholder" to "mail@mail.com",
 
             //Calls
-            "app.chats.chat.call.connecting" to "Подключаемся",
+            "app.chats.chat.call.connecting" to "Подключаемся...",
             "app.chats.chat.call.waiting_operator" to "Ищем свободного оператора",
             "app.chats.chat.call.connection_error" to "Проблемы со связью",
             "app.chats.chat.call.call_ended" to "Завершён",

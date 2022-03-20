@@ -8,7 +8,6 @@ import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.managers.MediaOutputManager
 import com.custom.rgs_android_dom.utils.logException
-import com.custom.rgs_android_dom.utils.toReadableTime
 import com.yandex.metrica.YandexMetrica
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -30,14 +29,11 @@ class CallViewModel(private val channelId: String,
     private val roomInfoController = MutableLiveData<RoomInfoModel>()
     val roomInfoObserver: LiveData<RoomInfoModel> = roomInfoController
 
-    private val consultantController = MutableLiveData<ChannelMemberModel>()
-    val consultantObserver: LiveData<ChannelMemberModel> = consultantController
-
-    private val callTimeController = MutableLiveData<String>()
-    val callTimeObserver: LiveData<String> = callTimeController
-
     private val mediaOutputController = MutableLiveData<MediaOutputType>()
     val mediaOutputObserver: LiveData<MediaOutputType> = mediaOutputController
+
+    private val callInfoController = MutableLiveData<CallInfoModel>()
+    val callInfoObserver: LiveData<CallInfoModel> = callInfoController
 
     private var micEnabled = false
     private var cameraEnabled = false
@@ -88,8 +84,8 @@ class CallViewModel(private val channelId: String,
                         CallState.ENDED -> {
                             closeController.value = Unit
                         }
-                        CallState.ACTIVE -> {
-                            callTimeController.value = callStatus.duration?.toReadableTime()
+                        else -> {
+                            callInfoController.value = callStatus
                         }
                     }
 
@@ -119,21 +115,12 @@ class CallViewModel(private val channelId: String,
             YandexMetrica.reportEvent("video_start", "{\"videoID\":\"${chatInteractor.getMasterOnlineCase().channelId}\"}")
         }
 
-        consultant?.let {
-            consultantController.value = it
+        if (chatInteractor.getCallInfo().state == CallState.IDLE){
+            chatInteractor.initCallInfo(consultant, callType)
         }
 
-    }
+        callInfoController.value = chatInteractor.getCallInfo()
 
-    fun acceptCall(id: String) {
-        chatInteractor.acceptCall(
-            channelId = chatInteractor.getMasterOnlineCase().channelId,
-            callId = id
-        )
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
-            .addTo(dataCompositeDisposable)
     }
 
     fun onBackClick(){
@@ -217,5 +204,16 @@ class CallViewModel(private val channelId: String,
             YandexMetrica.reportEvent("video_end", "{\"videoID\":\"${chatInteractor.getMasterOnlineCase().channelId}\"}")
         }
         super.onCleared()
+    }
+
+    private fun acceptCall(id: String) {
+        chatInteractor.acceptCall(
+            channelId = chatInteractor.getMasterOnlineCase().channelId,
+            callId = id
+        )
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
+            .addTo(dataCompositeDisposable)
     }
 }
