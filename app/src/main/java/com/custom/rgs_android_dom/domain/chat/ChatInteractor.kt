@@ -281,4 +281,12 @@ class ChatInteractor(
     fun declineCall(channelId: String, callId: String): Completable {
         return chatRepository.declineCall(channelId, callId)
     }
+
+    fun initCallInfo(consultant: ChannelMemberModel?, callType: CallType) {
+        chatRepository.initCallInfo(consultant, callType)
+    }
+
+    fun getCallInfo(): CallInfoModel {
+        return chatRepository.getCallInfo()
+    }
 }
