@@ -24,7 +24,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "ru.rgs.dom"
+        applicationId "ru.moi_service.property"
         minSdkVersion 24
         targetSdkVersion 31
         versionCode 1
@@ -73,7 +73,7 @@ android {
     productFlavors {
 
         production {
-            applicationId 'ru.rgs.dom'
+            applicationId 'ru.moi_service.property'
             resValue "string", "app_name", "Мой_Сервис Дом"
             buildConfigField "String", "BASE_URL", '"https://pdom.moi-service.ru"'
             buildConfigField "String", "WS_URL", '"wss://pdom.moi-service.ru/ws/?token=%s"'
@@ -81,11 +81,11 @@ android {
             buildConfigField "String", "YANDEX_APPMETRICA_KEY", '"20d8663f-8e7f-473d-ad7b-b6384a8a76bd"'
             buildConfigField "String", "RME_APP_ID", '"com.custom.my_service_android_client"'
             buildConfigField "String", "LIVEKIT_URL", '"wss://livekit.moi-service.ru"'
-            manifestPlaceholders = [ authProviderAuthority:"ru.rgs.dom.data.providers" ]
+            manifestPlaceholders = [ authProviderAuthority:"ru.moi_service.property.data.providers" ]
         }
 
         stage {
-            applicationId 'ru.rgs.dom.test'
+            applicationId 'ru.moi_service.property.test'
             versionNameSuffix 't'
             resValue "string", "app_name", "Мой_Сервис Дом"
             buildConfigField "String", "BASE_URL", '"https://ddom.moi-service.ru"'
@@ -94,11 +94,11 @@ android {
             buildConfigField "String", "YANDEX_APPMETRICA_KEY", '"20d8663f-8e7f-473d-ad7b-b6384a8a76bd"'
             buildConfigField "String", "RME_APP_ID", '"com.custom.my_service_android_client.beta"'
             buildConfigField "String", "LIVEKIT_URL", '"wss://dlivekit.moi-service.ru"'
-            manifestPlaceholders = [ authProviderAuthority:"ru.rgs.dom.test.data.providers" ]
+            manifestPlaceholders = [ authProviderAuthority:"ru.moi_service.property.test.data.providers" ]
         }
 
         dev {
-            applicationId 'ru.rgs.dom.dev'
+            applicationId 'ru.moi_service.property.dev'
             versionNameSuffix 'd'
             resValue "string", "app_name", "Мой_Сервис Дом"
             buildConfigField "String", "BASE_URL", '"https://ddom.moi-service.ru"'
@@ -107,7 +107,7 @@ android {
             buildConfigField "String", "YANDEX_APPMETRICA_KEY", '"20d8663f-8e7f-473d-ad7b-b6384a8a76bd"'
             buildConfigField "String", "RME_APP_ID", '"com.custom.my_service_android_client.dev"'
             buildConfigField "String", "LIVEKIT_URL", '"wss://dlivekit.moi-service.ru"'
-            manifestPlaceholders = [ authProviderAuthority:"ru.rgs.dom.dev.data.providers" ]
+            manifestPlaceholders = [ authProviderAuthority:"ru.moi_service.property.dev.data.providers" ]
         }
 
     }
