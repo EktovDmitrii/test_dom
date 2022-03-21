@@ -35,7 +35,6 @@ class OnboardingFragment :
         super.onViewCreated(view, savedInstanceState)
         binding.onboardingViewPager.adapter = OnboardingPagerAdapter(this)
         binding.onboardingViewPager.isUserInputEnabled = false
-        binding.onboardingViewPager.registerOnPageChangeCallback(viewPagerChangeListener)
         YandexMetrica.reportEvent("onboarding_progress", "{\"progress_status\":\"1\"}")
 
         TabLayoutMediator(
@@ -62,9 +61,14 @@ class OnboardingFragment :
 
     }
 
-    override fun onDestroy() {
+    override fun onPause() {
+        super.onPause()
         binding.onboardingViewPager.unregisterOnPageChangeCallback(viewPagerChangeListener)
-        super.onDestroy()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.onboardingViewPager.registerOnPageChangeCallback(viewPagerChangeListener)
     }
 
     override fun onClose() {
