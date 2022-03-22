@@ -9,6 +9,7 @@ import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Single
 import okhttp3.MultipartBody
+import okhttp3.Request
 import retrofit2.http.*
 import kotlin.reflect.KClass
 
@@ -301,4 +302,16 @@ interface MSDApi {
 
     @POST("chat/users/me/channels/{channelId}/webrtc/calls/{callId}/decline")
     fun declineCall(@Path("channelId") channelId: String, @Path("callId") callId: String): Completable
+
+    @POST("insurance/clients/me/agents/tasks/requests/modifications")
+    fun requestEditAgent(): Completable
+
+    @GET("insurance/clients/me/agents/tasks/requests/modifications")
+    fun getRequestEditAgentTasks(): Single<RequestEditAgentTasksResponse>
+
+    @POST("clients/me/tasks/requests/modifications")
+    fun requestEditClient(): Completable
+
+    @GET("clients/me/tasks/requests/modifications")
+    fun getRequestEditClientTasks(): Single<RequestEditClientTasksResponse>
 }

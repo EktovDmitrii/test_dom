@@ -81,11 +81,6 @@ ClientInteractor(
         }
     }
 
-    //todo
-    fun saveText(text: Boolean) {
-        clientRepository.saveTextToAgent(text)
-    }
-
     fun onKnowAgentCodeClick() {
         fillClientViewState =
             fillClientViewState.copy(isOpenCodeAgendFields = !fillClientViewState.isOpenCodeAgendFields)
@@ -576,16 +571,28 @@ ClientInteractor(
         return clientRepository.requestEditAgent()
     }
 
-    fun getEditAgentRequestedSubject(): PublishSubject<Boolean> {
+    fun isEditAgentRequested(): Single<Boolean>{
+        return clientRepository.getRequestEditAgentTasks().map {
+            it.find { it.status == RequestEditAgentStatus.OPEN } != null
+        }
+    }
+
+    fun getEditAgentRequestedSubject(): PublishSubject<Boolean>{
         return clientRepository.getEditAgentRequestedSubject()
     }
 
-    fun requestEditPersonalData(): Completable {
-        return clientRepository.requestEditPersonalData()
+    fun requestEditClient(): Completable {
+        return clientRepository.requestEditClient()
     }
 
-    fun getEditPersonalDataRequestedSubject(): BehaviorSubject<Boolean> {
-        return clientRepository.getEditPersonalDataRequestedSubject()
+    fun getEditClientRequestedSubject(): PublishSubject<Boolean> {
+        return clientRepository.getEditClientRequestedSubject()
+    }
+
+    fun isEditClientRequested(): Single<Boolean>{
+        return clientRepository.getRequestEditClientTasks().map {
+            it.find { it.status == RequestEditClientStatus.OPEN } != null
+        }
     }
 
     fun loadAndSaveClient(): Completable {

@@ -19,7 +19,7 @@ class RequestEditPersonalDataViewModel(
     val isSuccessTextViewVisibleObserver: LiveData<Boolean> = isSuccessTextViewVisibleController
 
     fun onConfirmClick(){
-        clientInteractor.requestEditPersonalData()
+        clientInteractor.requestEditClient()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
