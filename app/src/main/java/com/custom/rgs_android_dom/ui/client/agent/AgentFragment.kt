@@ -43,19 +43,11 @@ class AgentFragment : BaseFragment<AgentViewModel, FragmentAgentBinding>(R.layou
                 binding.agentPhoneTextView.setNoValue()
             }
 
-            if(state.isEditAgentButtonVisible) {
-                binding.requestEditLinearLayout.gone()
-                binding.answerEditLinearLayout.gone()
-            } else {
-                binding.requestEditLinearLayout.isVisible = !state.isRequestEditContainerVisible
-                binding.answerEditLinearLayout.isVisible = state.isRequestEditContainerVisible
-            }
-
         }
 
         subscribe(viewModel.editAgentRequestedObserver) { wasRequested ->
             binding.requestEditLinearLayout.isVisible = !wasRequested
-            binding.answerEditLinearLayout.isVisible = wasRequested
+            binding.editAgentRequestedLinearLayout.isVisible = wasRequested
         }
 
     }

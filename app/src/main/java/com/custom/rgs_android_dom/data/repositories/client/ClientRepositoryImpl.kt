@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.data.network.mappers.OrdersMapper
 import com.custom.rgs_android_dom.data.network.requests.DeleteContactsRequest
 import com.custom.rgs_android_dom.data.network.requests.UpdateClientRequest
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
+import com.custom.rgs_android_dom.domain.client.mappers.AgentMapper
 import com.custom.rgs_android_dom.domain.client.models.*
 import com.custom.rgs_android_dom.domain.repositories.ClientRepository
 import com.custom.rgs_android_dom.utils.PATTERN_DATE_TIME_MILLIS
@@ -24,9 +25,9 @@ class ClientRepositoryImpl(
 ) : ClientRepository {
 
     private val clientUpdatedSubject: PublishSubject<ClientModel> = PublishSubject.create()
-    private val editAgentRequestedSubject: PublishSubject<Boolean> = PublishSubject.create()
-    private val editPersonalDataRequestedSubject: BehaviorSubject<Boolean> = BehaviorSubject.create()
+    private val editClientRequestedSubject: PublishSubject<Boolean> = PublishSubject.create()
     private val orderCancelledSubject: PublishSubject<Unit> = PublishSubject.create()
+    private val editAgentRequestedSubject: PublishSubject<Boolean> = PublishSubject.create()
 
     override fun updateClient(
         firstName: String?,
@@ -95,16 +96,11 @@ class ClientRepositoryImpl(
         return clientUpdatedSubject
     }
 
-    override fun saveTextToAgent(saveText: Boolean) {
-        clientSharedPreferences.saveEditAgentWasRequested(true)
-    }
-
     override fun assignAgent(code: String, phone: String, assignType: String): Completable {
         val request = ClientMapper.agentToRequest(code, phone, assignType)
         return api.assignAgent(request)
             .flatMapCompletable { response ->
                 val agent = ClientMapper.responseToAgent(response)
-                clientSharedPreferences.saveEditAgentWasRequested(false)
                 clientSharedPreferences.saveAgent(agent)
                 clientSharedPreferences.getClient()?.let { client ->
                     clientUpdatedSubject.onNext(client)
@@ -174,9 +170,7 @@ class ClientRepositoryImpl(
     }
 
     override fun requestEditAgent(): Completable {
-        // Todo Replace with real request later
-        return Completable.fromCallable {
-            Thread.sleep(2000)
+        return api.requestEditAgent().doOnComplete {
             editAgentRequestedSubject.onNext(true)
         }
     }
@@ -185,22 +179,20 @@ class ClientRepositoryImpl(
         return editAgentRequestedSubject
     }
 
+    override fun getRequestEditAgentTasks(): Single<List<RequestEditAgentTaskModel>> {
+        return api.getRequestEditAgentTasks().map {
+            AgentMapper.responseToRequestEditAgentTaskModel(it)
+        }
+    }
+
     override fun getUserDetails(): Single<UserDetailsModel> {
         return api.getUser().map {
             ClientMapper.responseToUserDetails(it)
         }
     }
 
-    override fun requestEditPersonalData(): Completable {
-        // Todo Replace with real request later
-        return Completable.fromCallable {
-            Thread.sleep(2000)
-            editPersonalDataRequestedSubject.onNext(true)
-        }
-    }
-
-    override fun getEditPersonalDataRequestedSubject(): BehaviorSubject<Boolean> {
-        return editPersonalDataRequestedSubject
+    override fun getEditClientRequestedSubject(): PublishSubject<Boolean> {
+        return editClientRequestedSubject
     }
 
     override fun getOrders(size: Long, index: Long): Single<List<Order>> {
@@ -260,6 +252,18 @@ class ClientRepositoryImpl(
     override fun getCancelledTasks(orderId: String): Single<List<CancelledTaskModel>> {
         return api.getCancelledTasks(orderId).map { response->
             OrdersMapper.responseToCancelledTasks(response)
+        }
+    }
+
+    override fun requestEditClient(): Completable {
+        return api.requestEditClient().doOnComplete {
+            editClientRequestedSubject.onNext(true)
+        }
+    }
+
+    override fun getRequestEditClientTasks(): Single<List<RequestEditClientTaskModel>> {
+        return api.getRequestEditClientTasks().map {
+            ClientMapper.responseToRequestEditClientTasks(it)
         }
     }
 

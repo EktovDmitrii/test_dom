@@ -27,8 +27,6 @@ interface ClientRepository {
 
     fun getClientUpdatedSubject(): Observable<ClientModel>
 
-    fun saveTextToAgent(saveText: Boolean)
-
     fun assignAgent(code: String, phone: String, assignType: String): Completable
 
     fun postPassport(serial: String, number: String): Completable
@@ -43,13 +41,13 @@ interface ClientRepository {
 
     fun requestEditAgent(): Completable
 
+    fun getRequestEditAgentTasks(): Single<List<RequestEditAgentTaskModel>>
+
     fun getEditAgentRequestedSubject(): PublishSubject<Boolean>
 
     fun getUserDetails(): Single<UserDetailsModel>
 
-    fun requestEditPersonalData(): Completable
-
-    fun getEditPersonalDataRequestedSubject(): BehaviorSubject<Boolean>
+    fun getEditClientRequestedSubject(): PublishSubject<Boolean>
 
     fun getOrders(size: Long, index: Long): Single<List<Order>>
 
@@ -70,5 +68,9 @@ interface ClientRepository {
     fun getOrderCancelledSubject(): PublishSubject<Unit>
 
     fun getCancelledTasks(orderId: String): Single<List<CancelledTaskModel>>
+
+    fun requestEditClient(): Completable
+
+    fun getRequestEditClientTasks(): Single<List<RequestEditClientTaskModel>>
 
 }
