@@ -18,6 +18,7 @@ import io.reactivex.schedulers.Schedulers
 class CallRequestViewModel(
     private val callerId: String,
     private val callId: String,
+    private val channelId: String,
     private val chatInteractor: ChatInteractor
 ) : BaseViewModel() {
 
@@ -55,7 +56,7 @@ class CallRequestViewModel(
         closeController.value = Unit
 
         val callFragment = CallFragment.newInstance(
-            chatInteractor.getMasterOnlineCase().channelId,
+            channelId,
             CallType.AUDIO_CALL,
             chatInteractor.getCurrentConsultant(),
             callId
@@ -67,7 +68,7 @@ class CallRequestViewModel(
         isClosableController.value = true
 
         chatInteractor.declineCall(
-            channelId = chatInteractor.getMasterOnlineCase().channelId,
+            channelId = channelId,
             callId = callId
         )
             .subscribeOn(Schedulers.io())
@@ -87,7 +88,7 @@ class CallRequestViewModel(
         isClosableController.value = true
 
         chatInteractor.declineCall(
-            channelId = chatInteractor.getMasterOnlineCase().channelId,
+            channelId = channelId,
             callId = callId
         )
             .subscribeOn(Schedulers.io())
