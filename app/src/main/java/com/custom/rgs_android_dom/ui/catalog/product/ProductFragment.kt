@@ -115,6 +115,9 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
                 binding.address.root.visible()
             }
         }
+        subscribe(viewModel.isGoneButtonObserver) { isGone ->
+            binding.detailButton.root.goneIf(isGone)
+        }
         subscribe(viewModel.productValidityFromToObserver) { validityPair ->
             validityPair?.let { pair ->
                 binding.validityFromTo.validityTitle.text = pair.first

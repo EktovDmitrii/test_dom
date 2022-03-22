@@ -34,6 +34,9 @@ class ServiceViewModel(
     private val productValidityFromToController = MutableLiveData<Pair<String, String>?>()
     val productValidityFromToObserver: LiveData<Pair<String, String>?> = productValidityFromToController
 
+    private val isGoneButtonController = MutableLiveData<Boolean>()
+    val isGoneButtonObserver: LiveData<Boolean> = isGoneButtonController
+
     private val orderTextViewVisibleController = MutableLiveData<Boolean>()
     val orderTextViewVisibleObserver: LiveData<Boolean> = orderTextViewVisibleController
 
@@ -96,10 +99,15 @@ class ServiceViewModel(
 
     private fun setValidityDate() {
         productValidityFromToController.value = if (service.purchaseValidFrom != null && service.purchaseValidFrom.isAfterNow){
+            isGoneButtonController.value = true
             "Действует с" to service.purchaseValidFrom.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
         } else if (service.purchaseValidTo != null && service.purchaseValidTo.isAfterNow){
+            isGoneButtonController.value = false
             "Действует до" to service.purchaseValidTo.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
-        } else null
+        } else {
+            isGoneButtonController.value = false
+            null
+        }
     }
 
     fun onServiceOrderClick(){

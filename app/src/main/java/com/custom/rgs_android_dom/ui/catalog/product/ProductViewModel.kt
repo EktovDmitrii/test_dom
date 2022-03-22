@@ -43,6 +43,9 @@ class ProductViewModel(
     private val productAddressController = MutableLiveData<String?>()
     val productAddressObserver: LiveData<String?> = productAddressController
 
+    private val isGoneButtonController = MutableLiveData<Boolean>()
+    val isGoneButtonObserver: LiveData<Boolean> = isGoneButtonController
+
     private val productValidityFromToController = MutableLiveData<Pair<String, String>?>()
     val productValidityFromToObserver: LiveData<Pair<String, String>?> = productValidityFromToController
 
@@ -96,10 +99,15 @@ class ProductViewModel(
 
     private fun setValidityDate() {
         productValidityFromToController.value = if (product.purchaseValidFrom != null && product.purchaseValidFrom.isAfterNow){
+            isGoneButtonController.value = true
             "Действует с" to product.purchaseValidFrom.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
         } else if (product.purchaseValidTo != null && product.purchaseValidTo.isAfterNow){
+            isGoneButtonController.value = false
             "Действует до" to product.purchaseValidTo.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
-        } else null
+        } else {
+            isGoneButtonController.value = false
+            null
+        }
     }
 
     fun onCheckoutClick() {
