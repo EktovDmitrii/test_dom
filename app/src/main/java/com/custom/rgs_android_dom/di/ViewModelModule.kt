@@ -86,7 +86,7 @@ import com.custom.rgs_android_dom.ui.stories.tabs.TabNewServiceViewModel
 import com.custom.rgs_android_dom.ui.stories.tabs.TabSupportViewModel
 
 val viewModelModule = module {
-    viewModel { parameters -> RegistrationCodeViewModel(phone = parameters[0], token = parameters[1], registrationInteractor = get(), clientInteractor = get()) }
+    viewModel { parameters -> RegistrationCodeViewModel(phone = parameters[0], token = parameters[1], navigateId = parameters[2], registrationInteractor = get(), clientInteractor = get()) }
     viewModel { RegistrationPhoneViewModel(countriesInteractor = get(), registrationInteractor = get()) }
     viewModel { SplashViewModel(registrationInteractor = get(), clientInteractor = get()) }
     viewModel { OnboardingViewModel() }
@@ -126,7 +126,7 @@ val viewModelModule = module {
     viewModel { parameters-> ManageFileViewModel(chatFile = parameters.get()) }
     viewModel { parameters -> VideoPlayerViewModel(chatFile = parameters.get()) }
     viewModel { parameters -> CallViewModel(channelId = parameters[0], callType = parameters[1], consultant = parameters[2], callId = parameters[3] ,chatInteractor = get(), mediaOutputManager = get()) }
-    viewModel { parameters -> CallRequestViewModel(callerId = parameters[0], callId = parameters[1], chatInteractor = get()) }
+    viewModel { parameters -> CallRequestViewModel(callerId = parameters[0], callId = parameters[1], channelId = parameters[2], chatInteractor = get()) }
     viewModel { PropertyUploadDocumentsViewModel(propertyInteractor = get()) }
     viewModel { MediaOutputChooserViewModel(mediaOutputManager = get()) }
     viewModel { RequestRationaleViewModel() }

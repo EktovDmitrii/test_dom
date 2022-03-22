@@ -210,7 +210,7 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
     }
 
     private fun showRequestingCall(wsModel: WsCallAcceptModel) {
-        ScreenManager.showScreen(CallRequestFragment.newInstance(wsModel.callerId, wsModel.callId))
+        ScreenManager.showScreen(CallRequestFragment.newInstance(wsModel.callerId, wsModel.callId, wsModel.channelId))
     }
 
     fun onChatClick() {
