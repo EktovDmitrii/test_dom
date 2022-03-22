@@ -86,7 +86,7 @@ import com.custom.rgs_android_dom.ui.stories.tabs.TabNewServiceViewModel
 import com.custom.rgs_android_dom.ui.stories.tabs.TabSupportViewModel
 
 val viewModelModule = module {
-    viewModel { parameters -> RegistrationCodeViewModel(phone = parameters[0], token = parameters[1], navigateId = parameters[2], registrationInteractor = get(), clientInteractor = get()) }
+    viewModel { parameters -> RegistrationCodeViewModel(phone = parameters[0], token = parameters[1], registrationInteractor = get(), clientInteractor = get()) }
     viewModel { RegistrationPhoneViewModel(countriesInteractor = get(), registrationInteractor = get()) }
     viewModel { SplashViewModel(registrationInteractor = get(), clientInteractor = get()) }
     viewModel { OnboardingViewModel() }
