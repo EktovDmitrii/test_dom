@@ -62,7 +62,7 @@ class AgentViewModel(private val clientInteractor: ClientInteractor) : BaseViewM
     private fun loadAgent(){
         Single.zip(clientInteractor.getAgent(), clientInteractor.isEditAgentRequested()){agent, isEditAgentRequested->
             agentController.postValue(agent)
-            if (agent.agentCode.isNotEmpty()){
+            if (!agent.isEditAgentButtonVisible){
                 editAgentRequestedController.postValue(isEditAgentRequested)
             }
         }
