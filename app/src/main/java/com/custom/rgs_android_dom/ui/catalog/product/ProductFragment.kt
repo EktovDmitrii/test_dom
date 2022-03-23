@@ -101,7 +101,6 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
                 advantagesAdapter.setItems(it)
                 binding.advantagesLayout.root.visibleIf(it.isNotEmpty())
             }
-            binding.detailButton.root.goneIf(product.isPurchased)
         }
 
         subscribe(viewModel.productServicesObserver) {

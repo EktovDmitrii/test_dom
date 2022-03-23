@@ -34,9 +34,6 @@ class ServiceViewModel(
     private val productValidityFromToController = MutableLiveData<Pair<String, String>?>()
     val productValidityFromToObserver: LiveData<Pair<String, String>?> = productValidityFromToController
 
-    private val isGoneButtonController = MutableLiveData<Boolean>()
-    val isGoneButtonObserver: LiveData<Boolean> = isGoneButtonController
-
     private val orderTextViewVisibleController = MutableLiveData<Boolean>()
     val orderTextViewVisibleObserver: LiveData<Boolean> = orderTextViewVisibleController
 
@@ -45,6 +42,8 @@ class ServiceViewModel(
 
     private val isOrderTextViewEnabledController = MutableLiveData<Boolean>()
     val isOrderTextViewEnabledObserver: LiveData<Boolean> = isOrderTextViewEnabledController
+
+    private val isGoneOrderTextView = service.purchaseValidFrom != null && service.purchaseValidFrom.isAfterNow
 
     init {
         setValidityDate()
@@ -57,7 +56,7 @@ class ServiceViewModel(
             .subscribeBy(
                 onSuccess = {
                     serviceController.value = it
-                    orderTextViewVisibleController.value = service.isPurchased && service.quantity > 0
+                    orderTextViewVisibleController.value = service.isPurchased && service.quantity > 0 && !isGoneOrderTextView
                     priceTextViewVisibleController.value = service.isPurchased
                 },
                 onError = {
@@ -99,13 +98,10 @@ class ServiceViewModel(
 
     private fun setValidityDate() {
         productValidityFromToController.value = if (service.purchaseValidFrom != null && service.purchaseValidFrom.isAfterNow){
-            isGoneButtonController.value = true
             "Действует с" to service.purchaseValidFrom.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
         } else if (service.purchaseValidTo != null && service.purchaseValidTo.isAfterNow){
-            isGoneButtonController.value = false
             "Действует до" to service.purchaseValidTo.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
         } else {
-            isGoneButtonController.value = false
             null
         }
     }
@@ -123,7 +119,7 @@ class ServiceViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    orderTextViewVisibleController.value = service.isPurchased &&  it.available > 0
+                    orderTextViewVisibleController.value = service.isPurchased &&  it.available > 0 && !isGoneOrderTextView
                 },
                 onError = {
                     logException(this, it)

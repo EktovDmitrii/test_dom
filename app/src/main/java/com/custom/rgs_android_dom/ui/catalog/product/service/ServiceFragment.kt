@@ -109,9 +109,6 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
                 binding.validityFromTo.root.visible()
             }
         }
-        subscribe(viewModel.isGoneButtonObserver) { isGone ->
-            binding.detailButton.root.goneIf(isGone)
-        }
         subscribe(viewModel.isOrderTextViewEnabledObserver){
             binding.detailButton.root.isEnabled = it
             binding.detailButton.productArrangeBtn.isEnabled = it
