@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.chat.models.CallType
+import com.custom.rgs_android_dom.domain.chat.models.CaseModel
 import com.custom.rgs_android_dom.domain.chat.models.ChannelMemberModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.chats.chat.ChatFragment
@@ -28,10 +29,25 @@ class CallRequestViewModel(
     private val consultantController = MutableLiveData<ChannelMemberModel>()
     val consultantObserver: LiveData<ChannelMemberModel> = consultantController
 
+    private var activeCases: List<CaseModel> = emptyList()
+
     init {
         chatInteractor.getCurrentConsultant()?.let { consultant ->
             consultantController.value = consultant
         } ?: getConsultantInfoFromRemote()
+
+        chatInteractor.getCasesFlowable()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    activeCases = it.activeCases
+                },
+                onError = {
+                    logException(this, it)
+                }
+            )
+            .addTo(dataCompositeDisposable)
     }
 
     private fun getConsultantInfoFromRemote() {
@@ -97,7 +113,9 @@ class CallRequestViewModel(
                 onComplete = {
                     closeController.value = Unit
 
-                    ScreenManager.showBottomScreen(ChatFragment.newInstance(chatInteractor.getMasterOnlineCase()))
+                    activeCases.firstOrNull { it.channelId == channelId }?.let {
+                        ScreenManager.showBottomScreen(ChatFragment.newInstance(it))
+                    } ?: ScreenManager.showBottomScreen(ChatFragment.newInstance(chatInteractor.getMasterOnlineCase()))
                 },
                 onError = {
                     logException(this, it)
