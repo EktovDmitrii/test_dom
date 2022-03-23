@@ -3,10 +3,11 @@ package com.custom.rgs_android_dom.ui.policies.insurant.dialogs
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
+import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentPolicyDialogsBinding
 import com.custom.rgs_android_dom.domain.policies.models.Failure
-import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
 import com.custom.rgs_android_dom.domain.policies.models.ShowPromptModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
@@ -115,6 +116,13 @@ class PolicyDialogsFragment :
                         binding.bindPolicySuccessLayout.descriptionTextView.text.toString().insertDate(
                             it.bound.startsAt, it.bound.endsAt
                         )
+
+                    binding.bindPolicySuccessLayout.titleFirstTextView.text = it.bound.name
+                    binding.bindPolicySuccessLayout.titleSecondTextView.text = it.bound.name
+                    GlideApp.with(binding.root.context)
+                        .load(it.bound.logo.let { GlideUrlProvider.makeHeadersGlideUrl(it) })
+                        .transform(RoundedCorners(10.dp(binding.root.context)))
+                        .into(binding.bindPolicySuccessLayout.iconImageView)
                 }
                 it.showPrompt != null -> {
                     when (it.showPrompt) {

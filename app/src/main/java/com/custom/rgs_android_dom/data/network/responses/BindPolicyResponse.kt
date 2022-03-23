@@ -5,6 +5,9 @@ import com.google.gson.annotations.SerializedName
 data class BindPolicyResponse(
 
     @SerializedName("contract")
-    val contract: ContractResponse?
+    val contract: ContractResponse?,
+
+    @SerializedName("clientProductIds")
+    val clientProductIds: List<String>?
 
 )

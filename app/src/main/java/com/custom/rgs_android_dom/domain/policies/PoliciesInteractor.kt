@@ -4,10 +4,7 @@ import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
 import com.custom.rgs_android_dom.domain.client.exceptions.ValidateFieldModel
-import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
-import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
-import com.custom.rgs_android_dom.domain.policies.models.PolicyShortModel
-import com.custom.rgs_android_dom.domain.policies.models.ShowPromptModel
+import com.custom.rgs_android_dom.domain.policies.models.*
 import com.custom.rgs_android_dom.domain.repositories.ClientRepository
 import com.custom.rgs_android_dom.domain.repositories.PoliciesRepository
 import com.custom.rgs_android_dom.ui.policies.insurant.InsurantViewState
@@ -118,10 +115,10 @@ class PoliciesInteractor(
         return policiesRepository.getPromptSaveSubject()
     }
 
-    fun savePersonalData(): Completable {
+    fun savePersonalData(boundModel: BoundPolicyDialogModel): Completable {
         policiesRepository.newDialog(PolicyDialogModel(showPrompt = ShowPromptModel.Loading))
         var birthday: LocalDateTime?
-        val birthdayWithTimezone = "${insurantViewState.birthday.tryParseDate()}T00:00:00.000Z"
+        val birthdayWithTimezone = boundModel.contractClientBirthDate
         birthday = birthdayWithTimezone.tryParseLocalDateTime({
             logException(this, it)
             birthday = null
@@ -130,9 +127,9 @@ class PoliciesInteractor(
         val avatar = clientRepository.getUserDetails().blockingGet().avatarUrl
 
         return clientRepository.updateClient(
-            firstName = insurantViewState.firstName,
-            lastName = insurantViewState.lastName,
-            middleName = insurantViewState.middleName,
+            firstName = boundModel.contractClientFirstName,
+            lastName = boundModel.contractClientLastName,
+            middleName = boundModel.contractClientMiddleName,
             birthday = birthday,
             gender = client?.gender,
             phone = client?.phone,
@@ -166,6 +163,10 @@ class PoliciesInteractor(
 
     fun getClientProductSingle(contractId: String): Single<PolicyModel> {
         return policiesRepository.getPolicySingle(contractId)
+    }
+
+    fun getPolicyDialogModel(): PolicyDialogModel?{
+        return policiesRepository.getPolicyDialogModel()
     }
 
 }
