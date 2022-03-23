@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.data.repositories.policies
 
 import android.annotation.SuppressLint
+import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
 import com.custom.rgs_android_dom.data.network.requests.BindPolicyRequest
@@ -19,6 +20,8 @@ import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 
 class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
+
+    private var policyModel: PolicyDialogModel? = null
 
     private var policyDialogSubject = PublishSubject.create<PolicyDialogModel>()
     private val promptSaveSubject = BehaviorSubject.create<Boolean>()
@@ -43,10 +46,21 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
         )
 
         return api.bindPolicy(request).map { bindPolicyResponse ->
+            val contractId = bindPolicyResponse.contract?.id
+            val products = api.getClientProducts(50, 0, contractId).blockingGet()
+
             PolicyDialogModel(
                 bound = BoundPolicyDialogModel(
+                    clientProductIds = bindPolicyResponse.clientProductIds ?: listOf(),
+                    contractId = bindPolicyResponse.contract?.id ?: "",
                     startsAt = bindPolicyResponse.contract?.startDate,
-                    endsAt = bindPolicyResponse.contract?.endDate
+                    endsAt = bindPolicyResponse.contract?.endDate,
+                    name = products.clientProducts?.get(0)?.productName ?: "",
+                    logo = "${BuildConfig.BASE_URL}/api/store/${products.clientProducts?.get(0)?.logoSmall}",
+                    contractClientBirthDate = "${insurantViewState.birthday.tryParseDate()}T00:00:00.000Z",
+                    contractClientFirstName = insurantViewState.firstName,
+                    contractClientLastName = insurantViewState.lastName,
+                    contractClientMiddleName = insurantViewState.middleName
                 )
             )
         }
@@ -61,6 +75,7 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
     }
 
     override fun newDialog(policyDialogModel: PolicyDialogModel) {
+        policyModel = policyDialogModel
         policyDialogSubject.onNext(policyDialogModel)
     }
 
@@ -119,6 +134,10 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
                 productServicesResponse
             )
         }
+    }
+
+    override fun getPolicyDialogModel(): PolicyDialogModel? {
+        return policyModel
     }
 
 }

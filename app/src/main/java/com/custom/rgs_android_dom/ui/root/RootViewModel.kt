@@ -170,7 +170,12 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                     )
                     navScopesVisibilityController.value = scopes
                     isUserAuthorizedController.value = false
-                    ScreenManager.resetStackAndShowScreen(RootFragment())
+
+                    if (it == TargetScreen.REGISTRATION) {
+                        ScreenManager.resetStackAndShowScreen(RegistrationPhoneFragment())
+                    } else {
+                        ScreenManager.resetStackAndShowScreen(RootFragment())
+                    }
                 },
                 onError = {
                     logException(this, it)

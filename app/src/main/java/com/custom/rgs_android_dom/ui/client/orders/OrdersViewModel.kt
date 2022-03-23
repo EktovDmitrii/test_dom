@@ -63,7 +63,7 @@ class OrdersViewModel(
         closeController.value = Unit
     }
 
-    private fun loadOrderHistory() {
+    fun loadOrderHistory() {
         clientInteractor.getOrdersHistory()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

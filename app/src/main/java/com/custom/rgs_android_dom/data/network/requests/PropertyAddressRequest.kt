@@ -8,19 +8,19 @@ data class PropertyAddressRequest(
     val address: String,
 
     @SerializedName("city_fias_id")
-    val cityFiasId: String,
+    val cityFiasId: String?,
 
     @SerializedName("city_name")
-    val cityName: String,
+    val cityName: String?,
 
     @SerializedName("fias_id")
-    val fiasId: String,
+    val fiasId: String?,
 
     @SerializedName("region_fias_id")
-    val regionFiasId: String,
+    val regionFiasId: String?,
 
     @SerializedName("region_name")
-    val regionName: String,
+    val regionName: String?,
 
     @SerializedName("entrance")
     val entrance: Int? = null,

@@ -24,6 +24,10 @@ class OrdersFragment : BaseFragment<OrdersViewModel, FragmentOrdersBinding>(R.la
             backImageView.setOnDebouncedClickListener {
                 viewModel.onBackClick()
             }
+            swipeRefresh.setOnRefreshListener {
+                viewModel.loadOrderHistory()
+                swipeRefresh.isRefreshing = false
+            }
 
             showCatalogTextView.setOnDebouncedClickListener {
                 viewModel.onShowCatalogClick()

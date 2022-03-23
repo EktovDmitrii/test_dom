@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.domain.repositories
 
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthState
+import com.custom.rgs_android_dom.ui.navigation.TargetScreen
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
@@ -18,9 +19,9 @@ interface RegistrationRepository {
 
     fun getAccessToken(): String?
 
-    fun logout(): Completable
+    fun logout(nextScreen: TargetScreen? = null): Completable
 
-    fun getLogoutSubject(): PublishSubject<Unit>
+    fun getLogoutSubject(): PublishSubject<TargetScreen>
 
     fun refreshToken(refreshToken: String): Completable
 

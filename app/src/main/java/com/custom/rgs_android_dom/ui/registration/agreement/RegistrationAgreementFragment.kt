@@ -51,7 +51,7 @@ class RegistrationAgreementFragment :
         }
 
         binding.backImageView.setOnDebouncedClickListener {
-            onClose()
+            viewModel.onBackClick()
         }
 
         subscribe(viewModel.isNextTextViewEnabledObserver) {
@@ -61,18 +61,20 @@ class RegistrationAgreementFragment :
         subscribe(viewModel.networkErrorObserver) {
             toast(it)
         }
+        subscribe(viewModel.isSignedBeforeCloseObserver) {
+            if (it) {
+                ScreenManager.closeScope(REGISTRATION)
+            } else {
+                onClose()
+            }
+        }
     }
 
     override fun onClose() {
-        viewModel.onBackClick { isAccepted ->
-            hideSoftwareKeyboard()
-            viewModel.disposeAll()
-            if (isAccepted) {
-                ScreenManager.closeScope(REGISTRATION)
-            } else {
-                super.onClose()
-                ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
-            }
+        if (viewModel.isSignedBeforeCloseObserver.value == null) {
+            viewModel.onBackClick()
+        } else {
+            super.onClose()
         }
     }
 

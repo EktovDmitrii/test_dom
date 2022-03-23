@@ -55,11 +55,11 @@ object PropertyMapper {
         val isTemporary = if (propertyItemModel.isTemporary == true) "yes" else if (propertyItemModel.isTemporary == false) "no" else null
         val address = PropertyAddressRequest(
             address = if (propertyItemModel.address!=null) propertyItemModel.address.address else "",
-            cityFiasId = if (propertyItemModel.address!=null) propertyItemModel.address.cityFiasId else "",
-            cityName = if (propertyItemModel.address!=null) propertyItemModel.address.cityName else "",
-            fiasId = if (propertyItemModel.address!=null) propertyItemModel.address.fiasId else "",
-            regionFiasId =  if (propertyItemModel.address!=null)propertyItemModel.address.regionFiasId else "",
-            regionName = if (propertyItemModel.address!=null) propertyItemModel.address.regionName else "",
+            cityFiasId = propertyItemModel.address?.cityFiasId,
+            cityName = propertyItemModel.address?.cityName,
+            fiasId = propertyItemModel.address?.fiasId,
+            regionFiasId =  propertyItemModel.address?.regionFiasId,
+            regionName = propertyItemModel.address?.regionName,
             entrance = propertyItemModel.address?.entrance,
             floor = propertyItemModel.address?.floor,
         )

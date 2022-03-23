@@ -43,11 +43,17 @@ class ProductViewModel(
     private val productAddressController = MutableLiveData<String?>()
     val productAddressObserver: LiveData<String?> = productAddressController
 
+    private val isGoneButtonController = MutableLiveData<Boolean>()
+    val isGoneButtonObserver: LiveData<Boolean> = isGoneButtonController
+
     private val productValidityFromToController = MutableLiveData<Pair<String, String>?>()
     val productValidityFromToObserver: LiveData<Pair<String, String>?> = productValidityFromToController
 
+    private val isGoneOrderTextView = product.purchaseValidFrom != null && product.purchaseValidFrom.isAfterNow
+
     init {
         setValidityDate()
+        isGoneButtonController.value = isGoneOrderTextView && product.isPurchased
 
         catalogInteractor.getProduct(product.productId)
             .subscribeOn(Schedulers.io())
@@ -99,7 +105,9 @@ class ProductViewModel(
             "Действует с" to product.purchaseValidFrom.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
         } else if (product.purchaseValidTo != null && product.purchaseValidTo.isAfterNow){
             "Действует до" to product.purchaseValidTo.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
-        } else null
+        } else {
+            null
+        }
     }
 
     fun onCheckoutClick() {

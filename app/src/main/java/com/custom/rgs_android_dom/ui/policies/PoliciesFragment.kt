@@ -43,7 +43,7 @@ class PoliciesFragment :
 
         subscribe(viewModel.promptSaveObserver) {
             if (it) {
-                val dialog = PolicyDialogsFragment.newInstance(PolicyDialogModel(showPrompt = ShowPromptModel.Content),getNavigateId())
+                val dialog = PolicyDialogsFragment.newInstance(PolicyDialogModel(showPrompt = ShowPromptModel.Content), getNavigateId())
                 dialog.show(childFragmentManager, dialog.TAG)
             }
         }
