@@ -96,11 +96,11 @@ class PropertyRepositoryImpl(
             name = name,
             address = PropertyAddressRequest(
                 address = address.addressString,
-                cityFiasId = address.cityFiasId,
-                cityName = address.cityName,
-                fiasId = address.fiasId,
-                regionFiasId = address.regionFiasId,
-                regionName = address.regionName,
+                cityFiasId = address.cityFiasId.ifEmpty { null },
+                cityName = address.cityName.ifEmpty { null },
+                fiasId = address.fiasId.ifEmpty { null },
+                regionFiasId = address.regionFiasId.ifEmpty { null },
+                regionName = address.regionName.ifEmpty { null },
                 entrance = entrance,
                 floor = floor
             ),
