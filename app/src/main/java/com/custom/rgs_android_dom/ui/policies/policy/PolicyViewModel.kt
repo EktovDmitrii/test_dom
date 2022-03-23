@@ -26,11 +26,20 @@ class PolicyViewModel(contractId: String, policiesInteractor: PoliciesInteractor
 
     init {
         policiesInteractor.getClientProductSingle(contractId)
+            .doOnSubscribe {
+                loadingStateController.postValue(LoadingState.CONTENT)
+            }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
-                onError = { logException(this, it) },
-                onSuccess = { productController.value = it }
+                onError = {
+                    loadingStateController.value = LoadingState.ERROR
+                    logException(this, it)
+                },
+                onSuccess = {
+                    loadingStateController.value = LoadingState.CONTENT
+                    productController.value = it
+                }
             )
             .addTo(dataCompositeDisposable)
     }

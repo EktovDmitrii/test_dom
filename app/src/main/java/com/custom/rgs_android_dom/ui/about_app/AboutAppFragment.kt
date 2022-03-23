@@ -27,6 +27,10 @@ class AboutAppFragment : BaseFragment<AboutAppViewModel, FragmentAboutAppBinding
             ScreenManager.showScreen(WebViewFragment.newInstance("https://moi-service.ru/legal/policy"))
         }
 
+        binding.feedbackLinearLayout.setOnDebouncedClickListener {
+            ScreenManager.showScreen(WebViewFragment.newInstance("https://dom.moi-service.ru/support"))
+        }
+
 
         binding.versionTextView.text = "Версия ${BuildConfig.VERSION_NAME}"
 
