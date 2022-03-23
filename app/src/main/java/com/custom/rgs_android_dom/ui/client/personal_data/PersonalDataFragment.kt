@@ -32,6 +32,14 @@ class PersonalDataFragment : BaseFragment<PersonalDataViewModel, FragmentPersona
             val addPhotoFragment = AddPhotoFragment()
             addPhotoFragment.show(childFragmentManager, addPhotoFragment.TAG)
         }
+        binding.avatarStubImageView.setOnDebouncedClickListener {
+            val addPhotoFragment = AddPhotoFragment()
+            addPhotoFragment.show(childFragmentManager, addPhotoFragment.TAG)
+        }
+        binding.avatarImageView.setOnDebouncedClickListener {
+            val addPhotoFragment = AddPhotoFragment()
+            addPhotoFragment.show(childFragmentManager, addPhotoFragment.TAG)
+        }
 
         subscribe(viewModel.personalDataObserver){personalData->
             if (personalData.name.isEmpty()){
