@@ -16,17 +16,20 @@ class CallRequestFragment : BaseFragment<CallRequestViewModel, FragmentRequestCa
     companion object {
         private const val ARG_CHAT_CALLER_ID = "ARG_CHAT_CALLER_ID"
         private const val ARG_CHAT_CALL_ID = "ARG_CHAT_CALL_ID"
+        private const val ARG_CHAT_CHANNEL_ID = "ARG_CHAT_CHANNEL_ID"
 
-        fun newInstance(callerId: String, callId: String) = CallRequestFragment().args {
+        fun newInstance(callerId: String, callId: String, channelId: String) = CallRequestFragment().args {
             putString(ARG_CHAT_CALLER_ID, callerId)
             putString(ARG_CHAT_CALL_ID, callId)
+            putString(ARG_CHAT_CHANNEL_ID, channelId)
         }
     }
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
             requireArguments().getString(ARG_CHAT_CALLER_ID),
-            requireArguments().getString(ARG_CHAT_CALL_ID)
+            requireArguments().getString(ARG_CHAT_CALL_ID),
+            requireArguments().getString(ARG_CHAT_CHANNEL_ID)
         )
     }
 
