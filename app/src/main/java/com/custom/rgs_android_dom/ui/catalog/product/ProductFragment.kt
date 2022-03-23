@@ -101,7 +101,6 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
                 advantagesAdapter.setItems(it)
                 binding.advantagesLayout.root.visibleIf(it.isNotEmpty())
             }
-            binding.detailButton.root.goneIf(product.isPurchased)
         }
 
         subscribe(viewModel.productServicesObserver) {
@@ -114,6 +113,9 @@ class ProductFragment :BaseBottomSheetFragment<ProductViewModel, FragmentProduct
                 binding.address.addressValue.text = it
                 binding.address.root.visible()
             }
+        }
+        subscribe(viewModel.isGoneButtonObserver) { isGone ->
+            binding.detailButton.root.goneIf(isGone)
         }
         subscribe(viewModel.productValidityFromToObserver) { validityPair ->
             validityPair?.let { pair ->

@@ -43,6 +43,8 @@ class ServiceViewModel(
     private val isOrderTextViewEnabledController = MutableLiveData<Boolean>()
     val isOrderTextViewEnabledObserver: LiveData<Boolean> = isOrderTextViewEnabledController
 
+    private val isGoneOrderTextView = service.purchaseValidFrom != null && service.purchaseValidFrom.isAfterNow
+
     init {
         setValidityDate()
 
@@ -54,7 +56,7 @@ class ServiceViewModel(
             .subscribeBy(
                 onSuccess = {
                     serviceController.value = it
-                    orderTextViewVisibleController.value = service.isPurchased && service.quantity > 0
+                    orderTextViewVisibleController.value = service.isPurchased && service.quantity > 0 && !isGoneOrderTextView
                     priceTextViewVisibleController.value = service.isPurchased
                 },
                 onError = {
@@ -99,7 +101,9 @@ class ServiceViewModel(
             "Действует с" to service.purchaseValidFrom.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
         } else if (service.purchaseValidTo != null && service.purchaseValidTo.isAfterNow){
             "Действует до" to service.purchaseValidTo.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
-        } else null
+        } else {
+            null
+        }
     }
 
     fun onServiceOrderClick(){
@@ -115,7 +119,7 @@ class ServiceViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    orderTextViewVisibleController.value = service.isPurchased &&  it.available > 0
+                    orderTextViewVisibleController.value = service.isPurchased &&  it.available > 0 && !isGoneOrderTextView
                 },
                 onError = {
                     logException(this, it)
