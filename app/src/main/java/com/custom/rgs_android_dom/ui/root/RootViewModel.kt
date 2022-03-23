@@ -10,8 +10,6 @@ import com.custom.rgs_android_dom.domain.chat.models.CallType
 import com.custom.rgs_android_dom.domain.chat.models.Sender
 import com.custom.rgs_android_dom.domain.chat.models.WsCallAcceptModel
 import com.custom.rgs_android_dom.domain.chat.models.MediaOutputType
-import com.custom.rgs_android_dom.domain.chat.models.Sender
-import com.custom.rgs_android_dom.domain.chat.models.WsCallAcceptModel
 import com.custom.rgs_android_dom.domain.chat.models.WsEvent
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
