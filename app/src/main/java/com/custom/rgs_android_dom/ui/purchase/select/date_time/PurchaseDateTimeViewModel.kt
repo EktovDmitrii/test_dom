@@ -64,7 +64,11 @@ class PurchaseDateTimeViewModel : BaseViewModel() {
     }
 
     fun selectPeriod(purchasePeriodModel: PurchaseTimePeriodModel) {
-        selectedDateTime = selectedDateTime.copy(selectedPeriodModel = purchasePeriodModel)
+        selectedDateTime = selectedDateTime.copy(
+            selectedPeriodModel = if (purchasePeriodModel.timeFrom == "18:00")
+                purchasePeriodModel.copy(timeTo = "23:59")
+            else purchasePeriodModel
+        )
         selectedDateTimeController.value = selectedDateTime
     }
 
