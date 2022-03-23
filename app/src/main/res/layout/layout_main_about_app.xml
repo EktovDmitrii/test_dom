@@ -7,7 +7,8 @@
     android:background="@drawable/rectangle_filled_white_top_radius_24dp"
     android:orientation="vertical"
     android:paddingBottom="124dp"
-    android:paddingHorizontal="20dp">
+    android:paddingHorizontal="20dp"
+    android:clipToPadding="false">
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:layout_width="match_parent"
