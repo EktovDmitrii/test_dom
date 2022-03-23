@@ -18,7 +18,7 @@ import io.reactivex.schedulers.Schedulers
 
 class PolicyDialogsViewModel(private val chatInteractor: ChatInteractor,
                              private val policiesInteractor: PoliciesInteractor,
-                             model: PolicyDialogModel
+                             private val model: PolicyDialogModel
 ) : BaseViewModel() {
 
     private val dialogModelController = MutableLiveData<PolicyDialogModel>()
@@ -41,13 +41,16 @@ class PolicyDialogsViewModel(private val chatInteractor: ChatInteractor,
     }
 
     fun onSaveClick() {
-        policiesInteractor.savePersonalData()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onComplete = { dialogModelController.value = PolicyDialogModel(showPrompt = ShowPromptModel.Done) },
-                onError = { logException(this, it) })
-            .addTo(dataCompositeDisposable)
+        policiesInteractor.getPolicyDialogModel()?.bound?.let { boundModel->
+            policiesInteractor.savePersonalData(boundModel)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                    onComplete = { dialogModelController.value = PolicyDialogModel(showPrompt = ShowPromptModel.Done) },
+                    onError = { logException(this, it) })
+                .addTo(dataCompositeDisposable)
+        }
+
     }
 
     fun onCancelClick() {

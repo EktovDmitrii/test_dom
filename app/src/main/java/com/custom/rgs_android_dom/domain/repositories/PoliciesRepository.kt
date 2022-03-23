@@ -25,4 +25,6 @@ interface PoliciesRepository {
 
     fun getPolicySingle(contractId: String): Single<PolicyModel>
 
+    fun getPolicyDialogModel(): PolicyDialogModel?
+
 }
