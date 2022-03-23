@@ -129,71 +129,73 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/avatarPropertyLayout" />
 
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/propertyTypeTitleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/secondary100"
+                android:fontFamily="@font/suisse_regular"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:layout_marginTop="16dp"
+                android:enabled="false"
+                android:paddingHorizontal="20dp"
+                android:textColor="@color/secondary900_alpha64"
+                app:layout_constraintTop_toBottomOf="@id/editImagePropertyTextView"
+                android:textSize="14sp"
+                app:translationTextKey="Тип недвижимости" />
+
+            <RadioGroup
+                android:id="@+id/propertyTypeRadioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="16dp"
+                android:gravity="start|center_horizontal"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/propertyTypeTitleTextView">
+
+                <RadioButton
+                    android:id="@+id/houseTypeRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:enabled="false"
+                    android:background="@drawable/bg_selector_property_type_background"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:paddingHorizontal="20dp"
+                    android:text="Дом"
+                    android:textColor="@color/selector_property_info" />
+
+                <RadioButton
+                    android:id="@+id/flatTypeRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:enabled="false"
+                    android:background="@drawable/bg_selector_property_type_background"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:paddingHorizontal="20dp"
+                    android:text="Квартира"
+                    android:textColor="@color/selector_property_info" />
+
+            </RadioGroup>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/notClickableLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editImagePropertyTextView">
-
-                <com.custom.rgs_android_dom.views.text.MSDTextView
-                    android:id="@+id/propertyTypeTitleTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@color/secondary100"
-                    android:fontFamily="@font/suisse_regular"
-                    android:gravity="center_vertical"
-                    android:includeFontPadding="false"
-                    android:paddingHorizontal="20dp"
-                    android:textColor="@color/secondary900_alpha64"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:textSize="14sp"
-                    app:translationTextKey="Тип недвижимости" />
-
-                <RadioGroup
-                    android:id="@+id/propertyTypeRadioGroup"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center_horizontal"
-                    android:orientation="horizontal"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/propertyTypeTitleTextView">
-
-                    <RadioButton
-                        android:id="@+id/houseTypeRadioButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="6dp"
-                        android:background="@drawable/bg_selector_property_type_background"
-                        android:button="@android:color/transparent"
-                        android:gravity="center"
-                        android:paddingHorizontal="20dp"
-                        android:text="Дом"
-                        android:textColor="@color/selector_property_info" />
-
-                    <RadioButton
-                        android:id="@+id/flatTypeRadioButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:background="@drawable/bg_selector_property_type_background"
-                        android:button="@android:color/transparent"
-                        android:gravity="center"
-                        android:paddingHorizontal="20dp"
-                        android:text="Квартира"
-                        android:textColor="@color/selector_property_info" />
-
-                </RadioGroup>
+                app:layout_constraintTop_toBottomOf="@+id/propertyTypeRadioGroup">
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:id="@+id/addressApartmentTitleTextView"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_marginTop="16dp"
                     android:background="@color/secondary100"
                     android:fontFamily="@font/suisse_regular"
                     android:gravity="center_vertical"
@@ -201,7 +203,7 @@
                     android:paddingHorizontal="16dp"
                     android:textColor="@color/secondary900_alpha64"
                     android:textSize="14sp"
-                    app:layout_constraintTop_toBottomOf="@id/propertyTypeRadioGroup"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:translationTextKey="Адрес" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
