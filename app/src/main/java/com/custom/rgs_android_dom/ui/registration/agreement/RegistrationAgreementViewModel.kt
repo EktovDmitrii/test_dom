@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.navigation.TargetScreen
 import com.custom.rgs_android_dom.ui.registration.fill_client.RegistrationFillClientFragment
 import com.custom.rgs_android_dom.utils.logException
 import com.yandex.metrica.YandexMetrica
@@ -20,6 +21,9 @@ class RegistrationAgreementViewModel(private val phone: String,
     private val isNextTextViewEnabledController = MutableLiveData<Boolean>()
     val isNextTextViewEnabledObserver: LiveData<Boolean> = isNextTextViewEnabledController
 
+    private val isSignedBeforeCloseController = MutableLiveData<Boolean>()
+    val isSignedBeforeCloseObserver: LiveData<Boolean> = isSignedBeforeCloseController
+
     private var isAcceptedAgreement = false
 
     fun onAcceptAgreementCheckedChanged(isChecked: Boolean){
@@ -30,24 +34,25 @@ class RegistrationAgreementViewModel(private val phone: String,
        acceptAgreement()
     }
 
-    fun onBackClick(callback: (Boolean) -> Unit){
+    fun onBackClick(){
         if (!isAcceptedAgreement) {
-            registrationInteractor.logout()
+            registrationInteractor.logout(TargetScreen.REGISTRATION)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                     onComplete = {
                         YandexMetrica.reportEvent("session_start_offline")
-                        callback.invoke(isAcceptedAgreement)
+                        isSignedBeforeCloseController.value = false
                     },
                     onError = {
-                        YandexMetrica.reportEvent("session_start_offline")
-                        callback.invoke(isAcceptedAgreement)
                         logException(this, it)
+                        YandexMetrica.reportEvent("session_start_offline")
+                        isSignedBeforeCloseController.value = false
                     }
-                ).addTo(dataCompositeDisposable)
+                )
+                .addTo(dataCompositeDisposable)
         } else {
-            callback.invoke(isAcceptedAgreement)
+            isSignedBeforeCloseController.value = true
         }
     }
 

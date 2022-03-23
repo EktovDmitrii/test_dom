@@ -9,6 +9,7 @@ import com.custom.rgs_android_dom.domain.repositories.RegistrationRepository
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthState
 import com.custom.rgs_android_dom.domain.repositories.ChatRepository
+import com.custom.rgs_android_dom.ui.navigation.TargetScreen
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -27,7 +28,7 @@ class RegistrationRepositoryImpl(
         private const val HEADER_BEARER = "Bearer"
     }
 
-    private val logout = PublishSubject.create<Unit>()
+    private val logout = PublishSubject.create<TargetScreen>()
     private val loginSubject = PublishSubject.create<Unit>()
     private val authFlowEnded = PublishSubject.create<Unit>()
 
@@ -59,14 +60,14 @@ class RegistrationRepositoryImpl(
         return authContentProviderManager.getAccessToken()
     }
 
-    override fun logout(): Completable {
+    override fun logout(nextScreen: TargetScreen?): Completable {
         return api.postLogout().andThen {
             database.chatsDao.clearCases()
             if (isAuthorized()){
                 chatRepository.disconnectFromWebSocket()
                 authContentProviderManager.clear()
                 clientSharedPreferences.clear()
-                logout.onNext(Unit)
+                logout.onNext(nextScreen ?: TargetScreen.UNSPECIFIED)
             }
         }
     }
@@ -76,11 +77,11 @@ class RegistrationRepositoryImpl(
             chatRepository.disconnectFromWebSocket()
             authContentProviderManager.clear()
             clientSharedPreferences.clear()
-            logout.onNext(Unit)
+            logout.onNext(TargetScreen.UNSPECIFIED)
         }
     }
 
-    override fun getLogoutSubject(): PublishSubject<Unit> {
+    override fun getLogoutSubject(): PublishSubject<TargetScreen> {
         return logout
     }
 
