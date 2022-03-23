@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui.policies.policy
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
@@ -29,14 +30,14 @@ class PolicyFragment : BaseFragment<PolicyViewModel, FragmentPolicyBinding>(R.la
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         binding.backImageView.setOnDebouncedClickListener {
             requireActivity().onBackPressed()
             //viewModel.onBackClick()
         }
 
         subscribe(viewModel.productObserver) {
-
+            binding.contentLinearLayout.visible()
+            binding.loadingProgressBar.gone()
             binding.includes.includesRecycler.adapter = PolicyProductInclusionAdapter(
                 onServiceClick = { serviceShortModel ->
                     viewModel.onServiceClick(
@@ -75,6 +76,18 @@ class PolicyFragment : BaseFragment<PolicyViewModel, FragmentPolicyBinding>(R.la
         parametersOf(
             requireArguments().getString(KEY_CONTRACT_ID, null)
         )
+    }
+
+    override fun onContent() {
+        super.onContent()
+        binding.contentLinearLayout.visible()
+        binding.loadingProgressBar.gone()
+    }
+
+    override fun onLoading() {
+        super.onLoading()
+        binding.contentLinearLayout.gone()
+        binding.loadingProgressBar.visible()
     }
 
 }
