@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.domain.registration
 
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthState
 import com.custom.rgs_android_dom.domain.repositories.RegistrationRepository
+import com.custom.rgs_android_dom.ui.navigation.TargetScreen
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
@@ -20,11 +21,11 @@ class RegistrationInteractor(private val registrationRepository: RegistrationRep
         return registrationRepository.signOpd()
     }
 
-    fun logout(): Completable {
-        return registrationRepository.logout()
+    fun logout(nextScreen: TargetScreen? = null): Completable {
+        return registrationRepository.logout(nextScreen)
     }
 
-    fun getLogoutSubject(): PublishSubject<Unit>{
+    fun getLogoutSubject(): PublishSubject<TargetScreen>{
         return registrationRepository.getLogoutSubject()
     }
 
