@@ -133,12 +133,21 @@ object ClientMapper {
         return if (response != null){
             ClientAgent(
                 code = response.agent.agentCode,
-                phone = response.assignPhone,
-                editAgentWasRequested = null
+                phone = response.assignPhone
             )
         } else {
             null
         }
+    }
+
+    fun responseToRequestEditClientTasks(response: RequestEditClientTasksResponse): List<RequestEditClientTaskModel>{
+        return response.tasks?.map { task->
+            RequestEditClientTaskModel(
+                status = if (task.status == "open") RequestEditClientStatus.OPEN else RequestEditClientStatus.UNSPECIFIED,
+                subStatus = task.subStatus,
+                taskId = task.taskId
+            )
+        } ?: emptyList()
     }
 
     fun responseToPolicyShort(response: ClientProductResponse, contracts: GetPolicyContractsResponse): PolicyShortModel {
