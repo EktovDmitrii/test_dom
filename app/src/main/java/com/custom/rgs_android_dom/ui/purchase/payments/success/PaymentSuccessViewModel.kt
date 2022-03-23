@@ -13,6 +13,7 @@ import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
 import com.custom.rgs_android_dom.ui.catalog.product.ProductLauncher
 import com.custom.rgs_android_dom.ui.client.order_detail.OrderDetailFragment
+import com.custom.rgs_android_dom.ui.client.orders.OrdersFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -46,7 +47,6 @@ class PaymentSuccessViewModel(
     }
 
     fun onMoreClick(){
-        closeController.value = Unit
         catalogInteractor.getProduct(productId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -55,6 +55,7 @@ class PaymentSuccessViewModel(
                     if (product.defaultProduct){
                         openOrderDetailsScreen()
                     } else {
+                        closeController.value = Unit
                         ScreenManager.showBottomScreen(
                             ProductFragment.newInstance(
                                 ProductLauncher(
@@ -74,17 +75,24 @@ class PaymentSuccessViewModel(
 
 
     private fun openOrderDetailsScreen(){
-        clientInteractor.getOrder(orderId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onSuccess = {
-                    ScreenManager.showScreen(OrderDetailFragment.newInstance(it))
-                },
-                onError = {
-                    logException(this, it)
-                }
-            ).addTo(dataCompositeDisposable)
+        if (orderId.isNotEmpty()) {
+            clientInteractor.getOrder(orderId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                    onSuccess = {
+                        closeController.value = Unit
+                        ScreenManager.showScreen(OrderDetailFragment.newInstance(it))
+                    },
+                    onError = {
+                        closeController.value = Unit
+                        logException(this, it)
+                    }
+                ).addTo(dataCompositeDisposable)
+        } else {
+            closeController.value = Unit
+            ScreenManager.showScreen(OrdersFragment())
+        }
     }
 
 }

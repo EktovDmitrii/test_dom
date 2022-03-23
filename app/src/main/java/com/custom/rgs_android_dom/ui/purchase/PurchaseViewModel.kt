@@ -233,10 +233,7 @@ class PurchaseViewModel(
                                 url = it.paymentUrl,
                                 productId = purchase.id,
                                 email = purchase.email,
-                                price = purchase.price?.amount.toString(),
                                 orderId = it.orderId,
-                                //fragmentId = navigateId
-                                fragmentId = -1
                             )
                         )
                     },

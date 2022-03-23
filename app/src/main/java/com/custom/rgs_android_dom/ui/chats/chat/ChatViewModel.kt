@@ -201,7 +201,6 @@ class ChatViewModel(
                 url = paymentUrl,
                 productId = productId,
                 email = email ?: "",
-                price = amount.toString(),
                 orderId = ""
             )
         )
@@ -258,7 +257,6 @@ class ChatViewModel(
                 url = widget.paymentUrl ?: "",
                 productId = /*widget.productId*/"",
                 email = email ?: "",
-                price = widget.amount.toString(),
                 orderId = ""
             )
         )
