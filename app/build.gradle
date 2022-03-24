@@ -27,7 +27,7 @@ android {
         applicationId "ru.moi_service.property"
         minSdkVersion 24
         targetSdkVersion 31
-        versionCode 1
+        versionCode 2
         versionName "0.0.1"
     }
 
@@ -75,7 +75,7 @@ android {
         production {
             applicationId 'ru.moi_service.property'
             resValue "string", "app_name", "Мой_Сервис Дом"
-            buildConfigField "String", "BASE_URL", '"https://pdom.moi-service.ru"'
+            buildConfigField "String", "BASE_URL", '"https://dom.moi-service.ru"'
             buildConfigField "String", "WS_URL", '"wss://pdom.moi-service.ru/ws/?token=%s"'
             buildConfigField "String", "YANDEX_MAPS_KEY", '"8472a02b-fba9-4544-9b23-3b2f8944f584"'
             buildConfigField "String", "YANDEX_APPMETRICA_KEY", '"20d8663f-8e7f-473d-ad7b-b6384a8a76bd"'
