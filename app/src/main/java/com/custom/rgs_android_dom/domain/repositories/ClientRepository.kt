@@ -8,6 +8,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import org.joda.time.DateTime
 import org.joda.time.LocalDateTime
 
 interface ClientRepository {
@@ -15,7 +16,7 @@ interface ClientRepository {
     fun updateClient(firstName: String?,
                      lastName: String?,
                      middleName: String?,
-                     birthday: LocalDateTime?,
+                     birthday: DateTime?,
                      gender: Gender?,
                      phone: String?,
                      email: String?,

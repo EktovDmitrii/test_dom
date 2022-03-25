@@ -8,14 +8,13 @@ import com.custom.rgs_android_dom.domain.policies.models.*
 import com.custom.rgs_android_dom.domain.repositories.ClientRepository
 import com.custom.rgs_android_dom.domain.repositories.PoliciesRepository
 import com.custom.rgs_android_dom.ui.policies.insurant.InsurantViewState
-import com.custom.rgs_android_dom.utils.PATTERN_DATE_TIME_MILLIS
-import com.custom.rgs_android_dom.utils.logException
-import com.custom.rgs_android_dom.utils.tryParseDate
-import com.custom.rgs_android_dom.utils.tryParseLocalDateTime
+import com.custom.rgs_android_dom.utils.*
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 import org.joda.time.LocalDateTime
 
 class PoliciesInteractor(
@@ -117,12 +116,15 @@ class PoliciesInteractor(
 
     fun savePersonalData(boundModel: BoundPolicyDialogModel): Completable {
         policiesRepository.newDialog(PolicyDialogModel(showPrompt = ShowPromptModel.Loading))
-        var birthday: LocalDateTime?
+        var birthday: DateTime?
         val birthdayWithTimezone = boundModel.contractClientBirthDate
-        birthday = birthdayWithTimezone.tryParseLocalDateTime({
+        birthday = birthdayWithTimezone.tryParseDateTime({
             logException(this, it)
             birthday = null
         }, format = PATTERN_DATE_TIME_MILLIS)
+
+        birthday = birthday?.withZone(DateTimeZone.forOffsetHours(3))
+
         val client = clientSharedPreferences.getClient()
         val avatar = clientRepository.getUserDetails().blockingGet().avatarUrl
 
