@@ -56,7 +56,7 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
                     startsAt = bindPolicyResponse.contract?.startDate,
                     endsAt = bindPolicyResponse.contract?.endDate,
                     name = products.clientProducts?.get(0)?.productName ?: "",
-                    logo = "${BuildConfig.BASE_URL}/api/store/${products.clientProducts?.get(0)?.logoSmall}",
+                    logo = "${BuildConfig.BASE_URL}/api/store/${products.clientProducts?.get(0)?.productIcon}",
                     contractClientBirthDate = "${insurantViewState.birthday.tryParseDate()}T00:00:00.000Z",
                     contractClientFirstName = insurantViewState.firstName,
                     contractClientLastName = insurantViewState.lastName,

@@ -12,10 +12,7 @@ import com.custom.rgs_android_dom.databinding.ItemCatalogSubcategoryDetailsBindi
 import com.custom.rgs_android_dom.databinding.ItemCatalogSubcategoryWithSmallImageBinding
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogSubCategoryModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
-import com.custom.rgs_android_dom.utils.GlideApp
-import com.custom.rgs_android_dom.utils.dp
-import com.custom.rgs_android_dom.utils.gone
-import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
+import com.custom.rgs_android_dom.utils.*
 
 class CatalogSubcategoriesDetailsAdapter(
     private val onProductClick: (ProductShortModel) -> Unit = {}
@@ -47,7 +44,7 @@ class CatalogSubcategoriesDetailsAdapter(
 
         fun bind(model: CatalogSubCategoryModel) {
             binding.titleTextView.text = model.name
-            binding.subtitleTextView.text = "${model.products.size} видов услуг"
+            binding.subtitleTextView.text = model.products.size.formatQuantity()
 
             GlideApp.with(binding.root.context)
                 .load(GlideUrlProvider.makeHeadersGlideUrl(model.logoMiddle))

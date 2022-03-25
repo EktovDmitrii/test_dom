@@ -155,7 +155,7 @@ object ClientMapper {
             id = response.id ?: "",
             contractId = response.contractId ?: "",
             name = response.productName ?: "",
-            logo = "${BuildConfig.BASE_URL}/api/store/${response.logoSmall}",
+            logo = "${BuildConfig.BASE_URL}/api/store/${response.productIcon}",
             startsAt = contracts.contracts?.find { response.contractId == it.id }?.startDate,
             expiresAt = contracts.contracts?.find { response.contractId == it.id }?.endDate
         )
