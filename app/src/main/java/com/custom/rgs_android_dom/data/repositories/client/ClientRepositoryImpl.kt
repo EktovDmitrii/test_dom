@@ -17,6 +17,7 @@ import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import org.joda.time.DateTime
 import org.joda.time.LocalDateTime
 
 class ClientRepositoryImpl(
@@ -33,7 +34,7 @@ class ClientRepositoryImpl(
         firstName: String?,
         lastName: String?,
         middleName: String?,
-        birthday: LocalDateTime?,
+        birthday: DateTime?,
         gender: Gender?,
         phone: String?,
         email: String?,

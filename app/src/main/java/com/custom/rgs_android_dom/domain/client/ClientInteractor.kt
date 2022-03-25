@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.domain.client
 
+import android.util.Log
 import com.custom.rgs_android_dom.data.repositories.files.FilesRepositoryImpl.Companion.STORE_AVATARS
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
@@ -18,6 +19,8 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
 import org.joda.time.format.DateTimeFormat
@@ -33,7 +36,7 @@ ClientInteractor(
 ) {
 
     companion object {
-        private val MIN_DATE = LocalDateTime.now().minusYears(16).plusDays(-1)
+        private val MIN_DATE = LocalDateTime.now().minusYears(16).plusDays(1)
         private val MAX_DATE = LocalDateTime.parse("1900-01-01")
 
         private const val DOC_SERIAL_LENGTH = 4
@@ -99,11 +102,11 @@ ClientInteractor(
             errorsValidate.add(ValidateFieldModel(ClientField.FIRSTNAME, ""))
         }
 
-        var birthday: LocalDateTime? = null
+        var birthday: DateTime? = null
         fillClientViewState.birthday?.let { birthdayString ->
 
             val birthdayWithTimezone = "${birthdayString.tryParseDate()}T00:00:00.000Z"
-            birthday = birthdayWithTimezone.tryParseLocalDateTime({
+            birthday = birthdayWithTimezone.tryParseDateTime({
                 logException(this, it)
                 birthday = null
             }, format = PATTERN_DATE_TIME_MILLIS)
@@ -116,6 +119,7 @@ ClientInteractor(
                     )
                 )
             }
+            birthday = birthday?.withZone(DateTimeZone.forOffsetHours(3))
         }
 
         if (fillClientViewState.agentCode == null && fillClientViewState.agentPhone != null) {
@@ -373,11 +377,10 @@ ClientInteractor(
             }
         }
 
-        var birthday: LocalDateTime? = null
+        var birthday: DateTime? = null
         if (editPersonalDataViewState.birthday.isNotEmpty()) {
-            val birthdayWithTimezone =
-                "${editPersonalDataViewState.birthday.tryParseDate()}T00:00:00.000Z"
-            birthday = birthdayWithTimezone.tryParseLocalDateTime({
+            val birthdayWithTimezone = "${editPersonalDataViewState.birthday.tryParseDate()}T00:00:00.000Z"
+            birthday = birthdayWithTimezone.tryParseDateTime({
                 logException(this, it)
                 birthday = null
             }, format = PATTERN_DATE_TIME_MILLIS)
@@ -390,6 +393,8 @@ ClientInteractor(
                     )
                 )
             }
+
+            birthday = birthday?.withZone(DateTimeZone.forOffsetHours(3))
         }
 
         if (editPersonalDataViewState.hasProducts && !editPersonalDataViewState.isDocSerialSaved && editPersonalDataViewState.docSerial.isNotEmpty()
@@ -610,7 +615,7 @@ ClientInteractor(
                     firstName = clientModel.firstName,
                     lastName = clientModel.lastName,
                     middleName = clientModel.middleName,
-                    birthday = clientModel.birthDate?.toLocalDateTime(),
+                    birthday = clientModel.birthDate,
                     gender = clientModel.gender,
                     phone = clientModel.phone,
                     email = clientModel.contacts?.find { it.type == "email" }?.contact,
@@ -633,7 +638,7 @@ ClientInteractor(
                 firstName = clientModel.firstName,
                 lastName = clientModel.lastName,
                 middleName = clientModel.middleName,
-                birthday = clientModel.birthDate?.toLocalDateTime(),
+                birthday = clientModel.birthDate,
                 gender = clientModel.gender,
                 phone = clientModel.phone,
                 email = clientModel.contacts?.find { it.type == "email" }?.contact,
@@ -642,8 +647,8 @@ ClientInteractor(
         }
     }
 
-    private fun isBirthdayValid(birthday: LocalDateTime): Boolean {
-        return !(birthday.isAfter(MIN_DATE) || birthday.isBefore(
+    private fun isBirthdayValid(birthday: DateTime): Boolean {
+        return !(birthday.toLocalDateTime().isAfter(MIN_DATE) || birthday.toLocalDateTime().isBefore(
             MAX_DATE
         ))
     }
@@ -698,7 +703,7 @@ ClientInteractor(
         firstName: String? = null,
         lastName: String? = null,
         middleName: String? = null,
-        birthday: LocalDateTime? = null,
+        birthday: DateTime? = null,
         gender: Gender? = null,
         phone: String? = null,
         email: String? = null,
