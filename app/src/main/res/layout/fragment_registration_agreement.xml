@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
     android:clickable="true">
 
@@ -30,7 +31,7 @@
             android:fontFamily="@font/my_service_medium"
             android:textColor="@color/secondary900"
             android:textSize="20sp"
-            app:translationTextKey="Обработка данных" />
+            app:translationTextKey="app.registration.agreement.title" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
@@ -57,7 +58,7 @@
                 android:lineSpacingMultiplier="0"
                 android:textColor="@color/secondary600"
                 android:textSize="14sp"
-                app:translationTextKey="Я принимаю условия пользовательского соглашения, политику обработки персональных данных и даю своё согласие на обработку персональных данных" />
+                tools:text="Я принимаю условия пользовательского соглашения, политику обработки персональных данных и даю своё согласие на обработку персональных данных" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -73,6 +74,6 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:enabled="false"
-        app:translationTextKey="Далее" />
+        app:translationTextKey="app.registration.agreement.button_title" />
 
 </RelativeLayout>

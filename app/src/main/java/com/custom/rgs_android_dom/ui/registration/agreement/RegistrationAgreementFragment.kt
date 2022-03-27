@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentRegistrationAgreementBinding
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -94,19 +95,26 @@ class RegistrationAgreementFragment :
     }
 
     private fun makeAgreementLinks() {
+        val agreement: String = TranslationInteractor.getTranslation("app.registration.agreement.first_text") +
+                TranslationInteractor.getTranslation("app.registration.agreement.first_link") +
+                TranslationInteractor.getTranslation("app.registration.agreement.second_link") +
+                TranslationInteractor.getTranslation("app.registration.agreement.second_text") +
+                TranslationInteractor.getTranslation("app.registration.agreement.third_link")
+       binding.agreementTextView.text = agreement
+
         binding.agreementTextView.makeStringWithLink(
             resources.getColor(R.color.primary500,null),
-            Pair("пользовательского соглашения,", View.OnClickListener {
+            Pair(TranslationInteractor.getTranslation("app.registration.agreement.first_link"), View.OnClickListener {
                 val webViewFragment =
                     WebViewFragment.newInstance("https://moi-service.ru/legal/moi-service-dom/polzovatelskoe-soglashenie")
                 ScreenManager.showScreen(webViewFragment)
             }),
-            Pair("политику обработки персональных данных", View.OnClickListener {
+            Pair(TranslationInteractor.getTranslation("app.registration.agreement.second_link"), View.OnClickListener {
                 val webViewFragment =
                     WebViewFragment.newInstance("https://moi-service.ru/legal/policy")
                 ScreenManager.showScreen(webViewFragment)
             }),
-            Pair("согласие на обработку персональных данных", View.OnClickListener {
+            Pair(TranslationInteractor.getTranslation("app.registration.agreement.third_link"), View.OnClickListener {
                 val webViewFragment =
                     WebViewFragment.newInstance("https://moi-service.ru/legal/soglasie-polzovatelya-na-obrabotku-personalnyh-dannyh")
                 ScreenManager.showScreen(webViewFragment)

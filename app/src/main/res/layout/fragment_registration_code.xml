@@ -47,7 +47,7 @@
             android:fontFamily="@font/my_service_medium"
             android:textColor="@color/secondary900"
             android:textSize="20sp"
-            app:translationTextKey="Введите код из СМС" />
+            app:translationTextKey="app.registration.code.title" />
 
         <com.custom.rgs_android_dom.views.MSDCodeInput
             android:id="@+id/codeInput"
@@ -90,7 +90,7 @@
                 android:textColor="@color/primary_500_secondary_400_text_color"
                 android:textSize="14sp"
                 android:visibility="gone"
-                app:translationTextKey="Отправить код повторно" />
+                app:translationTextKey="app.registration.code.resend_text" />
         </FrameLayout>
 
 
@@ -105,6 +105,6 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:enabled="false"
-        app:translationTextKey="Далее" />
+        app:translationTextKey="app.registration.code.button_title" />
 
 </RelativeLayout>

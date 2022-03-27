@@ -26,13 +26,13 @@
             style="@style/GenderSelector"
             android:id="@+id/maleTextView"
             android:layout_width="wrap_content"
-            app:translationTextKey="Мужчина"/>
+            app:translationTextKey="app.profile.add.sex.male"/>
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             style="@style/GenderSelector"
             android:id="@+id/femaleTextView"
             android:layout_width="wrap_content"
-            app:translationTextKey="Женщина"
+            app:translationTextKey="app.profile.add.sex.female"
             android:layout_marginStart="12dp"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
