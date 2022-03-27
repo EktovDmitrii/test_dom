@@ -152,7 +152,7 @@ val viewModelModule = module {
     viewModel { SOSViewModel(chatInteractor = get(), registrationInteractor = get(), clientInteractor = get(), context = get()) }
     viewModel { parameters -> PaymentWebViewViewModel(url = parameters.get()) }
     viewModel { PaymentErrorViewModel(chatInteractor = get()) }
-    viewModel { parameters -> PaymentSuccessViewModel(productId = parameters[0], email = parameters[1], orderId = parameters[2], purchaseInteractor = get(), catalogInteractor = get(), clientInteractor = get()) }
+    viewModel { parameters -> PaymentSuccessViewModel(productId = parameters[0], productVersionId = parameters[1], email = parameters[1], orderId = parameters[2], purchaseInteractor = get(), catalogInteractor = get(), clientInteractor = get()) }
     viewModel { parameters -> StoriesViewModel(tab = parameters.get()) }
     viewModel { TabNewServiceViewModel() }
     viewModel { TabGuaranteeViewModel() }

@@ -74,17 +74,17 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
         }
     }
 
-    override fun getProduct(productId: String): Single<ProductModel> {
-        val request = if (authContentProviderManager.isAuthorized()) api.getProduct(productId)
+    override fun getProduct(productId: String, productVersionId: String?): Single<ProductModel> {
+        val request = if (authContentProviderManager.isAuthorized()) api.getProduct(productVersionId ?: "")
             else api.getGuestProduct(productId)
         return request.map { response->
             CatalogMapper.responseToProduct(response)
         }
     }
 
-    override fun getProductServices(productId: String): Single<List<ServiceShortModel>> {
+    override fun getProductServices(productId: String, productVersionId: String?): Single<List<ServiceShortModel>> {
         val productServicesSingle = if (authContentProviderManager.isAuthorized()){
-            api.getProductServicesResponse(productId, 100, 0)
+            api.getProductServicesResponse(productVersionId ?: "", 100, 0)
         } else {
             api.getGuestProductServicesResponse(productId, 100, 0)
         }
@@ -100,9 +100,9 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
         }
     }
 
-    override fun getProductServiceDetails(productId: String, serviceId: String): Single<ServiceModel> {
+    override fun getProductServiceDetails(productId: String, serviceId: String, serviceVersionId: String?): Single<ServiceModel> {
         val serviceModelSingle = if (authContentProviderManager.isAuthorized()) {
-            api.getProductServiceDetails(productId, serviceId)
+            api.getProductServiceDetails(productId, serviceVersionId ?: "")
         } else {
             api.getGuestProductServiceDetails(productId, serviceId)
         }

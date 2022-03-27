@@ -34,7 +34,7 @@ class PolicyFragment : BaseFragment<PolicyViewModel, FragmentPolicyBinding>(R.la
             requireActivity().onBackPressed()
             //viewModel.onBackClick()
         }
-
+        // TODO Add product verion id
         subscribe(viewModel.productObserver) {
             binding.contentLinearLayout.visible()
             binding.loadingProgressBar.gone()
@@ -42,13 +42,13 @@ class PolicyFragment : BaseFragment<PolicyViewModel, FragmentPolicyBinding>(R.la
                 onServiceClick = { serviceShortModel ->
                     viewModel.onServiceClick(
                         serviceShortModel,
-                        ProductLauncher(it.productId)
+                        ProductLauncher(it.productId, null)
                     )
                 },
                 onOrderClick = { serviceShortModel ->
                     viewModel.onServiceOrderClick(
                         serviceShortModel,
-                        ProductLauncher(it.productId)
+                        ProductLauncher(it.productId, null)
                     )
                 }
             )

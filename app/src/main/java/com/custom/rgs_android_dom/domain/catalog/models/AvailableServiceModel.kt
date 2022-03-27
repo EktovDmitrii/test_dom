@@ -6,6 +6,8 @@ data class AvailableServiceModel(
     val id: String,
     val serviceId: String,
     val productId: String,
+    var productVersionId: String,
+    val serviceVersionId: String,
     val serviceName: String,
     val productIcon: String,
     val serviceIcon: String,

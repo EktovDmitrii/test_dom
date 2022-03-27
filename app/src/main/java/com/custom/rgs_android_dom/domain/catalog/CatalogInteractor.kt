@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.domain.catalog
 
+import android.util.Log
 import com.custom.rgs_android_dom.domain.catalog.models.*
 import com.custom.rgs_android_dom.domain.main.CommentModel
 import com.custom.rgs_android_dom.domain.repositories.CatalogRepository
@@ -57,12 +58,12 @@ class CatalogInteractor(
         return catalogRepository.getProducts()
     }
 
-    fun getProduct(productId: String): Single<ProductModel>{
-        return catalogRepository.getProduct(productId)
+    fun getProduct(productId: String, productVersionId: String?): Single<ProductModel>{
+        return catalogRepository.getProduct(productId, productVersionId)
     }
 
-    fun getProductServices(productId: String, isPurchased: Boolean, validityFrom: DateTime?): Single<List<ServiceShortModel>> {
-        return catalogRepository.getProductServices(productId).map { services->
+    fun getProductServices(productId: String, productVersionId: String?, isPurchased: Boolean, validityFrom: DateTime?): Single<List<ServiceShortModel>> {
+        return catalogRepository.getProductServices(productId, productVersionId).map { services->
             if (isPurchased){
                 services.forEach { service->
                     val availableService = catalogRepository.getAvailableServiceInProduct(productId, service.serviceId).blockingGet()
@@ -82,8 +83,8 @@ class CatalogInteractor(
         }
     }
 
-    fun getProductServiceDetails(productId: String, serviceId: String): Single<ServiceModel> {
-        return catalogRepository.getProductServiceDetails(productId, serviceId)
+    fun getProductServiceDetails(productId: String, serviceId: String, serviceVersionId: String?): Single<ServiceModel> {
+        return catalogRepository.getProductServiceDetails(productId, serviceId, serviceVersionId)
     }
 
     fun findProducts(query: String): Single<List<ProductShortModel>>{
@@ -117,6 +118,7 @@ class CatalogInteractor(
         return Single.zip(catalogRepository.getClientProducts(null), catalogRepository.getAvailableServices()){products, services->
            return@zip services.filter { service->
                val product = products.find { it.productId == service.productId && it.defaultProduct }
+               Log.d("MyLog", "SERVICES " + service.serviceName + " PRODUCT VERSION ID " + service.productVersionId)
                return@filter product == null
            }
         }

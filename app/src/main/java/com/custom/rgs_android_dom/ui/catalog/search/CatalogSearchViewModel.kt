@@ -118,9 +118,9 @@ class CatalogSearchViewModel(
         YandexMetrica.reportEvent("mp_search_service", "{\"service\":\"${product.name}\"}")
 
         if (product.defaultProduct){
-            ScreenManager.showBottomScreen(SingleProductFragment.newInstance(SingleProductLauncher( product.id)))
+            ScreenManager.showBottomScreen(SingleProductFragment.newInstance(SingleProductLauncher( product.id, product.versionId)))
         } else {
-            ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(product.id)))
+            ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(product.id, product.versionId)))
         }
     }
 

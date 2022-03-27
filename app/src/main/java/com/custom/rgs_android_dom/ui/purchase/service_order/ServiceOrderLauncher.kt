@@ -8,6 +8,7 @@ import java.io.Serializable
 data class ServiceOrderLauncher(
     val serviceId: String,
     val productId: String,
+    val serviceVersionId: String?,
     val deliveryType: DeliveryType? = null,
     val property: PropertyItemModel? = null,
     val dateTime: PurchaseDateTimeModel? = null

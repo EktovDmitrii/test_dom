@@ -16,11 +16,11 @@ interface CatalogRepository {
 
     fun findProducts(query: String): Single<List<ProductShortModel>>
 
-    fun getProduct(productId: String): Single<ProductModel>
+    fun getProduct(productId: String, productVersionId: String?): Single<ProductModel>
 
-    fun getProductServices(productId: String): Single<List<ServiceShortModel>>
+    fun getProductServices(productId: String, productVersionId: String?): Single<List<ServiceShortModel>>
 
-    fun getProductServiceDetails(productId: String, serviceId: String): Single<ServiceModel>
+    fun getProductServiceDetails(productId: String, serviceId: String, serviceVersionId: String?): Single<ServiceModel>
 
     fun getAvailableServices(): Single<List<AvailableServiceModel>>
 

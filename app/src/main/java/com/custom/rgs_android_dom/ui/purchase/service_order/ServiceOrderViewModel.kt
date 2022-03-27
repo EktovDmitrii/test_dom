@@ -45,7 +45,7 @@ class ServiceOrderViewModel(
 
     init {
         Single.zip(
-            catalogInteractor.getProductServiceDetails(serviceOrderLauncher.productId, serviceOrderLauncher.serviceId),
+            catalogInteractor.getProductServiceDetails(serviceOrderLauncher.productId, serviceOrderLauncher.serviceId, serviceOrderLauncher.serviceVersionId),
             propertyInteractor.getAllProperty()
         ){ service, propertyList ->
             YandexMetrica.reportEvent("service_order_start", "{\"service\":\"${service.name}\"}")

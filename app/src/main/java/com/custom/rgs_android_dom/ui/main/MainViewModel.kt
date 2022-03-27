@@ -245,7 +245,7 @@ class MainViewModel(
     }
 
     fun onServiceClick(serviceModel: ProductShortModel) {
-        ScreenManager.showBottomScreen(SingleProductFragment.newInstance(SingleProductLauncher(serviceModel.id)))
+        ScreenManager.showBottomScreen(SingleProductFragment.newInstance(SingleProductLauncher(serviceModel.id, serviceModel.versionId)))
     }
 
     fun onAllCatalogClick() {
@@ -274,8 +274,8 @@ class MainViewModel(
         ScreenManager.showBottomScreen(MainCatalogFragment.newInstance())
     }
 
-    fun onPopularProductClick(productId: String) {
-        ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(productId)))
+    fun onPopularProductClick(product: ProductShortModel) {
+        ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(product.id, product.versionId)))
     }
 
     fun onStoriesNewServiceClick() {

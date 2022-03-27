@@ -30,7 +30,7 @@ class SingleProductViewModel(
     val productObserver: LiveData<ProductModel> = productController
 
     init {
-        catalogInteractor.getProduct(product.productId)
+        catalogInteractor.getProduct(product.productId, product.productVersionId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
@@ -54,6 +54,7 @@ class SingleProductViewModel(
             if (registrationInteractor.isAuthorized()) {
                 catalogInteractor.getProductServices(
                     product.id,
+                    product.versionId,
                     product.isPurchased,
                     product.validityFrom
                 )
@@ -67,6 +68,7 @@ class SingleProductViewModel(
                                         ServiceOrderLauncher(
                                             serviceId = it[0].serviceId,
                                             productId = product.id,
+                                            serviceVersionId = it[0].serviceVersionId,
                                             deliveryType = it[0].serviceDeliveryType
                                         )
                                     )
@@ -74,6 +76,7 @@ class SingleProductViewModel(
                                 } else {
                                     val purchaseServiceModel = PurchaseModel(
                                         id = product.id,
+                                        versionId = product.versionId ?: "",
                                         defaultProduct = product.defaultProduct,
                                         duration = product.duration,
                                         deliveryTime = product.deliveryTime,

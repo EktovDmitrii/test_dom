@@ -20,12 +20,14 @@ class PaymentSuccessFragment :
     companion object {
 
         private const val ARG_PRODUCT_ID = "ARG_PRODUCT_ID"
+        private const val ARG_PRODUCT_VERSION_ID = "ARG_PRODUCT_VERSION_D"
         private const val ARG_EMAIL = "ARG_EMAIL"
         private const val ARG_ORDER_ID = "ARG_ORDER_ID"
 
-        fun newInstance(productId: String, email: String, orderId: String) =
+        fun newInstance(productId: String, productVersionId: String?, email: String, orderId: String) =
             PaymentSuccessFragment().args {
                 putString(ARG_PRODUCT_ID, productId)
+                putString(ARG_PRODUCT_VERSION_ID, productVersionId)
                 putString(ARG_EMAIL, email)
                 putString(ARG_ORDER_ID, orderId)
             }
@@ -34,6 +36,7 @@ class PaymentSuccessFragment :
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
             requireArguments().getString(ARG_PRODUCT_ID),
+            requireArguments().getString(ARG_PRODUCT_VERSION_ID),
             requireArguments().getString(ARG_EMAIL),
             requireArguments().getString(ARG_ORDER_ID)
         )

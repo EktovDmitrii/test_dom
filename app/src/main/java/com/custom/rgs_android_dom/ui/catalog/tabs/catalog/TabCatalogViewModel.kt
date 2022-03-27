@@ -70,9 +70,9 @@ class TabCatalogViewModel(
 
     fun onProductClick(productModel: ProductShortModel) {
         if (productModel.defaultProduct){
-            ScreenManager.showBottomScreen(SingleProductFragment.newInstance(SingleProductLauncher(productModel.id)))
+            ScreenManager.showBottomScreen(SingleProductFragment.newInstance(SingleProductLauncher(productModel.id, productModel.versionId)))
         } else {
-            ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(productModel.id)))
+            ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(productModel.id, productModel.versionId)))
         }
     }
 

@@ -23,6 +23,7 @@ import io.reactivex.schedulers.Schedulers
 
 class PaymentSuccessViewModel(
     private val productId: String,
+    private val productVersionId: String?,
     email: String,
     private val orderId: String,
     private val purchaseInteractor: PurchaseInteractor,
@@ -47,7 +48,8 @@ class PaymentSuccessViewModel(
     }
 
     fun onMoreClick(){
-        catalogInteractor.getProduct(productId)
+        // TODO Add product verion id
+        catalogInteractor.getProduct(productId, productVersionId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
@@ -60,6 +62,7 @@ class PaymentSuccessViewModel(
                             ProductFragment.newInstance(
                                 ProductLauncher(
                                     productId = productId,
+                                    productVersionId = productVersionId,
                                     isPurchased = true,
                                     purchaseValidTo = product.validityTo
                                 )

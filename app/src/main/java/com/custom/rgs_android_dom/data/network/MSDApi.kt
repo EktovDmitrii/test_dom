@@ -192,33 +192,33 @@ interface MSDApi {
         @Query("size") size: Long
     ): Single<ProductsForPurchaseResponse>
 
-    @GET("clients/me/purchase/products/{productId}/details")
+    @GET("clients/me/balance/products")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getProduct(@Path("productId") productId: String): Single<ProductResponse>
+    fun getClientProducts(@Query("size") size: Int, @Query("index") index: Int, @Query("contractIds") contractIds: String?, @Query("status") status: String = "active"): Single<ClientProductsResponse>
+
+    @GET("clients/me/purchase/products/versions/{productVersionId}/details")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getProduct(@Path("productVersionId") productVersionId: String): Single<ProductResponse>
 
     @GET("guests/purchase/products/{productId}/details")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getGuestProduct(@Path("productId") productId: String): Single<ProductResponse>
 
-    @GET("clients/me/balance/products")
-    @ErrorType(MSDNetworkErrorResponse::class)
-    fun getClientProducts(@Query("size") size: Int, @Query("index") index: Int, @Query("contractIds") contractIds: String?, @Query("status") status: String = "active"): Single<ClientProductsResponse>
-
     @GET("guests/purchase/products/{productId}/services/{serviceId}/details")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getGuestProductServiceDetails(@Path("productId") productId: String, @Path("serviceId") serviceId: String): Single<ServiceResponse>
 
-    @GET("clients/me/purchase/products/{productId}/services/{serviceId}/details")
+    @GET("clients/me/purchase/products/{productId}/services/versions/{serviceVersionId}/details")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getProductServiceDetails(@Path("productId") productId: String, @Path("serviceId") serviceId: String): Single<ServiceResponse>
+    fun getProductServiceDetails(@Path("productId") productId: String, @Path("serviceVersionId") serviceVersionId: String): Single<ServiceResponse>
 
     @GET("guests/purchase/products/{productId}/services")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getGuestProductServicesResponse(@Path("productId") productId: String, @Query("size") size: Int, @Query("index") index: Int): Single<ProductServicesResponse>
 
-    @GET("clients/me/purchase/products/{productId}/services")
+    @GET("clients/me/purchase/products/versions/{productVersionId}/services")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getProductServicesResponse(@Path("productId") productId: String, @Query("size") size: Int, @Query("index") index: Int): Single<ProductServicesResponse>
+    fun getProductServicesResponse(@Path("productVersionId") productVersionId: String, @Query("size") size: Int, @Query("index") index: Int): Single<ProductServicesResponse>
 
     @GET("chat/users/{userId}/files/{fileId}/preview")
     @ErrorType(MSDNetworkErrorResponse::class)
