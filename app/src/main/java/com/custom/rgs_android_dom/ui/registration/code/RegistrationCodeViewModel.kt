@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -44,7 +45,7 @@ class RegistrationCodeViewModel(
     private var timer: CountDownTimer? = null
 
     init {
-        phoneController.value = "Мы отправили СМС на номер\n$phone"
+        phoneController.value = "${TranslationInteractor.getTranslation("app.registration.code.phone_subtitle")}\n${phone}"
         startCountdownTimer()
     }
 
@@ -104,7 +105,8 @@ class RegistrationCodeViewModel(
 
             override fun onTick(millisUntilFinished: Long) {
                 val secondsLeft = String.format("%02d", millisUntilFinished.div(1000))
-                countdownTextController.value = "Вы сможете повторно запросить\nкод через 00:$secondsLeft"
+                countdownTextController.value = TranslationInteractor.getTranslation("app.registration.code.timer_subtitle")
+                    .replace("%@", "00:${secondsLeft}")
             }
 
             override fun onFinish() {
