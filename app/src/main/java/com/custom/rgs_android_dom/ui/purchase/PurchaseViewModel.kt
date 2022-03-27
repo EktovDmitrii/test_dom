@@ -232,6 +232,7 @@ class PurchaseViewModel(
                             PaymentWebViewFragment.newInstance(
                                 url = it.paymentUrl,
                                 productId = purchase.id,
+                                productVersionId = purchase.versionId,
                                 email = purchase.email,
                                 orderId = it.orderId,
                             )

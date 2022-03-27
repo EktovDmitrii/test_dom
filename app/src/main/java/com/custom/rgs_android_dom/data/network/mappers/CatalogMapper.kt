@@ -257,7 +257,9 @@ object CatalogMapper {
                         validityTo = serviceDetails.validityTo,
                         canBeOrdered = serviceDetails.validityFrom?.isBeforeNow ?: false &&
                                 serviceDetails.validityTo?.isAfterNow ?: false,
-                        objectId = serviceDetails.objectId
+                        objectId = serviceDetails.objectId,
+                        serviceVersionId = serviceDetails.serviceVersionId ?: "",
+                        productVersionId = serviceDetails.productVersionId ?: ""
                     )
                 )
             }

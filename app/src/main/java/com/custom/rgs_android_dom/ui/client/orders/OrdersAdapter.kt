@@ -83,6 +83,7 @@ class OrdersAdapter(
             val service = if (item.services?.isNotEmpty() == true) item.services[0] else null
             val status = item.status
             if (status == OrderStatus.DRAFT) {
+                // TODO Add product version id
                 val purchaseModel = PurchaseModel(
                     id = item.id,
                     defaultProduct = service?.defaultProduct ?: false,
@@ -94,7 +95,8 @@ class OrdersAdapter(
                         amount = null,
                         fix = service?.serviceFixPrice ?: false,
                         vatType = null
-                    )
+                    ),
+                    versionId = service?.serviceVersionId ?: ""
                 )
                 if (service?.defaultProduct == true) {
                     if (invoices.isNotEmpty()) {
@@ -129,7 +131,8 @@ class OrdersAdapter(
                         amount = null,
                         fix = service?.serviceFixPrice ?: false,
                         vatType = null
-                    )
+                    ),
+                    versionId = service?.serviceVersionId ?: ""
                 )
 
                 ItemOrderAdditionalBillBinding.inflate(LayoutInflater.from(context), invoiceContainer, false).apply {

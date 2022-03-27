@@ -53,6 +53,7 @@ class PolicyViewModel(contractId: String, policiesInteractor: PoliciesInteractor
             ServiceLauncher(
                 productId = product.productId,
                 serviceId = serviceShortModel.serviceId,
+                serviceVersionId = serviceShortModel.serviceVersionId,
                 isPurchased = product.isPurchased,
                 purchaseValidFrom = product.purchaseValidFrom,
                 purchaseValidTo = product.purchaseValidTo,
@@ -69,6 +70,7 @@ class PolicyViewModel(contractId: String, policiesInteractor: PoliciesInteractor
             ServiceOrderLauncher(
                 serviceId = serviceShortModel.serviceId,
                 productId = product.productId,
+                serviceVersionId = serviceShortModel.serviceVersionId,
                 deliveryType = serviceShortModel.serviceDeliveryType
             )
         )

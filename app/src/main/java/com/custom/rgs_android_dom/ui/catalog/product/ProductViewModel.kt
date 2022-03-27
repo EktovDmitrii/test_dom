@@ -55,7 +55,7 @@ class ProductViewModel(
         setValidityDate()
         isGoneButtonController.value = isGoneOrderTextView && product.isPurchased
 
-        catalogInteractor.getProduct(product.productId)
+        catalogInteractor.getProduct(product.productId, product.productVersionId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
@@ -117,6 +117,7 @@ class ProductViewModel(
 
                 val purchaseServiceModel = PurchaseModel(
                     id = it.id,
+                    versionId = it.versionId ?: "",
                     defaultProduct = it.defaultProduct,
                     duration = it.duration,
                     deliveryTime = it.deliveryTime,
@@ -138,6 +139,7 @@ class ProductViewModel(
             ServiceLauncher(
                 productId = product.productId,
                 serviceId = serviceShortModel.serviceId,
+                serviceVersionId = serviceShortModel.serviceVersionId,
                 isPurchased = product.isPurchased,
                 purchaseValidFrom = product.purchaseValidFrom,
                 purchaseValidTo = product.purchaseValidTo,
@@ -151,13 +153,13 @@ class ProductViewModel(
 
     fun onServiceOrderClick(serviceShortModel: ServiceShortModel){
         val serviceOrderFragment = ServiceOrderFragment.newInstance(
-            ServiceOrderLauncher(serviceShortModel.serviceId, product.productId)
+            ServiceOrderLauncher(serviceShortModel.serviceId, product.productId, serviceShortModel.serviceVersionId)
         )
         ScreenManager.showScreen(serviceOrderFragment)
     }
 
     private fun getIncludedServices(){
-        catalogInteractor.getProductServices(product.productId, product.isPurchased, product.purchaseValidFrom)
+        catalogInteractor.getProductServices(product.productId, product.productVersionId, product.isPurchased, product.purchaseValidFrom)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(

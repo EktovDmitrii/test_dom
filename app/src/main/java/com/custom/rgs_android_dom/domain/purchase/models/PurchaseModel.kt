@@ -8,6 +8,7 @@ import java.io.Serializable
 //Todo расширится
 data class PurchaseModel(
     val id: String,
+    val versionId: String,
     val defaultProduct: Boolean,
     val duration: ProductDurationModel?,
     val deliveryTime: String?,

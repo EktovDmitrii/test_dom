@@ -12,7 +12,7 @@ import com.custom.rgs_android_dom.utils.dp
 import com.custom.rgs_android_dom.utils.formatPrice
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 
-class PopularProductsAdapter(private val onProductClick: (productId: String) -> Unit = {}) :
+class PopularProductsAdapter(private val onProductClick: (product: ProductShortModel) -> Unit = {}) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var products = mutableListOf<ProductShortModel>()
@@ -43,11 +43,11 @@ class PopularProductsAdapter(private val onProductClick: (productId: String) -> 
 
     inner class PopularProductsViewHolder(
         private val binding: ItemMainPopularProductBinding,
-        private val onProductClick: (productId: String) -> Unit
+        private val onProductClick: (product: ProductShortModel) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: ProductShortModel) {
-            binding.root.setOnDebouncedClickListener { onProductClick(model.id) }
+            binding.root.setOnDebouncedClickListener { onProductClick(model) }
             binding.labelTextView.text = model.name
             binding.priceTextView.text = model.price.formatPrice()
 

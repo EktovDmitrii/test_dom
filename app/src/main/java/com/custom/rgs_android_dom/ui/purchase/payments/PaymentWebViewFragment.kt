@@ -20,18 +20,21 @@ class PaymentWebViewFragment : BaseBottomSheetFragment<PaymentWebViewViewModel, 
     companion object {
         private const val ARG_PAYMENT_URL = "ARG_PAYMENT_URL"
         private const val ARG_PRODUCT_ID = "ARG_PRODUCT_ID"
+        private const val ARG_PRODUCT_VERSION_ID = "ARG_PRODUCT_VERSION_ID"
         private const val ARG_EMAIL = "ARG_EMAIL"
         private const val ARG_ORDER_ID = "ARG_ORDER_ID"
 
         fun newInstance(
             url: String,
             productId: String,
+            productVersionId: String?,
             email: String,
             orderId: String
         ): PaymentWebViewFragment {
             return PaymentWebViewFragment().args {
                 putString(ARG_PAYMENT_URL, url)
                 putString(ARG_PRODUCT_ID, productId)
+                putString(ARG_PRODUCT_VERSION_ID, productVersionId)
                 putString(ARG_EMAIL, email)
                 putString(ARG_ORDER_ID, orderId)
             }
@@ -57,6 +60,7 @@ class PaymentWebViewFragment : BaseBottomSheetFragment<PaymentWebViewViewModel, 
 
         val email = requireArguments().getString(ARG_EMAIL) ?: ""
         val productId = requireArguments().getString(ARG_PRODUCT_ID) ?: ""
+        val productVersionId = requireArguments().getString(ARG_PRODUCT_VERSION_ID) ?: ""
         val orderId = requireArguments().getString(ARG_ORDER_ID, "")
 
         val webClient = object : WebViewClient() {
@@ -78,6 +82,7 @@ class PaymentWebViewFragment : BaseBottomSheetFragment<PaymentWebViewViewModel, 
                         ScreenManager.showScreenScope(
                             PaymentSuccessFragment.newInstance(
                                 productId,
+                                productVersionId,
                                 email,
                                 orderId
                             ), PAYMENT

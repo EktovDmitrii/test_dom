@@ -84,7 +84,7 @@ class TabAvailableServicesViewModel(
     }
 
     fun onServiceClick(service: AvailableServiceModel) {
-        catalogInteractor.getProduct(service.productId)
+        catalogInteractor.getProduct(service.productId, service.productVersionId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
@@ -96,6 +96,7 @@ class TabAvailableServicesViewModel(
                             SingleProductFragment.newInstance(
                                 SingleProductLauncher(
                                     productId = product.id,
+                                    productVersionId = product.versionId,
                                     isPurchased = true
                                 )
                             )
@@ -106,6 +107,7 @@ class TabAvailableServicesViewModel(
                                 ServiceLauncher(
                                     productId = service.productId,
                                     serviceId = service.serviceId,
+                                    serviceVersionId = service.serviceVersionId,
                                     isPurchased = true,
                                     purchaseObjectId = service.objectId,
                                     purchaseValidFrom = service.validityFrom,

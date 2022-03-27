@@ -47,12 +47,12 @@ class CatalogSubcategoryViewModel(
             // Open service (single product) details screen
             ScreenManager.showBottomScreen(
                 SingleProductFragment.newInstance(
-                    SingleProductLauncher(product.id)
+                    SingleProductLauncher(product.id, product.versionId)
                 )
             )
         } else {
             // Open product details screen
-            ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(product.id)))
+            ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(product.id, product.versionId)))
         }
     }
 

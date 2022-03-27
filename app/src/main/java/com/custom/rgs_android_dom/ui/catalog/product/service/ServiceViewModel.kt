@@ -50,7 +50,7 @@ class ServiceViewModel(
 
         isOrderTextViewEnabledController.value = service.canBeOrdered
 
-        catalogInteractor.getProductServiceDetails(service.productId, service.serviceId)
+        catalogInteractor.getProductServiceDetails(service.productId, service.serviceId, service.serviceVersionId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
@@ -108,7 +108,7 @@ class ServiceViewModel(
 
     fun onServiceOrderClick(){
         val serviceOrderFragment = ServiceOrderFragment.newInstance(
-            ServiceOrderLauncher(service.serviceId, service.productId)
+            ServiceOrderLauncher(service.serviceId, service.productId, service.serviceVersionId)
         )
         ScreenManager.showScreen(serviceOrderFragment)
     }

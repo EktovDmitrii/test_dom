@@ -178,10 +178,12 @@ class ChatViewModel(
     }
 
     fun onProductClick(widget: WidgetModel.WidgetOrderProductModel) {
+        // TODO Find out how to get productversion id for widget
         ScreenManager.showBottomScreen(
             ProductFragment.newInstance(
                 ProductLauncher(
-                    productId = widget.productId ?: ""
+                    productId = widget.productId ?: "",
+                    productVersionId = null
                 )
             )
         )
@@ -196,10 +198,12 @@ class ChatViewModel(
     }
 
     fun onPayClick(paymentUrl: String, productId: String, amount: Int) {
+        // TODO Add Product Version id
         ScreenManager.showBottomScreen(
             PaymentWebViewFragment.newInstance(
                 url = paymentUrl,
                 productId = productId,
+                productVersionId = "",
                 email = email ?: "",
                 orderId = ""
             )
@@ -252,10 +256,12 @@ class ChatViewModel(
     }
 
     fun onWidgetPayClick(widget: WidgetModel.WidgetAdditionalInvoiceModel) {
+        // TODO ADD Product version id
         ScreenManager.showBottomScreen(
             PaymentWebViewFragment.newInstance(
                 url = widget.paymentUrl ?: "",
                 productId = /*widget.productId*/"",
+                productVersionId = "",
                 email = email ?: "",
                 orderId = ""
             )
@@ -268,14 +274,16 @@ class ChatViewModel(
         } else {
             Single.just(PropertyItemModel.empty())
         }
+        // TODO Find out how to get productVersionId from widget
         widget.productId?.let { id ->
             Single.zip(
-                catalogInteractor.getProduct(id),
-                catalogInteractor.getProductServices(id, false, null),
+                catalogInteractor.getProduct(id, null),
+                catalogInteractor.getProductServices(id, null,false, null),
                 propertyRequest
             ) { product, services, property ->
                 PurchaseModel(
                     id = id,
+                    versionId = product.versionId ?: "",
                     defaultProduct = product.defaultProduct,
                     duration = product.duration,
                     deliveryTime = product.deliveryTime,
@@ -315,6 +323,7 @@ class ChatViewModel(
                 ServiceOrderLauncher(
                     serviceId = service.serviceId,
                     productId = service.productId,
+                    serviceVersionId = service.serviceVersionId,
                     property = if (!property.isEmpty) property else null,
                     dateTime = getPurchaseDate(widget.orderDate, widget.orderTime),
                 )
