@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootLayout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    android:background="@drawable/rectangle_filled_submarine_radius_16dp"
-    android:paddingVertical="12dp"
+    tools:background="@drawable/rectangle_filled_submarine_radius_16dp"
+    android:paddingBottom="12dp"
     android:paddingStart="16dp">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iconImageView"
         android:layout_width="36dp"
         android:layout_height="36dp"
+        android:layout_marginTop="12dp"
         android:background="@drawable/rectangle_filled_white_radius_10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="229dp"
-        android:layout_height="254dp"
+        android:id="@+id/iconSignImageView"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_policy_success" />
+        tools:background="@drawable/policy_active_sign" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
