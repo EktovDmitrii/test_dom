@@ -53,7 +53,7 @@ class ProductViewModel(
 
     init {
         setValidityDate()
-        isGoneButtonController.value = isGoneOrderTextView && product.isPurchased
+        isGoneButtonController.value = isGoneOrderTextView || product.isPurchased
 
         catalogInteractor.getProduct(product.productId, product.productVersionId)
             .subscribeOn(Schedulers.io())
