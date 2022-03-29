@@ -92,7 +92,9 @@ class PurchaseInteractor(
                         DATE_PATTERN_DATE_AND_TIME_FOR_PURCHASE
                     ) + TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT).removePrefix("GMT"),
                     timeFrom = serviceOrderViewState.orderDate?.selectedPeriodModel?.timeFrom ?: "",
-                    timeTo = serviceOrderViewState.orderDate?.selectedPeriodModel?.timeTo ?: "",
+                    timeTo = (if (serviceOrderViewState.orderDate?.selectedPeriodModel?.timeFrom == "18:00")
+                        serviceOrderViewState.orderDate?.selectedPeriodModel?.copy(timeTo = "23:59")?.timeTo
+                    else serviceOrderViewState.orderDate?.selectedPeriodModel?.timeTo) ?: "",
                     comment = serviceOrderViewState.comment
                 )
             }
