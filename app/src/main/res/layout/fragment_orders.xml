@@ -34,7 +34,7 @@
             android:textAlignment="center"
             android:textColor="@color/secondary900"
             android:textSize="16sp"
-            app:translationTextKey="История заказов" />
+            app:translationTextKey="app.profile.menu.orders" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -98,7 +98,7 @@
             android:paddingVertical="4dp"
             android:textColor="@color/secondary900"
             android:textSize="14sp"
-            app:translationTextKey="Перейти в каталог услуг" />
+            app:translationTextKey="app.catalog.tabs.my_services_navigate_catalog" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

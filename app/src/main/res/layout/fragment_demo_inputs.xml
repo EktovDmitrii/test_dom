@@ -15,7 +15,7 @@
             android:id="@+id/labelTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:translationLabelKey="ФИО"/>
+            app:translationLabelKey="app.profile.client.name.title"/>
 
         <com.custom.rgs_android_dom.views.text.MSDLabelIconTextView
             android:id="@+id/labelIconTextView"

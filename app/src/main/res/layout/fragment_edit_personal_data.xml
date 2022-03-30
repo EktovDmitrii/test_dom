@@ -95,15 +95,15 @@
                 android:inputType="date"
                 app:icon="@drawable/ic_calendar_24px"
                 app:mask="[00]{.}[00]{.}[0000]"
-                app:translationHintKey="24.04.1990"
-                app:translationLabelKey="app.personal_info.birthday.title" />
+                app:translationHintKey="app.profile.add.birthday.placeholder"
+                app:translationLabelKey="app.profile.add.birthday.title" />
 
             <com.custom.rgs_android_dom.views.MSDGenderSelector
                 android:id="@+id/genderSelector"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:translationLabelKey="app.personal_info.sex.title" />
+                app:translationLabelKey="app.profile.add.sex.title" />
 
             <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
                 android:id="@+id/passportSeriesEditText"
@@ -113,7 +113,7 @@
                 android:inputType="number"
                 android:maxLength="4"
                 app:translationHintKey="9999"
-                app:translationLabelKey="app.personal_info.passport_series.title" />
+                app:translationLabelKey="app.profile.client.passport_series.title" />
 
             <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
                 android:id="@+id/passportNumberEditText"
@@ -122,8 +122,8 @@
                 android:layout_marginTop="16dp"
                 android:inputType="number"
                 android:maxLength="6"
-                app:translationHintKey="999999"
-                app:translationLabelKey="app.personal_info.passport_number.title" />
+                app:translationHintKey="app.profile.add.agent_info.placeholder"
+                app:translationLabelKey="app.profile.client.passport_number.title" />
 
             <com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
                 android:id="@+id/phoneEditText"
@@ -131,7 +131,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:inputType="phone"
-                app:translationLabelKey="app.personal_info.phone.title" />
+                app:translationHintKey="app.profile.add.agent_info.phone.placeholder"
+                app:translationLabelKey="app.profile.client.phone.title" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/requestEditLinearLayout"
@@ -153,7 +154,7 @@
                     android:fontFamily="@font/suisse_regular"
                     android:textColor="@color/secondary500"
                     android:textSize="14sp"
-                    app:translationTextKey="Чтобы редактировать личные данные," />
+                    app:translationTextKey="app.profile.client.edit_request.title" />
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:id="@+id/editRequestTextView"
@@ -163,7 +164,7 @@
                     android:textColor="@color/primary500"
                     android:textSize="14sp"
                     app:isUnderlined="true"
-                    app:translationTextKey="оставьте заявку" />
+                    app:translationTextKey="app.profile.client.edit_request.button_title" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -175,8 +176,8 @@
                 android:inputType="phone"
                 app:hintAlwaysVisible="true"
                 app:mask="+7 [000] [000]-[00]-[00]"
-                app:translationHintKey="app.personal_info.second_phone.placeholder"
-                app:translationLabelKey="app.personal_info.second_phone.title" />
+                app:translationHintKey="app.profile.add.agent_info.phone.placeholder"
+                app:translationLabelKey="app.profile.client.additional_phone.title" />
 
             <com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
                 android:id="@+id/emailEditText"
@@ -185,8 +186,8 @@
                 android:layout_marginTop="16dp"
                 android:imeOptions="actionDone"
                 android:inputType="textWebEmailAddress"
-                app:translationHintKey="app.personal_info.email.placeholder"
-                app:translationLabelKey="app.personal_info.email.title" />
+                app:translationHintKey="app.profile.client.email.placeholder"
+                app:translationLabelKey="app.profile.client.email.title" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -209,7 +210,7 @@
             android:layout_gravity="end"
             android:layout_marginEnd="20dp"
             android:enabled="false"
-            app:translationTextKey="Сохранить" />
+            app:translationTextKey="app.profile.add.buttons.save_title" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 </RelativeLayout>
