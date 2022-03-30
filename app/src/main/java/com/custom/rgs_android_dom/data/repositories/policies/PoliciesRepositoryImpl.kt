@@ -7,10 +7,7 @@ import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
 import com.custom.rgs_android_dom.data.network.requests.BindPolicyRequest
 import com.custom.rgs_android_dom.data.network.responses.ProductServicesResponse
 import com.custom.rgs_android_dom.data.network.responses.PropertyItemResponse
-import com.custom.rgs_android_dom.domain.policies.models.BoundPolicyDialogModel
-import com.custom.rgs_android_dom.domain.policies.models.PolicyDialogModel
-import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
-import com.custom.rgs_android_dom.domain.policies.models.PolicyShortModel
+import com.custom.rgs_android_dom.domain.policies.models.*
 import com.custom.rgs_android_dom.domain.repositories.PoliciesRepository
 import com.custom.rgs_android_dom.ui.policies.insurant.InsurantViewState
 import com.custom.rgs_android_dom.utils.tryParseDate
@@ -100,13 +97,13 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
         return if (!contractIds.isNullOrEmpty()){
             Single.zip(contractsSingle, clientProductsSingle) { contracts, clientProducts ->
                 if (clientProducts.clientProducts != null){
-                    clientProducts.clientProducts.map { ClientMapper.responseToPolicyShort(it, contracts) }
+                    clientProducts.clientProducts.map { ClientMapper.responseToPolicyShort(it, contracts) }.sortedBy { it.expiresAt }
                 } else {
-                    listOf()
+                    emptyList()
                 }
 
             }
-        } else { Single.just(listOf()) }
+        } else { Single.just(emptyList()) }
     }
 
     override fun getPolicySingle(contractId: String): Single<PolicyModel> {

@@ -19,8 +19,8 @@ class PoliciesFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.dataStateLayout.recyclerView.adapter = PoliciesAdapter {
-            viewModel.onPolicyClick(it)
+        binding.dataStateLayout.recyclerView.adapter = PoliciesAdapter { id, isActive ->
+            viewModel.onPolicyClick(id, isActive)
         }
 
         binding.backImageView.setOnDebouncedClickListener {

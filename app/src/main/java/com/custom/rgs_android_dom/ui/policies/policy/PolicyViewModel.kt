@@ -19,10 +19,17 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
-class PolicyViewModel(contractId: String, policiesInteractor: PoliciesInteractor) : BaseViewModel() {
+class PolicyViewModel(
+    contractId: String,
+    isActivePolicy: Boolean,
+    policiesInteractor: PoliciesInteractor
+) : BaseViewModel() {
 
     private val productController = MutableLiveData<PolicyModel>()
     val productObserver: LiveData<PolicyModel> = productController
+
+    private val isActiveController = MutableLiveData(isActivePolicy)
+    val isActiveObserver: LiveData<Boolean> = isActiveController
 
     init {
         policiesInteractor.getClientProductSingle(contractId)
@@ -38,7 +45,7 @@ class PolicyViewModel(contractId: String, policiesInteractor: PoliciesInteractor
                 },
                 onSuccess = {
                     loadingStateController.value = LoadingState.CONTENT
-                    productController.value = it
+                    productController.value = it.copy(isActive = isActivePolicy)
                 }
             )
             .addTo(dataCompositeDisposable)

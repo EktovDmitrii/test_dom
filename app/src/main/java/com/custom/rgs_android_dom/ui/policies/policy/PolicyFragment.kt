@@ -1,8 +1,8 @@
 package com.custom.rgs_android_dom.ui.policies.policy
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
@@ -18,9 +18,11 @@ class PolicyFragment : BaseFragment<PolicyViewModel, FragmentPolicyBinding>(R.la
     companion object {
 
         const val KEY_CONTRACT_ID = "KEY_CONTRACT_ID"
+        const val KEY_IS_ACTIVE = "KEY_IS_ACTIVE"
 
-        fun newInstance(contractId: String) = PolicyFragment().args {
+        fun newInstance(contractId: String, isActive: Boolean) = PolicyFragment().args {
             putString(KEY_CONTRACT_ID, contractId)
+            putBoolean(KEY_IS_ACTIVE, isActive)
         }
 
     }
@@ -58,6 +60,7 @@ class PolicyFragment : BaseFragment<PolicyViewModel, FragmentPolicyBinding>(R.la
                     .transform(RoundedCorners(15.dp(requireContext())))
                     .into(binding.productImageView)
             }
+            inclusionAdapter.setStatus(it.isActive)
             inclusionAdapter.setItems(it.includedProducts ?: listOf())
             binding.titleTextView.text = it.productTitle
             binding.startDateTextView.text = it.startsAt?.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
@@ -69,12 +72,53 @@ class PolicyFragment : BaseFragment<PolicyViewModel, FragmentPolicyBinding>(R.la
             binding.descriptionTextView.text = it.productDescription
             binding.clientNameTextView.text = it.clientName
         }
-
+        subscribe(viewModel.isActiveObserver) {
+            if (!it) {
+                binding.archiveTextView.visible()
+                binding.titleTextView.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.secondary500
+                    )
+                )
+                binding.descriptionTextView.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.secondary500
+                    )
+                )
+                binding.policyDataTextView.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.secondary500
+                    )
+                )
+                binding.clientNameTextView.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.secondary500
+                    )
+                )
+                binding.startDateTextView.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.secondary500
+                    )
+                )
+                binding.expirationDateTextView.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.secondary500
+                    )
+                )
+            }
+        }
     }
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
-            requireArguments().getString(KEY_CONTRACT_ID, null)
+            requireArguments().getString(KEY_CONTRACT_ID, null),
+            requireArguments().getBoolean(KEY_IS_ACTIVE, true),
         )
     }
 
