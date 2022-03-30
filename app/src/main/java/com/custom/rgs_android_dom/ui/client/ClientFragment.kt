@@ -98,6 +98,10 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
             viewModel.onPoliciesClick()
         }
 
+        binding.paymentMethodsLinearLayout.setOnDebouncedClickListener {
+            viewModel.onPaymentMethodsClick()
+        }
+
         subscribe(viewModel.propertyItemsObserver) { propertyItems ->
             propertyItemsAdapter.setItems(propertyItems)
         }

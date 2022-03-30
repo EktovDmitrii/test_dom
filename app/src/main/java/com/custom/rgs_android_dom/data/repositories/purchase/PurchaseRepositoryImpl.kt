@@ -10,6 +10,7 @@ import com.custom.rgs_android_dom.domain.purchase.models.NewCardModel
 import com.custom.rgs_android_dom.domain.purchase.models.PurchaseInfoModel
 import com.custom.rgs_android_dom.domain.repositories.PurchaseRepository
 import com.custom.rgs_android_dom.utils.safeLet
+import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 
@@ -17,6 +18,7 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
 
     private val serviceOrdered = PublishSubject.create<String>()
     private val productPurchased = PublishSubject.create<String>()
+    private val deletedCardSubject = PublishSubject.create<String>()
 
     override fun getSavedCards(): Single<List<CardModel>> {
         return api.getSavedCards().toSingle().map { list ->
@@ -124,5 +126,15 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
 
     override fun notifyProductPurchased(productId: String) {
         productPurchased.onNext(productId)
+    }
+
+    override fun deleteCard(bindingId: String): Completable {
+        return api.deleteCard(bindingId).doOnComplete {
+            deletedCardSubject.onNext(bindingId)
+        }
+    }
+
+    override fun getDeletedCardSubject(): PublishSubject<String> {
+        return deletedCardSubject
     }
 }

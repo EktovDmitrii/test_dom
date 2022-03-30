@@ -135,6 +135,18 @@ class TranslationRepositoryImpl(private val api: MSDApi) :
             "app.chats.chat.call.connection_error" to "Проблемы со связью",
             "app.chats.chat.call.call_ended" to "Завершён",
             "app.chats.chat.call.online_master" to "Онлайн мастер",
+
+            //Payment methods
+            "app.client.payment_methods.title" to "Способы оплаты",
+            "app.client.payment_methods.title_edit" to "Редактирование карт",
+            "app.client.payment_methods.delete_card" to "Удалить карту",
+            "app.client.payment_methods.card_deleted" to "Карта удалена",
+            "app.client.payment_methods.no_linked_cards" to "У вас пока нет привязанных карт",
+            "app.client.payment_methods.error.error_code" to "Код ошибки: %@",
+            "app.client.payment_methods.error.title" to "Невозможно обработать",
+            "app.client.payment_methods.error.subtitle" to "Мы не смогли обработать ваш запрос.\nПожалуйста, попробуйте еще раз",
+            "app.client.payment_methods.error.try_again" to "Попробовать еще раз",
+            "app.client.payment_methods.error.contact_online_master" to "Написать онлайн мастеру",
         )
     }
 

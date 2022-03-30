@@ -314,4 +314,8 @@ interface MSDApi {
 
     @GET("clients/me/tasks/requests/modifications")
     fun getRequestEditClientTasks(): Single<RequestEditClientTasksResponse>
+
+    @DELETE("clients/me/billing/cards/{bindingId}")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun deleteCard(@Path("bindingId") bindingId: String): Completable
 }
