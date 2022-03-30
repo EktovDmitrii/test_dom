@@ -31,7 +31,7 @@
              android:fontFamily="@font/my_service_medium"
              android:textColor="@color/secondary900"
              android:textSize="16sp"
-             app:translationTextKey="Личные данные"/>
+             app:translationTextKey="app.profile.client.title"/>
 
          <androidx.appcompat.widget.AppCompatImageView
              android:id="@+id/editImageView"
@@ -65,7 +65,7 @@
              android:fontFamily="@font/suisse_regular"
              android:textColor="@color/secondary500"
              android:textSize="16sp"
-             app:translationTextKey="Фотография"/>
+             app:translationTextKey="app.profile.client.photo.title"/>
 
          <androidx.appcompat.widget.AppCompatImageView
              android:id="@+id/avatarStubImageView"
@@ -92,7 +92,7 @@
              android:textColor="@color/primary500"
              android:textSize="16sp"
              android:layout_marginTop="8dp"
-             app:translationTextKey="Редактировать фотографию"/>
+             app:translationTextKey="app.profile.client.photo.edit"/>
 
          <com.custom.rgs_android_dom.views.text.MSDTextView
              android:id="@+id/noAvatarTextView"
@@ -102,56 +102,56 @@
              android:textColor="@color/secondary500"
              android:textSize="16sp"
              android:layout_marginTop="4dp"
-             app:translationTextKey="Консультантам и специалистам будет приятно видеть, с кем они ведут диалог в чате"/>
+             app:translationTextKey="app.profile.client.photo.empty_title"/>
 
          <com.custom.rgs_android_dom.views.text.MSDLabelTextView
              android:id="@+id/nameTextView"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:layout_marginTop="16dp"
-             app:translationLabelKey="ФИО"/>
+             app:translationLabelKey="app.profile.client.name.title"/>
 
          <com.custom.rgs_android_dom.views.text.MSDLabelTextView
              android:id="@+id/birthdayTextView"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:layout_marginTop="20dp"
-             app:translationLabelKey="Дата рождения"/>
+             app:translationLabelKey="app.profile.add.birthday.title"/>
 
          <com.custom.rgs_android_dom.views.text.MSDLabelTextView
              android:id="@+id/genderTextView"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:layout_marginTop="20dp"
-             app:translationLabelKey="Пол"/>
+             app:translationLabelKey="app.profile.add.sex.title"/>
 
          <com.custom.rgs_android_dom.views.text.MSDLabelTextView
              android:id="@+id/passportTextView"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:layout_marginTop="20dp"
-             app:translationLabelKey="Серия и номер паспорта"/>
+             app:translationLabelKey="app.profile.client.pasport.title"/>
 
          <com.custom.rgs_android_dom.views.text.MSDLabelTextView
              android:id="@+id/phoneTextView"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:layout_marginTop="20dp"
-             app:translationLabelKey="Номер телефона"/>
+             app:translationLabelKey="app.phone.field_title"/>
 
          <com.custom.rgs_android_dom.views.text.MSDLabelTextView
              android:id="@+id/additionalPhoneTextView"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:layout_marginTop="20dp"
-             app:translationLabelKey="Дополнительный телефон"/>
+             app:translationLabelKey="app.profile.client.additional_phone.title"/>
 
          <com.custom.rgs_android_dom.views.text.MSDLabelTextView
              android:id="@+id/emailTextView"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:layout_marginTop="20dp"
-             app:translationLabelKey="Электронная почта"/>
+             app:translationLabelKey="app.profile.client.email.title"/>
 
       </androidx.appcompat.widget.LinearLayoutCompat>
 

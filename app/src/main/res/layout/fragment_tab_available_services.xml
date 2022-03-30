@@ -29,7 +29,7 @@
             android:gravity="center"
             android:textColor="@color/secondary500"
             android:textSize="14sp"
-            app:translationTextKey="У вас пока нет доступных услуг.\nВы можете купить услуги в составе\nкомплексных продуктов" />
+            app:translationTextKey="app.catalog.tabs.my_services_empty_state" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/openCatalogTextView"
@@ -46,7 +46,7 @@
             android:textSize="13sp"
             app:lineHeight="24sp"
             android:includeFontPadding="false"
-            app:translationTextKey="Перейти в каталог услуг" />
+            app:translationTextKey="app.catalog.tabs.my_services_navigate_catalog" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

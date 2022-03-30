@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="21dp"
-            app:translationTextKey="У вас пока нет продуктов. Вы можете\nпривязать существующий продукт"
+            app:translationTextKey="app.catalog.tabs.my_products_empty_state"
             android:fontFamily="@font/suisse_regular"
             android:textColor="@color/secondary500"
             android:textSize="14sp"
@@ -42,7 +42,7 @@
             android:gravity="center"
             android:background="@drawable/rectangle_filled_white_stroke_secondary_500_1dp_radius_24dp"
             android:elevation="4dp"
-            app:translationTextKey="Привязать полис"/>
+            app:translationTextKey="app.catalog.tabs.my_products_connect_policy"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -90,7 +90,7 @@
                 android:textColor="@color/secondary900_alpha64"
                 android:textSize="14sp"
                 app:layout_constraintTop_toBottomOf="@id/nameApartmentTextInputLayout"
-                app:translationTextKey="Фотография" />
+                app:translationTextKey="app.profile.client.photo.title" />
 
             <RelativeLayout
                 android:id="@+id/avatarPropertyLayout"
@@ -114,7 +114,7 @@
                     android:layout_height="116dp" />
             </RelativeLayout>
 
-            <TextView
+            <com.custom.rgs_android_dom.views.text.MSDTextView
                 android:id="@+id/editImagePropertyTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -123,7 +123,7 @@
                 android:fontFamily="@font/suisse_regular"
                 android:includeFontPadding="false"
                 android:paddingHorizontal="20dp"
-                android:text="Редактировать фотографию"
+                app:translationTextKey="app.profile.client.photo.edit"
                 android:textColor="@color/primary500"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"

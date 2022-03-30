@@ -44,7 +44,7 @@
         android:inputType="phone"
         app:hintAlwaysVisible="true"
         app:mask="+7 [000] [000]-[00]-[00]"
-        app:translationHintKey="+7 999 999-99-99"
+        app:translationHintKey="app.profile.add.agent_info.phone.placeholder"
         app:translationLabelKey="Номер телефона агента" />
 
     <FrameLayout

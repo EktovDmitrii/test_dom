@@ -26,7 +26,7 @@
             android:includeFontPadding="false"
             android:textColor="@color/secondary900"
             android:textSize="16sp"
-            app:translationTextKey="Полисы" />
+            app:translationTextKey="app.profile.menu.policies" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/addImageView"
