@@ -64,7 +64,7 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
                 .into(binding.header.logoImageView)
 
             if (service.duration != null) {
-                binding.validity.validityValue.text = service.duration.toString()
+                binding.validity.validityValue.text = service.duration.toString() + " после покупки"
             } else {
                 binding.validity.root.gone()
             }
