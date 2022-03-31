@@ -121,7 +121,7 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
 
             var productServicesResponse: ProductServicesResponse? = null
             if (clientProductResponse?.productId != null){
-                productServicesResponse = api.getProductServicesResponse(clientProductResponse.productId, 100, 0).blockingGet()
+                productServicesResponse = api.getProductServicesResponse(clientProductResponse.productVersionId ?: "", 100, 0).blockingGet()
             }
 
             ClientMapper.responseToPolicy(
