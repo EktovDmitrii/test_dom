@@ -6,6 +6,7 @@ import java.io.Serializable
 data class ProductLauncher(
     val productId: String,
     val productVersionId: String?,
+    val clientProductId: String? = null,
     val isPurchased: Boolean = false,
     val purchaseValidFrom: DateTime? = null,
     val purchaseValidTo: DateTime? = null,

@@ -66,7 +66,7 @@ class CatalogInteractor(
         return catalogRepository.getProductServices(productId, productVersionId).map { services->
             if (isPurchased){
                 services.forEach { service->
-                    val availableService = catalogRepository.getAvailableServiceInProduct(productId, service.serviceId).blockingGet()
+                    val availableService = catalogRepository.getAvailableServiceInProduct(productId, null, service.serviceId).blockingGet()
                     service.quantity = availableService.available.toLong()
                 }
             }
@@ -168,7 +168,7 @@ class CatalogInteractor(
     }
 
     fun getAvailableServiceInProduct(productId: String, serviceId: String): Single<AvailableServiceModel> {
-        return catalogRepository.getAvailableServiceInProduct(productId, serviceId)
+        return catalogRepository.getAvailableServiceInProduct(productId, null, serviceId)
     }
 
     fun getProductsByContracts(): Single<List<ClientProductModel>> {

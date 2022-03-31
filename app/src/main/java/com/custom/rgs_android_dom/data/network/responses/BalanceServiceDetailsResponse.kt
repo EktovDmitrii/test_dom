@@ -31,6 +31,9 @@ data class BalanceServiceDetailsResponse(
     @SerializedName("objectId")
     val objectId: String?,
 
+    @SerializedName("clientProductId")
+    val clientProductId: String,
+
     @SerializedName("serviceVersionId")
     val serviceVersionId: String?,
 

@@ -248,6 +248,7 @@ object CatalogMapper {
                         id = serviceDetails.id,
                         serviceId = serviceDetails.serviceId,
                         productId = serviceDetails.productId,
+                        clientProductId = serviceDetails.clientProductId,
                         serviceName = serviceDetails.serviceName,
                         productIcon = "${BuildConfig.BASE_URL}/api/store/${serviceDetails.productIcon}",
                         serviceIcon = "${BuildConfig.BASE_URL}/api/store/${serviceDetails.serviceIcon}",

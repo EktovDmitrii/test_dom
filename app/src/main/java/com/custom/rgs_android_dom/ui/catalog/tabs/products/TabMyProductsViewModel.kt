@@ -113,6 +113,7 @@ class TabMyProductsViewModel(
                         productId = product.productId,
                         productVersionId = product.productVersionId,
                         isPurchased = true,
+                        clientProductId = product.id,
                         purchaseValidFrom = product.validityFrom,
                         purchaseValidTo = product.validityTo,
                         purchaseObjectId = product.objectId

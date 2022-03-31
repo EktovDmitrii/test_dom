@@ -140,6 +140,7 @@ class ProductViewModel(
                 productId = product.productId,
                 serviceId = serviceShortModel.serviceId,
                 serviceVersionId = serviceShortModel.serviceVersionId,
+                clientProductId = product.clientProductId,
                 isPurchased = product.isPurchased,
                 purchaseValidFrom = product.purchaseValidFrom,
                 purchaseValidTo = product.purchaseValidTo,
@@ -152,10 +153,17 @@ class ProductViewModel(
     }
 
     fun onServiceOrderClick(serviceShortModel: ServiceShortModel){
-        val serviceOrderFragment = ServiceOrderFragment.newInstance(
-            ServiceOrderLauncher(serviceShortModel.serviceId, product.productId, serviceShortModel.serviceVersionId)
-        )
-        ScreenManager.showScreen(serviceOrderFragment)
+        product.clientProductId?.let {
+            val serviceOrderFragment = ServiceOrderFragment.newInstance(
+                ServiceOrderLauncher(
+                    serviceShortModel.serviceId,
+                    product.productId,
+                    serviceShortModel.serviceVersionId,
+                    product.clientProductId
+                )
+            )
+            ScreenManager.showScreen(serviceOrderFragment)
+        }
     }
 
     private fun getIncludedServices(){

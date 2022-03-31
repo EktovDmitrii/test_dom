@@ -26,6 +26,6 @@ interface CatalogRepository {
 
     fun getClientProducts(contractIds: String?): Single<List<ClientProductModel>>
 
-    fun getAvailableServiceInProduct(productId: String, serviceId: String): Single<AvailableServiceModel>
+    fun getAvailableServiceInProduct(productId: String, clientProductId: String?, serviceId: String): Single<AvailableServiceModel>
 
 }

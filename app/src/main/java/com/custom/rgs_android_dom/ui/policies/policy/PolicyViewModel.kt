@@ -61,6 +61,7 @@ class PolicyViewModel(
                 productId = product.productId,
                 serviceId = serviceShortModel.serviceId,
                 serviceVersionId = serviceShortModel.serviceVersionId,
+                clientProductId = productObserver.value?.id,
                 isPurchased = product.isPurchased,
                 purchaseValidFrom = product.purchaseValidFrom,
                 purchaseValidTo = product.purchaseValidTo,
@@ -73,15 +74,18 @@ class PolicyViewModel(
     }
 
     fun onServiceOrderClick(serviceShortModel: ServiceShortModel,product: ProductLauncher){
-        val serviceOrderFragment = ServiceOrderFragment.newInstance(
-            ServiceOrderLauncher(
-                serviceId = serviceShortModel.serviceId,
-                productId = product.productId,
-                serviceVersionId = serviceShortModel.serviceVersionId,
-                deliveryType = serviceShortModel.serviceDeliveryType
+        productObserver.value?.let {
+            val serviceOrderFragment = ServiceOrderFragment.newInstance(
+                ServiceOrderLauncher(
+                    serviceId = serviceShortModel.serviceId,
+                    productId = product.productId,
+                    clientProductId = it.id,
+                    serviceVersionId = serviceShortModel.serviceVersionId,
+                    deliveryType = serviceShortModel.serviceDeliveryType
+                )
             )
-        )
-        ScreenManager.showScreen(serviceOrderFragment)
+            ScreenManager.showScreen(serviceOrderFragment)
+        }
     }
 
 }
