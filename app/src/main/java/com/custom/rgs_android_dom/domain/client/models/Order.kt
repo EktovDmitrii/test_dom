@@ -41,7 +41,7 @@ data class Order(
     fun getDateTime(): String {
         val localDate = LocalDate.parse(deliveryDate, DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZZ"))
         val onlyDate = localDate.toString(DATE_PATTERN_DATE_FULL_MONTH)
-        val time = "${deliveryTime?.from} - ${deliveryTime?.to}"
+        val time = "${deliveryTime?.from} - ${ if (deliveryTime?.to == "23:59") "00:00" else deliveryTime?.to}"
         return "$onlyDate; $time"
     }
 
