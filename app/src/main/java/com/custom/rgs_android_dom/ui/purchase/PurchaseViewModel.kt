@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.purchase
 
+import android.util.Log
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -27,6 +28,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import org.joda.time.DateTimeZone
 import java.util.*
 
 class PurchaseViewModel(
@@ -211,9 +213,8 @@ class PurchaseViewModel(
                 } else {
                     true
                 },
-                deliveryDate = purchase.purchaseDateTimeModel?.selectedDate?.formatTo(
-                    DATE_PATTERN_DATE_AND_TIME_FOR_PURCHASE
-                ) + TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT).removePrefix("GMT"),
+                deliveryDate =  purchase.purchaseDateTimeModel?.selectedDate?.toDateTime(
+                    DateTimeZone.UTC).toString(),
                 timeFrom = purchase.purchaseDateTimeModel?.selectedPeriodModel?.timeFrom,
                 timeTo = if (purchase.purchaseDateTimeModel?.selectedPeriodModel?.timeFrom == "18:00")
                     purchase.purchaseDateTimeModel.selectedPeriodModel?.copy(timeTo = "23:59")?.timeTo

@@ -4,6 +4,7 @@ import android.text.Editable
 import android.util.Log
 import com.custom.rgs_android_dom.domain.chat.models.OrderTimeModel
 import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
 import org.joda.time.format.DateTimeFormat
@@ -24,6 +25,20 @@ fun String.tryParseDate(
 ): LocalDate? =
     try {
         LocalDate.parse(this, DateTimeFormat.forPattern(format))
+    } catch (e: Exception) {
+        onError(e)
+        null
+    }
+
+fun String.tryParseDateToDateTimeUTCWithOffset(
+    offset: Int,
+    onError: (Exception) -> Unit = {},
+    format: String = DATE_PATTERN_DATE_ONLY
+): DateTime? =
+    try {
+        LocalDate.parse(this, DateTimeFormat.forPattern(format))
+            .toDateTimeAtStartOfDay(DateTimeZone.UTC)
+            .withZone(DateTimeZone.forOffsetHours(offset))
     } catch (e: Exception) {
         onError(e)
         null
