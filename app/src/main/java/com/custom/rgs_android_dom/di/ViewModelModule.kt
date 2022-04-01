@@ -36,6 +36,9 @@ import com.custom.rgs_android_dom.ui.chats.ChatsViewModel
 import com.custom.rgs_android_dom.ui.client.order_detail.OrderDetailViewModel
 import com.custom.rgs_android_dom.ui.client.order_detail.cancel_order.CancelOrderViewModel
 import com.custom.rgs_android_dom.ui.client.orders.OrdersViewModel
+import com.custom.rgs_android_dom.ui.client.payment_methods.PaymentMethodsViewModel
+import com.custom.rgs_android_dom.ui.client.payment_methods.delete.DeletePaymentMethodViewModel
+import com.custom.rgs_android_dom.ui.client.payment_methods.error.ErrorDeletePaymentMethodViewModel
 import com.custom.rgs_android_dom.ui.main.MainViewModel
 import com.custom.rgs_android_dom.ui.client.personal_data.add_photo.AddPhotoViewModel
 import com.custom.rgs_android_dom.ui.property.add.details.PropertyDetailsViewModel
@@ -168,4 +171,7 @@ val viewModelModule = module {
     viewModel { parameters -> CancelOrderViewModel(order = parameters[0], clientInteractor = get()) }
     viewModel { parameters -> PropertyMoreViewModel(property = parameters[0], clientInteractor = get(), catalogInteractor = get())}
     viewModel { parameters -> DeletePropertyViewModel(property = parameters.get(), propertyInteractor = get(), clientInteractor = get(), chatInteractor = get(), catalogInteractor = get())}
+    viewModel { PaymentMethodsViewModel(purchaseInteractor = get(), chatInteractor = get()) }
+    viewModel { parameters -> DeletePaymentMethodViewModel(bindingId = parameters[0], purchaseInteractor = get()) }
+    viewModel { parameters -> ErrorDeletePaymentMethodViewModel(errorCode = parameters[0]) }
 }

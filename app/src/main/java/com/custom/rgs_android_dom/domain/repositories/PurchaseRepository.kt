@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.domain.repositories
 import com.custom.rgs_android_dom.domain.client.models.Order
 import com.custom.rgs_android_dom.domain.purchase.models.CardModel
 import com.custom.rgs_android_dom.domain.purchase.models.PurchaseInfoModel
+import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 
@@ -38,4 +39,8 @@ interface PurchaseRepository {
     fun getProductPurchasedSubject(): PublishSubject<String>
 
     fun notifyProductPurchased(productId: String)
+
+    fun deleteCard(bindingId: String): Completable
+
+    fun getDeletedCardSubject(): PublishSubject<String>
 }
