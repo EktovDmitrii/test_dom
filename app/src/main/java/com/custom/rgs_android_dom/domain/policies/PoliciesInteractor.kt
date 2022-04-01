@@ -71,13 +71,14 @@ class PoliciesInteractor(
 
     fun bindPolicy(): Single<Any> {
         val errorsValidate = ArrayList<ValidateFieldModel>()
-        var birthday: LocalDateTime?
+        var birthday: DateTime?
         if (insurantViewState.birthday.isNotEmpty()) {
-            val birthdayWithTimezone = "${insurantViewState.birthday.tryParseDate()}T00:00:00.000Z"
+            /*val birthdayWithTimezone = "${insurantViewState.birthday.tryParseDate()}T00:00:00.000Z"
             birthday = birthdayWithTimezone.tryParseLocalDateTime({
                 logException(this, it)
                 birthday = null
-            }, format = PATTERN_DATE_TIME_MILLIS)
+            }, format = PATTERN_DATE_TIME_MILLIS)*/
+            birthday = insurantViewState.birthday.tryParseDateToDateTimeUTCWithOffset(0)
 
             if (birthday == null || birthday != null && !isBirthdayValid(birthday!!)) {
                 errorsValidate.add(
@@ -166,8 +167,8 @@ class PoliciesInteractor(
         insurantViewStateSubject.onNext(insurantViewState)
     }
 
-    private fun isBirthdayValid(birthday: LocalDateTime): Boolean {
-        return !(birthday.isAfter( MIN_DATE ) || birthday.isBefore( MAX_DATE ))
+    private fun isBirthdayValid(birthday: DateTime): Boolean {
+        return !(birthday.toLocalDateTime().isAfter( MIN_DATE ) || birthday.toLocalDateTime().isBefore( MAX_DATE ))
     }
 
     fun getClientProductSingle(contractId: String): Single<PolicyModel> {

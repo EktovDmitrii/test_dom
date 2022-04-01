@@ -3,13 +3,14 @@ package com.custom.rgs_android_dom.ui.root
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.OverScroller
 import androidx.core.content.ContextCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentRootBinding
-import com.custom.rgs_android_dom.domain.chat.models.CallState
 import com.custom.rgs_android_dom.domain.chat.models.CallInfoModel
+import com.custom.rgs_android_dom.domain.chat.models.CallState
 import com.custom.rgs_android_dom.domain.chat.models.MediaOutputType
 import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
@@ -23,6 +24,10 @@ import com.custom.rgs_android_dom.views.NavigationScope
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.*
 import com.yandex.metrica.YandexMetrica
+import org.joda.time.DateTimeZone
+import org.joda.time.format.DateTimeFormat
+import org.joda.time.format.DateTimeFormatter
+
 
 class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.fragment_root) {
 
@@ -70,7 +75,6 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         ScreenManager.initBottomSheet(R.id.bottomContainer)
         ScreenManager.onBottomSheetChanged = {fragment->
             bottomSheetMainFragment = fragment

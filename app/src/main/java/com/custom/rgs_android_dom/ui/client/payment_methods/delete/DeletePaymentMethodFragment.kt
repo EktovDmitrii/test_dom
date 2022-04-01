@@ -1,7 +1,6 @@
 package com.custom.rgs_android_dom.ui.client.payment_methods.delete
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.custom.rgs_android_dom.databinding.FragmentDeletePaymentMethodBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
@@ -39,7 +38,6 @@ class DeletePaymentMethodFragment() : BaseBottomSheetModalFragment<DeletePayment
         }
 
         subscribe(viewModel.showErrorDialogObserver){
-            Log.d("MyLog", "SHOW ERROR DIALOG " + it)
             dismissAllowingStateLoss()
             parentFragment?.let { parentFragment->
                 val errorDialog = ErrorDeletePaymentMethodFragment.newInstance(it)

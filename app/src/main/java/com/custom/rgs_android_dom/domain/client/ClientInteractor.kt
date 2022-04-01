@@ -105,11 +105,12 @@ ClientInteractor(
         var birthday: DateTime? = null
         fillClientViewState.birthday?.let { birthdayString ->
 
-            val birthdayWithTimezone = "${birthdayString.tryParseDate()}T00:00:00.000Z"
+            /*val birthdayWithTimezone = "${birthdayString.tryParseDate()}T00:00:00.000Z"
             birthday = birthdayWithTimezone.tryParseDateTime({
                 logException(this, it)
                 birthday = null
-            }, format = PATTERN_DATE_TIME_MILLIS)
+            }, format = PATTERN_DATE_TIME_MILLIS)*/
+            birthday = birthdayString.tryParseDateToDateTimeUTCWithOffset(0)
 
             if (birthday == null || birthday != null && !isBirthdayValid(birthday!!)) {
                 errorsValidate.add(
@@ -119,7 +120,6 @@ ClientInteractor(
                     )
                 )
             }
-            birthday = birthday?.withZone(DateTimeZone.forOffsetHours(3))
         }
 
         if (fillClientViewState.agentCode == null && fillClientViewState.agentPhone != null) {
@@ -379,13 +379,13 @@ ClientInteractor(
 
         var birthday: DateTime? = null
         if (editPersonalDataViewState.birthday.isNotEmpty()) {
-            val birthdayWithTimezone = "${editPersonalDataViewState.birthday.tryParseDate()}T00:00:00.000Z"
+            /*val birthdayWithTimezone = "${editPersonalDataViewState.birthday.tryParseDate()}T00:00:00.000Z"
             birthday = birthdayWithTimezone.tryParseDateTime({
                 logException(this, it)
                 birthday = null
-            }, format = PATTERN_DATE_TIME_MILLIS)
-
-            if (birthday == null || birthday != null && !isBirthdayValid(birthday!!)) {
+            }, format = PATTERN_DATE_TIME_MILLIS)*/
+            birthday = editPersonalDataViewState.birthday.tryParseDateToDateTimeUTCWithOffset(0)
+            if (birthday == null || !isBirthdayValid(birthday)) {
                 errorsValidate.add(
                     ValidateFieldModel(
                         ClientField.BIRTHDATE,
@@ -394,7 +394,7 @@ ClientInteractor(
                 )
             }
 
-            birthday = birthday?.withZone(DateTimeZone.forOffsetHours(3))
+            //birthday = birthday?.withZone(DateTimeZone.forOffsetHours(3))
         }
 
         if (editPersonalDataViewState.hasProducts && !editPersonalDataViewState.isDocSerialSaved && editPersonalDataViewState.docSerial.isNotEmpty()
