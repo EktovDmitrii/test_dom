@@ -62,7 +62,7 @@
             android:textColor="@color/bottom_navigation_item_color"
             android:textSize="12sp"
             android:layout_marginTop="6dp"
-            app:translationTextKey="Каталог" />
+            app:translationTextKey="app.catalog.tabs.title" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

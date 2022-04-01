@@ -77,13 +77,33 @@ class TranslationRepositoryImpl(private val api: MSDApi) :
             "app.profile.add.agent_info.phone.placeholder" to "+7 999 999-99-99",
             "app.profile.add.agent_info.code_validation_error" to "Проверьте, правильно ли введен код агента",
             "app.profile.add.agent_info.phone_validation_error" to "Проверьте, правильно ли введен номер телефона",
+            "app.profile.client.photo.title" to "Фотография",
+            "app.profile.client.photo.edit" to "Редактировать фотографию",
+            "app.profile.client.photo.empty_title" to "Консультантам и специалистам будет приятно\nвидеть, с кем они ведут диалог в чате",
+            "app.profile.client.photo.load_error" to "Ошибка загрузки аватарки",
+            "app.profile.client.name.title" to "ФИО",
+            "app.profile.client.name.empty_title" to "Нет данных",
+            "app.profile.client.pasport.title" to "Серия и номер паспорта",
+            "app.profile.client.additional_phone.title" to "Дополнительный телефон",
+            "app.profile.client.email.title" to "Электронная почта",
+            "app.profile.client.title" to "Личные данные",
+            "app.profile.client.edit_request.title" to "Чтобы редактировать личные данные,",
+            "app.profile.client.edit_request.button_title" to "оставьте заявку",
+            "app.profile.client.edit_request.success" to "Заявка на редактирование данных будет рассмотрена",
+            "app.profile.client.passport_series.title" to "Серия паспорта",
+            "app.profile.client.passport_number.title" to "Номер паспорта",
+            "app.profile.client.phone.title" to "Номер телефона",
+            "app.profile.client.email.placeholder" to "mail@mail.com",
 
             // Profile
-            "app.profile.slider.slide_tip_text" to "Потяните, чтобы связаться с мастером",
-            "app.profile.header.title" to "Мои объекты",
+            "app.profile.slider.slide_tip_text" to "Потяните вниз, чтобы открыть",
+            "app.profile.header.title" to "Моя недвижимость",
             "app.profile.header.add" to "Добавить",
             "app.profile.menu.name_placeholder" to "Добавьте ваше имя",
+            "app.profile.menu.orders" to "История заказов",
+            "app.profile.menu.policies" to "Полисы",
             "app.profile.menu.agent_info" to "Данные об агенте",
+            "app.profile.menu.agent_code" to "Я знаю код агента",
             "app.profile.menu.about_app" to "О приложении",
             "app.profile.menu.logout" to "Выйти",
 
@@ -110,31 +130,38 @@ class TranslationRepositoryImpl(private val api: MSDApi) :
             "app.about_app.footer.version" to "Версия %@",
             "app.about_app.footer.build" to "Сборка %@",
 
-            // Personal info
-            "app.personal_info.title" to "Личные данные",
-            "app.personal_info.photo.title" to "Фотографии",
-
-            "app.personal_info.photo.edit" to "Редактировать фотографию",
-            "app.personal_info.photo.info" to "Консультантам и специалистам будет приятно видеть, с кем они ведут диалог в чате",
-            "app.personal_info.name.title" to "ФИО",
-            "app.personal_info.birthday.title" to "Дата рождения",
-            "app.personal_info.sex.title" to "Пол",
-            "app.personal_info.passport.title" to "Серия и номер паспорта",
-            "app.personal_info.passport_series.title" to "Серия паспорта",
-            "app.personal_info.passport_number.title" to "Номер паспорта",
-            "app.personal_info.phone.title" to "Номер телефона",
-            "app.personal_info.phone.placeholder" to "+7 999 999-99-99",
-            "app.personal_info.second_phone.title" to "Дополнительный номер",
-            "app.personal_info.second_phone.placeholder" to "+7 999 999-99-99",
-            "app.personal_info.email.title" to "Электронная почта",
-            "app.personal_info.email.placeholder" to "mail@mail.com",
-
             //Calls
             "app.chats.chat.call.connecting" to "Подключаемся...",
             "app.chats.chat.call.waiting_operator" to "Ищем свободного оператора",
             "app.chats.chat.call.connection_error" to "Проблемы со связью",
             "app.chats.chat.call.call_ended" to "Завершён",
             "app.chats.chat.call.online_master" to "Онлайн мастер",
+
+            //Catalog
+            "app.catalog.main_catalog" to "Все",
+            "app.catalog.products" to "Мои продукты",
+            "app.catalog.available_services" to "Доступные услуги",
+
+            //Catalog Search
+            "app.catalog.search.empty_title" to "Не смогли что-то найти?",
+            "app.catalog.search.empty_subtitle" to "Попробуйте новый поиск или напишите Онлайн Мастеру, мы поможем подобрать нужный сервис под любой запрос!",
+            "app.catalog.search.emptyState" to "Чат с Онлайн Мастером",
+            "app.catalog.search.popular_header" to "Популярные",
+            "app.catalog.search.cancel" to "Отменить",
+            "app.catalog.search.placeholder" to "Чем вам помочь?",
+            "app.catalog.search.title" to "Поиск по каталогу услуг",
+
+            //Catalog Subcategory
+            "app.catalog.subcategory.other" to "Прочее",
+
+            //Catalog Tabs
+            "app.catalog.tabs.title" to "Каталог",
+            "app.catalog.tabs.all" to "Все",
+            "app.catalog.tabs.all_services" to "Все услуги в категории",
+            "app.catalog.tabs.my_products_empty_state" to "У вас пока нет продуктов. Вы можете\nпривязать существующий продукт",
+            "app.catalog.tabs.my_products_connect_policy" to "Привязать полис",
+            "app.catalog.tabs.my_services_empty_state" to "У вас пока нет доступных услуг.\nВы можете купить услуги в составе\nкомплексных продуктов",
+            "app.catalog.tabs.my_services_navigate_catalog" to "Перейти в каталог услуг",
 
             //Payment methods
             "app.client.payment_methods.title" to "Способы оплаты",
@@ -147,6 +174,7 @@ class TranslationRepositoryImpl(private val api: MSDApi) :
             "app.client.payment_methods.error.subtitle" to "Мы не смогли обработать ваш запрос.\nПожалуйста, попробуйте еще раз",
             "app.client.payment_methods.error.try_again" to "Попробовать еще раз",
             "app.client.payment_methods.error.contact_online_master" to "Написать онлайн мастеру",
+
         )
     }
 

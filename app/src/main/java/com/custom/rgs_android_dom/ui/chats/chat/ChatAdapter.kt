@@ -447,7 +447,7 @@ class ChatAdapter(
             binding.timeTextView.text = widget.orderTime?.formatOrderTime()
             binding.dateTextView.text = widget.orderDate?.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
             binding.serviceNameTextView.text = widget.name
-            binding.durationTextView.text = widget.deliveryTime
+            binding.durationTextView.text = widget.deliveryTime?.formatDeliveryTime()
 
             val icon = widget.icon
             if (!icon.isNullOrEmpty()) {

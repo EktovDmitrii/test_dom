@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.policies.PoliciesInteractor
-import com.custom.rgs_android_dom.domain.policies.models.PolicyShortModel
+import com.custom.rgs_android_dom.domain.policies.models.PolicyViewholderModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.POLICY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -20,8 +20,8 @@ import io.reactivex.schedulers.Schedulers
 class PoliciesViewModel(private val policiesInteractor: PoliciesInteractor, clientInteractor: ClientInteractor) :
     BaseViewModel() {
 
-    private val policiesController = MutableLiveData<List<PolicyShortModel>>()
-    val policiesObserver: LiveData<List<PolicyShortModel>> = policiesController
+    private val policiesController = MutableLiveData<List<PolicyViewholderModel>>()
+    val policiesObserver: LiveData<List<PolicyViewholderModel>> = policiesController
 
     private val promptSaveController = MutableLiveData<Boolean>()
     val promptSaveObserver: LiveData<Boolean> = promptSaveController
@@ -85,8 +85,8 @@ class PoliciesViewModel(private val policiesInteractor: PoliciesInteractor, clie
         ScreenManager.showScreenScope(AddPolicyFragment.newInstance(fragmentId), POLICY)
     }
 
-    fun onPolicyClick(contractId: String) {
-        ScreenManager.showScreen(PolicyFragment.newInstance(contractId))
+    fun onPolicyClick(contractId: String, isActive: Boolean) {
+        ScreenManager.showScreen(PolicyFragment.newInstance(contractId, isActive))
     }
 
     private fun getPolicies() {

@@ -9,6 +9,7 @@ import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentClientBinding
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.utils.recycler_view.HorizontalItemDecoration
@@ -110,7 +111,7 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
             binding.phoneTextView.text = state.phone
 
             if (state.firstName.isEmpty() && state.lastName.isEmpty()) {
-                binding.nameTextView.text = "Добавьте ваше имя"
+                binding.nameTextView.text = TranslationInteractor.getTranslation("app.profile.menu.name_placeholder")
                 binding.nameTextView.setTextColor(requireContext().getColor(R.color.primary500))
             } else {
                 binding.nameTextView.text = "${state.lastName} ${state.firstName}"
@@ -118,9 +119,9 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
             }
 
             if (state.hasAgentInfo){
-                binding.agentInfoTextView.text = "Данные об агенте"
+                binding.agentInfoTextView.text = TranslationInteractor.getTranslation("app.profile.menu.agent_info")
             } else {
-                binding.agentInfoTextView.text = "Я знаю код агента"
+                binding.agentInfoTextView.text = TranslationInteractor.getTranslation("app.profile.menu.agent_code")
             }
 
             if (state.avatar.isEmpty()){

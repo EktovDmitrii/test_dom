@@ -51,15 +51,30 @@
                     android:layout_height="80dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="24dp"
+                    android:layout_marginBottom="24dp"
                     android:background="@drawable/rectangle_filled_white_radius_15dp"
                     android:elevation="2dp" />
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/archiveTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/suisse_regular"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/secondary500"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    app:lineHeight="24sp"
+                    app:translationTextKey="Архив"
+                    />
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:id="@+id/titleTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="24dp"
                     android:fontFamily="@font/my_service_bold"
                     android:includeFontPadding="false"
                     android:textColor="@color/secondary900"

@@ -14,5 +14,6 @@ data class PolicyModel (
     val policySeriesAndNumber: String,
     val clientName: String,
     val startsAt: DateTime? = null,
-    val expiresAt: DateTime? = null
+    val expiresAt: DateTime? = null,
+    val isActive: Boolean = true
 )

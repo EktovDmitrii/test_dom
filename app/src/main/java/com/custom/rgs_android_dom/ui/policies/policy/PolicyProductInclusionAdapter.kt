@@ -23,6 +23,7 @@ class PolicyProductInclusionAdapter (
     }
 
     private var inclusions: List<ServiceShortModel> = emptyList()
+    private var status: Boolean = true
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding = ItemGridPolicyInfoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -40,6 +41,10 @@ class PolicyProductInclusionAdapter (
         notifyDataSetChanged()
     }
 
+    fun setStatus(status: Boolean) {
+        this.status = status
+    }
+
     inner class ProductFeatureViewHolder(
         private val binding: ItemGridPolicyInfoBinding,
         private val onServiceClick: (ServiceShortModel) -> Unit = {},
@@ -51,25 +56,28 @@ class PolicyProductInclusionAdapter (
 
             binding.numberTextView.visibleIf(item.quantity > 0)
 
-            if (item.quantity.toInt() == INFINITY) {
-                binding.numberTextView.text = ""
-                binding.numberTextView.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.ic_infinity, 0, 0, 0
-                )
-            } else if (item.quantity.toInt() > 0) {
-                binding.numberTextView.text = "${item.quantity}"
+            if (status) {
+                if (item.quantity.toInt() == INFINITY) {
+                    binding.numberTextView.text = ""
+                    binding.numberTextView.setCompoundDrawablesWithIntrinsicBounds(
+                        R.drawable.ic_infinity, 0, 0, 0
+                    )
+                } else if (item.quantity.toInt() > 0) {
+                    binding.numberTextView.text = "${item.quantity}"
+                }
+            } else {
+                binding.numberTextView.text = "0"
             }
 
             if (item.isPurchased){
                 binding.orderTextView.visible()
-                binding.orderTextView.isEnabled = item.canBeOrdered
+                binding.orderTextView.isEnabled = item.canBeOrdered && status
             } else {
                 binding.orderTextView.gone()
             }
 
-
             binding.orderTextView.setOnDebouncedClickListener {
-                onOrderClick(item)
+                if (status) onOrderClick(item)
             }
 
             binding.layout.setOnDebouncedClickListener {

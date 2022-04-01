@@ -192,7 +192,7 @@
             android:fontFamily="@font/my_service_medium"
             android:textColor="@color/secondary900"
             android:textSize="16sp"
-            app:translationTextKey="Расскажите о себе" />
+            app:translationTextKey="app.profile.add.header.title" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/closeImageView"

@@ -155,7 +155,7 @@ val viewModelModule = module {
     viewModel { SOSViewModel(chatInteractor = get(), registrationInteractor = get(), clientInteractor = get(), context = get()) }
     viewModel { parameters -> PaymentWebViewViewModel(url = parameters.get()) }
     viewModel { PaymentErrorViewModel(chatInteractor = get()) }
-    viewModel { parameters -> PaymentSuccessViewModel(productId = parameters[0], productVersionId = parameters[1], email = parameters[1], orderId = parameters[2], purchaseInteractor = get(), catalogInteractor = get(), clientInteractor = get()) }
+    viewModel { parameters -> PaymentSuccessViewModel(productId = parameters[0], productVersionId = parameters[1], email = parameters[2], orderId = parameters[3], purchaseInteractor = get(), catalogInteractor = get(), clientInteractor = get()) }
     viewModel { parameters -> StoriesViewModel(tab = parameters.get()) }
     viewModel { TabNewServiceViewModel() }
     viewModel { TabGuaranteeViewModel() }
@@ -166,7 +166,7 @@ val viewModelModule = module {
     viewModel { InsurantViewModel(policiesInteractor = get()) }
     viewModel { parameters -> PolicyDialogsViewModel(policiesInteractor = get(), model = parameters.get(), chatInteractor = get()) }
     viewModel { parameters -> ServiceOrderViewModel(serviceOrderLauncher = parameters.get(), propertyInteractor = get(), catalogInteractor = get(), purchaseInteractor = get()) }
-    viewModel { parameters -> PolicyViewModel(contractId = parameters.get(),policiesInteractor = get()) }
+    viewModel { parameters -> PolicyViewModel(contractId = parameters[0], isActivePolicy = parameters[1], policiesInteractor = get()) }
     viewModel { ChatsViewModel(chatInteractor = get(), registrationInteractor = get()) }
     viewModel { parameters -> CancelOrderViewModel(order = parameters[0], clientInteractor = get()) }
     viewModel { parameters -> PropertyMoreViewModel(property = parameters[0], clientInteractor = get(), catalogInteractor = get())}

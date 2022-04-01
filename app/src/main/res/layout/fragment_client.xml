@@ -36,7 +36,7 @@
                     android:fontFamily="@font/my_service_bold"
                     android:textSize="16sp"
                     android:textColor="@color/secondary900"
-                    app:translationTextKey="Моя недвижимость"
+                    app:translationTextKey="app.profile.header.title"
                     android:paddingHorizontal="20dp"/>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -144,7 +144,7 @@
                                 android:includeFontPadding="false"
                                 android:textColor="@color/secondary900"
                                 android:textSize="16sp"
-                                app:translationTextKey="История заказов" />
+                                app:translationTextKey="app.profile.menu.orders" />
 
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -183,7 +183,7 @@
                                 android:includeFontPadding="false"
                                 android:textColor="@color/secondary900"
                                 android:textSize="16sp"
-                                app:translationTextKey="Полисы" />
+                                app:translationTextKey="app.profile.menu.policies" />
 
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -262,7 +262,7 @@
                                 android:includeFontPadding="false"
                                 android:textColor="@color/secondary900"
                                 android:textSize="16sp"
-                                app:translationTextKey="Данные об агенте" />
+                                app:translationTextKey="app.profile.menu.agent_info" />
 
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -301,7 +301,7 @@
                                 android:includeFontPadding="false"
                                 android:textColor="@color/secondary900"
                                 android:textSize="16sp"
-                                app:translationTextKey="О приложении" />
+                                app:translationTextKey="app.profile.menu.about_app" />
 
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -377,7 +377,7 @@
                             android:gravity="center_vertical"
                             android:textColor="@color/error600"
                             android:textSize="16sp"
-                            app:translationTextKey="Выйти" />
+                            app:translationTextKey="app.profile.menu.logout" />
 
                     </RelativeLayout>
 

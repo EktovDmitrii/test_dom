@@ -194,7 +194,7 @@
                             android:includeFontPadding="false"
                             android:textColor="@color/gray"
                             android:textSize="13sp"
-                            app:translationTextKey="Полисы" />
+                            app:translationTextKey="app.profile.menu.policies" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 

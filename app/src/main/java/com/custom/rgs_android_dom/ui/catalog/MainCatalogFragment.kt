@@ -6,6 +6,7 @@ import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentMainCatalogBinding
 import com.custom.rgs_android_dom.databinding.TabCatalogBinding
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.client.orders.OrdersFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -39,9 +40,9 @@ class MainCatalogFragment :
     }
 
     private val tabs = listOf(
-        Pair(R.drawable.ic_tab_catalog, "Все"),
-        Pair(R.drawable.ic_tab_products, "Мои продукты"),
-        Pair(R.drawable.ic_tab_available_services, "Доступные услуги")
+        Pair(R.drawable.ic_tab_catalog, TranslationInteractor.getTranslation("app.catalog.main_catalog")),
+        Pair(R.drawable.ic_tab_products, TranslationInteractor.getTranslation("app.catalog.products")),
+        Pair(R.drawable.ic_tab_available_services, TranslationInteractor.getTranslation("app.catalog.available_services"))
     )
 
     override fun getParameters(): ParametersDefinition = {

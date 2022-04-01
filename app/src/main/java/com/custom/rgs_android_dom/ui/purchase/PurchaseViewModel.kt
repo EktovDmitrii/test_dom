@@ -215,8 +215,10 @@ class PurchaseViewModel(
                     DATE_PATTERN_DATE_AND_TIME_FOR_PURCHASE
                 ) + TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT).removePrefix("GMT"),
                 timeFrom = purchase.purchaseDateTimeModel?.selectedPeriodModel?.timeFrom,
-                timeTo = purchase.purchaseDateTimeModel?.selectedPeriodModel?.timeTo,
-                withOrder = purchase.defaultProduct && purchase.price?.fix == false
+                timeTo = if (purchase.purchaseDateTimeModel?.selectedPeriodModel?.timeFrom == "18:00")
+                    purchase.purchaseDateTimeModel.selectedPeriodModel?.copy(timeTo = "23:59")?.timeTo
+                else purchase.purchaseDateTimeModel?.selectedPeriodModel?.timeTo,
+                withOrder = purchase.defaultProduct
             )
                 .doOnSubscribe {
                     isEnableButtonController.postValue(false)

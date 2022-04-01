@@ -5,6 +5,7 @@ import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentEditPersonalDataBinding
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.client.personal_data.request_edit.RequestEditPersonalDataFragment
 import com.custom.rgs_android_dom.utils.*
@@ -194,9 +195,9 @@ class EditPersonalDataFragment :
         subscribe(viewModel.editPersonalDataRequestedObserver) { wasRequested ->
             binding.editRequestTextView.goneIf(wasRequested)
             binding.descriptionTextView.text = if (wasRequested) {
-                "Заявка на редактирование данных будет рассмотрена"
+                TranslationInteractor.getTranslation("app.profile.client.edit_request.success")
             } else {
-                "Чтобы редактировать личные данные,"
+                TranslationInteractor.getTranslation("app.profile.client.edit_request.title")
             }
         }
     }

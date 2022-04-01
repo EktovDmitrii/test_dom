@@ -386,7 +386,7 @@
                     android:textSize="13sp"
                     android:gravity="center_vertical"
                     android:alpha="0.8"
-                    app:translationTextKey="Потяните вниз, чтобы открыть"/>
+                    app:translationTextKey="app.profile.slider.slide_tip_text"/>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
