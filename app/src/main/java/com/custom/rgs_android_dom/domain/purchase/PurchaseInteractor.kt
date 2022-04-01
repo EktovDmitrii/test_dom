@@ -8,6 +8,7 @@ import com.custom.rgs_android_dom.domain.repositories.CatalogRepository
 import com.custom.rgs_android_dom.domain.repositories.PurchaseRepository
 import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_AND_TIME_FOR_PURCHASE
 import com.custom.rgs_android_dom.utils.formatTo
+import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 import java.util.*
@@ -110,6 +111,14 @@ class PurchaseInteractor(
 
     fun notifyProductPurchased(productId: String){
         purchaseRepository.notifyProductPurchased(productId)
+    }
+
+    fun deleteCard(bindingId: String): Completable {
+        return purchaseRepository.deleteCard(bindingId)
+    }
+
+    fun getDeletedCardSubject(): PublishSubject<String>{
+        return purchaseRepository.getDeletedCardSubject()
     }
 
     private fun setPropertyOptional(deliveryType: DeliveryType?) {

@@ -178,7 +178,7 @@ object CatalogMapper {
             type = response.type,
             unitType = response.unitType,
             duration = if (response.duration != null){
-                ServiceDurationModel(
+                ProductDurationModel(
                     unitType = response.duration.unitType.asEnumOrDefault(ProductUnitType.UNKNOWN),
                     units = response.duration.units
                 )

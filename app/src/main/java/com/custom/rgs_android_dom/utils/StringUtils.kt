@@ -86,20 +86,4 @@ fun OrderTimeModel.formatOrderTime(): String {
     return "${this.from} - ${this.to}"
 }
 
-fun String.formatDeliveryTime() : String {
-    var deliveryTime = 0
-    if (this.isNotEmpty()) {
-        val deliveryTimeString = this.substringBefore('h')
-        try {
-            deliveryTime = Integer.valueOf(deliveryTimeString)
-        } catch (e: Exception) {
-            return this
-        }
-    }
-    return when {
-        deliveryTime.toString().takeLast(2).toInt() in 11..19 -> "Работа займет ~$deliveryTime часов"
-        deliveryTime.toString().takeLast(1).toInt() == 1 -> "Работа займет ~$deliveryTime час"
-        deliveryTime.toString().takeLast(1).toInt() in 2..4 -> "Работа займет ~$deliveryTime часа"
-        else -> "Работа займет ~$deliveryTime часов"
-    }
-}
+fun String.formatDeliveryTime() = "Работа займет ~$this"

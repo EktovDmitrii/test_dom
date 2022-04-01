@@ -143,6 +143,7 @@ class ProductViewModel(
                 clientProductId = product.clientProductId,
                 isPurchased = product.isPurchased,
                 purchaseValidFrom = product.purchaseValidFrom,
+                duration = productObserver.value?.duration,
                 purchaseValidTo = product.purchaseValidTo,
                 purchaseObjectId = product.purchaseObjectId,
                 quantity = serviceShortModel.quantity,

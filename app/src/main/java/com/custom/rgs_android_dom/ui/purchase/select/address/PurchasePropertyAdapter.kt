@@ -58,18 +58,25 @@ class PurchasePropertyAdapter(
             binding.propertyAddressTextView.text = property.address?.address
             binding.propertyNameTextView.text = property.name
 
-            when (property.type) {
-                PropertyType.HOUSE -> {
-                    GlideApp.with(binding.propertyTypeImageView.context)
-                        .load(R.drawable.ic_type_home)
-                        .transform(RoundedCorners(16.dp(binding.propertyTypeImageView.context)))
-                        .into(binding.propertyTypeImageView)
-                }
-                PropertyType.APARTMENT -> {
-                    GlideApp.with(binding.propertyTypeImageView.context)
-                        .load(R.drawable.ic_type_apartment_334px)
-                        .transform(RoundedCorners(16.dp(binding.propertyTypeImageView.context)))
-                        .into(binding.propertyTypeImageView)
+            if (property.photoLink != null) {
+                GlideApp.with(binding.propertyTypeImageView.context)
+                    .load(GlideUrlProvider.makeHeadersGlideUrl(property.photoLink))
+                    .transform(RoundedCorners(16.dp(binding.propertyTypeImageView.context)))
+                    .into(binding.propertyTypeImageView)
+            } else {
+                when (property.type) {
+                    PropertyType.HOUSE -> {
+                        GlideApp.with(binding.propertyTypeImageView.context)
+                            .load(R.drawable.ic_type_home)
+                            .transform(RoundedCorners(16.dp(binding.propertyTypeImageView.context)))
+                            .into(binding.propertyTypeImageView)
+                    }
+                    PropertyType.APARTMENT -> {
+                        GlideApp.with(binding.propertyTypeImageView.context)
+                            .load(R.drawable.ic_type_apartment_334px)
+                            .transform(RoundedCorners(16.dp(binding.propertyTypeImageView.context)))
+                            .into(binding.propertyTypeImageView)
+                    }
                 }
             }
             binding.checkImageView.visibleIf(property == currentPropertyItem)

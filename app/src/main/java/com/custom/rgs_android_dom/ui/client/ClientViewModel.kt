@@ -12,6 +12,7 @@ import com.custom.rgs_android_dom.ui.about_app.AboutAppFragment
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.client.agent.AgentFragment
 import com.custom.rgs_android_dom.ui.client.orders.OrdersFragment
+import com.custom.rgs_android_dom.ui.client.payment_methods.PaymentMethodsFragment
 import com.custom.rgs_android_dom.ui.client.personal_data.PersonalDataFragment
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -155,6 +156,10 @@ class ClientViewModel(
 
     fun onPoliciesClick() {
         ScreenManager.showScreen(PoliciesFragment())
+    }
+
+    fun onPaymentMethodsClick() {
+        ScreenManager.showScreen(PaymentMethodsFragment())
     }
 
     fun onRefresh(){

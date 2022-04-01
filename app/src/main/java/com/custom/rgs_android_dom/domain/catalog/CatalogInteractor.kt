@@ -118,7 +118,6 @@ class CatalogInteractor(
         return Single.zip(catalogRepository.getClientProducts(null), catalogRepository.getAvailableServices()){products, services->
            return@zip services.filter { service->
                val product = products.find { it.productId == service.productId && it.defaultProduct }
-               Log.d("MyLog", "SERVICES " + service.serviceName + " PRODUCT VERSION ID " + service.productVersionId)
                return@filter product == null
            }
         }

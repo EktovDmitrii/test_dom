@@ -97,6 +97,8 @@ class DeletePropertyFragment : BaseBottomSheetModalFragment<DeletePropertyViewMo
         subscribe(viewModel.cannotBeDeletedObserver){
             binding.deletePropertyTextView.gone()
             binding.tryAgainTextView.gone()
+            binding.nameTextView.visible()
+            binding.addressTextView.visible()
             binding.contactMasterOnlineTextView.visible()
 
             binding.propertyLogoImageView.visible()
@@ -122,6 +124,8 @@ class DeletePropertyFragment : BaseBottomSheetModalFragment<DeletePropertyViewMo
     override fun onLoading() {
         super.onLoading()
         binding.propertyLogoImageView.visible()
+        binding.nameTextView.visible()
+        binding.addressTextView.visible()
         binding.errorImageView.gone()
 
         binding.titleTextView.text = "Удалить недвижимость?"
@@ -139,10 +143,12 @@ class DeletePropertyFragment : BaseBottomSheetModalFragment<DeletePropertyViewMo
         super.onError()
 
         binding.propertyLogoImageView.gone()
+        binding.nameTextView.gone()
+        binding.addressTextView.gone()
         binding.errorImageView.visible()
 
         binding.titleTextView.text = "Невозможно обработать"
-        binding.subtitleTextView.text = "К сожалению, мы не смогли обработать\nваш запрос. Пожалуйста, попробуйте\nеще раз"
+        binding.subtitleTextView.text = "Мы не смогли обработать\nваш запрос. Пожалуйста, попробуйте\nеще раз"
         binding.subtitleTextView.visible()
 
         binding.deletePropertyTextView.gone()

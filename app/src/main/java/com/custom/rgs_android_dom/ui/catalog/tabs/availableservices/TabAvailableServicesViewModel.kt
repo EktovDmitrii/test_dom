@@ -110,6 +110,7 @@ class TabAvailableServicesViewModel(
                                     serviceVersionId = service.serviceVersionId,
                                     clientProductId = service.clientProductId,
                                     isPurchased = true,
+                                    duration = product.duration,
                                     purchaseObjectId = service.objectId,
                                     purchaseValidFrom = service.validityFrom,
                                     purchaseValidTo = service.validityTo,
