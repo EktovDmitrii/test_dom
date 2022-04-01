@@ -118,7 +118,7 @@ class ServiceOrderViewModel(
     }
 
     fun onOrderClick(){
-        purchaseInteractor.orderServiceOnBalance(serviceOrderLauncher.productId, serviceOrderLauncher.serviceId)
+        purchaseInteractor.orderServiceOnBalance(serviceOrderLauncher.productId, serviceOrderLauncher.clientProductId, serviceOrderLauncher.serviceId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {

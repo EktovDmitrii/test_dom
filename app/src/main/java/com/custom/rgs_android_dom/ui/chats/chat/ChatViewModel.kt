@@ -323,6 +323,7 @@ class ChatViewModel(
                 ServiceOrderLauncher(
                     serviceId = service.serviceId,
                     productId = service.productId,
+                    clientProductId = service.clientProductId,
                     serviceVersionId = service.serviceVersionId,
                     property = if (!property.isEmpty) property else null,
                     dateTime = getPurchaseDate(widget.orderDate, widget.orderTime),

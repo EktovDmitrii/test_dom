@@ -82,8 +82,8 @@ class PurchaseInteractor(
         validateServiceOrderViewState()
     }
 
-    fun orderServiceOnBalance(productId: String, serviceId: String): Single<Order> {
-        return catalogRepository.getAvailableServiceInProduct(productId, serviceId)
+    fun orderServiceOnBalance(productId: String, clientProductId: String, serviceId: String): Single<Order> {
+        return catalogRepository.getAvailableServiceInProduct(productId, clientProductId, serviceId)
             .flatMap {
                 purchaseRepository.orderServiceOnBalance(
                     serviceId = serviceId,

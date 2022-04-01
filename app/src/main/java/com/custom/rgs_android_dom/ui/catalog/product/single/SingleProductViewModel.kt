@@ -69,7 +69,8 @@ class SingleProductViewModel(
                                             serviceId = it[0].serviceId,
                                             productId = product.id,
                                             serviceVersionId = it[0].serviceVersionId,
-                                            deliveryType = it[0].serviceDeliveryType
+                                            deliveryType = it[0].serviceDeliveryType,
+                                            clientProductId = ""
                                         )
                                     )
                                     ScreenManager.showScreen(serviceOrderFragment)

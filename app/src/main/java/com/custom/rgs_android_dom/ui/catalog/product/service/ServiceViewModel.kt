@@ -107,10 +107,17 @@ class ServiceViewModel(
     }
 
     fun onServiceOrderClick(){
-        val serviceOrderFragment = ServiceOrderFragment.newInstance(
-            ServiceOrderLauncher(service.serviceId, service.productId, service.serviceVersionId)
-        )
-        ScreenManager.showScreen(serviceOrderFragment)
+        service.clientProductId?.let {
+            val serviceOrderFragment = ServiceOrderFragment.newInstance(
+                ServiceOrderLauncher(
+                    service.serviceId,
+                    service.productId,
+                    service.serviceVersionId,
+                    it
+                )
+            )
+            ScreenManager.showScreen(serviceOrderFragment)
+        }
     }
 
     private fun checkServiceAvailability(){

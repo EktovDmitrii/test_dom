@@ -162,9 +162,8 @@ object ClientMapper {
     }
 
     fun responseToPolicy(clientProductResponse: ClientProductResponse?,contractResponse: ContractResponse?, propertyItemResponse: PropertyItemResponse?, productServicesResponse: ProductServicesResponse?): PolicyModel {
-
         return PolicyModel(
-            id= clientProductResponse?.productId ?: "",
+            id= clientProductResponse?.id ?: "",
             productId = clientProductResponse?.productId ?: "",
             logo = "${BuildConfig.BASE_URL}/api/store/${clientProductResponse?.productIcon}",
             productTitle= clientProductResponse?.productName ?: "",
