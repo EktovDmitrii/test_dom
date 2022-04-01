@@ -55,7 +55,7 @@ class ServiceViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    serviceController.value = it
+                    serviceController.value = it.copy(duration = service.duration)
                     orderTextViewVisibleController.value = service.isPurchased && service.quantity > 0 && !isGoneOrderTextView
                     priceTextViewVisibleController.value = service.isPurchased
                 },

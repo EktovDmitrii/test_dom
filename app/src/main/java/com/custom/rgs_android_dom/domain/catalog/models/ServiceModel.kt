@@ -28,7 +28,7 @@ data class ServiceModel(
     val title: String?,
     val type: String?,
     val unitType: String?,
-    val duration: ServiceDurationModel?,
+    val duration: ProductDurationModel?,
     val validityFrom: DateTime?,
     val validityTo: DateTime?,
     val versionActivatedAt: DateTime?,

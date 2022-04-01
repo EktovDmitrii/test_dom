@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.ui.policies.policy
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.ServiceShortModel
 import com.custom.rgs_android_dom.domain.policies.PoliciesInteractor
 import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
@@ -22,7 +23,8 @@ import io.reactivex.schedulers.Schedulers
 class PolicyViewModel(
     contractId: String,
     isActivePolicy: Boolean,
-    policiesInteractor: PoliciesInteractor
+    policiesInteractor: PoliciesInteractor,
+    val catalogInteractor: CatalogInteractor,
 ) : BaseViewModel() {
 
     private val productController = MutableLiveData<PolicyModel>()
@@ -56,20 +58,31 @@ class PolicyViewModel(
     }
 
     fun onServiceClick(serviceShortModel: ServiceShortModel,product: ProductLauncher) {
-        val serviceFragment = ServiceFragment.newInstance(
-            ServiceLauncher(
-                productId = product.productId,
-                serviceId = serviceShortModel.serviceId,
-                serviceVersionId = serviceShortModel.serviceVersionId,
-                isPurchased = product.isPurchased,
-                purchaseValidFrom = product.purchaseValidFrom,
-                purchaseValidTo = product.purchaseValidTo,
-                purchaseObjectId = product.purchaseObjectId,
-                quantity = serviceShortModel.quantity,
-                canBeOrdered = serviceShortModel.canBeOrdered
-            )
-        )
-        ScreenManager.showBottomScreen(serviceFragment)
+        catalogInteractor.getProduct(product.productId, product.productVersionId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    val serviceFragment = ServiceFragment.newInstance(
+                        ServiceLauncher(
+                            productId = product.productId,
+                            serviceId = serviceShortModel.serviceId,
+                            serviceVersionId = serviceShortModel.serviceVersionId,
+                            isPurchased = product.isPurchased,
+                            duration = it.duration,
+                            purchaseValidFrom = product.purchaseValidFrom,
+                            purchaseValidTo = product.purchaseValidTo,
+                            purchaseObjectId = product.purchaseObjectId,
+                            quantity = serviceShortModel.quantity,
+                            canBeOrdered = serviceShortModel.canBeOrdered
+                        )
+                    )
+                    ScreenManager.showBottomScreen(serviceFragment)
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
     }
 
     fun onServiceOrderClick(serviceShortModel: ServiceShortModel,product: ProductLauncher){
