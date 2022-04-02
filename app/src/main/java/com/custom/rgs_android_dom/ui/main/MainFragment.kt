@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.core.view.children
@@ -194,6 +195,10 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
         subscribe(viewModel.popularCategoriesObserver){
             binding.popularCategoriesLayout.root.goneIf(it.isEmpty())
             popularCategoriesAdapter.setItems(it)
+
+            it.forEach {
+                Log.d("MyLog", "Category title " + it.name + " SIZE " + it.subCategories.size + " PRODUCTS " + it.products.size + " IS PRIMARY  " + it.isPrimary)
+            }
         }
 
         subscribe(viewModel.loadingStateObserver) {

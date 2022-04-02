@@ -18,6 +18,7 @@ import com.custom.rgs_android_dom.ui.catalog.product.ProductLauncher
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductLauncher
 import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchFragment
+import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogPrimaryProductsFragment
 import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogSubcategoriesFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
 import com.custom.rgs_android_dom.ui.client.orders.OrdersFragment
@@ -262,8 +263,13 @@ class MainViewModel(
     }
 
     fun onCategoryClick(category: CatalogCategoryModel) {
-        val catalogSubcategoriesFragment = CatalogSubcategoriesFragment.newInstance(category)
-        ScreenManager.showBottomScreen(catalogSubcategoriesFragment)
+        if (category.isPrimary){
+            val primSubcategoriesFragment = CatalogPrimaryProductsFragment.newInstance(category)
+            ScreenManager.showBottomScreen(primSubcategoriesFragment)
+        } else {
+            val catalogSubcategoriesFragment = CatalogSubcategoriesFragment.newInstance(category)
+            ScreenManager.showBottomScreen(catalogSubcategoriesFragment)
+        }
     }
 
     fun onShowAllPopularCategoriesClick() {
