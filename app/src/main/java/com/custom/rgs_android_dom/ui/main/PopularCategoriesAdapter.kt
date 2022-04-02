@@ -49,7 +49,7 @@ class PopularCategoriesAdapter(private val onCategoryClick: (CatalogCategoryMode
         fun bind(model: CatalogCategoryModel) {
 
             binding.titleTextView.text = model.name
-            binding.quantityTextView.text = model.subCategories.size.formatQuantity()
+            binding.quantityTextView.text = model.products.size.formatQuantity()
 
             val requestOptions = RequestOptions().transform( CenterCrop(), RoundedCorners(ROUNDING_RADIUS.dp(binding.root.context)))
 
