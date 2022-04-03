@@ -17,7 +17,7 @@
         android:paddingVertical="18dp"
         android:textColor="@color/secondary900"
         android:textSize="20sp"
-        app:translationTextKey="Фото" />
+        app:translationTextKey="app.object.main.actions.add.photo" />
 
     <View
         android:id="@+id/dividerView"
@@ -36,6 +36,6 @@
         android:paddingVertical="18dp"
         android:textColor="@color/secondary900"
         android:textSize="20sp"
-        app:translationTextKey="Файлы" />
+        app:translationTextKey="app.object.main.actions.add.file" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

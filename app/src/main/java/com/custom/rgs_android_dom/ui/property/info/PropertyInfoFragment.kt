@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentPropertyInfoBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsFragment
 import com.custom.rgs_android_dom.ui.property.info.more.PropertyMoreFragment
@@ -59,11 +60,11 @@ class PropertyInfoFragment :
             when (propertyItem.type) {
                 PropertyType.HOUSE -> {
                     binding.propertyImageView.setImageResource(R.drawable.ic_type_home)
-                    binding.typeTextView.setValue("Дом")
+                    binding.typeTextView.setValue(TranslationInteractor.getTranslation("app.object.main.info.property_type.house"))
                 }
                 PropertyType.APARTMENT -> {
                     binding.propertyImageView.setImageResource(R.drawable.ic_type_apartment_334px)
-                    binding.typeTextView.setValue("Квартира")
+                    binding.typeTextView.setValue(TranslationInteractor.getTranslation("app.object.main.info.property_type.appartment"))
                 }
             }
             binding.titleTextView.text = propertyItem.name
@@ -76,13 +77,26 @@ class PropertyInfoFragment :
             }
 
             propertyItem.isOwn?.let { isOwn ->
-                binding.isOwnTextView.setValue(if (isOwn) "Да" else "Нет")
+                binding.isOwnTextView.setValue(if (isOwn) {
+                    TranslationInteractor.getTranslation("app.object.main.info.yes")
+                }else{
+                    TranslationInteractor.getTranslation("app.object.main.info.no")
+                })
             }
             propertyItem.isRent?.let { isRent ->
-                binding.isRentTextView.setValue(if (isRent) "Да" else "Нет")
+                binding.isRentTextView.setValue(if (isRent) {
+                    TranslationInteractor.getTranslation("app.object.main.info.yes")
+                } else {
+                    TranslationInteractor.getTranslation("app.object.main.info.no")
+                })
             }
             propertyItem.isTemporary?.let { isTemporary ->
-                binding.isTemporaryTextView.setValue(if (isTemporary) "Да" else "Нет")
+                binding.isTemporaryTextView.setValue(if (isTemporary) {
+                    TranslationInteractor.getTranslation("app.object.main.info.yes")
+                }
+                else {
+                    TranslationInteractor.getTranslation("app.object.main.info.no")
+                })
             }
 
             propertyItem.totalArea?.let { totalArea ->

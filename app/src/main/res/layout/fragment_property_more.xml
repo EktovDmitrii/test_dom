@@ -15,7 +15,7 @@
         android:textColor="@color/secondary900"
         android:fontFamily="@font/suisse_regular"
         android:includeFontPadding="false"
-        app:translationTextKey="Редактировать недвижимость"/>
+        app:translationTextKey="app.object.main.actions.edit"/>
 
     <View
         android:layout_width="match_parent"
@@ -32,6 +32,6 @@
         android:textColor="@color/error500"
         android:fontFamily="@font/suisse_regular"
         android:includeFontPadding="false"
-        app:translationTextKey="Удалить недвижимость"/>
+        app:translationTextKey="app.object.main.actions.delete"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>
