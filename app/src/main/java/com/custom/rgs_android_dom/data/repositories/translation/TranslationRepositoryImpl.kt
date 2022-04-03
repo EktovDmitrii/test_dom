@@ -175,6 +175,9 @@ class TranslationRepositoryImpl(private val api: MSDApi) :
             "app.client.payment_methods.error.try_again" to "Попробовать еще раз",
             "app.client.payment_methods.error.contact_online_master" to "Написать онлайн мастеру",
 
+            //Property
+            "app.object.main.actions.add.err_file_limit" to "Размер файла больше 10 mb",
+
         )
     }
 

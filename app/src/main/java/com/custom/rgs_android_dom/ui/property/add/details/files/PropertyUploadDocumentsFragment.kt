@@ -7,7 +7,9 @@ import com.custom.rgs_android_dom.databinding.FragmentPropertyUploadDocumentsBin
 import com.custom.rgs_android_dom.ui.alert.OnAlertClickListener
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.utils.activity.activity_contracts.PropertyDocumentsActivityContract
+import com.custom.rgs_android_dom.utils.notification
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
+import com.custom.rgs_android_dom.utils.subscribe
 
 class PropertyUploadDocumentsFragment : BaseBottomSheetModalFragment<PropertyUploadDocumentsViewModel, FragmentPropertyUploadDocumentsBinding>(),
     OnAlertClickListener {
@@ -52,6 +54,10 @@ class PropertyUploadDocumentsFragment : BaseBottomSheetModalFragment<PropertyUpl
 
         binding.uploadFilesTextView.setOnDebouncedClickListener {
             chooseDocumentsAction.launch("*/*")
+        }
+
+        subscribe(viewModel.errorMessageObserver){
+            parentFragment?.notification(it)
         }
 
     }

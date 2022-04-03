@@ -130,7 +130,7 @@ val viewModelModule = module {
     viewModel { parameters -> VideoPlayerViewModel(chatFile = parameters.get()) }
     viewModel { parameters -> CallViewModel(channelId = parameters[0], callType = parameters[1], consultant = parameters[2], callId = parameters[3] ,chatInteractor = get(), mediaOutputManager = get()) }
     viewModel { parameters -> CallRequestViewModel(callerId = parameters[0], callId = parameters[1], channelId = parameters[2], chatInteractor = get()) }
-    viewModel { PropertyUploadDocumentsViewModel(propertyInteractor = get()) }
+    viewModel { PropertyUploadDocumentsViewModel(context = get(), propertyInteractor = get()) }
     viewModel { MediaOutputChooserViewModel(mediaOutputManager = get()) }
     viewModel { RequestRationaleViewModel() }
     viewModel { parameters -> MainCatalogViewModel(tab = parameters.get()) }
