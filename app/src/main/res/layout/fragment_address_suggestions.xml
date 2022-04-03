@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="12dp"
-        app:translationHintKey="Адрес дома"
+        app:translationHintKey="app.address.sugestion.input.placeholder"
         app:inputHeight="48dp"
         app:icon="@drawable/ic_destination_stroke_8px"/>
 
@@ -55,7 +55,7 @@
             android:textColor="@color/secondary400"
             android:textSize="16sp"
             android:layout_marginTop="28dp"
-            app:translationTextKey="Ничего не найдено"/>
+            app:translationTextKey="app.address.sugestion.empty_title"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -178,6 +178,32 @@ class TranslationRepositoryImpl(private val api: MSDApi) :
             //Property
             "app.object.main.actions.add.err_file_limit" to "Размер файла больше 10 mb",
 
+            // Property (address suggestions)
+            "app.address.sugestion.input.placeholder" to "Адрес дома",
+            "app.address.sugestion.empty_title" to "Ничего не найдено",
+
+            //Property (info)
+            "app.object.main.info.title" to "Информация",
+            "app.object.main.info.adress.title" to "Адрес",
+            "app.object.main.info.type.title" to "Тип объекта",
+            "app.object.main.info.is_own.title" to "В собственности",
+            "app.object.main.info.is_rent.title" to "Сдается в аренду",
+            "app.object.main.info.is_temporary.title" to "Временное проживание",
+            "app.object.main.info.area.title" to "Общая площадь",
+            "app.object.main.info.comment.title" to "Комментарий",
+            "app.object.main.actions.add" to "Добавить объект",
+            "app.object.main.actions.edit" to "Редактировать объект",
+            "app.object.main.actions.delete" to "Удалить объект",
+            "app.object.main.actions.load_photo" to "Загрузить фотографию",
+            "app.object.main.actions.cancel" to "Отмена",
+            "app.object.main.info.documents.title" to "Документы",
+            "app.object.main.info.documents.title_all" to "Все",
+            "app.object.main.info.property_type.house" to "Дом",
+            "app.object.main.info.property_type.appartment" to "Квартира",
+            "app.object.main.info.yes" to "Да",
+            "app.object.main.info.no" to "Нет",
+            "app.object.main.actions.add.photo" to "Фото",
+            "app.object.main.actions.add.file" to "Файлы",
         )
     }
 

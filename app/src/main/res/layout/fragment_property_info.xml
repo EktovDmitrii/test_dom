@@ -50,7 +50,7 @@
             app:layout_constraintEnd_toStartOf="@+id/moreImageView"
             app:layout_constraintStart_toEndOf="@+id/backImageView"
             app:layout_constraintTop_toBottomOf="@id/titleTextView"
-            app:translationTextKey="Редактировать данные" />
+            tools:text="г. Москва, Павелецкая наб. д. 4" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/moreImageView"
@@ -101,56 +101,56 @@
                     android:fontFamily="@font/my_service_bold"
                     android:textColor="@color/secondary900"
                     android:textSize="16sp"
-                    app:translationTextKey="Информация" />
+                    app:translationTextKey="app.object.main.info.title" />
 
                 <com.custom.rgs_android_dom.views.text.MSDLabelTextView
                     android:id="@+id/addressTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    app:translationLabelKey="Адрес" />
+                    app:translationLabelKey="app.object.main.info.adress.title" />
 
                 <com.custom.rgs_android_dom.views.text.MSDLabelTextView
                     android:id="@+id/typeTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    app:translationLabelKey="Тип объекта" />
+                    app:translationLabelKey="app.object.main.info.type.title" />
 
                 <com.custom.rgs_android_dom.views.text.MSDLabelTextView
                     android:id="@+id/isOwnTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    app:translationLabelKey="В собственности" />
+                    app:translationLabelKey="app.object.main.info.is_own.title" />
 
                 <com.custom.rgs_android_dom.views.text.MSDLabelTextView
                     android:id="@+id/isRentTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    app:translationLabelKey="Сдается в аренду" />
+                    app:translationLabelKey="app.object.main.info.is_rent.title" />
 
                 <com.custom.rgs_android_dom.views.text.MSDLabelTextView
                     android:id="@+id/isTemporaryTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    app:translationLabelKey="Временное проживание" />
+                    app:translationLabelKey="app.object.main.info.is_temporary.title" />
 
                 <com.custom.rgs_android_dom.views.text.MSDLabelTextView
                     android:id="@+id/totalAreaTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    app:translationLabelKey="Общая площадь" />
+                    app:translationLabelKey="app.object.main.info.area.title" />
 
                 <com.custom.rgs_android_dom.views.text.MSDLabelTextView
                     android:id="@+id/commentTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    app:translationLabelKey="Комментарий" />
+                    app:translationLabelKey="app.object.main.info.comment.title" />
 
             </LinearLayout>
 
@@ -177,7 +177,7 @@
                         android:fontFamily="@font/suisse_bold"
                         android:textColor="@color/secondary900"
                         android:textSize="16sp"
-                        app:translationTextKey="Документы" />
+                        app:translationTextKey="app.object.main.info.documents.title" />
 
                     <com.custom.rgs_android_dom.views.text.MSDTextView
                         android:id="@+id/allDocumentsTextView"
@@ -188,7 +188,7 @@
                         android:gravity="end"
                         android:textColor="@color/secondary600"
                         android:textSize="14sp"
-                        app:translationTextKey="Все" />
+                        app:translationTextKey="app.object.main.info.documents.title_all" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <com.custom.rgs_android_dom.views.MSDRecyclerView
