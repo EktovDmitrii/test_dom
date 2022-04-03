@@ -2,8 +2,11 @@ package com.custom.rgs_android_dom.ui.client.agent.edit
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.custom.rgs_android_dom.data.network.toMSDErrorModel
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
+import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
+import com.custom.rgs_android_dom.domain.client.exceptions.ValidateFieldModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,6 +15,10 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
 class EditAgentViewModel(private val clientInteractor: ClientInteractor) : BaseViewModel() {
+
+    companion object {
+        private const val ERR_AGENT_NOT_FOUND = "INS-093"
+    }
 
     private val isSaveTextViewEnabledController = MutableLiveData<Boolean>()
     val isSaveTextViewEnabledObserver: LiveData<Boolean> = isSaveTextViewEnabledController
@@ -61,7 +68,16 @@ class EditAgentViewModel(private val clientInteractor: ClientInteractor) : BaseV
                             loadingStateController.value = LoadingState.CONTENT
                         }
                         else -> {
-                            handleNetworkException(it)
+                            // TODO Temporary solution
+                            val msdErrorModel = it.toMSDErrorModel()
+                            if (msdErrorModel != null && msdErrorModel.code == ERR_AGENT_NOT_FOUND){
+                                networkErrorController.value = "Агента с таким кодом не существует"
+                                validateExceptionController.value = SpecificValidateClientExceptions(
+                                    listOf(ValidateFieldModel(ClientField.AGENTCODE, ""))
+                                )
+                            } else {
+                                handleNetworkException(it)
+                            }
                             loadingStateController.value = LoadingState.ERROR
                         }
                     }

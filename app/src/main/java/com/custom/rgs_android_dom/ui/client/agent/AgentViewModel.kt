@@ -8,6 +8,7 @@ import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.client.agent.edit.EditAgentFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.logException
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -23,23 +24,14 @@ class AgentViewModel(private val clientInteractor: ClientInteractor) : BaseViewM
 
 
     init {
-        clientInteractor.getAgent().subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onSuccess = {
-                    agentController.value = it
-                },
-                onError = {
-                    logException(this, it)
-                }
-            ).addTo(dataCompositeDisposable)
+        loadAgent()
 
         clientInteractor.agentUpdatedSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    agentController.value = it
+                    loadAgent()
                 },
                 onError = {
                     logException(this, it)
@@ -51,7 +43,6 @@ class AgentViewModel(private val clientInteractor: ClientInteractor) : BaseViewM
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    clientInteractor.saveText(it)
                     editAgentRequestedController.value = it
                 },
                 onError = {
@@ -66,6 +57,22 @@ class AgentViewModel(private val clientInteractor: ClientInteractor) : BaseViewM
 
     fun onEditClick(){
         ScreenManager.showScreen(EditAgentFragment())
+    }
+
+    private fun loadAgent(){
+        Single.zip(clientInteractor.getAgent(), clientInteractor.isEditAgentRequested()){agent, isEditAgentRequested->
+            agentController.postValue(agent)
+            if (!agent.isEditAgentButtonVisible){
+                editAgentRequestedController.postValue(isEditAgentRequested)
+            }
+        }
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribeBy(
+            onError = {
+                logException(this, it)
+            }
+        ).addTo(dataCompositeDisposable)
     }
 
 }

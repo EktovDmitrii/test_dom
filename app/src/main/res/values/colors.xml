@@ -29,20 +29,25 @@
     <color name="secondary900_alpha80">#8F20201F</color>
     <color name="secondary900_alpha64">#A320201F</color>
     <color name="secondary900_alpha4">#0A20201F</color>
+    <color name="secondary900_alpha30">#4D20201F</color>
     <color name="secondary900_alpha48">#7A20201F</color>
     <color name="secondary900_alpha6">#0F20201F</color>
+    <color name="secondary900_alpha2">#0520201F</color>
     <color name="error600_alpha12">#1FD45054</color>
     <color name="secondary_default">#7D7E7E</color>
     <color name="primary500_alpha12">#1FEEA641</color>
     <color name="primary500_alpha48">#48EEA641</color>
     <color name="primary500_black_alpha40">#87582B</color>
     <color name="white_alpha24">#3DFFFFFF</color>
+    <color name="white_alpha20">#33FFFFFF</color>
     <color name="white_alpha32">#52FFFFFF</color>
     <color name="white_alpha48">#48FFFFFF</color>
     <color name="white_alpha64">#A3FFFFFF</color>
     <color name="white_alpha80">#CCFFFFFF</color>
     <color name="white_alpha9">#17FFFFFF</color>
     <color name="secondary250_alpha48">#48DBDBDB</color>
+    <color name="dot_background">#CECBC7</color>
+    <color name="onboarding_background">#EBE7E2</color>
 
     <!-- TODO This is temorary name -->
     <color name="primary_200">#33F6A636</color>
@@ -52,6 +57,7 @@
     <color name="lime">#DEDFBA</color>
     <color name="gray">#333333</color>
     <color name="isabelline">#EDEAE5</color>
+    <color name="submarine">#B5C6C7</color>
 
     <!-- Text color for text input layout bottom line (overriden from default resources) -->
     <color name="mtrl_textinput_default_box_stroke_color">@color/white</color>

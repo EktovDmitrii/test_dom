@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.domain.catalog.models
 
+import com.custom.rgs_android_dom.domain.purchase.models.DeliveryType
 import org.joda.time.DateTime
 
 data class ServiceModel(
@@ -9,11 +10,14 @@ data class ServiceModel(
     val createdAt: DateTime?,
     val defaultProduct: DefaultProductModel?,
     val deliveryTime: String?,
-    val deliveryType: String?,
+    val deliveryType: DeliveryType?,
     val description: String?,
     val descriptionFormat: String?,
     val descriptionRef: String?,
-    val iconLink: String?,
+    val logoSmall: String,
+    val logoMiddle: String,
+    val logoLarge: String,
+    val iconLink: String,
     val id: String,
     val internalDescription: String?,
     val name: String?,
@@ -24,6 +28,7 @@ data class ServiceModel(
     val title: String?,
     val type: String?,
     val unitType: String?,
+    val duration: ProductDurationModel?,
     val validityFrom: DateTime?,
     val validityTo: DateTime?,
     val versionActivatedAt: DateTime?,

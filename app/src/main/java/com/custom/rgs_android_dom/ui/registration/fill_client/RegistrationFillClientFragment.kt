@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentRegistrationFillClientBinding
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -15,6 +16,7 @@ import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
 import com.custom.rgs_android_dom.views.edit_text.MSDLabelIconEditText
 import com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
+import com.yandex.metrica.YandexMetrica
 import org.joda.time.LocalDateTime
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
@@ -55,14 +57,20 @@ class RegistrationFillClientFragment : BaseFragment<RegistrationFillClientViewMo
         }
 
         binding.skipTextView.setOnDebouncedClickListener {
-            viewModel.onSkipClick()
+            YandexMetrica.reportEvent("login_step_5_reg_abort")
+
+            viewModel.onCloseClick()
         }
 
         binding.closeImageView.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("login_step_5_reg_abort")
+
             viewModel.onCloseClick()
         }
 
         binding.saveTextView.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("login_step_4_reg_save")
+
             hideSoftwareKeyboard()
             viewModel.onSaveClick()
         }
@@ -111,8 +119,8 @@ class RegistrationFillClientFragment : BaseFragment<RegistrationFillClientViewMo
         subscribe(viewModel.fillClientViewStateObserver){
             binding.agentInfoLinearLayout.isVisible = it.isOpenCodeAgendFields
 
-            val knowAgentCodeText = if (it.isOpenCodeAgendFields) "Свернуть информацию об агенте"
-            else "Знаю код агента"
+            val knowAgentCodeText = if (it.isOpenCodeAgendFields) TranslationInteractor.getTranslation("app.profile.add.agent_info.expanded_title")
+            else TranslationInteractor.getTranslation("app.profile.add.agent_info.collapsed_title")
             binding.knowAgentCodeTextView.text = knowAgentCodeText
 
             binding.agentCodeEditText.setText(it.agentCode ?: "")
@@ -143,11 +151,11 @@ class RegistrationFillClientFragment : BaseFragment<RegistrationFillClientViewMo
         subscribe(viewModel.validateExceptionObserver){ specError ->
             specError.fields.forEach {
                 when(it.fieldName){
-                    ClientField.BIRTHDATE -> binding.birthdayEditText.setState(MSDLabelIconEditText.State.ERROR, "Проверьте, правильно ли введена дата рождения")
-                    ClientField.FIRSTNAME -> binding.nameEditText.setState(MSDLabelEditText.State.ERROR, "Проверьте, правильно ли введено имя")
-                    ClientField.LASTNAME -> binding.surnameEditText.setState(MSDLabelEditText.State.ERROR, "Проверьте, правильно ли введена фамилия")
-                    ClientField.AGENTCODE -> binding.agentCodeEditText.setState(MSDLabelEditText.State.ERROR, "Проверьте, правильно ли введён код агента")
-                    ClientField.AGENTPHONE -> binding.agentPhoneEditText.setState(MSDMaskedLabelEditText.State.ERROR, "Проверьте, правильно ли введён номер телефона")
+                    ClientField.BIRTHDATE -> binding.birthdayEditText.setState(MSDLabelIconEditText.State.ERROR, TranslationInteractor.getTranslation("app.profile.add.birthday.validation_error"))
+                    ClientField.FIRSTNAME -> binding.nameEditText.setState(MSDLabelEditText.State.ERROR, TranslationInteractor.getTranslation("app.profile.add.firstname.validation_error"))
+                    ClientField.LASTNAME -> binding.surnameEditText.setState(MSDLabelEditText.State.ERROR, TranslationInteractor.getTranslation("app.profile.add.lastname.validation_error"))
+                    ClientField.AGENTCODE -> binding.agentCodeEditText.setState(MSDLabelEditText.State.ERROR, TranslationInteractor.getTranslation("app.profile.add.agent_info.code_validation_error"))
+                    ClientField.AGENTPHONE -> binding.agentPhoneEditText.setState(MSDMaskedLabelEditText.State.ERROR, "app.profile.add.agent_info.phone_validation_error")
                 }
             }
         }

@@ -7,11 +7,14 @@ data class ClientProductModel(
     val clientId: String?,
     val contractId: String?,
     val id: String,
-    val objectIds: List<String>?,
+    val objectId: String?,
     val productCode: String?,
     val productDescription: String?,
     val productDescriptionRef: String?,
     val productIcon: String?,
+    val logoSmall: String?,
+    val logoMiddle: String?,
+    val logoLarge: String?,
     val productId: String,
     val productName: String?,
     val productTitle: String?,
@@ -19,5 +22,6 @@ data class ClientProductModel(
     val productVersionId: String?,
     val status: String?,
     val validityFrom: DateTime?,
-    val validityTo: DateTime?
+    val validityTo: DateTime?,
+    val defaultProduct: Boolean
 )

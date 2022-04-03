@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:paddingBottom="12dp"
+        android:paddingStart="16dp"
+        android:background="@drawable/rectangle_filled_submarine_radius_16dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iconImageView"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/rectangle_filled_white_radius_10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="229dp"
+            android:layout_height="254dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/policy_active_sign" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/titleFirstTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/my_service_bold"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:includeFontPadding="false"
+                android:paddingEnd="120dp"
+                app:translationTextKey="Защита вашего дома"
+                tools:text="Защита вашего дома" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/durationTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:fontFamily="@font/suisse_regular"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:includeFontPadding="false"
+                app:translationTextKey="Действует с %s1 по %s2"
+                tools:text="Действует с 02.05.2021 по 02.05.2022"
+                />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/my_service_medium"
+        android:textSize="16sp"
+        android:textColor="@color/secondary600"
+        android:includeFontPadding="false"
+        app:translationTextKey="Полис привязан"
+        />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/titleSecondTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/my_service_bold"
+        android:textSize="20sp"
+        android:textColor="@color/secondary900"
+        android:includeFontPadding="false"
+        app:translationTextKey="Защита вашего дома"/>
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/descriptionTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/suisse_regular"
+        android:textSize="14sp"
+        android:lineSpacingExtra="10sp"
+        android:textColor="@color/secondary800"
+        android:includeFontPadding="false"
+        app:translationTextKey="Мы добавили полис к вашим страховым продуктам. Срок действия полиса страхования с %s1 по %s2"/>
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/understandTextView"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="22dp"
+        app:translationTextKey="Понятно!"
+        android:gravity="center"
+        android:fontFamily="@font/my_service_bold"
+        android:textSize="14sp"
+        android:textColor="@color/white"
+        android:includeFontPadding="false"
+        android:background="@drawable/rectangle_filled_primary_500_radius_12dp" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

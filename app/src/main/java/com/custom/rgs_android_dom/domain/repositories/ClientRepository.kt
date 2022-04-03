@@ -1,11 +1,14 @@
 package com.custom.rgs_android_dom.domain.repositories
 
+import androidx.core.content.edit
+import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.domain.client.models.*
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import org.joda.time.DateTime
 import org.joda.time.LocalDateTime
 
 interface ClientRepository {
@@ -13,7 +16,7 @@ interface ClientRepository {
     fun updateClient(firstName: String?,
                      lastName: String?,
                      middleName: String?,
-                     birthday: LocalDateTime?,
+                     birthday: DateTime?,
                      gender: Gender?,
                      phone: String?,
                      email: String?,
@@ -24,8 +27,6 @@ interface ClientRepository {
     fun loadAndSaveClient(): Completable
 
     fun getClientUpdatedSubject(): Observable<ClientModel>
-
-    fun saveTextToAgent(saveText: Boolean)
 
     fun assignAgent(code: String, phone: String, assignType: String): Completable
 
@@ -41,12 +42,36 @@ interface ClientRepository {
 
     fun requestEditAgent(): Completable
 
+    fun getRequestEditAgentTasks(): Single<List<RequestEditAgentTaskModel>>
+
     fun getEditAgentRequestedSubject(): PublishSubject<Boolean>
 
     fun getUserDetails(): Single<UserDetailsModel>
 
-    fun requestEditPersonalData(): Completable
+    fun getEditClientRequestedSubject(): PublishSubject<Boolean>
 
-    fun getEditPersonalDataRequestedSubject(): BehaviorSubject<Boolean>
+    fun getOrders(size: Long, index: Long): Single<List<Order>>
+
+    fun getGeneralInvoices(
+        size: Long,
+        index: Long,
+        status: String? = null,
+        num: String? = null,
+        fullText: String? = null,
+        orderIds: String,
+        withPayments: Boolean
+    ): Single<List<GeneralInvoice>>
+
+    fun getOrder(orderId: String): Single<Order>
+
+    fun cancelOrder(orderId: String): Completable
+
+    fun getOrderCancelledSubject(): PublishSubject<Unit>
+
+    fun getCancelledTasks(orderId: String): Single<List<CancelledTaskModel>>
+
+    fun requestEditClient(): Completable
+
+    fun getRequestEditClientTasks(): Single<List<RequestEditClientTaskModel>>
 
 }

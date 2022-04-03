@@ -1,20 +1,17 @@
 package com.custom.rgs_android_dom.domain.client
 
+import android.util.Log
 import com.custom.rgs_android_dom.data.repositories.files.FilesRepositoryImpl.Companion.STORE_AVATARS
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
 import com.custom.rgs_android_dom.domain.client.exceptions.ValidateFieldModel
 import com.custom.rgs_android_dom.domain.client.mappers.AgentMapper
-import com.custom.rgs_android_dom.domain.client.models.Gender
 import com.custom.rgs_android_dom.domain.client.mappers.ClientShortViewStateMapper
 import com.custom.rgs_android_dom.domain.client.mappers.EditPersonalDataViewStateMapper
 import com.custom.rgs_android_dom.domain.client.mappers.PersonalDataMapper
-import com.custom.rgs_android_dom.domain.client.models.ClientModel
+import com.custom.rgs_android_dom.domain.client.models.*
 import com.custom.rgs_android_dom.domain.client.view_states.*
-import com.custom.rgs_android_dom.domain.repositories.CatalogRepository
-import com.custom.rgs_android_dom.domain.repositories.ClientRepository
-import com.custom.rgs_android_dom.domain.repositories.FilesRepository
-import com.custom.rgs_android_dom.domain.repositories.RegistrationRepository
+import com.custom.rgs_android_dom.domain.repositories.*
 import com.custom.rgs_android_dom.utils.*
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Completable
@@ -22,18 +19,24 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
+import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
+import org.joda.time.format.DateTimeFormat
 import java.io.File
 
-class ClientInteractor(
+class
+ClientInteractor(
     private val clientRepository: ClientRepository,
     private val registrationRepository: RegistrationRepository,
     private val catalogRepository: CatalogRepository,
+    private val policiesRepository: PoliciesRepository,
     private val filesRepository: FilesRepository
 ) {
 
     companion object {
-        private val MIN_DATE = LocalDateTime.now().minusYears(16).plusDays(-1)
+        private val MIN_DATE = LocalDateTime.now().minusYears(16).plusDays(1)
         private val MAX_DATE = LocalDateTime.parse("1900-01-01")
 
         private const val DOC_SERIAL_LENGTH = 4
@@ -47,13 +50,38 @@ class ClientInteractor(
     var validateSubject = BehaviorRelay.create<Boolean>()
     var editAgentStateSubject = BehaviorRelay.create<EditAgentViewState>()
 
-    private var fillClientViewState: FillClientViewState = FillClientViewState(registrationRepository.getCurrentPhone())
+    private var fillClientViewState: FillClientViewState =
+        FillClientViewState(registrationRepository.getCurrentPhone())
     private var editPersonalDataViewState = EditPersonalDataViewState()
     private var editAgentViewState = EditAgentViewState()
 
-    //todo
-    fun saveText(text: Boolean) {
-        clientRepository.saveTextToAgent(text)
+    fun getOrdersHistory(): Single<List<Order>> {
+        return clientRepository.getOrders(1000, 0)
+            .flatMap {orders->
+                Single.just(sortOrderHistory(orders.filter { it.status != OrderStatus.DRAFT }))
+            }
+    }
+
+    private fun sortOrderHistory(orders: List<Order>): List<Order> {
+        val activeOrders = mutableListOf<Order>()
+        val otherOrders = mutableListOf<Order>()
+        orders.forEach {
+            if (it.status == OrderStatus.ACTIVE) activeOrders.add(it) else otherOrders.add(it)
+        }
+        return mutableListOf<Order>().apply {
+            addAll(activeOrders.sortedByDescending {
+                LocalDate.parse(
+                    it.deliveryDate,
+                    DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZZ")
+                )
+            })
+            addAll(otherOrders.sortedByDescending {
+                LocalDate.parse(
+                    it.deliveryDate,
+                    DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZZ")
+                )
+            })
+        }
     }
 
     fun onKnowAgentCodeClick() {
@@ -66,25 +94,31 @@ class ClientInteractor(
 
         val errorsValidate = ArrayList<ValidateFieldModel>()
 
-        if (fillClientViewState.surname?.trim()?.isEmpty() == true){
+        if (fillClientViewState.surname?.trim()?.isEmpty() == true) {
             errorsValidate.add(ValidateFieldModel(ClientField.LASTNAME, ""))
         }
 
-        if (fillClientViewState.name?.trim()?.isEmpty() == true){
+        if (fillClientViewState.name?.trim()?.isEmpty() == true) {
             errorsValidate.add(ValidateFieldModel(ClientField.FIRSTNAME, ""))
         }
 
-        var birthday: LocalDateTime? = null
+        var birthday: DateTime? = null
         fillClientViewState.birthday?.let { birthdayString ->
 
-            val birthdayWithTimezone = "${birthdayString.tryParseDate()}T00:00:00.000Z"
-            birthday = birthdayWithTimezone.tryParseLocalDateTime({
+            /*val birthdayWithTimezone = "${birthdayString.tryParseDate()}T00:00:00.000Z"
+            birthday = birthdayWithTimezone.tryParseDateTime({
                 logException(this, it)
                 birthday = null
-            }, format = PATTERN_DATE_TIME_MILLIS)
+            }, format = PATTERN_DATE_TIME_MILLIS)*/
+            birthday = birthdayString.tryParseDateToDateTimeUTCWithOffset(0)
 
             if (birthday == null || birthday != null && !isBirthdayValid(birthday!!)) {
-                errorsValidate.add(ValidateFieldModel(ClientField.BIRTHDATE, "Некорректная дата рождения"))
+                errorsValidate.add(
+                    ValidateFieldModel(
+                        ClientField.BIRTHDATE,
+                        "Некорректная дата рождения"
+                    )
+                )
             }
         }
 
@@ -92,17 +126,22 @@ class ClientInteractor(
             errorsValidate.add(ValidateFieldModel(ClientField.AGENTCODE, "Укажите код агента"))
         }
 
-        if (fillClientViewState.agentPhone != null){
-            if (!fillClientViewState.agentPhoneValid){
-                errorsValidate.add(ValidateFieldModel(ClientField.AGENTPHONE, "Укажите телефон агента"))
+        if (fillClientViewState.agentPhone != null) {
+            if (!fillClientViewState.agentPhoneValid) {
+                errorsValidate.add(
+                    ValidateFieldModel(
+                        ClientField.AGENTPHONE,
+                        "Укажите телефон агента"
+                    )
+                )
             }
         }
 
-        if (fillClientViewState.agentPhone == null && fillClientViewState.agentCode != null){
+        if (fillClientViewState.agentPhone == null && fillClientViewState.agentCode != null) {
             errorsValidate.add(ValidateFieldModel(ClientField.AGENTPHONE, "Укажите телефон агента"))
         }
 
-        if (errorsValidate.isNotEmpty()){
+        if (errorsValidate.isNotEmpty()) {
             return Completable.error(SpecificValidateClientExceptions(errorsValidate))
         }
 
@@ -113,7 +152,7 @@ class ClientInteractor(
             gender = fillClientViewState.gender,
         )
 
-        val agentCompletable = if (fillClientViewState.agentCode != null){
+        val agentCompletable = if (fillClientViewState.agentCode != null) {
             clientRepository.assignAgent(
                 code = fillClientViewState.agentCode?.trim() ?: "",
                 phone = fillClientViewState.agentPhone ?: "",
@@ -183,16 +222,28 @@ class ClientInteractor(
     }
 
     fun getClient(): Single<ClientShortViewState> {
-        return Single.zip(clientRepository.getClient(), clientRepository.getUserDetails()){clientModel, userDetailsModel ->
+        return Single.zip(
+            clientRepository.getClient(),
+            clientRepository.getUserDetails()
+        ) { clientModel, userDetailsModel ->
             ClientShortViewStateMapper.from(clientModel, userDetailsModel)
         }.doOnSuccess {
             CacheHelper.loadAndSaveClient()
         }
     }
 
-    fun getEditPersonalDataViewState(): Single<EditPersonalDataViewState>{
-        return Single.zip(clientRepository.getClient(), catalogRepository.getClientProducts()){ clientModel, clientProducts ->
-            editPersonalDataViewState = EditPersonalDataViewStateMapper.from(clientModel, clientProducts)
+    fun getClientModelSingle(): Single<ClientModel> {
+        return clientRepository.getClient()
+    }
+
+    fun getEditPersonalDataViewState(): Single<EditPersonalDataViewState> {
+        return Single.zip(
+            clientRepository.getClient(),
+            catalogRepository.getClientProducts(null),
+            policiesRepository.getPoliciesSingle()
+        ) { clientModel, clientProducts, policies ->
+            editPersonalDataViewState =
+                EditPersonalDataViewStateMapper.from(clientModel, clientProducts, policies)
             return@zip editPersonalDataViewState
         }.doOnSuccess {
             CacheHelper.loadAndSaveClient()
@@ -200,8 +251,8 @@ class ClientInteractor(
     }
 
     fun subscribeClientUpdateSubject(): Observable<ClientShortViewState> {
-        return clientRepository.getClientUpdatedSubject().flatMap { clientModel->
-            clientRepository.getUserDetails().flatMapObservable {  userDetailsModel->
+        return clientRepository.getClientUpdatedSubject().flatMap { clientModel ->
+            clientRepository.getUserDetails().flatMapObservable { userDetailsModel ->
                 Observable.fromCallable {
                     ClientShortViewStateMapper.from(clientModel, userDetailsModel)
                 }
@@ -210,8 +261,8 @@ class ClientInteractor(
     }
 
     fun getClientUpdatedSubject(): Observable<PersonalDataViewState> {
-        return clientRepository.getClientUpdatedSubject().flatMap { clientModel->
-            clientRepository.getUserDetails().flatMapObservable {  userDetailsModel->
+        return clientRepository.getClientUpdatedSubject().flatMap { clientModel ->
+            clientRepository.getUserDetails().flatMapObservable { userDetailsModel ->
                 Observable.fromCallable {
                     PersonalDataMapper.from(clientModel, userDetailsModel)
                 }
@@ -227,37 +278,40 @@ class ClientInteractor(
     }
 
     fun getPersonalData(): Single<PersonalDataViewState> {
-        return Single.zip(clientRepository.getClient(), clientRepository.getUserDetails()){clientModel, userDetailsModel ->
+        return Single.zip(
+            clientRepository.getClient(),
+            clientRepository.getUserDetails()
+        ) { clientModel, userDetailsModel ->
             PersonalDataMapper.from(clientModel, userDetailsModel)
         }
     }
 
-    fun onEditPersonalDataLastNameChanged(lastName: String){
+    fun onEditPersonalDataLastNameChanged(lastName: String) {
         editPersonalDataViewState = editPersonalDataViewState.copy(lastName = lastName)
         validateEditPersonalDataState()
     }
 
-    fun onEditPersonalDataFirstNameChanged(firstName: String){
+    fun onEditPersonalDataFirstNameChanged(firstName: String) {
         editPersonalDataViewState = editPersonalDataViewState.copy(firstName = firstName)
         validateEditPersonalDataState()
     }
 
-    fun onEditPersonalDataMiddleNameChanged(middleName: String){
+    fun onEditPersonalDataMiddleNameChanged(middleName: String) {
         editPersonalDataViewState = editPersonalDataViewState.copy(middleName = middleName)
         validateEditPersonalDataState()
     }
 
-    fun onEditPersonalDataBirthdayChanged(birthday: String){
+    fun onEditPersonalDataBirthdayChanged(birthday: String) {
         editPersonalDataViewState = editPersonalDataViewState.copy(birthday = birthday)
         validateEditPersonalDataState()
     }
 
-    fun onEditPersonalDataGenderChanged(gender: Gender){
+    fun onEditPersonalDataGenderChanged(gender: Gender) {
         editPersonalDataViewState = editPersonalDataViewState.copy(gender = gender)
         validateEditPersonalDataState()
     }
 
-    fun onEditPersonalDataPhoneChanged(phone: String){
+    fun onEditPersonalDataPhoneChanged(phone: String) {
         editPersonalDataViewState = editPersonalDataViewState.copy(phone = phone)
         validateEditPersonalDataState()
     }
@@ -267,114 +321,187 @@ class ClientInteractor(
         validateEditPersonalDataState()
     }
 
-    fun onEditPersonalDataDocNumberChanged(docNumber: String){
+    fun onEditPersonalDataDocNumberChanged(docNumber: String) {
         editPersonalDataViewState = editPersonalDataViewState.copy(docNumber = docNumber)
         validateEditPersonalDataState()
     }
 
-    fun onEditPersonalDataSecondPhoneChanged(secondPhone: String, isMaskFilled: Boolean){
-        editPersonalDataViewState = editPersonalDataViewState.copy(secondPhone = secondPhone, isSecondPhoneValid = isMaskFilled, wasSecondPhoneEdited = true)
+    fun onEditPersonalDataSecondPhoneChanged(secondPhone: String, isMaskFilled: Boolean) {
+        editPersonalDataViewState = editPersonalDataViewState.copy(
+            secondPhone = secondPhone,
+            isSecondPhoneValid = isMaskFilled,
+            wasSecondPhoneEdited = true
+        )
         validateEditPersonalDataState()
     }
 
-    fun onEditPersonalDataEmailChanged(email: String){
-        editPersonalDataViewState = editPersonalDataViewState.copy(email = email, wasEmailEdited = true)
+    fun onEditPersonalDataEmailChanged(email: String) {
+        editPersonalDataViewState =
+            editPersonalDataViewState.copy(email = email, wasEmailEdited = true)
         validateEditPersonalDataState()
     }
 
     fun savePersonalData(): Completable {
 
         val errorsValidate = ArrayList<ValidateFieldModel>()
-        if (!editPersonalDataViewState.isLastNameSaved && editPersonalDataViewState.lastName.isNotEmpty()){
-            if (editPersonalDataViewState.lastName.trim().isEmpty()){
-                errorsValidate.add(ValidateFieldModel(ClientField.LASTNAME, "Проверьте, правильно ли введена фамилия"))
+        if (!editPersonalDataViewState.isLastNameSaved && editPersonalDataViewState.lastName.isNotEmpty()) {
+            if (editPersonalDataViewState.lastName.trim().isEmpty()) {
+                errorsValidate.add(
+                    ValidateFieldModel(
+                        ClientField.LASTNAME,
+                        "Проверьте, правильно ли введена фамилия"
+                    )
+                )
             }
         }
 
-        if (!editPersonalDataViewState.isFirstNameSaved && editPersonalDataViewState.firstName.isNotEmpty()){
-            if (editPersonalDataViewState.firstName.trim().isEmpty()){
-                errorsValidate.add(ValidateFieldModel(ClientField.FIRSTNAME, "Проверьте, правильно ли введено имя"))
+        if (!editPersonalDataViewState.isFirstNameSaved && editPersonalDataViewState.firstName.isNotEmpty()) {
+            if (editPersonalDataViewState.firstName.trim().isEmpty()) {
+                errorsValidate.add(
+                    ValidateFieldModel(
+                        ClientField.FIRSTNAME,
+                        "Проверьте, правильно ли введено имя"
+                    )
+                )
             }
         }
 
-        if (!editPersonalDataViewState.isMiddleNameSaved && editPersonalDataViewState.middleName.isNotEmpty()){
-            if (editPersonalDataViewState.middleName.trim().isEmpty()){
-                errorsValidate.add(ValidateFieldModel(ClientField.MIDDLENAME, "Проверьте, правильно ли введено отчество"))
+        if (!editPersonalDataViewState.isMiddleNameSaved && editPersonalDataViewState.middleName.isNotEmpty()) {
+            if (editPersonalDataViewState.middleName.trim().isEmpty()) {
+                errorsValidate.add(
+                    ValidateFieldModel(
+                        ClientField.MIDDLENAME,
+                        "Проверьте, правильно ли введено отчество"
+                    )
+                )
             }
         }
 
-        var birthday: LocalDateTime? = null
-        if (editPersonalDataViewState.birthday.isNotEmpty()){
-            val birthdayWithTimezone = "${editPersonalDataViewState.birthday.tryParseDate()}T00:00:00.000Z"
-            birthday = birthdayWithTimezone.tryParseLocalDateTime({
+        var birthday: DateTime? = null
+        if (editPersonalDataViewState.birthday.isNotEmpty()) {
+            /*val birthdayWithTimezone = "${editPersonalDataViewState.birthday.tryParseDate()}T00:00:00.000Z"
+            birthday = birthdayWithTimezone.tryParseDateTime({
                 logException(this, it)
                 birthday = null
-            }, format = PATTERN_DATE_TIME_MILLIS)
-
-            if (birthday == null || birthday != null && !isBirthdayValid(birthday!!)) {
-                errorsValidate.add(ValidateFieldModel(ClientField.BIRTHDATE, "Проверьте, правильно ли введена дата рождения"))
+            }, format = PATTERN_DATE_TIME_MILLIS)*/
+            birthday = editPersonalDataViewState.birthday.tryParseDateToDateTimeUTCWithOffset(0)
+            if (birthday == null || !isBirthdayValid(birthday)) {
+                errorsValidate.add(
+                    ValidateFieldModel(
+                        ClientField.BIRTHDATE,
+                        "Проверьте, правильно ли введена дата рождения"
+                    )
+                )
             }
+
+            //birthday = birthday?.withZone(DateTimeZone.forOffsetHours(3))
         }
 
         if (editPersonalDataViewState.hasProducts && !editPersonalDataViewState.isDocSerialSaved && editPersonalDataViewState.docSerial.isNotEmpty()
-            || !editPersonalDataViewState.hasProducts && editPersonalDataViewState.docSerial.isNotEmpty()){
-            if (editPersonalDataViewState.docSerial.trim().length != DOC_SERIAL_LENGTH){
-                errorsValidate.add(ValidateFieldModel(ClientField.DOC_SERIAL, "Проверьте, правильно ли введена серия паспорта"))
+            || !editPersonalDataViewState.hasProducts && editPersonalDataViewState.docSerial.isNotEmpty()
+        ) {
+            if (editPersonalDataViewState.docSerial.trim().length != DOC_SERIAL_LENGTH) {
+                errorsValidate.add(
+                    ValidateFieldModel(
+                        ClientField.DOC_SERIAL,
+                        "Проверьте, правильно ли введена серия паспорта"
+                    )
+                )
             }
-            if (editPersonalDataViewState.docNumber.trim().length != DOC_NUMBER_LENGTH){
-                errorsValidate.add(ValidateFieldModel(ClientField.DOC_NUMBER, "Проверьте, правильно ли введён номер паспорта"))
+            if (editPersonalDataViewState.docNumber.trim().length != DOC_NUMBER_LENGTH) {
+                errorsValidate.add(
+                    ValidateFieldModel(
+                        ClientField.DOC_NUMBER,
+                        "Проверьте, правильно ли введён номер паспорта"
+                    )
+                )
             }
         }
 
         if (editPersonalDataViewState.hasProducts && !editPersonalDataViewState.isDocNumberSaved && editPersonalDataViewState.docNumber.isNotEmpty()
-            || !editPersonalDataViewState.hasProducts && editPersonalDataViewState.docNumber.isNotEmpty()){
-            if (editPersonalDataViewState.docNumber.trim().length != DOC_NUMBER_LENGTH){
-                errorsValidate.add(ValidateFieldModel(ClientField.DOC_NUMBER, "Проверьте, правильно ли введён номер паспорта"))
+            || !editPersonalDataViewState.hasProducts && editPersonalDataViewState.docNumber.isNotEmpty()
+        ) {
+            if (editPersonalDataViewState.docNumber.trim().length != DOC_NUMBER_LENGTH) {
+                errorsValidate.add(
+                    ValidateFieldModel(
+                        ClientField.DOC_NUMBER,
+                        "Проверьте, правильно ли введён номер паспорта"
+                    )
+                )
             }
-            if (editPersonalDataViewState.docSerial.trim().length != DOC_SERIAL_LENGTH){
-                errorsValidate.add(ValidateFieldModel(ClientField.DOC_SERIAL, "Проверьте, правильно ли введена серия паспорта"))
+            if (editPersonalDataViewState.docSerial.trim().length != DOC_SERIAL_LENGTH) {
+                errorsValidate.add(
+                    ValidateFieldModel(
+                        ClientField.DOC_SERIAL,
+                        "Проверьте, правильно ли введена серия паспорта"
+                    )
+                )
             }
         }
 
-        if (editPersonalDataViewState.wasSecondPhoneEdited && editPersonalDataViewState.secondPhone.isNotEmpty() && !editPersonalDataViewState.isSecondPhoneValid){
-            errorsValidate.add(ValidateFieldModel(ClientField.SECOND_PHONE, "Проверьте, правильно ли введён номер телефона"))
+        if (editPersonalDataViewState.wasSecondPhoneEdited && editPersonalDataViewState.secondPhone.isNotEmpty() && !editPersonalDataViewState.isSecondPhoneValid) {
+            errorsValidate.add(
+                ValidateFieldModel(
+                    ClientField.SECOND_PHONE,
+                    "Проверьте, правильно ли введён номер телефона"
+                )
+            )
         }
 
-        if (editPersonalDataViewState.wasEmailEdited && editPersonalDataViewState.email.isNotEmpty() && !editPersonalDataViewState.email.isValidEmail()){
-            errorsValidate.add(ValidateFieldModel(ClientField.EMAIL, "Проверьте, правильно ли введён email"))
+        if (editPersonalDataViewState.wasEmailEdited && editPersonalDataViewState.email.isNotEmpty() && !editPersonalDataViewState.email.isValidEmail()) {
+            errorsValidate.add(
+                ValidateFieldModel(
+                    ClientField.EMAIL,
+                    "Проверьте, правильно ли введён email"
+                )
+            )
         }
 
-        if (errorsValidate.isNotEmpty()){
+        if (errorsValidate.isNotEmpty()) {
             return Completable.error(SpecificValidateClientExceptions(errorsValidate))
         }
 
-        val updatePassportCompletable = if (!editPersonalDataViewState.isDocNumberSaved && editPersonalDataViewState.docNumber.isNotEmpty()){
-            postPassport(editPersonalDataViewState.docSerial, editPersonalDataViewState.docNumber)
-        } else if (editPersonalDataViewState.isDocNumberSaved && editPersonalDataViewState.docNumber.isNotEmpty()){
-            updatePassport(editPersonalDataViewState.docId, editPersonalDataViewState.docSerial, editPersonalDataViewState.docNumber)
-        } else {
-            Completable.complete()
-        }
-
-        val updatePhoneCompletable = if (editPersonalDataViewState.wasSecondPhoneEdited && editPersonalDataViewState.secondPhone.isNotEmpty()){
-            if (editPersonalDataViewState.isSecondPhoneSaved){
-                clientRepository.updateSecondPhone(editPersonalDataViewState.secondPhone, editPersonalDataViewState.secondPhoneId)
+        val updatePassportCompletable =
+            if (!editPersonalDataViewState.isDocNumberSaved && editPersonalDataViewState.docNumber.isNotEmpty()) {
+                postPassport(
+                    editPersonalDataViewState.docSerial,
+                    editPersonalDataViewState.docNumber
+                )
+            } else if (editPersonalDataViewState.isDocNumberSaved && editPersonalDataViewState.docNumber.isNotEmpty()) {
+                updatePassport(
+                    editPersonalDataViewState.docId,
+                    editPersonalDataViewState.docSerial,
+                    editPersonalDataViewState.docNumber
+                )
             } else {
-                clientRepository.saveSecondPhone(editPersonalDataViewState.secondPhone)
+                Completable.complete()
             }
-        } else {
-            Completable.complete()
-        }
+
+        val updatePhoneCompletable =
+            if (editPersonalDataViewState.wasSecondPhoneEdited && editPersonalDataViewState.secondPhone.isNotEmpty()) {
+                if (editPersonalDataViewState.isSecondPhoneSaved) {
+                    clientRepository.updateSecondPhone(
+                        editPersonalDataViewState.secondPhone,
+                        editPersonalDataViewState.secondPhoneId
+                    )
+                } else {
+                    clientRepository.saveSecondPhone(editPersonalDataViewState.secondPhone)
+                }
+            } else {
+                Completable.complete()
+            }
 
         val deleteIds = arrayListOf<String>()
         if (editPersonalDataViewState.wasEmailEdited
-                && editPersonalDataViewState.email.isEmpty()
-                && editPersonalDataViewState.emailId.isNotEmpty()){
+            && editPersonalDataViewState.email.isEmpty()
+            && editPersonalDataViewState.emailId.isNotEmpty()
+        ) {
             deleteIds.add(editPersonalDataViewState.emailId)
         }
         if (editPersonalDataViewState.wasSecondPhoneEdited
             && editPersonalDataViewState.secondPhone.isEmpty()
-            && editPersonalDataViewState.secondPhoneId.isNotEmpty()){
+            && editPersonalDataViewState.secondPhoneId.isNotEmpty()
+        ) {
             deleteIds.add(editPersonalDataViewState.secondPhoneId)
         }
 
@@ -395,20 +522,26 @@ class ClientInteractor(
                 avatar = it.avatarFileId
             )
         }
-        return Completable.concatArray(updatePassportCompletable, updatePhoneCompletable, updateClientCompletable, deleteCompletable)
+        return Completable.concatArray(
+            updatePassportCompletable,
+            updatePhoneCompletable,
+            updateClientCompletable,
+            deleteCompletable
+        )
     }
 
-    fun onEditAgentCodeChanged(agentCode: String){
+    fun onEditAgentCodeChanged(agentCode: String) {
         editAgentViewState = editAgentViewState.copy(agentCode = agentCode)
         validateAgentState()
     }
 
-    fun onEditAgentPhoneChanged(agentPhone: String, isMaskFilled: Boolean){
-        editAgentViewState = editAgentViewState.copy(agentPhone = agentPhone, isAgentPhoneValid = isMaskFilled)
+    fun onEditAgentPhoneChanged(agentPhone: String, isMaskFilled: Boolean) {
+        editAgentViewState =
+            editAgentViewState.copy(agentPhone = agentPhone, isAgentPhoneValid = isMaskFilled)
         validateAgentState()
     }
 
-    fun getAgent(): Single<AgentViewState>{
+    fun getAgent(): Single<AgentViewState> {
         return clientRepository.getClient().map {
             AgentMapper.from(it)
         }
@@ -416,39 +549,55 @@ class ClientInteractor(
 
     fun updateAgent(): Completable {
         val errorsValidate = ArrayList<ValidateFieldModel>()
-        if (editAgentViewState.agentCode.trim().isEmpty()){
+        if (editAgentViewState.agentCode.trim().isEmpty()) {
             errorsValidate.add(ValidateFieldModel(ClientField.AGENTCODE, ""))
         }
 
-        if (editAgentViewState.agentPhone.trim().isEmpty()){
+        if (editAgentViewState.agentPhone.trim().isEmpty()) {
             errorsValidate.add(ValidateFieldModel(ClientField.AGENTPHONE, ""))
         }
 
-        if (editAgentViewState.agentPhone.isNotEmpty() && !editAgentViewState.isAgentPhoneValid){
+        if (editAgentViewState.agentPhone.isNotEmpty() && !editAgentViewState.isAgentPhoneValid) {
             errorsValidate.add(ValidateFieldModel(ClientField.AGENTPHONE, ""))
         }
 
-        if (errorsValidate.isNotEmpty()){
+        if (errorsValidate.isNotEmpty()) {
             return Completable.error(SpecificValidateClientExceptions(errorsValidate))
         }
 
-        return clientRepository.assignAgent(editAgentViewState.agentCode, editAgentViewState.agentPhone, ASSIGN_TYPE_PROFILE)
+        return clientRepository.assignAgent(
+            editAgentViewState.agentCode,
+            editAgentViewState.agentPhone,
+            ASSIGN_TYPE_PROFILE
+        )
     }
 
     fun requestEditAgent(): Completable {
         return clientRepository.requestEditAgent()
     }
 
-    fun getEditAgentRequestedSubject(): PublishSubject<Boolean> {
+    fun isEditAgentRequested(): Single<Boolean>{
+        return clientRepository.getRequestEditAgentTasks().map {
+            it.find { it.status == RequestEditAgentStatus.OPEN } != null
+        }
+    }
+
+    fun getEditAgentRequestedSubject(): PublishSubject<Boolean>{
         return clientRepository.getEditAgentRequestedSubject()
     }
 
-    fun requestEditPersonalData(): Completable {
-        return clientRepository.requestEditPersonalData()
+    fun requestEditClient(): Completable {
+        return clientRepository.requestEditClient()
     }
 
-    fun getEditPersonalDataRequestedSubject(): BehaviorSubject<Boolean> {
-        return clientRepository.getEditPersonalDataRequestedSubject()
+    fun getEditClientRequestedSubject(): PublishSubject<Boolean> {
+        return clientRepository.getEditClientRequestedSubject()
+    }
+
+    fun isEditClientRequested(): Single<Boolean>{
+        return clientRepository.getRequestEditClientTasks().map {
+            it.find { it.status == RequestEditClientStatus.OPEN } != null
+        }
     }
 
     fun loadAndSaveClient(): Completable {
@@ -461,12 +610,12 @@ class ClientInteractor(
             .flatMap {
                 fileId = it
                 clientRepository.getClient()
-            }.flatMapCompletable{ clientModel->
+            }.flatMapCompletable { clientModel ->
                 return@flatMapCompletable updateClient(
                     firstName = clientModel.firstName,
                     lastName = clientModel.lastName,
                     middleName = clientModel.middleName,
-                    birthday = clientModel.birthDate?.toLocalDateTime(),
+                    birthday = clientModel.birthDate,
                     gender = clientModel.gender,
                     phone = clientModel.phone,
                     email = clientModel.contacts?.find { it.type == "email" }?.contact,
@@ -484,12 +633,12 @@ class ClientInteractor(
             }
         }.flatMap {
             clientRepository.getClient()
-        }.flatMapCompletable{ clientModel->
+        }.flatMapCompletable { clientModel ->
             return@flatMapCompletable updateClient(
                 firstName = clientModel.firstName,
                 lastName = clientModel.lastName,
                 middleName = clientModel.middleName,
-                birthday = clientModel.birthDate?.toLocalDateTime(),
+                birthday = clientModel.birthDate,
                 gender = clientModel.gender,
                 phone = clientModel.phone,
                 email = clientModel.contacts?.find { it.type == "email" }?.contact,
@@ -498,8 +647,8 @@ class ClientInteractor(
         }
     }
 
-    private fun isBirthdayValid(birthday: LocalDateTime): Boolean {
-        return !(birthday.isAfter(MIN_DATE) || birthday.isBefore(
+    private fun isBirthdayValid(birthday: DateTime): Boolean {
+        return !(birthday.toLocalDateTime().isAfter(MIN_DATE) || birthday.toLocalDateTime().isBefore(
             MAX_DATE
         ))
     }
@@ -515,9 +664,9 @@ class ClientInteractor(
         )
     }
 
-    private fun validateEditPersonalDataState(){
+    private fun validateEditPersonalDataState() {
         var isSaveTextViewEnabled = false
-        if(editPersonalDataViewState.hasProducts){
+        if (editPersonalDataViewState.hasProducts) {
             if (!editPersonalDataViewState.isFirstNameSaved && editPersonalDataViewState.firstName.isNotEmpty()
                 || !editPersonalDataViewState.isLastNameSaved && editPersonalDataViewState.lastName.isNotEmpty()
                 || !editPersonalDataViewState.isMiddleNameSaved && editPersonalDataViewState.middleName.isNotEmpty()
@@ -527,7 +676,8 @@ class ClientInteractor(
                 || !editPersonalDataViewState.isDocSerialSaved && editPersonalDataViewState.docSerial.isNotEmpty()
                 || !editPersonalDataViewState.isDocNumberSaved && editPersonalDataViewState.docNumber.isNotEmpty()
                 || editPersonalDataViewState.wasSecondPhoneEdited
-                || editPersonalDataViewState.wasEmailEdited){
+                || editPersonalDataViewState.wasEmailEdited
+            ) {
                 isSaveTextViewEnabled = true
             }
         } else {
@@ -540,7 +690,8 @@ class ClientInteractor(
                 || editPersonalDataViewState.docSerial.isNotEmpty()
                 || editPersonalDataViewState.docNumber.isNotEmpty()
                 || editPersonalDataViewState.wasSecondPhoneEdited
-                || editPersonalDataViewState.wasEmailEdited){
+                || editPersonalDataViewState.wasEmailEdited
+            ) {
                 isSaveTextViewEnabled = true
             }
         }
@@ -552,30 +703,56 @@ class ClientInteractor(
         firstName: String? = null,
         lastName: String? = null,
         middleName: String? = null,
-        birthday: LocalDateTime? = null,
+        birthday: DateTime? = null,
         gender: Gender? = null,
         phone: String? = null,
         email: String? = null,
         avatar: String? = null
     ): Completable {
-        return clientRepository.updateClient(firstName, lastName, middleName, birthday, gender, phone, email, avatar)
+        return clientRepository.updateClient(
+            firstName,
+            lastName,
+            middleName,
+            birthday,
+            gender,
+            phone,
+            email,
+            avatar
+        )
             .doOnComplete { fillClientStateSubject.accept(fillClientViewState) }
     }
 
-    private fun validateAgentState(){
-        var isSaveTextViewEnabled = editAgentViewState.agentCode.isNotEmpty() || editAgentViewState.agentPhone.isNotEmpty()
+    private fun validateAgentState() {
+        var isSaveTextViewEnabled =
+            editAgentViewState.agentCode.isNotEmpty() || editAgentViewState.agentPhone.isNotEmpty()
         validateSubject.accept(isSaveTextViewEnabled)
     }
 
     private fun postPassport(serial: String, number: String): Completable {
         return clientRepository.postPassport(serial, number)
     }
-    private fun updatePassport(id:String, serial: String, number: String): Completable {
+
+    private fun updatePassport(id: String, serial: String, number: String): Completable {
         return clientRepository.updatePassport(id, serial, number)
     }
 
-    fun getClientSavedSubject(): Observable<ClientModel> {
-       return clientRepository.getClientUpdatedSubject()
+    fun finishAuth() {
+        registrationRepository.finishAuth()
     }
 
+    fun getOrder(orderId: String): Single<Order> {
+        return clientRepository.getOrder(orderId)
+    }
+
+    fun cancelOrder(order: Order): Completable {
+        return clientRepository.cancelOrder(order.id)
+    }
+
+    fun getOrderCancelledSubject(): PublishSubject<Unit> {
+        return clientRepository.getOrderCancelledSubject()
+    }
+
+    fun getCancelledTasks(orderId: String): Single<List<CancelledTaskModel>> {
+        return clientRepository.getCancelledTasks(orderId)
+    }
 }

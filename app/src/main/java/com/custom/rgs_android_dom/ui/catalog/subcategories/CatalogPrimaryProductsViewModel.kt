@@ -6,6 +6,10 @@ import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
+import com.custom.rgs_android_dom.ui.catalog.product.ProductLauncher
+import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
+import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductLauncher
+import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 
 class CatalogPrimaryProductsViewModel(private val category: CatalogCategoryModel) :
@@ -26,8 +30,17 @@ class CatalogPrimaryProductsViewModel(private val category: CatalogCategoryModel
         closeController.value = Unit
     }
 
+    fun onSearchClick() {
+        val catalogSearchFragment = CatalogSearchFragment.newInstance()
+        ScreenManager.showScreen(catalogSearchFragment)
+    }
+
     fun onProductClick(productModel: ProductShortModel) {
-        ScreenManager.showBottomScreen(ProductFragment.newInstance(productModel.id))
+        if (productModel.defaultProduct){
+            ScreenManager.showBottomScreen(SingleProductFragment.newInstance(SingleProductLauncher(productModel.id, productModel.versionId)))
+        } else {
+            ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(productModel.id, productModel.versionId)))
+        }
     }
 
 }

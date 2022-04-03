@@ -17,13 +17,38 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/previewImageView"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/previewImageCardView"
             android:layout_width="56dp"
             android:layout_height="78dp"
-            android:background="@drawable/rectangle_filled_white_radius_8dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/previewImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="center"
+                android:background="@drawable/rectangle_filled_white_radius_8dp" />
+
+            <FrameLayout
+                android:id="@+id/textFilesPlaceHolderFrameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rectangle_filled_white_radius_8dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/ic_default_file"
+                    app:tint="@color/secondary400" />
+
+            </FrameLayout>
+        </androidx.cardview.widget.CardView>
+
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/documentNameTextView"
@@ -34,7 +59,7 @@
             android:textColor="@color/secondary600"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/previewImageView"
+            app:layout_constraintTop_toBottomOf="@id/previewImageCardView"
             tools:text="Example" />
 
         <FrameLayout

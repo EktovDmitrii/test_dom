@@ -29,7 +29,7 @@
         android:textColor="@color/primary500"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:translationTextKey="Все"
+        app:translationTextKey="app.catalog.tabs.all"
         />
 
     <com.custom.rgs_android_dom.views.MSDRecyclerView

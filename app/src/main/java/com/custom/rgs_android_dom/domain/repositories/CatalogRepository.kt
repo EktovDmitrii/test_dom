@@ -12,14 +12,20 @@ interface CatalogRepository {
 
     fun getProducts(): Single<List<ProductModel>>
 
-    fun getShowcase(tags: List<String>?, fullText: String?): Single<List<ProductShortModel>>
+    fun getShowcase(tags: List<String>?): Single<List<ProductShortModel>>
 
-    fun getProduct(productId: String): Single<ProductModel>
+    fun findProducts(query: String): Single<List<ProductShortModel>>
 
-    fun getProductServices(productId: String): Single<List<ServiceShortModel>>
+    fun getProduct(productId: String, productVersionId: String?): Single<ProductModel>
+
+    fun getProductServices(productId: String, productVersionId: String?): Single<List<ServiceShortModel>>
+
+    fun getProductServiceDetails(productId: String, serviceId: String, serviceVersionId: String?): Single<ServiceModel>
 
     fun getAvailableServices(): Single<List<AvailableServiceModel>>
 
-    fun getClientProducts(): Single<List<ClientProductModel>>
+    fun getClientProducts(contractIds: String?): Single<List<ClientProductModel>>
+
+    fun getAvailableServiceInProduct(productId: String, clientProductId: String?, serviceId: String): Single<AvailableServiceModel>
 
 }

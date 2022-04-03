@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/contentLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <FrameLayout
+            android:id="@+id/toolbarFrameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/backImageView"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical|start"
+                android:layout_marginVertical="10dp"
+                android:layout_marginStart="18dp"
+                android:tint="@color/secondary600"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_back_24px" />
+
+        </FrameLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="20dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/productImageView"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="24dp"
+                    android:background="@drawable/rectangle_filled_white_radius_15dp"
+                    android:elevation="2dp" />
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/archiveTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/suisse_regular"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/secondary500"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    app:lineHeight="24sp"
+                    app:translationTextKey="Архив"
+                    />
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/titleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:fontFamily="@font/my_service_bold"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/secondary900"
+                    android:textSize="20sp"
+                    app:lineHeight="28sp"
+                    tools:text="Дом в деталях" />
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/descriptionTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/suisse_regular"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/secondary900"
+                    android:textSize="16sp"
+                    app:lineHeight="24sp"
+                    tools:text="Страхованой полис для владельцев домов, дач и хозяйственных построек." />
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/addressTitleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/suisse_regular"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/secondary600"
+                    android:textSize="10sp"
+                    app:lineHeight="16sp"
+                    app:textAllCaps="true"
+                    app:translationTextKey="Адрес" />
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/addressTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/suisse_semi_bold"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/secondary900"
+                    android:textSize="16sp"
+                    app:lineHeight="24sp"
+                    tools:text="Дом (пр-т Победителей 147)" />
+
+                <include
+                    android:id="@+id/includes"
+                    layout="@layout/layout_policy_includes_info" />
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/suisse_regular"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/secondary600"
+                    android:textSize="10sp"
+                    app:lineHeight="16sp"
+                    app:textAllCaps="true"
+                    app:translationTextKey="Номер полиса" />
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/policyDataTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/suisse_regular"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/secondary900"
+                    android:textSize="16sp"
+                    app:lineHeight="24sp"
+                    app:translationTextKey="S 999999 - 9999999" />
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/suisse_regular"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/secondary600"
+                    android:textSize="10sp"
+                    app:lineHeight="16sp"
+                    app:textAllCaps="true"
+                    app:translationTextKey="ФИО Страхователя" />
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/clientNameTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/suisse_regular"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/secondary900"
+                    android:textSize="16sp"
+                    app:lineHeight="24sp"
+                    tools:text="Иванов Иван Иванович" />
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/suisse_regular"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/secondary600"
+                    android:textSize="10sp"
+                    app:lineHeight="16sp"
+                    app:textAllCaps="true"
+                    app:translationTextKey="Действует с" />
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/startDateTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/suisse_regular"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/secondary900"
+                    android:textSize="16sp"
+                    app:lineHeight="24sp"
+                    tools:text="08 января 2022" />
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/suisse_regular"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/secondary600"
+                    android:textSize="10sp"
+                    app:lineHeight="16sp"
+                    app:textAllCaps="true"
+                    app:translationTextKey="Действует до" />
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/expirationDateTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/suisse_regular"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/secondary900"
+                    android:textSize="16sp"
+                    app:lineHeight="24sp"
+                    tools:text="08 января 2023" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <ProgressBar
+        android:id="@+id/loadingProgressBar"
+        style="@style/ProgressBarStyle"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"/>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -52,11 +52,23 @@ class EditPersonalDataViewModel(private val clientInteractor: ClientInteractor) 
                 }
             ).addTo(dataCompositeDisposable)
 
-        clientInteractor.getEditPersonalDataRequestedSubject()
+        clientInteractor.getEditClientRequestedSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
+                    editPersonalDataRequestedController.value = it
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
+        clientInteractor.isEditClientRequested()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
                     editPersonalDataRequestedController.value = it
                 },
                 onError = {

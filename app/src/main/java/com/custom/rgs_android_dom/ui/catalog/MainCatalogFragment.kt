@@ -6,12 +6,17 @@ import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentMainCatalogBinding
 import com.custom.rgs_android_dom.databinding.TabCatalogBinding
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
+import com.custom.rgs_android_dom.ui.client.orders.OrdersFragment
+import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
 import com.custom.rgs_android_dom.views.NavigationScope
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.yandex.metrica.YandexMetrica
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -35,9 +40,9 @@ class MainCatalogFragment :
     }
 
     private val tabs = listOf(
-        Pair(R.drawable.ic_tab_catalog, "Все"),
-        Pair(R.drawable.ic_tab_products, "Мои продукты"),
-        Pair(R.drawable.ic_tab_available_services, "Доступные услуги")
+        Pair(R.drawable.ic_tab_catalog, TranslationInteractor.getTranslation("app.catalog.main_catalog")),
+        Pair(R.drawable.ic_tab_products, TranslationInteractor.getTranslation("app.catalog.products")),
+        Pair(R.drawable.ic_tab_available_services, TranslationInteractor.getTranslation("app.catalog.available_services"))
     )
 
     override fun getParameters(): ParametersDefinition = {
@@ -68,8 +73,14 @@ class MainCatalogFragment :
 
                 tab.customView = tabCatalogBinding.root
             }
-
         mediator.attach()
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                YandexMetrica.reportEvent("catalog_section", "{\"catalog_section_item\":\"${tabs[tab.position]}\"}")
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
 
         subscribe(viewModel.tabObserver) {
             when(it) {

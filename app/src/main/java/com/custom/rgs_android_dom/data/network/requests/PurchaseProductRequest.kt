@@ -16,15 +16,22 @@ data class PurchaseProductRequest(
     val saveCard: Boolean,
 
     @SerializedName("order")
-    val order: OrderRequest
+    val order: OrderRequest?
 )
 
 data class OrderRequest(
+
+    @SerializedName("comment")
+    val comment: String? = null,
+
     @SerializedName("deliveryDate")
-    val deliveryDate: String,
+    val deliveryDate: String? = null,
 
     @SerializedName("deliveryTime")
-    val deliveryTime: OrderTimeRequest
+    val deliveryTime: OrderTimeRequest? = null,
+
+    @SerializedName("withOrder")
+    val withOrder: Boolean = false
 )
 
 data class OrderTimeRequest(

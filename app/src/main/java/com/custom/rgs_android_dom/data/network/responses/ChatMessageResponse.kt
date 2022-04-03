@@ -3,6 +3,8 @@ package com.custom.rgs_android_dom.data.network.responses
 import com.google.gson.annotations.SerializedName
 import org.joda.time.DateTime
 import org.joda.time.LocalDateTime
+import org.json.JSONObject
+import org.json.JSONString
 
 data class ChatMessageResponse(
     @SerializedName("channelId")
@@ -24,5 +26,8 @@ data class ChatMessageResponse(
     val createdAt: DateTime,
 
     @SerializedName("type")
-    val type: String
+    val type: String,
+
+    @SerializedName("details")
+    val details: WidgetResponse?
 )

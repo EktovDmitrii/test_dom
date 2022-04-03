@@ -4,11 +4,14 @@ import android.os.Bundle
 import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentRegistrationAgreementBinding
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.ui.web_view.WebViewFragment
 import com.custom.rgs_android_dom.utils.*
+import com.yandex.metrica.YandexMetrica
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -19,23 +22,17 @@ class RegistrationAgreementFragment :
 
     companion object {
         private const val ARG_PHONE = "ARG_PHONE"
-        private const val ARG_CLOSE_AFTER_ACCEPT = "ARG_CLOSE_AFTER_ACCEPT"
 
-        fun newInstance(
-            phone: String,
-            closeAfterAccept: Boolean = false
-        ): RegistrationAgreementFragment {
+        fun newInstance(phone: String): RegistrationAgreementFragment {
             return RegistrationAgreementFragment().args {
                 putString(ARG_PHONE, phone)
-                putBoolean(ARG_CLOSE_AFTER_ACCEPT, closeAfterAccept)
             }
         }
     }
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
-            requireArguments().getString(ARG_PHONE),
-            requireArguments().getBoolean(ARG_CLOSE_AFTER_ACCEPT)
+            requireArguments().getString(ARG_PHONE)
         )
     }
 
@@ -49,11 +46,9 @@ class RegistrationAgreementFragment :
         }
 
         binding.nextTextView.setOnDebouncedClickListener {
-            viewModel.onNextClick()
-        }
+            YandexMetrica.reportEvent("login_step_3_reg")
 
-        binding.closeImageView.setOnDebouncedClickListener {
-            viewModel.onCloseClick()
+            viewModel.onNextClick()
         }
 
         binding.backImageView.setOnDebouncedClickListener {
@@ -67,11 +62,21 @@ class RegistrationAgreementFragment :
         subscribe(viewModel.networkErrorObserver) {
             toast(it)
         }
+        subscribe(viewModel.isSignedBeforeCloseObserver) {
+            if (it) {
+                ScreenManager.closeScope(REGISTRATION)
+            } else {
+                onClose()
+            }
+        }
     }
 
     override fun onClose() {
-        hideSoftwareKeyboard()
-        ScreenManager.closeScope(REGISTRATION)
+        if (viewModel.isSignedBeforeCloseObserver.value == null) {
+            viewModel.onBackClick()
+        } else {
+            super.onClose()
+        }
     }
 
     override fun onLoading() {
@@ -90,19 +95,26 @@ class RegistrationAgreementFragment :
     }
 
     private fun makeAgreementLinks() {
+        val agreement: String = TranslationInteractor.getTranslation("app.registration.agreement.first_text") +
+                TranslationInteractor.getTranslation("app.registration.agreement.first_link") +
+                TranslationInteractor.getTranslation("app.registration.agreement.second_link") +
+                TranslationInteractor.getTranslation("app.registration.agreement.second_text") +
+                TranslationInteractor.getTranslation("app.registration.agreement.third_link")
+       binding.agreementTextView.text = agreement
+
         binding.agreementTextView.makeStringWithLink(
             resources.getColor(R.color.primary500,null),
-            Pair("пользовательского соглашения,", View.OnClickListener {
+            Pair(TranslationInteractor.getTranslation("app.registration.agreement.first_link"), View.OnClickListener {
                 val webViewFragment =
-                    WebViewFragment.newInstance("https://moi-service.ru/legal/moi-servis-med/polzovatelskoe-soglashenie")
+                    WebViewFragment.newInstance("https://moi-service.ru/legal/moi-service-dom/polzovatelskoe-soglashenie")
                 ScreenManager.showScreen(webViewFragment)
             }),
-            Pair("политику обработки персональных данных", View.OnClickListener {
+            Pair(TranslationInteractor.getTranslation("app.registration.agreement.second_link"), View.OnClickListener {
                 val webViewFragment =
                     WebViewFragment.newInstance("https://moi-service.ru/legal/policy")
                 ScreenManager.showScreen(webViewFragment)
             }),
-            Pair("согласие на обработку персональных данных", View.OnClickListener {
+            Pair(TranslationInteractor.getTranslation("app.registration.agreement.third_link"), View.OnClickListener {
                 val webViewFragment =
                     WebViewFragment.newInstance("https://moi-service.ru/legal/soglasie-polzovatelya-na-obrabotku-personalnyh-dannyh")
                 ScreenManager.showScreen(webViewFragment)

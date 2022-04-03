@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="28dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/previousMonthImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:src="@drawable/ic__arrow_left_24px" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/monthTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/my_service_bold"
+        android:textColor="@color/secondary900"
+        android:textSize="16sp"
+        tools:text="Январь 2022" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/nextMonthImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:src="@drawable/ic_arrow_right_14px" />
+
+</FrameLayout>

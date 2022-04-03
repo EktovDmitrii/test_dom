@@ -6,11 +6,16 @@ import com.custom.rgs_android_dom.domain.repositories.ChatRepository
 import com.custom.rgs_android_dom.domain.chat.models.WsChatMessageModel
 import com.custom.rgs_android_dom.utils.*
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.disposables.Disposable
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import org.joda.time.LocalDateTime
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 class ChatInteractor(
     private val chatRepository: ChatRepository,
@@ -24,24 +29,27 @@ class ChatInteractor(
 
     var invalidUploadFileSubject = PublishSubject.create<File>()
     val newChatItemsSubject = PublishSubject.create<List<ChatItemModel>>()
-    val callJoinSubject = PublishSubject.create<CallJoinModel>()
 
     private var cachedChatItems = arrayListOf<ChatItemModel>()
     private var cachedChannelMembers = arrayListOf<ChannelMemberModel>()
 
-    fun getChatHistory(): Single<List<ChatItemModel>> {
-        return chatRepository.getChatHistory().map { allMessages->
+    private var typingTimerStarted: Boolean = false
+    private var typingIntervalDisposable: Disposable? = null
+    private var typingEndedDisposable: Disposable? = null
+
+    fun getChatHistory(channelId: String): Single<List<ChatItemModel>> {
+        return chatRepository.getChatHistory(channelId).map { allMessages->
             val chatItems = arrayListOf<ChatItemModel>()
 
             val filteredMessages = allMessages.filter { !it.type.startsWith(TYPE_SYSTEM_MESSAGE) }
             if (filteredMessages.isNotEmpty()){
                 filteredMessages.forEachIndexed { index, currentMessage ->
                     if (index == 0){
-                        val dateDivider = ChatDateDividerModel(currentMessage.createdAt.formatTo(DATE_PATTERN_DAY_MONTH_FULL_ONLY))
+                        val dateDivider = ChatDateDividerModel(date = currentMessage.createdAt.formatTo(DATE_PATTERN_DAY_MONTH_FULL_ONLY), channelId = channelId)
                         chatItems.add(dateDivider)
                     } else {
                         val prevMessage = if (index -1 >=0) filteredMessages[index-1] else null
-                        val dateDivider = getDateDivider(currentMessage.createdAt, prevMessage?.createdAt)
+                        val dateDivider = getDateDivider(currentMessage.channelId, currentMessage.createdAt, prevMessage?.createdAt)
                         if (dateDivider != null){
                             chatItems.add(dateDivider)
                         }
@@ -52,7 +60,7 @@ class ChatInteractor(
             cachedChatItems = chatItems
             return@map chatItems
         }.flatMap {
-            return@flatMap chatRepository.getChannelMembers()
+            return@flatMap chatRepository.getChannelMembers(channelId)
         }.map {
             cachedChannelMembers.clear()
             cachedChannelMembers.addAll(it)
@@ -62,23 +70,12 @@ class ChatInteractor(
                     chatItem.member = cachedChannelMembers.find { it.userId == chatItem.userId }
                 }
             }
-
-            /*cachedChatItems.forEach { chatItem->
-                if (chatItem is ChatMessageModel){
-                    chatItem.files?.let { chatFiles->
-                        chatFiles.forEach { chatFile->
-                            val preview = chatRepository.getChatFilePreview(chatItem.userId, chatFile.id).blockingGet()
-                            chatFile.preview = preview
-                        }
-                    }
-                }
-            }*/
             return@map cachedChatItems
         }
     }
 
-    fun sendMessage(message: String? = null, fileIds: List<String>? = null): Completable {
-        return chatRepository.sendMessage(message, fileIds)
+    fun sendMessage(channelId: String, message: String? = null, fileIds: List<String>? = null): Completable {
+        return chatRepository.sendMessage(channelId, message, fileIds)
     }
 
     fun onFilesToUploadSelected(files: List<File>){
@@ -97,45 +94,36 @@ class ChatInteractor(
         return chatRepository.getFilesToUploadSubject()
     }
 
-    fun postFilesToChat(files: List<File>): Completable {
+    fun postFilesToChat(channelId: String, files: List<File>): Completable {
         return Observable.fromArray(files)
             .flatMapIterable {
                 it
             }.flatMapSingle {
-                chatRepository.postFileInChat(it)
+                chatRepository.postFileInChat(channelId, it)
             }.toList()
             .flatMapCompletable { chatFiles ->
-                sendMessage(message = " ", fileIds = chatFiles.map { it.id })
+                sendMessage(channelId = channelId, message = " ", fileIds = chatFiles.map { it.id })
             }
     }
 
-    fun subscribeToSocketEvents(): Completable {
+    fun startListenNewMessageEvent(): Completable {
         return chatRepository.getWsEventsSubject().flatMapCompletable {
             when (it.event){
-                WsEventModel.Event.POSTED -> {
+                WsEvent.POSTED -> {
                     val messageModel = (it as WsChatMessageModel).data
                     messageModel?.takeIf {!it.type.startsWith(TYPE_SYSTEM_MESSAGE)}?.let { currentMessage ->
                         if (cachedChannelMembers.find { it.userId == currentMessage.userId } == null) {
                             cachedChannelMembers.clear()
                             cachedChannelMembers.addAll(
-                                chatRepository.getChannelMembers().blockingGet()
+                                chatRepository.getChannelMembers(currentMessage.channelId).blockingGet()
                             )
                         }
                         onNewMessage(currentMessage)
                     }
                 }
-                WsEventModel.Event.CALL_JOIN -> {
-                    (it as WsCallJoinModel).data?.let { callJoinModel->
-                        callJoinSubject.onNext(callJoinModel)
-                    }
-                }
-                WsEventModel.Event.CALL_DECLINED -> {
-                    chatRepository.clearRoomDataOnOpponentDeclined()
-                }
             }
             Completable.complete()
         }
-
     }
 
     fun connectToWebSocket(){
@@ -144,8 +132,8 @@ class ChatInteractor(
         }
     }
 
-    fun requestLiveKitToken(): Completable {
-        return chatRepository.requestLiveKitToken()
+    fun requestLiveKitToken(channelId: String): Completable {
+        return chatRepository.requestLiveKitToken(channelId)
             .flatMapCompletable {
                 Completable.complete()
             }
@@ -159,10 +147,6 @@ class ChatInteractor(
         return chatRepository.getRoomInfoSubject()
     }
 
-    fun getRoomDisconnectedSubject(): PublishSubject<Unit>{
-        return chatRepository.getRoomDisconnectedSubject()
-    }
-
     fun leaveLiveKitRoom(){
         chatRepository.leaveLiveKitRoom()
     }
@@ -171,12 +155,6 @@ class ChatInteractor(
         return chatRepository.getActualRoomInfo()
     }
 
-    fun getCallTimeSubject(): Observable<String>{
-        return chatRepository.getCallDurationSubject()
-            .map {duration->
-                return@map duration.toReadableTime()
-            }
-    }
 
     suspend fun enableCamera(enable: Boolean){
         chatRepository.enableCamera(enable)
@@ -184,6 +162,14 @@ class ChatInteractor(
 
     suspend fun enableMic(enable: Boolean){
         chatRepository.enableMic(enable)
+    }
+
+    fun getMembersFromRemote(channelId: String): Single<List<ChannelMemberModel>> {
+        return chatRepository.getChannelMembers(channelId).map {
+            cachedChannelMembers.clear()
+            cachedChannelMembers.addAll(it)
+            it
+        }
     }
 
     fun getCurrentConsultant(): ChannelMemberModel? {
@@ -196,12 +182,12 @@ class ChatInteractor(
         // TODO Find out how chat messages can be empty
         if (cachedChatItems.isNotEmpty()){
             val prevMessage = cachedChatItems[cachedChatItems.size-1] as ChatMessageModel
-            getDateDivider(newMessage.createdAt, prevMessage.createdAt)?.let { dateDivider->
+            getDateDivider(newMessage.channelId, newMessage.createdAt, prevMessage.createdAt)?.let { dateDivider->
                 chatItems.add(dateDivider)
             }
             chatItems.add(newMessage)
         } else {
-            val dateDivider = ChatDateDividerModel(newMessage.createdAt.formatTo(DATE_PATTERN_DAY_MONTH_FULL_ONLY))
+            val dateDivider = ChatDateDividerModel(date = newMessage.createdAt.formatTo(DATE_PATTERN_DAY_MONTH_FULL_ONLY), channelId = newMessage.channelId)
             chatItems.add(dateDivider)
             chatItems.add(newMessage)
         }
@@ -209,10 +195,10 @@ class ChatInteractor(
         newChatItemsSubject.onNext(chatItems)
     }
 
-    private fun getDateDivider(currentMessageDate: LocalDateTime, previousMessageDate: LocalDateTime?): ChatDateDividerModel? {
+    private fun getDateDivider(channelId: String, currentMessageDate: LocalDateTime, previousMessageDate: LocalDateTime?): ChatDateDividerModel? {
         previousMessageDate?.let { previousMessageDate->
             if (previousMessageDate.getPeriod(currentMessageDate).days >0 ) {
-                return ChatDateDividerModel(currentMessageDate.formatTo((DATE_PATTERN_DAY_MONTH_FULL_ONLY)))
+                return ChatDateDividerModel(date = currentMessageDate.formatTo((DATE_PATTERN_DAY_MONTH_FULL_ONLY)), channelId = channelId)
             }
         }
         return null
@@ -224,5 +210,83 @@ class ChatInteractor(
 
     suspend fun switchVideoTrack() {
         chatRepository.switchVideoTrack()
+    }
+
+    fun loadCases(): Completable {
+        return chatRepository.loadCases()
+    }
+
+    fun getCasesFlowable(): Flowable<ClientCasesModel>{
+        return chatRepository.getCasesFlowable()
+    }
+
+    fun getUnreadPostsCountFlowable(): Flowable<Int>{
+        return chatRepository.getCasesFlowable().map { cases->
+            var unreadPosts = 0
+            cases.activeCases.forEach {
+                unreadPosts += it.unreadPosts
+            }
+            cases.archivedCases.forEach {
+                unreadPosts += it.unreadPosts
+            }
+
+            unreadPosts
+        }
+    }
+
+    fun getMasterOnlineCase(): CaseModel {
+        return chatRepository.getMasterOnlineCase()
+    }
+
+    fun viewChannel(channelId: String): Completable {
+        return chatRepository.viewChannel(channelId)
+    }
+
+    fun notifyTyping(channelId: String){
+        if (!typingTimerStarted){
+            typingIntervalDisposable = Observable.interval(0,3, TimeUnit.SECONDS)
+                .flatMap {
+                    chatRepository.notifyTyping(channelId).toObservable<Unit>()
+                }
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribeBy (
+                    onError = {
+                        logException(this, it)
+                    }
+                )
+            typingTimerStarted = true
+        }
+
+        typingEndedDisposable?.dispose()
+        typingEndedDisposable = Completable.timer(3, TimeUnit.SECONDS)
+            .subscribe {
+                typingTimerStarted = false
+                typingIntervalDisposable?.dispose()
+            }
+    }
+
+    fun getWsEventsSubject(): PublishSubject<WsMessageModel<*>>{
+        return chatRepository.getWsEventsSubject()
+    }
+
+    fun getCallInfoSubject(): PublishSubject<CallInfoModel>{
+        return chatRepository.getCallInfoSubject()
+    }
+
+    fun acceptCall(channelId: String, callId: String): Completable {
+        return chatRepository.acceptCall(channelId, callId)
+    }
+
+    fun declineCall(channelId: String, callId: String): Completable {
+        return chatRepository.declineCall(channelId, callId)
+    }
+
+    fun initCallInfo(consultant: ChannelMemberModel?, callType: CallType) {
+        chatRepository.initCallInfo(consultant, callType)
+    }
+
+    fun getCallInfo(): CallInfoModel {
+        return chatRepository.getCallInfo()
     }
 }

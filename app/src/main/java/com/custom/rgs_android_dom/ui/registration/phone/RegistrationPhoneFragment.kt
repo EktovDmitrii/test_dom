@@ -9,6 +9,7 @@ import com.custom.rgs_android_dom.utils.hideSoftwareKeyboard
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
 import com.custom.rgs_android_dom.views.MSDPhoneInput
+import com.yandex.metrica.YandexMetrica
 
 class RegistrationPhoneFragment : BaseFragment<RegistrationPhoneViewModel, FragmentRegistrationPhoneBinding>(
     R.layout.fragment_registration_phone
@@ -16,6 +17,7 @@ class RegistrationPhoneFragment : BaseFragment<RegistrationPhoneViewModel, Fragm
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        YandexMetrica.reportEvent("login_start")
 
         subscribe(viewModel.isNextTextViewEnabledObserver){
             binding.nextTextView.isEnabled = it
@@ -52,6 +54,8 @@ class RegistrationPhoneFragment : BaseFragment<RegistrationPhoneViewModel, Fragm
         }
 
         binding.nextTextView.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("login_step_1_phone")
+
             viewModel.onNextClick()
             hideSoftwareKeyboard()
         }

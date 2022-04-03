@@ -4,9 +4,7 @@ import android.content.Context
 import android.text.InputFilter
 import android.text.InputFilter.LengthFilter
 import android.text.InputType
-import android.text.TextUtils
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.inputmethod.EditorInfo
@@ -49,6 +47,10 @@ class MSDTextInputLayout @JvmOverloads constructor(
 
         attrs.getString(R.styleable.MSDTextInputLayout_android_text)?.let{
             setText(it)
+        }
+
+        attrs.getString(R.styleable.MSDTextInputLayout_placeholderText)?.let{
+            binding.containerTextInputLayout.placeholderText = it
         }
 
         unfocusOnDone = attrs.getBoolean(R.styleable.MSDTextInputLayout_unfocusOnDone, false)
@@ -182,6 +184,19 @@ class MSDTextInputLayout @JvmOverloads constructor(
                 binding.containerTextInputLayout.boxStrokeColor = context.getColor(R.color.error500)
             }
         }
+    }
+
+    fun toggleEnable(isEnabled: Boolean) {
+        binding.valueEditText.clearFocus()
+        binding.valueEditText.hideKeyboard()
+        binding.containerTextInputLayout.clearFocus()
+        binding.containerTextInputLayout.hideKeyboard()
+
+        binding.containerTextInputLayout.isEnabled = isEnabled
+    }
+
+    fun setSelection(length: Int){
+        binding.valueEditText.setSelection(length)
     }
 
     private fun setDigitsLimit(digitsBeforeZero: Int, digitsAfterZero: Int) {

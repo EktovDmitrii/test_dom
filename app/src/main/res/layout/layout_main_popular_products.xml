@@ -32,7 +32,7 @@
             android:fontFamily="@font/suisse_regular"
             android:textColor="@color/primary500"
             android:textSize="16sp"
-            app:translationTextKey="Все" />
+            app:translationTextKey="app.catalog.tabs.all" />
 
     </FrameLayout>
 

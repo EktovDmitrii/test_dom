@@ -72,16 +72,17 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <include
-            android:id="@+id/orderBtn"
-            layout="@layout/layout_product_detail_confirm_button"
-            android:layout_width="match_parent"
+        <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullWidth
+            android:id="@+id/writeChatMaster"
             android:layout_height="wrap_content"
+            android:layout_width="match_parent"
             android:layout_alignParentBottom="true"
-            android:layout_marginHorizontal="4dp"
+            android:layout_marginHorizontal="24dp"
             app:layout_constraintBottom_toTopOf="@id/cancelPaymentTextView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:translationTextKey="Написать Онлайн Мастеру"
+            />
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/cancelPaymentTextView"
@@ -93,7 +94,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:translationTextKey="Отменить оплату" />
+            app:translationTextKey="Повторить попытку" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

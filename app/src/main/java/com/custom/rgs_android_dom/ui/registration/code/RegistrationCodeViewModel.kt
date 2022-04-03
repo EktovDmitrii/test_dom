@@ -5,11 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.registration.agreement.RegistrationAgreementFragment
 import com.custom.rgs_android_dom.utils.logException
+import com.yandex.metrica.YandexMetrica
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -43,7 +45,7 @@ class RegistrationCodeViewModel(
     private var timer: CountDownTimer? = null
 
     init {
-        phoneController.value = "Мы отправили СМС на номер\n$phone"
+        phoneController.value = "${TranslationInteractor.getTranslation("app.registration.code.phone_subtitle")}\n${phone}"
         startCountdownTimer()
     }
 
@@ -71,13 +73,14 @@ class RegistrationCodeViewModel(
 
     fun onCodeComplete(code: String){
         registrationInteractor.login(phone, code, token)
+            .flatMap { clientInteractor.getClient() }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
             .doOnSuccess { loadingStateController.value = LoadingState.CONTENT }
             .subscribeBy(
-                onSuccess = {isNewUser->
-                    saveClientAndClose(isNewUser)
+                onSuccess = {
+                    saveClientAndClose(it.isOpdSigned)
                     /*else {
                         ScreenManager.showScreen(MainFragment())
                     }*/
@@ -102,7 +105,8 @@ class RegistrationCodeViewModel(
 
             override fun onTick(millisUntilFinished: Long) {
                 val secondsLeft = String.format("%02d", millisUntilFinished.div(1000))
-                countdownTextController.value = "Вы сможете повторно запросить\nкод через 00:$secondsLeft"
+                countdownTextController.value = TranslationInteractor.getTranslation("app.registration.code.timer_subtitle")
+                    .replace("%@", "00:${secondsLeft}")
             }
 
             override fun onFinish() {
@@ -116,14 +120,18 @@ class RegistrationCodeViewModel(
         showResendCodeController.value = Unit
     }
 
-    private fun saveClientAndClose(isNewUser: Boolean){
+    private fun saveClientAndClose(isOpdSigned: Boolean){
         clientInteractor.loadAndSaveClient()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doFinally {
                 closeController.value = Unit
-                if (isNewUser){
+                if (!isOpdSigned){
+                    YandexMetrica.reportEvent("login_success_reg")
                     ScreenManager.showScreenScope(RegistrationAgreementFragment.newInstance(phone), REGISTRATION)
+                } else {
+                    YandexMetrica.reportEvent("session_start")
+                    clientInteractor.finishAuth()
                 }
             }
             .subscribeBy(

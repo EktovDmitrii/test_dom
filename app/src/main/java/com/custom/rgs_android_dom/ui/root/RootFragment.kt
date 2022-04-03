@@ -1,35 +1,48 @@
 package com.custom.rgs_android_dom.ui.root
 
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.TransitionDrawable
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.view.animation.*
 import android.widget.OverScroller
+import androidx.core.content.ContextCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentRootBinding
+import com.custom.rgs_android_dom.domain.chat.models.CallInfoModel
+import com.custom.rgs_android_dom.domain.chat.models.CallState
+import com.custom.rgs_android_dom.domain.chat.models.MediaOutputType
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.chats.chat.ChatFragment
+import com.custom.rgs_android_dom.ui.chats.chat.call.media_output_chooser.MediaOutputChooserFragment
 import com.custom.rgs_android_dom.ui.main.MainFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.views.NavigationScope
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.*
+import com.yandex.metrica.YandexMetrica
+import org.joda.time.DateTimeZone
+import org.joda.time.format.DateTimeFormat
+import org.joda.time.format.DateTimeFormatter
+
 
 class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.fragment_root) {
 
-    private lateinit var transitionBackground: TransitionDrawable
-
-    private val animationSet = AnimationSet(true)
-    private var canTransit = true
-    private var canTransitReverse = false
     private var bottomSheetInited = false
 
     private var bottomSheetMainFragment: BaseBottomSheetFragment<*, *>? = null
     private var bottomSheetBehavior: BottomSheetBehavior<*>? = null
     private var scroller: OverScroller? = null
     private var peekHeight: Int? = null
+
+    private var canTransit = true
+    private var canTransitReverse = false
+    private var isChatEventLogged = false
+
+    private var callInfo: CallInfoModel? = null
 
     private val bottomSheetCallback = object : BottomSheetCallback() {
         override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -50,7 +63,9 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
         }
 
         override fun onSlide(bottomSheet: View, slideOffset: Float) {
-            if (slideOffset < 0.49f && slideOffset > 0.0f) {
+            if (slideOffset >= 0.71f){
+                onSlideStateChanged(SlideState.MOVING_TOP)
+            } else if (slideOffset < 0.60f && slideOffset > 0.0f) {
                 onSlideStateChanged(SlideState.MOVING_BOTTOM)
             } else if (slideOffset == 0.0f) {
                 onSlideStateChanged(SlideState.BOTTOM)
@@ -60,49 +75,94 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        transitionBackground = TransitionDrawable(
-            arrayOf(
-                ColorDrawable(requireContext().getColor(R.color.primary400)),
-                ColorDrawable(requireContext().getColor(R.color.primary700))
-            )
-        )
-
-        binding.contentConstraintLayout.background = transitionBackground
-
         ScreenManager.initBottomSheet(R.id.bottomContainer)
-
         ScreenManager.onBottomSheetChanged = {fragment->
             bottomSheetMainFragment = fragment
             measureAndShowFragment()
             updateNavigationView()
-        }
+       }
 
         ScreenManager.showBottomScreen(MainFragment())
-
-        binding.toolbarChatIcon.setOnDebouncedClickListener {
-            viewModel.onChatClick()
-        }
 
         binding.bottomNavigationView.selectNavigationScope(NavigationScope.NAV_MAIN)
 
         binding.bottomNavigationView.setNavigationChangedListener { navigationItem->
             when (navigationItem){
                 NavigationScope.NAV_MAIN -> {
+                    YandexMetrica.reportEvent("mp_menu", "{\"menu_item\":\"Главная\"}")
+
                     viewModel.onMainClick()
                 }
                 NavigationScope.NAV_CATALOG -> {
+                    YandexMetrica.reportEvent("mp_menu", "{\"menu_item\":\"Каталог\"}")
+
                     viewModel.onCatalogueClick()
                 }
-                NavigationScope.NAV_CHAT -> {
-                    viewModel.onChatClick()
+                NavigationScope.NAV_CHATS -> {
+                    YandexMetrica.reportEvent("mp_menu", "{\"menu_item\":\"Чат\"}")
+
+                    viewModel.onChatsClick()
                 }
                 NavigationScope.NAV_LOGIN -> {
+                    YandexMetrica.reportEvent("mp_menu", "{\"menu_item\":\"Войти\"}")
+
                     viewModel.onLoginClick()
                 }
                 NavigationScope.NAV_PROFILE -> {
+                    YandexMetrica.reportEvent("mp_menu", "{\"menu_item\":\"Профиль\"}")
+
                     viewModel.onProfileClick()
                 }
+            }
+        }
+
+        binding.actionsChatLinearLayout.setOnDebouncedClickListener {
+            //TODO Add navigation to MyChatScreen
+        }
+
+        binding.phoneCallLinearLayout.setOnDebouncedClickListener {
+            makePhoneCall()
+        }
+
+        binding.guestPhoneCallLinearLayout.setOnDebouncedClickListener {
+            makePhoneCall()
+        }
+
+        binding.chatLinearLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("master_online_connection", "{\"connection\":\"Чат\"}")
+            viewModel.onChatClick()
+        }
+
+        binding.chatCallLinearLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("master_online_connection", "{\"connection\":\"Звонок\"}")
+            viewModel.onChatCallClick()
+        }
+
+        binding.chatVideoCallLinearLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("master_online_connection", "{\"connection\":\"Видео\"}")
+            viewModel.onChatVideoCallClick()
+        }
+
+        binding.actionsChatsTextView.setOnDebouncedClickListener {
+            viewModel.onChatsClick()
+        }
+
+        binding.maximizeImageView.setOnDebouncedClickListener {
+            if (callInfo != null && callInfo?.state != CallState.ENDED ){
+                viewModel.onMaximizeCallClick()
+            }
+        }
+
+        binding.callInfoFrameLayout.setOnDebouncedClickListener {
+            if (callInfo != null && callInfo?.state != CallState.ENDED ){
+                viewModel.onMaximizeCallClick()
+            }
+        }
+
+        binding.mediaOutputImageView.setOnDebouncedClickListener {
+            if (callInfo != null && callInfo?.state != CallState.ENDED ){
+                val mediaOutputChooserFragment = MediaOutputChooserFragment()
+                mediaOutputChooserFragment.show(childFragmentManager, mediaOutputChooserFragment.TAG)
             }
         }
 
@@ -112,134 +172,159 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
             }
         }
 
-        subscribe(viewModel.navScopeEnabledObserver){
-            binding.bottomNavigationView.setNavigationScopeEnabled(it.first, it.second)
+        subscribe(viewModel.isUserAuthorizedObserver){
+            binding.actionsChatsTextView.text = if (it) {
+                "Перейти ко всем чатам"
+            }
+            else {
+                "Войдите, чтобы видеть свои чаты"
+            }
+            binding.guestPhoneCallLinearLayout.goneIf(it)
+            binding.phoneCallLinearLayout.visibleIf(it)
+        }
+
+        subscribe(viewModel.unreadPostsObserver){
+            binding.bottomNavigationView.updateUnreadPostsCount(it)
+        }
+
+        subscribe(viewModel.callInfoObserver) { callInfo ->
+            updateCallInfoUI(callInfo)
+        }
+
+        subscribe(viewModel.mediaOutputObserver){
+            when (it){
+                MediaOutputType.PHONE,
+                MediaOutputType.WIRED_HEADPHONE -> {
+                    binding.mediaOutputImageView.setImageResource(R.drawable.ic_phone_call_24px)
+                }
+                MediaOutputType.SPEAKERPHONE -> {
+                    binding.mediaOutputImageView.setImageResource(R.drawable.ic_speaker_24px)
+                }
+                MediaOutputType.BLUETOOTH -> {
+                    binding.mediaOutputImageView.setImageResource(R.drawable.ic_bluetooth_24px)
+                }
+            }
         }
 
     }
 
-    override fun onStart() {
-        super.onStart()
-        viewModel.subscribeLogout()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        viewModel.unsubscribeLogout()
-    }
-
     override fun setStatusBarColor() {
-        setStatusBarColor(R.color.primary400)
+        val statusBarColor = if (callInfo != null){
+            when (callInfo?.state){
+                CallState.CONNECTING -> {
+                    R.color.secondary900
+                }
+                CallState.ACTIVE -> {
+                    R.color.success500
+                }
+                CallState.ENDED -> {
+                    R.color.error500
+                }
+                CallState.ERROR -> {
+                    R.color.secondary900
+                }
+                else -> {
+                    R.color.primary400
+                }
+            }
+        } else {
+            R.color.primary400
+        }
+        setStatusBarColor(statusBarColor)
     }
 
     override fun onVisibleToUser() {
         super.onVisibleToUser()
+        updateToolbarState()
         measureAndShowFragment()
         updateNavigationView()
     }
 
-    private fun measureAndShowFragment() {
+    private fun makePhoneCall(){
+        YandexMetrica.reportEvent("master_online_connection", "{\"connection\":\"8-800\"}")
 
-        binding.root.afterMeasured {
-            initAnimations()
-            bottomSheetBehavior = from<View>(binding.bottomContainer)
-            scroller = bottomSheetBehavior?.getViewDragHelper()?.getScroller()
-
-            bottomSheetBehavior?.addBottomSheetCallback(bottomSheetCallback)
-
-            val bottomSheetTopPadding = binding.toolbarLinearLayout.height
-
-            // TODO Improve this later
-                /*when (bottomSheetMainFragment) {
-                    is ClientFragment -> {
-                        binding.toolbarLinearLayout.height
-                    }
-                    is MainStubFragment -> {
-                        binding.toolbarLinearLayout.height
-                    }
-                    is MainCatalogFragment -> {
-                        binding.toolbarLinearLayout.height
-                    }
-                    is CatalogSubcategoriesFragment -> {
-                        binding.toolbarLinearLayout.height
-                    }
-                    else -> 0.dp(requireContext())
-                }*/
-
-            peekHeight =
-                binding.root.getLocationOnScreen().y - binding.callContainerLinearLayout.getLocationOnScreen().y +
-                        8.dp(requireContext()) + bottomSheetTopPadding
-
-            binding.bottomContainer.setPadding(0, bottomSheetTopPadding, 0, 0)
-
-            beforeBottomSheetInit()
-
-            binding.toolbarLinearLayout.setOnDebouncedClickListener {
-                bottomSheetBehavior?.state = STATE_COLLAPSED
-            }
-
-            if (bottomSheetBehavior?.state == STATE_EXPANDED) {
-                afterBottomSheetInit()
-            } else {
-                bottomSheetBehavior?.state = STATE_EXPANDED
-            }
-
-        }
+        val phoneCallIntent = Intent(Intent.ACTION_DIAL)
+        phoneCallIntent.data = Uri.parse("tel:88006004358")
+        phoneCallIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        requireContext().startActivity(phoneCallIntent)
     }
 
-    private fun initAnimations() {
-        var fadeOut = AlphaAnimation(1f, 0f).apply {
-            duration = 300
-            interpolator = LinearInterpolator()
-            fillAfter = true
+    private fun measureAndShowFragment() {
+        try {
+            binding.root.afterMeasured {
+                bottomSheetBehavior = from<View>(binding.bottomContainer)
+
+                if (bottomSheetMainFragment is ChatFragment) {
+                    bottomSheetBehavior?.isDraggable = false
+                } else {
+                    bottomSheetBehavior?.isDraggable = callInfo == null || callInfo?.state == CallState.IDLE
+                }
+
+                scroller = bottomSheetBehavior?.getViewDragHelper()?.getScroller()
+
+                bottomSheetBehavior?.addBottomSheetCallback(bottomSheetCallback)
+
+                val bottomSheetTopPadding = if (callInfo != null){
+                    binding.toolbarLinearLayout.height
+                } else {
+                    if (bottomSheetMainFragment is ChatFragment){ 8.dp(requireContext()) } else { binding.toolbarLinearLayout.height }
+                }
+
+                if (peekHeight == null){
+                    peekHeight = binding.root.getLocationOnScreen().y - binding.actionsLinearLayout.getLocationOnScreen().y + bottomSheetTopPadding
+                }
+
+                binding.bottomContainer.setPadding(0, bottomSheetTopPadding, 0, 0)
+
+                beforeBottomSheetInit()
+
+                binding.toolbarLinearLayout.setOnDebouncedClickListener {
+                    bottomSheetBehavior?.state = STATE_COLLAPSED
+                }
+
+                if (bottomSheetBehavior?.state == STATE_EXPANDED) {
+                    afterBottomSheetInit()
+                } else {
+                    bottomSheetBehavior?.state = STATE_EXPANDED
+                }
+            }
+        } catch (e: Exception){
+            logException(this, e)
         }
 
-        val slideUp = TranslateAnimation(
-            0f, 0f,
-            0f, -binding.swipeMoreTextView.height.toFloat()
-        ).apply {
-            duration = 300
-            interpolator = LinearInterpolator()
-            fillAfter = true
-        }
-
-        animationSet.addAnimation(fadeOut)
-        animationSet.addAnimation(slideUp)
-
-        animationSet.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(p0: Animation?) {
-            }
-
-            override fun onAnimationEnd(p0: Animation?) {
-                binding.swipeMoreTextView.invisible()
-            }
-
-            override fun onAnimationRepeat(p0: Animation?) {
-            }
-
-        })
     }
 
     private fun onSlideStateChanged(newState: SlideState) {
+        if (bottomSheetBehavior?.isDraggable == false){
+            return
+        }
         when (newState) {
             SlideState.TOP -> {
+                updateToolbarState()
+                isChatEventLogged = false
+            }
+            SlideState.MOVING_TOP -> {
                 if (canTransitReverse) {
-                    transitionBackground.reverseTransition(100)
                     canTransitReverse = false
+                    binding.toolbarLinearLayout.fadeVisibility(View.VISIBLE, 300)
+                    binding.actionsLinearLayout.fadeVisibility(View.INVISIBLE, 300)
                 }
-                binding.swipeMoreTextView.visible()
                 canTransit = true
             }
             SlideState.MOVING_BOTTOM -> {
                 if (canTransit) {
-                    binding.swipeMoreTextView.startAnimation(animationSet)
-                    transitionBackground.startTransition(100)
+                    binding.toolbarLinearLayout.fadeVisibility(View.GONE, 500)
+                    binding.actionsLinearLayout.fadeVisibility(View.VISIBLE, 500)
                     canTransit = false
                     canTransitReverse = true
                 }
             }
             SlideState.BOTTOM -> {
                 canTransitReverse = true
+                if (!isChatEventLogged) {
+                    YandexMetrica.reportEvent("master_online_open")
+                    isChatEventLogged = true
+                }
             }
         }
     }
@@ -248,8 +333,6 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
         binding.bottomContainer.invisible()
         binding.fakeBottomContainer.visible()
         bottomSheetInited = false
-        binding.callContainerLinearLayout.gone()
-        binding.swipeMoreTextView.gone()
         bottomSheetBehavior?.peekHeight = binding.root.getLocationOnScreen().y
     }
 
@@ -257,9 +340,6 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
         binding.bottomContainer.visible()
         binding.fakeBottomContainer.gone()
         bottomSheetInited = true
-        binding.callContainerLinearLayout.visible()
-        binding.swipeMoreTextView.visible()
-
         peekHeight?.let {
             bottomSheetBehavior?.peekHeight = it
         }
@@ -275,6 +355,92 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
         }
     }
 
-    enum class SlideState { TOP, MOVING_BOTTOM, BOTTOM }
+    private fun updateToolbarState(){
+        if (canTransitReverse){
+            binding.actionsLinearLayout.invisible()
+            binding.toolbarLinearLayout.visibleIf(callInfo == null)
+            binding.callInfoFrameLayout.visibleIf(callInfo != null)
+        }
+    }
 
+    private fun updateCallInfoUI(callInfo: CallInfoModel){
+        if (callInfo.state == CallState.IDLE){
+            this.callInfo = null
+        } else {
+            this.callInfo = callInfo
+        }
+
+        binding.actionsLinearLayout.gone()
+        binding.toolbarLinearLayout.gone()
+        binding.callInfoFrameLayout.visible()
+        binding.signalImageView.gone()
+
+        when (callInfo.state){
+            CallState.CONNECTING -> {
+                binding.contentFrameLauout.setBackgroundColor(
+                    ContextCompat.getColor(requireContext(), R.color.secondary900)
+                )
+                if (isVisible){
+                    setStatusBarColor(R.color.secondary900)
+                }
+                binding.callSubtitleTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary400))
+                binding.callTitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.connecting")
+                binding.callSubtitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.waiting_operator")
+            }
+            CallState.ACTIVE -> {
+                binding.contentFrameLauout.setBackgroundColor(
+                    ContextCompat.getColor(requireContext(), R.color.success500)
+                )
+                if (isVisible){
+                    setStatusBarColor(R.color.success500)
+                }
+
+                binding.callSubtitleTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white_alpha80))
+
+                binding.callTitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.online_master")
+                binding.callSubtitleTextView.text = callInfo.duration?.toReadableTime()
+            }
+            CallState.ENDED -> {
+                binding.contentFrameLauout.setBackgroundColor(
+                    ContextCompat.getColor(requireContext(), R.color.error500)
+                )
+                if (isVisible){
+                    setStatusBarColor(R.color.error500)
+                }
+
+                binding.callSubtitleTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white_alpha80))
+
+                binding.callTitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.online_master")
+                binding.callSubtitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.call_ended")
+            }
+            CallState.ERROR -> {
+                binding.contentFrameLauout.setBackgroundColor(
+                    ContextCompat.getColor(requireContext(), R.color.secondary900)
+                )
+                if (isVisible){
+                    setStatusBarColor(R.color.secondary900)
+                }
+
+                binding.callSubtitleTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary400))
+
+                binding.callTitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.connecting")
+                binding.callSubtitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.connection_error")
+                binding.signalImageView.visible()
+            }
+            CallState.IDLE -> {
+                binding.toolbarLinearLayout.visible()
+                binding.callInfoFrameLayout.gone()
+
+                binding.contentFrameLauout.setBackgroundColor(
+                    ContextCompat.getColor(requireContext(), R.color.primary400)
+                )
+                if (isVisible){
+                    setStatusBarColor(R.color.primary400)
+                }
+                measureAndShowFragment()
+            }
+        }
+    }
+
+    enum class SlideState { MOVING_TOP, TOP, MOVING_BOTTOM, BOTTOM }
 }

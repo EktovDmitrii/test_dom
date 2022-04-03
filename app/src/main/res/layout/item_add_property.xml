@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/uploadDocumentFrameLayout"
+    android:layout_width="84dp"
+    android:layout_height="116dp"
+    android:background="@drawable/rectangle_stroke_1dp_dashed_secondary_300_radius_8dp">
+
+    <com.custom.rgs_android_dom.views.MSDImageView
+        android:id="@+id/upload_document_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:foregroundGravity="center"
+        app:srcCompat="@drawable/ic_plus_romb_30dp" />
+
+</FrameLayout>

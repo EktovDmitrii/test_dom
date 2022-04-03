@@ -31,6 +31,6 @@
         android:textColor="@color/secondary900"
         android:textSize="16sp"
         android:layout_gravity="center_horizontal"
-        app:translationTextKey="Добавить" />
+        app:translationTextKey="app.profile.header.add" />
 
 </FrameLayout>

@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.data.providers.auth.manager
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.ContentObserver
@@ -44,6 +45,7 @@ class AuthContentProviderManager(private val context: Context) {
         registerObserver()
     }
 
+    @SuppressLint("Range")
     fun isAuthorized(): Boolean {
         for (uri in isAuthorizedUris){
             try {
@@ -67,6 +69,7 @@ class AuthContentProviderManager(private val context: Context) {
         return false
     }
 
+    @SuppressLint("Range")
     fun getAccessToken(): String? {
         for (uri in accessTokenUris){
             try {
@@ -92,6 +95,7 @@ class AuthContentProviderManager(private val context: Context) {
         return null
     }
 
+    @SuppressLint("Range")
     fun getRefreshToken(): String? {
         for (uri in refreshTokenUris){
             try {
@@ -117,6 +121,7 @@ class AuthContentProviderManager(private val context: Context) {
 
     }
 
+    @SuppressLint("Range")
     fun getRefreshTokenExpiresAt(): DateTime? {
         for (uri in refreshTokenExpiresAtUris){
             try {
@@ -164,7 +169,7 @@ class AuthContentProviderManager(private val context: Context) {
                 context.contentResolver.insert(uri, values)
                 context.contentResolver.notifyChange(uri, null)
             } catch (e: Exception){
-
+                e.printStackTrace()
             }
         }
     }

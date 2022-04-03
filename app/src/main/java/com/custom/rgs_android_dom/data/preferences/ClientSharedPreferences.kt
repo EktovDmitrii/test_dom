@@ -18,12 +18,26 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
         private const val PREF_KEY_CLIENT = "PREF_KEY_CLIENT"
         private const val PREF_KEY_LIVEKIT_ROOM_TOKEN = "PREF_KEY_LIVEKIT_ROOM_TOKEN"
         private const val PREF_KEY_LIVEKIT_CALL_ID = "PREF_KEY_LIVEKIT_ROOM_TOKEN"
+        private const val PREF_KEY_LIVEKIT_ROOM_ID = "PREF_KEY_LIVEKIT_ROOM_ID"
         private const val PREF_KEY_AGENT = "PREF_KEY_AGENT"
-        private const val PREF_EDIT_AGENT_WAS_REQUESTED = "PREF_TEXT_AGENT"
+
+        private const val PREFS_ONBOARDING = "OnboardingSharedPreference"
+        private const val PREF_IS_FIRST_RUN = "PREF_IS_FIRST_RUN"
     }
 
     private val preferences = context.getSharedPrefs(PREFS_NAME)
+    private val onboardingPreferences = context.getSharedPrefs(PREFS_ONBOARDING)
     private val rxPreferences = RxSharedPreferences.create(preferences)
+
+    fun isFirstRun(): Boolean {
+        return onboardingPreferences.getBoolean(PREF_IS_FIRST_RUN, true)
+    }
+
+    fun onFirstRun() {
+        onboardingPreferences.edit {
+            putBoolean(PREF_IS_FIRST_RUN, false)
+        }
+    }
 
     fun savePhone(phone: String){
         preferences.edit{
@@ -34,17 +48,6 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
     fun getPhone(): String? {
         return preferences.getString(PREF_KEY_PHONE, null)
     }
-
-    fun saveEditAgentWasRequested(text: Boolean){
-        preferences.edit(){
-            putBoolean(PREF_EDIT_AGENT_WAS_REQUESTED ,text)
-        }
-    }
-
-    fun getText(): Boolean {
-        return preferences.getBoolean(PREF_EDIT_AGENT_WAS_REQUESTED, true)
-    }
-
 
     fun saveClient(client: ClientModel){
         preferences.edit {
@@ -57,7 +60,6 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
         if (clientString != null){
             val client = gson.fromJson(clientString, ClientModel::class.java)
             client.agent = getAgent()
-            client.agent?.editAgentWasRequested = getText()
             return client
         }
         return null
@@ -77,6 +79,7 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
         preferences.edit {
             putString(PREF_KEY_LIVEKIT_ROOM_TOKEN, callJoin.token)
             putString(PREF_KEY_LIVEKIT_CALL_ID, callJoin.callId)
+            putString(PREF_KEY_LIVEKIT_ROOM_ID, callJoin.roomId)
         }
     }
 
@@ -84,7 +87,8 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
         if (preferences.contains(PREF_KEY_LIVEKIT_ROOM_TOKEN)){
             return CallJoinModel(
                 token = preferences.getString(PREF_KEY_LIVEKIT_ROOM_TOKEN, "") ?: "",
-                callId = preferences.getString(PREF_KEY_LIVEKIT_CALL_ID, "") ?: ""
+                callId = preferences.getString(PREF_KEY_LIVEKIT_CALL_ID, "") ?: "",
+                roomId = preferences.getString(PREF_KEY_LIVEKIT_ROOM_ID, "") ?: ""
             )
         }
         return null
@@ -94,6 +98,7 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
         preferences.edit{
             remove(PREF_KEY_LIVEKIT_ROOM_TOKEN)
             remove(PREF_KEY_LIVEKIT_CALL_ID)
+            remove(PREF_KEY_LIVEKIT_ROOM_ID)
         }
     }
 
@@ -111,4 +116,5 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
         }
         return null
     }
+
 }

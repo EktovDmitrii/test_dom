@@ -3,8 +3,13 @@ package com.custom.rgs_android_dom.data.network.mappers
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.requests.*
 import com.custom.rgs_android_dom.data.network.responses.*
+import com.custom.rgs_android_dom.domain.catalog.models.ServiceShortModel
 import com.custom.rgs_android_dom.domain.client.models.*
+import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
+import com.custom.rgs_android_dom.domain.policies.models.PolicyShortModel
+import com.custom.rgs_android_dom.domain.purchase.models.DeliveryType
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
+import java.lang.IllegalArgumentException
 
 object ClientMapper {
 
@@ -67,7 +72,8 @@ object ClientMapper {
             ),
             phone = response.phone,
             gender = response.gender,
-            status = response.status
+            status = response.status,
+            checkoutEmail = ""
         )
 
     }
@@ -127,12 +133,68 @@ object ClientMapper {
         return if (response != null){
             ClientAgent(
                 code = response.agent.agentCode,
-                phone = response.assignPhone,
-                editAgentWasRequested = null
+                phone = response.assignPhone
             )
         } else {
             null
         }
+    }
+
+    fun responseToRequestEditClientTasks(response: RequestEditClientTasksResponse): List<RequestEditClientTaskModel>{
+        return response.tasks?.map { task->
+            RequestEditClientTaskModel(
+                status = if (task.status == "open") RequestEditClientStatus.OPEN else RequestEditClientStatus.UNSPECIFIED,
+                subStatus = task.subStatus,
+                taskId = task.taskId
+            )
+        } ?: emptyList()
+    }
+
+    fun responseToPolicyShort(response: ClientProductResponse, contracts: GetPolicyContractsResponse): PolicyShortModel {
+        return PolicyShortModel(
+            id = response.id ?: "",
+            contractId = response.contractId ?: "",
+            name = response.productName ?: "",
+            logo = "${BuildConfig.BASE_URL}/api/store/${response.productIcon}",
+            startsAt = contracts.contracts?.find { response.contractId == it.id }?.startDate,
+            expiresAt = contracts.contracts?.find { response.contractId == it.id }?.endDate
+        )
+    }
+
+    fun responseToPolicy(clientProductResponse: ClientProductResponse?,contractResponse: ContractResponse?, propertyItemResponse: PropertyItemResponse?, productServicesResponse: ProductServicesResponse?): PolicyModel {
+        return PolicyModel(
+            id= clientProductResponse?.id ?: "",
+            productId = clientProductResponse?.productId ?: "",
+            logo = "${BuildConfig.BASE_URL}/api/store/${clientProductResponse?.productIcon}",
+            productTitle= clientProductResponse?.productName ?: "",
+            productDescription = clientProductResponse?.productTitle ?: "",
+            address = propertyItemResponse?.address?.address,
+            includedProducts = productServicesResponse?.items?.map {
+                ServiceShortModel(
+                    priceAmount = it.priceAmount,
+                    providerId = it.providerId,
+                    providerName = it.providerName,
+                    quantity = it.quantity ?: 0,
+                    serviceCode = it.serviceCode,
+                    serviceId = it.serviceId,
+                    serviceName = it.serviceName,
+                    serviceDeliveryType = when (it.serviceDeliveryType) {
+                        "online" -> DeliveryType.ONLINE
+                        "visit" -> DeliveryType.VISIT
+                        else -> throw IllegalArgumentException("wrong argument ${it.serviceDeliveryType} for serviceDeliveryType")
+                    },
+                    serviceVersionId = it.serviceVersionId,
+                    isPurchased = true,
+                    canBeOrdered = clientProductResponse?.validityFrom?.isBeforeNow ?: false &&
+                            clientProductResponse?.validityTo?.isAfterNow ?: false &&
+                            contractResponse?.startDate?.isBeforeNow ?: false &&
+                            contractResponse?.endDate?.isAfterNow ?: false)
+            } ?: listOf(),
+            policySeriesAndNumber = "${contractResponse?.serial} ${contractResponse?.number}",
+            clientName = "${contractResponse?.clientLastName} ${contractResponse?.clientFirstName} ${contractResponse?.clientMiddleName}",
+            startsAt = contractResponse?.startDate,
+            expiresAt = contractResponse?.endDate
+        )
     }
 
 }

@@ -5,12 +5,14 @@ import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentEditPersonalDataBinding
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.client.personal_data.request_edit.RequestEditPersonalDataFragment
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
 import com.custom.rgs_android_dom.views.edit_text.MSDLabelIconEditText
 import com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
+import com.yandex.metrica.YandexMetrica
 import org.joda.time.LocalDateTime
 
 class EditPersonalDataFragment :
@@ -80,6 +82,8 @@ class EditPersonalDataFragment :
         }
 
         binding.saveTextView.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("profile_personal_data_save")
+
             hideSoftwareKeyboard()
             viewModel.onSaveClick()
         }
@@ -97,15 +101,13 @@ class EditPersonalDataFragment :
         }
 
         subscribe(viewModel.editPersonalDataObserver) { state ->
-            if (state.hasProducts){
-                binding.lastNameEditText.isEnabled = !state.isLastNameSaved
-                binding.firstNameEditText.isEnabled = !state.isFirstNameSaved
-                binding.middleNameEditText.isEnabled = !state.isMiddleNameSaved
-                binding.birthdayEditText.isEnabled = !state.isBirthdaySaved
-                binding.genderSelector.isEnabled = !state.isGenderSaved
-                binding.passportSeriesEditText.isEnabled = !state.isDocSerialSaved
-                binding.passportNumberEditText.isEnabled = !state.isDocNumberSaved
-            }
+            binding.lastNameEditText.setEnabledEditView(!state.isLastNameSaved, state.hasPolicies, state.hasProducts)
+            binding.firstNameEditText.setEnabledEditView(!state.isFirstNameSaved, state.hasPolicies, state.hasProducts)
+            binding.middleNameEditText.setEnabledEditView(!state.isMiddleNameSaved, state.hasPolicies, state.hasProducts)
+            binding.birthdayEditText.setEnabledIconEditView(!state.isBirthdaySaved, state.hasPolicies, state.hasProducts)
+            binding.genderSelector.setEnabledSelectView(!state.isGenderSaved, state.hasPolicies, state.hasProducts)
+            binding.passportSeriesEditText.setEnabledEditView(!state.isDocSerialSaved, state.hasPolicies, state.hasProducts)
+            binding.passportNumberEditText.setEnabledEditView(!state.isDocNumberSaved, state.hasPolicies, state.hasProducts)
 
             binding.lastNameEditText.setText(state.lastName)
             binding.firstNameEditText.setText(state.firstName)
@@ -118,7 +120,11 @@ class EditPersonalDataFragment :
             binding.passportNumberEditText.setText(state.docNumber)
             binding.phoneEditText.isEnabled = !state.isPhoneSaved
             binding.phoneEditText.setText(state.phone)
-            binding.additionalPhoneEditText.setText(state.secondPhone)
+
+            if (state.secondPhone.isNotEmpty()){
+                binding.additionalPhoneEditText.setText(state.secondPhone)
+            }
+
             binding.emailEditText.setText(state.email)
         }
 
@@ -189,9 +195,9 @@ class EditPersonalDataFragment :
         subscribe(viewModel.editPersonalDataRequestedObserver) { wasRequested ->
             binding.editRequestTextView.goneIf(wasRequested)
             binding.descriptionTextView.text = if (wasRequested) {
-                "Заявка на редактирование данных будет рассмотрена"
+                TranslationInteractor.getTranslation("app.profile.client.edit_request.success")
             } else {
-                "Чтобы редактировать личные данные,"
+                TranslationInteractor.getTranslation("app.profile.client.edit_request.title")
             }
         }
     }

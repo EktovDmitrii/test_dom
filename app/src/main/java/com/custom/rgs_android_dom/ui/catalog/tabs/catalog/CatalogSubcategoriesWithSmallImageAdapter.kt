@@ -10,6 +10,7 @@ import com.custom.rgs_android_dom.databinding.ItemCatalogSubcategoryWithSmallIma
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogSubCategoryModel
 import com.custom.rgs_android_dom.utils.GlideApp
 import com.custom.rgs_android_dom.utils.dp
+import com.custom.rgs_android_dom.utils.formatQuantity
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 
 class CatalogSubcategoriesWithSmallImageAdapter(
@@ -42,10 +43,10 @@ class CatalogSubcategoriesWithSmallImageAdapter(
 
         fun bind(model: CatalogSubCategoryModel) {
             binding.titleTextView.text = model.name
-            binding.subtitleTextView.text = "${model.products.size} видов услуг"
+            binding.subtitleTextView.text = model.products.size.formatQuantity()
 
             GlideApp.with(binding.root.context)
-                .load(GlideUrlProvider.makeHeadersGlideUrl(model.logoMiddle))
+                .load(GlideUrlProvider.makeHeadersGlideUrl(model.logoSmall))
                 .transform(RoundedCorners(8.dp(binding.root.context)))
                 .error(R.drawable.rectangle_filled_secondary_100_radius_8dp)
                 .into(binding.logoImageView)

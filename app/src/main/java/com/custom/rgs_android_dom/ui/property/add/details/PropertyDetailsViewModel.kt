@@ -1,12 +1,9 @@
 package com.custom.rgs_android_dom.ui.property.add.details
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.Network
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.custom.rgs_android_dom.ui.managers.MSDConnectivityManager
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyDocumentValidationException
@@ -19,18 +16,18 @@ import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.logException
 import com.custom.rgs_android_dom.views.MSDYesNoSelector
+import com.yandex.metrica.YandexMetrica
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
-@SuppressLint("MissingPermission")
 class PropertyDetailsViewModel(
     propertyName: String,
     propertyAddress: AddressItemModel,
     propertyType: PropertyType,
     private val propertyInteractor: PropertyInteractor,
-    private val context: Context
+    connectivityManager: MSDConnectivityManager
 ) : BaseViewModel() {
 
     private val propertyDetailsViewStateController = MutableLiveData<PropertyDetailsViewState>()
@@ -40,19 +37,13 @@ class PropertyDetailsViewModel(
     val internetConnectionObserver: LiveData<Boolean> = internetConnectionController
 
     init {
-
-        val connectivityManager =  this.context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        connectivityManager.registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {
-
-            override fun onAvailable(network: Network) {
-                onInternetConnectionChanged(true)
-            }
-
-            override fun onLost(network: Network) {
-                onInternetConnectionChanged(false)
-            }
-
-        })
+        connectivityManager.connectivitySubject
+            .distinctUntilChanged()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy {
+                internetConnectionController.value = it }
+            .addTo(dataCompositeDisposable)
 
         propertyInteractor.propertyDetailsViewStateSubject
             .subscribeOn(Schedulers.io())
@@ -74,7 +65,8 @@ class PropertyDetailsViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                         propertyInteractor.updateDocuments(it)
+                    YandexMetrica.reportEvent("profile_object_add_complete")
+                    propertyInteractor.updateDocuments(it)
                 },
                 onError = {
                     logException(this, it)
@@ -128,10 +120,6 @@ class PropertyDetailsViewModel(
 
     }
 
-    fun onAddressChanged(address: String) {
-        propertyInteractor.updatePropertyAddress(address)
-    }
-
     fun onEntranceChanged(entrance: String) {
         propertyInteractor.updatePropertyEntrance(entrance)
     }
@@ -170,10 +158,6 @@ class PropertyDetailsViewModel(
 
     fun onRemoveDocumentClick(uri: Uri) {
         propertyInteractor.onRemoveDocument(uri)
-    }
-
-    fun onInternetConnectionChanged(isAvailable: Boolean) {
-        internetConnectionController.postValue(isAvailable)
     }
 
 }

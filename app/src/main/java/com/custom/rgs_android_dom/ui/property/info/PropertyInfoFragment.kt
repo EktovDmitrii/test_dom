@@ -3,10 +3,13 @@ package com.custom.rgs_android_dom.ui.property.info
 import android.os.Bundle
 import android.view.View
 import com.custom.rgs_android_dom.R
+import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentPropertyInfoBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsFragment
+import com.custom.rgs_android_dom.ui.property.info.more.PropertyMoreFragment
+import com.custom.rgs_android_dom.utils.GlideApp
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
@@ -19,7 +22,7 @@ class PropertyInfoFragment :
     override val TAG: String = "PROPERTY_INFO_FRAGMENT"
 
     private val adapter: PropertyDocumentsAdapter
-        get() = binding.listDocumentsRecyclerView.adapter as PropertyDocumentsAdapter
+        get() = binding.documentsRecyclerView.adapter as PropertyDocumentsAdapter
 
     companion object {
         private const val ARG_OBJECT_ID = "ARG_OBJECT_ID"
@@ -38,19 +41,18 @@ class PropertyInfoFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.listDocumentsRecyclerView.adapter = PropertyDocumentsAdapter()
+        binding.documentsRecyclerView.adapter = PropertyDocumentsAdapter {
+            val propertyUploadFilesFragment = PropertyUploadDocumentsFragment()
+            propertyUploadFilesFragment.show(childFragmentManager, propertyUploadFilesFragment.TAG)
+        }
 
         binding.backImageView.setOnDebouncedClickListener {
+            viewModel.disposeAll()
             onClose()
         }
 
         binding.moreImageView.setOnDebouncedClickListener {
-
-        }
-
-        binding.uploadDocumentFrameLayout.setOnDebouncedClickListener {
-            val propertyUploadFilesFragment = PropertyUploadDocumentsFragment()
-            propertyUploadFilesFragment.show(childFragmentManager, propertyUploadFilesFragment.TAG)
+            viewModel.onMoreClick()
         }
 
         subscribe(viewModel.propertyItemObserver) { propertyItem ->
@@ -67,6 +69,11 @@ class PropertyInfoFragment :
             binding.titleTextView.text = propertyItem.name
             binding.subtitleTextView.text = propertyItem.address?.address ?: ""
             binding.addressTextView.setValue(propertyItem.address?.address ?: "")
+            propertyItem.photoLink?.let{
+                GlideApp.with(requireContext())
+                    .load(GlideUrlProvider.makeHeadersGlideUrl(it))
+                    .into(binding.propertyImageView)
+            }
 
             propertyItem.isOwn?.let { isOwn ->
                 binding.isOwnTextView.setValue(if (isOwn) "Да" else "Нет")
@@ -84,13 +91,21 @@ class PropertyInfoFragment :
             if (propertyItem.comment.isNotEmpty()) {
                 binding.commentTextView.setValue(propertyItem.comment)
             }
-            if (propertyItem.documents.isNotEmpty()) {
-                adapter.setItems(propertyItem.documents)
-            }
+
+            adapter.setItems(propertyItem.documents)
 
             binding.allDocumentsTextView.setOnDebouncedClickListener {
                 viewModel.onShowAllDocumentsClick()
             }
+        }
+
+        subscribe(viewModel.internetConnectionObserver) {
+            adapter.onInternetConnectionChanged(it)
+        }
+
+        subscribe(viewModel.propertyMoreObserver){
+            val propertyMoreFragment = PropertyMoreFragment.newInstance(it)
+            propertyMoreFragment.show(childFragmentManager, propertyMoreFragment.TAG)
         }
     }
 

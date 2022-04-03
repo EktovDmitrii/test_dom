@@ -1,7 +1,6 @@
 package com.custom.rgs_android_dom.domain.catalog.models
 
 import org.joda.time.DateTime
-import java.io.Serializable
 
 data class ProductModel(
     val code: String?,
@@ -16,6 +15,9 @@ data class ProductModel(
     val descriptionRef: String?,
     val duration: ProductDurationModel?,
     val iconLink: String,
+    val logoSmall: String,
+    val logoMiddle: String,
+    val logoLarge: String,
     val id: String,
     val insuranceProducts: List<InsuranceProductModel>?,
     val internalDescription: String?,
@@ -24,6 +26,7 @@ data class ProductModel(
     val price: ProductPriceModel?,
     val status: String?,
     val tags: List<String>?,
+    val advantages: List<String>?,
     val title: String?,
     val type: String?,
     val validityFrom: DateTime?,
@@ -33,5 +36,6 @@ data class ProductModel(
     val versionCode: String?,
     val versionCreatedAt: DateTime?,
     val versionId: String?,
-    val versionStatus: String?
-): Serializable
+    val versionStatus: String?,
+    val isPurchased: Boolean = false
+)

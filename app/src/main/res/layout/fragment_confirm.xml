@@ -50,7 +50,7 @@
             android:lineSpacingMultiplier="0"
             tools:text="Если вы покинете страницу сейчас, данные об объекте недвижимости не сохранятся"/>
 
-        <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullwidth
+        <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullWidth
             android:id="@+id/confirmTextView"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"

@@ -22,7 +22,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/cancelTextView"
-            app:translationHintKey="Чем вам помочь?" />
+            app:translationHintKey="app.catalog.search.placeholder" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/cancelTextView"
@@ -37,7 +37,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/searchInput"
-            app:translationTextKey="Отменить"/>
+            app:translationTextKey="app.catalog.search.cancel"/>
 
         <View
             android:id="@+id/toolbarDividerView"
@@ -77,7 +77,7 @@
                     android:gravity="center"
                     android:textColor="@color/secondary500"
                     android:textSize="20sp"
-                    app:translationTextKey="Нет результатов" />
+                    app:translationTextKey="app.catalog.search.empty_title" />
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:layout_width="match_parent"
@@ -87,7 +87,7 @@
                     android:gravity="center"
                     android:textColor="@color/secondary400"
                     android:textSize="16sp"
-                    app:translationTextKey="По вашему запросу ничего не найдено.\nПопробуйте новый поиск или напишите Мастеру онлайн." />
+                    app:translationTextKey="app.catalog.search.empty_subtitle" />
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:id="@+id/openChatTextView"
@@ -102,7 +102,7 @@
                     android:fontFamily="@font/suisse_regular"
                     android:textColor="@color/secondary900"
                     android:textSize="14sp"
-                    app:translationTextKey="Чат с Мастером онлайн" />
+                    app:translationTextKey="app.catalog.search.emptyState" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -122,7 +122,7 @@
                     android:textSize="16sp"
                     android:layout_marginTop="16dp"
                     android:gravity="center_vertical"
-                    app:translationTextKey="Популярные"/>
+                    app:translationTextKey="app.catalog.search.popular_header"/>
 
                 <com.custom.rgs_android_dom.views.MSDRecyclerView
                     android:id="@+id/popularProductsRecyclerView"

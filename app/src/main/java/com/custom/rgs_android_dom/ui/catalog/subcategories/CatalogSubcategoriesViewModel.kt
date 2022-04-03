@@ -11,12 +11,15 @@ import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
+import com.custom.rgs_android_dom.ui.catalog.product.ProductLauncher
+import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductLauncher
+import com.custom.rgs_android_dom.ui.catalog.search.CatalogSearchFragment
 import com.custom.rgs_android_dom.ui.catalog.subcategory.CatalogSubcategoryFragment
 
 class CatalogSubcategoriesViewModel(
     private val category: CatalogCategoryModel,
     private val registrationInteractor: RegistrationInteractor
-) : BaseViewModel(){
+) : BaseViewModel() {
 
     private val titleController = MutableLiveData<String>()
     val titleObserver: LiveData<String> = titleController
@@ -37,21 +40,27 @@ class CatalogSubcategoriesViewModel(
         closeController.value = Unit
     }
 
-    fun onProductClick(product: ProductShortModel){
-        // TODO Replace this, when we will have guest endpoint for product details
-        if (registrationInteractor.isAuthorized()){
-            if (product.defaultProduct){
-                // Open service (single product) details screen
-                ScreenManager.showBottomScreen(SingleProductFragment.newInstance(product.id))
-            } else {
-                // Open product details screen
-                ScreenManager.showBottomScreen(ProductFragment.newInstance(product.id))
-            }
+    fun onSearchClick() {
+        val catalogSearchFragment = CatalogSearchFragment.newInstance()
+        ScreenManager.showScreen(catalogSearchFragment)
+    }
+
+    fun onProductClick(product: ProductShortModel) {
+        if (product.defaultProduct) {
+            // Open service (single product) details screen
+            ScreenManager.showBottomScreen(
+                SingleProductFragment.newInstance(
+                    SingleProductLauncher(product.id, product.versionId)
+                )
+            )
+        } else {
+            // Open product details screen
+            ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(product.id, product.versionId)))
         }
     }
 
     fun onSubCategoryClick(subCategory: CatalogSubCategoryModel) {
-        if (subCategory.products.isNotEmpty()){
+        if (subCategory.products.isNotEmpty()) {
             val catalogSubcategoryFragment = CatalogSubcategoryFragment.newInstance(subCategory)
             ScreenManager.showBottomScreen(catalogSubcategoryFragment)
         }

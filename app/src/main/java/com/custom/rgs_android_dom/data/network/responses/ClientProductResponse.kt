@@ -17,8 +17,8 @@ data class ClientProductResponse(
     @SerializedName("id")
     val id: String?,
 
-    @SerializedName("objectIds")
-    val objectIds: List<String>?,
+    @SerializedName("objectId")
+    val objectId: String?,
 
     @SerializedName("productCode")
     val productCode: String?,
@@ -31,6 +31,15 @@ data class ClientProductResponse(
 
     @SerializedName("productIcon")
     val productIcon: String?,
+
+    @SerializedName("logoSmall")
+    val logoSmall: String?,
+
+    @SerializedName("logoMiddle")
+    val logoMiddle: String?,
+
+    @SerializedName("logoLarge")
+    val logoLarge: String?,
 
     @SerializedName("productId")
     val productId: String?,
@@ -54,5 +63,8 @@ data class ClientProductResponse(
     val validityFrom: DateTime?,
 
     @SerializedName("validityTo")
-    val validityTo: DateTime?
+    val validityTo: DateTime?,
+
+    @SerializedName("defaultProduct")
+    val defaultProduct: Boolean?
 )

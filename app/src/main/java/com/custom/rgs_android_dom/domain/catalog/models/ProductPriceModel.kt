@@ -4,5 +4,6 @@ import java.io.Serializable
 
 data class ProductPriceModel(
     val amount: Int?,
-    val vatType: String?
+    val vatType: String?,
+    val fix: Boolean
 ): Serializable

@@ -76,7 +76,7 @@
                 tools:itemCount="5"
                 tools:listitem="@layout/item_catalog_gridlayout_subcategory" />
 
-            <TextView
+            <com.custom.rgs_android_dom.views.text.MSDTextView
                 android:id="@+id/othersTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
@@ -84,7 +84,7 @@
                 android:layout_marginTop="32dp"
                 android:fontFamily="@font/my_service_bold"
                 android:gravity="center_vertical"
-                android:text="Прочее"
+                app:translationTextKey="app.catalog.subcategory.other"
                 android:textColor="@color/secondary900"
                 android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@+id/backImageView" />

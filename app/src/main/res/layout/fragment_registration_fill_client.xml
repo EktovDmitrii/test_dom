@@ -31,7 +31,7 @@
                 android:fontFamily="@font/my_service_medium"
                 android:textColor="@color/secondary900"
                 android:textSize="20sp"
-                app:translationTextKey="Расскажите о себе" />
+                app:translationTextKey="app.profile.add.header.title" />
 
             <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
                 android:id="@+id/surnameEditText"
@@ -41,8 +41,8 @@
                 android:digits="@string/acceptable_name_chars"
                 android:inputType="textPersonName|textCapSentences"
                 android:maxLength="50"
-                app:translationHintKey="Иванов"
-                app:translationLabelKey="Фамилия" />
+                app:translationHintKey="app.profile.add.lastname.placeholder"
+                app:translationLabelKey="app.profile.add.lastname.title" />
 
             <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
                 android:id="@+id/nameEditText"
@@ -52,8 +52,8 @@
                 android:digits="@string/acceptable_name_chars"
                 android:inputType="textPersonName|textCapSentences"
                 android:maxLength="25"
-                app:translationHintKey="Иван"
-                app:translationLabelKey="Имя" />
+                app:translationHintKey="app.profile.add.firstname.placeholder"
+                app:translationLabelKey="app.profile.add.firstname.title" />
 
             <com.custom.rgs_android_dom.views.edit_text.MSDLabelIconEditText
                 android:id="@+id/birthdayEditText"
@@ -64,22 +64,22 @@
                 android:inputType="date"
                 app:icon="@drawable/ic_calendar_24px"
                 app:mask="[00]{.}[00]{.}[0000]"
-                app:translationHintKey="24.04.1990"
-                app:translationLabelKey="Дата рождения" />
+                app:translationHintKey="app.profile.add.birthday.placeholder"
+                app:translationLabelKey="app.profile.add.birthday.title" />
 
             <com.custom.rgs_android_dom.views.MSDGenderSelector
                 android:id="@+id/genderSelector"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:translationLabelKey="Пол" />
+                app:translationLabelKey="app.profile.add.sex.title" />
 
             <com.custom.rgs_android_dom.views.text.MSDTextViewSecondary
                 android:id="@+id/knowAgentCodeTextView"
                 style="@style/Button.WithoutBg.Secondary"
                 android:layout_width="wrap_content"
                 android:layout_marginTop="16dp"
-                app:translationTextKey="Знаю код агента" />
+                app:translationTextKey="app.profile.add.agent_info.collapsed_title" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/agentInfoLinearLayout"
@@ -95,8 +95,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:digits="@string/acceptable_agent_code_chars"
-                    app:translationHintKey="999999"
-                    app:translationLabelKey="Введите код агента" />
+                    app:translationHintKey="app.profile.add.agent_info.placeholder"
+                    app:translationLabelKey="app.profile.add.agent_info.lnr_title" />
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:layout_width="match_parent"
@@ -112,7 +112,7 @@
                     android:paddingBottom="8dp"
                     android:textColor="@color/primary500"
                     android:textSize="13sp"
-                    app:translationTextKey="Введите код агента, если он вам известен\nЭтот шаг можно пропустить" />
+                    app:translationTextKey="app.profile.add.agent_info.code_skip" />
 
                 <com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
                     android:id="@+id/agentPhoneEditText"
@@ -123,8 +123,8 @@
                     android:inputType="phone"
                     app:hintAlwaysVisible="true"
                     app:mask="+7 [000] [000]-[00]-[00]"
-                    app:translationHintKey="+7 999 999-99-99"
-                    app:translationLabelKey="Введите номер телефона агента" />
+                    app:translationHintKey="app.profile.add.agent_info.phone.placeholder"
+                    app:translationLabelKey="app.profile.add.agent_info.phone_title" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -161,7 +161,7 @@
                 style="@style/Button.WithoutBg.Primary"
                 android:layout_width="wrap_content"
                 android:layout_gravity="start"
-                app:translationTextKey="Пропустить"/>
+                app:translationTextKey="app.profile.add.buttons.skip_title"/>
 
             <com.custom.rgs_android_dom.views.text.MSDTextViewLoader
                 android:id="@+id/saveTextView"
@@ -169,7 +169,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:enabled="false"
-                app:translationTextKey="Сохранить" />
+                app:translationTextKey="app.profile.add.buttons.save_title" />
 
         </FrameLayout>
 
@@ -192,7 +192,7 @@
             android:fontFamily="@font/my_service_medium"
             android:textColor="@color/secondary900"
             android:textSize="16sp"
-            app:translationTextKey="Расскажите о себе" />
+            app:translationTextKey="app.profile.add.header.title" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/closeImageView"

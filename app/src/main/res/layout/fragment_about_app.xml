@@ -29,6 +29,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:overScrollMode="never"
             android:layout_alignBottom="@+id/versionTextView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -104,6 +105,7 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/feedbackLinearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -127,7 +129,7 @@
                             android:includeFontPadding="false"
                             android:textColor="@color/secondary900"
                             android:textSize="16sp"
-                            app:translationTextKey="Отправить отзыв" />
+                            app:translationTextKey="Обратная связь" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -165,7 +167,7 @@
                             android:includeFontPadding="false"
                             android:textColor="@color/secondary900"
                             android:textSize="16sp"
-                            app:translationTextKey="Лицензионные соглашения" />
+                            app:translationTextKey="Пользовательское соглашение" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 

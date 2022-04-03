@@ -1,11 +1,15 @@
 package com.custom.rgs_android_dom.domain.repositories
 
-import com.custom.rgs_android_dom.domain.purchase_service.model.SavedCardModel
+import com.custom.rgs_android_dom.domain.client.models.Order
+import com.custom.rgs_android_dom.domain.purchase.models.CardModel
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseInfoModel
+import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.subjects.PublishSubject
 
 interface PurchaseRepository {
 
-    fun getSavedCards(): Single<List<SavedCardModel>>
+    fun getSavedCards(): Single<List<CardModel>>
 
     fun makeProductPurchase(
         productId: String,
@@ -13,8 +17,30 @@ interface PurchaseRepository {
         email: String,
         saveCard: Boolean,
         objectId: String,
+        comment: String?,
+        deliveryDate: String?,
+        timeFrom: String?,
+        timeTo: String?,
+        withOrder: Boolean
+    ): Single<PurchaseInfoModel>
+
+    fun orderServiceOnBalance(
+        serviceId: String,
+        clientServiceId: String,
+        objectId: String,
         deliveryDate: String,
         timeFrom: String,
-        timeTo: String
-    ): Single<String>
+        timeTo: String,
+        comment: String?
+    ): Single<Order>
+
+    fun getServiceOrderedSubject(): PublishSubject<String>
+
+    fun getProductPurchasedSubject(): PublishSubject<String>
+
+    fun notifyProductPurchased(productId: String)
+
+    fun deleteCard(bindingId: String): Completable
+
+    fun getDeletedCardSubject(): PublishSubject<String>
 }

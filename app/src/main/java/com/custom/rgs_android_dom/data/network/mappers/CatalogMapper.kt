@@ -1,12 +1,13 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
-import android.util.Log
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.responses.*
 import com.custom.rgs_android_dom.domain.catalog.models.*
 import com.custom.rgs_android_dom.domain.catalog.models.ClientProductModel
+import com.custom.rgs_android_dom.domain.purchase.models.DeliveryType
 import com.custom.rgs_android_dom.utils.asEnumOrDefault
 import com.custom.rgs_android_dom.utils.safeLet
+import java.lang.IllegalArgumentException
 
 object CatalogMapper {
 
@@ -45,6 +46,7 @@ object CatalogMapper {
                 productTags = categoryNode.productTags ?: listOf(),
                 products = listOf(),
                 subCategories = subCategories,
+                sortOrder = categoryNode.sortOrder ?: 0,
                 isPrimary = categoryNode.productTags?.contains(TAG_PRODUCT_VIEW) ?: false
             )
             catalogCategories.add(category)
@@ -57,6 +59,7 @@ object CatalogMapper {
             code = response.code,
             activatedAt = response.activatedAt,
             archivedAt = response.archivedAt,
+            advantages = response.advantages,
             coolOff = if (response.coolOff != null) {
                 ProductCoolOffModel(
                     unitType = response.coolOff.unitType.asEnumOrDefault(ProductUnitType.UNKNOWN),
@@ -80,6 +83,9 @@ object CatalogMapper {
                 null
             },
             iconLink = "${BuildConfig.BASE_URL}/api/store/${response.iconLink}",
+            logoSmall = "${BuildConfig.BASE_URL}/api/store/${response.logoSmall}",
+            logoMiddle = "${BuildConfig.BASE_URL}/api/store/${response.logoMiddle}",
+            logoLarge = "${BuildConfig.BASE_URL}/api/store/${response.logoLarge}",
             id = response.id,
             insuranceProducts = response.insuranceProducts?.map {
                 InsuranceProductModel(
@@ -93,7 +99,8 @@ object CatalogMapper {
             price = if (response.price != null){
                 ProductPriceModel(
                     amount = response.price.amount,
-                    vatType = response.price.vatType
+                    vatType = response.price.vatType,
+                    fix = response.price.fix
                 )
             } else{
                 null
@@ -132,11 +139,18 @@ object CatalogMapper {
                 null
             },
             deliveryTime = response.deliveryTime,
-            deliveryType = response.deliveryType,
+            deliveryType = when (response.deliveryType) {
+                "online" -> DeliveryType.ONLINE
+                "visit" -> DeliveryType.VISIT
+                else -> null
+            },
             description = response.description,
             descriptionFormat = response.descriptionFormat,
             descriptionRef = response.descriptionRef,
             iconLink = "${BuildConfig.BASE_URL}/api/store/${response.iconLink}",
+            logoSmall = "${BuildConfig.BASE_URL}/api/store/${response.logoSmall}",
+            logoMiddle = "${BuildConfig.BASE_URL}/api/store/${response.logoMiddle}",
+            logoLarge = "${BuildConfig.BASE_URL}/api/store/${response.logoLarge}",
             id = response.id,
             internalDescription = response.internalDescription,
             name = response.name,
@@ -144,7 +158,8 @@ object CatalogMapper {
             price = if (response.price != null){
                 ServicePriceModel(
                     amount = response.price.amount,
-                    vatType = response.price.vatType
+                    vatType = response.price.vatType,
+                    fix = response.price.fix
                 )
             } else {
                 null
@@ -162,6 +177,14 @@ object CatalogMapper {
             title = response.title,
             type = response.type,
             unitType = response.unitType,
+            duration = if (response.duration != null){
+                ProductDurationModel(
+                    unitType = response.duration.unitType.asEnumOrDefault(ProductUnitType.UNKNOWN),
+                    units = response.duration.units
+                )
+            } else {
+                null
+            },
             validityFrom = response.validityFrom,
             validityTo = response.validityTo,
             versionActivatedAt = response.versionActivatedAt,
@@ -180,6 +203,9 @@ object CatalogMapper {
             title = response.title ?: "",
             code = response.code,
             icon = "${BuildConfig.BASE_URL}/api/store/${response.iconLink}",
+            logoSmall = "${BuildConfig.BASE_URL}/api/store/${response.logoSmall}",
+            logoMiddle = "${BuildConfig.BASE_URL}/api/store/${response.logoMiddle}",
+            logoLarge = "${BuildConfig.BASE_URL}/api/store/${response.logoLarge}",
             versionId = response.versionId,
             name = response.name,
             price = response.price,
@@ -193,10 +219,15 @@ object CatalogMapper {
             priceAmount = response.priceAmount,
             providerId = response.providerId,
             providerName = response.providerName,
-            quantity = response.quantity,
+            quantity = response.quantity ?: -1,
             serviceCode = response.serviceCode,
             serviceId = response.serviceId,
             serviceName = response.serviceName,
+            serviceDeliveryType = when (response.serviceDeliveryType) {
+                "online" -> DeliveryType.ONLINE
+                "visit" -> DeliveryType.VISIT
+                else -> throw IllegalArgumentException("wrong argument ${response.serviceDeliveryType} for serviceDeliveryType")
+            },
             serviceVersionId = response.serviceVersionId
         )
     }
@@ -217,10 +248,19 @@ object CatalogMapper {
                         id = serviceDetails.id,
                         serviceId = serviceDetails.serviceId,
                         productId = serviceDetails.productId,
+                        clientProductId = serviceDetails.clientProductId,
                         serviceName = serviceDetails.serviceName,
                         productIcon = "${BuildConfig.BASE_URL}/api/store/${serviceDetails.productIcon}",
+                        serviceIcon = "${BuildConfig.BASE_URL}/api/store/${serviceDetails.serviceIcon}",
                         available = serviceBalance?.available ?: 0,
-                        total = serviceBalance?.total ?: 0
+                        total = serviceBalance?.total ?: 0,
+                        validityFrom = serviceDetails.validityFrom,
+                        validityTo = serviceDetails.validityTo,
+                        canBeOrdered = serviceDetails.validityFrom?.isBeforeNow ?: false &&
+                                serviceDetails.validityTo?.isAfterNow ?: false,
+                        objectId = serviceDetails.objectId,
+                        serviceVersionId = serviceDetails.serviceVersionId ?: "",
+                        productVersionId = serviceDetails.productVersionId ?: ""
                     )
                 )
             }
@@ -236,11 +276,14 @@ object CatalogMapper {
             clientId = response.clientId ?: "",
             contractId = response.contractId ?: "",
             id = response.id ?: "",
-            objectIds = response.objectIds ?: arrayListOf(),
+            objectId = response.objectId,
             productCode = response.productCode ?: "",
             productDescription = response.productDescription ?: "",
             productDescriptionRef = response.productDescriptionRef ?: "",
             productIcon = "${BuildConfig.BASE_URL}/api/store/${response.productIcon}",
+            logoSmall = "${BuildConfig.BASE_URL}/api/store/${response.logoSmall}",
+            logoMiddle = "${BuildConfig.BASE_URL}/api/store/${response.logoMiddle}",
+            logoLarge = "${BuildConfig.BASE_URL}/api/store/${response.logoLarge}",
             productId = response.productId ?: "",
             productName = response.productName ?: "",
             productTitle = response.productTitle ?: "",
@@ -248,7 +291,8 @@ object CatalogMapper {
             productVersionId = response.productVersionId ?: "",
             status = response.status ?: "",
             validityFrom = response.validityFrom,
-            validityTo = response.validityTo
+            validityTo = response.validityTo,
+            defaultProduct = response.defaultProduct ?: false
         )
     }
 

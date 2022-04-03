@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/deleteTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="18dp"
+        android:textSize="20sp"
+        android:textColor="@color/error500"
+        app:translationTextKey="app.client.payment_methods.delete_card"
+        android:gravity="center"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

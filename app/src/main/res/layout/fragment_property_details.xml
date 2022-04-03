@@ -77,18 +77,35 @@
                 android:textSize="14sp"
                 app:translationTextKey="Адрес" />
 
-            <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
-                android:id="@+id/addressTextInputLayout"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/addressApartmentLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:inputType="textMultiLine"
-                android:maxLength="250"
-                app:enabled="false"
-                android:paddingHorizontal="20dp"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
-                app:translationHintKey="Адрес" />
+                app:layout_constraintTop_toBottomOf="@id/addressApartmentTitleTextView">
+
+                <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
+                    android:id="@+id/addressTextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:inputType="textMultiLine"
+                    android:maxLength="250"
+                    android:paddingHorizontal="20dp"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="0dp"
+                    app:translationHintKey="Адрес" />
+
+                <View
+                    android:id="@+id/addressApartmentClickView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:background="@android:color/transparent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/apartmentDataLinearLayout"
@@ -452,7 +469,7 @@
                     </FrameLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/listDocumentsRecyclerView"
+                        android:id="@+id/documentsRecyclerView"
                         android:layout_width="wrap_content"
                         android:layout_height="116dp"
                         android:orientation="horizontal"
@@ -488,7 +505,7 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="BottomAppBar">
 
-        <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullwidth
+        <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullWidth
             android:id="@+id/addTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

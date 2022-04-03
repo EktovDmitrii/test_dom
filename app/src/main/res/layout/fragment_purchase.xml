@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary500"
-    tools:context=".ui.purchase_service.PurchaseFragment">
+    android:background="@drawable/rectangle_filled_white_radius_24dp"
+    tools:context=".ui.purchase.PurchaseFragment">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/rectangle_filled_white_radius_24dp"
+
         android:orientation="vertical">
 
         <include
@@ -57,18 +56,17 @@
 
                 <include
                     android:id="@+id/layoutProperty"
-                    layout="@layout/layout_purchase_service_property" />
+                    layout="@layout/layout_purchase_service_property"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+                <include
+                    android:id="@+id/layoutNoProperty"
+                    layout="@layout/layout_purchase_no_property" />
 
                 <include
                     android:id="@+id/layoutDateTime"
                     layout="@layout/layout_purchase_date_time" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="64dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@color/secondary200" />
 
                 <include
                     android:id="@+id/layoutPayment"
@@ -80,7 +78,7 @@
 
                 <include
                     android:id="@+id/layoutCodeAgent"
-                    layout="@layout/layout_purchase_code_code" />
+                    layout="@layout/layout_purchase_agent_code" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 

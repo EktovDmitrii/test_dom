@@ -19,10 +19,13 @@ data class ServiceShortResponse(
     val serviceCode: String?,
 
     @SerializedName("serviceId")
-    val serviceId: String?,
+    val serviceId: String,
 
     @SerializedName("serviceName")
     val serviceName: String?,
+
+    @SerializedName("serviceDeliveryType")
+    val serviceDeliveryType: String,
 
     @SerializedName("serviceVersionId")
     val serviceVersionId: String?

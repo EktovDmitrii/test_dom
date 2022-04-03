@@ -4,18 +4,22 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
+import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
+import com.custom.rgs_android_dom.ui.catalog.product.ProductLauncher
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
-import com.custom.rgs_android_dom.ui.chat.ChatFragment
+import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductLauncher
+import com.custom.rgs_android_dom.ui.chats.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.navigation.TargetScreen
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.utils.logException
 import com.jakewharton.rxrelay2.PublishRelay
+import com.yandex.metrica.YandexMetrica
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -24,6 +28,7 @@ import java.util.concurrent.TimeUnit
 
 class CatalogSearchViewModel(
     tag: String?,
+    private val chatInteractor: ChatInteractor,
     private val catalogInteractor: CatalogInteractor,
     private val registrationInteractor: RegistrationInteractor,
     private val clientInteractor: ClientInteractor
@@ -78,13 +83,13 @@ class CatalogSearchViewModel(
                 }
             ).addTo(dataCompositeDisposable)
 
-        clientInteractor.getClientSavedSubject()
+        registrationInteractor.getAuthFlowEndedSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy (
                 onNext = {
                     when (screenToOpenOnLogin) {
-                        TargetScreen.CHAT -> { ScreenManager.showScreen(ChatFragment()) }
+                        TargetScreen.CHAT -> { ScreenManager.showBottomScreen(ChatFragment.newInstance(chatInteractor.getMasterOnlineCase())) }
                     }
                     screenToOpenOnLogin = TargetScreen.UNSPECIFIED
                 },
@@ -110,12 +115,13 @@ class CatalogSearchViewModel(
     }
 
     fun onProductClick(product: ProductShortModel){
+        YandexMetrica.reportEvent("mp_search_service", "{\"service\":\"${product.name}\"}")
+
         if (product.defaultProduct){
-            ScreenManager.showBottomScreen(SingleProductFragment.newInstance(product.id))
+            ScreenManager.showBottomScreen(SingleProductFragment.newInstance(SingleProductLauncher( product.id, product.versionId)))
         } else {
-            ScreenManager.showBottomScreen(ProductFragment.newInstance(product.id))
+            ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(product.id, product.versionId)))
         }
-        closeController.value = Unit
     }
 
     fun onCancelClick(){
@@ -124,7 +130,7 @@ class CatalogSearchViewModel(
 
     fun onOpenChatClick(){
         if (registrationInteractor.isAuthorized()){
-            ScreenManager.showScreen(ChatFragment())
+            ScreenManager.showBottomScreen(ChatFragment.newInstance(chatInteractor.getMasterOnlineCase()))
         } else {
             screenToOpenOnLogin = TargetScreen.CHAT
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)

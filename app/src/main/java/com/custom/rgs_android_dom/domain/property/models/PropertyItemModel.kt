@@ -12,7 +12,30 @@ data class PropertyItemModel(
     val isRent: Boolean?,
     val isTemporary: Boolean?,
     val name: String,
+    val photoLink: String?,
     val status: String,
     val totalArea: Float?,
-    val type: PropertyType
-) : Serializable
+    val type: PropertyType,
+    val isEmpty: Boolean = false
+) : Serializable {
+
+    companion object {
+        fun empty() = PropertyItemModel(
+            address = null,
+            clientId = "",
+            comment = "",
+            documents = mutableListOf(),
+            id = "",
+            isOwn = null,
+            isTemporary = null,
+            isRent = null,
+            name = "",
+            photoLink = null,
+            status = "",
+            totalArea = null,
+            type = PropertyType.UNDEFINED,
+            isEmpty = true
+        )
+    }
+
+}

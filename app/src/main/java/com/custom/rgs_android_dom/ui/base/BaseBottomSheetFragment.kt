@@ -11,7 +11,6 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.hideSoftwareKeyboard
 import com.custom.rgs_android_dom.utils.subscribe
-import com.custom.rgs_android_dom.views.MSDBottomNavigationView
 import com.custom.rgs_android_dom.views.NavigationScope
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -65,10 +64,6 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB : ViewBinding>: Bo
 
     }
 
-    open fun close(){
-        viewModel.close()
-    }
-
     open fun getParameters(): ParametersDefinition = {
         emptyParametersHolder()
     }
@@ -78,6 +73,7 @@ abstract class BaseBottomSheetFragment<VM : BaseViewModel, VB : ViewBinding>: Bo
     open fun onError() {}
 
     open fun onClose() {
+        viewModel.disposeAll()
         hideSoftwareKeyboard()
         ScreenManager.closeCurrentBottomFragment()
     }

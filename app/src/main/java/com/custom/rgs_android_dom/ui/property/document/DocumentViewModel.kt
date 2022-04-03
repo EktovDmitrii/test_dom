@@ -1,7 +1,9 @@
 package com.custom.rgs_android_dom.ui.property.document
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Environment
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
@@ -19,9 +21,11 @@ import java.io.File
 
 class DocumentViewModel(
     private val objectId: String,
-    propertyItemModel: PropertyItemModel,
     private val propertyInteractor: PropertyInteractor
 ) : BaseViewModel() {
+
+    private val isDeleteButtonVisibleController = MutableLiveData<Boolean>(false)
+    val isDeleteButtonVisibleObserver: LiveData<Boolean> = isDeleteButtonVisibleController
 
     private val propertyItemController = MutableLiveData<PropertyItemModel>()
     val propertyDocumentsObserver: LiveData<PropertyItemModel> = propertyItemController
@@ -30,7 +34,18 @@ class DocumentViewModel(
     val downloadFileObserver: LiveData<PropertyDocument> = downloadFileController
 
     init {
-        propertyItemController.postValue(propertyItemModel)
+        propertyInteractor.getPropertyItem(objectId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    propertyInteractor.propertyInfoStateSubject.onNext(it)
+                },
+                onError = {
+                    logException(this, it)
+                    networkErrorController.value = "Не удалось загрузить объект"
+                }
+            ).addTo(dataCompositeDisposable)
 
         propertyInteractor.propertyInfoStateSubject
             .subscribeOn(Schedulers.io())
@@ -50,36 +65,51 @@ class DocumentViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = { uri ->
-                    updateDocuments(uri)
+                    propertyItemController.value?.let {
+                        updateDocuments(it, uri)
+                    }
                 },
                 onError = {
                     logException(this, it)
                 }
             )
             .addTo(dataCompositeDisposable)
+
+        propertyInteractor.propertyDocumentDeletedSubject
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = { documentList ->
+                    propertyItemController.value = documentList
+                },
+                onError = {
+                    logException(this, it)
+                }
+            )
+            .addTo(dataCompositeDisposable)
+
     }
 
-    private fun updateDocuments(uri: List<Uri>) {
-        propertyItemController.value?.let {
-            propertyInteractor.updatePropertyItem(
-                objectId = objectId,
-                propertyItemModel = it,
-                filesUri = uri,
-            ).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                    onSuccess = {
-                        propertyInteractor.propertyInfoStateSubject.onNext(it)
-                    },
-                    onError = {
-                        logException(this, it)
-                        networkErrorController.value = "Не удалось загрузить объект"
-                    }
-                ).addTo(dataCompositeDisposable)
-        }
+    private fun updateDocuments(currentModel: PropertyItemModel, uri: List<Uri>) {
+        propertyInteractor.updatePropertyDocuments(
+            objectId = objectId,
+            propertyItemModel = currentModel,
+            filesUri = uri,
+        ).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    propertyInteractor.propertyInfoStateSubject.onNext(it)
+                },
+                onError = {
+                    logException(this, it)
+                    networkErrorController.value = "Не удалось загрузить объект"
+                }
+            ).addTo(dataCompositeDisposable)
     }
 
     fun onFileClick(propertyDocument: PropertyDocument) {
+        changeDeleteButtonsVisibility(false)
         val documentType = propertyDocument.link.substringAfterLast(".", "missing")
         var documentIndex = 0
         propertyItemController.value?.documents?.forEachIndexed { index, propertyDoc ->
@@ -94,7 +124,9 @@ class DocumentViewModel(
                         .absoluteFile.path + File.separator + propertyDocument.name
                 )
                 if (file.exists()) {
-                    ScreenManager.openDocument(Uri.fromFile(file))
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.fromFile(file))
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    (propertyDocument as Fragment).requireActivity().startActivity(intent)
                 } else {
                     downloadFileController.value = propertyDocument
                 }
@@ -113,7 +145,12 @@ class DocumentViewModel(
         )
     }
 
+    fun changeDeleteButtonsVisibility(isDeleteButtonVisible: Boolean){
+        isDeleteButtonVisibleController.value = isDeleteButtonVisible
+    }
+
     fun deleteDocument(propertyDocument: PropertyDocument) {
+        changeDeleteButtonsVisibility(true)
         val documentsList = propertyItemController.value?.documents
         documentsList?.remove(propertyDocument)
         val newPropertyItemModel = documentsList?.let {
@@ -123,6 +160,7 @@ class DocumentViewModel(
         }
 
         if (newPropertyItemModel != null) {
+            propertyInteractor.onFilesToDeleteSelected(newPropertyItemModel)
             propertyInteractor.updateDocument(objectId, newPropertyItemModel)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

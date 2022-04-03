@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
-import android.os.StrictMode
 import android.view.View
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.R
@@ -59,32 +58,18 @@ class DocumentListFragment :
 
     companion object {
         private const val ARG_OBJECT_ID = "ARG_OBJECT_ID"
-        private const val ARG_PROPERTY_MODEL = "ARG_PROPERTY_MODEL"
 
         fun newInstance(
-            objectId: String,
-            propertyItemModel: PropertyItemModel,
+            objectId: String
         ): DocumentListFragment {
             return DocumentListFragment().args {
                 putString(ARG_OBJECT_ID, objectId)
-                putSerializable(ARG_PROPERTY_MODEL, propertyItemModel)
             }
         }
     }
 
     override fun getParameters(): ParametersDefinition = {
-        parametersOf(
-            requireArguments().getString(ARG_OBJECT_ID),
-            requireArguments().getSerializable(ARG_PROPERTY_MODEL) as PropertyItemModel
-        )
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val builder: StrictMode.VmPolicy.Builder = StrictMode.VmPolicy.Builder()
-
-        StrictMode.setVmPolicy(builder.build())
-        builder.detectFileUriExposure()
+        parametersOf(requireArguments().getString(ARG_OBJECT_ID))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -93,11 +78,17 @@ class DocumentListFragment :
         downloadManager = requireContext().getDownloadManager()
 
         binding.backImageView.setOnDebouncedClickListener {
+            viewModel.disposeAll()
             onClose()
         }
 
         binding.addDocumentTextView.setOnDebouncedClickListener {
+            viewModel.changeDeleteButtonsVisibility(false)
             openPropertyUploadDocumentsScreen()
+        }
+
+        binding.saveDocumentListImageView.setOnDebouncedClickListener {
+            viewModel.changeDeleteButtonsVisibility(false)
         }
 
         binding.listDocumentsRecyclerView.adapter =
@@ -131,23 +122,29 @@ class DocumentListFragment :
         }
         subscribe(viewModel.propertyDocumentsObserver) { propertyItem ->
 
-            binding.editDocumentListImageView.visibleIf(propertyItem.documents.isNotEmpty())
             binding.emptyDocListGroup.visibleIf(propertyItem.documents.isEmpty())
             binding.listDocumentsRecyclerView.visibleIf(propertyItem.documents.isNotEmpty())
 
             if (propertyItem.documents.isNotEmpty()) {
                 documentListAdapter.setItems(
-                    propertyItem.documents,
-                    false
+                    propertyItem.documents
                 )
+            } else {
+                viewModel.changeDeleteButtonsVisibility(false)
             }
         }
         subscribe(viewModel.downloadFileObserver) {
             downloadFile(it)
         }
+
+        subscribe(viewModel.isDeleteButtonVisibleObserver) {
+            changeDeleteButtonVisibility(it)
+        }
     }
 
     override fun changeDeleteButtonVisibility(isDeleteButtonVisible: Boolean) {
+        binding.editDocumentListImageView.visibleIf(!isDeleteButtonVisible)
+        binding.saveDocumentListImageView.visibleIf(isDeleteButtonVisible)
         documentListAdapter.showDeleteButton(isDeleteButtonVisible)
     }
 

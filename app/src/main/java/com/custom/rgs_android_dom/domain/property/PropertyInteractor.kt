@@ -2,35 +2,43 @@ package com.custom.rgs_android_dom.domain.property
 
 import android.content.Context
 import android.net.Uri
+import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.mappers.PropertyMapper
+import com.custom.rgs_android_dom.data.repositories.files.FilesRepositoryImpl
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyDocumentValidationException
 import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyDocumentValidationException.*
 import com.custom.rgs_android_dom.domain.property.details.exceptions.PropertyField
 import com.custom.rgs_android_dom.domain.property.details.exceptions.ValidatePropertyException
 import com.custom.rgs_android_dom.domain.property.details.view_states.PropertyDetailsViewState
+import com.custom.rgs_android_dom.domain.property.models.ModificationTask
 import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.domain.property.view_states.SelectPropertyTypeViewState
 import com.custom.rgs_android_dom.domain.property.view_states.SelectAddressViewState
+import com.custom.rgs_android_dom.domain.repositories.FilesRepository
 import com.custom.rgs_android_dom.domain.repositories.PropertyRepository
 import com.custom.rgs_android_dom.utils.convertToFile
 import com.custom.rgs_android_dom.utils.sizeInMb
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import java.io.File
 
 class PropertyInteractor(
     private val propertyRepository: PropertyRepository,
+    private val filesRepository: FilesRepository,
     private val context: Context
 ) {
 
     companion object {
         private const val TOTAL_MAX_SIZE = 250.0   // Mb
         private const val ONE_FILE_MAX_SIZE = 10.0 // Mb
+
+        const val STORE_PATH = "${BuildConfig.BASE_URL}/api/store/"
 
         private val supportedFileExtensions =
             listOf("jpeg", "jpg", "png", "bmp", "pdf", "txt", "doc", "docx", "rtf")
@@ -41,7 +49,12 @@ class PropertyInteractor(
     val selectPropertyTypeViewStateSubject = PublishSubject.create<SelectPropertyTypeViewState>()
     val propertyDetailsViewStateSubject = PublishSubject.create<PropertyDetailsViewState>()
     val propertyInfoStateSubject = PublishSubject.create<PropertyItemModel>()
+    val propertyAvatarSubject = PublishSubject.create<String>()
+    val closePropertyPageSubject = propertyRepository.getClosePropertyPageSubject()
+    val propertyAvatarUrlChangedSubject = propertyRepository.getPropertyAvatarChangedSubject()
+    val propertyAvatarUrlRemovedSubject = propertyRepository.getPropertyAvatarRemovedSubject()
     val propertyDocumentUploadedSubject = propertyRepository.getPropertyDocumentUploadedSubject()
+    val propertyDocumentDeletedSubject = propertyRepository.getPropertyDocumentDeletedSubject()
     private lateinit var documentValidationException: PropertyDocumentValidationException
 
     private var selectAddressViewState = SelectAddressViewState(
@@ -71,6 +84,7 @@ class PropertyInteractor(
         isTemporary = null,
         totalArea = "",
         comment = "",
+        photoLink = null,
         isAddTextViewEnabled = false,
         documents = listOf()
     )
@@ -174,12 +188,47 @@ class PropertyInteractor(
         return propertyDetailsViewState
     }
 
-    fun updatePropertyAddress(newAddress: String) {
-        // TODO Do not forget to make a copy of such data, to avoid data loss while navigation between fragments
-        val addressCopy = propertyDetailsViewState.address.copy()
-        addressCopy.addressString = newAddress
-        propertyDetailsViewState = propertyDetailsViewState.copy(address = addressCopy)
-        checkIfPropertyDetailsFieldsFilled()
+    fun initPropertyDetailsForUpdate(propertyItemModel: PropertyItemModel): PropertyDetailsViewState {
+        propertyDetailsViewState = propertyDetailsViewState.copy(
+            name = propertyItemModel.name,
+            type = propertyItemModel.type.type,
+            address = AddressItemModel.createEmpty().copy(
+                addressString = propertyItemModel.address?.address ?: "",
+                cityFiasId = propertyItemModel.address?.cityFiasId ?: "",
+                cityName = propertyItemModel.address?.cityName ?: "",
+                fiasId = propertyItemModel.address?.fiasId ?: "",
+                regionFiasId = propertyItemModel.address?.regionFiasId ?: "",
+                regionName = propertyItemModel.address?.regionName ?: ""
+            ),
+            photoLink = propertyItemModel.photoLink,
+            entrance = propertyItemModel.address?.entrance?.let { it.toString() } ?: "",
+            floor = propertyItemModel.address?.floor?.let { it.toString() } ?: "",
+            isOwn = if (propertyItemModel.isOwn == true) "yes" else if (propertyItemModel.isOwn == false) "no" else null,
+            isRent = if (propertyItemModel.isRent == true) "yes" else if (propertyItemModel.isRent == false) "no" else null,
+            isTemporary = if (propertyItemModel.isTemporary == true) "yes" else if (propertyItemModel.isTemporary == false) "no" else null,
+            totalArea = propertyItemModel.totalArea?.let { it.toString() } ?: "",
+            comment = propertyItemModel.comment,
+            documentsFormatted = propertyItemModel.documents
+        )
+        return propertyDetailsViewState
+    }
+
+    fun updatePropertyName(name: String) {
+        propertyDetailsViewState = propertyDetailsViewState.copy(
+            name = name
+        )
+    }
+
+    fun updatePropertyType(type: String) {
+        propertyDetailsViewState = propertyDetailsViewState.copy(
+            type = type
+        )
+    }
+
+    fun updatePropertyAddress(addressItemModel: AddressItemModel) {
+        propertyDetailsViewState = propertyDetailsViewState.copy(
+            address = addressItemModel.copy()
+        )
     }
 
     fun updatePropertyEntrance(entrance: String) {
@@ -218,8 +267,30 @@ class PropertyInteractor(
         propertyDetailsViewState = propertyDetailsViewState.copy(comment = comment)
     }
 
-    fun addProperty(): Completable {
+    fun updateAvatar(id: String?) {
+        propertyDetailsViewState =  if (id != null) {
+            propertyAvatarSubject.onNext(STORE_PATH + id)
+            propertyDetailsViewState.copy(photoLink = STORE_PATH + id)
+        } else {
+            propertyAvatarSubject.onNext("")
+            propertyDetailsViewState.copy(photoLink = null)
+        }
+    }
 
+    fun updatePropertyAvatar(avatar: File): Completable {
+        return filesRepository.putFileToTheStore(avatar, FilesRepositoryImpl.STORE_AVATARS)
+            .map { id ->
+                propertyAvatarUrlChangedSubject.onNext(id)
+            }.doFinally {
+                avatar.delete()
+            }.ignoreElement()
+    }
+
+    fun removePropertyAvatar() {
+        propertyAvatarUrlRemovedSubject.onNext(Unit)
+    }
+
+    fun addProperty(): Completable {
         val documentsToPost = urisToFiles(propertyDetailsViewState.documents)
         if (validateFiles(documentsToPost)) {
 
@@ -236,18 +307,14 @@ class PropertyInteractor(
             propertyDetailsViewState.corpus.takeIf { it.isNotEmpty() }?.let {
                 addressString = "$addressString, корпус $it"
             }
-            propertyDetailsViewState.entrance.takeIf { it.isNotEmpty() }?.let {
-                addressString = "$addressString, подъезд $it"
-            }
-            propertyDetailsViewState.floor.takeIf { it.isNotEmpty() }?.let {
-                addressString = "$addressString, этаж $it"
-            }
             propertyDetailsViewState.flat.takeIf { it.isNotEmpty() }?.let {
                 addressString = "$addressString, квартира $it"
             }
 
             propertyDetailsViewState.address.addressString = addressString
 
+            val floor = if (propertyDetailsViewState.floor.isEmpty()) null else propertyDetailsViewState.floor.toInt()
+            val entrance = if (propertyDetailsViewState.entrance.isEmpty()) null else propertyDetailsViewState.entrance.toInt()
             val totalArea =
                 if (propertyDetailsViewState.totalArea.isNotEmpty()) propertyDetailsViewState.totalArea.toFloat() else null
             val comment = propertyDetailsViewState.comment.ifEmpty { null }
@@ -263,12 +330,48 @@ class PropertyInteractor(
                         isTemporary = propertyDetailsViewState.isTemporary,
                         totalArea = totalArea,
                         comment = comment,
-                        documents = propertyDocuments
+                        documents = propertyDocuments,
+                        floor = floor,
+                        entrance = entrance,
                     )
                 }
         } else {
             return Completable.error(documentValidationException)
         }
+    }
+
+    fun updateProperty(objectId: String): Completable {
+        val addressString = propertyDetailsViewState.address.addressString.trim()
+        if (addressString.isEmpty()) {
+            return Completable.error(
+                ValidatePropertyException(
+                    field = PropertyField.ADDRESS,
+                    errorMessage = ""
+                )
+            )
+        }
+
+        val floor = if (propertyDetailsViewState.floor.isEmpty()) null else propertyDetailsViewState.floor.toInt()
+        val entrance = if (propertyDetailsViewState.entrance.isEmpty()) null else propertyDetailsViewState.entrance.toInt()
+        val totalArea =
+            if (propertyDetailsViewState.totalArea.isNotEmpty()) propertyDetailsViewState.totalArea.toFloat() else null
+        val comment = propertyDetailsViewState.comment.ifEmpty { null }
+
+        return propertyRepository.updatePropertyInfo(
+            objectId = objectId,
+            name = propertyDetailsViewState.name,
+            type = propertyDetailsViewState.type,
+            address = propertyDetailsViewState.address.copy(),
+            isOwn = propertyDetailsViewState.isOwn ?: "unspecified",
+            isRent = propertyDetailsViewState.isRent ?: "unspecified",
+            isTemporary = propertyDetailsViewState.isTemporary ?: "unspecified",
+            photoLink = propertyDetailsViewState.photoLink?.removePrefix(STORE_PATH),
+            totalArea = totalArea,
+            comment = comment,
+            floor = floor,
+            entrance = entrance,
+            documents = propertyDetailsViewState.documentsFormatted
+        )
     }
 
     private fun postDocumentsSingle(files: List<File>): Single<List<PropertyDocument>> {
@@ -314,7 +417,13 @@ class PropertyInteractor(
     }
 
     fun onFilesToUploadSelected(files: List<Uri>) {
-        propertyRepository.onFilesToUploadSelected(files)
+        if (files.isNotEmpty()){
+            propertyRepository.onFilesToUploadSelected(files)
+        }
+    }
+
+    fun onFilesToDeleteSelected(propertyItemModel: PropertyItemModel){
+        propertyRepository.onFileToDeleteSelected(propertyItemModel)
     }
 
     private fun validateFiles(files: List<File>): Boolean {
@@ -380,7 +489,7 @@ class PropertyInteractor(
         propertyDetailsViewStateSubject.onNext(propertyDetailsViewState)
     }
 
-    fun updatePropertyItem(
+    fun updatePropertyDocuments(
         objectId: String,
         propertyItemModel: PropertyItemModel,
         filesUri: List<Uri>
@@ -389,10 +498,9 @@ class PropertyInteractor(
         return postDocumentsSingle(documentsToPost)
             .flatMap { propertyDocuments ->
                 val newDocumentsList = propertyItemModel.documents + propertyDocuments
-                propertyItemModel.documents = newDocumentsList.toMutableList()
                 propertyRepository.updateProperty(
                     objectId,
-                    propertyItemModel
+                    propertyItemModel.copy(documents = newDocumentsList.toMutableList())
                 )
             }
     }
@@ -405,4 +513,27 @@ class PropertyInteractor(
         propertyItemModel
     )
 
+    fun getEditPropertyRequestedSubject(): BehaviorSubject<Boolean> {
+        return propertyRepository.getEditPropertyRequestedSubject()
+    }
+
+    fun requestModification(objectId: String): Completable {
+        return propertyRepository.requestEditProperty(objectId)
+    }
+
+    fun getModifications(objectId: String): Single<List<ModificationTask>> {
+        return propertyRepository.getModifications(objectId)
+    }
+
+    fun getPropertyDeletedSubject(): PublishSubject<String>{
+        return propertyRepository.getPropertyDeletedSubject()
+    }
+
+    fun deleteProperty(objectId: String): Completable {
+        return propertyRepository.deleteProperty(objectId)
+    }
+
+    fun closePropertyPage() {
+        closePropertyPageSubject.onNext(Unit)
+    }
 }

@@ -37,7 +37,7 @@
             android:fontFamily="@font/my_service_medium"
             android:textColor="@color/secondary900"
             android:textSize="20sp"
-            app:translationTextKey="Вход и регистрация" />
+            app:translationTextKey="app.phone.title" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:layout_width="match_parent"
@@ -46,13 +46,25 @@
             android:fontFamily="@font/suisse_regular"
             android:textColor="@color/secondary600"
             android:textSize="16sp"
-            app:translationTextKey="Номер телефона" />
+            app:translationTextKey="app.phone.field_title" />
 
         <com.custom.rgs_android_dom.views.MSDPhoneInput
             android:id="@+id/phoneInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp" />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/suisse_regular"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="24dp"
+            android:lineSpacingMultiplier="0"
+            android:textColor="@color/secondary600"
+            android:textSize="13sp"
+            app:translationTextKey="Введите номер телефона — получите доступ\nк вашему профилю и полному функционалу\nприложения" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -65,6 +77,6 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:enabled="false"
-        app:translationTextKey="Далее" />
+        app:translationTextKey="app.phone.button_title" />
 
 </RelativeLayout>

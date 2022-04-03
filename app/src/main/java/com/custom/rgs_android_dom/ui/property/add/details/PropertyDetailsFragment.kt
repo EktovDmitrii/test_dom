@@ -18,6 +18,7 @@ import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsAdapter
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsFragment
 import com.custom.rgs_android_dom.utils.*
+import com.yandex.metrica.YandexMetrica
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -38,7 +39,7 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
     }
 
     private val adapter: PropertyUploadDocumentsAdapter
-        get() = binding.listDocumentsRecyclerView.adapter as PropertyUploadDocumentsAdapter
+        get() = binding.documentsRecyclerView.adapter as PropertyUploadDocumentsAdapter
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
@@ -100,9 +101,11 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
             viewModel.onIsTemporarySelected(it)
         }
 
-        binding.listDocumentsRecyclerView.adapter = PropertyUploadDocumentsAdapter { uri -> viewModel.onRemoveDocumentClick(uri) }
+        binding.documentsRecyclerView.adapter = PropertyUploadDocumentsAdapter { uri -> viewModel.onRemoveDocumentClick(uri) }
 
         binding.uploadDocumentFrameLayout.setOnDebouncedClickListener {
+            YandexMetrica.reportEvent("profile_object_add_doc")
+
             val propertyUploadFilesFragment = PropertyUploadDocumentsFragment()
             propertyUploadFilesFragment.show(childFragmentManager, propertyUploadFilesFragment.TAG)
         }

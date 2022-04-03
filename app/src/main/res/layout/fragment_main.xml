@@ -22,10 +22,10 @@
         layout="@layout/layout_error_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/contentNestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/secondary100"
@@ -36,7 +36,7 @@
             android:id="@+id/mainContentLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:focusableInTouchMode="true"
             android:orientation="vertical">
 
             <include
@@ -194,7 +194,7 @@
                             android:includeFontPadding="false"
                             android:textColor="@color/gray"
                             android:textSize="13sp"
-                            app:translationTextKey="Полисы" />
+                            app:translationTextKey="app.profile.menu.policies" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -225,7 +225,35 @@
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/ordersLinearLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center_horizontal"
+                            app:shapeAppearanceOverlay="@style/RoundedCorners16dpImageViewStyle"
+                            android:background="@drawable/rectangle_filled_white_radius_16dp"
+                            app:srcCompat="@drawable/ic_orders_240px" />
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="80dp"
+                            android:layout_height="20dp"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/gray"
+                            android:textSize="13sp"
+                            app:translationTextKey="Заказы" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
                 </androidx.appcompat.widget.LinearLayoutCompat>
+
 
             </HorizontalScrollView>
 

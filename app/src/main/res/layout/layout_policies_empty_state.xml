@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="335dp"
+        android:layout_height="216dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="180dp"
+        android:src="@drawable/image_policies" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/noPoliciesTextView"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/suisse_regular"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:textColor="@color/secondary500"
+        android:textSize="14sp"
+        app:translationTextKey="У вас пока нет ни одного \nполиса страхования" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/bindTextView"
+        android:layout_width="133dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/rectangle_filled_white_radius_16dp"
+        android:elevation="4dp"
+        android:fontFamily="@font/suisse_regular"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:textColor="@color/secondary900"
+        android:textSize="13sp"
+        app:translationTextKey="Привязать полис" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

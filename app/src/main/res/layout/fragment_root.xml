@@ -5,36 +5,397 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/contentConstraintLayout"
+    <FrameLayout
+        android:id="@+id/contentFrameLauout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/primary400"
         android:orientation="vertical">
 
+        <FrameLayout
+            android:id="@+id/callInfoFrameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height_chat"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="16dp"
+            android:paddingTop="8dp"
+            android:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/maximizeImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_maximize_24px"
+                android:layout_gravity="start"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_horizontal">
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/callTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/my_service_bold"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:layout_gravity="center_horizontal"
+                    app:translationTextKey="Подключаемся..." />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_horizontal">
+
+                    <com.custom.rgs_android_dom.views.text.MSDTextView
+                        android:id="@+id/callSubtitleTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/suisse_regular"
+                        android:textColor="@color/secondary400"
+                        android:textSize="13sp"
+                        android:layout_gravity="center_horizontal"
+                        app:translationTextKey="Ищем свободного оператора" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/signalImageView"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ic_signal_20px"
+                        android:visibility="gone"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/mediaOutputImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_phone_call_24px"
+                android:layout_gravity="end"/>
+
+        </FrameLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/actionsLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="244dp"
+            android:paddingTop="20dp"
+            android:orientation="vertical"
+            android:visibility="invisible">
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="156dp"
+                android:fillViewport="true"
+                android:paddingHorizontal="20dp"
+                android:clipToPadding="false"
+                android:scrollbars="none"
+                android:overScrollMode="never">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginEnd="-20dp">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/guestPhoneCallLinearLayout"
+                        android:layout_width="104dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/rectangle_filled_white_radius_16dp"
+                        android:paddingTop="14dp"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="72dp"
+                            android:layout_height="72dp"
+                            app:srcCompat="@drawable/ic_actions_phone_call_72px"/>
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/secondary900"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/my_service_bold"
+                            android:layout_marginTop="8dp"
+                            app:translationTextKey="8-800"/>
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/secondary900"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:paddingHorizontal="10dp"
+                            android:gravity="center_horizontal"
+                            android:layout_marginTop="4dp"
+                            app:translationTextKey="Бесплатный звонок"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/chatLinearLayout"
+                        android:layout_width="104dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="12dp"
+                        android:background="@drawable/rectangle_filled_white_radius_16dp"
+                        android:paddingTop="14dp"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="72dp"
+                            android:layout_height="72dp"
+                            app:srcCompat="@drawable/ic_actions_chat_72px"/>
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/secondary900"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/my_service_bold"
+                            android:layout_marginTop="8dp"
+                            app:translationTextKey="Чат"/>
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/secondary900"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:paddingHorizontal="10dp"
+                            android:gravity="center_horizontal"
+                            android:layout_marginTop="4dp"
+                            app:translationTextKey="Задать вопрос в чате"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/chatCallLinearLayout"
+                        android:layout_width="104dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="12dp"
+                        android:background="@drawable/rectangle_filled_white_radius_16dp"
+                        android:paddingTop="14dp"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="72dp"
+                            android:layout_height="72dp"
+                            app:srcCompat="@drawable/ic_actions_chat_call_72px"/>
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/secondary900"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/my_service_bold"
+                            android:layout_marginTop="8dp"
+                            app:translationTextKey="Звонок"/>
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/secondary900"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:paddingHorizontal="10dp"
+                            android:gravity="center_horizontal"
+                            android:layout_marginTop="4dp"
+                            app:translationTextKey="Онлайн аудиозвонок"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/chatVideoCallLinearLayout"
+                        android:layout_width="104dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="12dp"
+                        android:background="@drawable/rectangle_filled_white_radius_16dp"
+                        android:paddingTop="14dp"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="72dp"
+                            android:layout_height="72dp"
+                            app:srcCompat="@drawable/ic_actions_chat_video_call_72px"/>
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/secondary900"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/my_service_bold"
+                            android:layout_marginTop="8dp"
+                            app:translationTextKey="Видео"/>
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/secondary900"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:paddingHorizontal="10dp"
+                            android:gravity="center_horizontal"
+                            android:layout_marginTop="4dp"
+                            app:translationTextKey="Видеосвязь онлайн"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/phoneCallLinearLayout"
+                        android:layout_width="104dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="12dp"
+                        android:background="@drawable/rectangle_filled_white_radius_16dp"
+                        android:paddingTop="14dp"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="72dp"
+                            android:layout_height="72dp"
+                            app:srcCompat="@drawable/ic_actions_phone_call_72px"/>
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/secondary900"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/my_service_bold"
+                            android:layout_marginTop="8dp"
+                            app:translationTextKey="8-800"/>
+
+                        <com.custom.rgs_android_dom.views.text.MSDTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/secondary900"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/suisse_regular"
+                            android:paddingHorizontal="10dp"
+                            android:gravity="center_horizontal"
+                            android:layout_marginTop="4dp"
+                            app:translationTextKey="Бесплатный звонок"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </HorizontalScrollView>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/actionsChatLinearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:id="@+id/actionsChatsTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/my_service_medium"
+                    android:textSize="14sp"
+                    android:layout_gravity="center_vertical"
+                    android:alpha="0.8"
+                    android:text="Войдите, чтобы видеть свои чаты"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:backgroundTint="@color/black"
+                    app:tint="@color/white"
+                    android:alpha="0.8"
+                    android:layout_marginStart="6dp"
+                    app:srcCompat="@drawable/ic_arrow_long_right_24px"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/toolbarLinearLayout"
             android:layout_width="match_parent"
-            android:layout_height="69dp"
-            android:background="@drawable/rectangle_filled_primary_400_bottom_radius_24dp"
+            android:layout_height="@dimen/toolbar_height_chat"
             android:clickable="true"
             android:focusable="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:visibility="visible">
 
-            <ImageView
-                android:id="@+id/toolbarChatIcon"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="10dp"
-                android:src="@drawable/ic_main_chat_tmp"
-                android:visibility="gone" />
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/toolbarContentLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
+
+                    <com.custom.rgs_android_dom.views.text.MSDTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/my_service_bold"
+                        android:textSize="16sp"
+                        android:gravity="center_vertical"
+                        app:translationTextKey="Онлайн"/>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="46dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ic_online_chat_video"/>
+
+                    <com.custom.rgs_android_dom.views.text.MSDTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/my_service_bold"
+                        android:textSize="16sp"
+                        android:gravity="center_vertical"
+                        android:layout_marginStart="4dp"
+                        app:translationTextKey="Мастер"/>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="46dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="2dp"
+                        app:srcCompat="@drawable/ic_label_24_7"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/suisse_regular"
+                    android:textSize="13sp"
+                    android:gravity="center_vertical"
+                    android:alpha="0.8"
+                    app:translationTextKey="app.profile.slider.slide_tip_text"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <com.skydoves.androidveil.VeilLayout
                 android:id="@+id/rootShimmerLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
+                android:visibility="gone"
                 app:veilLayout_baseAlpha="0.6"
                 app:veilLayout_defaultChildVisible="true"
                 app:veilLayout_dropOff="0.5"
@@ -65,45 +426,9 @@
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </com.skydoves.androidveil.VeilLayout>
-
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/callContainerLinearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="272dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/rectangle_filled_primary_500_top_radius_24dp"
-            android:visibility="invisible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbarLinearLayout"
-            tools:visibility="visible">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="170dp"
-                android:layout_height="wrap_content"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/master_male" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <com.custom.rgs_android_dom.views.text.MSDTextView
-            android:id="@+id/swipeMoreTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:alpha="0.5"
-            android:fontFamily="@font/suisse_regular"
-            android:gravity="center"
-            android:includeFontPadding="false"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:visibility="invisible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbarLinearLayout"
-            app:translationTextKey="Потяните, чтобы связаться с мастером"
-            tools:visibility="visible" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 
     <FrameLayout
         android:id="@+id/bottomContainer"
@@ -118,7 +443,7 @@
         android:id="@+id/fakeBottomContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="62dp"
+        android:layout_marginTop="68dp"
         android:background="@drawable/rectangle_filled_white_top_radius_24dp" />
 
     <com.custom.rgs_android_dom.views.MSDBottomNavigationView

@@ -36,7 +36,7 @@
                     android:fontFamily="@font/my_service_bold"
                     android:textSize="16sp"
                     android:textColor="@color/secondary900"
-                    app:translationTextKey="Моя недвижимость"
+                    app:translationTextKey="app.profile.header.title"
                     android:paddingHorizontal="20dp"/>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -144,7 +144,7 @@
                                 android:includeFontPadding="false"
                                 android:textColor="@color/secondary900"
                                 android:textSize="16sp"
-                                app:translationTextKey="История заказов" />
+                                app:translationTextKey="app.profile.menu.orders" />
 
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -159,7 +159,7 @@
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <androidx.appcompat.widget.LinearLayoutCompat
-                        android:id="@+id/myCardsLinearLayout"
+                        android:id="@+id/policiesLinearLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -172,7 +172,46 @@
 
                             <ImageView
                                 style="@style/Icon.Filled.Primary500_Alpha12"
-                                app:srcCompat="@drawable/ic_payment_24px" />
+                                app:srcCompat="@drawable/ic_policies_20px" />
+
+                            <com.custom.rgs_android_dom.views.text.MSDTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="12dp"
+                                android:fontFamily="@font/suisse_regular"
+                                android:gravity="center_vertical"
+                                android:includeFontPadding="false"
+                                android:textColor="@color/secondary900"
+                                android:textSize="16sp"
+                                app:translationTextKey="app.profile.menu.policies" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:alpha="0.16"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginStart="48dp"
+                            android:background="@color/secondary900_alpha56"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/paymentMethodsLinearLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                style="@style/Icon.Filled.Primary500_Alpha12"
+                                app:srcCompat="@drawable/ic_payment_20px" />
 
                             <com.custom.rgs_android_dom.views.text.MSDTextView
                                 android:layout_width="wrap_content"
@@ -184,84 +223,6 @@
                                 android:textColor="@color/secondary900"
                                 android:textSize="16sp"
                                 app:translationTextKey="Способы оплаты" />
-
-                        </androidx.appcompat.widget.LinearLayoutCompat>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:alpha="0.16"
-                            android:layout_marginTop="15dp"
-                            android:layout_marginStart="48dp"
-                            android:background="@color/secondary900_alpha56"/>
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:id="@+id/notificationSettingsLinearLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:orientation="vertical">
-
-                        <androidx.appcompat.widget.LinearLayoutCompat
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                style="@style/Icon.Filled.Primary500_Alpha12"
-                                app:srcCompat="@drawable/ic_bell_24px" />
-
-                            <com.custom.rgs_android_dom.views.text.MSDTextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_marginStart="12dp"
-                                android:fontFamily="@font/suisse_regular"
-                                android:gravity="center_vertical"
-                                android:includeFontPadding="false"
-                                android:textColor="@color/secondary900"
-                                android:textSize="16sp"
-                                app:translationTextKey="Настройки уведомлений" />
-
-                        </androidx.appcompat.widget.LinearLayoutCompat>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:alpha="0.16"
-                            android:layout_marginTop="15dp"
-                            android:layout_marginStart="48dp"
-                            android:background="@color/secondary900_alpha56"/>
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:id="@+id/feedbackLinearLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:orientation="vertical">
-
-                        <androidx.appcompat.widget.LinearLayoutCompat
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                style="@style/Icon.Filled.Primary500_Alpha12"
-                                app:srcCompat="@drawable/ic_phone_24px" />
-
-                            <com.custom.rgs_android_dom.views.text.MSDTextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_marginStart="12dp"
-                                android:fontFamily="@font/suisse_regular"
-                                android:gravity="center_vertical"
-                                android:includeFontPadding="false"
-                                android:textColor="@color/secondary900"
-                                android:textSize="16sp"
-                                app:translationTextKey="Способы связи" />
 
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -301,7 +262,7 @@
                                 android:includeFontPadding="false"
                                 android:textColor="@color/secondary900"
                                 android:textSize="16sp"
-                                app:translationTextKey="Данные об агенте" />
+                                app:translationTextKey="app.profile.menu.agent_info" />
 
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -340,7 +301,7 @@
                                 android:includeFontPadding="false"
                                 android:textColor="@color/secondary900"
                                 android:textSize="16sp"
-                                app:translationTextKey="О приложении" />
+                                app:translationTextKey="app.profile.menu.about_app" />
 
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -416,7 +377,7 @@
                             android:gravity="center_vertical"
                             android:textColor="@color/error600"
                             android:textSize="16sp"
-                            app:translationTextKey="Выйти" />
+                            app:translationTextKey="app.profile.menu.logout" />
 
                     </RelativeLayout>
 

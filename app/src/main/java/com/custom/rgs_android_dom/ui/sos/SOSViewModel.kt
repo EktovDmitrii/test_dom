@@ -8,8 +8,8 @@ import com.custom.rgs_android_dom.domain.chat.models.CallType
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.ui.chat.ChatFragment
-import com.custom.rgs_android_dom.ui.chat.call.CallFragment
+import com.custom.rgs_android_dom.ui.chats.chat.ChatFragment
+import com.custom.rgs_android_dom.ui.chats.chat.call.CallFragment
 import com.custom.rgs_android_dom.ui.navigation.TargetScreen
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -46,7 +46,7 @@ class SOSViewModel(
                 }
             ).addTo(dataCompositeDisposable)
 
-        clientInteractor.getClientSavedSubject()
+        registrationInteractor.getAuthFlowEndedSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy (
@@ -54,10 +54,11 @@ class SOSViewModel(
                     if (isAuthorized) {
                         when (requestedScreen) {
                             TargetScreen.PHONE_CALL -> onFreePhoneCallClick()
-                            TargetScreen.CHAT -> { ScreenManager.showScreen(ChatFragment()) }
+                            TargetScreen.CHAT -> { ScreenManager.showBottomScreen(ChatFragment.newInstance(chatInteractor.getMasterOnlineCase())) }
                             TargetScreen.AUDIO_CALL -> {
                                 ScreenManager.showScreen(
                                     CallFragment.newInstance(
+                                        chatInteractor.getMasterOnlineCase().channelId,
                                         CallType.AUDIO_CALL,
                                         chatInteractor.getCurrentConsultant()
                                     )
@@ -67,6 +68,7 @@ class SOSViewModel(
                             TargetScreen.VIDEO_CALL -> {
                                 ScreenManager.showScreen(
                                     CallFragment.newInstance(
+                                        chatInteractor.getMasterOnlineCase().channelId,
                                         CallType.VIDEO_CALL,
                                         chatInteractor.getCurrentConsultant()
                                     )
@@ -87,6 +89,7 @@ class SOSViewModel(
         if (isAuthorized) {
             ScreenManager.showScreen(
                 CallFragment.newInstance(
+                    chatInteractor.getMasterOnlineCase().channelId,
                     CallType.AUDIO_CALL,
                     chatInteractor.getCurrentConsultant()
                 )
@@ -101,6 +104,7 @@ class SOSViewModel(
         if (isAuthorized) {
             ScreenManager.showScreen(
                 CallFragment.newInstance(
+                    chatInteractor.getMasterOnlineCase().channelId,
                     CallType.VIDEO_CALL,
                     chatInteractor.getCurrentConsultant()
                 )
@@ -113,7 +117,7 @@ class SOSViewModel(
     fun onChatClick() {
         requestedScreen = TargetScreen.CHAT
         if (isAuthorized) {
-            ScreenManager.showScreen(ChatFragment())
+            ScreenManager.showBottomScreen(ChatFragment.newInstance(chatInteractor.getMasterOnlineCase()))
         } else {
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
         }

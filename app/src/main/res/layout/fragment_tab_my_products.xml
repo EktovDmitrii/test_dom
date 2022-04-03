@@ -1,50 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/noProductsLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
         android:orientation="vertical"
-        android:paddingBottom="168dp">
+        android:paddingTop="98dp" >
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/temp_empty"
-            />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="188dp"
+            android:layout_height="143dp"
+            android:layout_gravity="center_horizontal"
+            app:srcCompat="@drawable/ic_tab_my_products_empty" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:translationTextKey="У вас пока нет продуктов. Вы можете\nпривязать существующий продукт"
+            android:layout_marginTop="21dp"
+            app:translationTextKey="app.catalog.tabs.my_products_empty_state"
             android:fontFamily="@font/suisse_regular"
             android:textColor="@color/secondary500"
             android:textSize="14sp"
-            android:gravity="center"
-            />
+            android:gravity="center" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/addPolicyTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="133dp"
+            android:layout_height="32dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/suisse_regular"
             android:textColor="@color/secondary900"
-            android:textSize="14sp"
+            android:textSize="13sp"
+            app:lineHeight="24sp"
+            android:includeFontPadding="false"
             android:layout_gravity="center_horizontal"
+            android:gravity="center"
             android:background="@drawable/rectangle_filled_white_stroke_secondary_500_1dp_radius_24dp"
-            android:elevation="2dp"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="4dp"
-            app:translationTextKey="Привязать полис"/>
+            android:elevation="4dp"
+            app:translationTextKey="app.catalog.tabs.my_products_connect_policy"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -60,6 +58,7 @@
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         android:overScrollMode="never"
         android:paddingBottom="168dp"
-        android:clipToPadding="false"/>
+        android:clipToPadding="false"
+        android:visibility="gone"/>
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+</FrameLayout>

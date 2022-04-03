@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/nameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:fontFamily="@font/suisse_regular"
+        android:gravity="center_vertical"
+        android:includeFontPadding="false"
+        android:maxLines="3"
+        android:textColor="@color/secondary900"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/quantityLinearLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lineHeight="20dp"
+        app:translationTextKey="Обработка герметиком, 2шт" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/quantityLinearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/priceTextView"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:background="@drawable/rectangle_filled_secondary_100_radius_32dp"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="2dp">
+
+            <TextView
+                android:id="@+id/quantityTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/suisse_regular"
+                android:includeFontPadding="false"
+                android:textColor="@color/secondary600"
+                android:textSize="12sp"
+                app:lineHeight="16dp"
+                tools:text="2" />
+
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:layout_marginHorizontal="4dp"
+            android:fontFamily="@font/suisse_semi_bold"
+            android:includeFontPadding="false"
+            android:text="x"
+            android:textColor="@color/secondary600"
+            android:textSize="14sp"
+            app:lineHeight="20dp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/priceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/suisse_bold"
+        android:includeFontPadding="false"
+        android:lines="3"
+        android:textColor="@color/secondary600"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lineHeight="20dp"
+        app:translationTextKey="1 500 ₽" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

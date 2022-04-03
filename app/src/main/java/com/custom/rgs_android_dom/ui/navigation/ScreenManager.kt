@@ -1,17 +1,17 @@
 package com.custom.rgs_android_dom.ui.navigation
 
-import android.content.Intent
-import android.net.Uri
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
 import com.custom.rgs_android_dom.ui.demo.DemoFragment
+import com.custom.rgs_android_dom.ui.main.MainFragment
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
+import com.custom.rgs_android_dom.ui.root.RootFragment
 import com.custom.rgs_android_dom.utils.activity.hideSoftwareKeyboard
 
 object ScreenManager {
@@ -30,6 +30,8 @@ object ScreenManager {
     @IdRes
     private var bottomContainerId: Int? = null
 
+    private var fragmentsToRestore = mutableListOf<BaseFragment<*,*>>()
+
     fun init(activity: AppCompatActivity, @IdRes containerId: Int) {
         this.activity = activity
         this.containerId = containerId
@@ -40,18 +42,14 @@ object ScreenManager {
     }
 
     fun resetStackAndShowScreen(
-        screen: BaseFragment<*, *>
+        screen: BaseFragment<*,*>
     ) {
-        activity?.let {
+        activity?.let{
             it.hideSoftwareKeyboard()
-            it.supportFragmentManager.popBackStackImmediate(
-                null,
-                FragmentManager.POP_BACK_STACK_INCLUSIVE
-            )
+            it.supportFragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
             scopes.clear()
             fragments.clear()
             bottomFragments.clear()
-
             showScreen(screen)
         }
     }
@@ -78,6 +76,11 @@ object ScreenManager {
     }
 
     fun showBottomScreen(fragment: BaseBottomSheetFragment<*, *>) {
+        val stack = activity?.supportFragmentManager?.fragments as List<Fragment>
+        if (stack.last() is BaseFragment<*,*> && fragments[NavigationMenu.HOME]?.size!! > 1) {
+            saveAndClearBaseFragmentsStack(stack)
+        }
+
         val container = bottomContainerId ?: return
         val transaction = beginTransaction() ?: return
 
@@ -91,12 +94,18 @@ object ScreenManager {
 
     fun closeCurrentBottomFragment() {
         val transaction = beginTransaction() ?: return
-        if (bottomFragments.isNotEmpty()) {
+        if (bottomFragments.isNotEmpty()){
             transaction.remove(bottomFragments.last())
             transaction.commitAllowingStateLoss()
             bottomFragments.removeLast()
-            if (bottomFragments.isNotEmpty()) {
-                onBottomSheetChanged(bottomFragments.last())
+            if (bottomFragments.isNotEmpty()){
+                val currentBottomSheetFragment = bottomFragments.last()
+                onBottomSheetChanged(currentBottomSheetFragment)
+                if (currentBottomSheetFragment is MainFragment || currentBottomSheetFragment is MainCatalogFragment ) {
+                    if (fragmentsToRestore.isNotEmpty()) {
+                        restoreBaseFragmentsStack()
+                    }
+                }
             }
         }
 
@@ -189,12 +198,6 @@ object ScreenManager {
         notifyCurrentVisibleFragment()
     }
 
-    fun openDocument(uri: Uri) {
-        val intent = Intent(Intent.ACTION_VIEW, uri)
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        activity?.startActivity(intent)
-    }
-
     private fun addFragmentInMap(fragment: BaseFragment<*, *>) {
         if (fragments[menuTag] == null) {
             fragments[menuTag] = ArrayList()
@@ -208,7 +211,7 @@ object ScreenManager {
 
     private fun reInit() {
         if (fragments[menuTag].isNullOrEmpty() && scopes.isEmpty()) {
-            showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
+            showScreen(RootFragment())
             //todo на время дэмо
             //showScreen(getFirstScreenForMenuItem(menuTag))
         }
@@ -267,4 +270,27 @@ object ScreenManager {
                 }
         }
     }
+
+    private fun saveAndClearBaseFragmentsStack(stack: List<Fragment>) {
+        var size = stack.size
+        stack.reversed().forEach {
+            if (it is BaseBottomSheetFragment<*,*>) { return }
+            if (it is BaseFragment<*,*>){
+                if (size-- > 1) {
+                    fragmentsToRestore.add(it)
+                    back(it.getNavigateId())
+                } else { return }
+            }
+        }
+    }
+
+    private fun restoreBaseFragmentsStack() {
+        if (fragmentsToRestore.isNotEmpty()) {
+            fragmentsToRestore.reversed().forEach {
+                showScreen(it)
+            }
+            fragmentsToRestore.clear()
+        }
+    }
+
 }

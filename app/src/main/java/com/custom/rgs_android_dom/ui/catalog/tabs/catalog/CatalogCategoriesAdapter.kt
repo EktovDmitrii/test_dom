@@ -10,6 +10,7 @@ import com.custom.rgs_android_dom.domain.catalog.models.CatalogSubCategoryModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
 import com.custom.rgs_android_dom.ui.base.BaseViewHolder
 import com.custom.rgs_android_dom.utils.*
+import com.yandex.metrica.YandexMetrica
 
 class CatalogCategoriesAdapter(
     private val onSubCategoryClick: (CatalogSubCategoryModel) -> Unit = {},
@@ -21,7 +22,8 @@ class CatalogCategoriesAdapter(
     companion object {
         private const val MAX_VISIBLE_SUB_CATEGORIES = 6
         private const val MIN_VISIBLE_SUBCATEGORIES_WITH_BIG_IMAGE = 3
-        
+        private const val MAX_VISIBLE_SUBCATEGORIES_WITH_SMALL_IMAGE = 2
+
         private const val TYPE_PRIMARY_ITEM = 0
         private const val TYPE_CATEGORY_ITEM = 1
     }
@@ -109,10 +111,10 @@ class CatalogCategoriesAdapter(
                     item.subCategories.size
                 }
                 
-                subCategoriesWithSmallImage = item.subCategories.subList(MIN_VISIBLE_SUBCATEGORIES_WITH_BIG_IMAGE, endIndex)
+                subCategoriesWithSmallImage = item.subCategories.subList(MIN_VISIBLE_SUBCATEGORIES_WITH_BIG_IMAGE, endIndex).take(MAX_VISIBLE_SUBCATEGORIES_WITH_SMALL_IMAGE)
                 
             } else {
-                subCategoriesWithSmallImage = item.subCategories
+                subCategoriesWithSmallImage = item.subCategories.take(MAX_VISIBLE_SUBCATEGORIES_WITH_SMALL_IMAGE)
             }
 
             binding.allProductsConstraintLayout.goneIf(item.subCategories.isEmpty())

@@ -3,16 +3,19 @@ package com.custom.rgs_android_dom.data.repositories.chat
 import android.content.Context
 import android.util.Log
 import com.custom.rgs_android_dom.BuildConfig
+import com.custom.rgs_android_dom.data.db.MSDDatabase
+import com.custom.rgs_android_dom.data.db.mappers.ChatsDbMapper
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.ChatMapper
 import com.custom.rgs_android_dom.data.network.requests.SendMessageRequest
-import com.custom.rgs_android_dom.data.network.responses.ChatFilePreviewResponse
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.domain.repositories.ChatRepository
+import com.custom.rgs_android_dom.ui.managers.MSDConnectivityManager
 import com.custom.rgs_android_dom.ui.managers.MediaOutputManager
 import com.custom.rgs_android_dom.utils.WsResponseParser
+import com.custom.rgs_android_dom.utils.logException
 import com.custom.rgs_android_dom.utils.toMultipartFormData
 import com.google.gson.Gson
 import io.livekit.android.ConnectOptions
@@ -23,10 +26,12 @@ import io.livekit.android.room.participant.Participant
 import io.livekit.android.room.participant.RemoteParticipant
 import io.livekit.android.room.track.*
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import okhttp3.*
@@ -43,7 +48,9 @@ class ChatRepositoryImpl(private val api: MSDApi,
                          private val gson: Gson,
                          private val authContentProviderManager: AuthContentProviderManager,
                          private val context: Context,
-                         private val mediaOutputManager: MediaOutputManager
+                         private val mediaOutputManager: MediaOutputManager,
+                         private val connectivityManager: MSDConnectivityManager,
+                         private val database: MSDDatabase
 ) : ChatRepository {
 
     companion object {
@@ -53,45 +60,88 @@ class ChatRepositoryImpl(private val api: MSDApi,
         private const val CLOSE_REASON_NORMAL = 1000
     }
 
+    init {
+        connectivityManager.connectivitySubject
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    if (!it){
+                        disconnectFromWebSocket()
+                        leaveLiveKitRoom()
+                    } else {
+                        if (!isConnected){
+                            connectToWebSocket()
+                        }
+                    }
+                }
+            )
+    }
+
     private val filesToUploadSubject = PublishSubject.create<List<File>>()
 
     var isConnected = false
+    var isConnecting = false
 
-    private val wsEventSubject: PublishSubject<WsEventModel<*>> = PublishSubject.create()
+    private val wsMessageSubject: PublishSubject<WsMessageModel<*>> = PublishSubject.create()
     private val wsResponseParser = WsResponseParser(gson)
 
     private val roomInfoSubject = PublishSubject.create<RoomInfoModel>()
-    private val roomDisconnectedSubject = PublishSubject.create<Unit>()
 
-    private val callDurationSubject = PublishSubject.create<Duration>()
     private var callStartTime: DateTime? = null
     private var callTimeDisposable: Disposable? = null
+    private val callInfoSubject = PublishSubject.create<CallInfoModel>()
+
+    private var callInfo = CallInfoModel()
 
     private var isInCall: Boolean = false
     private var roomInfo: RoomInfoModel? = null
+
+    private var socketRecreateDisposable: Disposable? = null
+    private var callStateIdleDisposable: Disposable? = null
 
     private var webSocket: WebSocket? = null
     private val webSocketListener = object : WebSocketListener() {
 
         override fun onOpen(webSocket: WebSocket, response: Response) {
             Log.d(TAG, "ON OPEN")
+            isConnected = true
+            isConnecting = false
+            wsMessageSubject.onNext(WsConnectionModel(WsEvent.SOCKET_CONNECTED))
         }
 
         override fun onMessage(webSocket: WebSocket, text: String) {
             Log.d(TAG, "ON MESSAGE " + text)
+            socketRecreateDisposable?.dispose()
             val parsedMessage = wsResponseParser.parse(text, clientSharedPreferences.getClient()?.userId ?: "")
             if (parsedMessage != null){
-                wsEventSubject.onNext(parsedMessage)
+                wsMessageSubject.onNext(parsedMessage)
+
+                when (parsedMessage.event){
+                    WsEvent.CALL_DECLINED -> {
+                        clearRoomDataOnOpponentDeclined()
+                    }
+                    WsEvent.ROOM_CLOSED -> {
+                        clearRoomDataOnOpponentDeclined()
+                    }
+                }
             }
         }
 
         override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
             Log.d(TAG, "ON CLOSED " + reason)
+            isConnecting = false
         }
 
         override fun onFailure(webSocket: WebSocket, throwable: Throwable, response: Response?) {
-            Log.d(TAG, "ON failure")
-            throwable.printStackTrace()
+            Log.d(TAG, "ON failure " + connectivityManager.isInternetConnected())
+            wsMessageSubject.onNext(WsConnectionModel(WsEvent.SOCKET_DISCONNECTED))
+            logException(this, throwable)
+            disconnectFromWebSocket()
+            leaveLiveKitRoom()
+            if (connectivityManager.isInternetConnected()){
+                connectToWebSocket()
+            }
         }
     }
 
@@ -125,7 +175,6 @@ class ChatRepositoryImpl(private val api: MSDApi,
             Log.d(LIVEKIT_TAG, "On failed to connect " + error.message)
 
             clearRoomData()
-            roomDisconnectedSubject.onNext(Unit)
         }
 
         override fun onTrackMuted(
@@ -162,6 +211,10 @@ class ChatRepositoryImpl(private val api: MSDApi,
     }
 
     override fun connectToWebSocket(){
+        if (isConnecting){
+            return
+        }
+        isConnecting = true
         val token = authContentProviderManager.getAccessToken()
         Log.d(TAG, "CONNECTING TO SOCKET " + token)
         if (token != null){
@@ -173,7 +226,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
                     level = HttpLoggingInterceptor.Level.BODY
                 })
             }
-
+            webSocket = null
             webSocket = clientBuilder
                 //.pingInterval(10, TimeUnit.SECONDS)
                 .build()
@@ -181,26 +234,22 @@ class ChatRepositoryImpl(private val api: MSDApi,
                     Request.Builder().url(wsUrl).build(),
                     webSocketListener
                 )
-
-            isConnected = true
-
-            Log.d(TAG, "CONNECTED")
         }
-
     }
 
-    override fun disconnectFromWebSocket(){
+    override fun disconnectFromWebSocket() {
         isConnected = false
+        isConnecting = false
         webSocket?.close(CLOSE_REASON_NORMAL, null)
+        webSocket = null
     }
 
-    override fun getWsEventsSubject(): PublishSubject<WsEventModel<*>> {
-        return wsEventSubject
+    override fun getWsEventsSubject(): PublishSubject<WsMessageModel<*>> {
+        return wsMessageSubject
     }
 
-    override fun getChatHistory(): Single<List<ChatMessageModel>> {
+    override fun getChatHistory(channelId: String): Single<List<ChatMessageModel>> {
         val client = clientSharedPreferences.getClient()
-        val channelId = client?.getChatChannelId() ?: ""
         return api.getChatMessages(channelId, 1000, 0).map {
             ChatMapper.responseToChatMessages(it, client?.userId ?: "")
         }.map {
@@ -208,9 +257,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
         }
     }
 
-    override fun getChannelMembers(): Single<List<ChannelMemberModel>> {
-        val client = clientSharedPreferences.getClient()
-        val channelId = client?.getChatChannelId() ?: ""
+    override fun getChannelMembers(channelId: String): Single<List<ChannelMemberModel>> {
         return api.getChannelMembers(channelId).toSingle().map {
             ChatMapper.responseToChannelMembers(it)
         }.onErrorResumeNext {
@@ -220,19 +267,14 @@ class ChatRepositoryImpl(private val api: MSDApi,
         }
     }
 
-    override fun sendMessage(message: String?, fileIds: List<String>?): Completable {
+    override fun sendMessage(channelId: String, message: String?, fileIds: List<String>?): Completable {
+        startSocketRecreateTimer()
         val request = SendMessageRequest(message = message, fileIds = fileIds)
-
-        val client = clientSharedPreferences.getClient()
-
-        val channelId = client?.getChatChannelId() ?: ""
-
         return api.postMessage(channelId, request)
     }
 
-    override fun postFileInChat(file: File): Single<ChatFileModel> {
+    override fun postFileInChat(channelId: String, file: File): Single<ChatFileModel> {
         val client = clientSharedPreferences.getClient()
-        val channelId = client?.getChatChannelId() ?: ""
         return api.postFileInChat(file.toMultipartFormData(), channelId).map {
             ChatMapper.responseToChatFile(it, client?.id ?: "", LocalDateTime.now(DateTimeZone.getDefault()))
         }
@@ -246,11 +288,21 @@ class ChatRepositoryImpl(private val api: MSDApi,
         filesToUploadSubject.onNext(files)
     }
 
-    override fun requestLiveKitToken(): Single<CallInfoModel> {
-        val client = clientSharedPreferences.getClient()
-        val channelId = client?.getChatChannelId() ?: ""
+    override fun requestLiveKitToken(channelId: String): Single<CallConnectionModel> {
+        callInfo = CallInfoModel(
+            state = CallState.CONNECTING,
+            channelId = channelId
+        )
+        callInfoSubject.onNext(callInfo)
+
         return api.startCall(channelId).map {
-            ChatMapper.responseToCallInfo(it)
+            ChatMapper.responseToCallConnection(it)
+        }.doOnError {
+            callInfo = CallInfoModel(
+                state = CallState.ERROR,
+                channelId = channelId
+            )
+            callInfoSubject.onNext(callInfo)
         }
     }
 
@@ -296,13 +348,17 @@ class ChatRepositoryImpl(private val api: MSDApi,
             myVideoTrack = videoTrack
         )
 
+        callInfo = callInfo.copy(
+            callType = callType
+        )
+
         clientSharedPreferences.saveLiveKitRoomCredentials(callJoin)
         isInCall = true
 
         roomInfo?.let {
             roomInfoSubject.onNext(it)
         }
-
+        callInfoSubject.onNext(callInfo)
     }
 
     override fun getRoomInfoSubject(): PublishSubject<RoomInfoModel> {
@@ -316,10 +372,6 @@ class ChatRepositoryImpl(private val api: MSDApi,
         clearRoomData()
     }
 
-    override fun getRoomDisconnectedSubject(): PublishSubject<Unit> {
-        return roomDisconnectedSubject
-    }
-
     override fun getActualRoomInfo(): RoomInfoModel? {
         return if (isInCall){
             roomInfo
@@ -328,11 +380,6 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
     override fun clearRoomDataOnOpponentDeclined() {
         clearRoomData()
-        roomDisconnectedSubject.onNext(Unit)
-    }
-
-    override fun getCallDurationSubject(): PublishSubject<Duration> {
-        return callDurationSubject
     }
 
     override suspend fun enableCamera(enable: Boolean) {
@@ -381,14 +428,31 @@ class ChatRepositoryImpl(private val api: MSDApi,
         isInCall = false
         clientSharedPreferences.clearLiveKitRoomCredentials()
         stopCallTimer()
-
         mediaOutputManager.onCallEnded()
 
-        /*
-        myVideoTrack = null
-        opponentVideoTrack = null
-        isInCall = false
-        */
+        if (callInfo.state != CallState.IDLE){
+            callInfo = callInfo.copy(
+                state = CallState.ENDED,
+                duration = null,
+                consultant = null,
+                error = null
+            )
+            callInfoSubject.onNext(callInfo)
+
+            callStateIdleDisposable?.dispose()
+            callStateIdleDisposable = Observable.fromCallable {  }
+                .delay(1, TimeUnit.SECONDS)
+                .subscribe {
+                    callInfo = callInfo.copy(
+                        state = CallState.IDLE,
+                        duration = null,
+                        consultant = null,
+                        error = null
+                    )
+                    callInfoSubject.onNext(callInfo)
+                }
+        }
+
     }
 
     private fun startCallTimer(){
@@ -398,9 +462,11 @@ class ChatRepositoryImpl(private val api: MSDApi,
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                val duration = Duration(callStartTime, DateTime.now())
-
-                callDurationSubject.onNext(duration)
+                callInfo = callInfo.copy(
+                    state = CallState.ACTIVE,
+                    duration = Duration(callStartTime, DateTime.now())
+                )
+                callInfoSubject.onNext(callInfo)
             }
     }
 
@@ -440,5 +506,99 @@ class ChatRepositoryImpl(private val api: MSDApi,
         return api.getChatFilePreview(userId, fileId).map {
             it.filename ?: ""
         }
+    }
+
+
+    override fun loadCases(): Completable {
+        val client = clientSharedPreferences.getClient()
+        val channelId = client?.getChatChannelId() ?: ""
+
+        return Single.zip(
+            api.getCases(size = 5000, index = 0),
+            api.getSubtypes(size = 5000, index = 0, withArchived = true, withInternal = true),
+            api.getUnreadPostsCount(channelId)){cases, subtypes, unreadPosts->
+
+            val cases = ChatsDbMapper.fromResponse(
+                response = cases,
+                subtypes = subtypes.subtypes ?: listOf(),
+                masterOnlineChannelId = channelId,
+                masterOnlineUnreadPosts = unreadPosts.count ?: 0
+            )
+            database.runInTransaction {
+                database.chatsDao.clearCases()
+                database.chatsDao.insertCases(cases)
+            }
+        }.flatMapCompletable {
+            Completable.complete()
+        }
+    }
+
+    override fun getCasesFlowable(): Flowable<ClientCasesModel> {
+        return database.chatsDao.getCasesFlowable().map {
+            ChatsDbMapper.toModel(it)
+        }
+    }
+
+    override fun getMasterOnlineCase(): CaseModel {
+        val client = clientSharedPreferences.getClient()
+        val channelId = client?.getChatChannelId() ?: ""
+
+        return CaseModel(
+            channelId = channelId,
+            name = "Онлайн Мастер",
+            subtype = null,
+            taskId = "",
+            unreadPosts = 0,
+            isArchived = false,
+            status = CaseStatus.UNKNOWN,
+            subStatus = CaseSubStatus.UNKNOWN,
+            reportedAt = DateTime.now()
+        )
+    }
+
+    override fun viewChannel(channelId: String): Completable {
+        return api.viewChannel(channelId)
+    }
+
+    override fun notifyTyping(channelId: String): Completable {
+        return api.notifyTyping(channelId)
+    }
+
+    override fun getCallInfoSubject(): PublishSubject<CallInfoModel> {
+        return callInfoSubject
+    }
+
+    private fun startSocketRecreateTimer(){
+        socketRecreateDisposable?.dispose()
+        socketRecreateDisposable = Completable.timer(6, TimeUnit.SECONDS)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy {
+                Log.d(TAG, "No one responding. Disconnecting")
+                disconnectFromWebSocket()
+                leaveLiveKitRoom()
+                connectToWebSocket()
+            }
+    }
+
+    override fun acceptCall(channelId: String, callId: String): Completable {
+        return api.acceptCall(channelId, callId)
+    }
+
+    override fun declineCall(channelId: String, callId: String): Completable {
+        return api.declineCall(channelId, callId)
+    }
+
+    override fun initCallInfo(consultant: ChannelMemberModel?, callType: CallType) {
+        callInfo = callInfo.copy(
+            state = CallState.CONNECTING,
+            consultant = consultant,
+            callType = callType
+        )
+        callInfoSubject.onNext(callInfo)
+    }
+
+    override fun getCallInfo(): CallInfoModel {
+        return callInfo
     }
 }

@@ -6,26 +6,22 @@
     android:layout_marginTop="@dimen/material_margin_normal"
     android:background="@drawable/rectangle_filled_white_top_radius_24dp"
     android:orientation="vertical"
-    android:paddingBottom="141dp">
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="52dp"
-        app:srcCompat="@drawable/ic_rosgrostrah_name" />
+    android:paddingBottom="124dp"
+    android:paddingHorizontal="20dp"
+    android:clipToPadding="false">
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginHorizontal="52dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:fontFamily="@font/suisse_regular"
         android:gravity="center"
         android:textColor="@color/secondary900_alpha64"
         android:textSize="13sp"
-        app:translationTextKey="Мой_Сервис Дом — имущественный сервис от флагмана отечественного страхования" />
+        android:lineSpacingExtra="24dp"
+        android:lineSpacingMultiplier="0"
+        app:translationTextKey="Мой_Сервис Дом — имущественный сервис\nот флагмана отечественного страхования" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/aboutServiceTextView"
@@ -33,7 +29,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="24dp"
-        android:layout_marginBottom="1dp"
         android:background="@drawable/rectangle_filled_white_stroke_secondary_500_1dp_radius_24dp"
         android:elevation="2dp"
         android:fontFamily="@font/suisse_regular"

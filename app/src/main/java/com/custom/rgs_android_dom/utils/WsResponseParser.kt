@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.utils
 
+import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.ChatMapper
 import com.custom.rgs_android_dom.data.network.responses.ChatMessageResponse
 import com.custom.rgs_android_dom.domain.chat.models.*
@@ -14,33 +15,58 @@ class WsResponseParser(private val gson: Gson) {
         const val FIELD_CALL_ID = "callId"
         const val FIELD_TOKEN = "token"
         const val FIELD_DECLINE_USER_ID = "declineUserId"
+        const val FIELD_INITIATOR_USER_ID = "initiatorUserId"
+        const val FIELD_CHANNEL_ID = "channelId"
+        const val FIELD_ROOM_ID = "roomId"
 
         const val EVENT_POSTED = "posted"
         const val EVENT_CHANNEL_VIEWED = "channel_viewed"
         const val EVENT_CALL_JOIN = "webrtc.call.can-join"
         const val EVENT_CALL_DECLINED = "webrtc.call.declined"
+        const val EVENT_ROOM_CLOSED = "webrtc.room.closed"
+        const val EVENT_ACCEPT_OFFER = "webrtc.call.accept-offer"
+        const val EVENT_CALL_MISSED = "webrtc.call.missed"
     }
 
-    fun parse(message: String, userId: String): WsEventModel<*>?{
+    fun parse(message: String, userId: String): WsMessageModel<*>?{
         try{
             val jsonResponse = JSONObject(message).getJSONObject(FIELD_DATA)
             return when (jsonResponse.getString(FIELD_EVENT)){
                 EVENT_POSTED -> {
-                    val chatMessageResponse = gson.fromJson(jsonResponse.getJSONObject(FIELD_DATA).toString(), ChatMessageResponse::class.java)
+                    val chatMessageResponse = gson.fromJson(jsonResponse.getJSONObject(FIELD_DATA).toString().safeJSON(), ChatMessageResponse::class.java)
                     val chatMessageModel = ChatMapper.responseToChatMessage(chatMessageResponse, userId)
 
-                    WsChatMessageModel(event = WsEventModel.Event.POSTED, message = chatMessageModel)
+                    WsChatMessageModel(event = WsEvent.POSTED, message = chatMessageModel)
                 }
                 EVENT_CALL_JOIN -> {
                     val callId = jsonResponse.getString(FIELD_CALL_ID)
                     val token = jsonResponse.getJSONObject(FIELD_DATA).getString(FIELD_TOKEN)
+                    val roomId = jsonResponse.getJSONObject(FIELD_DATA).getString(FIELD_ROOM_ID)
 
-                    val callJoinInfoModel = CallJoinModel(callId = callId, token = token)
-                    WsCallJoinModel(event = WsEventModel.Event.CALL_JOIN, callJoinInfo = callJoinInfoModel)
+                    val callJoinInfoModel = CallJoinModel(callId = callId, token = token, roomId = roomId)
+                    WsCallJoinModel(event = WsEvent.CALL_JOIN, callJoinInfo = callJoinInfoModel)
                 }
                 EVENT_CALL_DECLINED -> {
                     val declineUserId = jsonResponse.getJSONObject(FIELD_DATA).getString(FIELD_DECLINE_USER_ID)
-                    WsCallDeclinedModel(event = WsEventModel.Event.CALL_DECLINED, declineUserId = declineUserId)
+                    WsCallDeclinedModel(event = WsEvent.CALL_DECLINED, declineUserId = declineUserId)
+                }
+                EVENT_ROOM_CLOSED -> {
+                    WsRoomClosedModel(event = WsEvent.ROOM_CLOSED)
+                }
+                EVENT_ACCEPT_OFFER -> {
+                    val callId = jsonResponse.getString(FIELD_CALL_ID)
+                    val channelId = jsonResponse.getString(FIELD_CHANNEL_ID)
+                    val callerId = jsonResponse.getJSONObject(FIELD_DATA).getString(FIELD_INITIATOR_USER_ID)
+                    WsCallAcceptModel(
+                        event =  WsEvent.CALL_ACCEPT,
+                        callerId = callerId,
+                        callId = callId,
+                        channelId = channelId,
+                        caller = if (callerId == userId) Sender.ME else Sender.OPPONENT,
+                    )
+                }
+                EVENT_CALL_MISSED -> {
+                    WsCallMissedModel(event = WsEvent.CALL_MISSED)
                 }
                 else -> null
             }
