@@ -1,7 +1,9 @@
 package com.custom.rgs_android_dom.ui.property.document
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Environment
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
@@ -30,9 +32,6 @@ class DocumentViewModel(
 
     private val downloadFileController = MutableLiveData<PropertyDocument>()
     val downloadFileObserver: LiveData<PropertyDocument> = downloadFileController
-
-    private val openFileController = MutableLiveData<Uri>()
-    val openFileObserver: LiveData<Uri> = openFileController
 
     init {
         propertyInteractor.getPropertyItem(objectId)
@@ -125,7 +124,9 @@ class DocumentViewModel(
                         .absoluteFile.path + File.separator + propertyDocument.name
                 )
                 if (file.exists()) {
-                    openFileController.value = Uri.fromFile(file)
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.fromFile(file))
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    (propertyDocument as Fragment).requireActivity().startActivity(intent)
                 } else {
                     downloadFileController.value = propertyDocument
                 }

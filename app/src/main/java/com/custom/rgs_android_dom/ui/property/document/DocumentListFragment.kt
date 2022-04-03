@@ -136,6 +136,7 @@ class DocumentListFragment :
         subscribe(viewModel.downloadFileObserver) {
             downloadFile(it)
         }
+
         subscribe(viewModel.isDeleteButtonVisibleObserver) {
             changeDeleteButtonVisibility(it)
         }
