@@ -19,6 +19,7 @@ import com.custom.rgs_android_dom.utils.*
 import com.yandex.metrica.YandexMetrica
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
+import java.lang.IllegalArgumentException
 
 class ServiceOrderFragment : BaseFragment<ServiceOrderViewModel, FragmentServiceOrderBinding>(R.layout.fragment_service_order),
     SelectPurchaseAddressListener,
@@ -108,12 +109,24 @@ class ServiceOrderFragment : BaseFragment<ServiceOrderViewModel, FragmentService
                 binding.layoutProperty.propertyTypeTextView.text = property.name
                 binding.layoutProperty.propertyAddressTextView.text = property.address?.address
 
-                when (property.type) {
-                    PropertyType.HOUSE -> {
-                        binding.layoutProperty.propertyTypeImageView.setImageResource(R.drawable.ic_type_home)
-                    }
-                    PropertyType.APARTMENT -> {
-                        binding.layoutProperty.propertyTypeImageView.setImageResource(R.drawable.ic_type_apartment_334px)
+                if (property.photoLink != null) {
+                    GlideApp.with(requireContext())
+                        .load(GlideUrlProvider.makeHeadersGlideUrl(property.photoLink))
+                        .transform(RoundedCorners(4.dp(requireContext())))
+                        .into(binding.layoutProperty.propertyTypeImageView)
+                } else {
+                    when (property.type) {
+                        PropertyType.HOUSE -> {
+                            binding.layoutProperty.propertyTypeImageView.setImageResource(
+                                R.drawable.ic_type_home
+                            )
+                        }
+                        PropertyType.APARTMENT -> {
+                            binding.layoutProperty.propertyTypeImageView.setImageResource(
+                                R.drawable.ic_type_apartment_334px
+                            )
+                        }
+                        else -> throw IllegalArgumentException("Wrong argument for ${property.type}")
                     }
                 }
             }

@@ -75,7 +75,7 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
     }
 
     override fun getProduct(productId: String, productVersionId: String?): Single<ProductModel> {
-        val request = if (authContentProviderManager.isAuthorized()) api.getProduct(productVersionId ?: "")
+        val request = if (authContentProviderManager.isAuthorized()) api.getProduct(productVersionId ?: productId)
             else api.getGuestProduct(productId)
         return request.map { response->
             CatalogMapper.responseToProduct(response)
