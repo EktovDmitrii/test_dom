@@ -137,6 +137,10 @@ class MSDPhoneInput @JvmOverloads constructor(
         binding.countryCodeTextView.requestLayout()
         binding.countryCodeTextView.invalidate()
 
+        if (binding.phoneEditText.text?.isNotEmpty() == true){
+            binding.phoneEditText.text = binding.phoneEditText.text
+        }
+
     }
 
     fun setOnPhoneChangedListener(onPhoneChangedListener: (String, Boolean) -> Unit) {

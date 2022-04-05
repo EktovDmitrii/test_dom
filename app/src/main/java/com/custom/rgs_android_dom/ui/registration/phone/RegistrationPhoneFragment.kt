@@ -35,6 +35,7 @@ class RegistrationPhoneFragment : BaseFragment<RegistrationPhoneViewModel, Fragm
             binding.phoneInput.setOnDoneClickListener {
                 viewModel.onDoneClick()
             }
+
         }
 
         binding.phoneInput.setOnCountryClickListener {
