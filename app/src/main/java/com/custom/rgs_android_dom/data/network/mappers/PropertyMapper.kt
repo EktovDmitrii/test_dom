@@ -50,16 +50,16 @@ object PropertyMapper {
     }
 
     fun propertyToRequest(propertyItemModel: PropertyItemModel): UpdatePropertyRequest{
-        val isOwn = if (propertyItemModel.isOwn == true) "yes" else if (propertyItemModel.isOwn == false) "no" else null
-        val isRent = if (propertyItemModel.isRent == true) "yes" else if (propertyItemModel.isRent == false) "no" else null
-        val isTemporary = if (propertyItemModel.isTemporary == true) "yes" else if (propertyItemModel.isTemporary == false) "no" else null
+        val isOwn = if (propertyItemModel.isOwn == true) "yes" else if (propertyItemModel.isOwn == false) "no" else "unspecified"
+        val isRent = if (propertyItemModel.isRent == true) "yes" else if (propertyItemModel.isRent == false) "no" else "unspecified"
+        val isTemporary = if (propertyItemModel.isTemporary == true) "yes" else if (propertyItemModel.isTemporary == false) "no" else "unspecified"
         val address = PropertyAddressRequest(
             address = if (propertyItemModel.address!=null) propertyItemModel.address.address else "",
-            cityFiasId = propertyItemModel.address?.cityFiasId,
-            cityName = propertyItemModel.address?.cityName,
-            fiasId = propertyItemModel.address?.fiasId,
-            regionFiasId =  propertyItemModel.address?.regionFiasId,
-            regionName = propertyItemModel.address?.regionName,
+            cityFiasId = propertyItemModel.address?.cityFiasId?.ifEmpty { null },
+            cityName = propertyItemModel.address?.cityName?.ifEmpty { null },
+            fiasId = propertyItemModel.address?.fiasId?.ifEmpty { null },
+            regionFiasId =  propertyItemModel.address?.regionFiasId?.ifEmpty { null },
+            regionName = propertyItemModel.address?.regionName?.ifEmpty { null },
             entrance = propertyItemModel.address?.entrance,
             floor = propertyItemModel.address?.floor,
         )
@@ -73,7 +73,7 @@ object PropertyMapper {
             isTemporary = isTemporary,
             name = propertyItemModel.name,
             totalArea = propertyItemModel.totalArea,
-            photoLink = propertyItemModel.photoLink
+            photoLink = propertyItemModel.photoLink?.removePrefix(STORE_PATH)
         )
     }
 
