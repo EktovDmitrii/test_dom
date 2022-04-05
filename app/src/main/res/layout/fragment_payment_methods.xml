@@ -33,6 +33,7 @@
                     app:srcCompat="@drawable/ic_back_24px" />
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
+                    android:id="@+id/titleTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

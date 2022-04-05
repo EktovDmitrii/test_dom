@@ -37,6 +37,10 @@ class DeletePaymentMethodFragment() : BaseBottomSheetModalFragment<DeletePayment
             viewModel.onDeleteClick()
         }
 
+        binding.cancelTextView.setOnDebouncedClickListener {
+            viewModel.onCancelClick()
+        }
+
         subscribe(viewModel.showErrorDialogObserver){
             dismissAllowingStateLoss()
             parentFragment?.let { parentFragment->

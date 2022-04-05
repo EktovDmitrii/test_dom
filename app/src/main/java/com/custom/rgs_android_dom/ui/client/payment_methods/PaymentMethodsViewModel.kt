@@ -74,10 +74,10 @@ class PaymentMethodsViewModel(
                         paymentMethodsController.value = paymentMethods
                         paymentMethodDeletedController.value = Unit
                     } else{
-                        isInEditMode = false
-                        isInEditModeController.value = isInEditMode
                         noPaymentMethodsController.value = true
                     }
+                    isInEditMode = false
+                    isInEditModeController.value = isInEditMode
                 },
                 onError = {
                     logException(this, it)

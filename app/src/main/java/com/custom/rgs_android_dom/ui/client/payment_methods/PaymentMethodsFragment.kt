@@ -47,6 +47,12 @@ class PaymentMethodsFragment : BaseFragment<PaymentMethodsViewModel, FragmentPay
             binding.editImageView.goneIf(it)
             binding.confirmImageView.visibleIf(it)
             paymentMethodsAdapter.setIsInEditMode(it)
+
+            binding.titleTextView.text = if (it){
+                TranslationInteractor.getTranslation("app.client.payment_methods.title_edit")
+            } else {
+                TranslationInteractor.getTranslation("app.client.payment_methods.title")
+            }
         }
 
         subscribe(viewModel.noPaymentMethodsObserver){
