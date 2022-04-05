@@ -23,6 +23,7 @@ import com.custom.rgs_android_dom.ui.purchase.PurchaseFragment
 import com.custom.rgs_android_dom.ui.purchase.payments.PaymentWebViewFragment
 import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderFragment
 import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderLauncher
+import com.custom.rgs_android_dom.ui.purchase.service_order.WidgetOrderErrorFragment
 import com.custom.rgs_android_dom.utils.logException
 import com.yandex.metrica.YandexMetrica
 import io.reactivex.Single
@@ -275,38 +276,40 @@ class ChatViewModel(
             Single.just(PropertyItemModel.empty())
         }
         // TODO Find out how to get productVersionId from widget
-        widget.productId?.let { id ->
-            Single.zip(
-                catalogInteractor.getProduct(id, null),
-                catalogInteractor.getProductServices(id, null,false, null),
-                propertyRequest
-            ) { product, services, property ->
-                PurchaseModel(
-                    id = id,
-                    versionId = product.versionId ?: "",
-                    defaultProduct = product.defaultProduct,
-                    duration = product.duration,
-                    deliveryTime = product.deliveryTime,
-                    deliveryType = services[0].serviceDeliveryType,
-                    propertyItemModel = if (!property.isEmpty) property else null,
-                    purchaseDateTimeModel = getPurchaseDate(widget.orderDate, widget.orderTime),
-                    logoSmall = product.logoSmall,
-                    name = product.name,
-                    price = product.price
-                )
-            }.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                    onSuccess = { purchaseModel ->
-                        val purchaseFragment = PurchaseFragment.newInstance(purchaseModel)
-                        //ScreenManager.showScreenScope(purchaseFragment, PAYMENT)
-                        ScreenManager.showBottomScreen(purchaseFragment)
-                    },
-                    onError = {
-                        logException(this, it)
-                    }
-                ).addTo(dataCompositeDisposable)
-        }
+        try {
+            widget.productId?.let { id ->
+                Single.zip(
+                    catalogInteractor.getProduct(id, null),
+                    catalogInteractor.getProductServices(id, null, false, null),
+                    propertyRequest
+                ) { product, services, property ->
+                    PurchaseModel(
+                        id = id,
+                        versionId = product.versionId ?: "",
+                        defaultProduct = product.defaultProduct,
+                        duration = product.duration,
+                        deliveryTime = product.deliveryTime,
+                        deliveryType = services[0].serviceDeliveryType,
+                        propertyItemModel = if (!property.isEmpty) property else null,
+                        purchaseDateTimeModel = getPurchaseDate(widget.orderDate, widget.orderTime),
+                        logoSmall = product.logoSmall,
+                        name = product.name,
+                        price = product.price
+                    )
+                }.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeBy(
+                        onSuccess = { purchaseModel ->
+                            val purchaseFragment = PurchaseFragment.newInstance(purchaseModel)
+                            //ScreenManager.showScreenScope(purchaseFragment, PAYMENT)
+                            ScreenManager.showBottomScreen(purchaseFragment)
+                        },
+                        onError = {
+                            ScreenManager.showScreen(WidgetOrderErrorFragment())
+                        }
+                    ).addTo(dataCompositeDisposable)
+            }
+        } catch (e: Exception) {}
     }
 
     fun orderProductService(widget: WidgetModel.WidgetOrderComplexProductModel) {
@@ -337,7 +340,7 @@ class ChatViewModel(
                         ScreenManager.showScreen(serviceOrderFragment)
                     },
                     onError = {
-                        logException(this, it)
+                        ScreenManager.showScreen(WidgetOrderErrorFragment())
                     }
                 ).addTo(dataCompositeDisposable)
         }

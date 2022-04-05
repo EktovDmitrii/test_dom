@@ -83,6 +83,7 @@ import com.custom.rgs_android_dom.ui.purchase.payments.PaymentWebViewViewModel
 import com.custom.rgs_android_dom.ui.purchase.payments.error.PaymentErrorViewModel
 import com.custom.rgs_android_dom.ui.purchase.payments.success.PaymentSuccessViewModel
 import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderViewModel
+import com.custom.rgs_android_dom.ui.purchase.service_order.WidgetOrderErrorViewModel
 import com.custom.rgs_android_dom.ui.stories.StoriesViewModel
 import com.custom.rgs_android_dom.ui.stories.tabs.TabGuaranteeViewModel
 import com.custom.rgs_android_dom.ui.stories.tabs.TabNewServiceViewModel
@@ -166,6 +167,7 @@ val viewModelModule = module {
     viewModel { InsurantViewModel(policiesInteractor = get()) }
     viewModel { parameters -> PolicyDialogsViewModel(policiesInteractor = get(), model = parameters.get(), chatInteractor = get()) }
     viewModel { parameters -> ServiceOrderViewModel(serviceOrderLauncher = parameters.get(), propertyInteractor = get(), catalogInteractor = get(), purchaseInteractor = get()) }
+    viewModel { WidgetOrderErrorViewModel(chatInteractor = get()) }
     viewModel { parameters -> PolicyViewModel(contractId = parameters[0], isActivePolicy = parameters[1], policiesInteractor = get(), catalogInteractor = get()) }
     viewModel { ChatsViewModel(chatInteractor = get(), registrationInteractor = get()) }
     viewModel { parameters -> CancelOrderViewModel(order = parameters[0], clientInteractor = get()) }

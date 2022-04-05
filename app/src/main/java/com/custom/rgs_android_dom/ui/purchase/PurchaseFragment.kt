@@ -27,6 +27,7 @@ import com.custom.rgs_android_dom.utils.*
 import com.yandex.metrica.YandexMetrica
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
+import java.lang.IllegalArgumentException
 
 class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurchaseBinding>(),
     SelectPurchaseAddressListener,
@@ -171,16 +172,24 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
                 binding.layoutProperty.propertyTypeTextView.text = it.name
                 binding.layoutProperty.propertyAddressTextView.text =
                     it.address?.address
-                when (it.type) {
-                    PropertyType.HOUSE -> {
-                        binding.layoutProperty.propertyTypeImageView.setImageResource(
-                            R.drawable.ic_type_home
-                        )
-                    }
-                    PropertyType.APARTMENT -> {
-                        binding.layoutProperty.propertyTypeImageView.setImageResource(
-                            R.drawable.ic_type_apartment_334px
-                        )
+                if (it.photoLink != null) {
+                    GlideApp.with(requireContext())
+                        .load(GlideUrlProvider.makeHeadersGlideUrl(it.photoLink))
+                        .transform(RoundedCorners(4.dp(requireContext())))
+                        .into(binding.layoutProperty.propertyTypeImageView)
+                } else {
+                    when (it.type) {
+                        PropertyType.HOUSE -> {
+                            binding.layoutProperty.propertyTypeImageView.setImageResource(
+                                R.drawable.ic_type_home
+                            )
+                        }
+                        PropertyType.APARTMENT -> {
+                            binding.layoutProperty.propertyTypeImageView.setImageResource(
+                                R.drawable.ic_type_apartment_334px
+                            )
+                        }
+                        else -> throw IllegalArgumentException("Wrong argument for ${it.type}")
                     }
                 }
             }

@@ -368,6 +368,10 @@ class ChatRepositoryImpl(private val api: MSDApi,
     override fun leaveLiveKitRoom() {
         if (roomInfo?.room?.state == Room.State.CONNECTED){
             roomInfo?.room?.disconnect()
+        } else {
+            callInfo.channelId?.let { channelId ->
+                declineCall(channelId, "")
+            }
         }
         clearRoomData()
     }
