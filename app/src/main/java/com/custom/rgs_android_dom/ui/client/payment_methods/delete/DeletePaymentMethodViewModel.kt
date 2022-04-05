@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.ui.client.payment_methods.delete
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.data.network.toMSDErrorModel
@@ -35,6 +34,10 @@ class DeletePaymentMethodViewModel(
                     }
                 }
             ).addTo(dataCompositeDisposable)
+    }
+
+    fun onCancelClick(){
+        close()
     }
 
 

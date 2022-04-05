@@ -15,4 +15,23 @@
         app:translationTextKey="app.client.payment_methods.delete_card"
         android:gravity="center"/>
 
+    <View
+        android:id="@+id/dividerView"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/secondary200"/>
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/cancelTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_filled_white_radius_13dp"
+        android:fontFamily="@font/suisse_regular"
+        android:gravity="center"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="18dp"
+        android:textColor="@color/secondary900"
+        android:textSize="20sp"
+        app:translationTextKey="app.client.payment_methods.cancel" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>
