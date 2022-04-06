@@ -1,9 +1,11 @@
 package com.custom.rgs_android_dom.ui.property.document
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Environment
-import androidx.fragment.app.Fragment
+import android.util.Log
+import androidx.core.content.FileProvider
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
@@ -19,9 +21,11 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import java.io.File
 
+
 class DocumentViewModel(
     private val objectId: String,
-    private val propertyInteractor: PropertyInteractor
+    private val propertyInteractor: PropertyInteractor,
+    private val context: Context
 ) : BaseViewModel() {
 
     private val isDeleteButtonVisibleController = MutableLiveData<Boolean>(false)
@@ -32,6 +36,11 @@ class DocumentViewModel(
 
     private val downloadFileController = MutableLiveData<PropertyDocument>()
     val downloadFileObserver: LiveData<PropertyDocument> = downloadFileController
+
+    private val requestReadExternalStoragePermController = MutableLiveData<Unit>()
+    val requestReadExternalStoragePermObserver: LiveData<Unit> = requestReadExternalStoragePermController
+
+    private var selectedPropertyDocument: PropertyDocument? = null
 
     init {
         propertyInteractor.getPropertyItem(objectId)
@@ -119,20 +128,41 @@ class DocumentViewModel(
         when (documentType) {
             "jpg", "jpeg", "png", "bmp" -> showDetailDocumentScreen(documentIndex)
             else -> {
-                val file = File(
-                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                        .absoluteFile.path + File.separator + propertyDocument.name
-                )
-                if (file.exists()) {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.fromFile(file))
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    (propertyDocument as Fragment).requireActivity().startActivity(intent)
-                } else {
-                    downloadFileController.value = propertyDocument
-                }
+                selectedPropertyDocument = propertyDocument
+
+                requestReadExternalStoragePermController.value = Unit
 
             }
         }
+    }
+
+    fun onReadExternalStoragePermGranted(){
+        selectedPropertyDocument?.let { selectedPropertyDocument->
+            val file = File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                    .absoluteFile.path + File.separator + selectedPropertyDocument.name
+            )
+            if (file.exists()) {
+                val contentUri = FileProvider.getUriForFile(context, context.packageName, file)
+
+                val mime = context.contentResolver.getType(contentUri)
+
+                val intent = Intent()
+                intent.action = Intent.ACTION_VIEW
+                intent.setDataAndType(contentUri, mime)
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+
+                ScreenManager.launchIntent(intent)
+            } else {
+                downloadFileController.value = selectedPropertyDocument
+            }
+        }
+
+    }
+
+    // TODO Add some modal screen with permission rationale
+    fun onShouldRequestReadExternalStoragePermRationale(){
+
     }
 
     private fun showDetailDocumentScreen(documentIndex: Int) {

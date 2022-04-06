@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.navigation
 
+import android.content.Intent
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -13,6 +14,8 @@ import com.custom.rgs_android_dom.ui.main.MainFragment
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.ui.root.RootFragment
 import com.custom.rgs_android_dom.utils.activity.hideSoftwareKeyboard
+import com.custom.rgs_android_dom.utils.logException
+import java.lang.Exception
 
 object ScreenManager {
 
@@ -196,6 +199,14 @@ object ScreenManager {
 
         reInit()
         notifyCurrentVisibleFragment()
+    }
+
+    fun launchIntent(intent: Intent){
+        try{
+            activity?.startActivity(intent)
+        } catch (e: Exception){
+            logException(this, e)
+        }
     }
 
     private fun addFragmentInMap(fragment: BaseFragment<*, *>) {
