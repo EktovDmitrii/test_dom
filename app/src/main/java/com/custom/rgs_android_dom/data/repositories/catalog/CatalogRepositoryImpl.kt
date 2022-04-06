@@ -118,7 +118,7 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
     }
 
     override fun getClientProducts(contractIds: String?): Single<List<ClientProductModel>> {
-        return api.getClientProducts(5000, 0, contractIds).map {response ->
+        return api.getClientProducts(5000, 0, contractIds, "active").map {response ->
             return@map if (response.clientProducts != null){
                 response.clientProducts.map { CatalogMapper.responseToClientProduct(it) }
             } else listOf()

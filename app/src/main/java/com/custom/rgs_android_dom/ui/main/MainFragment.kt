@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.ui.main
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.core.view.children
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentMainBinding

@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.domain.client
 
-import android.util.Log
 import com.custom.rgs_android_dom.data.repositories.files.FilesRepositoryImpl.Companion.STORE_AVATARS
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
@@ -17,10 +16,8 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import org.joda.time.DateTime
-import org.joda.time.DateTimeZone
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
 import org.joda.time.format.DateTimeFormat
@@ -119,7 +116,14 @@ ClientInteractor(
                         "Некорректная дата рождения"
                     )
                 )
-            }
+            } else if (birthday != null && !isAdult(birthday!!)) {
+                errorsValidate.add(
+                    ValidateFieldModel(
+                        ClientField.BIRTHDATE,
+                        "Сервис доступен для лиц старше 16 лет"
+                    )
+                )
+            } else { }
         }
 
         if (fillClientViewState.agentCode == null && fillClientViewState.agentPhone != null) {
@@ -392,6 +396,13 @@ ClientInteractor(
                         "Проверьте, правильно ли введена дата рождения"
                     )
                 )
+            } else if (!isAdult(birthday)) {
+                errorsValidate.add(
+                    ValidateFieldModel(
+                        ClientField.BIRTHDATE,
+                        "Сервис доступен для лиц старше 16 лет"
+                    )
+                )
             }
 
             //birthday = birthday?.withZone(DateTimeZone.forOffsetHours(3))
@@ -651,6 +662,15 @@ ClientInteractor(
         return !(birthday.toLocalDateTime().isAfter(MIN_DATE) || birthday.toLocalDateTime().isBefore(
             MAX_DATE
         ))
+    }
+
+    private fun isAdult(birthday: DateTime): Boolean {
+        val now = DateTime.now()
+        return if ((now.year - birthday.year) >= 16) {
+            !(now.monthOfYear == birthday.monthOfYear && now.dayOfMonth == birthday.dayOfMonth)
+        } else {
+            false
+        }
     }
 
     private fun validateProfileState() {
