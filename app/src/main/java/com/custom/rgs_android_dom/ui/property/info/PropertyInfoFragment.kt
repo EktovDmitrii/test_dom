@@ -1,29 +1,32 @@
 package com.custom.rgs_android_dom.ui.property.info
 
+import android.Manifest
+import android.app.DownloadManager
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.R
+import com.custom.rgs_android_dom.data.network.url.DownloadManagerRequestProvider
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentPropertyInfoBinding
+import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
 import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsFragment
 import com.custom.rgs_android_dom.ui.property.info.more.PropertyMoreFragment
-import com.custom.rgs_android_dom.utils.GlideApp
-import com.custom.rgs_android_dom.utils.args
-import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
-import com.custom.rgs_android_dom.utils.subscribe
+import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-class PropertyInfoFragment :
-    BaseBottomSheetFragment<PropertyInfoViewModel, FragmentPropertyInfoBinding>() {
-
-    override val TAG: String = "PROPERTY_INFO_FRAGMENT"
-
-    private val adapter: PropertyDocumentsAdapter
-        get() = binding.documentsRecyclerView.adapter as PropertyDocumentsAdapter
+class PropertyInfoFragment : BaseBottomSheetFragment<PropertyInfoViewModel, FragmentPropertyInfoBinding>() {
 
     companion object {
         private const val ARG_OBJECT_ID = "ARG_OBJECT_ID"
@@ -35,6 +38,42 @@ class PropertyInfoFragment :
         }
     }
 
+    override val TAG: String = "PROPERTY_INFO_FRAGMENT"
+
+    private val adapter: PropertyDocumentsAdapter
+        get() = binding.documentsRecyclerView.adapter as PropertyDocumentsAdapter
+
+    private var downloadManager: DownloadManager? = null
+
+    private var downloadedFileId: Long? = null
+
+    private var onDownloadCompleteReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, downloadIntent: Intent) {
+            if (downloadIntent.action == DownloadManager.ACTION_DOWNLOAD_COMPLETE) {
+                downloadIntent.extras?.let {
+                    val fileId = it.getLong(DownloadManager.EXTRA_DOWNLOAD_ID)
+                    if (fileId == downloadedFileId) {
+                        downloadManager?.getUriForDownloadedFile(fileId)?.let { uri ->
+                            openFile(uri)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private val requestReadStorageAction =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            when {
+                granted -> {
+                    viewModel.onReadExternalStoragePermGranted()
+                }
+                !ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) -> {
+                    viewModel.onShouldRequestReadExternalStoragePermRationale()
+                }
+            }
+        }
+
     override fun getParameters(): ParametersDefinition = {
         parametersOf(requireArguments().getString(ARG_OBJECT_ID))
     }
@@ -42,10 +81,17 @@ class PropertyInfoFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.documentsRecyclerView.adapter = PropertyDocumentsAdapter {
-            val propertyUploadFilesFragment = PropertyUploadDocumentsFragment()
-            propertyUploadFilesFragment.show(childFragmentManager, propertyUploadFilesFragment.TAG)
-        }
+        downloadManager = requireContext().getDownloadManager()
+
+        binding.documentsRecyclerView.adapter = PropertyDocumentsAdapter(
+            onAddClick = {
+                val propertyUploadFilesFragment = PropertyUploadDocumentsFragment()
+                propertyUploadFilesFragment.show(childFragmentManager, propertyUploadFilesFragment.TAG)
+            },
+            onDocumentClick = {
+                viewModel.onDocumentClick(it)
+            }
+        )
 
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.disposeAll()
@@ -121,6 +167,14 @@ class PropertyInfoFragment :
             val propertyMoreFragment = PropertyMoreFragment.newInstance(it)
             propertyMoreFragment.show(childFragmentManager, propertyMoreFragment.TAG)
         }
+
+        subscribe(viewModel.downloadFileObserver) {
+            downloadFile(it)
+        }
+
+        subscribe(viewModel.requestReadExternalStoragePermObserver){
+            requestReadStorageAction.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
     }
 
     override fun getThemeResource(): Int {
@@ -129,6 +183,31 @@ class PropertyInfoFragment :
 
     override fun isNavigationViewVisible(): Boolean {
         return false
+    }
+
+    private fun openFile(uri: Uri) {
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        requireContext().startActivity(intent)
+        requireContext().unregisterReceiver(onDownloadCompleteReceiver)
+    }
+
+    private fun downloadFile(documentUrl: PropertyDocument) {
+        val documentId = documentUrl.link.substringAfterLast("/", "missing")
+        val url = "${BuildConfig.BASE_URL}/api/store/${documentId}"
+        val request = DownloadManagerRequestProvider.makeDownloadManagerRequest(
+            url,
+            documentUrl.name,
+            requireContext().getString(R.string.app_name),
+            "Скачивание файла"
+        )
+
+        requireContext().registerReceiver(
+            onDownloadCompleteReceiver,
+            IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
+        )
+
+        downloadedFileId = downloadManager?.enqueue(request)
     }
 
 }

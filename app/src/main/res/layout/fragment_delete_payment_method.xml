@@ -9,11 +9,12 @@
         android:id="@+id/deleteTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
         android:paddingVertical="18dp"
         android:textSize="20sp"
         android:textColor="@color/error500"
         app:translationTextKey="app.client.payment_methods.delete_card"
-        android:gravity="center"/>
+        android:gravity="start|center"/>
 
     <View
         android:id="@+id/dividerView"
@@ -27,8 +28,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/rectangle_filled_white_radius_13dp"
         android:fontFamily="@font/suisse_regular"
-        android:gravity="center"
-        android:paddingHorizontal="16dp"
+        android:gravity="start|center"
+        android:paddingHorizontal="20dp"
         android:paddingVertical="18dp"
         android:textColor="@color/secondary900"
         android:textSize="20sp"

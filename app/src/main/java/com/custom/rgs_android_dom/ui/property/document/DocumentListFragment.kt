@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.property.document
 
+import android.Manifest
 import android.app.DownloadManager
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -8,12 +9,13 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.DownloadManagerRequestProvider
 import com.custom.rgs_android_dom.databinding.FragmentDocumentBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
-import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsFragment
@@ -30,6 +32,18 @@ class DocumentListFragment :
     BaseFragment<DocumentViewModel, FragmentDocumentBinding>(R.layout.fragment_document),
     EditDocumentListBottomSheetFragment.EditDocumentListListener,
     ConfirmBottomSheetFragment.ConfirmListener {
+
+    companion object {
+        private const val ARG_OBJECT_ID = "ARG_OBJECT_ID"
+
+        fun newInstance(
+            objectId: String
+        ): DocumentListFragment {
+            return DocumentListFragment().args {
+                putString(ARG_OBJECT_ID, objectId)
+            }
+        }
+    }
 
     private val documentListAdapter: DocumentListAdapter
         get() = binding.listDocumentsRecyclerView.adapter as DocumentListAdapter
@@ -53,20 +67,21 @@ class DocumentListFragment :
                 }
             }
         }
-
     }
 
-    companion object {
-        private const val ARG_OBJECT_ID = "ARG_OBJECT_ID"
-
-        fun newInstance(
-            objectId: String
-        ): DocumentListFragment {
-            return DocumentListFragment().args {
-                putString(ARG_OBJECT_ID, objectId)
+    private val requestReadStorageAction =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            when {
+                granted -> {
+                    viewModel.onReadExternalStoragePermGranted()
+                }
+                !ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) -> {
+                    viewModel.onShouldRequestReadExternalStoragePermRationale()
+                }
             }
         }
-    }
+
+
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(requireArguments().getString(ARG_OBJECT_ID))
@@ -139,6 +154,10 @@ class DocumentListFragment :
 
         subscribe(viewModel.isDeleteButtonVisibleObserver) {
             changeDeleteButtonVisibility(it)
+        }
+
+        subscribe(viewModel.requestReadExternalStoragePermObserver){
+            requestReadStorageAction.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
     }
 

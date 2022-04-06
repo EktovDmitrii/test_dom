@@ -111,11 +111,11 @@ val viewModelModule = module {
     viewModel { parameters -> ChatViewModel(case = parameters[0], chatInteractor = get(), clientInteractor = get(), catalogInteractor = get(), propertyInteractor = get()) }
     viewModel { parameters-> SelectPropertyTypeViewModel(propertyName = parameters[0], propertyAddress = parameters[1], propertyInteractor = get()) }
     viewModel { parameters-> PropertyDetailsViewModel(propertyName = parameters[0], propertyAddress = parameters[1], propertyType = parameters[2], propertyInteractor = get(), connectivityManager = get()) }
-    viewModel { parameters-> PropertyInfoViewModel(objectId = parameters.get(), propertyInteractor = get(), clientInteractor = get(), connectivityManager = get()) }
+    viewModel { parameters-> PropertyInfoViewModel(objectId = parameters.get(), propertyInteractor = get(), clientInteractor = get(), connectivityManager = get(), context = get()) }
     viewModel { parameters-> EditPropertyInfoViewModel(objectId = parameters[0], isEditable = parameters[1], propertyInteractor = get(), addressInteractor = get()) }
     viewModel { parameters-> EditPropertyAvatarBottomSheetViewModel(propertyInteractor = get()) }
     viewModel { parameters-> RequestPropertyInfoEditViewModel(objectId = parameters.get(), propertyInteractor = get()) }
-    viewModel { parameters-> DocumentViewModel(objectId = parameters.get(), propertyInteractor = get()) }
+    viewModel { parameters-> DocumentViewModel(objectId = parameters.get(), propertyInteractor = get(), context = get()) }
     viewModel { parameters-> DetailDocumentViewModel( objectId = parameters[0], documentIndex = parameters[1], propertyItemModel = parameters[2], propertyInteractor = get()) }
     viewModel { ScreenStubViewModel() }
     viewModel { RequestEditAgentViewModel(clientInteractor = get()) }

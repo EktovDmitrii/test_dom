@@ -21,7 +21,10 @@ import com.custom.rgs_android_dom.domain.property.models.AddDocument
 import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
 import com.custom.rgs_android_dom.utils.*
 
-class PropertyDocumentsAdapter(private val onAddClick: () -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PropertyDocumentsAdapter(
+    private val onAddClick: () -> Unit,
+    private val onDocumentClick: (PropertyDocument) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var isConnected = false
     private var documents = mutableListOf<Any>()
@@ -51,7 +54,7 @@ class PropertyDocumentsAdapter(private val onAddClick: () -> Unit) : RecyclerVie
                 LayoutInflater.from(parent.context),
                 parent,
                 false )
-            PropertyDocumentsViewHolder(binding)
+            PropertyDocumentsViewHolder(binding, onDocumentClick)
         } else {
             val binding = ItemAddPropertyBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -87,7 +90,8 @@ class PropertyDocumentsAdapter(private val onAddClick: () -> Unit) : RecyclerVie
     }
 
     inner class PropertyDocumentsViewHolder(
-        private val binding: ItemPropertyDownloadedDocumentBinding
+        private val binding: ItemPropertyDownloadedDocumentBinding,
+        private val onDocumentClick: (PropertyDocument) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
 
@@ -145,6 +149,10 @@ class PropertyDocumentsAdapter(private val onAddClick: () -> Unit) : RecyclerVie
                     .into(binding.previewImageView)
             }
             binding.progressBarContainerFrameLayout.goneIf(isConnected)
+
+            binding.root.setOnDebouncedClickListener {
+                onDocumentClick(model)
+            }
         }
     }
 

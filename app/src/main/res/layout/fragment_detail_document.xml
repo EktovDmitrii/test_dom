@@ -30,7 +30,7 @@
 
             <com.custom.rgs_android_dom.views.text.MSDTextView
                 android:id="@+id/documentNameTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/my_service_medium"
