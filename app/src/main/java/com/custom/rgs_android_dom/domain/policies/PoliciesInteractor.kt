@@ -171,7 +171,7 @@ class PoliciesInteractor(
         return !(birthday.toLocalDateTime().isAfter( MIN_DATE ) || birthday.toLocalDateTime().isBefore( MAX_DATE ))
     }
 
-    fun getClientProductSingle(contractId: String): Single<PolicyModel> {
+    fun getPolicy(contractId: String): Single<PolicyModel> {
         return policiesRepository.getPolicySingle(contractId)
     }
 

@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.data.network.mappers
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.requests.*
 import com.custom.rgs_android_dom.data.network.responses.*
+import com.custom.rgs_android_dom.domain.catalog.models.AvailableServiceModel
 import com.custom.rgs_android_dom.domain.catalog.models.ServiceShortModel
 import com.custom.rgs_android_dom.domain.client.models.*
 import com.custom.rgs_android_dom.domain.policies.models.PolicyModel
@@ -161,7 +162,13 @@ object ClientMapper {
         )
     }
 
-    fun responseToPolicy(clientProductResponse: ClientProductResponse?,contractResponse: ContractResponse?, propertyItemResponse: PropertyItemResponse?, productServicesResponse: ProductServicesResponse?): PolicyModel {
+    fun responseToPolicy(
+        clientProductResponse: ClientProductResponse?,
+        contractResponse: ContractResponse?,
+        propertyItemResponse: PropertyItemResponse?,
+        productServicesResponse: ProductServicesResponse?,
+        availableServices: List<AvailableServiceModel>): PolicyModel {
+
         return PolicyModel(
             id= clientProductResponse?.id ?: "",
             productId = clientProductResponse?.productId ?: "",
@@ -169,21 +176,21 @@ object ClientMapper {
             productTitle= clientProductResponse?.productName ?: "",
             productDescription = clientProductResponse?.productTitle ?: "",
             address = propertyItemResponse?.address?.address,
-            includedProducts = productServicesResponse?.items?.map {
+            includedProducts = productServicesResponse?.items?.map {serviceShort->
                 ServiceShortModel(
-                    priceAmount = it.priceAmount,
-                    providerId = it.providerId,
-                    providerName = it.providerName,
-                    quantity = it.quantity ?: 0,
-                    serviceCode = it.serviceCode,
-                    serviceId = it.serviceId,
-                    serviceName = it.serviceName,
-                    serviceDeliveryType = when (it.serviceDeliveryType) {
+                    priceAmount = serviceShort.priceAmount,
+                    providerId = serviceShort.providerId,
+                    providerName = serviceShort.providerName,
+                    quantity = availableServices.find { it.serviceId == serviceShort.serviceId }?.available?.toLong() ?: 0,
+                    serviceCode = serviceShort.serviceCode,
+                    serviceId = serviceShort.serviceId,
+                    serviceName = serviceShort.serviceName,
+                    serviceDeliveryType = when (serviceShort.serviceDeliveryType) {
                         "online" -> DeliveryType.ONLINE
                         "visit" -> DeliveryType.VISIT
-                        else -> throw IllegalArgumentException("wrong argument ${it.serviceDeliveryType} for serviceDeliveryType")
+                        else -> throw IllegalArgumentException("wrong argument ${serviceShort.serviceDeliveryType} for serviceDeliveryType")
                     },
-                    serviceVersionId = it.serviceVersionId,
+                    serviceVersionId = serviceShort.serviceVersionId,
                     isPurchased = true,
                     canBeOrdered = clientProductResponse?.validityFrom?.isBeforeNow ?: false &&
                             clientProductResponse?.validityTo?.isAfterNow ?: false &&
