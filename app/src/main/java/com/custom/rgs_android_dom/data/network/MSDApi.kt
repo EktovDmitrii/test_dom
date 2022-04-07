@@ -226,7 +226,14 @@ interface MSDApi {
 
     @GET("clients/me/balance/services")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getAvailableServices(@Query("size") size: Int, @Query("index") index: Int, @Query("withBalance") withBalance: Boolean, @Query("status") status: String = "active", @Query("productId") productId: String? = null, @Query("serviceId") serviceId: String? = null): Single<BalanceServicesResponse>
+    fun getAvailableServices(
+        @Query("size") size: Int,
+        @Query("index") index: Int,
+        @Query("withBalance") withBalance: Boolean,
+        @Query("status") status: String = "active",
+        @Query("productId") productId: String? = null,
+        @Query("serviceId") serviceId: String? = null,
+        @Query("contractId") contractId: String? = null): Single<BalanceServicesResponse>
 
     @GET("clients/me/billing/cards")
     @ErrorType(MSDNetworkErrorResponse::class)

@@ -34,7 +34,7 @@ class PolicyViewModel(
     val isActiveObserver: LiveData<Boolean> = isActiveController
 
     init {
-        policiesInteractor.getClientProductSingle(contractId)
+        policiesInteractor.getPolicy(contractId)
             .doOnSubscribe {
                 loadingStateController.postValue(LoadingState.CONTENT)
             }

@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.data.repositories.policies
 import android.annotation.SuppressLint
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.MSDApi
+import com.custom.rgs_android_dom.data.network.mappers.CatalogMapper
 import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
 import com.custom.rgs_android_dom.data.network.requests.BindPolicyRequest
 import com.custom.rgs_android_dom.data.network.responses.ProductServicesResponse
@@ -109,8 +110,11 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
     override fun getPolicySingle(contractId: String): Single<PolicyModel> {
         val clientProductsSingle  = api.getClientProducts(1, 0, contractId)
         val contractsSingle = api.getPolicyContracts()
+        val availableServicesSingle = api.getAvailableServices(size = 100, index = 0, withBalance = true, contractId = contractId).map { response->
+            CatalogMapper.responseToBalanceServices(response)
+        }
 
-        return Single.zip(clientProductsSingle,contractsSingle) { clientProducts, contracts ->
+        return Single.zip(clientProductsSingle, contractsSingle, availableServicesSingle) { clientProducts, contracts, availableServices ->
             val clientProductResponse = clientProducts.clientProducts?.get(0)
             val objectId = clientProductResponse?.objectId
             var propertyItemResponse: PropertyItemResponse? = null
@@ -128,7 +132,8 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
                 clientProductResponse,
                 contracts.contracts?.firstOrNull { it.id == contractId },
                 propertyItemResponse,
-                productServicesResponse
+                productServicesResponse,
+                availableServices
             )
         }
     }

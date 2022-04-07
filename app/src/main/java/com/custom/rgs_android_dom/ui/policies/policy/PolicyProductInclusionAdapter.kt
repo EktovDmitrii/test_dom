@@ -76,6 +76,13 @@ class PolicyProductInclusionAdapter (
                 binding.orderTextView.gone()
             }
 
+            if (item.quantity <= 0){
+                binding.orderTextView.isEnabled = false
+            } else if (item.isPurchased){
+                binding.orderTextView.isEnabled = item.canBeOrdered && status
+            }
+
+
             binding.orderTextView.setOnDebouncedClickListener {
                 if (status) onOrderClick(item)
             }
