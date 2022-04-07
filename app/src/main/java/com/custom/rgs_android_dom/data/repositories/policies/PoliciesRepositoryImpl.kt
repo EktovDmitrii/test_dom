@@ -44,7 +44,7 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
 
         return api.bindPolicy(request).map { bindPolicyResponse ->
             val contractId = bindPolicyResponse.contract?.id
-            val products = api.getClientProducts(50, 0, contractId).blockingGet()
+            val products = api.getClientProducts(50, 0, contractId, "active").blockingGet()
 
             PolicyDialogModel(
                 bound = BoundPolicyDialogModel(
@@ -116,7 +116,7 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
             var propertyItemResponse: PropertyItemResponse? = null
 
             if (objectId != null) {
-                propertyItemResponse = api.getAllProperty().blockingGet().objects?.first { it.id == objectId }
+                propertyItemResponse = api.getAllProperty().blockingGet().objects?.firstOrNull { it.id == objectId }
             }
 
             var productServicesResponse: ProductServicesResponse? = null
@@ -126,7 +126,7 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
 
             ClientMapper.responseToPolicy(
                 clientProductResponse,
-                contracts.contracts?.first { it.id == contractId },
+                contracts.contracts?.firstOrNull { it.id == contractId },
                 propertyItemResponse,
                 productServicesResponse
             )

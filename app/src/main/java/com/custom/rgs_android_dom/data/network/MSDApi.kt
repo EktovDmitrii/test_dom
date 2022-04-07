@@ -194,7 +194,7 @@ interface MSDApi {
 
     @GET("clients/me/balance/products")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getClientProducts(@Query("size") size: Int, @Query("index") index: Int, @Query("contractIds") contractIds: String?, @Query("status") status: String = "active"): Single<ClientProductsResponse>
+    fun getClientProducts(@Query("size") size: Int, @Query("index") index: Int, @Query("contractIds") contractIds: String?, @Query("status") status: String? = null): Single<ClientProductsResponse>
 
     @GET("clients/me/purchase/products/versions/{productVersionId}/details")
     @ErrorType(MSDNetworkErrorResponse::class)
