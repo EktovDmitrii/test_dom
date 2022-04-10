@@ -49,31 +49,35 @@ class PaymentSuccessViewModel(
 
     fun onMoreClick(){
         // TODO Add product verion id
-        catalogInteractor.getProduct(productId, productVersionId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onSuccess = {product->
-                    if (product.defaultProduct){
-                        openOrderDetailsScreen()
-                    } else {
-                        closeController.value = Unit
-                        ScreenManager.showBottomScreen(
-                            ProductFragment.newInstance(
-                                ProductLauncher(
-                                    productId = productId,
-                                    productVersionId = productVersionId,
-                                    isPurchased = true,
-                                    purchaseValidTo = product.validityTo
+        if (!productVersionId.isNullOrEmpty()) {
+            catalogInteractor.getProduct(productId, productVersionId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                    onSuccess = { product ->
+                        if (product.defaultProduct) {
+                            openOrderDetailsScreen()
+                        } else {
+                            closeController.value = Unit
+                            ScreenManager.showBottomScreen(
+                                ProductFragment.newInstance(
+                                    ProductLauncher(
+                                        productId = productId,
+                                        productVersionId = productVersionId,
+                                        isPurchased = true,
+                                        purchaseValidTo = product.validityTo
+                                    )
                                 )
                             )
-                        )
+                        }
+                    },
+                    onError = {
+                        logException(this, it)
                     }
-                },
-                onError = {
-                    logException(this, it)
-                }
-            ).addTo(dataCompositeDisposable)
+                ).addTo(dataCompositeDisposable)
+        } else {
+            openOrderDetailsScreen()
+        }
     }
 
 
