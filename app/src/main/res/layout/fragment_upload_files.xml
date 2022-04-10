@@ -12,7 +12,7 @@
         android:paddingVertical="18dp"
         android:textSize="20sp"
         android:textColor="@color/secondary900"
-        app:translationTextKey="Фото"
+        app:translationTextKey="app.object.main.actions.add.photo"
         android:gravity="center"/>
 
     <View
@@ -28,7 +28,7 @@
         android:paddingVertical="18dp"
         android:textSize="20sp"
         android:textColor="@color/secondary900"
-        app:translationTextKey="Файлы"
+        app:translationTextKey="app.object.main.actions.add.file"
         android:gravity="center"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

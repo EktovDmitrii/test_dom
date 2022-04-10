@@ -99,7 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:paddingHorizontal="24dp"
-            app:translationTextKey="Да, удалить" />
+            app:translationTextKey="app.document.yes_delete" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullWidth
             android:id="@+id/contactMasterOnlineTextView"

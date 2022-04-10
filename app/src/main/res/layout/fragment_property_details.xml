@@ -33,7 +33,7 @@
             android:gravity="center"
             android:textColor="@color/secondary900_alpha64"
             android:textSize="12sp"
-            app:translationTextKey="Шаг 3 из 3" />
+            app:translationTextKey="app.object.add.step_info.header.title" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/titleTextView"
@@ -45,7 +45,7 @@
             android:gravity="center"
             android:textColor="@color/secondary900"
             android:textSize="16sp"
-            app:translationTextKey="Общая информация" />
+            app:translationTextKey="app.object.add.step_info.header.subtitle" />
 
     </RelativeLayout>
 
@@ -75,7 +75,7 @@
                 android:paddingHorizontal="20dp"
                 android:textColor="@color/secondary900_alpha64"
                 android:textSize="14sp"
-                app:translationTextKey="Адрес" />
+                app:translationTextKey="app.object.add.step_info.address.separator.title" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/addressApartmentLayout"
@@ -93,7 +93,7 @@
                     android:paddingHorizontal="20dp"
                     app:boxStrokeWidth="0dp"
                     app:boxStrokeWidthFocused="0dp"
-                    app:translationHintKey="Адрес" />
+                    app:translationHintKey="app.object.add.step_info.address.title" />
 
                 <View
                     android:id="@+id/addressApartmentClickView"
@@ -136,7 +136,7 @@
                             android:layout_gravity="center_vertical"
                             android:imeOptions="actionNext"
                             android:paddingHorizontal="20dp"
-                            app:translationHintKey="Корпус" />
+                            app:translationHintKey="app.object.add.step_info.address.corpus.title" />
 
                     </FrameLayout>
 
@@ -158,7 +158,7 @@
                             android:imeOptions="actionNext"
                             android:inputType="number"
                             android:paddingHorizontal="20dp"
-                            app:translationHintKey="Подъезд" />
+                            app:translationHintKey="app.object.add.step_info.address.approach.title" />
 
                     </FrameLayout>
 
@@ -187,7 +187,7 @@
                             android:imeOptions="actionNext"
                             android:inputType="number"
                             android:paddingHorizontal="20dp"
-                            app:translationHintKey="Этаж" />
+                            app:translationHintKey="app.object.add.step_info.address.floor.title" />
 
                     </FrameLayout>
 
@@ -210,7 +210,7 @@
                             android:imeOptions="actionNext"
                             android:inputType="number"
                             android:paddingHorizontal="20dp"
-                            app:translationHintKey="Квартира" />
+                            app:translationHintKey="app.object.add.step_info.address.flat.title" />
 
                     </FrameLayout>
 
@@ -231,7 +231,7 @@
                     android:paddingHorizontal="20dp"
                     app:boxStrokeWidth="0dp"
                     app:boxStrokeWidthFocused="0dp"
-                    app:translationHintKey="Населённый пункт" />
+                    app:translationHintKey="app.object.add.step_info.address.locality.title" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -308,7 +308,7 @@
                 android:paddingHorizontal="20dp"
                 android:textColor="@color/secondary900_alpha64"
                 android:textSize="14sp"
-                app:translationTextKey="Информация об объекте" />
+                app:translationTextKey="app.object.add.step_info.object.separator.title" />
 
             <com.custom.rgs_android_dom.views.MSDYesNoSelector
                 android:id="@+id/isOwnSelector"
@@ -316,7 +316,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:paddingHorizontal="20dp"
-                app:translationLabelKey="Объект в собственности?">
+                app:translationLabelKey="app.object.add.step_info.object.questions.object_is_owned">
 
                 <com.custom.rgs_android_dom.views.MSDImageView
                     android:id="@+id/isOwnInfoImageView"
@@ -340,7 +340,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:paddingHorizontal="20dp"
-                app:translationLabelKey="Сдаётся в аренду?">
+                app:translationLabelKey="app.object.add.step_info.object.questions.for_rent">
 
                 <com.custom.rgs_android_dom.views.MSDImageView
                     android:id="@+id/isInRentInfoImageView"
@@ -364,7 +364,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:paddingHorizontal="20dp"
-                app:translationLabelKey="Временное проживание?">
+                app:translationLabelKey="app.object.add.step_info.object.questions.temporary_residence">
 
                 <com.custom.rgs_android_dom.views.MSDImageView
                     android:id="@+id/isTemporaryInfoImageView"
@@ -392,7 +392,7 @@
                 android:inputType="numberDecimal"
                 android:paddingHorizontal="20dp"
                 app:decimalLimit="6.2"
-                app:translationHintKey="Площадь (м²)" />
+                app:translationHintKey="app.object.add.step_info.object.square.title" />
 
             <com.custom.rgs_android_dom.views.text.MSDTextView
                 android:layout_width="match_parent"
@@ -405,7 +405,7 @@
                 android:paddingHorizontal="20dp"
                 android:textColor="@color/secondary900_alpha64"
                 android:textSize="14sp"
-                app:translationTextKey="Дополнительно" />
+                app:translationTextKey="app.object.add.step_info.additional.separator.title" />
 
             <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
                 android:id="@+id/commentInputLayout"
@@ -417,7 +417,7 @@
                 android:lines="5"
                 android:maxLength="500"
                 android:paddingHorizontal="20dp"
-                app:translationHintKey="Добавить комментарий" />
+                app:translationHintKey="app.object.add.step_info.additional.comment.placeholder" />
 
             <View
                 android:layout_width="match_parent"
@@ -439,7 +439,7 @@
                     android:fontFamily="@font/suisse_regular"
                     android:textColor="@color/secondary500"
                     android:textSize="16sp"
-                    app:translationTextKey="Добавить документы" />
+                    app:translationTextKey="app.object.add.step_info.additional.documents.placeholder" />
 
                 <View
                     android:layout_width="match_parent"
@@ -510,7 +510,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
-            app:translationTextKey="Добавить объект" />
+            app:translationTextKey="app.object.add.step_info.buttons.next" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentSelectAddressBinding
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.MainActivity
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
@@ -160,10 +161,10 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
        subscribe(viewModel.showConfirmCloseObserver){
            val confirmDialog = ConfirmBottomSheetFragment.newInstance(
                icon = R.drawable.ic_confirm_cancel,
-               title = "Хотите выйти?",
-               description = "Если вы покинете страницу сейчас, данные об объекте недвижимости не сохранятся",
-               confirmText = "Да, выйти",
-               cancelText = "Нет, остаться"
+               title = TranslationInteractor.getTranslation("app.object.add.step_cancel.question.title"),
+               description = TranslationInteractor.getTranslation("app.object.add.step_cancel.question.subtitle"),
+               confirmText = TranslationInteractor.getTranslation("app.object.add.step_cancel.buttons.confirm"),
+               cancelText = TranslationInteractor.getTranslation("app.object.add.step_cancel.buttons.confirm_decline")
            )
            confirmDialog.show(childFragmentManager, ConfirmBottomSheetFragment.TAG)
        }
@@ -241,7 +242,7 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
     private fun showRequestLocationRationaleDialog(){
         val requestLocationRationaleDialog = RequestRationaleFragment.newInstance(
             requestCode = REQUEST_CODE_LOCATION,
-            description = "Разрешите доступ к вашей геопозиции, чтобы нам проще было вас найти и помочь",
+            description = TranslationInteractor.getTranslation("app.object.add.step_setting.title"),
             icon = R.drawable.device_location
         )
         requestLocationRationaleDialog.show(childFragmentManager, requestLocationRationaleDialog.TAG)

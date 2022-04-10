@@ -28,7 +28,7 @@
             android:gravity="center"
             android:lineSpacingExtra="24dp"
             android:lineSpacingMultiplier="0"
-            app:translationTextKey="Разрешите доступ к вашей геопозиции, чтобы нам проще было вас найти и помочь"/>
+            app:translationTextKey="app.object.add.step_setting.title"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iconImageView"
@@ -55,7 +55,7 @@
                 android:id="@+id/openLocationSettingsTextView"
                 style="@style/Button.Filled.Primary"
                 android:layout_width="match_parent"
-                app:translationTextKey="Перейти в настройки" />
+                app:translationTextKey="app.object.add.step_setting.button.to_settings" />
 
         </com.google.android.material.bottomappbar.BottomAppBar>
 

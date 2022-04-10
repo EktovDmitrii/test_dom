@@ -347,7 +347,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
     private fun showRequestRecordAudioRationaleDialog(){
         val requestRationaleFragment = RequestRationaleFragment.newInstance(
             requestCode = REQUEST_CODE_MIC,
-            description = "Разрешите доступ, чтобы консультант или мастер могли слышать вас",
+            description = TranslationInteractor.getTranslation("app.alert.call_request.audio"),
             icon = R.drawable.device_microphone
         )
         requestRationaleFragment.show(childFragmentManager, requestRationaleFragment.TAG)
@@ -356,7 +356,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
     private fun showRequestRecordVideoRationaleDialog(){
         val requestRationaleFragment = RequestRationaleFragment.newInstance(
             requestCode = REQUEST_CODE_MIC_AND_CAMERA,
-            description = "Разрешите доступ, чтобы консультант или мастер могли видеть вас",
+            description = TranslationInteractor.getTranslation("app.alert.call_request.camera"),
             icon = R.drawable.device_microphone
         )
         requestRationaleFragment.show(childFragmentManager, requestRationaleFragment.TAG)
