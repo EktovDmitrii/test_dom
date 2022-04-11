@@ -264,7 +264,7 @@ class ChatViewModel(
                 productId = /*widget.productId*/"",
                 productVersionId = "",
                 email = email ?: "",
-                orderId = ""
+                orderId = widget.orderId ?: ""
             )
         )
     }

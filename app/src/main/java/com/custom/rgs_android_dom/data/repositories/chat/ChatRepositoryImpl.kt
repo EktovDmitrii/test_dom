@@ -82,6 +82,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
     var isConnected = false
     var isConnecting = false
+    private var callModel: CallConnectionModel? = null
 
     private val wsMessageSubject: PublishSubject<WsMessageModel<*>> = PublishSubject.create()
     private val wsResponseParser = WsResponseParser(gson)
@@ -296,7 +297,9 @@ class ChatRepositoryImpl(private val api: MSDApi,
         callInfoSubject.onNext(callInfo)
 
         return api.startCall(channelId).map {
-            ChatMapper.responseToCallConnection(it)
+            ChatMapper.responseToCallConnection(it).apply {
+                callModel = this
+            }
         }.doOnError {
             callInfo = CallInfoModel(
                 state = CallState.ERROR,
@@ -370,7 +373,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
             roomInfo?.room?.disconnect()
         } else {
             callInfo.channelId?.let { channelId ->
-                declineCall(channelId, "")
+                declineCall(channelId, callModel?.id ?: "")
             }
         }
         clearRoomData()
