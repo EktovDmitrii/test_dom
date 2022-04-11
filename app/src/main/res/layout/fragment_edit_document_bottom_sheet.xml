@@ -15,7 +15,7 @@
         android:paddingVertical="18dp"
         android:textColor="@color/secondary900"
         android:textSize="20sp"
-        app:translationTextKey="Перезагрузить документы" />
+        app:translationTextKey="app.document.refresh_documents" />
 
     <View
         android:id="@+id/dividerView"
@@ -31,7 +31,7 @@
         android:paddingVertical="18dp"
         android:textColor="@color/secondary900"
         android:textSize="20sp"
-        app:translationTextKey="Редактировать название" />
+        app:translationTextKey="app.document.edit_name" />
 
     <View
         android:id="@+id/secondDividerView"
@@ -47,6 +47,6 @@
         android:paddingVertical="18dp"
         android:textColor="@color/error500"
         android:textSize="20sp"
-        app:translationTextKey="Удалить документ" />
+        app:translationTextKey="app.document.remove_document" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

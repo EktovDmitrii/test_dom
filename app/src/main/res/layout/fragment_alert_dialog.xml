@@ -35,7 +35,7 @@
         android:textColor="@color/primary500"
         app:layout_constraintEnd_toStartOf="@+id/positiveTextView"
         app:layout_constraintTop_toBottomOf="@+id/messageTextView"
-        tools:text="Отмена" />
+        tools:text="app.client.payment_methods.cancel" />
 
     <TextView
         android:id="@+id/positiveTextView"

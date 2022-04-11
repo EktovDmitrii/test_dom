@@ -15,7 +15,7 @@
         android:paddingVertical="18dp"
         android:textColor="@color/secondary900"
         android:textSize="20sp"
-        app:translationTextKey="Добавить документ" />
+        app:translationTextKey="app.document.add_document" />
 
     <View
         android:id="@+id/dividerView"
@@ -31,6 +31,6 @@
         android:paddingVertical="18dp"
         android:textColor="@color/secondary900"
         android:textSize="20sp"
-        app:translationTextKey="Редактировать список" />
+        app:translationTextKey="app.document.edit_list" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

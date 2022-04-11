@@ -29,7 +29,7 @@
             android:gravity="center"
             android:lineSpacingExtra="24dp"
             android:lineSpacingMultiplier="0"
-            tools:text="Разрешите доступ, чтобы консультант или мастер могли слышать вас"/>
+            tools:text="app.alert.call_request.audio"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iconImageView"
@@ -55,7 +55,7 @@
                 android:id="@+id/openSettingsTextView"
                 style="@style/Button.Filled.Primary"
                 android:layout_width="match_parent"
-                app:translationTextKey="Перейти в настройки" />
+                app:translationTextKey="app.object.add.step_setting.button.to_settings" />
 
         </com.google.android.material.bottomappbar.BottomAppBar>
 

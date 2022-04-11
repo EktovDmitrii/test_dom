@@ -9,6 +9,7 @@ import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentDetailDocumentBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
 import com.custom.rgs_android_dom.ui.property.document.edit_document.EditDocumentBottomSheetFragment
@@ -88,10 +89,10 @@ class DetailDocumentFragment :
     override fun onDeleteDocumentClick() {
         val confirmDialog = ConfirmBottomSheetFragment.newInstance(
             icon = R.drawable.ic_confirm_delete_document,
-            title = "Удалить документ?",
-            description = "Документ будет удален безвозвратно. В случае необходимости вы сможете загрузить его заново",
-            confirmText = "Да, удалить",
-            cancelText = "Нет, оставить"
+            title = TranslationInteractor.getTranslation("app.document.delete_document_question"),
+            description = TranslationInteractor.getTranslation("app.document.document_description"),
+            confirmText = TranslationInteractor.getTranslation("app.document.yes_delete"),
+            cancelText = TranslationInteractor.getTranslation("app.document.no_stay")
         )
         confirmDialog.show(childFragmentManager, ConfirmBottomSheetFragment.TAG)
     }

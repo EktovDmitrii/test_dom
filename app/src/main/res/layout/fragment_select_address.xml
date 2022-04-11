@@ -43,7 +43,7 @@
                 android:gravity="center"
                 android:textColor="@color/secondary900_alpha64"
                 android:textSize="12sp"
-                app:translationTextKey="Шаг 1 из 3" />
+                app:translationTextKey="app.object.add.step_geo.header.title" />
 
             <com.custom.rgs_android_dom.views.text.MSDTextView
                 android:id="@+id/titleTextView"
@@ -55,7 +55,7 @@
                 android:layout_alignParentBottom="true"
                 android:gravity="center"
                 android:layout_centerHorizontal="true"
-                app:translationTextKey="Адрес"/>
+                app:translationTextKey="app.object.add.step_geo.header.subtitle"/>
 
         </RelativeLayout>
 
@@ -173,7 +173,7 @@
                     style="@style/Button.Small.Primary.Stroke"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:translationTextKey="Ред." />
+                    app:translationTextKey="app.object.add.step_geo.address.edit" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="24dp"
@@ -190,12 +190,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:imeOptions="actionDone"
-                    android:text="Мой Дом 2"
-                    app:focusedTranslationHintKey="Название объекта"
+                    app:focusedTranslationHintKey="app.object.add.step_geo.name.title"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/addressSecondaryTextView"
                     app:layout_constraintTop_toBottomOf="@+id/addressSecondaryTextView"
-                    app:translationHintKey="Нажмите, чтобы редактировать название"
+                    app:translationHintKey="app.object.add.step_geo.name.help_title"
                     app:unfocusOnDone="true" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -206,7 +205,7 @@
                 android:layout_width="match_parent"
                 android:layout_marginTop="24dp"
                 android:enabled="false"
-                app:translationTextKey="Далее" />
+                app:translationTextKey="app.object.add.step_geo.buttons.next" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

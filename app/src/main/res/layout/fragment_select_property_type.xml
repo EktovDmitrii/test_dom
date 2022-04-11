@@ -31,7 +31,7 @@
             android:gravity="center"
             android:textColor="@color/secondary900_alpha64"
             android:textSize="12sp"
-            app:translationTextKey="Шаг 2 из 3" />
+            app:translationTextKey="app.object.add.step_type.header.title" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/titleTextView"
@@ -43,7 +43,7 @@
             android:gravity="center"
             android:textColor="@color/secondary900"
             android:textSize="16sp"
-            app:translationTextKey="Тип недвижимости" />
+            app:translationTextKey="app.object.add.step_type.header.subtitle" />
 
     </RelativeLayout>
 
@@ -80,7 +80,7 @@
                 android:fontFamily="@font/suisse_book"
                 android:textColor="@color/secondary900"
                 android:textSize="16sp"
-                app:translationTextKey="Дом" />
+                app:translationTextKey="app.object.add.step_type.house.title" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -110,7 +110,7 @@
                 android:fontFamily="@font/suisse_book"
                 android:textColor="@color/secondary900"
                 android:textSize="16sp"
-                app:translationTextKey="Квартира" />
+                app:translationTextKey="app.object.add.step_type.flat.title" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -154,7 +154,7 @@
             android:lineSpacingExtra="24dp"
             android:lineSpacingMultiplier="0"
             android:visibility="visible"
-            app:translationTextKey="Если хотите добавить частный дом, загородный дом, дачу или таунхаус, выберите Дом." />
+            app:translationTextKey="app.object.add.step_type.house.tip" />
     </FrameLayout>
 
 
@@ -176,7 +176,7 @@
             style="@style/Button.Filled.Primary"
             android:layout_width="match_parent"
             android:enabled="false"
-            app:translationTextKey="Далее" />
+            app:translationTextKey="app.object.add.step_geo.buttons.next" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 </RelativeLayout>

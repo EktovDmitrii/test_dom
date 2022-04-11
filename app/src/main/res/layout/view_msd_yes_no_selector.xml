@@ -26,13 +26,13 @@
             style="@style/YesNoSelector"
             android:id="@+id/yesTextView"
             android:layout_width="wrap_content"
-            app:translationTextKey="Да"/>
+            app:translationTextKey="app.object.add.step_info.object.questions.yes"/>
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             style="@style/YesNoSelector"
             android:id="@+id/noTextView"
             android:layout_width="wrap_content"
-            app:translationTextKey="Нет"
+            app:translationTextKey="app.object.add.step_info.object.questions.no"
             android:layout_marginStart="12dp"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>

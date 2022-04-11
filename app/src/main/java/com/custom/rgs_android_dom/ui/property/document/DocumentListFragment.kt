@@ -16,6 +16,7 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.DownloadManagerRequestProvider
 import com.custom.rgs_android_dom.databinding.FragmentDocumentBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyDocument
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsFragment
@@ -112,10 +113,10 @@ class DocumentListFragment :
 
                 val confirmDialog = ConfirmBottomSheetFragment.newInstance(
                     icon = R.drawable.ic_confirm_delete_document,
-                    title = "Удалить документ?",
-                    description = "Документ будет удален безвозвратно. В случае необходимости вы сможете загрузить его заново",
-                    confirmText = "Да, удалить",
-                    cancelText = "Нет, оставить"
+                    title = TranslationInteractor.getTranslation("app.document.delete_document_question"),
+                    description = TranslationInteractor.getTranslation("app.document.document_description"),
+                    confirmText = TranslationInteractor.getTranslation("app.document.yes_delete"),
+                    cancelText = TranslationInteractor.getTranslation("app.document.no_stay")
                 )
                 confirmDialog.show(childFragmentManager, ConfirmBottomSheetFragment.TAG)
             },

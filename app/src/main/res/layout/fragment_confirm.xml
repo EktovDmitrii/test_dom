@@ -34,7 +34,7 @@
             android:layout_marginTop="8dp"
             android:textColor="@color/secondary900"
             android:includeFontPadding="false"
-            tools:text="Хотите выйти?"/>
+            tools:text="app.object.add.step_cancel.question.title"/>
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/descriptionTextView"
@@ -48,7 +48,7 @@
             android:gravity="center"
             android:lineSpacingExtra="24dp"
             android:lineSpacingMultiplier="0"
-            tools:text="Если вы покинете страницу сейчас, данные об объекте недвижимости не сохранятся"/>
+            tools:text="app.object.add.step_cancel.question.subtitle"/>
 
         <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullWidth
             android:id="@+id/confirmTextView"
@@ -56,14 +56,14 @@
             android:layout_width="match_parent"
             android:layout_marginTop="32dp"
             android:paddingHorizontal="4dp"
-            app:translationTextKey="Да, выйти" />
+            app:translationTextKey="app.object.add.step_cancel.buttons.confirm" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/cancelTextView"
             android:layout_width="wrap_content"
             style="@style/Button.WithoutBg.Primary"
             android:layout_marginTop="10dp"
-            app:translationTextKey="Нет, остаться"/>
+            app:translationTextKey="app.object.add.step_cancel.buttons.confirm_decline"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
