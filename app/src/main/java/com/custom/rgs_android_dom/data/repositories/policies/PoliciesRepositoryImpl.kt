@@ -98,7 +98,7 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
         return if (!contractIds.isNullOrEmpty()){
             Single.zip(contractsSingle, clientProductsSingle) { contracts, clientProducts ->
                 if (clientProducts.clientProducts != null){
-                    clientProducts.clientProducts.map { ClientMapper.responseToPolicyShort(it, contracts) }.sortedBy { it.expiresAt }
+                    clientProducts.clientProducts.map { ClientMapper.responseToPolicyShort(it, contracts) }.sortedByDescending { it.expiresAt }
                 } else {
                     emptyList()
                 }

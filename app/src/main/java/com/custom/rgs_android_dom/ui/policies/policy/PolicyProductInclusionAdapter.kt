@@ -54,7 +54,7 @@ class PolicyProductInclusionAdapter (
         override fun bind(item: ServiceShortModel) {
             binding.titleTextView.text = item.serviceName
 
-            binding.numberTextView.visibleIf(item.quantity > 0)
+            binding.numberTextView.visibleIf(item.quantity >= 0)
 
             if (status) {
                 if (item.quantity.toInt() == INFINITY) {
