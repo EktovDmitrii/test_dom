@@ -9,7 +9,9 @@ import com.custom.rgs_android_dom.domain.client.models.Order
 import com.custom.rgs_android_dom.domain.client.models.OrderStatus
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.chats.chat.ChatFragment
+import com.custom.rgs_android_dom.ui.navigation.ScreenInfo
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.navigation.TargetScreen
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -66,7 +68,10 @@ class OrderDetailViewModel(
 
     fun onFeedbackClick() {
         closeController.value = Unit
-        ScreenManager.showBottomScreen(ChatFragment.newInstance(chatInteractor.getMasterOnlineCase()))
+        ScreenManager.showBottomScreen(ChatFragment.newInstance(
+            chatInteractor.getMasterOnlineCase(),
+            ScreenInfo(TargetScreen.ORDER_DETAILS, order))
+        )
     }
 
     fun onCancelOrderClick() {

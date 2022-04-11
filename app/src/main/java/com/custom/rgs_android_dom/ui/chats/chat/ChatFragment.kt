@@ -20,6 +20,7 @@ import com.custom.rgs_android_dom.domain.chat.models.CaseModel
 import com.custom.rgs_android_dom.domain.chat.models.ChatFileModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.chats.chat.files.upload.UploadFilesFragment
+import com.custom.rgs_android_dom.ui.navigation.ScreenInfo
 import com.custom.rgs_android_dom.utils.*
 import com.yandex.metrica.YandexMetrica
 import org.koin.core.parameter.ParametersDefinition
@@ -30,10 +31,14 @@ class ChatFragment : BaseBottomSheetFragment<ChatViewModel, FragmentChatBinding>
     companion object{
         private const val UP_DIRECTION = 1
         private const val ARG_CASE = "ARG_CASE"
+        private const val ARG_BACK_SCREEN = "ARG_BACK_SCREEN"
 
-        fun newInstance(case: CaseModel): ChatFragment {
+        fun newInstance(case: CaseModel, backScreen: ScreenInfo? = null): ChatFragment {
             return ChatFragment().args {
                 putSerializable(ARG_CASE, case)
+                if (backScreen != null){
+                    putSerializable(ARG_BACK_SCREEN, backScreen)
+                }
             }
         }
 
@@ -63,7 +68,10 @@ class ChatFragment : BaseBottomSheetFragment<ChatViewModel, FragmentChatBinding>
     }
 
     override fun getParameters(): ParametersDefinition = {
-        parametersOf(requireArguments().getSerializable(ARG_CASE) as CaseModel)
+        parametersOf(
+            requireArguments().getSerializable(ARG_CASE) as CaseModel,
+            if (requireArguments().containsKey(ARG_BACK_SCREEN)) requireArguments().getSerializable(ARG_BACK_SCREEN) as ScreenInfo else null
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

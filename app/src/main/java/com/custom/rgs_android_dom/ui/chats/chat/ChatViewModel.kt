@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
+import com.custom.rgs_android_dom.domain.client.models.Order
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.purchase.models.PurchaseDateTimeModel
@@ -17,8 +18,10 @@ import com.custom.rgs_android_dom.ui.catalog.product.ProductLauncher
 import com.custom.rgs_android_dom.ui.chats.chat.call.CallFragment
 import com.custom.rgs_android_dom.ui.chats.chat.files.viewers.image.ImageViewerFragment
 import com.custom.rgs_android_dom.ui.chats.chat.files.viewers.video.VideoPlayerFragment
-import com.custom.rgs_android_dom.ui.navigation.PAYMENT
+import com.custom.rgs_android_dom.ui.client.order_detail.OrderDetailFragment
+import com.custom.rgs_android_dom.ui.navigation.ScreenInfo
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.navigation.TargetScreen
 import com.custom.rgs_android_dom.ui.purchase.PurchaseFragment
 import com.custom.rgs_android_dom.ui.purchase.payments.PaymentWebViewFragment
 import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderFragment
@@ -36,6 +39,7 @@ import java.io.File
 
 class ChatViewModel(
     private val case: CaseModel,
+    private val backScreen: ScreenInfo?,
     private val chatInteractor: ChatInteractor,
     private val catalogInteractor: CatalogInteractor,
     private val clientInteractor: ClientInteractor,
@@ -127,7 +131,21 @@ class ChatViewModel(
     }
 
     fun onBackClick() {
-        closeController.value = Unit
+        if (backScreen != null) {
+            when (backScreen.targetScreen){
+                TargetScreen.ORDER_DETAILS -> {
+                    closeController.value = Unit
+                    val order = backScreen.params as Order
+                    ScreenManager.showScreen(OrderDetailFragment.newInstance(order))
+                }
+                else -> {
+                    closeController.value = Unit
+                }
+            }
+        } else {
+            closeController.value = Unit
+        }
+
     }
 
     fun onSendMessageClick(newMessage: String) {
@@ -192,6 +210,14 @@ class ChatViewModel(
 
     fun onChatClose() {
         viewChannel()
+        if (backScreen != null) {
+            when (backScreen.targetScreen){
+                TargetScreen.ORDER_DETAILS -> {
+                    val order = backScreen.params as Order
+                    ScreenManager.showScreen(OrderDetailFragment.newInstance(order))
+                }
+            }
+        }
     }
 
     fun onUserTyping() {

@@ -317,7 +317,7 @@ interface MSDApi {
     fun getRequestEditAgentTasks(): Single<RequestEditAgentTasksResponse>
 
     @POST("clients/me/tasks/requests/modifications")
-    fun requestEditClient(): Completable
+    fun requestEditClient(@Body editClientRequest: EditClientRequest): Completable
 
     @GET("clients/me/tasks/requests/modifications")
     fun getRequestEditClientTasks(): Single<RequestEditClientTasksResponse>
