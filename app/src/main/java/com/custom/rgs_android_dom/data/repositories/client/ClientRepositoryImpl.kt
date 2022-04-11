@@ -5,6 +5,7 @@ import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
 import com.custom.rgs_android_dom.data.network.mappers.GeneralInvoiceMapper
 import com.custom.rgs_android_dom.data.network.mappers.OrdersMapper
 import com.custom.rgs_android_dom.data.network.requests.DeleteContactsRequest
+import com.custom.rgs_android_dom.data.network.requests.EditClientRequest
 import com.custom.rgs_android_dom.data.network.requests.UpdateClientRequest
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.domain.client.mappers.AgentMapper
@@ -257,7 +258,7 @@ class ClientRepositoryImpl(
     }
 
     override fun requestEditClient(): Completable {
-        return api.requestEditClient().doOnComplete {
+        return api.requestEditClient(EditClientRequest("property")).doOnComplete {
             editClientRequestedSubject.onNext(true)
         }
     }
