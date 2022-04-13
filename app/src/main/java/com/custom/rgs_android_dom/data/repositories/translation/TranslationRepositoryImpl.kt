@@ -122,10 +122,10 @@ class TranslationRepositoryImpl(private val api: MSDApi) :
 
             // About app
             "app.about_app.title" to "О приложении",
-            "app.about_app.subtitle" to "Удобный сервис для домашних дел от флагмана отечественного рынка страхования",
+            "app.about_app.subtitle" to "Удобный сервис для домашних дел от флагмана\nотечественного рынка страхования",
             "app.about_app.menu.rate" to "Оценить приложение",
-            "app.about_app.menu.feedback" to "Отправить отзыв",
-            "app.about_app.menu.license_agreements" to "Лицензионные соглашения",
+            "app.about_app.menu.feedback" to "Обратная связь",
+            "app.about_app.menu.license_agreements" to "Пользовательское соглашение",
             "app.about_app.menu.personal_agreements" to "Политика конфиденциальности",
             "app.about_app.footer.version" to "Версия %@",
             "app.about_app.footer.build" to "Сборка %@",
