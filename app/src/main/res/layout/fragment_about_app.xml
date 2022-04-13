@@ -55,7 +55,7 @@
                     android:textSize="20sp"
                     android:textColor="@color/secondary900"
                     android:layout_marginTop="28dp"
-                    app:translationTextKey="О приложении"/>
+                    app:translationTextKey="app.about_app.title"/>
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:layout_width="wrap_content"
@@ -63,14 +63,15 @@
                     android:fontFamily="@font/suisse_regular"
                     android:textSize="14sp"
                     android:textColor="@color/secondary900"
-                    android:layout_marginTop="28dp"
+                    android:layout_marginTop="4dp"
                     android:gravity="center_horizontal"
-                    app:translationTextKey="Мой_Сервис Дом — имущественный сервис от флагмана отечественного страхования" />
+                    app:translationTextKey="app.about_app.subtitle" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/rateLinearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="52dp"
+                    android:layout_marginTop="54dp"
                     android:orientation="vertical">
 
                     <androidx.appcompat.widget.LinearLayoutCompat
@@ -91,7 +92,7 @@
                             android:includeFontPadding="false"
                             android:textColor="@color/secondary900"
                             android:textSize="16sp"
-                            app:translationTextKey="Оценить приложение" />
+                            app:translationTextKey="app.about_app.menu.rate" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -129,7 +130,7 @@
                             android:includeFontPadding="false"
                             android:textColor="@color/secondary900"
                             android:textSize="16sp"
-                            app:translationTextKey="Обратная связь" />
+                            app:translationTextKey="app.about_app.menu.feedback" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -167,7 +168,7 @@
                             android:includeFontPadding="false"
                             android:textColor="@color/secondary900"
                             android:textSize="16sp"
-                            app:translationTextKey="Пользовательское соглашение" />
+                            app:translationTextKey="app.about_app.menu.license_agreements" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -205,7 +206,7 @@
                             android:includeFontPadding="false"
                             android:textColor="@color/secondary900"
                             android:textSize="16sp"
-                            app:translationTextKey="Политика конфиденциальности" />
+                            app:translationTextKey="app.about_app.menu.personal_agreements" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
