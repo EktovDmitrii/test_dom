@@ -374,6 +374,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
         } else {
             callInfo.channelId?.let { channelId ->
                 declineCall(channelId, callModel?.id ?: "")
+                    .subscribe()
             }
         }
         clearRoomData()

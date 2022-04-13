@@ -33,7 +33,7 @@ ClientInteractor(
 ) {
 
     companion object {
-        private val MIN_DATE = LocalDateTime.now().minusYears(16).plusDays(1)
+        private val MIN_DATE = LocalDateTime.now()
         private val MAX_DATE = LocalDateTime.parse("1900-01-01")
 
         private const val DOC_SERIAL_LENGTH = 4
