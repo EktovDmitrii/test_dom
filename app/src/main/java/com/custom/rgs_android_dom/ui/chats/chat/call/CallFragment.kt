@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui.chats.chat.call
 
 import android.Manifest
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -244,6 +245,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
             binding.signalImageView.gone()
             when (callInfo.state){
                 CallState.CONNECTING -> {
+                    playTune("track1.mp3", true)
                     binding.titleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.connecting")
                     binding.subtitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.waiting_operator")
 
@@ -252,6 +254,8 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
                     }
                 }
                 CallState.ACTIVE -> {
+                    mediaPlayer.stop()
+                    playTune("track3.mp3")
                     binding.titleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.online_master")
                     binding.subtitleTextView.text = callInfo.duration?.toReadableTime()
 
@@ -260,6 +264,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
                     }
                 }
                 CallState.ERROR -> {
+                    mediaPlayer.stop()
                     binding.titleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.connecting")
                     binding.subtitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.connection_error")
                     binding.signalImageView.visible()
