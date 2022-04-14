@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.base
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -23,6 +24,10 @@ abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(layout: Int) : 
     private val navigateId: Int = Random.nextInt()
     protected val viewModel: VM by viewModel(clazz = getViewModelKClass(), parameters = getParameters())
     protected val binding: VB by viewBinding(viewBindingClass = getViewBindingJavaClass())
+
+    protected val mediaPlayer = MediaPlayer().apply {
+        setVolume(1f, 1f)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,6 +56,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(layout: Int) : 
 
     open fun onClose(){
         hideSoftwareKeyboard()
+        mediaPlayer.stop()
         ScreenManager.back(getNavigateId())
     }
 
@@ -72,6 +78,23 @@ abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(layout: Int) : 
     @Suppress("UNCHECKED_CAST")
     protected fun getViewBindingJavaClass(): Class<VB> {
         return (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VB>
+    }
+
+    protected fun playTune(name: String, isLoop: Boolean = false) {
+        try {
+            val descriptor = requireContext().assets.openFd(name)
+            mediaPlayer.setDataSource(
+                descriptor.fileDescriptor,
+                descriptor.startOffset,
+                descriptor.length
+            )
+            descriptor.close()
+            mediaPlayer.prepare()
+            mediaPlayer.isLooping = isLoop
+            mediaPlayer.start()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun handleState(state: BaseViewModel.LoadingState){

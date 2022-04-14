@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui.root
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -412,6 +413,7 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
 
                 binding.callTitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.online_master")
                 binding.callSubtitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.call_ended")
+                playTune()
             }
             CallState.ERROR -> {
                 binding.contentFrameLauout.setBackgroundColor(
@@ -439,6 +441,25 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
                 }
                 measureAndShowFragment()
             }
+        }
+    }
+
+    private fun playTune() {
+        try {
+            val mediaPlayer = MediaPlayer()
+            val descriptor = requireContext().assets.openFd("track5.mp3")
+            mediaPlayer.setDataSource(
+                descriptor.fileDescriptor,
+                descriptor.startOffset,
+                descriptor.length
+            )
+            descriptor.close()
+            mediaPlayer.prepare()
+            mediaPlayer.setVolume(1f, 1f)
+            mediaPlayer.isLooping = false
+            mediaPlayer.start()
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
