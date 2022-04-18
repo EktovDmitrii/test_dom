@@ -25,7 +25,7 @@ class TranslationRepositoryImpl(private val api: MSDApi) :
             "app.phone.title" to "Вход и регистрация",
             "app.phone.field_title" to "Номер телефона",
             "app.phone.button_title" to "Далее",
-            "app.phone.field_description" to "Введите номер телефона — получите доступ\\nк вашему профилю и полному функционалу\\nприложения",
+            "app.phone.field_description" to "Введите номер телефона — получите доступ\nк вашему профилю и полному функционалу\nприложения",
 
             // Country select
             "app.country.title" to "Выберите страну",
@@ -94,6 +94,15 @@ class TranslationRepositoryImpl(private val api: MSDApi) :
             "app.profile.client.passport_number.title" to "Номер паспорта",
             "app.profile.client.phone.title" to "Номер телефона",
             "app.profile.client.email.placeholder" to "mail@mail.com",
+            "app.profile.add.birthday.service_unavailable" to "Сервис доступен для лиц старше 16 лет",
+            "app.profile.client.birthday.title" to "Дата рождения",
+            "app.profile.client.birthday.empty_title" to "Нет данных",
+            "app.profile.client.sex.empty_title" to "Нет данных",
+            "app.profile.client.pasport.empty_title" to "Нет данных",
+            "app.profile.client.phone.empty_title" to "Нет данных",
+            "app.profile.client.additional_phone.empty_title" to "Нет данных",
+            "app.profile.client.email.empty_title" to "Нет данных",
+            "app.profile.client_edit.service_unavailable_date_birth_error_label" to "Сервис доступен для лиц старше 16 лет",
 
             // Profile
             "app.profile.slider.slide_tip_text" to "Потяните вниз, чтобы открыть",
@@ -136,6 +145,14 @@ class TranslationRepositoryImpl(private val api: MSDApi) :
             "app.chats.chat.call.connection_error" to "Проблемы со связью",
             "app.chats.chat.call.call_ended" to "Завершён",
             "app.chats.chat.call.online_master" to "Онлайн мастер",
+
+            //Cases
+            "app.chat.chat_list.archive_delimeter_title" to "Архив",
+            "app.chat.chat_list.title" to "Чаты",
+            "app.chat.chat_screen.bottom_archive_label_title" to "Чат архивирован",
+            "app.chat.chat_list.case_substatus_solved" to "Выполнен",
+            "app.chat.chat_list.case_substatus_cancelled" to "Отменен",
+            "app.chat.chat_list.case_substatus_deleted" to "Удален",
 
             //Catalog
             "app.catalog.main_catalog" to "Все",
@@ -196,6 +213,7 @@ class TranslationRepositoryImpl(private val api: MSDApi) :
             "app.object.main.actions.edit" to "Редактировать объект",
             "app.object.main.actions.delete" to "Удалить объект",
             "app.object.main.actions.load_photo" to "Загрузить фотографию",
+            "app.object.main.actions.delete_photo" to "Удалить фотографию",
             "app.object.main.actions.cancel" to "Отмена",
             "app.object.main.info.documents.title" to "Документы",
             "app.object.main.info.documents.title_all" to "Все",
@@ -275,6 +293,8 @@ class TranslationRepositoryImpl(private val api: MSDApi) :
             "app.profile.notifications_settings.items.sms" to "SMS",
             "app.profile.notifications_settings.items.push" to "Push-уведомления",
 
+            // Policies
+            "app.policies.archive.title" to "Архив",
         )
     }
 

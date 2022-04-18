@@ -42,7 +42,7 @@
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:layout_gravity="center_horizontal"
-                    app:translationTextKey="Подключаемся..." />
+                    app:translationTextKey="app.chats.chat.call.connecting" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="wrap_content"
@@ -58,7 +58,7 @@
                         android:textColor="@color/secondary400"
                         android:textSize="13sp"
                         android:layout_gravity="center_horizontal"
-                        app:translationTextKey="Ищем свободного оператора" />
+                        app:translationTextKey="app.chats.chat.call.waiting_operator" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/signalImageView"

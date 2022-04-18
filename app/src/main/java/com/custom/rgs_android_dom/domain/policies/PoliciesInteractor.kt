@@ -146,7 +146,7 @@ class PoliciesInteractor(
             val newList: MutableList<PolicyViewholderModel> = list.toMutableList()
             val indexOfDivider = list.indexOfFirst { it.expiresAt?.isBeforeNow == true }
             if (indexOfDivider != -1) {
-                newList.add(indexOfDivider, PolicyDividerModel("Архив"))
+                newList.add(indexOfDivider, PolicyDividerModel("app.policies.archive.title"))
             }
             newList
         }

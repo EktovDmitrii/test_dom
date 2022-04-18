@@ -11,6 +11,7 @@ import com.custom.rgs_android_dom.domain.client.mappers.PersonalDataMapper
 import com.custom.rgs_android_dom.domain.client.models.*
 import com.custom.rgs_android_dom.domain.client.view_states.*
 import com.custom.rgs_android_dom.domain.repositories.*
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.utils.*
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Completable
@@ -120,7 +121,7 @@ ClientInteractor(
                 errorsValidate.add(
                     ValidateFieldModel(
                         ClientField.BIRTHDATE,
-                        "Сервис доступен для лиц старше 16 лет"
+                        TranslationInteractor.getTranslation("app.profile.add.birthday.service_unavailable")
                     )
                 )
             } else { }
@@ -353,7 +354,7 @@ ClientInteractor(
                 errorsValidate.add(
                     ValidateFieldModel(
                         ClientField.LASTNAME,
-                        "Проверьте, правильно ли введена фамилия"
+                        TranslationInteractor.getTranslation("app.profile.add.lastname.validation_error")
                     )
                 )
             }
@@ -364,7 +365,7 @@ ClientInteractor(
                 errorsValidate.add(
                     ValidateFieldModel(
                         ClientField.FIRSTNAME,
-                        "Проверьте, правильно ли введено имя"
+                        TranslationInteractor.getTranslation("app.profile.add.firstname.validation_error")
                     )
                 )
             }
@@ -393,14 +394,14 @@ ClientInteractor(
                 errorsValidate.add(
                     ValidateFieldModel(
                         ClientField.BIRTHDATE,
-                        "Проверьте, правильно ли введена дата рождения"
+                        TranslationInteractor.getTranslation("app.profile.add.birthday.validation_error")
                     )
                 )
             } else if (!isAdult(birthday)) {
                 errorsValidate.add(
                     ValidateFieldModel(
                         ClientField.BIRTHDATE,
-                        "Сервис доступен для лиц старше 16 лет"
+                        TranslationInteractor.getTranslation("app.profile.client_edit.service_unavailable_date_birth_error_label")
                     )
                 )
             }
