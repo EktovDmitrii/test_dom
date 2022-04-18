@@ -775,4 +775,8 @@ ClientInteractor(
     fun getCancelledTasks(orderId: String): Single<List<CancelledTaskModel>> {
         return clientRepository.getCancelledTasks(orderId)
     }
+
+    fun saveFCMToken(token: String): Completable {
+        return clientRepository.saveFCMToken("", token)
+    }
 }

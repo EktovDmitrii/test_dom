@@ -33,6 +33,7 @@ import com.custom.rgs_android_dom.ui.chats.chat.files.upload.UploadFilesViewMode
 import com.custom.rgs_android_dom.ui.chats.chat.files.viewers.image.ImageViewerViewModel
 import com.custom.rgs_android_dom.ui.chats.chat.files.viewers.video.VideoPlayerViewModel
 import com.custom.rgs_android_dom.ui.chats.ChatsViewModel
+import com.custom.rgs_android_dom.ui.client.notifications_settings.NotificationsSettingsViewModel
 import com.custom.rgs_android_dom.ui.client.order_detail.OrderDetailViewModel
 import com.custom.rgs_android_dom.ui.client.order_detail.cancel_order.CancelOrderViewModel
 import com.custom.rgs_android_dom.ui.client.orders.OrdersViewModel
@@ -176,4 +177,5 @@ val viewModelModule = module {
     viewModel { PaymentMethodsViewModel(purchaseInteractor = get(), chatInteractor = get()) }
     viewModel { parameters -> DeletePaymentMethodViewModel(bindingId = parameters[0], purchaseInteractor = get()) }
     viewModel { parameters -> ErrorDeletePaymentMethodViewModel(errorCode = parameters[0]) }
+    viewModel { NotificationsSettingsViewModel(clientInteractor = get()) }
 }

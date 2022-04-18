@@ -325,4 +325,8 @@ interface MSDApi {
     @DELETE("clients/me/billing/cards/{bindingId}")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun deleteCard(@Path("bindingId") bindingId: String): Completable
+
+    @POST("communications/push/users/me/devices/{deviceId}/tokens")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun saveFCMToken(@Path("deviceId") deviceId: String, @Body saveTokenRequest: SaveTokenRequest): Completable
 }

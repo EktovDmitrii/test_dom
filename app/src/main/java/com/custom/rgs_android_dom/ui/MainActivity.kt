@@ -19,7 +19,6 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import org.koin.android.ext.android.inject
-import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
@@ -45,18 +44,8 @@ class MainActivity : AppCompatActivity() {
         ScreenManager.resetStackAndShowScreen(SplashFragment())
     }
 
-   /* override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-        if (supportFragmentManager.fragments.isNotEmpty()) {
-            supportFragmentManager.fragments.lastOrNull { it is DispatchTouchEventListener }?.let {
-                (it as DispatchTouchEventListener).dispatchTouchEvent(event)
-            }
-        }
-        return super.dispatchTouchEvent(event)
-    }*/
-
     private fun loadTranslation(){
         translationInteractor.loadTranslation()
-            //.retryWhen{throwables -> throwables.delay(5, TimeUnit.SECONDS)}
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
@@ -75,9 +64,7 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    private fun startSplash() {
-        ScreenManager.showScreen(SplashFragment())
-    }
+
 
     override fun onBackPressed() {
         val fragmentList = supportFragmentManager.fragments

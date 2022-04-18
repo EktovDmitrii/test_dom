@@ -103,6 +103,10 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
             viewModel.onPaymentMethodsClick()
         }
 
+        binding.notificationsSettingsLinearLayout.setOnDebouncedClickListener {
+            viewModel.onNotificationsSettingsClick()
+        }
+
         subscribe(viewModel.propertyItemsObserver) { propertyItems ->
             propertyItemsAdapter.setItems(propertyItems)
         }

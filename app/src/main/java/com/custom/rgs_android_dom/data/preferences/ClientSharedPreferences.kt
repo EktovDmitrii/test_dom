@@ -20,6 +20,7 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
         private const val PREF_KEY_LIVEKIT_CALL_ID = "PREF_KEY_LIVEKIT_ROOM_TOKEN"
         private const val PREF_KEY_LIVEKIT_ROOM_ID = "PREF_KEY_LIVEKIT_ROOM_ID"
         private const val PREF_KEY_AGENT = "PREF_KEY_AGENT"
+        private const val PREF_KEY_FCM_TOKEN = "PREF_KEY_FCM_TOKEN"
 
         private const val PREFS_ONBOARDING = "OnboardingSharedPreference"
         private const val PREF_IS_FIRST_RUN = "PREF_IS_FIRST_RUN"
@@ -107,6 +108,16 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
             clear()
         }
         rxPreferences.clear()
+    }
+
+    fun getFCMToken(): String {
+        return preferences.getString(PREF_KEY_FCM_TOKEN, null) ?: ""
+    }
+
+    fun saveFCMToken(token: String){
+        preferences.edit(){
+            putString(PREF_KEY_FCM_TOKEN, token)
+        }
     }
 
     private fun getAgent(): ClientAgent? {

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/toolbarAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@color/white">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/backImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:paddingHorizontal="14dp"
+                android:tint="@color/secondary800"
+                app:srcCompat="@drawable/ic_back_24px"/>
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/my_service_medium"
+                android:textColor="@color/secondary900"
+                android:textSize="16sp"
+                app:translationTextKey="app.profile.notifications_settings.title"/>
+
+        </FrameLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbarAppBar"
+        android:layout_marginTop="16dp"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp">
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:gravity="center_vertical">
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center"
+                android:fontFamily="@font/suisse_regular"
+                android:includeFontPadding="false"
+                android:textColor="@color/secondary900"
+                android:textSize="16sp"
+                app:translationTextKey="app.profile.notifications_settings.items.sms" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/enableSMSSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center"
+                android:checked="true"
+                app:thumbTint="@color/switch_color_primary_500_secondary_250"
+                app:trackTint="@color/switch_color_primary_500_secondary_250_alpha" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_marginTop="22dp"
+            android:gravity="center_vertical">
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center"
+                android:fontFamily="@font/suisse_regular"
+                android:includeFontPadding="false"
+                android:textColor="@color/secondary900"
+                android:textSize="16sp"
+                app:translationTextKey="app.profile.notifications_settings.items.push" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/enablePushSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center"
+                app:thumbTint="@color/switch_color_primary_500_secondary_250"
+                app:trackTint="@color/switch_color_primary_500_secondary_250_alpha" />
+
+        </FrameLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</RelativeLayout>

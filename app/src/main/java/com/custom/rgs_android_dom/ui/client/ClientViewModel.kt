@@ -11,6 +11,7 @@ import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.about_app.AboutAppFragment
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.client.agent.AgentFragment
+import com.custom.rgs_android_dom.ui.client.notifications_settings.NotificationsSettingsFragment
 import com.custom.rgs_android_dom.ui.client.orders.OrdersFragment
 import com.custom.rgs_android_dom.ui.client.payment_methods.PaymentMethodsFragment
 import com.custom.rgs_android_dom.ui.client.personal_data.PersonalDataFragment
@@ -160,6 +161,10 @@ class ClientViewModel(
 
     fun onPaymentMethodsClick() {
         ScreenManager.showScreen(PaymentMethodsFragment())
+    }
+
+    fun onNotificationsSettingsClick() {
+        ScreenManager.showScreen(NotificationsSettingsFragment())
     }
 
     fun onRefresh(){

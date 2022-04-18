@@ -268,7 +268,13 @@ class TranslationRepositoryImpl(private val api: MSDApi) :
 
             //System request
             "app.alert.call_request.audio" to "Разрешите доступ, чтобы консультант или мастер могли слышать вас",
-            "app.alert.call_request.camera" to "Разрешите доступ, чтобы консультант или мастер могли видеть вас"
+            "app.alert.call_request.camera" to "Разрешите доступ, чтобы консультант или мастер могли видеть вас",
+
+            //Notifications settigns
+            "app.profile.notifications_settings.title" to "Настройки уведомлений",
+            "app.profile.notifications_settings.items.sms" to "SMS",
+            "app.profile.notifications_settings.items.push" to "Push-уведомления",
+
         )
     }
 

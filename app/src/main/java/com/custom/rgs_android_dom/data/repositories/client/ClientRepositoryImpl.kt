@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.data.network.mappers.GeneralInvoiceMapper
 import com.custom.rgs_android_dom.data.network.mappers.OrdersMapper
 import com.custom.rgs_android_dom.data.network.requests.DeleteContactsRequest
 import com.custom.rgs_android_dom.data.network.requests.EditClientRequest
+import com.custom.rgs_android_dom.data.network.requests.SaveTokenRequest
 import com.custom.rgs_android_dom.data.network.requests.UpdateClientRequest
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.domain.client.mappers.AgentMapper
@@ -266,6 +267,17 @@ class ClientRepositoryImpl(
     override fun getRequestEditClientTasks(): Single<List<RequestEditClientTaskModel>> {
         return api.getRequestEditClientTasks().map {
             ClientMapper.responseToRequestEditClientTasks(it)
+        }
+    }
+
+    override fun saveFCMToken(deviceId: String, token: String): Completable {
+        val savedToken = clientSharedPreferences.getFCMToken()
+        return if (savedToken != token){
+            clientSharedPreferences.saveFCMToken(token)
+            val saveTokenRequest = SaveTokenRequest(token)
+            api.saveFCMToken(deviceId, saveTokenRequest)
+        } else {
+            Completable.complete()
         }
     }
 
