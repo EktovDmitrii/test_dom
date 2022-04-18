@@ -2,9 +2,11 @@ package com.custom.rgs_android_dom.ui.fcm
 
 import android.content.Intent
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
+import com.custom.rgs_android_dom.utils.logException
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import org.koin.android.ext.android.inject
 
@@ -17,7 +19,14 @@ class MSDMessagingService : FirebaseMessagingService() {
         clientInteractor.saveFCMToken(token)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
+            .subscribeBy(
+                onComplete = {
+
+                },
+                onError = {
+                    logException(this, it)
+                }
+            )
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {

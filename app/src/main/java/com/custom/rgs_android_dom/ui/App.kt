@@ -4,12 +4,14 @@ import android.app.Application
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.di.*
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
+import com.custom.rgs_android_dom.utils.logException
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.metrica.YandexMetrica
 import com.yandex.metrica.YandexMetricaConfig
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import net.danlew.android.joda.JodaTimeAndroid
 import org.koin.android.ext.android.inject
@@ -64,7 +66,14 @@ class App: Application() {
                 clientInteractor.saveFCMToken(task.result)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe()
+                    .subscribeBy(
+                        onComplete = {
+
+                        },
+                        onError = {
+                            logException(this, it)
+                        }
+                    )
             }
         }
     }
