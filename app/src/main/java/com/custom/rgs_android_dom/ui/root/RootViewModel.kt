@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.root
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
@@ -30,6 +31,7 @@ import com.custom.rgs_android_dom.ui.navigation.TargetScreen
 import com.custom.rgs_android_dom.utils.logException
 import com.custom.rgs_android_dom.utils.safeLet
 import com.custom.rgs_android_dom.views.NavigationScope
+import com.google.firebase.messaging.FirebaseMessaging
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -95,6 +97,7 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
             .subscribeBy (
                 onNext = {
                     loadCases()
+                    obtainAndSaveFCMToken()
                     when (requestedScreen) {
                         TargetScreen.CHAT -> {
                             ScreenManager.showBottomScreen(ChatFragment.newInstance(chatInteractor.getMasterOnlineCase()))
@@ -361,5 +364,22 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                 }
             )
             .addTo(dataCompositeDisposable)
+    }
+
+    private fun obtainAndSaveFCMToken(){
+        Log.d("MyLog", "OBTAIN AND SAVE FCM TOKEN")
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task->
+            Log.d("MyLog", "On token completed " + task.isSuccessful)
+            if (task.isSuccessful){
+                clientInteractor.saveFCMToken(task.result)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeBy(
+                        onError = {
+                            logException(this, it)
+                        }
+                    ).addTo(dataCompositeDisposable)
+            }
+        }
     }
 }

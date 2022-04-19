@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.data.repositories.client
 
+import android.util.Log
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
 import com.custom.rgs_android_dom.data.network.mappers.GeneralInvoiceMapper
@@ -15,12 +16,15 @@ import com.custom.rgs_android_dom.domain.repositories.ClientRepository
 import com.custom.rgs_android_dom.utils.PATTERN_DATE_TIME_MILLIS
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
 import com.custom.rgs_android_dom.utils.formatTo
+import com.custom.rgs_android_dom.utils.md5
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import org.joda.time.DateTime
 import org.joda.time.LocalDateTime
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ClientRepositoryImpl(
     private val api: MSDApi,
@@ -270,12 +274,15 @@ class ClientRepositoryImpl(
         }
     }
 
-    override fun saveFCMToken(deviceId: String, token: String): Completable {
+    override fun saveFCMToken(token: String): Completable {
         val savedToken = clientSharedPreferences.getFCMToken()
+        val clientPhone = clientSharedPreferences.getClient()?.phone ?: UUID.randomUUID().toString()
+        Log.d("MyLog", "DEVICE ID " + clientPhone.md5())
         return if (savedToken != token){
             clientSharedPreferences.saveFCMToken(token)
             val saveTokenRequest = SaveTokenRequest(token)
-            api.saveFCMToken(deviceId, saveTokenRequest)
+            Log.d("MyLog", "Performing call")
+            api.deleteFCMToken(clientPhone.md5()).andThen(api.saveFCMToken(clientPhone.md5(), saveTokenRequest))
         } else {
             Completable.complete()
         }

@@ -1,11 +1,14 @@
 package com.custom.rgs_android_dom.ui
 
 import android.app.Application
+import android.util.Log
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.di.*
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.utils.logException
+import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.google.firebase.FirebaseApp
+import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.messaging.FirebaseMessaging
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.metrica.YandexMetrica
@@ -17,6 +20,7 @@ import net.danlew.android.joda.JodaTimeAndroid
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
+import java.util.*
 
 class App: Application() {
 
@@ -67,9 +71,6 @@ class App: Application() {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeBy(
-                        onComplete = {
-
-                        },
                         onError = {
                             logException(this, it)
                         }
