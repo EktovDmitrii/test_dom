@@ -123,9 +123,9 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
             }
 
             if (state.hasAgentInfo){
-                binding.agentInfoTextView.text = TranslationInteractor.getTranslation("app.profile.menu.agent_info")
+                binding.agentInfoTextView.text = TranslationInteractor.getTranslation("app.profile.menu_rows.agent_data")
             } else {
-                binding.agentInfoTextView.text = TranslationInteractor.getTranslation("app.profile.menu.agent_code")
+                binding.agentInfoTextView.text = TranslationInteractor.getTranslation("app.profile.menu_rows.no_agent_data")
             }
 
             if (state.avatar.isEmpty()){

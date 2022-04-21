@@ -18,7 +18,7 @@
         android:textAllCaps="true"
         android:textColor="@color/secondary600"
         android:textSize="10sp"
-        app:translationTextKey="Преимущества Мой_Сервис" />
+        app:translationTextKey="app.product_cards.service_detail_view.product_benegites.title" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/featuresValue1"
@@ -31,7 +31,7 @@
         android:elevation="2dp"
         android:textColor="@color/secondary900"
         android:textSize="16sp"
-        app:translationTextKey="Поддержка 24/7" />
+        app:translationTextKey="app.product_cards.service_detail_view.product_benegites.fix_price" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/featuresValue2"
@@ -44,6 +44,6 @@
         android:elevation="3dp"
         android:textColor="@color/secondary900"
         android:textSize="16sp"
-        app:translationTextKey="Гарантия 12 месяцев" />
+        app:translationTextKey="app.product_cards.service_detail_view.product_benegites.guarantee" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

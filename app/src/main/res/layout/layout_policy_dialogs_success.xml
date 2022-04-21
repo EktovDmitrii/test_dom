@@ -57,7 +57,7 @@
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 android:includeFontPadding="false"
-                app:translationTextKey="Действует с %s1 по %s2"
+                app:translationTextKey="app.polices.search_policy.result_view.from_to_text"
                 tools:text="Действует с 02.05.2021 по 02.05.2022"
                 />
 
@@ -73,7 +73,7 @@
         android:textSize="16sp"
         android:textColor="@color/secondary600"
         android:includeFontPadding="false"
-        app:translationTextKey="Полис привязан"
+        app:translationTextKey="app.polices.search_policy.result_view.result_status_label"
         />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
@@ -97,7 +97,7 @@
         android:lineSpacingExtra="10sp"
         android:textColor="@color/secondary800"
         android:includeFontPadding="false"
-        app:translationTextKey="Мы добавили полис к вашим страховым продуктам. Срок действия полиса страхования с %s1 по %s2"/>
+        app:translationTextKey="app.polices.search_policy.result_view.subtitle_from_to_text"/>
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/understandTextView"
@@ -105,7 +105,7 @@
         android:layout_height="48dp"
         android:layout_marginTop="36dp"
         android:layout_marginBottom="22dp"
-        app:translationTextKey="Понятно!"
+        app:translationTextKey="app.polices.search_policy.result_view.confirm_button"
         android:gravity="center"
         android:fontFamily="@font/my_service_bold"
         android:textSize="14sp"

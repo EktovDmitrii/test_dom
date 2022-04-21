@@ -31,7 +31,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/paymentImageView"
         app:layout_constraintTop_toTopOf="parent"
-        app:translationTextKey="Выберите способ оплаты" />
+        app:translationTextKey="app.order_detail.payment_methods_title" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/paymentCardTypeImageView"

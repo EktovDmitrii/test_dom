@@ -19,7 +19,7 @@
             android:fontFamily="@font/my_service_bold"
             android:textColor="@color/secondary600"
             android:textSize="14sp"
-            app:translationTextKey="Ещё" />
+            app:translationTextKey="app.catalog.more_view.title" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="16dp"

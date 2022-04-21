@@ -93,7 +93,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/emptyListImageView"
-        app:translationTextKey="У вас пока нет привязанных документов" />
+        app:translationTextKey="app.object_detail.documents_add.description_label" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/addDocumentTextView"
@@ -112,7 +112,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/emptyListTextView"
-        app:translationTextKey="Добавить документы" />
+        app:translationTextKey="app.object_detail.documents.add_button" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listDocumentsRecyclerView"

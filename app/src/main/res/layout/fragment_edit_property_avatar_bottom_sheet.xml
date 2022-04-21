@@ -15,7 +15,7 @@
         android:paddingStart="20dp"
         android:textColor="@color/secondary900"
         android:textSize="18sp"
-        app:translationTextKey="Загрузить фотографию" />
+        app:translationTextKey="app.object.main.actions.load_photo" />
 
     <View
         android:id="@+id/dividerView"
@@ -32,6 +32,6 @@
         android:paddingStart="20dp"
         android:textColor="@color/error500"
         android:textSize="18sp"
-        app:translationTextKey="Удалить фотографию" />
+        app:translationTextKey="app.object.main.actions.delete_photo" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

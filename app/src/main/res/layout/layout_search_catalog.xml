@@ -31,7 +31,7 @@
             android:gravity="center"
             android:textColor="@color/secondary900"
             android:textSize="16sp"
-            app:translationTextKey="app.catalog.search.title" />
+            app:translationTextKey="app.menu.home.search_block.search_button_title" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -144,7 +144,7 @@
                                 android:includeFontPadding="false"
                                 android:textColor="@color/secondary900"
                                 android:textSize="16sp"
-                                app:translationTextKey="app.profile.menu.orders" />
+                                app:translationTextKey="app.profile.menu_rows.orders" />
 
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -183,7 +183,7 @@
                                 android:includeFontPadding="false"
                                 android:textColor="@color/secondary900"
                                 android:textSize="16sp"
-                                app:translationTextKey="app.profile.menu.policies" />
+                                app:translationTextKey="app.profile.menu_rows.polises" />
 
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -222,7 +222,7 @@
                                 android:includeFontPadding="false"
                                 android:textColor="@color/secondary900"
                                 android:textSize="16sp"
-                                app:translationTextKey="Способы оплаты" />
+                                app:translationTextKey="app.profile.menu_rows.paymant_methods" />
 
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -262,7 +262,7 @@
                                 android:includeFontPadding="false"
                                 android:textColor="@color/secondary900"
                                 android:textSize="16sp"
-                                app:translationTextKey="app.profile.notifications_settings.title" />
+                                app:translationTextKey="app.profile.menu_rows.notifications_settings" />
 
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -302,7 +302,7 @@
                                 android:includeFontPadding="false"
                                 android:textColor="@color/secondary900"
                                 android:textSize="16sp"
-                                app:translationTextKey="app.profile.menu.agent_info" />
+                                app:translationTextKey="app.profile.menu_rows.agent_data" />
 
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -341,7 +341,7 @@
                                 android:includeFontPadding="false"
                                 android:textColor="@color/secondary900"
                                 android:textSize="16sp"
-                                app:translationTextKey="app.profile.menu.about_app" />
+                                app:translationTextKey="app.profile.menu_rows.about_us" />
 
                         </androidx.appcompat.widget.LinearLayoutCompat>
 

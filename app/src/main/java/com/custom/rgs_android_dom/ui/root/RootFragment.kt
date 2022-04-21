@@ -175,10 +175,10 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
 
         subscribe(viewModel.isUserAuthorizedObserver){
             binding.actionsChatsTextView.text = if (it) {
-                "Перейти ко всем чатам"
+                TranslationInteractor.getTranslation("app.menu.background_page.bottom_button_client.title")
             }
             else {
-                "Войдите, чтобы видеть свои чаты"
+                TranslationInteractor.getTranslation("app.menu.background_page.bottom_button_quest.description")
             }
             binding.guestPhoneCallLinearLayout.goneIf(it)
             binding.phoneCallLinearLayout.visibleIf(it)
@@ -398,7 +398,7 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
 
                 binding.callSubtitleTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white_alpha80))
 
-                binding.callTitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.online_master")
+                binding.callTitleTextView.text = TranslationInteractor.getTranslation("app.call.outgoing.default_consultant_name")
                 binding.callSubtitleTextView.text = callInfo.duration?.toReadableTime()
             }
             CallState.ENDED -> {
@@ -411,7 +411,7 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
 
                 binding.callSubtitleTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white_alpha80))
 
-                binding.callTitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.online_master")
+                binding.callTitleTextView.text = TranslationInteractor.getTranslation("app.call.outgoing.default_consultant_name")
                 binding.callSubtitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.call_ended")
                 playTune()
             }

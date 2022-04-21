@@ -126,7 +126,7 @@
                 android:fontFamily="@font/suisse_book"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                app:translationTextKey="app.chats.chat.call.online_master" />
+                app:translationTextKey="app.call.outgoing.default_consultant_name" />
 
             <FrameLayout
                 android:layout_width="match_parent"

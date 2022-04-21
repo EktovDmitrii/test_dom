@@ -12,6 +12,7 @@ import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.domain.repositories.ChatRepository
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.managers.MSDConnectivityManager
 import com.custom.rgs_android_dom.ui.managers.MediaOutputManager
 import com.custom.rgs_android_dom.utils.WsResponseParser
@@ -553,7 +554,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
         return CaseModel(
             channelId = channelId,
-            name = "Онлайн Мастер",
+            name = TranslationInteractor.getTranslation("app.chat.chat_start.back_label"),
             subtype = null,
             taskId = "",
             unreadPosts = 0,

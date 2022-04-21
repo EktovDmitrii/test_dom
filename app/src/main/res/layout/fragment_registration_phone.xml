@@ -64,7 +64,7 @@
             android:lineSpacingMultiplier="0"
             android:textColor="@color/secondary600"
             android:textSize="13sp"
-            app:translationTextKey="Введите номер телефона — получите доступ\nк вашему профилю и полному функционалу\nприложения" />
+            app:translationTextKey="app.phone.description_label_title" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

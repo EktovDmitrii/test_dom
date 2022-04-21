@@ -46,5 +46,11 @@ class MSDLabelTextView @JvmOverloads constructor(
         binding.noValueTextView.visible()
     }
 
+    fun setNoValue(noValue: String){
+        binding.valueTextView.gone()
+        binding.noValueTextView.visible()
+        binding.noValueTextView.text = noValue
+    }
+
 
 }

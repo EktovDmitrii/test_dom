@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.countries.CountriesInteractor
 import com.custom.rgs_android_dom.domain.countries.model.CountryModel
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.countries.CountriesFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
@@ -95,7 +96,7 @@ class RegistrationPhoneViewModel(
                 onError = {
                     //todo обработка ошибки
                     logException(this, it)
-                    val errorMessage = "Проверьте, правильно ли вы ввели номер телефона"
+                    val errorMessage = TranslationInteractor.getTranslation("app.phone.error_label_title")
                     phoneErrorController.value = errorMessage
                 }
             ).addTo(dataCompositeDisposable)

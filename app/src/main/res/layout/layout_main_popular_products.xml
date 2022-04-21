@@ -22,7 +22,7 @@
             android:fontFamily="@font/my_service_bold"
             android:textColor="@color/secondary900"
             android:textSize="16sp"
-            app:translationTextKey="Популярные продукты" />
+            app:translationTextKey="app.menu.home.popular_products_block.title" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/showAllTextView"
@@ -32,7 +32,7 @@
             android:fontFamily="@font/suisse_regular"
             android:textColor="@color/primary500"
             android:textSize="16sp"
-            app:translationTextKey="app.catalog.tabs.all" />
+            app:translationTextKey="app.menu.home.popular_products_block.button_all.title" />
 
     </FrameLayout>
 

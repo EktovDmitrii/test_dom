@@ -38,7 +38,8 @@
             android:textColor="@color/secondary800"
             android:lineSpacingExtra="16sp"
             android:lineSpacingMultiplier="0"
-            app:translationTextKey="Новый сервис"/>
+            android:layout_gravity="center_horizontal"
+            app:translationTextKey="app.menu.home.benefits_block.name.new_service_title"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -72,7 +73,8 @@
             android:textColor="@color/secondary800"
             android:lineSpacingExtra="16sp"
             android:lineSpacingMultiplier="0"
-            app:translationTextKey="Гарантия на работу"/>
+            android:layout_gravity="center_horizontal"
+            app:translationTextKey="app.menu.home.benefits_block.name.work_garantee"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -107,7 +109,8 @@
             android:includeFontPadding="false"
             android:lineSpacingExtra="16sp"
             android:lineSpacingMultiplier="0"
-            app:translationTextKey="Поддержка 24/7"/>
+            android:layout_gravity="center_horizontal"
+            app:translationTextKey="app.menu.home.benefits_block.name.support_title"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

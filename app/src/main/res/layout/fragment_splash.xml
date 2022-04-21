@@ -25,10 +25,10 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:fontFamily="@font/suisse_regular"
-        android:textColor="@color/secondary500"
-        android:textSize="14sp"
         android:lineSpacingExtra="24dp"
         android:lineSpacingMultiplier="0"
+        android:textColor="@color/secondary500"
+        android:textSize="14sp"
         app:translationTextKey="Мой_Сервис Дом — имущественный\nсервис от флагмана отечественного\nстрахования" />
 
 </RelativeLayout>

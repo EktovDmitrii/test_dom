@@ -17,7 +17,7 @@
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:translationTextKey="Новой картой"
+        app:translationTextKey="app.product.purchase.payment_method.new_card"
         android:textColor="@color/secondary900"
         android:textSize="16sp"
         android:includeFontPadding="false"
@@ -70,7 +70,7 @@
             android:fontFamily="@font/suisse_book"
             android:textSize="16sp"
             android:textColor="#808080"
-            app:translationTextKey="Сохранить карту для следующих оплат"
+            app:translationTextKey="app.product.purchase.payment_method.save_card_for_new_payments"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/saveCardImageView"
             app:layout_constraintEnd_toStartOf="@id/saveCardSwitch"

@@ -14,6 +14,7 @@ import com.custom.rgs_android_dom.domain.purchase.models.PurchaseDateTimeModel
 import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.domain.purchase.models.*
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
 import com.custom.rgs_android_dom.ui.purchase.add.agent.AddAgentFragment
@@ -102,9 +103,9 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
         subscribe(viewModel.purchaseObserver) { purchase ->
 
             binding.makeOrderButton.btnTitle.text =  if (purchase.defaultProduct){
-                "Заказать"
+                TranslationInteractor.getTranslation("app.product_cards.service_detail_view.buy_button_order")
             } else {
-                "Оформить продукт"
+                TranslationInteractor.getTranslation("app.product_cards.service_detail_view.buy_button_arrange")
             }
 
             GlideApp.with(requireContext())
@@ -115,16 +116,16 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
             binding.layoutPurchaseServiceHeader.nameTextView.text = purchase.name
 
             binding.layoutPurchaseServiceHeader.orderTitleTextView.text = if (purchase.defaultProduct){
-                "Ваш заказ"
+                TranslationInteractor.getTranslation("app.order_detail.order_title")
             } else {
-                "Оформление продукта"
+                TranslationInteractor.getTranslation("app.order_detail.service_title")
             }
 
             binding.layoutDateTime.root.visibleIf(purchase.defaultProduct)
             binding.layoutPurchaseServiceHeader.durationTextView.visibleIf(purchase.duration != null)
 
             if (purchase.defaultProduct){
-                binding.layoutPurchaseServiceHeader.durationTextView.text = "Работа займёт ~${purchase.deliveryTime}"
+                binding.layoutPurchaseServiceHeader.durationTextView.text = TranslationInteractor.getTranslation("app.support_service.prefix_titles.work_estimation") + purchase.deliveryTime
             } else {
                 binding.layoutPurchaseServiceHeader.durationTextView.text = "Действует ${purchase.duration}"
             }
@@ -149,12 +150,12 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
                     binding.layoutPayment.paymentCardGroup.visible()
                     binding.layoutPayment.paymentNewCardImageView.invisible()
                     binding.layoutPayment.paymentCardNumberTextView.text = card.number.takeLast(4)
-                    binding.layoutPayment.paymentCardTextView.text = "Оплата картой"
+                    binding.layoutPayment.paymentCardTextView.text = TranslationInteractor.getTranslation("app.product.purchase.card_payment")
                     binding.layoutPayment.paymentCardTextView.typeface = ResourcesCompat.getFont(requireContext(), R.font.suisse_semi_bold)
                 } else {
                     binding.layoutPayment.paymentCardGroup.invisible()
                     binding.layoutPayment.paymentNewCardImageView.visible()
-                    binding.layoutPayment.paymentCardTextView.text = "Оплата новой картой"
+                    binding.layoutPayment.paymentCardTextView.text =TranslationInteractor.getTranslation("app.product.purchase.new_card_payment")
                     binding.layoutPayment.paymentCardTextView.typeface = ResourcesCompat.getFont(requireContext(), R.font.suisse_semi_bold)
                 }
             }
@@ -163,9 +164,9 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
             binding.layoutNoProperty.root.visibleIf(purchase.propertyItemModel == null)
 
             binding.layoutProperty.addCommentTextView.text = if (purchase.comment.isNullOrEmpty()){
-                "Добавить комментарий"
+                TranslationInteractor.getTranslation("app.product.purchase.property.leave_comment")
             } else {
-                "Редактировать комментарий"
+                TranslationInteractor.getTranslation("app.product.purchase.property.edit_comment")
             }
 
             purchase.propertyItemModel?.let {

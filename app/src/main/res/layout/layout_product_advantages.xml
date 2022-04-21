@@ -18,7 +18,7 @@
         android:textAllCaps="true"
         android:textColor="@color/secondary600"
         android:textSize="10sp"
-        app:translationTextKey="Преимущества продукта" />
+        app:translationTextKey="app.product_cards.product_detail_view.benefits.benefites" />
 
     <com.custom.rgs_android_dom.views.MSDRecyclerView
         android:id="@+id/advantagesRecycler"

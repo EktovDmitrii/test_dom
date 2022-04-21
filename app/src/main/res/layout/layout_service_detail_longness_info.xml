@@ -16,7 +16,7 @@
         android:textAllCaps="true"
         android:textColor="@color/secondary600"
         android:textSize="10sp"
-        app:translationTextKey="продолжительность выполнения"
+        app:translationTextKey="app.product_cards.service_detail_view.duration_title"
         />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView

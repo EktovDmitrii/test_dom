@@ -24,7 +24,7 @@
             android:textSize="16sp"
             android:fontFamily="@font/suisse_regular"
             android:layout_marginStart="20dp"
-            app:translationTextKey="Выберите недвижимость"/>
+            app:translationTextKey="app.product.purchase.select_property_title"/>
 
         <FrameLayout
             android:layout_width="match_parent"

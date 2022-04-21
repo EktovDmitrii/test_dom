@@ -12,6 +12,7 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentEditPropertyInfoBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.address.suggestions.AddressSuggestionsFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.property.info.edit.avatar.EditPropertyAvatarBottomSheetFragment
@@ -142,7 +143,7 @@ class EditPropertyInfoFragment :
                 binding.isTemporarySelector.setSelection(isTemporary)
             }
 
-            binding.cityApartmentTextInputLayout.setText(propertyViewState.address.cityName.ifEmpty { "Не определено" })
+            binding.cityApartmentTextInputLayout.setText(propertyViewState.address.cityName.ifEmpty { TranslationInteractor.getTranslation("app.object_detail.documents.no_data_placeholder")})
             binding.addressApartmentTextInputLayout.setText(propertyViewState.address.addressString)
             binding.totalAreaInputLayout.setText(propertyViewState.totalArea)
             binding.floorTextInputLayout.setText(propertyViewState.floor)
@@ -150,7 +151,7 @@ class EditPropertyInfoFragment :
             binding.commentInputLayout.setText(propertyViewState.comment)
         }
         subscribe(viewModel.selectAddressItemModelObserver) {
-            binding.cityApartmentTextInputLayout.setText(it.cityName.ifEmpty { "Не определено" })
+            binding.cityApartmentTextInputLayout.setText(it.cityName.ifEmpty { TranslationInteractor.getTranslation("app.object_detail.documents.no_data_placeholder") })
             binding.addressApartmentTextInputLayout.setText(it.addressString)
         }
         subscribe(viewModel.isEnabledSaveButtonObserver) {

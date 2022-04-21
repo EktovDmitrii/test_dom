@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
-            app:translationTextKey="app.catalog.tabs.all_services" />
+            app:translationTextKey="app.catalog.default_node.all_service_in_categort_title" />
 
         <com.custom.rgs_android_dom.views.MSDImageView
             android:id="@+id/arrowRightImageView"

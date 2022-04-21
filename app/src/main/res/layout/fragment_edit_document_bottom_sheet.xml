@@ -15,7 +15,7 @@
         android:paddingVertical="18dp"
         android:textColor="@color/secondary900"
         android:textSize="20sp"
-        app:translationTextKey="app.document.refresh_documents" />
+        app:translationTextKey="app.chat.chat_start.web_document_view.reload_alert" />
 
     <View
         android:id="@+id/dividerView"
@@ -31,7 +31,7 @@
         android:paddingVertical="18dp"
         android:textColor="@color/secondary900"
         android:textSize="20sp"
-        app:translationTextKey="app.document.edit_name" />
+        app:translationTextKey="app.chat.chat_start.web_document_view.edit_alert" />
 
     <View
         android:id="@+id/secondDividerView"
@@ -47,6 +47,6 @@
         android:paddingVertical="18dp"
         android:textColor="@color/error500"
         android:textSize="20sp"
-        app:translationTextKey="app.document.remove_document" />
+        app:translationTextKey="app.chat.chat_start.web_document_view.delete_alert" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

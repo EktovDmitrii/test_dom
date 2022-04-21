@@ -175,7 +175,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/sendMessageImageView"
                         app:layout_constraintStart_toEndOf="@+id/attachImageView"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:translationHintKey="Введите сообщение" />
+                        app:translationHintKey="app.chat.chat_start.bottom_input_view.placeholder" />
 
                     <com.custom.rgs_android_dom.views.MSDImageView
                         android:id="@+id/sendMessageImageView"
@@ -213,7 +213,7 @@
                     android:textColor="@color/secondary500"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="24dp"
-                    app:translationTextKey="Чат архивирован"/>
+                    app:translationTextKey="app.chat.chat_screen.bottom_archive_label_title"/>
 
             </FrameLayout>
 
