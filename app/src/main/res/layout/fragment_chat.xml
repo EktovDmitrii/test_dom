@@ -17,16 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <View
-            android:id="@+id/swipeAnchorView"
-            android:layout_width="51dp"
-            android:layout_height="4dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/rectangle_filled_secondary_100_radius_8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
         <com.custom.rgs_android_dom.views.MSDImageView
             android:id="@+id/backImageView"
             android:layout_width="wrap_content"
