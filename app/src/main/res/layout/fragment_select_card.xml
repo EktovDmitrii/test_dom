@@ -31,7 +31,7 @@
                 android:fontFamily="@font/my_service_bold"
                 android:textColor="@color/secondary900"
                 android:textSize="16sp"
-                app:translationTextKey="Способ оплаты" />
+                app:translationTextKey="app.product.purchase.payment_method.title" />
 
             <com.custom.rgs_android_dom.views.MSDRecyclerView
                 android:id="@+id/cardsRecyclerView"
@@ -63,7 +63,7 @@
                     android:fontFamily="@font/my_service_bold"
                     android:gravity="center"
                     android:paddingVertical="12dp"
-                    app:translationTextKey="Выбрать"
+                    app:translationTextKey="app.product.purchase.payment_method.select"
                     android:textColor="@color/button_color_white_secondary_400"
                     android:textSize="14sp" />
 

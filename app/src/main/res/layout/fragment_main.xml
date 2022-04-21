@@ -82,7 +82,7 @@
                             android:includeFontPadding="false"
                             android:textColor="@color/gray"
                             android:textSize="13sp"
-                            app:translationTextKey="Войти" />
+                            app:translationTextKey="app.menu.home.shortcut_actions_block.login_title" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -111,7 +111,7 @@
                             android:includeFontPadding="false"
                             android:textColor="@color/gray"
                             android:textSize="13sp"
-                            app:translationTextKey="Добавить" />
+                            app:translationTextKey="app.menu.home.shortcut_actions_block.append_title" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -140,7 +140,7 @@
                             android:includeFontPadding="false"
                             android:textColor="@color/gray"
                             android:textSize="13sp"
-                            app:translationTextKey="Мой дом" />
+                            app:translationTextKey="app.menu.home.shortcut_actions_block.myhome_title" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -167,7 +167,7 @@
                             android:includeFontPadding="false"
                             android:textColor="@color/gray"
                             android:textSize="13sp"
-                            app:translationTextKey="SOS" />
+                            app:translationTextKey="app.menu.home.shortcut_actions_block.sos_title" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -194,7 +194,7 @@
                             android:includeFontPadding="false"
                             android:textColor="@color/gray"
                             android:textSize="13sp"
-                            app:translationTextKey="app.profile.menu.policies" />
+                            app:translationTextKey="app.menu.home.shortcut_actions_block.polices_title" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -221,7 +221,7 @@
                             android:includeFontPadding="false"
                             android:textColor="@color/gray"
                             android:textSize="13sp"
-                            app:translationTextKey="Продукты" />
+                            app:translationTextKey="app.menu.home.shortcut_actions_block.products_title" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -248,7 +248,7 @@
                             android:includeFontPadding="false"
                             android:textColor="@color/gray"
                             android:textSize="13sp"
-                            app:translationTextKey="Заказы" />
+                            app:translationTextKey="app.menu.home.shortcut_actions_block.orders_title" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 

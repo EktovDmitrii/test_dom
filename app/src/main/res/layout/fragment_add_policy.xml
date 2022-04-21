@@ -37,7 +37,7 @@
                     android:includeFontPadding="false"
                     android:textColor="@color/secondary900_alpha64"
                     android:textSize="12sp"
-                    app:translationTextKey="Шаг 1 из 2" />
+                    app:translationTextKey="app.polices.add_step_one.view_title" />
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:layout_width="wrap_content"
@@ -48,7 +48,7 @@
                     android:includeFontPadding="false"
                     android:textColor="@color/secondary900"
                     android:textSize="16sp"
-                    app:translationTextKey="Данные полиса" />
+                    app:translationTextKey="app.polices.add_step_one.view_subtitle" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -65,7 +65,7 @@
             android:includeFontPadding="false"
             android:textColor="@color/secondary900"
             android:textSize="16sp"
-            app:translationTextKey="Введите серию и номер полиса, который хотите привязать" />
+            app:translationTextKey="app.polices.add_step_one.description_label" />
 
         <com.custom.rgs_android_dom.views.edit_text.MSDPolicyInput
             android:id="@+id/policyInput"
@@ -74,9 +74,9 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="24dp"
             android:inputType="text"
-            app:translationHintKey="Введите серию и номер полиса"
-            app:translationInfoKey="Где найти?"
-            app:translationLabelKey="Серия и номер полиса" />
+            app:translationHintKey="app.polices.add_step_one.serial_number_input"
+            app:translationInfoKey="app.polices.add_step_one.find_button"
+            app:translationLabelKey="app.polices.add_step_one.serial_number_label" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -97,7 +97,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="22dp"
             android:enabled="false"
-            app:translationTextKey="Далее" />
+            app:translationTextKey="app.polices.add_step_one.next_button" />
 
     </com.google.android.material.card.MaterialCardView>
 

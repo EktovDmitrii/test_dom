@@ -32,7 +32,7 @@
                 android:fontFamily="@font/my_service_medium"
                 android:textColor="@color/secondary900"
                 android:textSize="16sp"
-                app:translationTextKey="Редактировать данные"/>
+                app:translationTextKey="app.profile.client_edit.view_title"/>
 
         </FrameLayout>
 
@@ -61,8 +61,8 @@
                 android:digits="@string/acceptable_name_chars"
                 android:inputType="textPersonName|textCapSentences"
                 android:maxLength="50"
-                app:translationHintKey="Иванов"
-                app:translationLabelKey="Фамилия" />
+                app:translationHintKey="app.profile.client_edit.last_name_input"
+                app:translationLabelKey="app.profile.client_edit.last_name_label" />
 
             <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
                 android:id="@+id/firstNameEditText"
@@ -72,8 +72,8 @@
                 android:digits="@string/acceptable_name_chars"
                 android:inputType="textPersonName|textCapSentences"
                 android:maxLength="25"
-                app:translationHintKey="Иван"
-                app:translationLabelKey="Имя" />
+                app:translationHintKey="app.profile.client_edit.first_name_input"
+                app:translationLabelKey="app.profile.client_edit.first_name_label" />
 
             <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
                 android:id="@+id/middleNameEditText"
@@ -83,8 +83,8 @@
                 android:digits="@string/acceptable_name_chars"
                 android:inputType="textPersonName|textCapSentences"
                 android:maxLength="25"
-                app:translationHintKey="Иванович"
-                app:translationLabelKey="Отчество" />
+                app:translationHintKey="app.profile.client_edit.middle_name_input"
+                app:translationLabelKey="app.profile.client_edit.middle_name_label" />
 
             <com.custom.rgs_android_dom.views.edit_text.MSDLabelIconEditText
                 android:id="@+id/birthdayEditText"
@@ -96,14 +96,14 @@
                 app:icon="@drawable/ic_calendar_24px"
                 app:mask="[00]{.}[00]{.}[0000]"
                 app:translationHintKey="app.profile.add.birthday.placeholder"
-                app:translationLabelKey="app.profile.add.birthday.title" />
+                app:translationLabelKey="app.profile.client_edit.date_birth_label" />
 
             <com.custom.rgs_android_dom.views.MSDGenderSelector
                 android:id="@+id/genderSelector"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:translationLabelKey="app.profile.add.sex.title" />
+                app:translationLabelKey="app.profile.client_edit.sex_label" />
 
             <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
                 android:id="@+id/passportSeriesEditText"
@@ -113,7 +113,7 @@
                 android:inputType="number"
                 android:maxLength="4"
                 app:translationHintKey="9999"
-                app:translationLabelKey="app.profile.client.passport_series.title" />
+                app:translationLabelKey="app.profile.client_edit.passport_series_label" />
 
             <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
                 android:id="@+id/passportNumberEditText"
@@ -123,7 +123,7 @@
                 android:inputType="number"
                 android:maxLength="6"
                 app:translationHintKey="app.profile.add.agent_info.placeholder"
-                app:translationLabelKey="app.profile.client.passport_number.title" />
+                app:translationLabelKey="app.profile.client_edit.passpoert_number_label" />
 
             <com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
                 android:id="@+id/phoneEditText"
@@ -132,7 +132,7 @@
                 android:layout_marginTop="16dp"
                 android:inputType="phone"
                 app:translationHintKey="app.profile.add.agent_info.phone.placeholder"
-                app:translationLabelKey="app.profile.client.phone.title" />
+                app:translationLabelKey="app.profile.client_edit.phone_number_label" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/requestEditLinearLayout"
@@ -154,7 +154,7 @@
                     android:fontFamily="@font/suisse_regular"
                     android:textColor="@color/secondary500"
                     android:textSize="14sp"
-                    app:translationTextKey="app.profile.client.edit_request.title" />
+                    app:translationTextKey="app.profile.client_edit.request_top_text" />
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:id="@+id/editRequestTextView"
@@ -164,7 +164,7 @@
                     android:textColor="@color/primary500"
                     android:textSize="14sp"
                     app:isUnderlined="true"
-                    app:translationTextKey="app.profile.client.edit_request.button_title" />
+                    app:translationTextKey="app.profile.client_edit.request_end_text" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -177,7 +177,7 @@
                 app:hintAlwaysVisible="true"
                 app:mask="+7 [000] [000]-[00]-[00]"
                 app:translationHintKey="app.profile.add.agent_info.phone.placeholder"
-                app:translationLabelKey="app.profile.client.additional_phone.title" />
+                app:translationLabelKey="app.profile.client_edit.additional_number_label" />
 
             <com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
                 android:id="@+id/emailEditText"
@@ -187,7 +187,7 @@
                 android:imeOptions="actionDone"
                 android:inputType="textWebEmailAddress"
                 app:translationHintKey="app.profile.client.email.placeholder"
-                app:translationLabelKey="app.profile.client.email.title" />
+                app:translationLabelKey="app.profile.client_edit.email_label" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -210,7 +210,7 @@
             android:layout_gravity="end"
             android:layout_marginEnd="20dp"
             android:enabled="false"
-            app:translationTextKey="app.profile.add.buttons.save_title" />
+            app:translationTextKey="app.profile.client_edit.save_button" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 </RelativeLayout>

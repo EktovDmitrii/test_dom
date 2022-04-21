@@ -44,43 +44,43 @@ class PersonalDataFragment : BaseFragment<PersonalDataViewModel, FragmentPersona
 
         subscribe(viewModel.personalDataObserver){personalData->
             if (personalData.name.isEmpty()){
-                binding.nameTextView.setNoValue(TranslationInteractor.getTranslation("app.profile.client.name.empty_title"))
+                binding.nameTextView.setNoValue(TranslationInteractor.getTranslation("app.profile.client.no_data_text"))
             } else {
                 binding.nameTextView.setValue(personalData.name)
             }
 
             if (personalData.birthday.isEmpty()){
-                binding.birthdayTextView.setNoValue(TranslationInteractor.getTranslation("app.profile.client.birthday.empty_title"))
+                binding.birthdayTextView.setNoValue(TranslationInteractor.getTranslation("app.profile.client.no_data_text"))
             } else {
                 binding.birthdayTextView.setValue(personalData.birthday)
             }
 
             if (personalData.gender.isEmpty()){
-                binding.genderTextView.setNoValue(TranslationInteractor.getTranslation("app.profile.client.sex.empty_title"))
+                binding.genderTextView.setNoValue(TranslationInteractor.getTranslation("app.profile.client.no_data_text"))
             } else {
                 binding.genderTextView.setValue(personalData.gender)
             }
 
             if (personalData.passport.isEmpty()){
-                binding.passportTextView.setNoValue(TranslationInteractor.getTranslation("app.profile.client.pasport.empty_title"))
+                binding.passportTextView.setNoValue(TranslationInteractor.getTranslation("app.profile.client.no_data_text"))
             } else {
                 binding.passportTextView.setValue(personalData.passport)
             }
 
             if (personalData.phone.isEmpty()){
-                binding.phoneTextView.setNoValue(TranslationInteractor.getTranslation("app.profile.client.phone.empty_title"))
+                binding.phoneTextView.setNoValue(TranslationInteractor.getTranslation("app.profile.client.no_data_text"))
             } else {
                 binding.phoneTextView.setValue(personalData.phone)
             }
 
             if (personalData.additionalPhone.isEmpty()){
-                binding.additionalPhoneTextView.setNoValue(TranslationInteractor.getTranslation("app.profile.client.additional_phone.empty_title"))
+                binding.additionalPhoneTextView.setNoValue(TranslationInteractor.getTranslation("app.profile.client.no_data_text"))
             } else {
                 binding.additionalPhoneTextView.setValue(personalData.additionalPhone)
             }
 
             if (personalData.email.isEmpty()){
-                binding.emailTextView.setNoValue(TranslationInteractor.getTranslation("app.profile.client.email.empty_title"))
+                binding.emailTextView.setNoValue(TranslationInteractor.getTranslation("app.profile.client.no_data_text"))
             } else {
                 binding.emailTextView.setValue(personalData.email)
             }

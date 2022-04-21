@@ -32,7 +32,7 @@
         android:textColor="@color/secondary900"
         android:textSize="20sp"
         app:lineHeight="28sp"
-        app:translationTextKey="Новый сервис" />
+        app:translationTextKey="app.menu.home.benefits_block.story_name.new_service_title" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/descTextView"
@@ -48,7 +48,7 @@
         android:gravity="center"
         android:textSize="16sp"
         app:lineHeight="28sp"
-        app:translationTextKey="Консультации по любому имущественному вопросу, ремонт, удалённая диагностика, сопровождение Онлайн Мастера 24/7 и многое другое в одном приложении!" />
+        app:translationTextKey="app.menu.home.benefits_block.story_description.new_service_title" />
 
     <View
         android:id="@+id/newServiceRightFrameLayout"

@@ -43,7 +43,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_goneMarginBottom="12dp"
-        app:translationTextKey="Далее" />
+        app:translationTextKey="app.onboarding.next_button" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/skipTextView"
@@ -56,6 +56,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:translationTextKey="Пропустить" />
+        app:translationTextKey="app.onboarding.skip_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

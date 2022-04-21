@@ -20,7 +20,7 @@
         android:gravity="center"
         android:textColor="@color/secondary500"
         android:textSize="14sp"
-        app:translationTextKey="Не удаётся загрузить данные" />
+        app:translationTextKey="app.menu.error_view.title" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/reloadTextView"
@@ -35,6 +35,6 @@
         android:fontFamily="@font/suisse_regular"
         android:textColor="@color/secondary900"
         android:textSize="14sp"
-        app:translationTextKey="Повторить попытку" />
+        app:translationTextKey="app.menu.error_view.retry_title" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

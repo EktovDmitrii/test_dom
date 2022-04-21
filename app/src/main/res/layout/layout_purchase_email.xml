@@ -34,7 +34,7 @@
         app:layout_constraintEnd_toStartOf="@id/arrowRightImageView"
         app:layout_constraintStart_toEndOf="@id/emailImageView"
         app:layout_constraintTop_toTopOf="parent"
-        app:translationTextKey="Добавить почту для чека" />
+        app:translationTextKey="app.order_detail.email_forcheck_title" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/arrowRightImageView"

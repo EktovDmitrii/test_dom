@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.utils
 import android.text.Editable
 import android.util.Log
 import com.custom.rgs_android_dom.domain.chat.models.OrderTimeModel
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import org.joda.time.LocalDate
@@ -101,4 +102,4 @@ fun OrderTimeModel.formatOrderTime(): String {
     return "${this.from} - ${this.to}"
 }
 
-fun String.formatDeliveryTime() = "Работа займет ~$this"
+fun String.formatDeliveryTime() = "${TranslationInteractor.getTranslation("app.support_service.prefix_titles.work_estimation")} $this"

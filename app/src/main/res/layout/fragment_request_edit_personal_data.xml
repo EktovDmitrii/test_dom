@@ -34,7 +34,7 @@
             android:textColor="@color/secondary900"
             android:includeFontPadding="false"
             android:gravity="center"
-            app:translationTextKey="Вы действительно\nхотите оставить заявку?"/>
+            app:translationTextKey="app.profile.client_edit_request.question_title_label"/>
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/descriptionTextView"
@@ -48,7 +48,7 @@
             android:gravity="center"
             android:lineSpacingExtra="24dp"
             android:lineSpacingMultiplier="0"
-            app:translationTextKey="Онлайн Мастер свяжется с вами в чате, чтобы уточнить несколько вопросов"/>
+            app:translationTextKey="app.profile.client_edit_request.question_body_label"/>
 
         <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullWidth
             android:id="@+id/confirmTextView"
@@ -56,7 +56,7 @@
             android:layout_width="match_parent"
             android:layout_marginTop="32dp"
             android:paddingHorizontal="4dp"
-            app:translationTextKey="Отправить заявку" />
+            app:translationTextKey="app.profile.client_edit_request.confirm_button" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullWidth
             android:id="@+id/successTextView"
@@ -66,7 +66,7 @@
             android:layout_marginBottom="22dp"
             android:paddingHorizontal="4dp"
             android:visibility="gone"
-            app:translationTextKey="Отлично!"/>
+            app:translationTextKey="app.profile.client_edit_request.confirm_sended_button"/>
 
         <com.custom.rgs_android_dom.views.text.MSDTextViewSecondary
             android:id="@+id/cancelTextView"
@@ -74,7 +74,7 @@
             style="@style/Button.WithoutBg.Secondary"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="22dp"
-            app:translationTextKey="Нет, спасибо"/>
+            app:translationTextKey="app.profile.client_edit_request.cancel_button"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

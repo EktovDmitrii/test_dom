@@ -14,6 +14,7 @@ import com.custom.rgs_android_dom.databinding.FragmentPropertyDetailsBinding
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.details.view_states.PropertyDetailsViewState
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsAdapter
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsFragment
@@ -150,7 +151,7 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
         binding.apartmentDataLinearLayout.gone()
         binding.homeDataLinearLayout.visible()
         val cityName = propertyDetailsViewState.address.cityName
-        binding.cityNameHomeTextInputLayout.setText( if ( cityName.isNotEmpty() ) { cityName } else {"Не определено"} )
+        binding.cityNameHomeTextInputLayout.setText( if ( cityName.isNotEmpty() ) { cityName } else {TranslationInteractor.getTranslation("app.object_detail.documents.no_data_placeholder")} )
         binding.corpusHomeTextInputLayout.setText(propertyDetailsViewState.corpus)
     }
 
@@ -158,7 +159,7 @@ class PropertyDetailsFragment : BaseFragment<PropertyDetailsViewModel, FragmentP
         binding.apartmentDataLinearLayout.visible()
         binding.homeDataLinearLayout.gone()
         val cityName = propertyDetailsViewState.address.cityName
-        binding.cityNameApartmentTextInputLayout.setText( if ( cityName.isNotEmpty() ) { cityName } else {"Не определено"} )
+        binding.cityNameApartmentTextInputLayout.setText( if ( cityName.isNotEmpty() ) { cityName } else {TranslationInteractor.getTranslation("app.object_detail.documents.no_data_placeholder")} )
         binding.corpusApartmentTextInputLayout.setText(propertyDetailsViewState.corpus)
     }
 

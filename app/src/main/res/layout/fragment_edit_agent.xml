@@ -32,7 +32,7 @@
                 android:fontFamily="@font/my_service_medium"
                 android:textColor="@color/secondary900"
                 android:textSize="16sp"
-                app:translationTextKey="Редактировать данные"/>
+                app:translationTextKey="app.agent_info_edit.view_title"/>
 
         </FrameLayout>
 
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:digits="@string/acceptable_agent_code_chars"
             app:translationHintKey="999999"
-            app:translationLabelKey="Код агента" />
+            app:translationLabelKey="app.agent_info_edit.agent_code_title" />
 
         <com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
             android:id="@+id/agentPhoneEditText"
@@ -65,7 +65,7 @@
             app:hintAlwaysVisible="true"
             app:mask="+7 [000] [000]-[00]-[00]"
             app:translationHintKey="app.profile.add.agent_info.phone.placeholder"
-            app:translationLabelKey="Номер телефона агента" />
+            app:translationLabelKey="app.agent_info_edit.agent_phone_label" />
 
 
 
@@ -87,7 +87,7 @@
             android:layout_gravity="end"
             android:layout_marginEnd="20dp"
             android:enabled="false"
-            app:translationTextKey="Сохранить" />
+            app:translationTextKey="app.agent_info_edit.save_button" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 </RelativeLayout>

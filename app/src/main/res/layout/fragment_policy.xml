@@ -107,7 +107,7 @@
                     android:textSize="10sp"
                     app:lineHeight="16sp"
                     app:textAllCaps="true"
-                    app:translationTextKey="Адрес" />
+                    app:translationTextKey="app.polices.polices_detail_view.address_label" />
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:id="@+id/addressTextView"
@@ -137,7 +137,7 @@
                     android:textSize="10sp"
                     app:lineHeight="16sp"
                     app:textAllCaps="true"
-                    app:translationTextKey="Номер полиса" />
+                    app:translationTextKey="app.polices.polices_detail_view.policy_number_label" />
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:id="@+id/policyDataTextView"
@@ -163,7 +163,7 @@
                     android:textSize="10sp"
                     app:lineHeight="16sp"
                     app:textAllCaps="true"
-                    app:translationTextKey="ФИО Страхователя" />
+                    app:translationTextKey="app.polices.polices_detail_view.fullname_label" />
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:id="@+id/clientNameTextView"
@@ -189,7 +189,7 @@
                     android:textSize="10sp"
                     app:lineHeight="16sp"
                     app:textAllCaps="true"
-                    app:translationTextKey="Действует с" />
+                    app:translationTextKey="app.polices.polices_detail_view.valid_from_label" />
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:id="@+id/startDateTextView"
@@ -215,7 +215,7 @@
                     android:textSize="10sp"
                     app:lineHeight="16sp"
                     app:textAllCaps="true"
-                    app:translationTextKey="Действует до" />
+                    app:translationTextKey="app.polices.polices_detail_view.valid_until_label" />
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:id="@+id/expirationDateTextView"

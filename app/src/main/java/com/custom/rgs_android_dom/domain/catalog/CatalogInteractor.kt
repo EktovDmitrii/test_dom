@@ -5,6 +5,7 @@ import com.custom.rgs_android_dom.domain.catalog.models.*
 import com.custom.rgs_android_dom.domain.main.CommentModel
 import com.custom.rgs_android_dom.domain.repositories.CatalogRepository
 import com.custom.rgs_android_dom.domain.repositories.PoliciesRepository
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import io.reactivex.Single
 import org.joda.time.DateTime
 
@@ -133,34 +134,34 @@ class CatalogInteractor(
         return Single.just(
             listOf(
                 CommentModel(
-                    name = "Сергей",
+                    name = TranslationInteractor.getTranslation("app.menu.home.raiting_block.raiting_cell.one_name"),
                     rate = 5,
-                    comment = "Все очень грамотно, быстро, все объяснили по заявке."
+                    comment = TranslationInteractor.getTranslation("app.menu.home.raiting_block.raiting_cell.one_description")
                 ),
                 CommentModel(
-                    name = "Ханума",
+                    name = TranslationInteractor.getTranslation("app.menu.home.raiting_block.raiting_cell.two_name"),
                     rate = 5,
-                    comment = "Все быстро организовали, не пришлось долго ждать, мастер вежливый и культурный"
+                    comment = TranslationInteractor.getTranslation("app.menu.home.raiting_block.raiting_cell.two_description")
                 ),
                 CommentModel(
-                    name = "Ирина",
+                    name = TranslationInteractor.getTranslation("app.menu.home.raiting_block.raiting_cell.three_name"),
                     rate = 5,
-                    comment = "Вовремя приехали, быстро все сделали, мастер очень понравился, готова рекомендовать"
+                    comment = TranslationInteractor.getTranslation("app.menu.home.raiting_block.raiting_cell.three_description")
                 ),
                 CommentModel(
-                    name = "Татьяна",
+                    name = TranslationInteractor.getTranslation("app.menu.home.raiting_block.raiting_cell.four_name"),
                     rate = 5,
-                    comment = "Очень довольна, все было своевременно, мастер был всегда на связи"
+                    comment = TranslationInteractor.getTranslation("app.menu.home.raiting_block.raiting_cell.four_description")
                 ),
                 CommentModel(
-                    name = "Серафима",
+                    name = TranslationInteractor.getTranslation("app.menu.home.raiting_block.raiting_cell.five_name"),
                     rate = 4,
-                    comment = "Мастер - хороший, толковый парень, на все руки мастер"
+                    comment = TranslationInteractor.getTranslation("app.menu.home.raiting_block.raiting_cell.five_description")
                 ),
                 CommentModel(
-                    name = "Анастасия",
+                    name = TranslationInteractor.getTranslation("app.menu.home.raiting_block.raiting_cell.six_name"),
                     rate = 5,
-                    comment = "Супер все быстро организовано, качество работ на высоком уровне, все понравилось"
+                    comment = TranslationInteractor.getTranslation("app.menu.home.raiting_block.raiting_cell.six_description")
                 )
             )
         )

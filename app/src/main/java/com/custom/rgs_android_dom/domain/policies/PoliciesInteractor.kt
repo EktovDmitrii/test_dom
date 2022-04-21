@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.domain.client.exceptions.ValidateFieldModel
 import com.custom.rgs_android_dom.domain.policies.models.*
 import com.custom.rgs_android_dom.domain.repositories.ClientRepository
 import com.custom.rgs_android_dom.domain.repositories.PoliciesRepository
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.policies.insurant.InsurantViewState
 import com.custom.rgs_android_dom.utils.*
 import io.reactivex.Completable
@@ -84,7 +85,7 @@ class PoliciesInteractor(
                 errorsValidate.add(
                     ValidateFieldModel(
                         ClientField.BIRTHDATE,
-                        "Проверьте, правильно ли введена дата рождения"
+                        TranslationInteractor.getTranslation("app.polices.add_step_two.birth_date_error_label")
                     )
                 )
             }

@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.util.Log
 import androidx.appcompat.widget.AppCompatEditText
 import com.custom.rgs_android_dom.R
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 
 class MSDBaseEditText @JvmOverloads constructor(
     context: Context,
@@ -16,7 +17,7 @@ class MSDBaseEditText @JvmOverloads constructor(
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.MSDBaseEditText, 0, 0)
         attrs.getString(R.styleable.MSDBaseEditText_translationHintKey)?.let { translationHintKey ->
             //TODO Add handling translation logic here
-            hint = translationHintKey
+            hint = TranslationInteractor.getTranslation(translationHintKey)
         }
 
 

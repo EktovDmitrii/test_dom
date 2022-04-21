@@ -21,7 +21,7 @@
         android:textSize="13sp"
         android:lineSpacingExtra="24dp"
         android:lineSpacingMultiplier="0"
-        app:translationTextKey="Мой_Сервис Дом — имущественный сервис\nот флагмана отечественного страхования" />
+        app:translationTextKey="app.menu.home.about_service_block.label_title" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/aboutServiceTextView"
@@ -36,6 +36,6 @@
         android:paddingVertical="6dp"
         android:textColor="@color/secondary900"
         android:textSize="14sp"
-        app:translationTextKey="О сервисе" />
+        app:translationTextKey="app.menu.home.about_service_block.button_title" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

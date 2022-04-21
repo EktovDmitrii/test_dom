@@ -53,7 +53,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/moreImageView"
-            app:translationTextKey="app.catalog.tabs.all_services" />
+            app:translationTextKey="app.catalog.default_node.all_service_in_categort_title" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/moreImageView"

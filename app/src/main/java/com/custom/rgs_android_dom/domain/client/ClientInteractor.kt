@@ -354,7 +354,7 @@ ClientInteractor(
                 errorsValidate.add(
                     ValidateFieldModel(
                         ClientField.LASTNAME,
-                        TranslationInteractor.getTranslation("app.profile.add.lastname.validation_error")
+                        TranslationInteractor.getTranslation("app.profile.client_edit.last_name_error_label")
                     )
                 )
             }
@@ -365,7 +365,7 @@ ClientInteractor(
                 errorsValidate.add(
                     ValidateFieldModel(
                         ClientField.FIRSTNAME,
-                        TranslationInteractor.getTranslation("app.profile.add.firstname.validation_error")
+                        TranslationInteractor.getTranslation("app.profile.client_edit.first_name_error_label")
                     )
                 )
             }
@@ -376,7 +376,7 @@ ClientInteractor(
                 errorsValidate.add(
                     ValidateFieldModel(
                         ClientField.MIDDLENAME,
-                        "Проверьте, правильно ли введено отчество"
+                        TranslationInteractor.getTranslation("app.profile.client_edit.middle_name_error_label")
                     )
                 )
             }
@@ -394,7 +394,7 @@ ClientInteractor(
                 errorsValidate.add(
                     ValidateFieldModel(
                         ClientField.BIRTHDATE,
-                        TranslationInteractor.getTranslation("app.profile.add.birthday.validation_error")
+                        TranslationInteractor.getTranslation("app.profile.client_edit.date_birth_error_label")
                     )
                 )
             } else if (!isAdult(birthday)) {
@@ -416,7 +416,7 @@ ClientInteractor(
                 errorsValidate.add(
                     ValidateFieldModel(
                         ClientField.DOC_SERIAL,
-                        "Проверьте, правильно ли введена серия паспорта"
+                        TranslationInteractor.getTranslation("app.profile.client_edit.passport_series_error_label")
                     )
                 )
             }
@@ -424,7 +424,7 @@ ClientInteractor(
                 errorsValidate.add(
                     ValidateFieldModel(
                         ClientField.DOC_NUMBER,
-                        "Проверьте, правильно ли введён номер паспорта"
+                        TranslationInteractor.getTranslation("app.profile.client_edit.passport_number_error_label")
                     )
                 )
             }
@@ -437,7 +437,7 @@ ClientInteractor(
                 errorsValidate.add(
                     ValidateFieldModel(
                         ClientField.DOC_NUMBER,
-                        "Проверьте, правильно ли введён номер паспорта"
+                        TranslationInteractor.getTranslation("app.profile.client_edit.passport_number_error_label")
                     )
                 )
             }
@@ -445,7 +445,7 @@ ClientInteractor(
                 errorsValidate.add(
                     ValidateFieldModel(
                         ClientField.DOC_SERIAL,
-                        "Проверьте, правильно ли введена серия паспорта"
+                        TranslationInteractor.getTranslation("app.profile.client_edit.passport_series_error_label")
                     )
                 )
             }
@@ -455,7 +455,7 @@ ClientInteractor(
             errorsValidate.add(
                 ValidateFieldModel(
                     ClientField.SECOND_PHONE,
-                    "Проверьте, правильно ли введён номер телефона"
+                    TranslationInteractor.getTranslation("app.profile.client_edit.additional_number_error_label")
                 )
             )
         }
@@ -464,7 +464,7 @@ ClientInteractor(
             errorsValidate.add(
                 ValidateFieldModel(
                     ClientField.EMAIL,
-                    "Проверьте, правильно ли введён email"
+                    TranslationInteractor.getTranslation("app.profile.client_edit.email_error_label")
                 )
             )
         }
@@ -562,15 +562,15 @@ ClientInteractor(
     fun updateAgent(): Completable {
         val errorsValidate = ArrayList<ValidateFieldModel>()
         if (editAgentViewState.agentCode.trim().isEmpty()) {
-            errorsValidate.add(ValidateFieldModel(ClientField.AGENTCODE, ""))
+            errorsValidate.add(ValidateFieldModel(ClientField.AGENTCODE, TranslationInteractor.getTranslation("app.agent_info_edit.agent_phone_error_label")))
         }
 
         if (editAgentViewState.agentPhone.trim().isEmpty()) {
-            errorsValidate.add(ValidateFieldModel(ClientField.AGENTPHONE, ""))
+            errorsValidate.add(ValidateFieldModel(ClientField.AGENTPHONE, TranslationInteractor.getTranslation("app.agent_info_edit.agent_phone_error_label")))
         }
 
         if (editAgentViewState.agentPhone.isNotEmpty() && !editAgentViewState.isAgentPhoneValid) {
-            errorsValidate.add(ValidateFieldModel(ClientField.AGENTPHONE, ""))
+            errorsValidate.add(ValidateFieldModel(ClientField.AGENTPHONE, TranslationInteractor.getTranslation("app.agent_info_edit.agent_phone_error_label")))
         }
 
         if (errorsValidate.isNotEmpty()) {
