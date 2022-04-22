@@ -249,7 +249,9 @@ interface MSDApi {
         @Query("status") status: String = "active",
         @Query("productId") productId: String? = null,
         @Query("serviceId") serviceId: String? = null,
-        @Query("contractId") contractId: String? = null): Single<BalanceServicesResponse>
+        @Query("contractId") contractId: String? = null,
+        @Query("balanceGroupByType") balanceGroupByType: String? = null
+    ): Single<BalanceServicesResponse>
 
     @GET("clients/me/billing/cards")
     @ErrorType(MSDNetworkErrorResponse::class)

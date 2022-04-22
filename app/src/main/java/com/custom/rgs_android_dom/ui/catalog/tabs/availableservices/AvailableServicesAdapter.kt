@@ -64,7 +64,7 @@ class AvailableServicesAdapter(
                 .into(binding.iconImageView)
 
             binding.nameTextView.text = item.serviceName
-            if (item.available == INFINITY) {
+            if (item.total == INFINITY) {
                 binding.quantityTextView.text = ""
                 binding.quantityTextView.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.ic_infinity, 0, 0, 0

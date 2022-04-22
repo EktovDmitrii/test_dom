@@ -112,8 +112,8 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
         }
     }
 
-    override fun getAvailableServices(): Single<List<AvailableServiceModel>> {
-        return api.getAvailableServices(size = 5000, index = 0, withBalance = true, businessLine = BuildConfig.BUSINESS_LINE).map { response->
+    override fun getAvailableServices(balanceGroupByType: String?): Single<List<AvailableServiceModel>> {
+        return api.getAvailableServices(size = 5000, index = 0, withBalance = true, businessLine = BuildConfig.BUSINESS_LINE, balanceGroupByType = balanceGroupByType).map { response->
             CatalogMapper.responseToBalanceServices(response).filter { it.available > 0 }
         }
     }
