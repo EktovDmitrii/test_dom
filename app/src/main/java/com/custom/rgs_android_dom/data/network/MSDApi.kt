@@ -9,7 +9,6 @@ import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Single
 import okhttp3.MultipartBody
-import okhttp3.Request
 import retrofit2.http.*
 import kotlin.reflect.KClass
 
@@ -167,11 +166,19 @@ interface MSDApi {
 
     @GET("services/search/query")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getServices(@Query("size") size: Int, @Query("index") index: Int): Single<ServiceItemsResponse>
+    fun getServices(
+        @Query("size") size: Int,
+        @Query("index") index: Int,
+        @Query("businessLine") businessLine: String
+    ): Single<ServiceItemsResponse>
 
     @GET("products/search/query")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getProducts(@Query("size") size: Int, @Query("index") index: Int): Single<ProductItemsResponse>
+    fun getProducts(
+        @Query("size") size: Int,
+        @Query("index") index: Int,
+        @Query("businessLine") businessLine: String
+    ): Single<ProductItemsResponse>
 
     @GET("clients/me/purchase/products/showcase")
     @ErrorType(MSDNetworkErrorResponse::class)
@@ -180,7 +187,9 @@ interface MSDApi {
         @Query("name") name: String? = null,
         @Query("nameOrTag") nameOrTag: String? = null,
         @Query("index") index: Int,
-        @Query("size") size: Long): Single<ProductsForPurchaseResponse>
+        @Query("size") size: Long,
+        @Query("businessLine") businessLine: String
+    ): Single<ProductsForPurchaseResponse>
 
     @GET("guests/purchase/products/showcase")
     @ErrorType(MSDNetworkErrorResponse::class)
@@ -189,12 +198,18 @@ interface MSDApi {
         @Query("name") name: String? = null,
         @Query("nameOrTag") nameOrTag: String? = null,
         @Query("index") index: Int,
-        @Query("size") size: Long
+        @Query("size") size: Long,
+        @Query("businessLine") businessLine: String
     ): Single<ProductsForPurchaseResponse>
 
     @GET("clients/me/balance/products")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getClientProducts(@Query("size") size: Int, @Query("index") index: Int, @Query("contractIds") contractIds: String?, @Query("status") status: String? = null): Single<ClientProductsResponse>
+    fun getClientProducts(
+        @Query("size") size: Int,
+        @Query("index") index: Int,
+        @Query("businessLine") businessLine: String,
+        @Query("contractIds") contractIds: String?,
+        @Query("status") status: String? = null): Single<ClientProductsResponse>
 
     @GET("clients/me/purchase/products/versions/{productVersionId}/details")
     @ErrorType(MSDNetworkErrorResponse::class)
@@ -230,6 +245,7 @@ interface MSDApi {
         @Query("size") size: Int,
         @Query("index") index: Int,
         @Query("withBalance") withBalance: Boolean,
+        @Query("businessLine") businessLine: String,
         @Query("status") status: String = "active",
         @Query("productId") productId: String? = null,
         @Query("serviceId") serviceId: String? = null,
@@ -256,10 +272,7 @@ interface MSDApi {
     fun orderServiceOnBalance(@Body body: OrderServiceRequest, @Query("confirm") confirmOrder: Boolean): Single<OrderResponse>
 
     @GET("clients/me/orders")
-    fun getOrders(@Query("size") size: Long, @Query("index") index: Long): Single<OrdersResponse>
-
-    @GET("clients/me/orders")
-    fun getOrders(): Single<OrdersResponse>
+    fun getOrders(@Query("businessLine") businessLine: String): Single<OrdersResponse>
 
     @GET("clients/me/billing/general-invoices")
     fun getGeneralInvoices(
@@ -276,7 +289,10 @@ interface MSDApi {
     fun getOrderDetail(@Path("orderId") orderId: String): Single<OrderResponse>
 
     @GET("clients/me/crm/tasks/client-cases")
-    fun getCases(@Query("size") size: Long, @Query("index") index: Long): Single<ClientCasesResponse>
+    fun getCases(
+        @Query("size") size: Long,
+        @Query("index") index: Long,
+        @Query("businessLine") businessLine: String): Single<ClientCasesResponse>
 
     @GET("crm/tasks/subtypes/search/query")
     fun getSubtypes(
@@ -311,16 +327,16 @@ interface MSDApi {
     fun declineCall(@Path("channelId") channelId: String, @Path("callId") callId: String): Completable
 
     @POST("insurance/clients/me/agents/tasks/requests/modifications")
-    fun requestEditAgent(): Completable
+    fun requestEditAgent(@Body businessLineRequest: BusinessLineRequest): Completable
 
     @GET("insurance/clients/me/agents/tasks/requests/modifications")
-    fun getRequestEditAgentTasks(): Single<RequestEditAgentTasksResponse>
+    fun getRequestEditAgentTasks(@Query("businessLine") businessLine: String): Single<RequestEditAgentTasksResponse>
 
     @POST("clients/me/tasks/requests/modifications")
-    fun requestEditClient(@Body editClientRequest: EditClientRequest): Completable
+    fun requestEditClient(@Body businessLineRequest: BusinessLineRequest): Completable
 
     @GET("clients/me/tasks/requests/modifications")
-    fun getRequestEditClientTasks(): Single<RequestEditClientTasksResponse>
+    fun getRequestEditClientTasks(@Query("businessLine") businessLine: String): Single<RequestEditClientTasksResponse>
 
     @DELETE("clients/me/billing/cards/{bindingId}")
     @ErrorType(MSDNetworkErrorResponse::class)

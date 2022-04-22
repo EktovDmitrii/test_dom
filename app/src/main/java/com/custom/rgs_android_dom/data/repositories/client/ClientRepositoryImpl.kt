@@ -1,11 +1,12 @@
 package com.custom.rgs_android_dom.data.repositories.client
 
+import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
 import com.custom.rgs_android_dom.data.network.mappers.GeneralInvoiceMapper
 import com.custom.rgs_android_dom.data.network.mappers.OrdersMapper
 import com.custom.rgs_android_dom.data.network.requests.DeleteContactsRequest
-import com.custom.rgs_android_dom.data.network.requests.EditClientRequest
+import com.custom.rgs_android_dom.data.network.requests.BusinessLineRequest
 import com.custom.rgs_android_dom.data.network.requests.SaveTokenRequest
 import com.custom.rgs_android_dom.data.network.requests.UpdateClientRequest
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
@@ -17,10 +18,8 @@ import com.custom.rgs_android_dom.utils.formatPhoneForApi
 import com.custom.rgs_android_dom.utils.formatTo
 import io.reactivex.Completable
 import io.reactivex.Single
-import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import org.joda.time.DateTime
-import org.joda.time.LocalDateTime
 
 class ClientRepositoryImpl(
     private val api: MSDApi,
@@ -173,7 +172,7 @@ class ClientRepositoryImpl(
     }
 
     override fun requestEditAgent(): Completable {
-        return api.requestEditAgent().doOnComplete {
+        return api.requestEditAgent(BusinessLineRequest(BuildConfig.BUSINESS_LINE)).doOnComplete {
             editAgentRequestedSubject.onNext(true)
         }
     }
@@ -183,7 +182,7 @@ class ClientRepositoryImpl(
     }
 
     override fun getRequestEditAgentTasks(): Single<List<RequestEditAgentTaskModel>> {
-        return api.getRequestEditAgentTasks().map {
+        return api.getRequestEditAgentTasks(businessLine = BuildConfig.BUSINESS_LINE).map {
             AgentMapper.responseToRequestEditAgentTaskModel(it)
         }
     }
@@ -199,7 +198,7 @@ class ClientRepositoryImpl(
     }
 
     override fun getOrders(size: Long, index: Long): Single<List<Order>> {
-        return api.getOrders()
+        return api.getOrders(businessLine = BuildConfig.BUSINESS_LINE)
             .flatMap { orderResponse ->
                 val orders = orderResponse.orders
                 if (orders != null){
@@ -259,13 +258,13 @@ class ClientRepositoryImpl(
     }
 
     override fun requestEditClient(): Completable {
-        return api.requestEditClient(EditClientRequest("property")).doOnComplete {
+        return api.requestEditClient(BusinessLineRequest(BuildConfig.BUSINESS_LINE)).doOnComplete {
             editClientRequestedSubject.onNext(true)
         }
     }
 
     override fun getRequestEditClientTasks(): Single<List<RequestEditClientTaskModel>> {
-        return api.getRequestEditClientTasks().map {
+        return api.getRequestEditClientTasks(businessLine = BuildConfig.BUSINESS_LINE).map {
             ClientMapper.responseToRequestEditClientTasks(it)
         }
     }

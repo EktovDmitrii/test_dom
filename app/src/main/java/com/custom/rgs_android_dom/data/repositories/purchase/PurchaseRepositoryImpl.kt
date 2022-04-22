@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.data.repositories.purchase
 
+import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.OrdersMapper
 import com.custom.rgs_android_dom.data.network.mappers.PurchaseMapper
@@ -81,7 +82,8 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
             email = email,
             saveCard = saveCard,
             objectId = objectId,
-            order = orderRequest
+            order = orderRequest,
+            businessLine = BuildConfig.BUSINESS_LINE
         )
         return api.makeProductPurchase(
             productId = productId,
