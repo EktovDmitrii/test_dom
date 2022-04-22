@@ -49,8 +49,12 @@ class PopularCategoriesAdapter(private val onCategoryClick: (CatalogCategoryMode
         fun bind(model: CatalogCategoryModel) {
 
             binding.titleTextView.text = model.name
-            binding.quantityTextView.text = model.subCategories.sumOf { it.products.size }.formatQuantity()
 
+            val subcategoriesSum = model.subCategories.sumOf { it.products.size } + model.products.size
+
+            //binding.quantityTextView.text = (model.subCategories.sumOf { it.products.size }.formatQuantity() + model.products.size)
+            binding.quantityTextView.text = subcategoriesSum.formatQuantity()
+            
             val requestOptions = RequestOptions().transform( CenterCrop(), RoundedCorners(ROUNDING_RADIUS.dp(binding.root.context)))
 
              GlideApp.with(binding.root.context)
