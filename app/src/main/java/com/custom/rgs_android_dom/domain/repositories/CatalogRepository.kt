@@ -22,7 +22,7 @@ interface CatalogRepository {
 
     fun getProductServiceDetails(productId: String, serviceId: String, serviceVersionId: String?): Single<ServiceModel>
 
-    fun getAvailableServices(): Single<List<AvailableServiceModel>>
+    fun getAvailableServices(balanceGroupByType: String?): Single<List<AvailableServiceModel>>
 
     fun getClientProducts(contractIds: String?): Single<List<ClientProductModel>>
 
