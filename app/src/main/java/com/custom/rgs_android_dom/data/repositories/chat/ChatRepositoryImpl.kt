@@ -523,7 +523,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
         val channelId = client?.getChatChannelId() ?: ""
 
         return Single.zip(
-            api.getCases(size = 5000, index = 0),
+            api.getCases(size = 5000, index = 0, businessLine = BuildConfig.BUSINESS_LINE),
             api.getSubtypes(size = 5000, index = 0, withArchived = true, withInternal = true),
             api.getUnreadPostsCount(channelId)){cases, subtypes, unreadPosts->
 

@@ -45,7 +45,7 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
 
         return api.bindPolicy(request).map { bindPolicyResponse ->
             val contractId = bindPolicyResponse.contract?.id
-            val products = api.getClientProducts(50, 0, contractId, "active").blockingGet()
+            val products = api.getClientProducts(size = 50, index = 0, businessLine = BuildConfig.BUSINESS_LINE, contractIds = contractId, status = "active").blockingGet()
 
             PolicyDialogModel(
                 bound = BoundPolicyDialogModel(
@@ -93,7 +93,7 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
 
         val contractsSingle = api.getPolicyContracts()
 
-        val clientProductsSingle = api.getClientProducts(50, 0, contractIds)
+        val clientProductsSingle = api.getClientProducts(size = 50, index = 0, businessLine = BuildConfig.BUSINESS_LINE, contractIds = contractIds)
 
         return if (!contractIds.isNullOrEmpty()){
             Single.zip(contractsSingle, clientProductsSingle) { contracts, clientProducts ->
@@ -108,9 +108,9 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
     }
 
     override fun getPolicySingle(contractId: String): Single<PolicyModel> {
-        val clientProductsSingle  = api.getClientProducts(1, 0, contractId)
+        val clientProductsSingle  = api.getClientProducts(size = 1, index = 0, businessLine = BuildConfig.BUSINESS_LINE, contractIds = contractId)
         val contractsSingle = api.getPolicyContracts()
-        val availableServicesSingle = api.getAvailableServices(size = 100, index = 0, withBalance = true, contractId = contractId).map { response->
+        val availableServicesSingle = api.getAvailableServices(size = 100, index = 0, withBalance = true, businessLine = BuildConfig.BUSINESS_LINE, contractId = contractId).map { response->
             CatalogMapper.responseToBalanceServices(response)
         }
 
