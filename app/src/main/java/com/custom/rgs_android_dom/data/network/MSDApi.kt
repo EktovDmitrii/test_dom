@@ -253,9 +253,9 @@ interface MSDApi {
         @Query("balanceGroupByType") balanceGroupByType: String? = null
     ): Single<BalanceServicesResponse>
 
-    @GET("clients/me/billing/cards")
+    @GET("clients/me/billing/cards/{merchantType}")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getSavedCards(): Maybe<List<SavedCardResponse>>
+    fun getSavedCards(@Path("merchantType") merchantType: String): Maybe<List<SavedCardResponse>>
 
     @POST("clients/me/purchase/products/{productId}")
     @ErrorType(MSDNetworkErrorResponse::class)
@@ -340,9 +340,9 @@ interface MSDApi {
     @GET("clients/me/tasks/requests/modifications")
     fun getRequestEditClientTasks(@Query("businessLine") businessLine: String): Single<RequestEditClientTasksResponse>
 
-    @DELETE("clients/me/billing/cards/{bindingId}")
+    @DELETE("clients/me/billing/cards/{bindingId}/{merchantType}")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun deleteCard(@Path("bindingId") bindingId: String): Completable
+    fun deleteCard(@Path("bindingId") bindingId: String, @Path("merchantType") merchantType: String): Completable
 
     @POST("communications/push/users/me/devices/{deviceId}/tokens")
     @ErrorType(MSDNetworkErrorResponse::class)

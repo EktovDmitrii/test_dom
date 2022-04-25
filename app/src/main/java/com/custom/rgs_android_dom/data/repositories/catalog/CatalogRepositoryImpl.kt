@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.data.repositories.catalog
 
+import android.util.Log
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.CatalogMapper
@@ -127,7 +128,7 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
     }
 
     override fun getAvailableServiceInProduct(productId: String, clientProductId: String?, serviceId: String): Single<AvailableServiceModel> {
-        return api.getAvailableServices(5000, 0, true, "active", productId, serviceId).map { response->
+        return api.getAvailableServices(size = 5000, index = 0, withBalance = true,  businessLine = BuildConfig.BUSINESS_LINE, status = "active", productId = productId, serviceId = serviceId, balanceGroupByType = "client-service").map { response->
             val services = CatalogMapper.responseToBalanceServices(response)
             if (clientProductId == null) services[0]
             else services.first { it.clientProductId == clientProductId }
