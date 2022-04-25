@@ -22,7 +22,7 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
     private val deletedCardSubject = PublishSubject.create<String>()
 
     override fun getSavedCards(): Single<List<CardModel>> {
-        return api.getSavedCards().toSingle().map { list ->
+        return api.getSavedCards(BuildConfig.MERCHANT_TYPE).toSingle().map { list ->
             list.map { PurchaseMapper.responseToSavedCard(it) }.plus(NewCardModel())
         }.onErrorResumeNext {
             Single.just(listOf(NewCardModel()))
@@ -131,7 +131,7 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
     }
 
     override fun deleteCard(bindingId: String): Completable {
-        return api.deleteCard(bindingId).doOnComplete {
+        return api.deleteCard(bindingId, BuildConfig.MERCHANT_TYPE).doOnComplete {
             deletedCardSubject.onNext(bindingId)
         }
     }
