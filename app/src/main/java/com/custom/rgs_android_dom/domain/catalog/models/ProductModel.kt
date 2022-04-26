@@ -35,7 +35,7 @@ data class ProductModel(
     val versionArchivedAt: DateTime?,
     val versionCode: String?,
     val versionCreatedAt: DateTime?,
-    val versionId: String?,
+    val versionId: String,
     val versionStatus: String?,
     val isPurchased: Boolean = false
 )

@@ -84,26 +84,26 @@ class ChatFragment : BaseBottomSheetFragment<ChatViewModel, FragmentChatBinding>
         binding.messagesRecyclerView.layoutManager = layoutManager
 
         binding.messagesRecyclerView.adapter = ChatAdapter(
-            {
+            onFileClick = {
                 viewModel.onFileClick(it)
                 hideSoftwareKeyboard()
             },
-            {
-               viewModel.onProductClick(it)
+            onWidgetProductClick = {
+               viewModel.onWidgetProductClick(it)
                 hideSoftwareKeyboard()
             },
-            {
+            onWidgetAdditionalInvoiceClick = {
                 if (!it.paymentUrl.isNullOrEmpty()) {
                     viewModel.onWidgetPayClick(it)
                 }
                 hideSoftwareKeyboard()
             },
-            {
-                viewModel.orderDefaultProduct(it)
+            onWidgetOrderDefaultProductClick = {
+                viewModel.onWidgetOrderDefaultProductClick(it)
                 hideSoftwareKeyboard()
             },
-            {
-                viewModel.orderProductService(it)
+            onWidgetOrderComplexProductClick = {
+                viewModel.onWidgetOrderComplexProductClick(it)
                 hideSoftwareKeyboard()
             }
         )
