@@ -58,7 +58,7 @@ class PolicyViewModel(
     }
 
     fun onServiceClick(serviceShortModel: ServiceShortModel,product: ProductLauncher) {
-        catalogInteractor.getProduct(product.productId, product.productVersionId)
+        catalogInteractor.getProductByVersion(product.productId, product.productVersionId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(

@@ -101,7 +101,7 @@ class TabMyProductsViewModel(
                 SingleProductFragment.newInstance(
                     SingleProductLauncher(
                         productId = product.productId,
-                        productVersionId = product.productVersionId,
+                        productVersionId = product.productVersionId ?: "",
                         isPurchased = true
                     )
                 )
@@ -111,7 +111,7 @@ class TabMyProductsViewModel(
                 ProductFragment.newInstance(
                     ProductLauncher(
                         productId = product.productId,
-                        productVersionId = product.productVersionId,
+                        productVersionId = product.productVersionId ?: "",
                         isPurchased = true,
                         clientProductId = product.id,
                         purchaseValidFrom = product.validityFrom,

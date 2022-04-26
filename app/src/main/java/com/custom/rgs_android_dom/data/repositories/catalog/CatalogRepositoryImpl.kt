@@ -76,17 +76,43 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
         }
     }
 
-    override fun getProduct(productId: String, productVersionId: String?): Single<ProductModel> {
-        val request = if (authContentProviderManager.isAuthorized()) api.getProduct(productVersionId ?: productId)
+    override fun getProductByVersion(productId: String, productVersionId: String): Single<ProductModel> {
+        val request = if (authContentProviderManager.isAuthorized()) api.getProductByVersion(productVersionId)
             else api.getGuestProduct(productId)
         return request.map { response->
             CatalogMapper.responseToProduct(response)
         }
     }
 
-    override fun getProductServices(productId: String, productVersionId: String?): Single<List<ServiceShortModel>> {
+    override fun getProduct(productId: String): Single<ProductModel> {
+        val request = if (authContentProviderManager.isAuthorized()) api.getProduct(productId)
+        else api.getGuestProduct(productId)
+        return request.map { response->
+            CatalogMapper.responseToProduct(response)
+        }
+    }
+
+    override fun getProductServicesByVersion(productId: String, productVersionId: String): Single<List<ServiceShortModel>> {
         val productServicesSingle = if (authContentProviderManager.isAuthorized()){
-            api.getProductServicesResponse(productVersionId ?: "", 100, 0)
+            api.getProductServicesByVersion(productVersionId, 100, 0)
+        } else {
+            api.getGuestProductServicesResponse(productId, 100, 0)
+        }
+
+        return productServicesSingle.map { response->
+            return@map if (response.items != null) {
+                response.items.map {
+                    CatalogMapper.responseToServiceShort(it)
+                }
+            } else {
+                listOf()
+            }
+        }
+    }
+
+    override fun getProductServices(productId: String): Single<List<ServiceShortModel>> {
+        val productServicesSingle = if (authContentProviderManager.isAuthorized()){
+            api.getProductServices(productId, 100, 0)
         } else {
             api.getGuestProductServicesResponse(productId, 100, 0)
         }

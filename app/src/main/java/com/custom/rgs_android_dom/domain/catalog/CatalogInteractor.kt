@@ -59,12 +59,37 @@ class CatalogInteractor(
         return catalogRepository.getProducts()
     }
 
-    fun getProduct(productId: String, productVersionId: String?): Single<ProductModel>{
-        return catalogRepository.getProduct(productId, productVersionId)
+    fun getProductByVersion(productId: String, productVersionId: String): Single<ProductModel>{
+        return catalogRepository.getProductByVersion(productId, productVersionId)
     }
 
-    fun getProductServices(productId: String, productVersionId: String?, isPurchased: Boolean, validityFrom: DateTime?): Single<List<ServiceShortModel>> {
-        return catalogRepository.getProductServices(productId, productVersionId).map { services->
+    fun getProduct(productId: String,): Single<ProductModel>{
+        return catalogRepository.getProduct(productId)
+    }
+
+    fun getProductServicesByVersion(productId: String, productVersionId: String, isPurchased: Boolean, validityFrom: DateTime?): Single<List<ServiceShortModel>> {
+        return catalogRepository.getProductServicesByVersion(productId, productVersionId).map { services->
+            if (isPurchased){
+                services.forEach { service->
+                    val availableService = catalogRepository.getAvailableServiceInProduct(productId, null, service.serviceId).blockingGet()
+                    service.quantity = availableService.available.toLong()
+                }
+            }
+            if (validityFrom !=null && validityFrom.isAfterNow){
+                services.forEach { service->
+                    service.canBeOrdered = false
+                }
+            } else{
+                services.forEach{service->
+                    service.canBeOrdered = service.quantity > 0
+                }
+            }
+            return@map services.map { it.copy(isPurchased = isPurchased) }
+        }
+    }
+
+    fun getProductServices(productId: String, isPurchased: Boolean, validityFrom: DateTime?): Single<List<ServiceShortModel>> {
+        return catalogRepository.getProductServices(productId).map { services->
             if (isPurchased){
                 services.forEach { service->
                     val availableService = catalogRepository.getAvailableServiceInProduct(productId, null, service.serviceId).blockingGet()
@@ -178,7 +203,7 @@ class CatalogInteractor(
         }
     }
 
-    fun getFromAvailableServices(serviceId: String): Single<AvailableServiceModel> {
+    fun getServiceFromAvailable(serviceId: String): Single<AvailableServiceModel> {
         return catalogRepository.getAvailableServices("client-service").map { it.firstOrNull { it.id == serviceId } }
     }
 }

@@ -50,7 +50,7 @@ class PaymentSuccessViewModel(
     fun onMoreClick(){
         // TODO Add product verion id
         if (!productVersionId.isNullOrEmpty()) {
-            catalogInteractor.getProduct(productId, productVersionId)
+            catalogInteractor.getProductByVersion(productId, productVersionId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(

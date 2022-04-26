@@ -55,7 +55,7 @@ class ProductViewModel(
         setValidityDate()
         isGoneButtonController.value = isGoneOrderTextView || product.isPurchased
 
-        catalogInteractor.getProduct(product.productId, product.productVersionId)
+        catalogInteractor.getProductByVersion(product.productId, product.productVersionId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
@@ -168,7 +168,7 @@ class ProductViewModel(
     }
 
     private fun getIncludedServices(){
-        catalogInteractor.getProductServices(product.productId, product.productVersionId, product.isPurchased, product.purchaseValidFrom)
+        catalogInteractor.getProductServicesByVersion(product.productId, product.productVersionId, product.isPurchased, product.purchaseValidFrom)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(

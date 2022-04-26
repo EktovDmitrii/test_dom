@@ -213,7 +213,11 @@ interface MSDApi {
 
     @GET("clients/me/purchase/products/versions/{productVersionId}/details")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getProduct(@Path("productVersionId") productVersionId: String): Single<ProductResponse>
+    fun getProductByVersion(@Path("productVersionId") productVersionId: String): Single<ProductResponse>
+
+    @GET("clients/me/purchase/products/{productId}/details")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getProduct(@Path("productId") productId: String): Single<ProductResponse>
 
     @GET("guests/purchase/products/{productId}/details")
     @ErrorType(MSDNetworkErrorResponse::class)
@@ -233,7 +237,11 @@ interface MSDApi {
 
     @GET("clients/me/purchase/products/versions/{productVersionId}/services")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getProductServicesResponse(@Path("productVersionId") productVersionId: String, @Query("size") size: Int, @Query("index") index: Int): Single<ProductServicesResponse>
+    fun getProductServicesByVersion(@Path("productVersionId") productVersionId: String, @Query("size") size: Int, @Query("index") index: Int): Single<ProductServicesResponse>
+
+    @GET("clients/me/purchase/products/{productId}/services")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getProductServices(@Path("productId") productId: String, @Query("size") size: Int, @Query("index") index: Int): Single<ProductServicesResponse>
 
     @GET("chat/users/{userId}/files/{fileId}/preview")
     @ErrorType(MSDNetworkErrorResponse::class)

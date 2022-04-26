@@ -114,7 +114,7 @@ object CatalogMapper {
             versionArchivedAt = response.versionArchivedAt,
             versionCode = response.versionCode,
             versionCreatedAt = response.versionCreatedAt,
-            versionId = response.versionId,
+            versionId = response.versionId ?: "",
             versionStatus = response.versionStatus,
             title = response.title,
             type = response.type
