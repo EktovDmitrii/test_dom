@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.ui.chats
+package com.custom.rgs_android_dom.ui.chats.call_request
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,7 +8,7 @@ import com.custom.rgs_android_dom.domain.chat.models.CaseModel
 import com.custom.rgs_android_dom.domain.chat.models.ChannelMemberModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.chats.chat.ChatFragment
-import com.custom.rgs_android_dom.ui.chats.chat.call.CallFragment
+import com.custom.rgs_android_dom.ui.chats.call.CallFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers

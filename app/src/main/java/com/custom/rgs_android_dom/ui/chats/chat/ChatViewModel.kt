@@ -17,7 +17,7 @@ import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
 import com.custom.rgs_android_dom.ui.catalog.product.ProductLauncher
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductLauncher
-import com.custom.rgs_android_dom.ui.chats.chat.call.CallFragment
+import com.custom.rgs_android_dom.ui.chats.call.CallFragment
 import com.custom.rgs_android_dom.ui.chats.chat.files.viewers.image.ImageViewerFragment
 import com.custom.rgs_android_dom.ui.chats.chat.files.viewers.video.VideoPlayerFragment
 import com.custom.rgs_android_dom.ui.client.order_detail.OrderDetailFragment

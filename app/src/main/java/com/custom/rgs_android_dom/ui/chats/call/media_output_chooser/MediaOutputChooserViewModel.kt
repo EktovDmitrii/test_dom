@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.ui.chats.chat.call.media_output_chooser
+package com.custom.rgs_android_dom.ui.chats.call.media_output_chooser
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

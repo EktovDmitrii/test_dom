@@ -1,7 +1,6 @@
-package com.custom.rgs_android_dom.ui.chats.chat.call
+package com.custom.rgs_android_dom.ui.chats.call
 
 import android.Manifest
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -15,7 +14,7 @@ import com.custom.rgs_android_dom.databinding.FragmentCallBinding
 import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.chats.chat.call.media_output_chooser.MediaOutputChooserFragment
+import com.custom.rgs_android_dom.ui.chats.call.media_output_chooser.MediaOutputChooserFragment
 import com.custom.rgs_android_dom.ui.rationale.RequestRationaleFragment
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.utils.activity.clearLightStatusBar
@@ -110,8 +109,12 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         parametersOf(
             requireArguments().getString(ARC_CHANNEL_ID),
             requireArguments().getSerializable(ARG_CALL_TYPE) as CallType,
-            if (requireArguments().containsKey(ARG_CONSULTANT)) requireArguments().getSerializable(ARG_CONSULTANT) as ChannelMemberModel else null,
-            if (requireArguments().containsKey(ARG_CHAT_CALL_ID)) requireArguments().getString(ARG_CHAT_CALL_ID) else null,
+            if (requireArguments().containsKey(ARG_CONSULTANT)) requireArguments().getSerializable(
+                ARG_CONSULTANT
+            ) as ChannelMemberModel else null,
+            if (requireArguments().containsKey(ARG_CHAT_CALL_ID)) requireArguments().getString(
+                ARG_CHAT_CALL_ID
+            ) else null,
         )
     }
 
@@ -289,6 +292,10 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
                     binding.mediaOutputImageView.setImageResource(R.drawable.ic_bluetooth_24px)
                 }
             }
+        }
+
+        subscribe(viewModel.callAcceptedObserver){
+            playTune("track3.mp3")
         }
 
     }
