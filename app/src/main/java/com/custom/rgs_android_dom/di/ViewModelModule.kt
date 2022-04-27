@@ -24,9 +24,9 @@ import com.custom.rgs_android_dom.ui.catalog.subcategories.CatalogPrimaryProduct
 import com.custom.rgs_android_dom.ui.catalog.tabs.availableservices.TabAvailableServicesViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.catalog.TabCatalogViewModel
 import com.custom.rgs_android_dom.ui.catalog.tabs.products.TabMyProductsViewModel
-import com.custom.rgs_android_dom.ui.chats.CallRequestViewModel
-import com.custom.rgs_android_dom.ui.chats.chat.call.CallViewModel
-import com.custom.rgs_android_dom.ui.chats.chat.call.media_output_chooser.MediaOutputChooserViewModel
+import com.custom.rgs_android_dom.ui.chats.call_request.CallRequestViewModel
+import com.custom.rgs_android_dom.ui.chats.call.CallViewModel
+import com.custom.rgs_android_dom.ui.chats.call.media_output_chooser.MediaOutputChooserViewModel
 import com.custom.rgs_android_dom.ui.rationale.RequestRationaleViewModel
 import com.custom.rgs_android_dom.ui.chats.chat.files.manage.ManageFileViewModel
 import com.custom.rgs_android_dom.ui.chats.chat.files.upload.UploadFilesViewModel

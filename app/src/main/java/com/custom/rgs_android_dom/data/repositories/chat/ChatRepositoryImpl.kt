@@ -315,8 +315,6 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
         val withVideo = (callType == CallType.VIDEO_CALL && cameraEnabled)
 
-        startCallTimer()
-
         val room = LiveKit.connect(
             context,
             BuildConfig.LIVEKIT_URL,
@@ -324,6 +322,8 @@ class ChatRepositoryImpl(private val api: MSDApi,
             ConnectOptions(),
             roomListener
         )
+
+        startCallTimer()
 
         val videoTrack = if (withVideo){
             val videoTrack = room.localParticipant.createVideoTrack()

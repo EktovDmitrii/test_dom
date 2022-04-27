@@ -1,4 +1,4 @@
-package com.custom.rgs_android_dom.ui.chats.chat.call
+package com.custom.rgs_android_dom.ui.chats.call
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -35,6 +35,9 @@ class CallViewModel(private val channelId: String,
     private val callInfoController = MutableLiveData<CallInfoModel>()
     val callInfoObserver: LiveData<CallInfoModel> = callInfoController
 
+    private val callAcceptedController = MutableLiveData<Unit>()
+    val callAcceptedObserver: LiveData<Unit> = callAcceptedController
+
     private var micEnabled = false
     private var cameraEnabled = false
 
@@ -47,6 +50,7 @@ class CallViewModel(private val channelId: String,
                     when (it.event){
                         WsEvent.CALL_JOIN -> {
                             (it as WsCallJoinModel).data?.let { callJoinModel->
+                                callAcceptedController.value = Unit
                                 viewModelScope.launch {
                                     chatInteractor.connectToLiveKitRoom(callJoinModel, callType, cameraEnabled, micEnabled)
                                 }
