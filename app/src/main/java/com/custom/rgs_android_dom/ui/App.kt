@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.di.*
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
@@ -24,6 +25,9 @@ class App: Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+
         FirebaseApp.initializeApp(this)
         activateAppMetrica()
         initKoin()

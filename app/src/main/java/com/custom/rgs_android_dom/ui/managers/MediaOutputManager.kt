@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.managers
 
+import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.bluetooth.BluetoothProfile
@@ -9,6 +10,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.media.AudioDeviceInfo
 import android.media.AudioManager
+import android.util.Log
 import com.custom.rgs_android_dom.domain.chat.models.MediaOutputModel
 import com.custom.rgs_android_dom.domain.chat.models.MediaOutputType
 import io.reactivex.subjects.PublishSubject
@@ -47,8 +49,9 @@ class MediaOutputManager(private val context: Context) {
                 }
             }
         }
-
-        bluetoothManager.adapter.getProfileProxy(context, serviceListener, BluetoothProfile.HEADSET)
+        if (bluetoothManager.adapter != null){
+            bluetoothManager.adapter.getProfileProxy(context, serviceListener, BluetoothProfile.HEADSET)
+        }
 
         val btConnectionBroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
@@ -129,7 +132,7 @@ class MediaOutputManager(private val context: Context) {
             )
         }
 
-        if (bluetoothManager.adapter.isEnabled){
+        if (bluetoothManager.adapter != null && bluetoothManager.adapter.isEnabled){
             val devices = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS)
             for (device in devices) {
                 if (device.type == AudioDeviceInfo.TYPE_BLUETOOTH_A2DP || device.type == AudioDeviceInfo.TYPE_BLUETOOTH_SCO) {

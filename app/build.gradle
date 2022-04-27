@@ -29,6 +29,7 @@ android {
         targetSdkVersion 31
         versionCode 4
         versionName "0.0.2"
+        vectorDrawables.useSupportLibrary = true
     }
 
     signingConfigs {

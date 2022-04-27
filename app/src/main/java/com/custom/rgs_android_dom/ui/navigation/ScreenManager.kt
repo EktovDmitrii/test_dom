@@ -195,7 +195,13 @@ object ScreenManager {
             transaction.show(it)
         }
 
-        transaction.commitNow()
+        // TODO Find out why manager is executing transaction
+        try {
+            transaction.commitNow()
+        } catch (e: Exception){
+            logException(this, e)
+        }
+
 
         reInit()
         notifyCurrentVisibleFragment()
