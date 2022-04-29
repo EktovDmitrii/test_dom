@@ -217,7 +217,11 @@ class CallViewModel(private val channelId: String,
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
+            .subscribeBy (
+                onError = {
+                    logException(this, it)
+                }
+            )
             .addTo(dataCompositeDisposable)
     }
 }

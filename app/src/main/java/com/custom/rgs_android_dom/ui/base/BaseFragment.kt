@@ -82,6 +82,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(layout: Int) : 
 
     protected fun playTune(name: String, isLoop: Boolean = false) {
         try {
+            mediaPlayer.reset()
             val descriptor = requireContext().assets.openFd(name)
             mediaPlayer.setDataSource(
                 descriptor.fileDescriptor,
