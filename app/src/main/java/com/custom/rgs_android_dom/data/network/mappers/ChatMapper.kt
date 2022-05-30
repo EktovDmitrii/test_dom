@@ -144,7 +144,7 @@ object ChatMapper{
                 objType = details.objType,
                 orderDate = details.orderDate,
                 orderTime = details.orderTime.let { OrderTimeModel(from = it?.from, to = it?.to) },
-                productId = details.productId,
+                productId = details.productId ?: "",
                 widgetType = WidgetType.OrderDefaultProduct,
                 price = if (details.price is Double) details.price.toInt() else null
             )
@@ -153,7 +153,7 @@ object ChatMapper{
                 description = details.description,
                 name = details.name,
                 price = if (details.price != null && details.price !is Double) WidgetPriceModel(amount = ((details.price as LinkedTreeMap<*, *>)["Amount"] as Double?)?.toInt(), vatType = details.price["VatType"].toString(), fix = details.price["Fix"] == true) else null,
-                productId = details.productId,
+                productId = details.productId ?: "",
                 widgetType = WidgetType.Product
             )
             else -> throw IllegalArgumentException("wrong type widget type: ${details.widgetType}")

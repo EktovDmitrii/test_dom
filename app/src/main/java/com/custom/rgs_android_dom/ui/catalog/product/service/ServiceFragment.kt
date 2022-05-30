@@ -8,6 +8,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentServiceBinding
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.catalog.ProductAdvantagesAdapter
 import com.custom.rgs_android_dom.utils.*
@@ -41,7 +42,7 @@ class ServiceFragment : BaseBottomSheetFragment<ServiceViewModel, FragmentServic
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.detailButton.btnTitle.text = "Заказать"
+        binding.detailButton.btnTitle.text = TranslationInteractor.getTranslation("app.product_cards.service_detail_view.buy_button_order")
 
         binding.advantagesLayout.advantagesRecycler.adapter = ProductAdvantagesAdapter()
 

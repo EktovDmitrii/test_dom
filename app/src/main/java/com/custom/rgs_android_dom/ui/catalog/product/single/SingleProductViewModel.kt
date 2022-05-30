@@ -30,7 +30,7 @@ class SingleProductViewModel(
     val productObserver: LiveData<ProductModel> = productController
 
     init {
-        catalogInteractor.getProduct(product.productId, product.productVersionId)
+        catalogInteractor.getProductByVersion(product.productId, product.productVersionId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
@@ -52,7 +52,7 @@ class SingleProductViewModel(
     fun onCheckoutClick() {
         productController.value?.let { product ->
             if (registrationInteractor.isAuthorized()) {
-                catalogInteractor.getProductServices(
+                catalogInteractor.getProductServicesByVersion(
                     product.id,
                     product.versionId,
                     product.isPurchased,

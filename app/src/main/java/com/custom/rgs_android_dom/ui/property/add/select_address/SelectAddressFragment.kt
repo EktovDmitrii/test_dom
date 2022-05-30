@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentSelectAddressBinding
+import com.custom.rgs_android_dom.domain.property.models.LocationPointModel
 import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.MainActivity
 import com.custom.rgs_android_dom.ui.base.BaseFragment
@@ -22,7 +23,6 @@ import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.utils.activity.hideKeyboardForced
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
-import com.yandex.mapkit.ScreenPoint
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.*
 import com.yandex.metrica.YandexMetrica
@@ -36,7 +36,6 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
     companion object {
         private const val ARG_PROPERTY_COUNT = "ARG_PROPERTY_COUNT"
 
-        private const val ZOOM_LEVEL = 14.0f
         private const val AZIMUTH = 0.0f
         private const val TILT = 0.0f
         private const val ANIMATION_DURATION = 1f
@@ -231,9 +230,9 @@ class SelectAddressFragment : BaseFragment<SelectAddressViewModel, FragmentSelec
         }
     }
 
-    private fun moveToLocation(location: Point){
+    private fun moveToLocation(location: LocationPointModel){
         binding.mapView.map.move(
-            CameraPosition(location, ZOOM_LEVEL, AZIMUTH, TILT),
+            CameraPosition(location.point, location.zoom, AZIMUTH, TILT),
             Animation(Animation.Type.SMOOTH, ANIMATION_DURATION),
             null
         )

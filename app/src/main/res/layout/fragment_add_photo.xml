@@ -12,7 +12,7 @@
         android:paddingVertical="18dp"
         android:textSize="20sp"
         android:textColor="@color/secondary900"
-        app:translationTextKey="Загрузить фотографию"
+        app:translationTextKey="app.profile.client.loading_photo_action"
         android:gravity="center"/>
 
     <View
@@ -28,7 +28,7 @@
         android:paddingVertical="18dp"
         android:textSize="20sp"
         android:textColor="@color/error500"
-        app:translationTextKey="Удалить фотографию"
+        app:translationTextKey="app.profile.client.delete_photo_action"
         android:gravity="center"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

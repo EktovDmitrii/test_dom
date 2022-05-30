@@ -16,13 +16,17 @@ interface CatalogRepository {
 
     fun findProducts(query: String): Single<List<ProductShortModel>>
 
-    fun getProduct(productId: String, productVersionId: String?): Single<ProductModel>
+    fun getProductByVersion(productId: String, productVersionId: String): Single<ProductModel>
 
-    fun getProductServices(productId: String, productVersionId: String?): Single<List<ServiceShortModel>>
+    fun getProduct(productId: String): Single<ProductModel>
+
+    fun getProductServicesByVersion(productId: String, productVersionId: String): Single<List<ServiceShortModel>>
+
+    fun getProductServices(productId: String): Single<List<ServiceShortModel>>
 
     fun getProductServiceDetails(productId: String, serviceId: String, serviceVersionId: String?): Single<ServiceModel>
 
-    fun getAvailableServices(): Single<List<AvailableServiceModel>>
+    fun getAvailableServices(balanceGroupByType: String?): Single<List<AvailableServiceModel>>
 
     fun getClientProducts(contractIds: String?): Single<List<ClientProductModel>>
 

@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
+import android.util.Log
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.responses.*
 import com.custom.rgs_android_dom.domain.catalog.models.*
@@ -113,7 +114,7 @@ object CatalogMapper {
             versionArchivedAt = response.versionArchivedAt,
             versionCode = response.versionCode,
             versionCreatedAt = response.versionCreatedAt,
-            versionId = response.versionId,
+            versionId = response.versionId ?: "",
             versionStatus = response.versionStatus,
             title = response.title,
             type = response.type
@@ -236,13 +237,13 @@ object CatalogMapper {
         val balanceServices = arrayListOf<AvailableServiceModel>()
 
         safeLet(response.balance, response.services){balance, services->
+            val filteredBalance = balance.filter { it.available > 0 } ?: emptyList()
             val filteredServices = services.filter {serviceDetails->
-                balance.find { it.serviceId ==  serviceDetails.serviceId}  != null
+                filteredBalance .find { it.clientServiceId ==  serviceDetails.id}  != null
             }
 
             filteredServices.forEach { serviceDetails->
-                val serviceBalance = balance.find { it.serviceId ==  serviceDetails.serviceId}
-
+                val serviceBalance = filteredBalance.find { it.clientServiceId ==  serviceDetails.id}
                 balanceServices.add(
                     AvailableServiceModel(
                         id = serviceDetails.id,

@@ -124,24 +124,24 @@ class PropertyInfoFragment : BaseBottomSheetFragment<PropertyInfoViewModel, Frag
 
             propertyItem.isOwn?.let { isOwn ->
                 binding.isOwnTextView.setValue(if (isOwn) {
-                    TranslationInteractor.getTranslation("app.object.main.info.yes")
+                    TranslationInteractor.getTranslation("app.object_detail.yes")
                 }else{
-                    TranslationInteractor.getTranslation("app.object.main.info.no")
+                    TranslationInteractor.getTranslation("app.object_detail.no")
                 })
             }
             propertyItem.isRent?.let { isRent ->
                 binding.isRentTextView.setValue(if (isRent) {
-                    TranslationInteractor.getTranslation("app.object.main.info.yes")
+                    TranslationInteractor.getTranslation("app.object_detail.yes")
                 } else {
-                    TranslationInteractor.getTranslation("app.object.main.info.no")
+                    TranslationInteractor.getTranslation("app.object_detail.no")
                 })
             }
             propertyItem.isTemporary?.let { isTemporary ->
                 binding.isTemporaryTextView.setValue(if (isTemporary) {
-                    TranslationInteractor.getTranslation("app.object.main.info.yes")
+                    TranslationInteractor.getTranslation("app.object_detail.yes")
                 }
                 else {
-                    TranslationInteractor.getTranslation("app.object.main.info.no")
+                    TranslationInteractor.getTranslation("app.object_detail.no")
                 })
             }
 

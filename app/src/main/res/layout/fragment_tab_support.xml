@@ -42,7 +42,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/supportImageView"
                 app:lineHeight="28sp"
-                app:translationTextKey="Круглосуточная поддержка" />
+                app:translationTextKey="app.menu.home.benefits_block.story_name.support_title" />
 
             <com.custom.rgs_android_dom.views.text.MSDTextView
                 android:id="@+id/supportDescTextView"
@@ -58,7 +58,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/supportTitleTextView"
                 app:lineHeight="28sp"
-                app:translationTextKey="Не можете найти какую-то услугу? Нужна консультация по саду? Прорвало трубу? Просто спросить? Консультант ответит на любой бытовой вопрос и предложит наилучшее решение!" />
+                app:translationTextKey="app.menu.home.benefits_block.story_description.support_title" />
 
             <View
                 android:id="@+id/supportLeftFrameLayout"
@@ -90,7 +90,7 @@
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     app:lineHeight="24dp"
-                    app:translationTextKey="Всё понятно!" />
+                    app:translationTextKey="app.menu.home.benefits_block.story_description.support_all_ok" />
 
 
             </FrameLayout>

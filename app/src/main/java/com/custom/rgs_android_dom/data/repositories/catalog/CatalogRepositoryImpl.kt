@@ -1,5 +1,7 @@
 package com.custom.rgs_android_dom.data.repositories.catalog
 
+import android.util.Log
+import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.CatalogMapper
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
@@ -23,7 +25,7 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
     }
 
     override fun getProducts(): Single<List<ProductModel>> {
-        return api.getProducts(100, 0).map {response->
+        return api.getProducts(size = 100, index = 0, businessLine = BuildConfig.BUSINESS_LINE).map { response->
             response.items?.map {
                 CatalogMapper.responseToProduct(it)
             }
@@ -31,7 +33,7 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
     }
 
     override fun getServices(): Single<List<ServiceModel>> {
-        return api.getServices(100, 0).map {response->
+        return api.getServices(size = 100, index = 0, businessLine = BuildConfig.BUSINESS_LINE).map {response->
             response.items?.map {
                 CatalogMapper.responseToService(it)
             }
@@ -40,9 +42,9 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
 
     override fun getShowcase(tags: List<String>?): Single<List<ProductShortModel>> {
         val showcaseSingle = if (authContentProviderManager.isAuthorized()){
-            api.getShowcase(tags = tags?.joinToString(","), index = 0, size = 5000)
+            api.getShowcase(tags = tags?.joinToString(","), index = 0, size = 5000, businessLine = BuildConfig.BUSINESS_LINE)
         } else {
-            api.getGuestShowcase(tags = tags?.joinToString(","), index = 0, size = 5000)
+            api.getGuestShowcase(tags = tags?.joinToString(","), index = 0, size = 5000, businessLine = BuildConfig.BUSINESS_LINE)
         }
 
         return showcaseSingle.map { response->
@@ -58,9 +60,9 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
 
     override fun findProducts(query: String): Single<List<ProductShortModel>> {
         val showcaseSingle = if (authContentProviderManager.isAuthorized()){
-            api.getShowcase(nameOrTag = query, index = 0, size = 5000)
+            api.getShowcase(nameOrTag = query, index = 0, size = 5000, businessLine = BuildConfig.BUSINESS_LINE)
         } else {
-            api.getGuestShowcase(nameOrTag = query, index = 0, size = 5000)
+            api.getGuestShowcase(nameOrTag = query, index = 0, size = 5000, businessLine = BuildConfig.BUSINESS_LINE)
         }
 
         return showcaseSingle.map { response->
@@ -74,17 +76,43 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
         }
     }
 
-    override fun getProduct(productId: String, productVersionId: String?): Single<ProductModel> {
-        val request = if (authContentProviderManager.isAuthorized()) api.getProduct(productVersionId ?: productId)
+    override fun getProductByVersion(productId: String, productVersionId: String): Single<ProductModel> {
+        val request = if (authContentProviderManager.isAuthorized()) api.getProductByVersion(productVersionId)
             else api.getGuestProduct(productId)
         return request.map { response->
             CatalogMapper.responseToProduct(response)
         }
     }
 
-    override fun getProductServices(productId: String, productVersionId: String?): Single<List<ServiceShortModel>> {
+    override fun getProduct(productId: String): Single<ProductModel> {
+        val request = if (authContentProviderManager.isAuthorized()) api.getProduct(productId)
+        else api.getGuestProduct(productId)
+        return request.map { response->
+            CatalogMapper.responseToProduct(response)
+        }
+    }
+
+    override fun getProductServicesByVersion(productId: String, productVersionId: String): Single<List<ServiceShortModel>> {
         val productServicesSingle = if (authContentProviderManager.isAuthorized()){
-            api.getProductServicesResponse(productVersionId ?: "", 100, 0)
+            api.getProductServicesByVersion(productVersionId, 100, 0)
+        } else {
+            api.getGuestProductServicesResponse(productId, 100, 0)
+        }
+
+        return productServicesSingle.map { response->
+            return@map if (response.items != null) {
+                response.items.map {
+                    CatalogMapper.responseToServiceShort(it)
+                }
+            } else {
+                listOf()
+            }
+        }
+    }
+
+    override fun getProductServices(productId: String): Single<List<ServiceShortModel>> {
+        val productServicesSingle = if (authContentProviderManager.isAuthorized()){
+            api.getProductServices(productId, 100, 0)
         } else {
             api.getGuestProductServicesResponse(productId, 100, 0)
         }
@@ -111,14 +139,14 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
         }
     }
 
-    override fun getAvailableServices(): Single<List<AvailableServiceModel>> {
-        return api.getAvailableServices(5000, 0, true).map { response->
+    override fun getAvailableServices(balanceGroupByType: String?): Single<List<AvailableServiceModel>> {
+        return api.getAvailableServices(size = 5000, index = 0, withBalance = true, businessLine = BuildConfig.BUSINESS_LINE, balanceGroupByType = balanceGroupByType).map { response->
             CatalogMapper.responseToBalanceServices(response).filter { it.available > 0 }
         }
     }
 
     override fun getClientProducts(contractIds: String?): Single<List<ClientProductModel>> {
-        return api.getClientProducts(5000, 0, contractIds, "active").map {response ->
+        return api.getClientProducts(size = 5000, index = 0, businessLine = BuildConfig.BUSINESS_LINE, contractIds = contractIds, status = "active").map { response ->
             return@map if (response.clientProducts != null){
                 response.clientProducts.map { CatalogMapper.responseToClientProduct(it) }
             } else listOf()
@@ -126,7 +154,7 @@ class CatalogRepositoryImpl(private val api: MSDApi, private val authContentProv
     }
 
     override fun getAvailableServiceInProduct(productId: String, clientProductId: String?, serviceId: String): Single<AvailableServiceModel> {
-        return api.getAvailableServices(5000, 0, true, "active", productId, serviceId).map { response->
+        return api.getAvailableServices(size = 5000, index = 0, withBalance = true,  businessLine = BuildConfig.BUSINESS_LINE, status = "active", productId = productId, serviceId = serviceId, balanceGroupByType = "client-service").map { response->
             val services = CatalogMapper.responseToBalanceServices(response)
             if (clientProductId == null) services[0]
             else services.first { it.clientProductId == clientProductId }

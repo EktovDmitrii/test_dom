@@ -44,13 +44,13 @@ class PolicyFragment : BaseFragment<PolicyViewModel, FragmentPolicyBinding>(R.la
                 onServiceClick = { serviceShortModel ->
                     viewModel.onServiceClick(
                         serviceShortModel,
-                        ProductLauncher(it.productId, null)
+                        ProductLauncher(it.productId, "")
                     )
                 },
                 onOrderClick = { serviceShortModel ->
                     viewModel.onServiceOrderClick(
                         serviceShortModel,
-                        ProductLauncher(it.productId, null)
+                        ProductLauncher(it.productId, "")
                     )
                 }
             )

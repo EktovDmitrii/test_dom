@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.utils
 import android.text.Editable
 import android.util.Log
 import com.custom.rgs_android_dom.domain.chat.models.OrderTimeModel
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import org.joda.time.LocalDate
@@ -109,3 +110,5 @@ fun String.md5(): String {
     val md = MessageDigest.getInstance("MD5")
     return BigInteger(1, md.digest(this.toByteArray())).toString(16).padStart(32, '0')
 }
+
+fun String.formatDeliveryTime() = "${TranslationInteractor.getTranslation("app.support_service.prefix_titles.work_estimation")} $this"

@@ -1,6 +1,5 @@
-package com.custom.rgs_android_dom.ui.chats
+package com.custom.rgs_android_dom.ui.chats.call_request
 
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.View
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners

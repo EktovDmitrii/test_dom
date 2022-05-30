@@ -16,7 +16,10 @@ data class PurchaseProductRequest(
     val saveCard: Boolean,
 
     @SerializedName("order")
-    val order: OrderRequest?
+    val order: OrderRequest?,
+
+    @SerializedName("businessLine")
+    val businessLine: String
 )
 
 data class OrderRequest(

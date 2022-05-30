@@ -25,7 +25,7 @@
             android:textSize="16sp"
             android:textColor="@color/secondary900"
             android:layout_marginTop="6dp"
-            app:translationTextKey="Чаты"/>
+            app:translationTextKey="app.chat.chat_list.title"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -65,7 +65,7 @@
                     android:fontFamily="@font/suisse_regular"
                     android:textSize="14sp"
                     android:textColor="@color/secondary400"
-                    app:translationTextKey="Архив"
+                    app:translationTextKey="app.chat.chat_list.archive_delimeter_title"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>

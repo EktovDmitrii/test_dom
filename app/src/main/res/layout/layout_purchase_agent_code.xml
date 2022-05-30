@@ -30,7 +30,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/codeAgentImageView"
         app:layout_constraintTop_toTopOf="parent"
-        app:translationTextKey="app.profile.menu.agent_code" />
+        app:translationTextKey="app.agent_info_edit.agent_code_title" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/arrowRightImageView"

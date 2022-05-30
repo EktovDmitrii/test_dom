@@ -15,7 +15,7 @@
         android:textAllCaps="true"
         android:textColor="@color/secondary600"
         android:textSize="10sp"
-        app:translationTextKey="Сроки действия и условия"
+        app:translationTextKey="app.product_cards.product_detail_view.validaty.terms_conditions"
         />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView

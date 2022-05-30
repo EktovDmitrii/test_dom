@@ -67,7 +67,7 @@
             android:lineHeight="28dp"
             android:lineSpacingMultiplier="0"
             android:lineSpacingExtra="28dp"
-            app:translationTextKey="У вас нет ни одного объекта,\nхотите добавить?"/>
+            app:translationTextKey="app.product.purchase.select_property.no_property"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -102,7 +102,7 @@
                 android:fontFamily="@font/my_service_bold"
                 android:textColor="@color/primary500"
                 android:textSize="14sp"
-                app:translationTextKey="Добавить новый объект" />
+                app:translationTextKey="app.product.purchase.select_property.add_object" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 

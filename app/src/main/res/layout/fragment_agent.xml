@@ -33,7 +33,7 @@
                 android:fontFamily="@font/my_service_medium"
                 android:textColor="@color/secondary900"
                 android:textSize="16sp"
-                app:translationTextKey="Данные агента" />
+                app:translationTextKey="app.agent_info.view_title" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/editImageView"
@@ -64,14 +64,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                app:translationLabelKey="Код агента" />
+                app:translationLabelKey="app.agent_info.agent_code_label" />
 
             <com.custom.rgs_android_dom.views.text.MSDLabelTextView
                 android:id="@+id/agentPhoneTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                app:translationLabelKey="Номер телефона агента" />
+                app:translationLabelKey="app.agent_info.agent_phone_label" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/requestEditLinearLayout"
@@ -96,7 +96,7 @@
                     android:lineSpacingMultiplier="0"
                     android:textColor="@color/secondary500"
                     android:textSize="14sp"
-                    app:translationTextKey="Код агента и номер телефона можно изменить только по запросу" />
+                    app:translationTextKey="app.agent_info.request_top_label" />
 
                 <com.custom.rgs_android_dom.views.text.MSDTextView
                     android:id="@+id/requestEditTextView"
@@ -108,7 +108,7 @@
                     android:lineSpacingMultiplier="0"
                     android:textColor="@color/secondary500"
                     android:textSize="14sp"
-                    app:translationTextKey="Пожалуйста, оставьте заявку, чтобы изменить код и номер телефона агента." />
+                    app:translationTextKey="app.agent_info.request_submit_label" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -133,7 +133,7 @@
                     android:lineSpacingMultiplier="0"
                     android:textColor="@color/secondary500"
                     android:textSize="14sp"
-                    app:translationTextKey="Заявка на редактирование данных будет рассмотрена." />
+                    app:translationTextKey="app.agent_info.request_submited_top_label" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.appcompat.widget.LinearLayoutCompat>

@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentRequestEditPersonalDataBinding
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.utils.*
 import com.yandex.metrica.YandexMetrica
@@ -36,10 +37,10 @@ class RequestEditPersonalDataFragment() : BaseBottomSheetFragment<RequestEditPer
             binding.cancelTextView.isVisible = !isVisible
 
             if (isVisible){
-                binding.titleTextView.text = "Заявка отправлена.\nОператор свяжется с вами"
+                binding.titleTextView.text = TranslationInteractor.getTranslation("app.profile.client_edit_request.question_sended_label")
                 binding.iconImageView.setImageResource(R.drawable.ic_success_question)
             } else {
-                binding.titleTextView.text = "Вы действительно\nхотите оставить заявку?"
+                binding.titleTextView.text = TranslationInteractor.getTranslation("\"app.profile.client_edit_request.question_title_label")
                 binding.iconImageView.setImageResource(R.drawable.ic_question)
             }
         }

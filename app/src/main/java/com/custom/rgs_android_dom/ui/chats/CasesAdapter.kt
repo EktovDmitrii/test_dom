@@ -14,6 +14,7 @@ import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.ItemCaseItemBinding
 import com.custom.rgs_android_dom.domain.chat.models.CaseModel
 import com.custom.rgs_android_dom.domain.chat.models.CaseSubStatus
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.utils.*
 
 class CasesAdapter(private val onCaseClick: (CaseModel) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -114,12 +115,15 @@ class CasesAdapter(private val onCaseClick: (CaseModel) -> Unit) : RecyclerView.
                 binding.statusTextView.text = when (model.subStatus){
                     CaseSubStatus.CANCELLED -> {
                         "Отменен"
+                        TranslationInteractor.getTranslation("app.chat.chat_list.case_substatus_cancelled")
                     }
                     CaseSubStatus.SOLVED -> {
                         "Выполнен"
+                        TranslationInteractor.getTranslation("app.chat.chat_list.case_substatus_solved")
                     }
                     CaseSubStatus.DELETED -> {
                         "Отложен"
+                        TranslationInteractor.getTranslation("app.chat.chat_list.case_substatus_deleted")
                     }
                     else -> {
                         ""

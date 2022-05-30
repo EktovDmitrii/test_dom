@@ -8,6 +8,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentSingleProductBinding
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.catalog.ProductAdvantagesAdapter
 import com.custom.rgs_android_dom.utils.*
@@ -59,6 +60,7 @@ class SingleProductFragment :
                 .into(binding.header.logoImageView)
 
             binding.validity.validityValue.text = product.duration.toString() + " после покупки"
+
             binding.header.headerTitle.text = product.name
             binding.header.headerDescription.text = product.title
             binding.about.aboutValue.text = product.description?.let { descr ->
@@ -87,11 +89,11 @@ class SingleProductFragment :
             }
 
             if (product.isPurchased) {
-                binding.checkoutButton.btnTitle.text = "Заказать"
+                binding.checkoutButton.btnTitle.text = TranslationInteractor.getTranslation("app.product_cards.service_detail_view.buy_button_order")
                 binding.checkoutButton.btnTitle.gravity = Gravity.CENTER
                 binding.checkoutButton.btnPriceGroup.gone()
             } else {
-                binding.checkoutButton.btnTitle.text = "Оформить"
+                binding.checkoutButton.btnTitle.text = TranslationInteractor.getTranslation("app.product_cards.service_detail_view.buy_button_arrange")
                 binding.checkoutButton.btnPriceGroup.visible()
             }
         }

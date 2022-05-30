@@ -9,7 +9,7 @@ sealed class WidgetModel(open val widgetType: WidgetType) {
         val description: String?,
         val name: String?,
         val price: WidgetPriceModel?,
-        val productId: String?,
+        val productId: String,
         override val widgetType: WidgetType
     ) : WidgetModel(widgetType)
 
@@ -24,7 +24,7 @@ sealed class WidgetModel(open val widgetType: WidgetType) {
         val objType: String?,
         val orderDate: DateTime?,
         val orderTime: OrderTimeModel?,
-        val productId: String?,
+        val productId: String,
         override val widgetType: WidgetType,
         val price: Int?
     ) : WidgetModel(widgetType)

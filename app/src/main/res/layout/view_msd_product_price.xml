@@ -16,7 +16,7 @@
         android:textSize="10sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:translationTextKey="Стоимость" />
+        app:translationTextKey="app.product_cards.product_detail_view.price_view.price_label" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/priceValue"
@@ -43,7 +43,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/priceTitle"
-        app:translationTextKey="от 1500 ₽" />
+        app:translationTextKey="app.product_cards.product_detail_view.price_view.from_text" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/priceUnfixedTextView"
@@ -99,7 +99,7 @@
         app:layout_constraintBottom_toBottomOf="@id/priceIncludedImageView"
         app:layout_constraintStart_toEndOf="@id/priceIncludedImageView"
         app:layout_constraintTop_toTopOf="@id/priceIncludedImageView"
-        app:translationTextKey="Включено в продукт" />
+        app:translationTextKey="app.product_cards.product_detail_view.price_view.include_product_label" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/priceIncludedGroup"

@@ -17,7 +17,7 @@
         android:fontFamily="@font/my_service_bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:translationTextKey="Популярные услуги"
+        app:translationTextKey="app.menu.home.popular_services_block.title"
         />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
@@ -31,7 +31,7 @@
         android:textColor="@color/primary500"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:translationTextKey="app.catalog.tabs.all"
+        app:translationTextKey="app.menu.home.popular_services_block.button_all.title"
         />
 
     <androidx.recyclerview.widget.RecyclerView

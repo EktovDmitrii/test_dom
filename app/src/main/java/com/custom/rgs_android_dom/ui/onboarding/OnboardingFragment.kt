@@ -5,6 +5,7 @@ import android.view.View
 import androidx.viewpager2.widget.ViewPager2
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentOnboardingBinding
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.utils.*
 import com.google.android.material.tabs.TabLayoutMediator
@@ -24,8 +25,8 @@ class OnboardingFragment :
         override fun onPageSelected(position: Int) {
             binding.skipTextView.visibleIf(position == OnboardingPagerAdapter.TABS_COUNT - 1)
             binding.nextTextView.setText(
-                if (position == OnboardingPagerAdapter.TABS_COUNT - 1) "Войти"
-                else "Далее", false
+                if (position == OnboardingPagerAdapter.TABS_COUNT - 1) TranslationInteractor.getTranslation("app.onboarding.login_button")
+                else TranslationInteractor.getTranslation("app.onboarding.next_button"), false
             )
             super.onPageSelected(position)
         }

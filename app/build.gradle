@@ -27,8 +27,9 @@ android {
         applicationId "ru.moi_service.property"
         minSdkVersion 24
         targetSdkVersion 31
-        versionCode 4
+        versionCode 5
         versionName "0.0.2"
+        vectorDrawables.useSupportLibrary = true
     }
 
     signingConfigs {
@@ -81,6 +82,8 @@ android {
             buildConfigField "String", "YANDEX_APPMETRICA_KEY", '"20d8663f-8e7f-473d-ad7b-b6384a8a76bd"'
             buildConfigField "String", "RME_APP_ID", '"com.custom.my_service_android_client"'
             buildConfigField "String", "LIVEKIT_URL", '"wss://livekit.moi-service.ru"'
+            buildConfigField "String", "BUSINESS_LINE", '"property"'
+            buildConfigField "String", "MERCHANT_TYPE", '"property"'
             manifestPlaceholders = [ authProviderAuthority:"ru.moi_service.property.data.providers" ]
         }
 
@@ -94,6 +97,8 @@ android {
             buildConfigField "String", "YANDEX_APPMETRICA_KEY", '"20d8663f-8e7f-473d-ad7b-b6384a8a76bd"'
             buildConfigField "String", "RME_APP_ID", '"com.custom.my_service_android_client.beta"'
             buildConfigField "String", "LIVEKIT_URL", '"wss://slivekit.moi-service.ru"'
+            buildConfigField "String", "BUSINESS_LINE", '"property"'
+            buildConfigField "String", "MERCHANT_TYPE", '"property"'
             manifestPlaceholders = [ authProviderAuthority:"ru.moi_service.property.test.data.providers" ]
         }
 
@@ -107,6 +112,8 @@ android {
             buildConfigField "String", "YANDEX_APPMETRICA_KEY", '"20d8663f-8e7f-473d-ad7b-b6384a8a76bd"'
             buildConfigField "String", "RME_APP_ID", '"com.custom.my_service_android_client.dev"'
             buildConfigField "String", "LIVEKIT_URL", '"wss://dlivekit.moi-service.ru"'
+            buildConfigField "String", "BUSINESS_LINE", '"property"'
+            buildConfigField "String", "MERCHANT_TYPE", '"property"'
             manifestPlaceholders = [ authProviderAuthority:"ru.moi_service.property.dev.data.providers" ]
         }
 

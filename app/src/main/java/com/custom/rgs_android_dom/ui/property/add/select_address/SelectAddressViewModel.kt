@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.address.AddressInteractor
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
+import com.custom.rgs_android_dom.domain.property.models.LocationPointModel
 import com.custom.rgs_android_dom.domain.property.view_states.SelectAddressViewState
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.managers.LocationManager
@@ -26,13 +27,18 @@ class SelectAddressViewModel(private val propertyCount: Int,
                              context: Context
 ) : BaseViewModel() {
 
+    companion object {
+        private const val DEFAULT_ZOOM_LEVEL = 14.0f
+        private const val MAX_ZOOM_LEVEL = 17.5f
+    }
+
     private val locationManager = LocationManager(context)
 
     private val selectAddressViewStateController = MutableLiveData<SelectAddressViewState>()
     val selectAddressViewStateObserver: LiveData<SelectAddressViewState> = selectAddressViewStateController
 
-    private val locationController = MutableLiveData<Point>()
-    val locationObserver: LiveData<Point> = locationController
+    private val locationController = MutableLiveData<LocationPointModel>()
+    val locationObserver: LiveData<LocationPointModel> = locationController
 
     private val showLocationPermissionsRationaleController = MutableLiveData<Boolean>()
     val showLocationPermissionsRationaleObserver: LiveData<Boolean> = showLocationPermissionsRationaleController
@@ -58,7 +64,7 @@ class SelectAddressViewModel(private val propertyCount: Int,
             .subscribeBy(
                 onNext = {
                     propertyInteractor.onPropertyAddressChanged(it)
-                    locationController.value = it.coordinates
+                    locationController.value = LocationPointModel(it.coordinates, MAX_ZOOM_LEVEL)
                 },
                 onError = {
                     propertyInteractor.onPropertyAddressChanged(AddressItemModel.createEmpty())
@@ -75,11 +81,11 @@ class SelectAddressViewModel(private val propertyCount: Int,
     }
 
     fun onLocationPermissionsGranted(){
-        getUserLocation()
+        getUserLocation(DEFAULT_ZOOM_LEVEL)
     }
 
     fun onLocationPermissionsNotGranted(){
-        locationController.value = locationManager.getDefaultLocation()
+        locationController.value = LocationPointModel(locationManager.getDefaultLocation(), DEFAULT_ZOOM_LEVEL)
         //onLocationChanged(locationInteractor.getDefaultLocation())
         propertyInteractor.onFailedToGetLocation()
         loadingStateController.value = LoadingState.CONTENT
@@ -90,11 +96,11 @@ class SelectAddressViewModel(private val propertyCount: Int,
     }
 
     fun onRequestLocationRationaleDialogClosed(){
-        getUserLocation()
+        getUserLocation(DEFAULT_ZOOM_LEVEL)
     }
 
     fun onMyLocationClick(){
-        getUserLocation()
+        getUserLocation(MAX_ZOOM_LEVEL)
     }
 
     fun onLocationChanged(newLocation: Point){
@@ -125,16 +131,16 @@ class SelectAddressViewModel(private val propertyCount: Int,
         }
     }
 
-    private fun getUserLocation(){
+    private fun getUserLocation(zoom: Float){
         locationManager.getCurrentLocation(
             onSuccess = {
-                locationController.value = it
+                locationController.value = LocationPointModel(it, zoom)
                 propertyInteractor.onLocationLoaded()
                 loadingStateController.value = LoadingState.CONTENT
             }, onError = {
                 logException(this, it)
                 propertyInteractor.onFailedToGetLocation()
-                locationController.value = locationManager.getDefaultLocation()
+                locationController.value = LocationPointModel(locationManager.getDefaultLocation(), zoom)
                 loadingStateController.value = LoadingState.CONTENT
             }
         )

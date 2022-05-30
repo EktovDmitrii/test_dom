@@ -15,7 +15,9 @@ import com.custom.rgs_android_dom.domain.purchase.models.PurchaseTimePeriodModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
 import com.custom.rgs_android_dom.ui.catalog.product.ProductLauncher
-import com.custom.rgs_android_dom.ui.chats.chat.call.CallFragment
+import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
+import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductLauncher
+import com.custom.rgs_android_dom.ui.chats.call.CallFragment
 import com.custom.rgs_android_dom.ui.chats.chat.files.viewers.image.ImageViewerFragment
 import com.custom.rgs_android_dom.ui.chats.chat.files.viewers.video.VideoPlayerFragment
 import com.custom.rgs_android_dom.ui.client.order_detail.OrderDetailFragment
@@ -196,18 +198,6 @@ class ChatViewModel(
         ScreenManager.showScreen(callFragment)
     }
 
-    fun onProductClick(widget: WidgetModel.WidgetOrderProductModel) {
-        // TODO Find out how to get productversion id for widget
-        ScreenManager.showBottomScreen(
-            ProductFragment.newInstance(
-                ProductLauncher(
-                    productId = widget.productId ?: "",
-                    productVersionId = null
-                )
-            )
-        )
-    }
-
     fun onChatClose() {
         viewChannel()
         if (backScreen != null) {
@@ -295,50 +285,67 @@ class ChatViewModel(
         )
     }
 
-    fun orderDefaultProduct(widget: WidgetModel.WidgetOrderDefaultProductModel) {
+    // Клик по виджету для заказа комплексного продукта
+    fun onWidgetProductClick(widget: WidgetModel.WidgetOrderProductModel) {
+        catalogInteractor.getProduct(widget.productId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {product->
+                    if (product.defaultProduct){
+                        ScreenManager.showBottomScreen(SingleProductFragment.newInstance(SingleProductLauncher(product.id, product.versionId)))
+                    } else {
+                        ScreenManager.showBottomScreen(ProductFragment.newInstance(ProductLauncher(product.id, product.versionId)))
+                    }
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+    }
+
+    // Обработка заказа дефолтного продукта
+    fun onWidgetOrderDefaultProductClick(widget: WidgetModel.WidgetOrderDefaultProductModel) {
         val propertyRequest: Single<PropertyItemModel> = if (widget.objId != null) {
             propertyInteractor.getPropertyItem(widget.objId)
         } else {
             Single.just(PropertyItemModel.empty())
         }
-        // TODO Find out how to get productVersionId from widget
-        try {
-            widget.productId?.let { id ->
-                Single.zip(
-                    catalogInteractor.getProduct(id, null),
-                    catalogInteractor.getProductServices(id, null, false, null),
-                    propertyRequest
-                ) { product, services, property ->
-                    PurchaseModel(
-                        id = id,
-                        versionId = product.versionId ?: "",
-                        defaultProduct = product.defaultProduct,
-                        duration = product.duration,
-                        deliveryTime = product.deliveryTime,
-                        deliveryType = services[0].serviceDeliveryType,
-                        propertyItemModel = if (!property.isEmpty) property else null,
-                        purchaseDateTimeModel = getPurchaseDate(widget.orderDate, widget.orderTime),
-                        logoSmall = product.logoSmall,
-                        name = product.name,
-                        price = product.price
-                    )
-                }.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeBy(
-                        onSuccess = { purchaseModel ->
-                            val purchaseFragment = PurchaseFragment.newInstance(purchaseModel)
-                            //ScreenManager.showScreenScope(purchaseFragment, PAYMENT)
-                            ScreenManager.showBottomScreen(purchaseFragment)
-                        },
-                        onError = {
-                            ScreenManager.showScreen(WidgetOrderErrorFragment())
-                        }
-                    ).addTo(dataCompositeDisposable)
+        Single.zip(
+            catalogInteractor.getProduct(widget.productId),
+            catalogInteractor.getProductServices(widget.productId, false, null),
+            propertyRequest
+        ) { product, services, property->
+            PurchaseModel(
+                id = widget.productId,
+                versionId = product.versionId ?: "",
+                defaultProduct = product.defaultProduct,
+                duration = product.duration,
+                deliveryTime = product.deliveryTime,
+                deliveryType = services[0].serviceDeliveryType,
+                propertyItemModel = if (!property.isEmpty) property else null,
+                purchaseDateTimeModel = getPurchaseDate(widget.orderDate, widget.orderTime),
+                logoSmall = product.logoSmall,
+                name = product.name,
+                price = product.price
+            )
+        }
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribeBy(
+            onSuccess = {purchaseModel->
+                val purchaseFragment = PurchaseFragment.newInstance(purchaseModel)
+                ScreenManager.showBottomScreen(purchaseFragment)
+            },
+            onError = {
+                logException(this, it)
+                ScreenManager.showScreen(WidgetOrderErrorFragment())
             }
-        } catch (e: Exception) {}
+        ).addTo(dataCompositeDisposable)
     }
 
-    fun orderProductService(widget: WidgetModel.WidgetOrderComplexProductModel) {
+    // Обработка клику по виджету заказа УСЛУГИ НА БАЛАНСЕ (просто у виджета такой нэйминг)
+    fun onWidgetOrderComplexProductClick(widget: WidgetModel.WidgetOrderComplexProductModel) {
         val propertyRequest: Single<PropertyItemModel> = if (widget.objId != null) {
             propertyInteractor.getPropertyItem(widget.objId)
         } else {
@@ -347,7 +354,7 @@ class ChatViewModel(
         widget.clientServiceId?.let { id ->
             Single.zip(
                 propertyRequest,
-                catalogInteractor.getFromAvailableServices(id)
+                catalogInteractor.getServiceFromAvailable(id)
             ) { property, service ->
                 ServiceOrderLauncher(
                     serviceId = service.serviceId,
@@ -358,17 +365,17 @@ class ChatViewModel(
                     dateTime = getPurchaseDate(widget.orderDate, widget.orderTime),
                 )
             }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                    onSuccess = {
-                        val serviceOrderFragment = ServiceOrderFragment.newInstance(it)
-                        ScreenManager.showScreen(serviceOrderFragment)
-                    },
-                    onError = {
-                        ScreenManager.showScreen(WidgetOrderErrorFragment())
-                    }
-                ).addTo(dataCompositeDisposable)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    val serviceOrderFragment = ServiceOrderFragment.newInstance(it)
+                    ScreenManager.showScreen(serviceOrderFragment)
+                },
+                onError = {
+                    ScreenManager.showScreen(WidgetOrderErrorFragment())
+                }
+            ).addTo(dataCompositeDisposable)
         }
     }
 

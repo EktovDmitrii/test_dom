@@ -1,7 +1,6 @@
-package com.custom.rgs_android_dom.ui.chats.chat.call
+package com.custom.rgs_android_dom.ui.chats.call
 
 import android.Manifest
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -15,7 +14,7 @@ import com.custom.rgs_android_dom.databinding.FragmentCallBinding
 import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.chats.chat.call.media_output_chooser.MediaOutputChooserFragment
+import com.custom.rgs_android_dom.ui.chats.call.media_output_chooser.MediaOutputChooserFragment
 import com.custom.rgs_android_dom.ui.rationale.RequestRationaleFragment
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.utils.activity.clearLightStatusBar
@@ -110,8 +109,12 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
         parametersOf(
             requireArguments().getString(ARC_CHANNEL_ID),
             requireArguments().getSerializable(ARG_CALL_TYPE) as CallType,
-            if (requireArguments().containsKey(ARG_CONSULTANT)) requireArguments().getSerializable(ARG_CONSULTANT) as ChannelMemberModel else null,
-            if (requireArguments().containsKey(ARG_CHAT_CALL_ID)) requireArguments().getString(ARG_CHAT_CALL_ID) else null,
+            if (requireArguments().containsKey(ARG_CONSULTANT)) requireArguments().getSerializable(
+                ARG_CONSULTANT
+            ) as ChannelMemberModel else null,
+            if (requireArguments().containsKey(ARG_CHAT_CALL_ID)) requireArguments().getString(
+                ARG_CHAT_CALL_ID
+            ) else null,
         )
     }
 
@@ -246,8 +249,8 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
             when (callInfo.state){
                 CallState.CONNECTING -> {
                     playTune("track1.mp3", true)
-                    binding.titleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.connecting")
-                    binding.subtitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.waiting_operator")
+                    binding.titleTextView.text = TranslationInteractor.getTranslation("app.call.outgoing.connecting_title")
+                    binding.subtitleTextView.text = TranslationInteractor.getTranslation("app.call.outgoing.subtitle_label")
 
                     callInfo.consultant?.let {consultant->
                         showConsultantInfo(consultant)
@@ -256,7 +259,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
                 CallState.ACTIVE -> {
                     mediaPlayer.stop()
                     playTune("track3.mp3")
-                    binding.titleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.online_master")
+                    binding.titleTextView.text = TranslationInteractor.getTranslation("app.call.outgoing.default_consultant_name")
                     binding.subtitleTextView.text = callInfo.duration?.toReadableTime()
 
                     callInfo.consultant?.let {consultant->
@@ -265,7 +268,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
                 }
                 CallState.ERROR -> {
                     mediaPlayer.stop()
-                    binding.titleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.connecting")
+                    binding.titleTextView.text = TranslationInteractor.getTranslation("app.call.outgoing.connecting_title")
                     binding.subtitleTextView.text = TranslationInteractor.getTranslation("app.chats.chat.call.connection_error")
                     binding.signalImageView.visible()
 
@@ -289,6 +292,10 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
                     binding.mediaOutputImageView.setImageResource(R.drawable.ic_bluetooth_24px)
                 }
             }
+        }
+
+        subscribe(viewModel.callAcceptedObserver){
+            playTune("track3.mp3")
         }
 
     }
@@ -352,7 +359,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
     private fun showRequestRecordAudioRationaleDialog(){
         val requestRationaleFragment = RequestRationaleFragment.newInstance(
             requestCode = REQUEST_CODE_MIC,
-            description = TranslationInteractor.getTranslation("app.alert.call_request.audio"),
+            description = TranslationInteractor.getTranslation("app.call.privacy.question_title"),
             icon = R.drawable.device_microphone
         )
         requestRationaleFragment.show(childFragmentManager, requestRationaleFragment.TAG)

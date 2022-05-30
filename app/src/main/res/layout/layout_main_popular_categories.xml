@@ -25,7 +25,7 @@
             android:fontFamily="@font/my_service_bold"
             android:textSize="16sp"
             android:textColor="@color/secondary900"
-            app:translationTextKey="Популярные категории"/>
+            app:translationTextKey="app.menu.home.popular_category_block.title"/>
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/showAllTextView"
@@ -35,7 +35,7 @@
             android:fontFamily="@font/suisse_regular"
             android:textSize="16sp"
             android:textColor="@color/primary500"
-            app:translationTextKey="app.catalog.tabs.all" />
+            app:translationTextKey="app.menu.home.popular_category_block.button_all.title" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

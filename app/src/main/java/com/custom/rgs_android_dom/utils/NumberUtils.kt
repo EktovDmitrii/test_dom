@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.utils
 
 import android.text.Html
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
@@ -52,9 +53,17 @@ fun Int.formatPriceGroupedByThousands(): String {
 
 fun Int.formatQuantity(): String {
     return when {
-        this.toString().takeLast(2).toInt() in 11..19 -> "$this видов услуг"
-        this.toString().takeLast(1).toInt() == 1 -> "$this вид услуг"
-        this.toString().takeLast(1).toInt() in 2..4 -> "$this вида услуг"
-        else -> "$this видов услуг"
+        this.toString().takeLast(2).toInt() in 11..19 -> {
+            "$this ${TranslationInteractor.getTranslation("app.support_service.prefix_titles.countServiceKindText.plurar")} ${TranslationInteractor.getTranslation("app.support_service.prefix_titles.countServiceKindText.service_title")}"
+        }
+        this.toString().takeLast(1).toInt() == 1 -> {
+            "$this ${TranslationInteractor.getTranslation("app.support_service.prefix_titles.countServiceKindText.single")} ${TranslationInteractor.getTranslation("app.support_service.prefix_titles.countServiceKindText.service_title")}"
+        }
+        this.toString().takeLast(1).toInt() in 2..4 -> {
+            "$this ${TranslationInteractor.getTranslation("app.support_service.prefix_titles.countServiceKindText.from")} ${TranslationInteractor.getTranslation("app.support_service.prefix_titles.countServiceKindText.service_title")}"
+        }
+        else -> {
+            "$this ${TranslationInteractor.getTranslation("app.support_service.prefix_titles.countServiceKindText.plurar")} ${TranslationInteractor.getTranslation("app.support_service.prefix_titles.countServiceKindText.service_title")}"
+        }
     }
 }

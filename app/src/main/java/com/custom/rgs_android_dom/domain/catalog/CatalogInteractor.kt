@@ -5,6 +5,7 @@ import com.custom.rgs_android_dom.domain.catalog.models.*
 import com.custom.rgs_android_dom.domain.main.CommentModel
 import com.custom.rgs_android_dom.domain.repositories.CatalogRepository
 import com.custom.rgs_android_dom.domain.repositories.PoliciesRepository
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import io.reactivex.Single
 import org.joda.time.DateTime
 
@@ -58,12 +59,37 @@ class CatalogInteractor(
         return catalogRepository.getProducts()
     }
 
-    fun getProduct(productId: String, productVersionId: String?): Single<ProductModel>{
-        return catalogRepository.getProduct(productId, productVersionId)
+    fun getProductByVersion(productId: String, productVersionId: String): Single<ProductModel>{
+        return catalogRepository.getProductByVersion(productId, productVersionId)
     }
 
-    fun getProductServices(productId: String, productVersionId: String?, isPurchased: Boolean, validityFrom: DateTime?): Single<List<ServiceShortModel>> {
-        return catalogRepository.getProductServices(productId, productVersionId).map { services->
+    fun getProduct(productId: String,): Single<ProductModel>{
+        return catalogRepository.getProduct(productId)
+    }
+
+    fun getProductServicesByVersion(productId: String, productVersionId: String, isPurchased: Boolean, validityFrom: DateTime?): Single<List<ServiceShortModel>> {
+        return catalogRepository.getProductServicesByVersion(productId, productVersionId).map { services->
+            if (isPurchased){
+                services.forEach { service->
+                    val availableService = catalogRepository.getAvailableServiceInProduct(productId, null, service.serviceId).blockingGet()
+                    service.quantity = availableService.available.toLong()
+                }
+            }
+            if (validityFrom !=null && validityFrom.isAfterNow){
+                services.forEach { service->
+                    service.canBeOrdered = false
+                }
+            } else{
+                services.forEach{service->
+                    service.canBeOrdered = service.quantity > 0
+                }
+            }
+            return@map services.map { it.copy(isPurchased = isPurchased) }
+        }
+    }
+
+    fun getProductServices(productId: String, isPurchased: Boolean, validityFrom: DateTime?): Single<List<ServiceShortModel>> {
+        return catalogRepository.getProductServices(productId).map { services->
             if (isPurchased){
                 services.forEach { service->
                     val availableService = catalogRepository.getAvailableServiceInProduct(productId, null, service.serviceId).blockingGet()
@@ -115,7 +141,7 @@ class CatalogInteractor(
     }
 
     fun getAvailableServices(): Single<List<AvailableServiceModel>>{
-        return Single.zip(catalogRepository.getClientProducts(null), catalogRepository.getAvailableServices()){products, services->
+        return Single.zip(catalogRepository.getClientProducts(null), catalogRepository.getAvailableServices("client-service")){products, services->
            return@zip services.filter { service->
                val product = products.find { it.productId == service.productId && it.defaultProduct }
                return@filter product == null
@@ -133,34 +159,34 @@ class CatalogInteractor(
         return Single.just(
             listOf(
                 CommentModel(
-                    name = "Сергей",
+                    name = TranslationInteractor.getTranslation("app.menu.home.raiting_block.raiting_cell.one_name"),
                     rate = 5,
-                    comment = "Все очень грамотно, быстро, все объяснили по заявке."
+                    comment = TranslationInteractor.getTranslation("app.menu.home.raiting_block.raiting_cell.one_description")
                 ),
                 CommentModel(
-                    name = "Ханума",
+                    name = TranslationInteractor.getTranslation("app.menu.home.raiting_block.raiting_cell.two_name"),
                     rate = 5,
-                    comment = "Все быстро организовали, не пришлось долго ждать, мастер вежливый и культурный"
+                    comment = TranslationInteractor.getTranslation("app.menu.home.raiting_block.raiting_cell.two_description")
                 ),
                 CommentModel(
-                    name = "Ирина",
+                    name = TranslationInteractor.getTranslation("app.menu.home.raiting_block.raiting_cell.three_name"),
                     rate = 5,
-                    comment = "Вовремя приехали, быстро все сделали, мастер очень понравился, готова рекомендовать"
+                    comment = TranslationInteractor.getTranslation("app.menu.home.raiting_block.raiting_cell.three_description")
                 ),
                 CommentModel(
-                    name = "Татьяна",
+                    name = TranslationInteractor.getTranslation("app.menu.home.raiting_block.raiting_cell.four_name"),
                     rate = 5,
-                    comment = "Очень довольна, все было своевременно, мастер был всегда на связи"
+                    comment = TranslationInteractor.getTranslation("app.menu.home.raiting_block.raiting_cell.four_description")
                 ),
                 CommentModel(
-                    name = "Серафима",
+                    name = TranslationInteractor.getTranslation("app.menu.home.raiting_block.raiting_cell.five_name"),
                     rate = 4,
-                    comment = "Мастер - хороший, толковый парень, на все руки мастер"
+                    comment = TranslationInteractor.getTranslation("app.menu.home.raiting_block.raiting_cell.five_description")
                 ),
                 CommentModel(
-                    name = "Анастасия",
+                    name = TranslationInteractor.getTranslation("app.menu.home.raiting_block.raiting_cell.six_name"),
                     rate = 5,
-                    comment = "Супер все быстро организовано, качество работ на высоком уровне, все понравилось"
+                    comment = TranslationInteractor.getTranslation("app.menu.home.raiting_block.raiting_cell.six_description")
                 )
             )
         )
@@ -177,7 +203,7 @@ class CatalogInteractor(
         }
     }
 
-    fun getFromAvailableServices(serviceId: String): Single<AvailableServiceModel> {
-        return catalogRepository.getAvailableServices().map { it.firstOrNull { it.id == serviceId } }
+    fun getServiceFromAvailable(serviceId: String): Single<AvailableServiceModel> {
+        return catalogRepository.getAvailableServices("client-service").map { it.firstOrNull { it.id == serviceId } }
     }
 }

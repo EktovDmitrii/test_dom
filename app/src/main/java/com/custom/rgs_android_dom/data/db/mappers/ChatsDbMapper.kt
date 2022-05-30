@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.data.network.responses.CaseResponse
 import com.custom.rgs_android_dom.data.network.responses.ClientCasesResponse
 import com.custom.rgs_android_dom.data.network.responses.SubtypeResponse
 import com.custom.rgs_android_dom.domain.chat.models.*
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.utils.asEnumOrDefault
 import org.joda.time.DateTime
 
@@ -40,7 +41,7 @@ object ChatsDbMapper {
         cases.add(0,
             CaseDbModel(
                 channelId = masterOnlineChannelId,
-                name = "Онлайн Мастер",
+                name = TranslationInteractor.getTranslation("app.chat.chat_start.back_label"),
                 subtype = null,
                 taskId = "",
                 unreadPosts = masterOnlineUnreadPosts,

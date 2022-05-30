@@ -5,6 +5,7 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentTabOnboardingBinding
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setStatusBarColor
@@ -30,11 +31,11 @@ class TabOnboardingFragment :
         super.onViewCreated(view, savedInstanceState)
         val curr = requireArguments().getInt(ARG_POSITION, 0)
         binding.tabTitleTextView.text = when (curr) {
-            0 -> "Удобный сервис\nдля домашних дел"
-            1 -> "Сотни услуг для дома\nв одном месте"
-            2 -> "Привязка страховых\nполисов"
-            3 -> "Онлайн Мастер\n24/7 для помощи\nпо любым вопросам"
-            4 -> "Добро пожаловать\nв Мой_Сервис Дом!"
+            0 -> TranslationInteractor.getTranslation("app.onboarding.step_one.title_label")
+            1 -> TranslationInteractor.getTranslation("app.onboarding.step_two.title_label")
+            2 -> TranslationInteractor.getTranslation("app.onboarding.step_three.title_label")
+            3 -> TranslationInteractor.getTranslation("app.onboarding.step_four.title_label")
+            4 -> TranslationInteractor.getTranslation("app.onboarding.step_five.title_label")
             else -> throw IllegalArgumentException("Wrong argument value: $curr")
         }
         binding.tabGroup.visibleIf(curr == 0)

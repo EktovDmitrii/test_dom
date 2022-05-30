@@ -28,7 +28,7 @@
         android:paddingVertical="18dp"
         android:textSize="20sp"
         android:textColor="@color/error500"
-        app:translationTextKey="Удалить"
+        app:translationTextKey="app.chat.chat_start.full_screen_image.delete_alert"
         android:gravity="center"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

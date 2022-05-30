@@ -12,7 +12,7 @@
         android:paddingVertical="18dp"
         android:textSize="20sp"
         android:textColor="@color/secondary900"
-        app:translationTextKey="app.object.main.actions.add.photo"
+        app:translationTextKey="app.chat.chat_start.add_document.photo_alert"
         android:gravity="center"/>
 
     <View
@@ -28,7 +28,7 @@
         android:paddingVertical="18dp"
         android:textSize="20sp"
         android:textColor="@color/secondary900"
-        app:translationTextKey="app.object.main.actions.add.file"
+        app:translationTextKey="app.chat.chat_start.add_document.file_alert"
         android:gravity="center"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

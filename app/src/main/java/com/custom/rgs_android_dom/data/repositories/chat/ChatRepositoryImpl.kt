@@ -12,6 +12,7 @@ import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.domain.repositories.ChatRepository
+import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.managers.MSDConnectivityManager
 import com.custom.rgs_android_dom.ui.managers.MediaOutputManager
 import com.custom.rgs_android_dom.utils.WsResponseParser
@@ -314,8 +315,6 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
         val withVideo = (callType == CallType.VIDEO_CALL && cameraEnabled)
 
-        startCallTimer()
-
         val room = LiveKit.connect(
             context,
             BuildConfig.LIVEKIT_URL,
@@ -323,6 +322,8 @@ class ChatRepositoryImpl(private val api: MSDApi,
             ConnectOptions(),
             roomListener
         )
+
+        startCallTimer()
 
         val videoTrack = if (withVideo){
             val videoTrack = room.localParticipant.createVideoTrack()
@@ -374,7 +375,11 @@ class ChatRepositoryImpl(private val api: MSDApi,
         } else {
             callInfo.channelId?.let { channelId ->
                 declineCall(channelId, callModel?.id ?: "")
-                    .subscribe()
+                    .subscribeBy(
+                        onError = {
+                            logException(this, it)
+                        }
+                    )
             }
         }
         clearRoomData()
@@ -522,7 +527,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
         val channelId = client?.getChatChannelId() ?: ""
 
         return Single.zip(
-            api.getCases(size = 5000, index = 0),
+            api.getCases(size = 5000, index = 0, businessLine = BuildConfig.BUSINESS_LINE),
             api.getSubtypes(size = 5000, index = 0, withArchived = true, withInternal = true),
             api.getUnreadPostsCount(channelId)){cases, subtypes, unreadPosts->
 
@@ -553,7 +558,7 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
         return CaseModel(
             channelId = channelId,
-            name = "Онлайн Мастер",
+            name = TranslationInteractor.getTranslation("app.chat.chat_start.back_label"),
             subtype = null,
             taskId = "",
             unreadPosts = 0,

@@ -116,14 +116,14 @@
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:layout_marginTop="20dp"
-             app:translationLabelKey="app.profile.add.birthday.title"/>
+             app:translationLabelKey="app.profile.client.birthday.title"/>
 
          <com.custom.rgs_android_dom.views.text.MSDLabelTextView
              android:id="@+id/genderTextView"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:layout_marginTop="20dp"
-             app:translationLabelKey="app.profile.add.sex.title"/>
+             app:translationLabelKey="app.profile.client.sex.title"/>
 
          <com.custom.rgs_android_dom.views.text.MSDLabelTextView
              android:id="@+id/passportTextView"
@@ -137,7 +137,7 @@
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:layout_marginTop="20dp"
-             app:translationLabelKey="app.phone.field_title"/>
+             app:translationLabelKey="app.profile.client.phone.title"/>
 
          <com.custom.rgs_android_dom.views.text.MSDLabelTextView
              android:id="@+id/additionalPhoneTextView"

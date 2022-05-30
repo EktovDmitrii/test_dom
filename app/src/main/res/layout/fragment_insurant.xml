@@ -31,7 +31,9 @@
                     android:layout_height="44dp"
                     android:layout_gravity="start"
                     android:layout_marginStart="8dp"
-                    android:src="@drawable/ic_back_44px" />
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="10dp"
+                    android:src="@drawable/ic_back_24px" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="wrap_content"
@@ -48,7 +50,7 @@
                         android:includeFontPadding="false"
                         android:textColor="@color/secondary900_alpha64"
                         android:textSize="12sp"
-                        app:translationTextKey="Шаг 2 из 2" />
+                        app:translationTextKey="app.polices.add_step_two.view_title" />
 
                     <com.custom.rgs_android_dom.views.text.MSDTextView
                         android:layout_width="wrap_content"
@@ -59,7 +61,7 @@
                         android:includeFontPadding="false"
                         android:textColor="@color/secondary900"
                         android:textSize="16sp"
-                        app:translationTextKey="Данные страхователя" />
+                        app:translationTextKey="app.polices.add_step_two.view_subtitle" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -76,7 +78,7 @@
                 android:includeFontPadding="false"
                 android:textColor="@color/secondary900"
                 android:textSize="16sp"
-                app:translationTextKey="Заполните данные, указанные в полисе, чтобы подтвердить его принадлежность" />
+                app:translationTextKey="app.polices.add_step_two.description_label" />
 
 
             <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
@@ -88,8 +90,8 @@
                 android:digits="@string/acceptable_name_chars"
                 android:inputType="textPersonName|textCapSentences"
                 android:maxLength="50"
-                app:translationHintKey="Иванов"
-                app:translationLabelKey="Фамилия страхователя" />
+                app:translationHintKey="app.polices.add_step_two.last_name_input"
+                app:translationLabelKey="app.polices.add_step_two.last_name_label" />
 
             <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
                 android:id="@+id/firstNameEditText"
@@ -100,8 +102,8 @@
                 android:digits="@string/acceptable_name_chars"
                 android:inputType="textPersonName|textCapSentences"
                 android:maxLength="25"
-                app:translationHintKey="Иван"
-                app:translationLabelKey="Имя страхователя" />
+                app:translationHintKey="app.polices.add_step_two.first_name_input"
+                app:translationLabelKey="app.polices.add_step_two.first_name_label" />
 
             <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
                 android:id="@+id/middleNameEditText"
@@ -112,8 +114,8 @@
                 android:digits="@string/acceptable_name_chars"
                 android:inputType="textPersonName|textCapSentences"
                 android:maxLength="25"
-                app:translationHintKey="Иванович"
-                app:translationLabelKey="Отчество страхователя" />
+                app:translationHintKey="app.polices.add_step_two.middle_name_input"
+                app:translationLabelKey="app.polices.add_step_two.middle_name_label" />
 
             <com.custom.rgs_android_dom.views.edit_text.MSDLabelIconEditText
                 android:id="@+id/birthdayEditText"
@@ -126,7 +128,7 @@
                 app:icon="@drawable/ic_calendar_24px"
                 app:mask="[00]{.}[00]{.}[0000]"
                 app:translationHintKey="24.04.1990"
-                app:translationLabelKey="Дата рождения" />
+                app:translationLabelKey="app.polices.add_step_two.birth_date_label" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -149,7 +151,7 @@
             android:layout_marginBottom="22dp"
             android:enabled="false"
             style="@style/Button.Filled.Primary"
-            app:translationTextKey="Далее" />
+            app:translationTextKey="app.polices.add_step_two.next_button" />
 
     </com.google.android.material.card.MaterialCardView>
 
