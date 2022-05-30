@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.data.network
 
+import androidx.room.Delete
 import com.custom.rgs_android_dom.data.network.data_adapters.NetworkException
 import com.custom.rgs_android_dom.data.network.error.MSDNetworkErrorResponse
 import com.custom.rgs_android_dom.data.network.responses.*
@@ -355,4 +356,8 @@ interface MSDApi {
     @POST("communications/push/users/me/devices/{deviceId}/tokens")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun saveFCMToken(@Path("deviceId") deviceId: String, @Body saveTokenRequest: SaveTokenRequest): Completable
+
+    @DELETE("communications/push/devices/{deviceId}")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun deleteFCMToken(@Path("deviceId") deviceId: String): Completable
 }

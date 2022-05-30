@@ -9,6 +9,8 @@ import org.joda.time.DateTimeZone
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
 import org.joda.time.format.DateTimeFormat
+import java.math.BigInteger
+import java.security.MessageDigest
 import java.util.regex.Pattern
 
 private  val EMAIL_ADDRESS_PATTERN: Pattern = Pattern
@@ -100,6 +102,13 @@ fun String.safeJSON(): String {
 
 fun OrderTimeModel.formatOrderTime(): String {
     return "${this.from} - ${this.to}"
+}
+
+fun String.formatDeliveryTime() = "Работа займет ~$this"
+
+fun String.md5(): String {
+    val md = MessageDigest.getInstance("MD5")
+    return BigInteger(1, md.digest(this.toByteArray())).toString(16).padStart(32, '0')
 }
 
 fun String.formatDeliveryTime() = "${TranslationInteractor.getTranslation("app.support_service.prefix_titles.work_estimation")} $this"

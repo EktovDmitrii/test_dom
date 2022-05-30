@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.domain.client
 
+import android.util.Log
 import com.custom.rgs_android_dom.data.repositories.files.FilesRepositoryImpl.Companion.STORE_AVATARS
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
@@ -778,6 +779,11 @@ ClientInteractor(
     }
 
     fun saveFCMToken(token: String): Completable {
-        return clientRepository.saveFCMToken("", token)
+        Log.d("MyLog", "REG REP IS AUTH " + registrationRepository.isAuthorized())
+        return if (registrationRepository.isAuthorized()){
+            clientRepository.saveFCMToken(token)
+        } else {
+            Completable.complete()
+        }
     }
 }

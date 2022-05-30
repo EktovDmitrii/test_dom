@@ -11,10 +11,12 @@ import com.custom.rgs_android_dom.data.providers.auth.manager.AuthState
 import com.custom.rgs_android_dom.domain.repositories.ChatRepository
 import com.custom.rgs_android_dom.ui.navigation.TargetScreen
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
+import com.custom.rgs_android_dom.utils.md5
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 import org.joda.time.DateTime
+import java.util.*
 
 class RegistrationRepositoryImpl(
     private val api: MSDApi,
@@ -61,7 +63,8 @@ class RegistrationRepositoryImpl(
     }
 
     override fun logout(nextScreen: TargetScreen?): Completable {
-        return api.postLogout().andThen {
+        val clientPhone = clientSharedPreferences.getClient()?.phone ?: UUID.randomUUID().toString()
+        return api.deleteFCMToken(clientPhone.md5()).andThen(api.postLogout()).andThen {
             database.chatsDao.clearCases()
             if (isAuthorized()){
                 chatRepository.disconnectFromWebSocket()

@@ -1,6 +1,8 @@
 package com.custom.rgs_android_dom.ui.fcm
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import androidx.lifecycle.ProcessLifecycleOwner
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.utils.logException
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -29,9 +31,10 @@ class MSDMessagingService : FirebaseMessagingService() {
             )
     }
 
+    @SuppressLint("WrongThread")
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-
+        //ProcessLifecycleOwner.get().lifecycle.currentState
     }
 
     override fun handleIntent(messageIntent: Intent) {
