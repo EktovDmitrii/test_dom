@@ -178,7 +178,7 @@ interface MSDApi {
     fun getProducts(
         @Query("size") size: Int,
         @Query("index") index: Int,
-        @Query("businessLine") businessLine: String
+        @Query("businessLines") businessLines: String
     ): Single<ProductItemsResponse>
 
     @GET("clients/me/purchase/products/showcase")
@@ -189,7 +189,7 @@ interface MSDApi {
         @Query("nameOrTag") nameOrTag: String? = null,
         @Query("index") index: Int,
         @Query("size") size: Long,
-        @Query("businessLine") businessLine: String
+        @Query("businessLines") businessLines: String
     ): Single<ProductsForPurchaseResponse>
 
     @GET("guests/purchase/products/showcase")
@@ -200,7 +200,7 @@ interface MSDApi {
         @Query("nameOrTag") nameOrTag: String? = null,
         @Query("index") index: Int,
         @Query("size") size: Long,
-        @Query("businessLine") businessLine: String
+        @Query("businessLines") businessLines: String
     ): Single<ProductsForPurchaseResponse>
 
     @GET("clients/me/balance/products")
@@ -208,7 +208,7 @@ interface MSDApi {
     fun getClientProducts(
         @Query("size") size: Int,
         @Query("index") index: Int,
-        @Query("businessLine") businessLine: String,
+        @Query("businessLines") businessLines: String,
         @Query("contractIds") contractIds: String?,
         @Query("status") status: String? = null): Single<ClientProductsResponse>
 
@@ -254,7 +254,7 @@ interface MSDApi {
         @Query("size") size: Int,
         @Query("index") index: Int,
         @Query("withBalance") withBalance: Boolean,
-        @Query("businessLine") businessLine: String,
+        @Query("businessLines") businessLine: String,
         @Query("status") status: String = "active",
         @Query("productId") productId: String? = null,
         @Query("serviceId") serviceId: String? = null,
@@ -283,7 +283,7 @@ interface MSDApi {
     fun orderServiceOnBalance(@Body body: OrderServiceRequest, @Query("confirm") confirmOrder: Boolean): Single<OrderResponse>
 
     @GET("clients/me/orders")
-    fun getOrders(@Query("businessLine") businessLine: String): Single<OrdersResponse>
+    fun getOrders(@Query("businessLines") businessLines: String): Single<OrdersResponse>
 
     @GET("clients/me/billing/general-invoices")
     fun getGeneralInvoices(
