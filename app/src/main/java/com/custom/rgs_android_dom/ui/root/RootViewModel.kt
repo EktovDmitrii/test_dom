@@ -30,6 +30,7 @@ import com.custom.rgs_android_dom.ui.managers.MediaOutputManager
 import com.custom.rgs_android_dom.ui.navigation.TargetScreen
 import com.custom.rgs_android_dom.utils.logException
 import com.custom.rgs_android_dom.views.NavigationScope
+import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.messaging.FirebaseMessaging
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -366,18 +367,18 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
     }
 
     private fun obtainAndSaveFCMToken(){
-        Log.d("MyLog", "OBTAIN AND SAVE FCM TOKEN")
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task->
-            Log.d("MyLog", "On token completed " + task.isSuccessful)
-            if (task.isSuccessful){
-                clientInteractor.saveFCMToken(task.result)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeBy(
-                        onError = {
-                            logException(this, it)
-                        }
-                    ).addTo(dataCompositeDisposable)
+            FirebaseInstallations.getInstance().id.addOnSuccessListener { deviceId->
+                if (task.isSuccessful){
+                    clientInteractor.saveFCMToken(task.result, deviceId)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeBy(
+                            onError = {
+                                logException(this, it)
+                            }
+                        ).addTo(dataCompositeDisposable)
+                }
             }
         }
     }

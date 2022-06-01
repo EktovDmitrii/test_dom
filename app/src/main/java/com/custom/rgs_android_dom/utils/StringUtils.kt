@@ -1,7 +1,6 @@
 package com.custom.rgs_android_dom.utils
 
 import android.text.Editable
-import android.util.Log
 import com.custom.rgs_android_dom.domain.chat.models.OrderTimeModel
 import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import org.joda.time.DateTime
@@ -103,8 +102,6 @@ fun String.safeJSON(): String {
 fun OrderTimeModel.formatOrderTime(): String {
     return "${this.from} - ${this.to}"
 }
-
-fun String.formatDeliveryTime() = "Работа займет ~$this"
 
 fun String.md5(): String {
     val md = MessageDigest.getInstance("MD5")

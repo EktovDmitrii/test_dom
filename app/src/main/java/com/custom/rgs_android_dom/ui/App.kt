@@ -70,14 +70,16 @@ class App: Application() {
     private fun obtainAndSaveFCMToken(){
         FirebaseMessaging.getInstance().token.addOnCompleteListener {task->
             if (task.isSuccessful){
-                clientInteractor.saveFCMToken(task.result)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeBy(
-                        onError = {
-                            logException(this, it)
-                        }
-                    )
+                FirebaseInstallations.getInstance().id.addOnSuccessListener {deviceId->
+                    clientInteractor.saveFCMToken(task.result, deviceId)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeBy(
+                            onError = {
+                                logException(this, it)
+                            }
+                        )
+                }
             }
         }
     }

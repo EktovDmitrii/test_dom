@@ -778,10 +778,9 @@ ClientInteractor(
         return clientRepository.getCancelledTasks(orderId)
     }
 
-    fun saveFCMToken(token: String): Completable {
-        Log.d("MyLog", "REG REP IS AUTH " + registrationRepository.isAuthorized())
+    fun saveFCMToken(token: String, deviceId: String): Completable {
         return if (registrationRepository.isAuthorized()){
-            clientRepository.saveFCMToken(token)
+            clientRepository.saveFCMToken(token, deviceId)
         } else {
             Completable.complete()
         }

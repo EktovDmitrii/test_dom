@@ -74,6 +74,6 @@ interface ClientRepository {
 
     fun getRequestEditClientTasks(): Single<List<RequestEditClientTaskModel>>
 
-    fun saveFCMToken(token: String): Completable
+    fun saveFCMToken(token: String, deviceId: String): Completable
 
 }

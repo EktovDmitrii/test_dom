@@ -18,6 +18,7 @@ import com.custom.rgs_android_dom.utils.PATTERN_DATE_TIME_MILLIS
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
 import com.custom.rgs_android_dom.utils.formatTo
 import com.custom.rgs_android_dom.utils.md5
+import com.google.firebase.installations.FirebaseInstallations
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
@@ -275,13 +276,14 @@ class ClientRepositoryImpl(
         }
     }
 
-    override fun saveFCMToken(token: String): Completable {
+    override fun saveFCMToken(token: String, deviceId: String): Completable {
         val savedToken = clientSharedPreferences.getFCMToken()
-        val clientPhone = clientSharedPreferences.getClient()?.phone ?: UUID.randomUUID().toString()
+
         return if (savedToken != token){
             clientSharedPreferences.saveFCMToken(token)
+            clientSharedPreferences.saveDeviceId(deviceId)
             val saveTokenRequest = SaveTokenRequest(token)
-            api.deleteFCMToken(clientPhone.md5()).andThen(api.saveFCMToken(clientPhone.md5(), saveTokenRequest))
+            api.deleteFCMToken(deviceId).andThen(api.saveFCMToken(deviceId, saveTokenRequest))
         } else {
             Completable.complete()
         }
