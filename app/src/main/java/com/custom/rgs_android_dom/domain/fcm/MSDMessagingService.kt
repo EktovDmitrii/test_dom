@@ -1,11 +1,8 @@
-package com.custom.rgs_android_dom.ui.fcm
+package com.custom.rgs_android_dom.domain.fcm
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.util.Log
-import androidx.lifecycle.ProcessLifecycleOwner
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
-import com.custom.rgs_android_dom.ui.managers.MSDNotificationManager
 import com.custom.rgs_android_dom.utils.logException
 import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -18,6 +15,7 @@ import org.koin.android.ext.android.inject
 class MSDMessagingService : FirebaseMessagingService() {
 
     private val clientInteractor: ClientInteractor by inject()
+    private val notificationsInteractor: NotificationsInteractor by inject()
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
@@ -37,23 +35,11 @@ class MSDMessagingService : FirebaseMessagingService() {
     @SuppressLint("WrongThread")
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-        Log.d("MyLog", "On message received")
-        MSDNotificationManager.notify(
-            this,
-            "Мой_Сервис Дом",
-            "У вас новое уведомление",
-            ""
-        )
+        notificationsInteractor.parseAndShowNotification(remoteMessage.toIntent())
     }
 
     override fun handleIntent(messageIntent: Intent) {
-        Log.d("MyLog", "Handle intent")
-        MSDNotificationManager.notify(
-            this,
-            "Мой_Сервис Дом",
-            "У вас новое уведомление",
-            ""
-        )
+        notificationsInteractor.parseAndShowNotification(messageIntent)
     }
 
 }

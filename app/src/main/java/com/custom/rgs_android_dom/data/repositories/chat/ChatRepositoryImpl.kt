@@ -26,10 +26,7 @@ import io.livekit.android.room.RoomListener
 import io.livekit.android.room.participant.Participant
 import io.livekit.android.room.participant.RemoteParticipant
 import io.livekit.android.room.track.*
-import io.reactivex.Completable
-import io.reactivex.Flowable
-import io.reactivex.Observable
-import io.reactivex.Single
+import io.reactivex.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
@@ -613,5 +610,11 @@ class ChatRepositoryImpl(private val api: MSDApi,
 
     override fun getCallInfo(): CallInfoModel {
         return callInfo
+    }
+
+    override fun getCase(channelId: String): Maybe<CaseModel> {
+        return database.chatsDao.getCase(channelId).map {
+            ChatsDbMapper.toCaseModel(it)
+        }
     }
 }

@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.domain.countries.CountriesInteractor
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.address.AddressInteractor
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
+import com.custom.rgs_android_dom.domain.fcm.NotificationsInteractor
 import com.custom.rgs_android_dom.domain.policies.PoliciesInteractor
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.purchase.PurchaseInteractor
@@ -34,4 +35,6 @@ val domainModule = module {
     factory { PurchaseInteractor(purchaseRepository = get(), catalogRepository = get()) }
 
     factory { PoliciesInteractor(policiesRepository = get(), clientRepository = get(), clientSharedPreferences = get()) }
+
+    factory { NotificationsInteractor(context = androidContext(), notificationsRepository = get()) }
 }

@@ -6,14 +6,15 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Bundle
 import androidx.core.app.NotificationCompat
+import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.ui.MainActivity
 import kotlin.random.Random
 
 object MSDNotificationManager {
 
-    const val ACTION_NOTIFICATION = "EXTRA_NOTIFICATION"
-    const val EXTRA_NOTIFICATION_CONTENT = "EXTRA_NOTIFICATION_CONTENT"
+    const val ACTION_NOTIFICATION = "ACTION_NOTIFICATION"
 
     private const val CHANNEL_ID = "MSD_PUSHES_CHANNEL_ID"
     private const val CHANNEL_NAME = "MSD_PUSHES_CHANNEL"
@@ -22,7 +23,7 @@ object MSDNotificationManager {
         context: Context,
         title: String = "",
         message: String,
-        content: String,
+        content: Bundle,
     ) {
 
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -39,7 +40,7 @@ object MSDNotificationManager {
 
         val intent = Intent(context, MainActivity::class.java).apply {
             action = ACTION_NOTIFICATION
-            putExtra(EXTRA_NOTIFICATION_CONTENT, content)
+            putExtras(content)
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
 
@@ -47,14 +48,11 @@ object MSDNotificationManager {
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setContentTitle(title)
             .setContentText(message)
-            //.setSmallIcon(R.drawable.)
+            .setSmallIcon(R.drawable.ic_notification)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
-            .apply {
-                if (title.isNotEmpty()){
-                    setContentTitle(title)
-                }
-            }.build()
+            .setContentTitle(title)
+            .build()
 
 
         manager.notify(notificationId, notification)

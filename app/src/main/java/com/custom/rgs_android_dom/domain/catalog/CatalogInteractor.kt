@@ -47,7 +47,12 @@ class CatalogInteractor(
 
                 catalogCategory.products = availableProducts.filter { it.tags.any { it in catalogCategory.productTags }}
             }
-            return@map catalogCategories.filter { it.subCategories.isNotEmpty() || it.isPrimary }.sortedBy { it.sortOrder }
+
+            return@map catalogCategories.filter {
+                it.subCategories.isNotEmpty() && it.subCategories.any { it.products.isNotEmpty() } || it.products.isNotEmpty()
+            }.sortedBy { it.sortOrder }
+
+           // return@map catalogCategories.filter { it.subCategories.isNotEmpty() || it.products.isNotEmpty() /*|| it.isPrimary*/ }.sortedBy { it.sortOrder }
         }
     }
 

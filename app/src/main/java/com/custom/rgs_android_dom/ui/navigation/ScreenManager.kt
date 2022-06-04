@@ -215,6 +215,10 @@ object ScreenManager {
         }
     }
 
+    fun containsScreen(fragment: Fragment) : Boolean{
+        return fragments[menuTag]?.find { it::class.java.canonicalName == fragment::class.java.canonicalName } != null
+    }
+
     private fun addFragmentInMap(fragment: BaseFragment<*, *>) {
         if (fragments[menuTag] == null) {
             fragments[menuTag] = ArrayList()

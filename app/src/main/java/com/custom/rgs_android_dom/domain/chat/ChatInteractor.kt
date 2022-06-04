@@ -5,10 +5,7 @@ import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.domain.repositories.ChatRepository
 import com.custom.rgs_android_dom.domain.chat.models.WsChatMessageModel
 import com.custom.rgs_android_dom.utils.*
-import io.reactivex.Completable
-import io.reactivex.Flowable
-import io.reactivex.Observable
-import io.reactivex.Single
+import io.reactivex.*
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
@@ -288,5 +285,9 @@ class ChatInteractor(
 
     fun getCallInfo(): CallInfoModel {
         return chatRepository.getCallInfo()
+    }
+
+    fun getCase(channelId: String): Maybe<CaseModel> {
+        return chatRepository.getCase(channelId)
     }
 }

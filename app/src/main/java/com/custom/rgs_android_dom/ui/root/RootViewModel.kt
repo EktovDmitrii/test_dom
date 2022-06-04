@@ -1,5 +1,7 @@
 package com.custom.rgs_android_dom.ui.root
 
+import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,6 +15,9 @@ import com.custom.rgs_android_dom.domain.chat.models.WsCallAcceptModel
 import com.custom.rgs_android_dom.domain.chat.models.MediaOutputType
 import com.custom.rgs_android_dom.domain.chat.models.WsEvent
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
+import com.custom.rgs_android_dom.domain.fcm.NotificationsInteractor
+import com.custom.rgs_android_dom.domain.fcm.models.NotificationEvent
+import com.custom.rgs_android_dom.domain.fcm.models.Redirect
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
@@ -21,13 +26,16 @@ import com.custom.rgs_android_dom.ui.chats.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.chats.call.CallFragment
 import com.custom.rgs_android_dom.ui.chats.ChatsFragment
 import com.custom.rgs_android_dom.ui.client.ClientFragment
+import com.custom.rgs_android_dom.ui.client.order_detail.OrderDetailFragment
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.registration.agreement.RegistrationAgreementFragment
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.ui.main.MainFragment
+import com.custom.rgs_android_dom.ui.managers.MSDNotificationManager
 import com.custom.rgs_android_dom.ui.managers.MediaOutputManager
 import com.custom.rgs_android_dom.ui.navigation.TargetScreen
+import com.custom.rgs_android_dom.utils.asEnumOrDefault
 import com.custom.rgs_android_dom.utils.logException
 import com.custom.rgs_android_dom.views.NavigationScope
 import com.google.firebase.installations.FirebaseInstallations
@@ -41,6 +49,7 @@ import org.koin.core.component.inject
 class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                     private val clientInteractor: ClientInteractor,
                     private val chatInteractor: ChatInteractor,
+                    private val notificationsInteractor: NotificationsInteractor,
                     private val mediaOutputManager: MediaOutputManager
 ) : BaseViewModel() {
 
@@ -212,6 +221,18 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
 
         mediaOutputController.value = mediaOutputManager.getInitialMediaOutput()
 
+        notificationsInteractor.getNotificationContentSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    parseNewNotificationContent(it)
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+
         if (registrationInteractor.isAuthorized()){
             loadCases()
         }
@@ -374,6 +395,58 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeBy(
+                            onError = {
+                                logException(this, it)
+                            }
+                        ).addTo(dataCompositeDisposable)
+                }
+            }
+        }
+    }
+
+    private fun parseNewNotificationContent(content: Bundle){
+        if (registrationInteractor.isAuthorized()){
+            when (content.getString(NotificationsInteractor.EXTRA_EVENT)){
+                NotificationEvent.NEW_MESSAGE,
+                NotificationEvent.NEW_WIDGET -> {
+                    val channelId = content.getString(NotificationsInteractor.EXTRA_CHANNEL_ID) ?: ""
+                    chatInteractor.getCase(channelId)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeBy(
+                            onSuccess = {
+                                val chatFragment = ChatFragment.newInstance(it)
+                                ScreenManager.showBottomScreen(chatFragment)
+                            },
+                            onError = {
+                                logException(this, it)
+                            }
+                        ).addTo(dataCompositeDisposable)
+                }
+                NotificationEvent.CALL_CONSULTANT  -> {
+                    val channelId = content.getString(NotificationsInteractor.EXTRA_CHANNEL_ID) ?: ""
+                    val callerId = content.getString(NotificationsInteractor.INITIATOR_USER_ID) ?: ""
+                    val callId = content.getString(NotificationsInteractor.CALL_ID) ?: ""
+
+                    val callRequestFragment = CallRequestFragment.newInstance(
+                        callerId = callerId,
+                        callId = callId,
+                        channelId = channelId
+                    )
+                    if (!ScreenManager.containsScreen(callRequestFragment)) {
+                        ScreenManager.showScreen(callRequestFragment)
+                    }
+                }
+                NotificationEvent.ORDER_CANCELLED,
+                NotificationEvent.ORDER_COMPLETED -> {
+                    val orderId = content.getString(NotificationsInteractor.EXTRA_ORDER_ID) ?: ""
+                    clientInteractor.getOrder(orderId)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeBy(
+                            onSuccess = {
+                                ScreenManager.showScreen(OrderDetailFragment.newInstance(it))
+                            },
                             onError = {
                                 logException(this, it)
                             }

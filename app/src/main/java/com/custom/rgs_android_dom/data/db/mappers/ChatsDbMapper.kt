@@ -52,27 +52,6 @@ object ChatsDbMapper {
             )
         )
 
-        /*val cases = arrayListOf<CaseDbModel>().apply {
-            add(
-                CaseDbModel(
-                    channelId = masterOnlineChannelId,
-                    name = "Онлайн Мастер",
-                    subtype = null,
-                    taskId = "",
-                    unreadPosts = masterOnlineUnreadPosts,
-                    isArchived = false,
-                    status = CaseStatus.UNKNOWN,
-                    subStatus = CaseSubStatus.UNKNOWN,
-                    reportedAt = DateTime.now()
-                )
-            )
-            if (response.activeCases != null){
-                addAll(response.activeCases.map { fromCaseResponse(it, subtypes, false) })
-            }*9
-
-            addAll(response.archivedCases?.map { fromCaseResponse(it, subtypes, true) } ?: listOf())
-        }*/
-
         return cases
     }
 
@@ -81,6 +60,10 @@ object ChatsDbMapper {
             activeCases = cases.filter { !it.isArchived } .map { fromCaseDbModel(it) },
             archivedCases = cases.filter { it.isArchived }.map { fromCaseDbModel(it) }
         )
+    }
+
+    fun toCaseModel(case: CaseDbModel): CaseModel {
+        return fromCaseDbModel(case)
     }
 
 

@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.data.repositories.countries.CountriesRepositor
 import com.custom.rgs_android_dom.data.repositories.address.AddressRepositoryImpl
 import com.custom.rgs_android_dom.data.repositories.catalog.CatalogRepositoryImpl
 import com.custom.rgs_android_dom.data.repositories.files.FilesRepositoryImpl
+import com.custom.rgs_android_dom.data.repositories.notifications.NotificationsRepositoryImpl
 import com.custom.rgs_android_dom.data.repositories.policies.PoliciesRepositoryImpl
 import com.custom.rgs_android_dom.data.repositories.property.PropertyRepositoryImpl
 import com.custom.rgs_android_dom.data.repositories.purchase.PurchaseRepositoryImpl
@@ -29,4 +30,5 @@ val dataModule = module {
     single <PurchaseRepository> { PurchaseRepositoryImpl(api = get()) }
     single <PoliciesRepository> {PoliciesRepositoryImpl(api = get())}
     single { MSDDatabase.create(androidContext()) }
+    single <NotificationsRepository> { NotificationsRepositoryImpl() }
 }

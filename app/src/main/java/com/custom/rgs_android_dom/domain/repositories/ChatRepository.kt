@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.domain.repositories
 import com.custom.rgs_android_dom.domain.chat.models.*
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 import java.io.File
@@ -68,5 +69,7 @@ interface ChatRepository {
     fun initCallInfo(consultant: ChannelMemberModel?, callType: CallType)
 
     fun getCallInfo(): CallInfoModel
+
+    fun getCase(channelId: String): Maybe<CaseModel>
 
 }

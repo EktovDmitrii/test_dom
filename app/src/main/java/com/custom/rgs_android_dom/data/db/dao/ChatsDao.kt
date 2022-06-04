@@ -7,6 +7,7 @@ import androidx.room.Query
 import com.custom.rgs_android_dom.data.db.models.chat.CaseDbModel
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Maybe
 import io.reactivex.Single
 
 @Dao
@@ -20,4 +21,7 @@ interface ChatsDao {
 
     @Query("DELETE FROM cases")
     fun clearCases()
+
+    @Query("SELECT * FROM cases WHERE channelId = :channelId")
+    fun getCase(channelId: String): Maybe<CaseDbModel>
 }

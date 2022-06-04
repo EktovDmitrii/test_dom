@@ -11,7 +11,6 @@ import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-
 class CallRequestFragment : BaseFragment<CallRequestViewModel, FragmentRequestCallBinding>(R.layout.fragment_request_call) {
 
     companion object {
@@ -36,6 +35,7 @@ class CallRequestFragment : BaseFragment<CallRequestViewModel, FragmentRequestCa
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         playTune("track6.mp3", true)
         binding.acceptCallImageView.setOnDebouncedClickListener {
             playTune("track4.mp3")

@@ -674,6 +674,17 @@ class TranslationRepositoryImpl(private val api: MSDApi) :
             "app.object_detail.documents.no_data_placeholder" to "Не определено",
             "app.catalog.more_view.title" to "Ещё",
 
+            //Notifications
+            "notification.message.new.title" to "Новое сообщение в чате",
+            "notification.message.new.body" to "Новое сообщение в чате. Войдите в приложение для просмотра сообщения",
+            "notification.call.consultant.title" to "Входящий звонок от консультанта",
+            "notification.call.consultant.body" to "Входящий звонок от консультанта. Войдите в приложение для приема звонка",
+            "notification.widget.new.title" to "Новое вложение в чате",
+            "notification.widget.new.body" to "Новое вложение в чате. Войдите в приложение для просмотра вложения",
+            "notification.order.completed.title" to "Оцените качество сервиса",
+            "notification.order.completed.body" to "Оцените качество сервиса: напишите цифру от 1 до 5",
+            "notification.order.cancelled.title" to "Заказ отменен",
+            "notification.order.cancelled.body" to "Ваш заказ был отменен. Войдите в приложение для просмотра подробной информации",
         )
     }
 

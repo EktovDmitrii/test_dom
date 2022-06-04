@@ -1,14 +1,17 @@
 package com.custom.rgs_android_dom.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
+import com.custom.rgs_android_dom.domain.fcm.NotificationsInteractor
 import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.managers.MSDNotificationManager.ACTION_NOTIFICATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.splash.SplashFragment
 import com.custom.rgs_android_dom.utils.CacheHelper
@@ -24,6 +27,7 @@ class MainActivity : AppCompatActivity() {
 
     private val translationInteractor: TranslationInteractor by inject()
     private val chatInteractor: ChatInteractor by inject()
+    private val notificationsInteractor: NotificationsInteractor by inject()
 
     companion object{
         private const val LOG = "MAIN"
@@ -43,6 +47,10 @@ class MainActivity : AppCompatActivity() {
         }
         ScreenManager.init(this, R.id.vgScreensContainer)
         ScreenManager.resetStackAndShowScreen(SplashFragment())
+
+        if (intent != null && intent.action == ACTION_NOTIFICATION){
+            notificationsInteractor.newNotification(intent)
+        }
     }
 
     private fun loadTranslation(){
@@ -82,6 +90,13 @@ class MainActivity : AppCompatActivity() {
 
         } else {
             super.onBackPressed()
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        if (intent.action == ACTION_NOTIFICATION){
+            notificationsInteractor.newNotification(intent)
         }
     }
 

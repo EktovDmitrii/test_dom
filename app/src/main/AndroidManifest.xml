@@ -55,7 +55,7 @@
         </provider>
 
         <service
-            android:name="com.custom.rgs_android_dom.ui.fcm.MSDMessagingService"
+            android:name="com.custom.rgs_android_dom.domain.fcm.MSDMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
