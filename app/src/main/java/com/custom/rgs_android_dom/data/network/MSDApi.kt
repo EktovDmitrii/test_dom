@@ -360,4 +360,8 @@ interface MSDApi {
     @DELETE("communications/push/devices/{deviceId}")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun deleteFCMToken(@Path("deviceId") deviceId: String): Completable
+
+    @GET("chat/users/me/channels/{channelId}/webrtc/calls")
+    fun getActiveCall(@Path("channelId") channelId: String): Maybe<ActiveCallResponse>
+
 }

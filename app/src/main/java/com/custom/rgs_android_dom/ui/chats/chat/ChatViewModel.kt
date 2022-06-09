@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.chats.chat
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
@@ -21,6 +22,7 @@ import com.custom.rgs_android_dom.ui.chats.call.CallFragment
 import com.custom.rgs_android_dom.ui.chats.chat.files.viewers.image.ImageViewerFragment
 import com.custom.rgs_android_dom.ui.chats.chat.files.viewers.video.VideoPlayerFragment
 import com.custom.rgs_android_dom.ui.client.order_detail.OrderDetailFragment
+import com.custom.rgs_android_dom.ui.managers.MSDNotificationManager
 import com.custom.rgs_android_dom.ui.navigation.ScreenInfo
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.navigation.TargetScreen
@@ -46,6 +48,7 @@ class ChatViewModel(
     private val catalogInteractor: CatalogInteractor,
     private val clientInteractor: ClientInteractor,
     private val propertyInteractor: PropertyInteractor,
+    private val notificationManager: MSDNotificationManager
 ) : BaseViewModel() {
 
     private val caseController = MutableLiveData<CaseModel>()
@@ -63,6 +66,8 @@ class ChatViewModel(
     private var email: String? = null
 
     init {
+
+        notificationManager.cancel(case.channelId.hashCode())
 
         caseController.value = case
 

@@ -290,4 +290,9 @@ class ChatInteractor(
     fun getCase(channelId: String): Maybe<CaseModel> {
         return chatRepository.getCase(channelId)
     }
+
+    fun getActiveCall(channelId: String): Maybe<ActiveCallModel> {
+        return chatRepository.getActiveCall(channelId)
+    }
+
 }

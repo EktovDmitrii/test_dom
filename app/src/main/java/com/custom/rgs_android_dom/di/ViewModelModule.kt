@@ -102,14 +102,14 @@ val viewModelModule = module {
     viewModel { parameters-> CountriesViewModel(selectedCountryLetterCode = parameters.get(), countriesInteractor = get())}
     viewModel { ClientViewModel(clientInteractor = get(), registrationInteractor = get(), propertyInteractor = get()) }
     viewModel { OrdersViewModel(clientInteractor = get(), purchaseInteractor = get()) }
-    viewModel { parameters -> OrderDetailViewModel(chatInteractor = get(), order = parameters.get(), clientInteractor = get()) }
-    viewModel { RootViewModel(registrationInteractor = get(), clientInteractor = get(), chatInteractor = get(), notificationsInteractor = get(), mediaOutputManager = get()) }
+    viewModel { parameters -> OrderDetailViewModel(chatInteractor = get(), order = parameters.get(), clientInteractor = get(), notificationManager = get()) }
+    viewModel { RootViewModel(registrationInteractor = get(), clientInteractor = get(), chatInteractor = get(), notificationsInteractor = get(), mediaOutputManager = get(), notificationManager = get()) }
     viewModel { PersonalDataViewModel(clientInteractor = get()) }
     viewModel { EditPersonalDataViewModel(clientInteractor = get()) }
     viewModel { AgentViewModel(clientInteractor = get()) }
     viewModel { EditAgentViewModel(clientInteractor = get()) }
     viewModel { AboutAppViewModel() }
-    viewModel { parameters -> ChatViewModel(case = parameters[0], backScreen = parameters[1], chatInteractor = get(), clientInteractor = get(), catalogInteractor = get(), propertyInteractor = get()) }
+    viewModel { parameters -> ChatViewModel(case = parameters[0], backScreen = parameters[1], chatInteractor = get(), clientInteractor = get(), catalogInteractor = get(), propertyInteractor = get(), notificationManager = get()) }
     viewModel { parameters-> SelectPropertyTypeViewModel(propertyName = parameters[0], propertyAddress = parameters[1], propertyInteractor = get()) }
     viewModel { parameters-> PropertyDetailsViewModel(propertyName = parameters[0], propertyAddress = parameters[1], propertyType = parameters[2], propertyInteractor = get(), connectivityManager = get()) }
     viewModel { parameters-> PropertyInfoViewModel(objectId = parameters.get(), propertyInteractor = get(), clientInteractor = get(), connectivityManager = get(), context = get()) }
@@ -131,7 +131,7 @@ val viewModelModule = module {
     viewModel { parameters-> ManageFileViewModel(chatFile = parameters.get()) }
     viewModel { parameters -> VideoPlayerViewModel(chatFile = parameters.get()) }
     viewModel { parameters -> CallViewModel(channelId = parameters[0], callType = parameters[1], consultant = parameters[2], callId = parameters[3] ,chatInteractor = get(), mediaOutputManager = get()) }
-    viewModel { parameters -> CallRequestViewModel(callerId = parameters[0], callId = parameters[1], channelId = parameters[2], chatInteractor = get()) }
+    viewModel { parameters -> CallRequestViewModel(callerId = parameters[0], callId = parameters[1], channelId = parameters[2], chatInteractor = get(), notificationManager = get()) }
     viewModel { PropertyUploadDocumentsViewModel(context = get(), propertyInteractor = get()) }
     viewModel { MediaOutputChooserViewModel(mediaOutputManager = get()) }
     viewModel { RequestRationaleViewModel() }

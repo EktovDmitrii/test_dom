@@ -1,14 +1,16 @@
 package com.custom.rgs_android_dom.ui.chats.call_request
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
-import com.custom.rgs_android_dom.domain.chat.models.CallType
-import com.custom.rgs_android_dom.domain.chat.models.CaseModel
-import com.custom.rgs_android_dom.domain.chat.models.ChannelMemberModel
+import com.custom.rgs_android_dom.domain.chat.models.*
+import com.custom.rgs_android_dom.domain.fcm.NotificationsInteractor
+import com.custom.rgs_android_dom.domain.fcm.NotificationsInteractor.Companion.NOTIFICATION_INCOMING_CALL
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.chats.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.chats.call.CallFragment
+import com.custom.rgs_android_dom.ui.managers.MSDNotificationManager
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -20,7 +22,8 @@ class CallRequestViewModel(
     private val callerId: String,
     private val callId: String,
     private val channelId: String,
-    private val chatInteractor: ChatInteractor
+    private val chatInteractor: ChatInteractor,
+    private val notificationManager: MSDNotificationManager
 ) : BaseViewModel() {
 
     private val isClosableController = MutableLiveData(false)
@@ -32,6 +35,9 @@ class CallRequestViewModel(
     private var activeCases: List<CaseModel> = emptyList()
 
     init {
+
+        notificationManager.cancel(NOTIFICATION_INCOMING_CALL)
+
         chatInteractor.getCurrentConsultant()?.let { consultant ->
             consultantController.value = consultant
         } ?: getConsultantInfoFromRemote()
@@ -48,6 +54,23 @@ class CallRequestViewModel(
                 }
             )
             .addTo(dataCompositeDisposable)
+
+        chatInteractor.getWsEventsSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    when (it.event){
+                        WsEvent.CALL_DECLINED -> {
+                            isClosableController.value = true
+                            closeController.value = Unit
+                        }
+                    }
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
     }
 
     private fun getConsultantInfoFromRemote() {
@@ -68,6 +91,8 @@ class CallRequestViewModel(
     }
 
     fun navigateCall() {
+        notificationManager.cancel(NOTIFICATION_INCOMING_CALL)
+
         isClosableController.value = true
         closeController.value = Unit
 
@@ -81,6 +106,8 @@ class CallRequestViewModel(
     }
 
     fun declineCall() {
+        notificationManager.cancel(NOTIFICATION_INCOMING_CALL)
+
         isClosableController.value = true
 
         chatInteractor.declineCall(
@@ -96,11 +123,14 @@ class CallRequestViewModel(
                 onError = {
                     logException(this, it)
                     handleNetworkException(it)
+                    closeController.value = Unit
                 }
             ).addTo(dataCompositeDisposable)
     }
 
     fun navigateChat() {
+        notificationManager.cancel(NOTIFICATION_INCOMING_CALL)
+
         isClosableController.value = true
 
         chatInteractor.declineCall(
@@ -123,4 +153,5 @@ class CallRequestViewModel(
                 }
             ).addTo(dataCompositeDisposable)
     }
+
 }

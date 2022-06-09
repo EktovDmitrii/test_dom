@@ -159,4 +159,13 @@ object ChatMapper{
             else -> throw IllegalArgumentException("wrong type widget type: ${details.widgetType}")
         }
     }
+
+    fun responseToActiveCall(response: ActiveCallResponse): ActiveCallModel {
+        return ActiveCallModel(
+            acceptedAt = response.acceptedAt,
+            registeredAt = response.registeredAt,
+            channelId = response.channelId
+        )
+    }
+
 }

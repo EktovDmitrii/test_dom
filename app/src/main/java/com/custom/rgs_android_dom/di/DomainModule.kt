@@ -36,5 +36,5 @@ val domainModule = module {
 
     factory { PoliciesInteractor(policiesRepository = get(), clientRepository = get(), clientSharedPreferences = get()) }
 
-    factory { NotificationsInteractor(context = androidContext(), notificationsRepository = get()) }
+    factory { NotificationsInteractor(notificationsRepository = get(), notificationManager = get()) }
 }

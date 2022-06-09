@@ -11,7 +11,7 @@ import com.custom.rgs_android_dom.domain.fcm.NotificationsInteractor
 import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.managers.MSDNotificationManager.ACTION_NOTIFICATION
+import com.custom.rgs_android_dom.ui.managers.MSDNotificationManager.Companion.ACTION_NOTIFICATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.splash.SplashFragment
 import com.custom.rgs_android_dom.utils.CacheHelper
