@@ -685,6 +685,8 @@ class TranslationRepositoryImpl(private val api: MSDApi) :
             "notification.order.completed.body" to "Оцените качество сервиса: напишите цифру от 1 до 5",
             "notification.order.cancelled.title" to "Заказ отменен",
             "notification.order.cancelled.body" to "Ваш заказ был отменен. Войдите в приложение для просмотра подробной информации",
+
+            "app.profile.client.sex.title" to "Пол",
         )
     }
 

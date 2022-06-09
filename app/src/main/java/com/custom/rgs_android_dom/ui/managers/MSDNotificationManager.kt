@@ -12,22 +12,24 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.ui.MainActivity
 import kotlin.random.Random
 
-object MSDNotificationManager {
+class MSDNotificationManager(private val context: Context) {
 
-    const val ACTION_NOTIFICATION = "ACTION_NOTIFICATION"
+    companion object {
+        const val ACTION_NOTIFICATION = "ACTION_NOTIFICATION"
 
-    private const val CHANNEL_ID = "MSD_PUSHES_CHANNEL_ID"
-    private const val CHANNEL_NAME = "MSD_PUSHES_CHANNEL"
+        private const val CHANNEL_ID = "MSD_PUSHES_CHANNEL_ID"
+        private const val CHANNEL_NAME = "MSD_PUSHES_CHANNEL"
+    }
+
+    val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     fun notify(
-        context: Context,
         title: String = "",
         message: String,
+        notificationId: Int,
         content: Bundle,
+        groupKey: String? = null
     ) {
-
-        val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val notificationId = Random.nextInt()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
@@ -51,10 +53,15 @@ object MSDNotificationManager {
             .setSmallIcon(R.drawable.ic_notification)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
-            .setContentTitle(title)
+            .setGroup(groupKey)
             .build()
 
 
         manager.notify(notificationId, notification)
     }
+
+    fun cancel(notificationId: Int) {
+        manager.cancel(notificationId)
+    }
+
 }

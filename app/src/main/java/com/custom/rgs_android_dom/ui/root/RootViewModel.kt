@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.root
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -50,7 +51,8 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                     private val clientInteractor: ClientInteractor,
                     private val chatInteractor: ChatInteractor,
                     private val notificationsInteractor: NotificationsInteractor,
-                    private val mediaOutputManager: MediaOutputManager
+                    private val mediaOutputManager: MediaOutputManager,
+                    private val notificationManager: MSDNotificationManager
 ) : BaseViewModel() {
 
     private val navScopesVisibilityController = MutableLiveData<List<Pair<NavigationScope, Boolean>>>()
@@ -163,6 +165,9 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                             val acceptModel = it as WsCallAcceptModel
                             if (acceptModel.caller == Sender.OPPONENT)
                                 showRequestingCall(acceptModel)
+                        }
+                        WsEvent.CALL_DECLINED -> {
+                            notificationManager.cancel(NotificationsInteractor.NOTIFICATION_INCOMING_CALL)
                         }
                     }
                 },
@@ -409,33 +414,45 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
             when (content.getString(NotificationsInteractor.EXTRA_EVENT)){
                 NotificationEvent.NEW_MESSAGE,
                 NotificationEvent.NEW_WIDGET -> {
-                    val channelId = content.getString(NotificationsInteractor.EXTRA_CHANNEL_ID) ?: ""
-                    chatInteractor.getCase(channelId)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeBy(
-                            onSuccess = {
-                                val chatFragment = ChatFragment.newInstance(it)
-                                ScreenManager.showBottomScreen(chatFragment)
-                            },
-                            onError = {
-                                logException(this, it)
-                            }
-                        ).addTo(dataCompositeDisposable)
+                    if (!ScreenManager.containsScreen(CallRequestFragment::class.java.canonicalName)) {
+                        val channelId = content.getString(NotificationsInteractor.EXTRA_CHANNEL_ID) ?: ""
+                        chatInteractor.getCase(channelId)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeBy(
+                                onSuccess = {
+                                    val chatFragment = ChatFragment.newInstance(it)
+                                    ScreenManager.showBottomScreen(chatFragment)
+                                },
+                                onError = {
+                                    logException(this, it)
+                                }
+                            ).addTo(dataCompositeDisposable)
+                    }
                 }
                 NotificationEvent.CALL_CONSULTANT  -> {
                     val channelId = content.getString(NotificationsInteractor.EXTRA_CHANNEL_ID) ?: ""
                     val callerId = content.getString(NotificationsInteractor.INITIATOR_USER_ID) ?: ""
                     val callId = content.getString(NotificationsInteractor.CALL_ID) ?: ""
 
-                    val callRequestFragment = CallRequestFragment.newInstance(
-                        callerId = callerId,
-                        callId = callId,
-                        channelId = channelId
-                    )
-                    if (!ScreenManager.containsScreen(callRequestFragment)) {
-                        ScreenManager.showScreen(callRequestFragment)
-                    }
+                    chatInteractor.getActiveCall(channelId)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeBy(
+                            onSuccess = {
+                                val callRequestFragment = CallRequestFragment.newInstance(
+                                    callerId = callerId,
+                                    callId = callId,
+                                    channelId = channelId
+                                )
+                                if (!ScreenManager.containsScreen(callRequestFragment)) {
+                                    ScreenManager.showScreen(callRequestFragment)
+                                }
+                            },
+                            onError = {
+                                logException(this, it)
+                            }
+                        ).addTo(dataCompositeDisposable)
                 }
                 NotificationEvent.ORDER_CANCELLED,
                 NotificationEvent.ORDER_COMPLETED -> {
@@ -455,4 +472,5 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
             }
         }
     }
+
 }

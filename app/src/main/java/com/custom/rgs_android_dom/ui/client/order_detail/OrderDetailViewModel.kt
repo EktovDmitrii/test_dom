@@ -9,6 +9,7 @@ import com.custom.rgs_android_dom.domain.client.models.Order
 import com.custom.rgs_android_dom.domain.client.models.OrderStatus
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.chats.chat.ChatFragment
+import com.custom.rgs_android_dom.ui.managers.MSDNotificationManager
 import com.custom.rgs_android_dom.ui.navigation.ScreenInfo
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.navigation.TargetScreen
@@ -21,7 +22,8 @@ import io.reactivex.schedulers.Schedulers
 class OrderDetailViewModel(
     private val chatInteractor: ChatInteractor,
     private val clientInteractor: ClientInteractor,
-    private val order: Order
+    private val order: Order,
+    private val notificationManager: MSDNotificationManager
 ) : BaseViewModel() {
 
     private val orderViewStateController = MutableLiveData<Order>()
@@ -36,6 +38,8 @@ class OrderDetailViewModel(
     private var orderDetails: Order = order
 
     init {
+        notificationManager.cancel(order.id.hashCode())
+
         orderViewStateController.value = orderDetails
 
         clientInteractor.getOrderCancelledSubject()

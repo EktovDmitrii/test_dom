@@ -617,4 +617,10 @@ class ChatRepositoryImpl(private val api: MSDApi,
             ChatsDbMapper.toCaseModel(it)
         }
     }
+
+    override fun getActiveCall(channelId: String): Maybe<ActiveCallModel> {
+        return api.getActiveCall(channelId).map {
+            ChatMapper.responseToActiveCall(it)
+        }
+    }
 }
