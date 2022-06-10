@@ -29,6 +29,9 @@ class CallRequestViewModel(
     private val isClosableController = MutableLiveData(false)
     val isClosableObserver: LiveData<Boolean> = isClosableController
 
+    private val callEndedController = MutableLiveData<Unit>()
+    val callEndedObserver: LiveData<Unit> = callEndedController
+
     private val consultantController = MutableLiveData<ChannelMemberModel>()
     val consultantObserver: LiveData<ChannelMemberModel> = consultantController
 
@@ -63,7 +66,7 @@ class CallRequestViewModel(
                     when (it.event){
                         WsEvent.CALL_DECLINED -> {
                             isClosableController.value = true
-                            closeController.value = Unit
+                            callEndedController.value = Unit
                         }
                     }
                 },

@@ -197,7 +197,7 @@ object ScreenManager {
 
         // TODO Find out why manager is executing transaction
         try {
-            transaction.commitNow()
+            transaction.commitNowAllowingStateLoss()
         } catch (e: Exception){
             logException(this, e)
         }

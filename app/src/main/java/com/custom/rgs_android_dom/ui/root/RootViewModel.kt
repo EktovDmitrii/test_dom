@@ -1,9 +1,6 @@
 package com.custom.rgs_android_dom.ui.root
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
@@ -18,7 +15,6 @@ import com.custom.rgs_android_dom.domain.chat.models.WsEvent
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.fcm.NotificationsInteractor
 import com.custom.rgs_android_dom.domain.fcm.models.NotificationEvent
-import com.custom.rgs_android_dom.domain.fcm.models.Redirect
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
@@ -36,7 +32,6 @@ import com.custom.rgs_android_dom.ui.main.MainFragment
 import com.custom.rgs_android_dom.ui.managers.MSDNotificationManager
 import com.custom.rgs_android_dom.ui.managers.MediaOutputManager
 import com.custom.rgs_android_dom.ui.navigation.TargetScreen
-import com.custom.rgs_android_dom.utils.asEnumOrDefault
 import com.custom.rgs_android_dom.utils.logException
 import com.custom.rgs_android_dom.views.NavigationScope
 import com.google.firebase.installations.FirebaseInstallations
