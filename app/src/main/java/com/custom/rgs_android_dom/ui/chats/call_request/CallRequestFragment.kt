@@ -35,7 +35,6 @@ class CallRequestFragment : BaseFragment<CallRequestViewModel, FragmentRequestCa
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         playTune("track6.mp3", true)
         binding.acceptCallImageView.setOnDebouncedClickListener {
             playTune("track4.mp3")
@@ -47,6 +46,7 @@ class CallRequestFragment : BaseFragment<CallRequestViewModel, FragmentRequestCa
         binding.chatImageView.setOnDebouncedClickListener {
             viewModel.navigateChat()
         }
+
         subscribe(viewModel.consultantObserver) { consultant ->
             binding.consultantNameTextView.text = "${consultant.lastName} ${consultant.firstName}"
 
@@ -60,6 +60,11 @@ class CallRequestFragment : BaseFragment<CallRequestViewModel, FragmentRequestCa
                 binding.avatarImageView.setImageResource(R.drawable.ic_call_consultant)
             }
         }
+
+        // TODO HACK for closing screen when app is not visible
+        subscribeForever(viewModel.callEndedObserver) {
+            super.onClose()
+        }
     }
 
     override fun setStatusBarColor() {
@@ -72,4 +77,5 @@ class CallRequestFragment : BaseFragment<CallRequestViewModel, FragmentRequestCa
         else
             super.onClose()
     }
+
 }

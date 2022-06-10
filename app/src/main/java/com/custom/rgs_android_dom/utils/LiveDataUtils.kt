@@ -20,3 +20,11 @@ fun <T> FragmentActivity.subscribe(liveData: (LiveData<T>)?, onNext: (t: T) -> U
         }
     })
 }
+
+fun <T> Fragment.subscribeForever(liveData: (LiveData<T>)?, onNext: (t: T) -> Unit) {
+    liveData?.observeForever {
+        if (it != null){
+            onNext(it)
+        }
+    }
+}
