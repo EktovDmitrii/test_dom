@@ -623,4 +623,10 @@ class ChatRepositoryImpl(private val api: MSDApi,
             ChatMapper.responseToActiveCall(it)
         }
     }
+
+    override fun getCasesSingle(): Single<ClientCasesModel> {
+        return database.chatsDao.getCasesSingle().map {
+            ChatsDbMapper.toModel(it)
+        }
+    }
 }

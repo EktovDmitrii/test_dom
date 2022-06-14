@@ -410,14 +410,33 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                 NotificationEvent.NEW_MESSAGE,
                 NotificationEvent.NEW_WIDGET -> {
                     if (!ScreenManager.containsScreen(CallRequestFragment::class.java.canonicalName)) {
-                        val channelId = content.getString(NotificationsInteractor.EXTRA_CHANNEL_ID) ?: ""
-                        chatInteractor.getCase(channelId)
+                        chatInteractor.getActiveCallsInAllCases()
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribeBy(
                                 onSuccess = {
-                                    val chatFragment = ChatFragment.newInstance(it)
-                                    ScreenManager.showBottomScreen(chatFragment)
+                                    if (it.isEmpty()){
+                                        val channelId = content.getString(NotificationsInteractor.EXTRA_CHANNEL_ID) ?: ""
+                                        chatInteractor.getCase(channelId)
+                                            .subscribeOn(Schedulers.io())
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                            .subscribeBy(
+                                                onSuccess = {
+                                                    val chatFragment = ChatFragment.newInstance(it)
+                                                    ScreenManager.showBottomScreen(chatFragment)
+                                                },
+                                                onError = {
+                                                    logException(this, it)
+                                                }
+                                            ).addTo(dataCompositeDisposable)
+                                    } else {
+                                        val callRequestFragment = CallRequestFragment.newInstance(
+                                            callerId = it[0].recipientUserId,
+                                            callId = it[0].callId,
+                                            channelId = it[0].channelId
+                                        )
+                                        ScreenManager.showScreen(callRequestFragment)
+                                    }
                                 },
                                 onError = {
                                     logException(this, it)

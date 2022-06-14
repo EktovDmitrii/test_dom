@@ -1,9 +1,7 @@
 package com.custom.rgs_android_dom.domain.fcm
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.domain.fcm.models.NotificationEvent
 import com.custom.rgs_android_dom.domain.repositories.NotificationsRepository

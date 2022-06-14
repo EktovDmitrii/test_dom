@@ -162,6 +162,9 @@ object ChatMapper{
 
     fun responseToActiveCall(response: ActiveCallResponse): ActiveCallModel {
         return ActiveCallModel(
+            callId = response.callId ?: "",
+            initiatorUserId = response.initiatorUserId ?: "",
+            recipientUserId = response.recipientUserId ?: "",
             acceptedAt = response.acceptedAt,
             registeredAt = response.registeredAt,
             channelId = response.channelId

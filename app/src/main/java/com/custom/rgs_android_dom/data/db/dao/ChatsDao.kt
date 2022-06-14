@@ -24,4 +24,7 @@ interface ChatsDao {
 
     @Query("SELECT * FROM cases WHERE channelId = :channelId")
     fun getCase(channelId: String): Maybe<CaseDbModel>
+
+    @Query("SELECT * FROM cases")
+    fun getCasesSingle(): Single<List<CaseDbModel>>
 }

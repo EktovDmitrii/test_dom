@@ -74,4 +74,6 @@ interface ChatRepository {
 
     fun getActiveCall(channelId: String): Maybe<ActiveCallModel>
 
+    fun getCasesSingle(): Single<ClientCasesModel>
+
 }

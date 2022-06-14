@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.domain.chat
 
+import android.util.Log
 import com.custom.rgs_android_dom.data.providers.auth.manager.AuthContentProviderManager
 import com.custom.rgs_android_dom.domain.chat.models.*
 import com.custom.rgs_android_dom.domain.repositories.ChatRepository
@@ -293,6 +294,25 @@ class ChatInteractor(
 
     fun getActiveCall(channelId: String): Maybe<ActiveCallModel> {
         return chatRepository.getActiveCall(channelId)
+    }
+
+    fun getActiveCallsInAllCases(): Single<List<ActiveCallModel>> {
+        return chatRepository.loadCases().andThen(chatRepository.getCasesSingle())
+            .map {
+                val activeCalls = arrayListOf<ActiveCallModel>()
+                val channels = it.activeCases.map { it.channelId }
+                channels.forEach { channel->
+                    try {
+                        val activeCall = chatRepository.getActiveCall(channel).blockingGet()
+                        if (activeCall != null){
+                            activeCalls.add(activeCall)
+                        }
+                    } catch (e: Exception){
+
+                    }
+                }
+                activeCalls
+            }
     }
 
 }
