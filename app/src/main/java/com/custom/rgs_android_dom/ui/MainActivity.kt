@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -79,6 +80,7 @@ class MainActivity : AppCompatActivity() {
         val fragmentList = supportFragmentManager.fragments
         val topFragment = fragmentList.last()
         if (topFragment != null) {
+            Log.d("MyLog", "Top fragment not null " + fragmentList.size)
             when(topFragment){
                 is BaseFragment<*,*> -> {
                     topFragment.onClose()
@@ -87,8 +89,8 @@ class MainActivity : AppCompatActivity() {
                     topFragment.onClose()
                 }
             }
-
         } else {
+            Log.d("MyLog", "Gonna back press")
             super.onBackPressed()
         }
     }

@@ -122,6 +122,16 @@ class PropertyInfoFragment : BaseBottomSheetFragment<PropertyInfoViewModel, Frag
                     .into(binding.propertyImageView)
             }
 
+            propertyItem.address?.entrance?.let { entrance->
+                binding.entranceTextView.visible()
+                binding.entranceTextView.setValue(entrance.toString())
+            }
+
+            propertyItem.address?.floor?.let { floor->
+                binding.floorTextView.visible()
+                binding.floorTextView.setValue(floor.toString())
+            }
+
             propertyItem.isOwn?.let { isOwn ->
                 binding.isOwnTextView.setValue(if (isOwn) {
                     TranslationInteractor.getTranslation("app.object_detail.yes")

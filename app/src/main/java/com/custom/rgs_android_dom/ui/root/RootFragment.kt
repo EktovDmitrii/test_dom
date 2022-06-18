@@ -18,6 +18,7 @@ import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.chats.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.chats.call.media_output_chooser.MediaOutputChooserFragment
+import com.custom.rgs_android_dom.ui.constants.FREE_CALL_PHONE
 import com.custom.rgs_android_dom.ui.main.MainFragment
 import com.custom.rgs_android_dom.ui.managers.MSDNotificationManager
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
@@ -31,16 +32,14 @@ import com.yandex.metrica.YandexMetrica
 class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.fragment_root) {
 
     private var bottomSheetInited = false
-
     private var bottomSheetMainFragment: BaseBottomSheetFragment<*, *>? = null
     private var bottomSheetBehavior: BottomSheetBehavior<*>? = null
     private var scroller: OverScroller? = null
     private var peekHeight: Int? = null
-
     private var canTransit = true
     private var canTransitReverse = false
     private var isChatEventLogged = false
-
+    private var previousBottomSheet: Int? = null
     private var callInfo: CallInfoModel? = null
 
     private val bottomSheetCallback = object : BottomSheetCallback() {
@@ -62,7 +61,7 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
         }
 
         override fun onSlide(bottomSheet: View, slideOffset: Float) {
-            if (slideOffset >= 0.71f){
+            if (slideOffset >= 0.71f) {
                 onSlideStateChanged(SlideState.MOVING_TOP)
             } else if (slideOffset < 0.60f && slideOffset > 0.0f) {
                 onSlideStateChanged(SlideState.MOVING_BOTTOM)
@@ -75,18 +74,20 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         ScreenManager.initBottomSheet(R.id.bottomContainer)
-        ScreenManager.onBottomSheetChanged = {fragment->
+        ScreenManager.onBottomSheetChanged = { fragment ->
             bottomSheetMainFragment = fragment
             measureAndShowFragment()
             updateNavigationView()
-       }
+        }
 
         ScreenManager.showBottomScreen(MainFragment())
 
         binding.bottomNavigationView.selectNavigationScope(NavigationScope.NAV_MAIN)
 
-        binding.bottomNavigationView.setNavigationChangedListener { navigationItem->
-            when (navigationItem){
+        binding.bottomNavigationView.setNavigationChangedListener { navigationItem ->
+            previousBottomSheet = bottomSheetBehavior?.state
+
+            when (navigationItem) {
                 NavigationScope.NAV_MAIN -> {
                     YandexMetrica.reportEvent("mp_menu", "{\"menu_item\":\"Главная\"}")
 
@@ -129,6 +130,7 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
 
         binding.chatLinearLayout.setOnDebouncedClickListener {
             YandexMetrica.reportEvent("master_online_connection", "{\"connection\":\"Чат\"}")
+            onSlideStateChanged(SlideState.TOP)
             viewModel.onChatClick()
         }
 
@@ -147,42 +149,41 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
         }
 
         binding.maximizeImageView.setOnDebouncedClickListener {
-            if (callInfo != null && callInfo?.state != CallState.ENDED ){
+            if (callInfo != null && callInfo?.state != CallState.ENDED) {
                 viewModel.onMaximizeCallClick()
             }
         }
 
         binding.callInfoFrameLayout.setOnDebouncedClickListener {
-            if (callInfo != null && callInfo?.state != CallState.ENDED ){
+            if (callInfo != null && callInfo?.state != CallState.ENDED) {
                 viewModel.onMaximizeCallClick()
             }
         }
 
         binding.mediaOutputImageView.setOnDebouncedClickListener {
-            if (callInfo != null && callInfo?.state != CallState.ENDED ){
+            if (callInfo != null && callInfo?.state != CallState.ENDED) {
                 val mediaOutputChooserFragment = MediaOutputChooserFragment()
                 mediaOutputChooserFragment.show(childFragmentManager, mediaOutputChooserFragment.TAG)
             }
         }
 
-        subscribe(viewModel.navScopesVisibilityObserver){ scopes->
+        subscribe(viewModel.navScopesVisibilityObserver) { scopes ->
             scopes.forEach {
                 binding.bottomNavigationView.setNavigationScopeVisible(it.first, it.second)
             }
         }
 
-        subscribe(viewModel.isUserAuthorizedObserver){
+        subscribe(viewModel.isUserAuthorizedObserver) {
             binding.actionsChatsTextView.text = if (it) {
                 TranslationInteractor.getTranslation("app.menu.background_page.bottom_button_client.title")
-            }
-            else {
+            } else {
                 TranslationInteractor.getTranslation("app.menu.background_page.bottom_button_quest.description")
             }
             binding.guestPhoneCallLinearLayout.goneIf(it)
             binding.phoneCallLinearLayout.visibleIf(it)
         }
 
-        subscribe(viewModel.unreadPostsObserver){
+        subscribe(viewModel.unreadPostsObserver) {
             binding.bottomNavigationView.updateUnreadPostsCount(it)
         }
 
@@ -190,8 +191,8 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
             updateCallInfoUI(callInfo)
         }
 
-        subscribe(viewModel.mediaOutputObserver){
-            when (it){
+        subscribe(viewModel.mediaOutputObserver) {
+            when (it) {
                 MediaOutputType.PHONE,
                 MediaOutputType.WIRED_HEADPHONE -> {
                     binding.mediaOutputImageView.setImageResource(R.drawable.ic_phone_call_24px)
@@ -204,12 +205,11 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
                 }
             }
         }
-
     }
 
     override fun setStatusBarColor() {
-        val statusBarColor = if (callInfo != null){
-            when (callInfo?.state){
+        val statusBarColor = if (callInfo != null) {
+            when (callInfo?.state) {
                 CallState.CONNECTING -> {
                     R.color.secondary900
                 }
@@ -239,11 +239,11 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
         updateNavigationView()
     }
 
-    private fun makePhoneCall(){
+    private fun makePhoneCall() {
         YandexMetrica.reportEvent("master_online_connection", "{\"connection\":\"8-800\"}")
 
         val phoneCallIntent = Intent(Intent.ACTION_DIAL)
-        phoneCallIntent.data = Uri.parse("tel:88006004358")
+        phoneCallIntent.data = Uri.parse(FREE_CALL_PHONE)
         phoneCallIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         requireContext().startActivity(phoneCallIntent)
     }
@@ -263,13 +263,17 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
 
                 bottomSheetBehavior?.addBottomSheetCallback(bottomSheetCallback)
 
-                val bottomSheetTopPadding = if (callInfo != null){
+                val bottomSheetTopPadding = if (callInfo != null) {
                     binding.toolbarLinearLayout.height
                 } else {
-                    if (bottomSheetMainFragment is ChatFragment){ 8.dp(requireContext()) } else { binding.toolbarLinearLayout.height }
+                    if (bottomSheetMainFragment is ChatFragment) {
+                        8.dp(requireContext())
+                    } else {
+                        binding.toolbarLinearLayout.height
+                    }
                 }
 
-                if (peekHeight == null){
+                if (peekHeight == null) {
                     peekHeight = binding.root.getLocationOnScreen().y - binding.actionsLinearLayout.getLocationOnScreen().y + bottomSheetTopPadding
                 }
 
@@ -281,20 +285,26 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
                     bottomSheetBehavior?.state = STATE_COLLAPSED
                 }
 
-                if (bottomSheetBehavior?.state == STATE_EXPANDED) {
+                if (bottomSheetBehavior?.state == STATE_EXPANDED && previousBottomSheet == null) {
                     afterBottomSheetInit()
-                } else {
+                } else if (previousBottomSheet == null) {
                     bottomSheetBehavior?.state = STATE_EXPANDED
+                } else {
+                    previousBottomSheet?.let { currentBottomSheetState ->
+                        bottomSheetBehavior?.state = currentBottomSheetState
+                        afterBottomSheetInit()
+                        previousBottomSheet = null
+                    }
                 }
             }
-        } catch (e: Exception){
+
+        } catch (e: Exception) {
             logException(this, e)
         }
-
     }
 
     private fun onSlideStateChanged(newState: SlideState) {
-        if (bottomSheetBehavior?.isDraggable == false){
+        if (bottomSheetBehavior?.isDraggable == false) {
             return
         }
         when (newState) {
@@ -342,28 +352,27 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
         peekHeight?.let {
             bottomSheetBehavior?.peekHeight = it
         }
-
     }
 
-    private fun updateNavigationView(){
-        bottomSheetMainFragment?.let { fragment->
+    private fun updateNavigationView() {
+        bottomSheetMainFragment?.let { fragment ->
             binding.bottomNavigationView.visibleIf(fragment.isNavigationViewVisible())
-            fragment.getNavigationScope()?.let { scope->
+            fragment.getNavigationScope()?.let { scope ->
                 binding.bottomNavigationView.selectNavigationScope(scope)
             }
         }
     }
 
-    private fun updateToolbarState(){
-        if (canTransitReverse){
+    private fun updateToolbarState() {
+        if (canTransitReverse) {
             binding.actionsLinearLayout.invisible()
             binding.toolbarLinearLayout.visibleIf(callInfo == null)
             binding.callInfoFrameLayout.visibleIf(callInfo != null)
         }
     }
 
-    private fun updateCallInfoUI(callInfo: CallInfoModel){
-        if (callInfo.state == CallState.IDLE){
+    private fun updateCallInfoUI(callInfo: CallInfoModel) {
+        if (callInfo.state == CallState.IDLE) {
             this.callInfo = null
         } else {
             this.callInfo = callInfo
@@ -374,12 +383,12 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
         binding.callInfoFrameLayout.visible()
         binding.signalImageView.gone()
 
-        when (callInfo.state){
+        when (callInfo.state) {
             CallState.CONNECTING -> {
                 binding.contentFrameLauout.setBackgroundColor(
                     ContextCompat.getColor(requireContext(), R.color.secondary900)
                 )
-                if (isVisible){
+                if (isVisible) {
                     setStatusBarColor(R.color.secondary900)
                 }
                 binding.callSubtitleTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary400))
@@ -390,7 +399,7 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
                 binding.contentFrameLauout.setBackgroundColor(
                     ContextCompat.getColor(requireContext(), R.color.success500)
                 )
-                if (isVisible){
+                if (isVisible) {
                     setStatusBarColor(R.color.success500)
                 }
 
@@ -403,7 +412,7 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
                 binding.contentFrameLauout.setBackgroundColor(
                     ContextCompat.getColor(requireContext(), R.color.error500)
                 )
-                if (isVisible){
+                if (isVisible) {
                     setStatusBarColor(R.color.error500)
                 }
 
@@ -417,7 +426,7 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
                 binding.contentFrameLauout.setBackgroundColor(
                     ContextCompat.getColor(requireContext(), R.color.secondary900)
                 )
-                if (isVisible){
+                if (isVisible) {
                     setStatusBarColor(R.color.secondary900)
                 }
 
@@ -434,8 +443,8 @@ class RootFragment : BaseFragment<RootViewModel, FragmentRootBinding>(R.layout.f
                 binding.contentFrameLauout.setBackgroundColor(
                     ContextCompat.getColor(requireContext(), R.color.primary400)
                 )
-                if (isVisible){
-                    setStatusBarColor(R.color.primary400)
+                if (isVisible) {
+                    setStatusBarColor(R.color.primary500)
                 }
                 measureAndShowFragment()
             }
