@@ -34,6 +34,10 @@ import com.custom.rgs_android_dom.ui.sos.SOSFragment
 import com.custom.rgs_android_dom.ui.stories.StoriesFragment
 import com.custom.rgs_android_dom.utils.isInternetConnected
 import com.custom.rgs_android_dom.utils.logException
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -68,9 +72,16 @@ class MainViewModel(
     private val popularProductsController = MutableLiveData<List<ProductShortModel>>()
     val popularProductsObserver: LiveData<List<ProductShortModel>> = popularProductsController
 
+    private val showAppUpdateScreenController = MutableLiveData<Boolean>()
+    val showAppUpdateScreenObserver: LiveData<Boolean> = showAppUpdateScreenController
+
     private var requestedScreen = TargetScreen.UNSPECIFIED
 
+    private var appUpdateManager = AppUpdateManagerFactory.create(context)
+
     init {
+        checkAppUpdates()
+
         registrationController.value = registrationInteractor.isAuthorized().let {
             if (it) getPropertyAvailability()
             return@let it
@@ -294,6 +305,18 @@ class MainViewModel(
 
     fun onStoriesSupportClick() {
         ScreenManager.showScreen(StoriesFragment.newInstance(StoriesFragment.TAB_SUPPORT))
+    }
+
+    private fun checkAppUpdates() {
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            //TODO Add handling this stuff when backend will be ready
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+                //showAppUpdateScreenController.value = true
+            } else {
+                //showAppUpdateScreenController.value = true
+            }
+        }
     }
 
 }

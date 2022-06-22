@@ -52,7 +52,9 @@ class LocationManager(private val context: Context){
                 } else {
                     onError(Throwable("Location is null"))
                 }
-                locationClient.removeLocationUpdates(locationCallback)
+                locationCallback?.let {
+                    locationClient.removeLocationUpdates(it)
+                }
             }
         }
         locationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
