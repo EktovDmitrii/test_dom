@@ -10,7 +10,9 @@
         android:id="@+id/toolbarAppBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -39,13 +41,16 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/contentLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbarAppBar"
         android:layout_marginTop="16dp"
         android:clipToPadding="false"
         android:orientation="vertical"
-        android:paddingHorizontal="20dp">
+        android:paddingHorizontal="20dp"
+        android:visibility="gone"
+        tools:visibility="visible">
 
 
         <FrameLayout
@@ -68,7 +73,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|center"
-                android:checked="true"
                 app:thumbTint="@color/switch_color_primary_500_secondary_250"
                 app:trackTint="@color/switch_color_primary_500_secondary_250_alpha" />
 
@@ -101,5 +105,11 @@
         </FrameLayout>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <ProgressBar
+        android:id="@+id/loadingProgressBar"
+        style="@style/ProgressBarStyle"
+        android:layout_width="50dp"
+        android:layout_height="50dp"/>
 
 </RelativeLayout>

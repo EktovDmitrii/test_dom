@@ -289,4 +289,13 @@ class ClientRepositoryImpl(
         }
     }
 
+    override fun updateNotificationChannel(notificationChannel: NotificationChannelInfo): Single<ClientModel> {
+        val updateNotificationsChannelsRequest = ClientMapper.notificationChannelToRequest(notificationChannel)
+        return api.updateNotificationChannels(updateNotificationsChannelsRequest).map { response->
+            val client = ClientMapper.responseToClient(response)
+            clientSharedPreferences.saveClient(client)
+            client
+        }
+    }
+
 }

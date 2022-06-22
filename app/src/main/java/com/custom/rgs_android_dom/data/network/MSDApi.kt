@@ -364,4 +364,7 @@ interface MSDApi {
     @GET("chat/users/me/channels/{channelId}/webrtc/calls")
     fun getActiveCall(@Path("channelId") channelId: String): Maybe<ActiveCallResponse>
 
+    @PUT("clients/me/notifications/channels")
+    fun updateNotificationChannels(@Body updateNotificationsChannelsRequest: UpdateNotificationsChannelsRequest): Single<ClientResponse>
+
 }

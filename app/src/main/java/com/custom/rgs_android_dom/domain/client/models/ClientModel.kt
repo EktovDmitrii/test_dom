@@ -19,7 +19,8 @@ data class ClientModel (
 	val phone: String,
 	val gender: Gender?,
 	val status: String?,
-	var checkoutEmail: String?
+	var checkoutEmail: String?,
+	val channels: List<NotificationChannelInfo>
 ) {
 
 	fun getChatChannelId(): String {

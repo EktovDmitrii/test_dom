@@ -76,4 +76,6 @@ interface ClientRepository {
 
     fun saveFCMToken(token: String, deviceId: String): Completable
 
+    fun updateNotificationChannel(notificationChannel: NotificationChannelInfo): Single<ClientModel>
+
 }
