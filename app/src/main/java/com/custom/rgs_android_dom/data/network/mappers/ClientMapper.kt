@@ -18,6 +18,8 @@ object ClientMapper {
     const val CONTACT_TYPE_PHONE = "phone"
     const val CONTACT_TYPE_EMAIL = "email"
     const val CONTACT_TYPE_CHAT = "chat"
+    private const val NOTIFICATION_CHANNEL_SMS = "sms"
+    private const val NOTIFICATION_CHANNEL_PUSH = "push"
 
     private const val AVATAR_ENDPOINT = "${BuildConfig.BASE_URL}/api/store"
 
@@ -74,7 +76,17 @@ object ClientMapper {
             phone = response.phone,
             gender = response.gender,
             status = response.status,
-            checkoutEmail = ""
+            checkoutEmail = "",
+            channels = response.channels?.map { channel->
+                NotificationChannelInfo(
+                    type = when (channel.type) {
+                        NOTIFICATION_CHANNEL_SMS -> NotificationChannelType.SMS
+                        NOTIFICATION_CHANNEL_PUSH -> NotificationChannelType.PUSH
+                        else -> NotificationChannelType.NONE
+                    },
+                    enabled = channel.enabled
+                )
+            } ?: emptyList()
         )
 
     }
@@ -201,6 +213,21 @@ object ClientMapper {
             clientName = "${contractResponse?.clientLastName} ${contractResponse?.clientFirstName} ${contractResponse?.clientMiddleName}",
             startsAt = contractResponse?.startDate,
             expiresAt = contractResponse?.endDate
+        )
+    }
+
+    fun notificationChannelToRequest(channel: NotificationChannelInfo): UpdateNotificationsChannelsRequest {
+        val type = when (channel.type){
+            NotificationChannelType.SMS -> NOTIFICATION_CHANNEL_SMS
+            NotificationChannelType.PUSH -> NOTIFICATION_CHANNEL_PUSH
+            else -> ""
+        }
+        val updateNotificationChannelRequest = UpdateNotificationChannelRequest(
+            type = type,
+            enabled = channel.enabled
+        )
+        return UpdateNotificationsChannelsRequest(
+            channels = listOf(updateNotificationChannelRequest)
         )
     }
 

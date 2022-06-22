@@ -56,9 +56,12 @@ data class ClientResponse (
 	val  docSerial: String,
 
 	@SerializedName("docNumber")
-	val docNumber: String
+	val docNumber: String,
 
-	)
+	@SerializedName("channels")
+	val channels: List<NotificationChannelInfoResponse>?
+
+)
 
 data class AddressResponse (
 	@SerializedName("id")
