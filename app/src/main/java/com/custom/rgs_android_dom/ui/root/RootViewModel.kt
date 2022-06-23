@@ -103,7 +103,6 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
             .subscribeBy (
                 onNext = {
                     loadCases()
-                    obtainAndSaveFCMToken()
                     when (requestedScreen) {
                         TargetScreen.CHAT -> {
                             ScreenManager.showBottomScreen(ChatFragment.newInstance(chatInteractor.getMasterOnlineCase()))
@@ -385,23 +384,6 @@ class RootViewModel(private val registrationInteractor: RegistrationInteractor,
                 }
             )
             .addTo(dataCompositeDisposable)
-    }
-
-    private fun obtainAndSaveFCMToken(){
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task->
-            FirebaseInstallations.getInstance().id.addOnSuccessListener { deviceId->
-                if (task.isSuccessful){
-                    clientInteractor.saveFCMToken(task.result, deviceId)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeBy(
-                            onError = {
-                                logException(this, it)
-                            }
-                        ).addTo(dataCompositeDisposable)
-                }
-            }
-        }
     }
 
     private fun parseNewNotificationContent(content: Bundle){

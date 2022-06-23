@@ -122,7 +122,7 @@ class ClientSharedPreferences(val context: Context, val gson: Gson) {
     }
 
     fun getDeviceId(): String {
-        return preferences.getString(PREF_DEVICE_ID, null) ?: ""
+        return preferences.getString(PREF_DEVICE_ID, "") ?: ""
     }
 
     fun saveDeviceId(deviceId: String) {
