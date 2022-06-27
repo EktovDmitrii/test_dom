@@ -93,6 +93,7 @@ import com.custom.rgs_android_dom.ui.stories.StoriesViewModel
 import com.custom.rgs_android_dom.ui.stories.tabs.TabGuaranteeViewModel
 import com.custom.rgs_android_dom.ui.stories.tabs.TabNewServiceViewModel
 import com.custom.rgs_android_dom.ui.stories.tabs.TabSupportViewModel
+import com.custom.rgs_android_dom.ui.update_app.UpdateAppViewModel
 
 val viewModelModule = module {
     viewModel { parameters -> RegistrationCodeViewModel(phone = parameters[0], token = parameters[1], registrationInteractor = get(), clientInteractor = get()) }
@@ -182,6 +183,7 @@ val viewModelModule = module {
     viewModel { parameters -> DeletePaymentMethodViewModel(bindingId = parameters[0], purchaseInteractor = get()) }
     viewModel { parameters -> ErrorDeletePaymentMethodViewModel(errorCode = parameters[0]) }
     viewModel { NotificationsSettingsViewModel(clientInteractor = get()) }
+    viewModel { UpdateAppViewModel() }
     viewModel { PromoCodesViewModel(promoCodesInteractor = get(), clientInteractor = get()) }
     viewModel { AddPromoCodeViewModel() }
     viewModel { parameters -> PromoCodeDialogsViewModel (promoCodeId = parameters[0], promoCodesInteractor = get(), chatInteractor = get()) }

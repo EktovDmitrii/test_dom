@@ -271,14 +271,22 @@ class ClientRepositoryImpl(
 
     override fun saveFCMToken(token: String, deviceId: String): Completable {
         val savedToken = clientSharedPreferences.getFCMToken()
-
-        return if (savedToken != token){
+        return if (savedToken != token) {
             clientSharedPreferences.saveFCMToken(token)
             clientSharedPreferences.saveDeviceId(deviceId)
             val saveTokenRequest = SaveTokenRequest(token)
-            api.deleteFCMToken(deviceId).andThen(api.saveFCMToken(deviceId, saveTokenRequest))
+            api.saveFCMToken(deviceId, saveTokenRequest)
         } else {
             Completable.complete()
+        }
+    }
+
+    override fun updateNotificationChannel(notificationChannel: NotificationChannelInfo): Single<ClientModel> {
+        val updateNotificationsChannelsRequest = ClientMapper.notificationChannelToRequest(notificationChannel)
+        return api.updateNotificationChannels(updateNotificationsChannelsRequest).map { response->
+            val client = ClientMapper.responseToClient(response)
+            clientSharedPreferences.saveClient(client)
+            client
         }
     }
 

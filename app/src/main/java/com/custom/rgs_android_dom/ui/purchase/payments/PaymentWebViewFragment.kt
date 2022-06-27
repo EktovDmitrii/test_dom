@@ -69,7 +69,7 @@ class PaymentWebViewFragment : BaseBottomSheetFragment<PaymentWebViewViewModel, 
                 request: WebResourceRequest?
             ): Boolean {
                 return when {
-                    request?.url.toString().contains("/billing/fail") -> {
+                    request?.url.toString().contains("fail") -> {
                         viewModel.onBack()
                         ScreenManager.showScreenScope(
                             PaymentErrorFragment(),
@@ -77,7 +77,7 @@ class PaymentWebViewFragment : BaseBottomSheetFragment<PaymentWebViewViewModel, 
                         )
                         true
                     }
-                    request?.url.toString().contains("/billing/success") -> {
+                    request?.url.toString().contains("success") -> {
                         viewModel.onBack()
                         ScreenManager.showScreenScope(
                             PaymentSuccessFragment.newInstance(

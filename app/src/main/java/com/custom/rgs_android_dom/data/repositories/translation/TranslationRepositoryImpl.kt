@@ -707,6 +707,12 @@ class TranslationRepositoryImpl(private val api: MSDApi) :
             "notification.order.cancelled.body" to "Ваш заказ был отменен. Войдите в приложение для просмотра подробной информации",
 
             "app.profile.client.sex.title" to "Пол",
+
+            // Update app
+            "app.ui.update_app.title" to "Ваша версия приложения устарела",
+            "app.ui.update_app.subtitle" to "Некоторые функции могут быть недоступны",
+            "app.ui.update_app.button.update" to "Обновить",
+            "app.ui.update_app.button.not_now" to "Не сейчас",
         )
     }
 

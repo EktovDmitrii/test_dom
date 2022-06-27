@@ -9,9 +9,12 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentMainBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.update_app.UpdateAppFragment
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.views.NavigationScope
 import com.custom.rgs_android_dom.utils.recycler_view.GridThreeSpanItemDecoration
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.skydoves.androidveil.VeilLayout
 import com.yandex.metrica.YandexMetrica
 
@@ -204,6 +207,11 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             requireActivity().findViewById<VeilLayout>(R.id.rootShimmerLayout)?.visibleIf(it == BaseViewModel.LoadingState.LOADING)
             requireActivity().findViewById<View>(R.id.toolbarContentLinearLayout)?.visibleIf(it != BaseViewModel.LoadingState.LOADING)
         }
+
+        subscribe(viewModel.showAppUpdateScreenObserver) { isUpdateForced->
+            val updateAppFragment = UpdateAppFragment.newInstance(isUpdateForced)
+            updateAppFragment.show(childFragmentManager, updateAppFragment.TAG)
+        }
     }
 
     override fun onClose() {
@@ -217,4 +225,5 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
     override fun getNavigationScope(): NavigationScope? {
         return NavigationScope.NAV_MAIN
     }
+
 }

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/swipeAnchorLayout"
+        layout="@layout/layout_bottom_sheet_swipe_anchor"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:gravity="center_horizontal">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iconImageView"
+            android:layout_width="303dp"
+            android:layout_height="160dp"
+            android:layout_marginTop="54dp"
+            app:srcCompat="@drawable/ic_update_app"/>
+        
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/my_service_bold"
+            android:textSize="20sp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/secondary900"
+            android:includeFontPadding="false"
+            android:gravity="center"
+            app:translationTextKey="app.ui.update_app.title"/>
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/suisse_regular"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/secondary600"
+            android:includeFontPadding="false"
+            android:gravity="center"
+            android:lineSpacingExtra="24dp"
+            android:lineSpacingMultiplier="0"
+            app:translationTextKey="app.ui.update_app.subtitle"/>
+
+        <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullWidth
+            android:id="@+id/updateTextView"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="32dp"
+            android:paddingHorizontal="4dp"
+            android:layout_marginBottom="22dp"
+            app:translationTextKey="app.ui.update_app.button.update" />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextViewSecondary
+            android:id="@+id/notNowTextView"
+            android:layout_width="wrap_content"
+            style="@style/Button.WithoutBg.Secondary"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="22dp"
+            android:visibility="gone"
+            app:translationTextKey="app.ui.update_app.button.not_now"
+            tools:visibility="visible"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

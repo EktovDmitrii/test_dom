@@ -62,7 +62,12 @@ class RegistrationRepositoryImpl(
     }
 
     override fun logout(nextScreen: TargetScreen?): Completable {
-        return api.deleteFCMToken(clientSharedPreferences.getDeviceId()).andThen(api.postLogout()).andThen {
+        val startChain = if (clientSharedPreferences.getDeviceId().isNotEmpty()) {
+            api.deleteFCMToken(clientSharedPreferences.getDeviceId()).andThen(api.postLogout())
+        } else {
+            api.postLogout()
+        }
+        return startChain.andThen {
             database.chatsDao.clearCases()
             if (isAuthorized()){
                 chatRepository.disconnectFromWebSocket()

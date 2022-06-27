@@ -784,4 +784,9 @@ ClientInteractor(
             Completable.complete()
         }
     }
+
+    fun updateNotificationChannel(notificationChannel: NotificationChannelInfo): Single<ClientModel> {
+        return clientRepository.updateNotificationChannel(notificationChannel)
+    }
+
 }
