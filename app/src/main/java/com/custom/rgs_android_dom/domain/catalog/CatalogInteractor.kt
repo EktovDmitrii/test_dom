@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.domain.catalog
 
-import android.util.Log
 import com.custom.rgs_android_dom.domain.catalog.models.*
 import com.custom.rgs_android_dom.domain.main.CommentModel
 import com.custom.rgs_android_dom.domain.repositories.CatalogRepository
@@ -72,11 +71,16 @@ class CatalogInteractor(
         return catalogRepository.getProduct(productId)
     }
 
-    fun getProductServicesByVersion(productId: String, productVersionId: String, isPurchased: Boolean, validityFrom: DateTime?): Single<List<ServiceShortModel>> {
+    fun getProductServicesByVersion(productId: String, productVersionId: String, isPurchased: Boolean, validityFrom: DateTime?, clientProductId: String?): Single<List<ServiceShortModel>> {
         return catalogRepository.getProductServicesByVersion(productId, productVersionId).map { services->
             if (isPurchased){
                 services.forEach { service->
-                    val availableService = catalogRepository.getAvailableServiceInProduct(productId, null, service.serviceId).blockingGet()
+                    val availableService = if (isPurchased) {
+                        catalogRepository.getAvailableServiceInClientProduct(clientProductId ?: "", service.serviceId).blockingGet()
+                    } else {
+                        catalogRepository.getAvailableServiceInProduct(productId, null, service.serviceId).blockingGet()
+                    }
+                    //val availableService = catalogRepository.getAvailableServiceInProduct(productId, null, service.serviceId).blockingGet()
                     service.quantity = availableService.available.toLong()
                 }
             }
@@ -211,4 +215,5 @@ class CatalogInteractor(
     fun getServiceFromAvailable(serviceId: String): Single<AvailableServiceModel> {
         return catalogRepository.getAvailableServices("client-service").map { it.firstOrNull { it.id == serviceId } }
     }
+
 }

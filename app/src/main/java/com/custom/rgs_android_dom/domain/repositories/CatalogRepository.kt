@@ -32,4 +32,6 @@ interface CatalogRepository {
 
     fun getAvailableServiceInProduct(productId: String, clientProductId: String?, serviceId: String): Single<AvailableServiceModel>
 
+    fun getAvailableServiceInClientProduct(clientProductId: String, serviceId: String): Single<AvailableServiceModel>
+
 }

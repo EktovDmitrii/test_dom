@@ -102,7 +102,8 @@ class TabMyProductsViewModel(
                     SingleProductLauncher(
                         productId = product.productId,
                         productVersionId = product.productVersionId ?: "",
-                        isPurchased = true
+                        isPurchased = true,
+                        clientProductId = product.id
                     )
                 )
             )

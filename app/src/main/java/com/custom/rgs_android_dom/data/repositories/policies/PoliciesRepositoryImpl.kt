@@ -82,7 +82,6 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
     }
 
     override fun getPoliciesSingle(): Single<List<PolicyShortModel>> {
-
         val policyContractSingle = api.getPolicyContracts()
 
         val contractIds = policyContractSingle.map {
@@ -111,9 +110,8 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
         val clientProductsSingle  = api.getClientProducts(size = 1, index = 0, businessLines = BuildConfig.BUSINESS_LINE, contractIds = contractId)
         val contractsSingle = api.getPolicyContracts()
         val availableServicesSingle = api.getAvailableServices(size = 100, index = 0, withBalance = true, businessLine = BuildConfig.BUSINESS_LINE, contractId = contractId).map { response->
-            CatalogMapper.responseToBalanceServices(response)
+            CatalogMapper.responseToPolicyServices(response)
         }
-
         return Single.zip(clientProductsSingle, contractsSingle, availableServicesSingle) { clientProducts, contracts, availableServices ->
             val clientProductResponse = clientProducts.clientProducts?.get(0)
             val objectId = clientProductResponse?.objectId
@@ -126,8 +124,8 @@ class PoliciesRepositoryImpl(private val api: MSDApi) : PoliciesRepository {
             var productServicesResponse: ProductServicesResponse? = null
             if (clientProductResponse?.productId != null){
                 productServicesResponse = api.getProductServicesByVersion(clientProductResponse.productVersionId ?: "", 100, 0).blockingGet()
-            }
 
+            }
             ClientMapper.responseToPolicy(
                 clientProductResponse,
                 contracts.contracts?.firstOrNull { it.id == contractId },
