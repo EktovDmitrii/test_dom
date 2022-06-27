@@ -56,7 +56,8 @@ class SingleProductViewModel(
                     product.id,
                     product.versionId,
                     product.isPurchased,
-                    product.validityFrom
+                    product.validityFrom,
+                    null
                 )
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

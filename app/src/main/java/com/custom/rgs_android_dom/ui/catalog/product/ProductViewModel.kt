@@ -168,7 +168,7 @@ class ProductViewModel(
     }
 
     private fun getIncludedServices(){
-        catalogInteractor.getProductServicesByVersion(product.productId, product.productVersionId, product.isPurchased, product.purchaseValidFrom)
+        catalogInteractor.getProductServicesByVersion(product.productId, product.productVersionId, product.isPurchased, product.purchaseValidFrom, product.clientProductId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
@@ -180,4 +180,5 @@ class ProductViewModel(
                 }
             ).addTo(dataCompositeDisposable)
     }
+
 }

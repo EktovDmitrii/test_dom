@@ -9,5 +9,6 @@ data class SingleProductLauncher(
     val serviceId: String? = null,
     val isPurchased: Boolean = false,
     val purchaseValidTo: DateTime? = null,
-    val purchaseObjectId: String? = null
+    val purchaseObjectId: String? = null,
+    val clientProductId: String? = null,
 ) : Serializable

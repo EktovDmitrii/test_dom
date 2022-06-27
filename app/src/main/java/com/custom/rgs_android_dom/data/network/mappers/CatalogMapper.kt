@@ -234,16 +234,17 @@ object CatalogMapper {
     }
 
     fun responseToBalanceServices(response: BalanceServicesResponse): List<AvailableServiceModel> {
+        // TODO Now I leave commented lines as is. Because maybe we need to filter balance by availability
         val balanceServices = arrayListOf<AvailableServiceModel>()
-
-        safeLet(response.balance, response.services){balance, services->
-            val filteredBalance = balance.filter { it.available > 0 } ?: emptyList()
-            val filteredServices = services.filter {serviceDetails->
-                filteredBalance .find { it.clientServiceId ==  serviceDetails.id}  != null
+        safeLet(response.balance, response.services){ balance, services->
+            //val filteredBalance = balance.filter { it.available > 0 } ?: emptyList()
+            val filteredServices = services.filter { serviceDetails->
+                //filteredBalance.find { it.clientServiceId ==  serviceDetails.id}  != null
+                balance.find { it.clientServiceId ==  serviceDetails.id }  != null
             }
-
             filteredServices.forEach { serviceDetails->
-                val serviceBalance = filteredBalance.find { it.clientServiceId ==  serviceDetails.id}
+                //val serviceBalance = filteredBalance.find { it.clientServiceId ==  serviceDetails.id}
+                val serviceBalance = balance.find { it.clientServiceId ==  serviceDetails.id }
                 balanceServices.add(
                     AvailableServiceModel(
                         id = serviceDetails.id,
@@ -265,9 +266,7 @@ object CatalogMapper {
                     )
                 )
             }
-
         }
-
         return balanceServices
     }
 
@@ -295,6 +294,43 @@ object CatalogMapper {
             validityTo = response.validityTo,
             defaultProduct = response.defaultProduct ?: false
         )
+    }
+
+    fun responseToPolicyServices(response: BalanceServicesResponse): List<AvailableServiceModel> {
+        // TODO Now I leave commented lines as is. Because maybe we need to filter balance by availability
+        val balanceServices = arrayListOf<AvailableServiceModel>()
+        safeLet(response.balance, response.services){ balance, services->
+            //val filteredBalance = balance.filter { it.available > 0 } ?: emptyList()
+            val filteredServices = services.filter { serviceDetails->
+                //filteredBalance.find { it.clientServiceId ==  serviceDetails.id}  != null
+                balance.find { it.serviceId == serviceDetails.serviceId }  != null
+            }
+            filteredServices.forEach { serviceDetails->
+                //val serviceBalance = filteredBalance.find { it.clientServiceId ==  serviceDetails.id}
+                val serviceBalance = balance.find { it.serviceId == serviceDetails.serviceId }
+                balanceServices.add(
+                    AvailableServiceModel(
+                        id = serviceDetails.id,
+                        serviceId = serviceDetails.serviceId,
+                        productId = serviceDetails.productId,
+                        clientProductId = serviceDetails.clientProductId,
+                        serviceName = serviceDetails.serviceName,
+                        productIcon = "${BuildConfig.BASE_URL}/api/store/${serviceDetails.productIcon}",
+                        serviceIcon = "${BuildConfig.BASE_URL}/api/store/${serviceDetails.serviceIcon}",
+                        available = serviceBalance?.available ?: 0,
+                        total = serviceBalance?.total ?: 0,
+                        validityFrom = serviceDetails.validityFrom,
+                        validityTo = serviceDetails.validityTo,
+                        canBeOrdered = serviceDetails.validityFrom?.isBeforeNow ?: false &&
+                                serviceDetails.validityTo?.isAfterNow ?: false,
+                        objectId = serviceDetails.objectId,
+                        serviceVersionId = serviceDetails.serviceVersionId ?: "",
+                        productVersionId = serviceDetails.productVersionId ?: ""
+                    )
+                )
+            }
+        }
+        return balanceServices
     }
 
 }
