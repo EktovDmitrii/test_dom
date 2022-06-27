@@ -57,8 +57,7 @@ data class ClientResponse (
 
 	@SerializedName("docNumber")
 	val docNumber: String
-
-	)
+)
 
 data class AddressResponse (
 	@SerializedName("id")

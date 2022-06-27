@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.ui.catalog.tabs.products
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor

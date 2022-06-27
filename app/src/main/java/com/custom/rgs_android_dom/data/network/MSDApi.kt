@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.data.network
 
-import androidx.room.Delete
 import com.custom.rgs_android_dom.data.network.data_adapters.NetworkException
 import com.custom.rgs_android_dom.data.network.error.MSDNetworkErrorResponse
 import com.custom.rgs_android_dom.data.network.responses.*
@@ -277,6 +276,14 @@ interface MSDApi {
     @GET("insurance/clients/me/contracts")
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getPolicyContracts() : Single<GetPolicyContractsResponse>
+
+    @POST("clients/me/promo/codes/activate")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun activatePromoCode(@Body body: ActivatePromoCodeRequest): Single<PromoCodeItemResponse>
+
+    @GET("clients/me/promo/codes")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getPromoCodes(@Query("statuses") statuses: String) : Single<GetPromoCodesResponse>
 
     @POST("clients/me/orders")
     @ErrorType(MSDNetworkErrorResponse::class)

@@ -1,13 +1,12 @@
 package com.custom.rgs_android_dom.data.repositories.client
 
-import android.util.Log
 import com.custom.rgs_android_dom.BuildConfig
 import com.custom.rgs_android_dom.data.network.MSDApi
 import com.custom.rgs_android_dom.data.network.mappers.ClientMapper
 import com.custom.rgs_android_dom.data.network.mappers.GeneralInvoiceMapper
 import com.custom.rgs_android_dom.data.network.mappers.OrdersMapper
-import com.custom.rgs_android_dom.data.network.requests.DeleteContactsRequest
 import com.custom.rgs_android_dom.data.network.requests.BusinessLineRequest
+import com.custom.rgs_android_dom.data.network.requests.DeleteContactsRequest
 import com.custom.rgs_android_dom.data.network.requests.SaveTokenRequest
 import com.custom.rgs_android_dom.data.network.requests.UpdateClientRequest
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
@@ -17,16 +16,10 @@ import com.custom.rgs_android_dom.domain.repositories.ClientRepository
 import com.custom.rgs_android_dom.utils.PATTERN_DATE_TIME_MILLIS
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
 import com.custom.rgs_android_dom.utils.formatTo
-import com.custom.rgs_android_dom.utils.md5
-import com.google.firebase.installations.FirebaseInstallations
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 import org.joda.time.DateTime
-import org.joda.time.LocalDateTime
-import java.util.*
-import kotlin.collections.ArrayList
-
 
 class ClientRepositoryImpl(
     private val api: MSDApi,

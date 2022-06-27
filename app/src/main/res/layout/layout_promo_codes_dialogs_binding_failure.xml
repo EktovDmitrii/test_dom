@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_height="179dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="24dp"
+        app:srcCompat="@drawable/image_binding_failure" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:fontFamily="@font/my_service_bold"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:textColor="@color/secondary900"
+        android:textSize="20sp"
+        app:translationTextKey="app.promo_codes.search_promo_codes.failure_view.failure_title" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/errorMessageTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/suisse_regular"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:textColor="@color/secondary600"
+        android:textSize="16sp"
+        app:translationTextKey="app.promo_codes.search_promo_codes.failure_view.failure_subtitle" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/chatTextView"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/rectangle_filled_primary_500_radius_12dp"
+        android:fontFamily="@font/my_service_bold"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:translationTextKey="app.promo_codes.search_promo_codes.failure_view.failure_button_title" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/changeDataTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="36dp"
+        android:fontFamily="@font/my_service_bold"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:textColor="@color/primary500"
+        android:textSize="14sp"
+        app:translationTextKey="app.promo_codes.search_promo_codes.failure_view.failure_button_subtitle" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

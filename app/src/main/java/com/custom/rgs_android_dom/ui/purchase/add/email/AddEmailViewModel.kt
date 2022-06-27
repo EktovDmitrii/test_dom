@@ -12,5 +12,4 @@ class AddEmailViewModel(private val email: String) : BaseViewModel() {
     init {
         emailController.value = email
     }
-
 }

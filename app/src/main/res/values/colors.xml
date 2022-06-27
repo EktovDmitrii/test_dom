@@ -58,6 +58,8 @@
     <color name="gray">#333333</color>
     <color name="isabelline">#EDEAE5</color>
     <color name="submarine">#B5C6C7</color>
+    <color name="glasses">#DEEFE7</color>
+    <color name="cleaning">#F1E6CB</color>
 
     <!-- Text color for text input layout bottom line (overriden from default resources) -->
     <color name="mtrl_textinput_default_box_stroke_color">@color/white</color>

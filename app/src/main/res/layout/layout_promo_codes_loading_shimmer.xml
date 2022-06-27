@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.skydoves.androidveil.VeilLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/material_margin_big"
+            android:paddingTop="@dimen/dp_12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:veilLayout_baseAlpha="0.6"
+            app:veilLayout_defaultChildVisible="true"
+            app:veilLayout_dropOff="0.5"
+            app:veilLayout_highlightAlpha="1.0"
+            app:veilLayout_highlightColor="@color/secondary500"
+            app:veilLayout_radius="16dp"
+            app:veilLayout_shimmerEnable="true"
+            app:veilLayout_veiled="true">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/rectangle_filled_secondary_100_radius_16dp"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="103dp"
+                    android:layout_height="4dp"
+                    android:layout_marginStart="@dimen/material_margin_normal"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/rectangle_filled_secondary_200_radius_6dp" />
+
+                <View
+                    android:layout_width="157dp"
+                    android:layout_height="6dp"
+                    android:layout_marginStart="@dimen/material_margin_normal"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/rectangle_filled_secondary_300_radius_8dp" />
+
+                <View
+                    android:layout_width="80dp"
+                    android:layout_height="4dp"
+                    android:layout_marginStart="@dimen/material_margin_normal"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/rectangle_filled_secondary_300_radius_8dp" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:background="@color/secondary100"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="16dp"
+                        android:layout_height="4dp"
+                        android:layout_marginStart="@dimen/material_margin_normal"
+                        android:background="@drawable/rectangle_filled_secondary_250_radius_6dp" />
+
+                    <View
+                        android:layout_width="122dp"
+                        android:layout_height="4dp"
+                        android:layout_marginStart="@dimen/material_margin_normal"
+                        android:background="@drawable/rectangle_filled_secondary_250_radius_6dp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </com.skydoves.androidveil.VeilLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="36dp"
+            android:background="@drawable/ic_circle_shimmer"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="36dp"
+            android:background="@drawable/ic_circle_shimmer"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.skydoves.androidveil.VeilLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/material_margin_big"
+            android:paddingTop="@dimen/dp_12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:veilLayout_baseAlpha="0.6"
+            app:veilLayout_defaultChildVisible="true"
+            app:veilLayout_dropOff="0.5"
+            app:veilLayout_highlightAlpha="1.0"
+            app:veilLayout_highlightColor="@color/secondary500"
+            app:veilLayout_radius="16dp"
+            app:veilLayout_shimmerEnable="true"
+            app:veilLayout_veiled="true">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/rectangle_filled_secondary_100_radius_16dp"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="103dp"
+                    android:layout_height="4dp"
+                    android:layout_marginStart="@dimen/material_margin_normal"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/rectangle_filled_secondary_200_radius_6dp" />
+
+                <View
+                    android:layout_width="157dp"
+                    android:layout_height="6dp"
+                    android:layout_marginStart="@dimen/material_margin_normal"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/rectangle_filled_secondary_300_radius_8dp" />
+
+                <View
+                    android:layout_width="80dp"
+                    android:layout_height="4dp"
+                    android:layout_marginStart="@dimen/material_margin_normal"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/rectangle_filled_secondary_300_radius_8dp" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:background="@color/secondary100"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="16dp"
+                        android:layout_height="4dp"
+                        android:layout_marginStart="@dimen/material_margin_normal"
+                        android:background="@drawable/rectangle_filled_secondary_250_radius_6dp" />
+
+                    <View
+                        android:layout_width="122dp"
+                        android:layout_height="4dp"
+                        android:layout_marginStart="@dimen/material_margin_normal"
+                        android:background="@drawable/rectangle_filled_secondary_250_radius_6dp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </com.skydoves.androidveil.VeilLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="36dp"
+            android:background="@drawable/ic_circle_shimmer"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="36dp"
+            android:background="@drawable/ic_circle_shimmer"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.skydoves.androidveil.VeilLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/material_margin_big"
+            android:paddingTop="@dimen/dp_12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:veilLayout_baseAlpha="0.6"
+            app:veilLayout_defaultChildVisible="true"
+            app:veilLayout_dropOff="0.5"
+            app:veilLayout_highlightAlpha="1.0"
+            app:veilLayout_highlightColor="@color/secondary500"
+            app:veilLayout_radius="16dp"
+            app:veilLayout_shimmerEnable="true"
+            app:veilLayout_veiled="true">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/rectangle_filled_secondary_100_radius_16dp"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="103dp"
+                    android:layout_height="4dp"
+                    android:layout_marginStart="@dimen/material_margin_normal"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/rectangle_filled_secondary_200_radius_6dp" />
+
+                <View
+                    android:layout_width="157dp"
+                    android:layout_height="6dp"
+                    android:layout_marginStart="@dimen/material_margin_normal"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/rectangle_filled_secondary_300_radius_8dp" />
+
+                <View
+                    android:layout_width="80dp"
+                    android:layout_height="4dp"
+                    android:layout_marginStart="@dimen/material_margin_normal"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/rectangle_filled_secondary_300_radius_8dp" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:background="@color/secondary100"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="16dp"
+                        android:layout_height="4dp"
+                        android:layout_marginStart="@dimen/material_margin_normal"
+                        android:background="@drawable/rectangle_filled_secondary_250_radius_6dp" />
+
+                    <View
+                        android:layout_width="122dp"
+                        android:layout_height="4dp"
+                        android:layout_marginStart="@dimen/material_margin_normal"
+                        android:background="@drawable/rectangle_filled_secondary_250_radius_6dp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </com.skydoves.androidveil.VeilLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="36dp"
+            android:background="@drawable/ic_circle_shimmer"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="36dp"
+            android:background="@drawable/ic_circle_shimmer"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.skydoves.androidveil.VeilLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/material_margin_big"
+        android:paddingTop="@dimen/dp_12"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:veilLayout_baseAlpha="0.6"
+        app:veilLayout_defaultChildVisible="true"
+        app:veilLayout_dropOff="0.5"
+        app:veilLayout_highlightAlpha="1.0"
+        app:veilLayout_highlightColor="@color/secondary500"
+        app:veilLayout_radius="16dp"
+        app:veilLayout_shimmerEnable="true"
+        app:veilLayout_veiled="true">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/rectangle_filled_secondary_100_radius_16dp"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="103dp"
+                android:layout_height="4dp"
+                android:layout_marginStart="@dimen/material_margin_normal"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/rectangle_filled_secondary_200_radius_6dp" />
+
+            <View
+                android:layout_width="157dp"
+                android:layout_height="6dp"
+                android:layout_marginStart="@dimen/material_margin_normal"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rectangle_filled_secondary_300_radius_8dp" />
+
+            <View
+                android:layout_width="80dp"
+                android:layout_height="4dp"
+                android:layout_marginStart="@dimen/material_margin_normal"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rectangle_filled_secondary_300_radius_8dp" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:background="@color/secondary100"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="16dp"
+                    android:layout_height="4dp"
+                    android:layout_marginStart="@dimen/material_margin_normal"
+                    android:background="@drawable/rectangle_filled_secondary_250_radius_6dp" />
+
+                <View
+                    android:layout_width="122dp"
+                    android:layout_height="4dp"
+                    android:layout_marginStart="@dimen/material_margin_normal"
+                    android:background="@drawable/rectangle_filled_secondary_250_radius_6dp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </com.skydoves.androidveil.VeilLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

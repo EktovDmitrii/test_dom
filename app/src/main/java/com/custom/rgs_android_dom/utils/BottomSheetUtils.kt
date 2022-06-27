@@ -1,12 +1,10 @@
 package com.custom.rgs_android_dom.utils
 
-import android.os.Handler
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.OverScroller
 import androidx.core.content.ContextCompat
 import androidx.customview.widget.ViewDragHelper
-import androidx.fragment.app.Fragment
 import com.custom.rgs_android_dom.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog

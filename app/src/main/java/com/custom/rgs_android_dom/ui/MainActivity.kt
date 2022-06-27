@@ -74,8 +74,6 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-
-
     override fun onBackPressed() {
         val fragmentList = supportFragmentManager.fragments
         val topFragment = fragmentList.last()
@@ -105,6 +103,4 @@ class MainActivity : AppCompatActivity() {
     interface DispatchTouchEventListener{
         fun dispatchTouchEvent(event: MotionEvent)
     }
-
-
 }

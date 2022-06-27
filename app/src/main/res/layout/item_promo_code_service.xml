@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    app:layout_constraintCircleRadius="16dp"
+    tools:background="@drawable/rectangle_filled_glasses_radius_16dp">
+
+    <FrameLayout
+        android:id="@+id/pictureFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/promo_code_background_service" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/material_margin_normal"
+        android:fontFamily="@font/my_service_bold"
+        android:gravity="center_vertical"
+        android:textColor="@color/secondary900"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/subtitleTextView"
+        app:translationTextKey="Комплекс услуг" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/subtitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/material_margin_normal"
+        android:layout_marginTop="@dimen/material_margin_normal"
+        android:fontFamily="@font/suisse_regular"
+        android:gravity="center_vertical"
+        android:textColor="@color/secondary800"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:translationTextKey="ЛЕТО 2022" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/material_margin_normal"
+        android:paddingBottom="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/durationTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:fontFamily="@font/suisse_regular"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:lines="1"
+            android:textColor="@color/secondary800"
+            android:textSize="10sp"
+            app:translationTextKey="app.promo_codes.promo_codes_detail_view.valid_until_label"
+            tools:text="Действует до 02.05.2022" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

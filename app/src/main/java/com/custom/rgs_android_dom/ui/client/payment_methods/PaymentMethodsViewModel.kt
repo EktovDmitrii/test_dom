@@ -1,11 +1,9 @@
 package com.custom.rgs_android_dom.ui.client.payment_methods
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.purchase.PurchaseInteractor
-import com.custom.rgs_android_dom.domain.purchase.models.NewCardModel
 import com.custom.rgs_android_dom.domain.purchase.models.SavedCardModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.chats.chat.ChatFragment

@@ -1,11 +1,9 @@
 package com.custom.rgs_android_dom.ui.chats.call_request
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.chat.models.*
-import com.custom.rgs_android_dom.domain.fcm.NotificationsInteractor
 import com.custom.rgs_android_dom.domain.fcm.NotificationsInteractor.Companion.NOTIFICATION_INCOMING_CALL
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.chats.chat.ChatFragment
