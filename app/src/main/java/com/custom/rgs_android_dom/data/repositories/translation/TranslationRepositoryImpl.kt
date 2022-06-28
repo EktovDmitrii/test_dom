@@ -673,6 +673,9 @@ class TranslationRepositoryImpl(private val api: MSDApi) :
             "app.promo_codes.agent_code_adapter.add_duration" to "Действует до %@",
             "app.promo_codes.agent_code_adapter.add_title" to "Комплекс услуг",
             "app.promo_codes.agent_code_adapter.add_second_title" to "Скидка %@",
+            "app.product.purchase.select_promo_code_subtitle" to "Используйте промокод",
+            "app.product.purchase.select_promo_code_title" to "Дополнительные данные",
+            "app.product.purchase.modal_promo_codes.promo_codes_title" to "Доступные",
 
             // Object
             "app.object_detail.no_data" to "Нет данных",

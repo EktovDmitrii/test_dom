@@ -5,8 +5,7 @@
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    app:layout_constraintCircleRadius="16dp"
-    tools:background="@drawable/rectangle_filled_glasses_radius_16dp">
+    app:layout_constraintCircleRadius="16dp">
 
     <FrameLayout
         android:id="@+id/pictureFrameLayout"

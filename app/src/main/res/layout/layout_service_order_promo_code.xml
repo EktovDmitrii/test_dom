@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp"
+    android:layout_marginTop="40dp">
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/my_service_bold"
+        android:textColor="@color/secondary800"
+        android:textSize="16sp"
+        android:layout_marginBottom="@dimen/material_margin_normal"
+        app:lineHeight="24sp"
+        app:translationTextKey="app.product.purchase.select_promo_code_title" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/promoCodeLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:srcCompat="@drawable/ic_promo_code_black_20px"/>
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondary800"
+            android:textSize="16sp"
+            android:fontFamily="@font/suisse_regular"
+            android:layout_marginStart="20dp"
+            app:translationTextKey="app.product.purchase.select_promo_code_subtitle"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:srcCompat="@drawable/ic_arrow_right_24px"
+                android:tint="@color/secondary400"
+                android:layout_gravity="end|center"/>
+        </FrameLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/secondary200"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="64dp"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

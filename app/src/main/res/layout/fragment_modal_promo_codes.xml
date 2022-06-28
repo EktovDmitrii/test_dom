@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/swipeAnchorLayout"
+        layout="@layout/layout_bottom_sheet_swipe_anchor" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="@dimen/material_margin_big"
+        android:layout_height="44dp">
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/suisse_bold"
+            android:includeFontPadding="false"
+            android:textColor="@color/secondary900"
+            android:textSize="16sp"
+            app:translationTextKey="app.product.purchase.modal_promo_codes.promo_codes_title" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/addImageView"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="end"
+            android:src="@drawable/ic_add_orange" />
+
+    </FrameLayout>
+
+    <include
+        android:id="@+id/emptyStateLayout"
+        layout="@layout/layout_promo_codes_empty_state"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/dataStateLayout"
+        layout="@layout/layout_promo_codes_available_state"
+        android:visibility="visible" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

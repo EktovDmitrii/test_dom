@@ -10,25 +10,24 @@ import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentPurchaseBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
+import com.custom.rgs_android_dom.domain.purchase.models.CardModel
 import com.custom.rgs_android_dom.domain.purchase.models.PurchaseDateTimeModel
 import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
-import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.domain.purchase.models.*
+import com.custom.rgs_android_dom.domain.purchase.models.SavedCardModel
 import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
 import com.custom.rgs_android_dom.ui.purchase.add.agent.AddAgentFragment
 import com.custom.rgs_android_dom.ui.purchase.add.agent.PurchaseAgentListener
 import com.custom.rgs_android_dom.ui.purchase.add.comment.PurchaseCommentListener
-import com.custom.rgs_android_dom.ui.purchase.select.date_time.PurchaseDateTimeFragment
+import com.custom.rgs_android_dom.ui.purchase.add.email.PurchaseEmailListener
 import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressListener
 import com.custom.rgs_android_dom.ui.purchase.select.card.SelectCardFragment
-import com.custom.rgs_android_dom.ui.purchase.add.email.PurchaseEmailListener
+import com.custom.rgs_android_dom.ui.purchase.select.date_time.PurchaseDateTimeFragment
 import com.custom.rgs_android_dom.utils.*
 import com.yandex.metrica.YandexMetrica
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
-import java.lang.IllegalArgumentException
 
 class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurchaseBinding>(),
     SelectPurchaseAddressListener,
@@ -100,6 +99,10 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
             viewModel.makeOrder()
         }
 
+        binding.layoutIncludedPromoCode.promoCodeLinearLayout.setOnDebouncedClickListener {
+            viewModel.onAddPromoCode(childFragmentManager)
+        }
+
         subscribe(viewModel.purchaseObserver) { purchase ->
 
             binding.makeOrderButton.btnTitle.text =  if (purchase.defaultProduct){
@@ -122,6 +125,7 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
             }
 
             binding.layoutDateTime.root.visibleIf(purchase.defaultProduct)
+            binding.layoutIncludedPromoCode.root.visibleIf(purchase.defaultProduct)
             binding.layoutPurchaseServiceHeader.durationTextView.visibleIf(purchase.duration != null)
 
             if (purchase.defaultProduct){
@@ -194,6 +198,7 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
                     }
                 }
             }
+
             purchase.purchaseDateTimeModel?.let {
                 binding.layoutDateTime.filledDateTimeGroup.visible()
                 binding.layoutDateTime.chooseDateTimeTextView.gone()

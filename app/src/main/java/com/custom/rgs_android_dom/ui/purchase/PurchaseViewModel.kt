@@ -11,14 +11,15 @@ import com.custom.rgs_android_dom.domain.purchase.models.*
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.navigation.PAYMENT
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
+import com.custom.rgs_android_dom.ui.promo_code.modal.ModalPromoCodesFragment
 import com.custom.rgs_android_dom.ui.purchase.add.agent.AddAgentFragment
 import com.custom.rgs_android_dom.ui.purchase.add.comment.AddCommentFragment
-import com.custom.rgs_android_dom.ui.purchase.select.date_time.PurchaseDateTimeFragment
-import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressFragment
-import com.custom.rgs_android_dom.ui.purchase.select.card.SelectCardFragment
 import com.custom.rgs_android_dom.ui.purchase.add.email.AddEmailFragment
 import com.custom.rgs_android_dom.ui.purchase.payments.PaymentWebViewFragment
 import com.custom.rgs_android_dom.ui.purchase.payments.error.PaymentErrorFragment
+import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressFragment
+import com.custom.rgs_android_dom.ui.purchase.select.card.SelectCardFragment
+import com.custom.rgs_android_dom.ui.purchase.select.date_time.PurchaseDateTimeFragment
 import com.custom.rgs_android_dom.utils.logException
 import com.yandex.metrica.YandexMetrica
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -26,7 +27,6 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import org.joda.time.DateTimeZone
-import java.util.*
 
 class PurchaseViewModel(
     private val model: PurchaseModel,
@@ -184,6 +184,11 @@ class PurchaseViewModel(
     fun onAddCommentClick(childFragmentManager: FragmentManager){
         val editPurchaseServiceComment = AddCommentFragment.newInstance(purchaseController.value?.comment)
         editPurchaseServiceComment.show(childFragmentManager, editPurchaseServiceComment.TAG)
+    }
+
+    fun onAddPromoCode(childFragmentManager: FragmentManager) {
+        val modalPromoCodes = ModalPromoCodesFragment()
+        modalPromoCodes.show(childFragmentManager, modalPromoCodes.TAG)
     }
 
     fun updateAgentCode(code: String) {

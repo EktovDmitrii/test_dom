@@ -3,8 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootLayout"
-    android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_width="wrap_content"
+    android:layout_height="206dp"
+    android:paddingHorizontal="2dp"
+    android:paddingTop="2dp"
+    android:paddingBottom="2dp"
     app:layout_constraintCircleRadius="16dp"
     tools:background="@drawable/rectangle_filled_glasses_radius_16dp">
 
