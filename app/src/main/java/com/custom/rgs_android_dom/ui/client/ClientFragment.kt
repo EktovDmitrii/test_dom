@@ -107,6 +107,10 @@ class ClientFragment() : BaseBottomSheetFragment<ClientViewModel, FragmentClient
             viewModel.onNotificationsSettingsClick()
         }
 
+        binding.promoCodeMethodsLinearLayout.setOnDebouncedClickListener {
+            viewModel.onPromoCodeClick()
+        }
+
         subscribe(viewModel.propertyItemsObserver) { propertyItems ->
             propertyItemsAdapter.setItems(propertyItems)
         }

@@ -42,12 +42,13 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.component.inject
 
-class RootViewModel(private val registrationInteractor: RegistrationInteractor,
-                    private val clientInteractor: ClientInteractor,
-                    private val chatInteractor: ChatInteractor,
-                    private val notificationsInteractor: NotificationsInteractor,
-                    private val mediaOutputManager: MediaOutputManager,
-                    private val notificationManager: MSDNotificationManager
+class RootViewModel(
+    private val registrationInteractor: RegistrationInteractor,
+    private val clientInteractor: ClientInteractor,
+    private val chatInteractor: ChatInteractor,
+    private val notificationsInteractor: NotificationsInteractor,
+    private val mediaOutputManager: MediaOutputManager,
+    private val notificationManager: MSDNotificationManager
 ) : BaseViewModel() {
 
     private val navScopesVisibilityController = MutableLiveData<List<Pair<NavigationScope, Boolean>>>()

@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.ui.purchase.add.agent
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +7,6 @@ import android.view.ViewGroup
 import com.custom.rgs_android_dom.databinding.FragmentAddAgentBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.utils.expand
-import com.custom.rgs_android_dom.utils.activity.hideKeyboardForced
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
 import com.google.android.material.bottomsheet.BottomSheetBehavior

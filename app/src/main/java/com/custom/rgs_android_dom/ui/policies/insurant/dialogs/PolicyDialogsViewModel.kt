@@ -16,9 +16,10 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
-class PolicyDialogsViewModel(private val chatInteractor: ChatInteractor,
-                             private val policiesInteractor: PoliciesInteractor,
-                             private val model: PolicyDialogModel
+class PolicyDialogsViewModel(
+    private val chatInteractor: ChatInteractor,
+    private val policiesInteractor: PoliciesInteractor,
+    private val model: PolicyDialogModel
 ) : BaseViewModel() {
 
     private val dialogModelController = MutableLiveData<PolicyDialogModel>()

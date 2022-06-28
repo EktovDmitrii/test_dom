@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.ui.purchase
 
-import android.util.Log
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -20,8 +19,6 @@ import com.custom.rgs_android_dom.ui.purchase.select.card.SelectCardFragment
 import com.custom.rgs_android_dom.ui.purchase.add.email.AddEmailFragment
 import com.custom.rgs_android_dom.ui.purchase.payments.PaymentWebViewFragment
 import com.custom.rgs_android_dom.ui.purchase.payments.error.PaymentErrorFragment
-import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_AND_TIME_FOR_PURCHASE
-import com.custom.rgs_android_dom.utils.formatTo
 import com.custom.rgs_android_dom.utils.logException
 import com.yandex.metrica.YandexMetrica
 import io.reactivex.android.schedulers.AndroidSchedulers

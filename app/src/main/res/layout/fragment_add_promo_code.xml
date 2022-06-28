@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/swipeAnchorLayout"
+        layout="@layout/layout_bottom_sheet_swipe_anchor" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/stepTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        android:layout_gravity="center"
+        android:fontFamily="@font/suisse_regular"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:textColor="@color/secondary900_alpha64"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:translationTextKey="app.polices.add_step_one.view_title" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_gravity="center"
+        android:fontFamily="@font/my_service_bold"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:textColor="@color/secondary900"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:translationTextKey="Введите промокод" />
+
+    <com.custom.rgs_android_dom.views.edit_text.MSDTextInputLayout
+        android:id="@+id/promoCodeTextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:imeOptions="actionDone"
+        android:paddingHorizontal="20dp"
+        app:focusedTranslationHintKey="app.promo_codes.add_promo_codes_view.add_promo_codes_title"
+        app:isFocused="true"
+        app:placeholderText="Код промокода"
+        app:translationHintKey="app.promo_codes.add_promo_codes_view.add_promo_codes_title"
+        app:unfocusOnDone="true" />
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/actionsFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/material_margin_normal"
+        android:visibility="gone"
+        tools:ignore="BottomAppBar">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="@dimen/dp_12">
+
+            <com.custom.rgs_android_dom.views.text.MSDTextViewLoader
+                android:id="@+id/secondSaveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:enabled="false"
+                app:translationTextKey="app.promo_codes.add_promo_codes_view.add_promo_codes_button" />
+
+        </FrameLayout>
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/saveButtonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="32dp"
+        android:visibility="gone"
+        tools:ignore="BottomAppBar">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="@dimen/dp_12">
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/firstSaveButton"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/button_filled_primary_background"
+                android:enabled="false"
+                android:fontFamily="@font/my_service_bold"
+                android:gravity="center"
+                android:paddingVertical="@dimen/dp_12"
+                android:textColor="@color/button_color_white_secondary_400"
+                android:textSize="14sp"
+                app:translationTextKey="Сохранить" />
+
+        </FrameLayout>
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

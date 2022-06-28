@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginHorizontal="20dp">
+
+    <com.custom.rgs_android_dom.views.MSDRecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:overScrollMode="never"
+        android:paddingTop="12dp"
+        android:paddingBottom="22dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:verticalDecorationGap="16dp"
+        tools:itemCount="5"
+        tools:listitem="@layout/item_promo_code_service" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

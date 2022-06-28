@@ -78,7 +78,6 @@ abstract class BaseBottomSheetModalFragment<VM : BaseViewModel, VB : ViewBinding
         subscribe(viewModel.isKeyboardOpenObserver) {
             isKeyboardOpen = it
         }
-
     }
 
     open fun getParameters(): ParametersDefinition = {
@@ -165,6 +164,4 @@ abstract class BaseBottomSheetModalFragment<VM : BaseViewModel, VB : ViewBinding
 
         sheetContainer.requestLayout()
     }
-
-
 }

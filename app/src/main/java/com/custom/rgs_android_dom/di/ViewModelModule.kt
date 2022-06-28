@@ -63,6 +63,10 @@ import com.custom.rgs_android_dom.ui.policies.add.info.InfoPolicyViewModel
 import com.custom.rgs_android_dom.ui.policies.insurant.InsurantViewModel
 import com.custom.rgs_android_dom.ui.policies.insurant.dialogs.PolicyDialogsViewModel
 import com.custom.rgs_android_dom.ui.policies.policy.PolicyViewModel
+import com.custom.rgs_android_dom.ui.promo_code.PromoCodesViewModel
+import com.custom.rgs_android_dom.ui.promo_code.add_agent.AddAgentPromoCodeViewModel
+import com.custom.rgs_android_dom.ui.promo_code.add_promo_code.AddPromoCodeViewModel
+import com.custom.rgs_android_dom.ui.promo_code.dialogs.PromoCodeDialogViewModel
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsViewModel
 import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressViewModel
 import com.custom.rgs_android_dom.ui.property.delete.DeletePropertyViewModel
@@ -180,4 +184,8 @@ val viewModelModule = module {
     viewModel { parameters -> ErrorDeletePaymentMethodViewModel(errorCode = parameters[0]) }
     viewModel { NotificationsSettingsViewModel(clientInteractor = get()) }
     viewModel { UpdateAppViewModel() }
+    viewModel { PromoCodesViewModel(promoCodesInteractor = get(), clientInteractor = get()) }
+    viewModel { AddPromoCodeViewModel() }
+    viewModel { parameters -> PromoCodeDialogViewModel (promoCodeId = parameters[0], promoCodesInteractor = get(), chatInteractor = get()) }
+    viewModel { parameters -> AddAgentPromoCodeViewModel(promoCodeId = parameters[0], clientInteractor = get()) }
 }

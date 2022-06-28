@@ -18,6 +18,7 @@ import com.custom.rgs_android_dom.ui.client.personal_data.PersonalDataFragment
 import com.custom.rgs_android_dom.ui.navigation.ADD_PROPERTY
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.policies.PoliciesFragment
+import com.custom.rgs_android_dom.ui.promo_code.PromoCodesFragment
 import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressFragment
 import com.custom.rgs_android_dom.ui.property.info.PropertyInfoFragment
 import com.custom.rgs_android_dom.ui.screen_stub.ScreenStubFragment
@@ -165,6 +166,10 @@ class ClientViewModel(
 
     fun onNotificationsSettingsClick() {
         ScreenManager.showScreen(NotificationsSettingsFragment())
+    }
+
+    fun onPromoCodeClick() {
+        ScreenManager.showScreen(PromoCodesFragment())
     }
 
     fun onRefresh(){

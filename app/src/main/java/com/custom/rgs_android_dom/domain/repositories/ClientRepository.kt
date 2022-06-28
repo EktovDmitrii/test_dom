@@ -1,26 +1,24 @@
 package com.custom.rgs_android_dom.domain.repositories
 
-import androidx.core.content.edit
-import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
 import com.custom.rgs_android_dom.domain.client.models.*
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import org.joda.time.DateTime
-import org.joda.time.LocalDateTime
 
 interface ClientRepository {
 
-    fun updateClient(firstName: String?,
-                     lastName: String?,
-                     middleName: String?,
-                     birthday: DateTime?,
-                     gender: Gender?,
-                     phone: String?,
-                     email: String?,
-                    avatar: String?): Completable
+    fun updateClient(
+        firstName: String?,
+        lastName: String?,
+        middleName: String?,
+        birthday: DateTime?,
+        gender: Gender?,
+        phone: String?,
+        email: String?,
+        avatar: String?
+    ): Completable
 
     fun getClient(): Single<ClientModel>
 

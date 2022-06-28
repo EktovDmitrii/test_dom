@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.ui.chats.chat
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
@@ -26,6 +25,7 @@ import com.custom.rgs_android_dom.ui.managers.MSDNotificationManager
 import com.custom.rgs_android_dom.ui.navigation.ScreenInfo
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.navigation.TargetScreen
+import com.custom.rgs_android_dom.ui.promo_code.PromoCodesFragment
 import com.custom.rgs_android_dom.ui.purchase.PurchaseFragment
 import com.custom.rgs_android_dom.ui.purchase.payments.PaymentWebViewFragment
 import com.custom.rgs_android_dom.ui.purchase.service_order.ServiceOrderFragment
@@ -144,6 +144,10 @@ class ChatViewModel(
                     closeController.value = Unit
                     val order = backScreen.params as Order
                     ScreenManager.showScreen(OrderDetailFragment.newInstance(order))
+                }
+                TargetScreen.PROMO_CODE -> {
+                    closeController.value = Unit
+                    ScreenManager.showScreen(PromoCodesFragment())
                 }
                 else -> {
                     closeController.value = Unit

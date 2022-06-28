@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/material_margin_big"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/itemServiceLayout"
+        android:visibility="gone"
+        layout="@layout/item_promo_code_service" />
+
+    <include
+        android:id="@+id/itemPercentLayout"
+        android:visibility="gone"
+        layout="@layout/item_promo_code_percent" />
+
+    <include
+        android:id="@+id/itemSaleLayout"
+        android:visibility="gone"
+        layout="@layout/item_promo_code_sale" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/titleSecondTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/my_service_bold"
+        android:includeFontPadding="false"
+        android:textColor="@color/secondary900"
+        android:textSize="20sp"
+        app:translationTextKey="Без паники" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/descriptionTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/suisse_regular"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="10sp"
+        android:textColor="@color/secondary800"
+        android:textSize="14sp"
+        app:translationTextKey="В жизни могут произойти ситуации, когда совершенно непонятно — что делать и к кому обратиться за помощью. В таких случаях поможет комплекс услуг «Без паники!». Просто позвоните нам — и вы получите консультацию и финансовую поддержку от наших специалистов." />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/understandTextView"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="22dp"
+        android:background="@drawable/rectangle_filled_primary_500_radius_12dp"
+        android:fontFamily="@font/my_service_bold"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:translationTextKey="app.polices.search_policy.result_view.confirm_button" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

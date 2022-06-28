@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/swipeAnchorLayout"
+        layout="@layout/layout_bottom_sheet_swipe_anchor" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/backImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:paddingHorizontal="14dp"
+            android:tint="@color/secondary800"
+            app:srcCompat="@drawable/ic_back_24px" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/suisse_regular"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:textColor="@color/secondary900_alpha64"
+                android:textSize="12sp"
+                app:translationTextKey="app.polices.add_step_two.view_title" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/my_service_bold"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:textColor="@color/secondary900"
+                android:textSize="16sp"
+                app:translationTextKey="app.polices.add_step_one.view_subtitle" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </FrameLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/material_margin_big"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp">
+
+        <com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
+            android:id="@+id/agentCodeEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="@string/acceptable_agent_code_chars"
+            app:isFocused="true"
+            app:translationHintKey="999999"
+            app:translationLabelKey="app.agent_info_edit.agent_code_title" />
+
+        <com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
+            android:id="@+id/agentPhoneEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:imeOptions="actionDone"
+            android:inputType="phone"
+            app:hintAlwaysVisible="true"
+            app:mask="+7 [000] [000]-[00]-[00]"
+            app:translationHintKey="app.profile.add.agent_info.phone.placeholder"
+            app:translationLabelKey="app.agent_info_edit.agent_phone_label" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/actionsFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/material_margin_normal"
+        tools:ignore="BottomAppBar">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="82dp"
+            android:background="@color/white"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="@dimen/dp_12">
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/skipButton"
+                style="@style/Button.WithoutBg.Primary"
+                android:layout_width="wrap_content"
+                android:layout_gravity="start"
+                app:translationTextKey="app.promo_codes.add_agent_code_view.add_agent_code_first_button" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextViewLoader
+                android:id="@+id/saveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:enabled="false"
+                app:translationTextKey="app.promo_codes.add_agent_code_view.add_agent_code_second_button" />
+
+        </FrameLayout>
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

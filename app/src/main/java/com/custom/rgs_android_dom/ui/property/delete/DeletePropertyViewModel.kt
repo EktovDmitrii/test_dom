@@ -3,12 +3,9 @@ package com.custom.rgs_android_dom.ui.property.delete
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
-import com.custom.rgs_android_dom.domain.catalog.models.ClientProductModel
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
-import com.custom.rgs_android_dom.domain.client.models.Order
 import com.custom.rgs_android_dom.domain.client.models.OrderStatus
-import com.custom.rgs_android_dom.domain.policies.PoliciesInteractor
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
@@ -20,7 +17,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.PublishSubject
 
 class DeletePropertyViewModel(
     private val property: PropertyItemModel,
