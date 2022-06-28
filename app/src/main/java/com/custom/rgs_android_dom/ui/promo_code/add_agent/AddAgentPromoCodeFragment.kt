@@ -6,7 +6,7 @@ import com.custom.rgs_android_dom.databinding.FragmentAddAgentCodeBinding
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.ui.promo_code.add_promo_code.AddPromoCodeFragment
-import com.custom.rgs_android_dom.ui.promo_code.dialogs.PromoCodeDialogsFragment
+import com.custom.rgs_android_dom.ui.promo_code.dialogs.PromoCodeDialogFragment
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
@@ -21,12 +21,12 @@ class AddAgentPromoCodeFragment :
     companion object {
 
         private const val KEY_PROMO_CODE_ID = "KEY_PROMO_CODE_ID"
-        private const val KEY_WAS_CODE_AGENT = "KEY_WAS_CODE_AGENT"
+        private const val KEY_SHOULD_SHOW_AGENT = "KEY_WAS_CODE_AGENT"
 
-        fun newInstance(promoCodeId: String, isWasCodeAgent: Boolean) =
+        fun newInstance(promoCodeId: String, shouldShowAgentView: Boolean) =
             AddAgentPromoCodeFragment().args {
                 putString(KEY_PROMO_CODE_ID, promoCodeId)
-                putBoolean(KEY_WAS_CODE_AGENT, isWasCodeAgent)
+                putBoolean(KEY_SHOULD_SHOW_AGENT, shouldShowAgentView)
             }
     }
 
@@ -39,20 +39,20 @@ class AddAgentPromoCodeFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val isWasCodeAgent = requireArguments().getBoolean(KEY_WAS_CODE_AGENT)
+        val shouldShowAgentView = requireArguments().getBoolean(KEY_SHOULD_SHOW_AGENT)
 
         binding.backImageView.setOnDebouncedClickListener {
-            val emailBottomFragment = AddPromoCodeFragment.newInstance(isWasCodeAgent)
+            val emailBottomFragment = AddPromoCodeFragment.newInstance(shouldShowAgentView)
             emailBottomFragment.show(parentFragmentManager, emailBottomFragment.TAG)
             onClose()
         }
 
         binding.saveButton.setOnDebouncedClickListener {
-            viewModel.onSaveClick(parentFragmentManager, isWasCodeAgent)
+            viewModel.onSaveClick(parentFragmentManager, shouldShowAgentView)
         }
 
         binding.skipButton.setOnDebouncedClickListener {
-            val dialog = PromoCodeDialogsFragment.newInstance(viewModel.promoCodeIdString, isWasCodeAgent)
+            val dialog = PromoCodeDialogFragment.newInstance(viewModel.promoCodeIdString, shouldShowAgentView)
             dialog.show(parentFragmentManager, dialog.TAG)
             onClose()
         }

@@ -9,7 +9,7 @@ class AddPromoCodeViewModel : BaseViewModel() {
     private val promoCodeController = MutableLiveData<String>()
     val promoCodeObserver: LiveData<String> = promoCodeController
 
-    fun setTextPromoCode(text: String) {
-        promoCodeController.value = text
+    fun onPromoCodeChanged(text: String) {
+        promoCodeController.value = text.trim()
     }
 }

@@ -8,7 +8,7 @@ import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
 import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.ui.promo_code.dialogs.PromoCodeDialogsFragment
+import com.custom.rgs_android_dom.ui.promo_code.dialogs.PromoCodeDialogFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -54,7 +54,7 @@ class AddAgentPromoCodeViewModel(
         clientInteractor.onEditAgentPhoneChanged(agentPhone, isMaskFilled)
     }
 
-    fun onSaveClick(parentFragmentManager: FragmentManager, isWasCodeAgent: Boolean) {
+    fun onSaveClick(parentFragmentManager: FragmentManager, shouldShowAgentView: Boolean) {
         clientInteractor.updateAgent()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -62,7 +62,7 @@ class AddAgentPromoCodeViewModel(
             .subscribeBy(
                 onComplete = {
                     val dialog =
-                        PromoCodeDialogsFragment.newInstance(promoCodeIdString, isWasCodeAgent)
+                        PromoCodeDialogFragment.newInstance(promoCodeIdString, shouldShowAgentView)
                     dialog.show(parentFragmentManager, dialog.TAG)
                     close()
                 },

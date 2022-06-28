@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.custom.rgs_android_dom.databinding.ItemPromoCodePercentBinding
 import com.custom.rgs_android_dom.databinding.ItemPromoCodeSaleBinding
 import com.custom.rgs_android_dom.databinding.ItemPromoCodeServiceBinding
-import com.custom.rgs_android_dom.domain.promo_codes.model.PromoCodesItemModel
+import com.custom.rgs_android_dom.domain.promo_codes.model.PromoCodeItemModel
 import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.constants.PERCENT_PROMO_CODE
 import com.custom.rgs_android_dom.ui.constants.SERVICE_PROMO_CODE
@@ -17,7 +17,7 @@ import com.custom.rgs_android_dom.utils.insertDate
 class PromoCodesAdapter(private val onPromoCodesClick: (String, Boolean) -> Unit) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val promoCodes = mutableListOf<PromoCodesItemModel>()
+    private val promoCodes = mutableListOf<PromoCodeItemModel>()
     private val durationText =
         TranslationInteractor.getTranslation("app.promo_codes.agent_code_adapter.add_duration")
     private val titleText =
@@ -72,7 +72,7 @@ class PromoCodesAdapter(private val onPromoCodesClick: (String, Boolean) -> Unit
         }
     }
 
-    fun setItems(promoCodes: List<PromoCodesItemModel>) {
+    fun setItems(promoCodes: List<PromoCodeItemModel>) {
         this.promoCodes.clear()
         this.promoCodes.addAll(promoCodes)
         notifyDataSetChanged()
@@ -83,7 +83,7 @@ class PromoCodesAdapter(private val onPromoCodesClick: (String, Boolean) -> Unit
         val onPromoCodesClick: (String, Boolean) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(model: PromoCodesItemModel) {
+        fun bind(model: PromoCodeItemModel) {
             binding.apply {
                 val duration = durationText.replace("%@", " ${model.expiredAt?.formatTo(DATE_PATTERN_DATE_ONLY)}")
                 titleText.insertDate(model.expiredAt, null)
@@ -98,7 +98,7 @@ class PromoCodesAdapter(private val onPromoCodesClick: (String, Boolean) -> Unit
         val onPromoCodesClick: (String, Boolean) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(model: PromoCodesItemModel) {
+        fun bind(model: PromoCodeItemModel) {
             val duration = durationText.replace("%@", " ${model.expiredAt?.formatTo(DATE_PATTERN_DATE_ONLY)}")
             binding.apply {
                 subtitleTextView.text = model.code
@@ -113,7 +113,7 @@ class PromoCodesAdapter(private val onPromoCodesClick: (String, Boolean) -> Unit
         val onPromoCodesClick: (String, Boolean) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(model: PromoCodesItemModel) {
+        fun bind(model: PromoCodeItemModel) {
             val duration =
                 durationText.replace("%@", " ${model.expiredAt?.formatTo(DATE_PATTERN_DATE_ONLY)}")
             binding.apply {
