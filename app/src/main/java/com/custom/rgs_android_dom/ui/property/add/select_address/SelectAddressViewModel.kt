@@ -28,7 +28,7 @@ class SelectAddressViewModel(private val propertyCount: Int,
 ) : BaseViewModel() {
 
     companion object {
-        private const val DEFAULT_ZOOM_LEVEL = 14.0f
+        private const val DEFAULT_ZOOM_LEVEL = 17.5f
         private const val MAX_ZOOM_LEVEL = 17.5f
     }
 
@@ -62,9 +62,12 @@ class SelectAddressViewModel(private val propertyCount: Int,
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
-                onNext = {
-                    propertyInteractor.onPropertyAddressChanged(it)
-                    locationController.value = LocationPointModel(it.coordinates, MAX_ZOOM_LEVEL)
+                onNext = {address->
+                    address.coordinates?.let {
+                        propertyInteractor.onPropertyAddressChanged(address)
+                        locationController.value = LocationPointModel(it, MAX_ZOOM_LEVEL)
+                    }
+
                 },
                 onError = {
                     propertyInteractor.onPropertyAddressChanged(AddressItemModel.createEmpty())

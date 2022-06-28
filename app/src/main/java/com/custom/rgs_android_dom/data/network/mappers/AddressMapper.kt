@@ -11,7 +11,9 @@ object AddressMapper {
             addressString = response.address,
             cityFiasId = response.cityFiasId,
             cityName = response.cityName,
-            coordinates = Point(response.coordinates.lat, response.coordinates.long),
+            coordinates = response.coordinates?.let { coordinates ->
+                Point(coordinates.lat, coordinates.long)
+            },
             fiasId = response.fiasId,
             geocodeId = response.geocodeId,
             regionFiasId = response.regionFiasId,
