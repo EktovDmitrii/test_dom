@@ -37,10 +37,8 @@ class DeletePropertyViewModel(
     }
 
     fun onDeleteClick(){
-        Single.zip(clientInteractor.getOrdersHistory(), catalogInteractor.getProductsByContracts()){orders, products->
-            val hasActiveOrders = orders.firstOrNull { it.status == OrderStatus.ACTIVE && it.objectId == property.id } != null
-            val hasProducts = products.firstOrNull { it.objectId == property.id } != null
-            hasActiveOrders || hasProducts
+        catalogInteractor.getProductsByContracts().map { products->
+            return@map products.firstOrNull { it.objectId == property.id } != null
         }
         .doOnSubscribe {
             loadingStateController.postValue(LoadingState.LOADING)
