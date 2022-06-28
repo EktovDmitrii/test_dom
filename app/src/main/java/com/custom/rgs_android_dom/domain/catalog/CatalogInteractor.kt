@@ -207,8 +207,12 @@ class CatalogInteractor(
 
     fun getProductsByContracts(): Single<List<ClientProductModel>> {
         return policiesRepository.getPoliciesSingle().flatMap {policies->
-            val contractIds = policies.joinToString(",") { it.contractId }
-            catalogRepository.getClientProducts(contractIds)
+            if (policies.isNotEmpty()) {
+                val contractIds = policies.joinToString(",") { it.contractId }
+                catalogRepository.getClientProducts(contractIds)
+            } else {
+                return@flatMap Single.just(emptyList())
+            }
         }
     }
 
