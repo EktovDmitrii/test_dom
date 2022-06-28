@@ -10,6 +10,7 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.utils.activity.setLightStatusBar
 import com.custom.rgs_android_dom.utils.hideSoftwareKeyboard
+import com.custom.rgs_android_dom.utils.logException
 import com.custom.rgs_android_dom.utils.setStatusBarColor
 import com.custom.rgs_android_dom.utils.subscribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -94,7 +95,15 @@ abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding>(layout: Int) : 
             mediaPlayer.isLooping = isLoop
             mediaPlayer.start()
         } catch (e: Exception) {
-            e.printStackTrace()
+            logException(this, e)
+        }
+    }
+
+    protected fun muteTune() {
+        try {
+            mediaPlayer.stop()
+        } catch (e: Exception) {
+            logException(this, e)
         }
     }
 
