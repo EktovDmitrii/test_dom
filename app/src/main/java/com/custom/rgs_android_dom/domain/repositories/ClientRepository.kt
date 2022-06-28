@@ -1,7 +1,6 @@
 package com.custom.rgs_android_dom.domain.repositories
 
 import com.custom.rgs_android_dom.domain.client.models.*
-import com.custom.rgs_android_dom.domain.promo_codes.model.PromoCodesItemModel
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single

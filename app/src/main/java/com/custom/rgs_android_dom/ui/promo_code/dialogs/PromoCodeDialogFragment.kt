@@ -13,18 +13,18 @@ import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
-class PromoCodeDialogsFragment :
-    BaseBottomSheetModalFragment<PromoCodeDialogsViewModel, FragmentPromoCodeDialogsBinding>() {
+class PromoCodeDialogFragment :
+    BaseBottomSheetModalFragment<PromoCodeDialogViewModel, FragmentPromoCodeDialogsBinding>() {
 
     companion object {
 
         private const val KEY_PROMO_CODE_ID = "KEY_PROMO_CODE_ID"
-        private const val KEY_WAS_CODE_AGENT = "KEY_WAS_CODE_AGENT"
+        private const val KEY_SHOULD_SHOW_AGENT = "KEY_SHOULD_SHOW_AGENT"
 
-        fun newInstance(promoCodeId: String, isWasCodeAgent: Boolean) =
-            PromoCodeDialogsFragment().args {
+        fun newInstance(promoCodeId: String, shouldShowAgentView: Boolean) =
+            PromoCodeDialogFragment().args {
                 putString(KEY_PROMO_CODE_ID, promoCodeId)
-                putBoolean(KEY_WAS_CODE_AGENT, isWasCodeAgent)
+                putBoolean(KEY_SHOULD_SHOW_AGENT, shouldShowAgentView)
             }
     }
 
@@ -41,7 +41,7 @@ class PromoCodeDialogsFragment :
 
         val durationText = TranslationInteractor.getTranslation("app.promo_codes.agent_code_adapter.add_duration")
         val titleText = TranslationInteractor.getTranslation("app.promo_codes.agent_code_adapter.add_second_title")
-        val isWasCodeAgent = requireArguments().getBoolean(KEY_WAS_CODE_AGENT)
+        val shouldShowAgentView = requireArguments().getBoolean(KEY_SHOULD_SHOW_AGENT)
 
         binding.loadingLayout.closeImageView.setOnDebouncedClickListener {
             onClose()
@@ -52,7 +52,7 @@ class PromoCodeDialogsFragment :
         }
 
         binding.bindPolicyFailureLayout.changeDataTextView.setOnDebouncedClickListener {
-            val emailBottomFragment = AddPromoCodeFragment.newInstance(isWasCodeAgent)
+            val emailBottomFragment = AddPromoCodeFragment.newInstance(shouldShowAgentView)
             emailBottomFragment.show(parentFragmentManager, emailBottomFragment.TAG)
             onClose()
         }
@@ -61,7 +61,7 @@ class PromoCodeDialogsFragment :
             viewModel.onPromoCodeClick()
         }
 
-        subscribe(viewModel.promoCodeObserver) { model ->
+        subscribe(viewModel.promoCodesObserver) { model ->
 
             val duration = durationText.replace("%@", " ${model.expiredAt?.formatTo(DATE_PATTERN_DATE_ONLY)}")
 

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.chat.ChatInteractor
 import com.custom.rgs_android_dom.domain.promo_codes.PromoCodesInteractor
-import com.custom.rgs_android_dom.domain.promo_codes.model.PromoCodesItemModel
+import com.custom.rgs_android_dom.domain.promo_codes.model.PromoCodeItemModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.chats.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenInfo
@@ -18,14 +18,14 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
-class PromoCodeDialogsViewModel(
+class PromoCodeDialogViewModel(
     private val promoCodeId: String,
     private val promoCodesInteractor: PromoCodesInteractor,
     private val chatInteractor: ChatInteractor,
 ) : BaseViewModel() {
 
-    private val promoCodeController = MutableLiveData<PromoCodesItemModel>()
-    val promoCodeObserver: LiveData<PromoCodesItemModel> = promoCodeController
+    private val promoCodesController = MutableLiveData<PromoCodeItemModel>()
+    val promoCodesObserver: LiveData<PromoCodeItemModel> = promoCodesController
 
     init {
         promoCodesInteractor.activatePromoCode(promoCodeId)
@@ -47,7 +47,7 @@ class PromoCodeDialogsViewModel(
             )
             .subscribeBy(
                 onSuccess = {
-                    promoCodeController.value = it
+                    promoCodesController.value = it
                 },
                 onError = {
                     logException(this, it)

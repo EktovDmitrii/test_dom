@@ -5,7 +5,7 @@ import android.view.View
 import com.custom.rgs_android_dom.databinding.FragmentAddPromoCodeBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.ui.promo_code.add_agent.AddAgentPromoCodeFragment
-import com.custom.rgs_android_dom.ui.promo_code.dialogs.PromoCodeDialogsFragment
+import com.custom.rgs_android_dom.ui.promo_code.dialogs.PromoCodeDialogFragment
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
@@ -16,10 +16,10 @@ class AddPromoCodeFragment :
 
     companion object {
 
-        private const val KEY_WAS_CODE_AGENT = "KEY_WAS_CODE_AGENT"
+        private const val KEY_SHOULD_SHOW_AGENT = "KEY_SHOULD_SHOW_AGENT"
 
-        fun newInstance(isWasCodeAgent: Boolean) = AddPromoCodeFragment().args {
-            putBoolean(KEY_WAS_CODE_AGENT, isWasCodeAgent)
+        fun newInstance(shouldShowAgentView: Boolean) = AddPromoCodeFragment().args {
+            putBoolean(KEY_SHOULD_SHOW_AGENT, shouldShowAgentView)
         }
     }
 
@@ -28,20 +28,20 @@ class AddPromoCodeFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val isShowCodeAgentView = requireArguments().getBoolean(KEY_WAS_CODE_AGENT)
+        val shouldShowAgentView = requireArguments().getBoolean(KEY_SHOULD_SHOW_AGENT)
 
         binding.promoCodeTextInputLayout.addTextWatcher { promoCodeText ->
-            viewModel.setTextPromoCode(promoCodeText)
+            viewModel.onPromoCodeChanged(promoCodeText)
         }
 
-        binding.stepTextView.visibleIf(!isShowCodeAgentView)
-        binding.titleTextView.visibleIf(!isShowCodeAgentView)
-        binding.saveButtonLayout.visibleIf(isShowCodeAgentView)
-        binding.actionsFrameLayout.visibleIf(!isShowCodeAgentView)
+        binding.stepTextView.visibleIf(!shouldShowAgentView)
+        binding.titleTextView.visibleIf(!shouldShowAgentView)
+        binding.saveButtonLayout.visibleIf(shouldShowAgentView)
+        binding.actionsFrameLayout.visibleIf(!shouldShowAgentView)
 
         binding.firstSaveButton.setOnDebouncedClickListener {
             viewModel.promoCodeObserver.value?.let { promoCodeTest ->
-                val dialog = PromoCodeDialogsFragment.newInstance(promoCodeTest, isShowCodeAgentView)
+                val dialog = PromoCodeDialogFragment.newInstance(promoCodeTest, shouldShowAgentView)
                 dialog.show(parentFragmentManager, dialog.TAG)
                 onClose()
             }
@@ -49,15 +49,17 @@ class AddPromoCodeFragment :
 
         binding.secondSaveButton.setOnDebouncedClickListener {
             viewModel.promoCodeObserver.value?.let { promoCodeTest ->
-                val dialog = AddAgentPromoCodeFragment.newInstance(promoCodeTest, isShowCodeAgentView)
+                val dialog = AddAgentPromoCodeFragment.newInstance(promoCodeTest,
+                    shouldShowAgentView = shouldShowAgentView
+                )
                 dialog.show(parentFragmentManager, dialog.TAG)
                 onClose()
             }
         }
 
         subscribe(viewModel.promoCodeObserver) {
-            binding.firstSaveButton.isEnabled = it.trim().isNotEmpty()
-            binding.secondSaveButton.isEnabled = it.trim().isNotEmpty()
+            binding.firstSaveButton.isEnabled = it.isNotEmpty()
+            binding.secondSaveButton.isEnabled = it.isNotEmpty()
         }
     }
 }

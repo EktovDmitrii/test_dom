@@ -258,7 +258,8 @@ interface MSDApi {
         @Query("productId") productId: String? = null,
         @Query("serviceId") serviceId: String? = null,
         @Query("contractId") contractId: String? = null,
-        @Query("balanceGroupByType") balanceGroupByType: String? = null
+        @Query("balanceGroupByType") balanceGroupByType: String? = null,
+        @Query("clientProductId") clientProductId: String? = null
     ): Single<BalanceServicesResponse>
 
     @GET("clients/me/billing/cards/{merchantType}")

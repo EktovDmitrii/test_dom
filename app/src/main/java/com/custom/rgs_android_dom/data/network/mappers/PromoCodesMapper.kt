@@ -1,22 +1,22 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
 import com.custom.rgs_android_dom.data.network.responses.PromoCodeItemResponse
-import com.custom.rgs_android_dom.domain.promo_codes.model.PromoCodeProducts
-import com.custom.rgs_android_dom.domain.promo_codes.model.PromoCodesItemModel
+import com.custom.rgs_android_dom.domain.promo_codes.model.PromoCodeProduct
+import com.custom.rgs_android_dom.domain.promo_codes.model.PromoCodeItemModel
 
 object PromoCodesMapper {
 
-    fun responseToPromoCodesItemModels(responseItem: List<PromoCodeItemResponse>?): List<PromoCodesItemModel> {
+    fun responseToPromoCodesItemModels(responseItem: List<PromoCodeItemResponse>?): List<PromoCodeItemModel> {
         return responseItem?.map {
 
             val promoCodeProducts = it.products?.map { products ->
-                PromoCodeProducts(
+                PromoCodeProduct(
                     count = products.count ?: 0,
                     productId = products.productId ?: ""
                 )
             }
 
-            PromoCodesItemModel(
+            PromoCodeItemModel(
                 businessLine = it.businessLine ?: "",
                 clientId = it.clientId ?: "",
                 code = it.code ?: "",
@@ -36,15 +36,15 @@ object PromoCodesMapper {
         } ?: emptyList()
     }
 
-    fun responseToPromoCodesItemModel(responseItem: PromoCodeItemResponse): PromoCodesItemModel {
+    fun responseToPromoCodesItemModel(responseItem: PromoCodeItemResponse): PromoCodeItemModel {
         val promoCodeProducts = responseItem.products?.map { products ->
-            PromoCodeProducts(
+            PromoCodeProduct(
                 count = products.count ?: 0,
                 productId = products.productId ?: ""
             )
         }
 
-        return PromoCodesItemModel(
+        return PromoCodeItemModel(
             businessLine = responseItem.businessLine ?: "",
             clientId = responseItem.clientId ?: "",
             code = responseItem.code ?: "",
