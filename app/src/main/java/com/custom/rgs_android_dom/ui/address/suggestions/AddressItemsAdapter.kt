@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.custom.rgs_android_dom.databinding.ItemAddressItemBinding
 import com.custom.rgs_android_dom.domain.address.models.AddressItemModel
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
+import com.custom.rgs_android_dom.utils.visibleIf
+import okhttp3.internal.indexOfNonWhitespace
 
 class AddressItemsAdapter(
     private val onAddressClick: (AddressItemModel) -> Unit = {}
@@ -45,6 +47,7 @@ class AddressItemsAdapter(
             secondaryText = "$secondaryText${model.regionName}"
 
             binding.addressSecondaryTextView.text = secondaryText
+            binding.addressSecondaryTextView.visibleIf(secondaryText.trim().isNotEmpty())
             binding.root.setOnDebouncedClickListener {
                 onAddressClick(model)
             }

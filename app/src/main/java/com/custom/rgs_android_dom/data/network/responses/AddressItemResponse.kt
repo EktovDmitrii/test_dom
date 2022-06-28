@@ -13,7 +13,7 @@ data class AddressItemResponse(
     val cityName: String,
 
     @SerializedName("coordinates")
-    val coordinates: CoordinatesResponse,
+    val coordinates: CoordinatesResponse?,
 
     @SerializedName("fiasId")
     val fiasId: String,

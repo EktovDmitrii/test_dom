@@ -7,7 +7,7 @@ data class AddressItemModel(
     var addressString: String,
     val cityFiasId: String,
     val cityName: String,
-    val coordinates: Point,
+    val coordinates: Point?,
     val fiasId: String,
     val geocodeId: String,
     val regionFiasId: String,
