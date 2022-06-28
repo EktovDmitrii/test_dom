@@ -35,7 +35,6 @@ class CallRequestFragment : BaseFragment<CallRequestViewModel, FragmentRequestCa
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        playTune("track6.mp3", true)
         binding.acceptCallImageView.setOnDebouncedClickListener {
             playTune("track4.mp3")
             viewModel.navigateCall()
@@ -76,6 +75,16 @@ class CallRequestFragment : BaseFragment<CallRequestViewModel, FragmentRequestCa
             hideSoftwareKeyboard()
         else
             super.onClose()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        playTune("track6.mp3", true)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        muteTune()
     }
 
 }
