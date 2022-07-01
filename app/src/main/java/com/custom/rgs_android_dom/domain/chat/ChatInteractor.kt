@@ -98,9 +98,8 @@ class ChatInteractor(
                 it
             }.flatMapSingle {
                 chatRepository.postFileInChat(channelId, it)
-            }.toList()
-            .flatMapCompletable { chatFiles ->
-                sendMessage(channelId = channelId, message = " ", fileIds = chatFiles.map { it.id })
+            }.flatMapCompletable {
+                sendMessage(channelId = channelId, message = " ", fileIds = listOf(it.id))
             }
     }
 
