@@ -70,9 +70,14 @@ class ClientRepositoryImpl(
         return api.getMyClient().map { response ->
             val client = ClientMapper.responseToClient(response)
             clientSharedPreferences.saveClient(client)
-            val agent = ClientMapper.responseToAgent(api.getAgent().blockingGet())
-            clientSharedPreferences.saveAgent(agent)
-            clientUpdatedSubject.onNext(client)
+
+            val agents = api.getAgents().blockingGet()?.list ?: emptyList()
+            if (agents.isNotEmpty()) {
+                val agent = ClientMapper.responseToAgent(agents[0])
+                clientSharedPreferences.saveAgent(agent)
+                clientUpdatedSubject.onNext(client)
+            }
+
             return@map clientSharedPreferences.getClient()
         }
     }
@@ -80,16 +85,17 @@ class ClientRepositoryImpl(
     override fun loadAndSaveClient(): Completable {
         return api.getMyClient().flatMapCompletable { response ->
             val client = ClientMapper.responseToClient(response)
-            val agentResponse = api.getAgent().blockingGet()
-            val agent = ClientMapper.responseToAgent(agentResponse)
-            client.agent = agent
-            val cachedClient = clientSharedPreferences.getClient()
-            if (cachedClient != null && cachedClient != client || cachedClient == null) {
-                clientSharedPreferences.saveClient(client)
-                clientSharedPreferences.saveAgent(agent)
-                clientUpdatedSubject.onNext(client)
+            val agents = api.getAgents().blockingGet()?.list ?: emptyList()
+            if (agents.isNotEmpty()) {
+                val agent = ClientMapper.responseToAgent(agents[0])
+                client.agent = agent
+                val cachedClient = clientSharedPreferences.getClient()
+                if (cachedClient != null && cachedClient != client || cachedClient == null) {
+                    clientSharedPreferences.saveClient(client)
+                    clientSharedPreferences.saveAgent(agent)
+                    clientUpdatedSubject.onNext(client)
+                }
             }
-
             return@flatMapCompletable Completable.complete()
         }
     }

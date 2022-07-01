@@ -145,7 +145,7 @@ interface MSDApi {
 
     @GET("insurance/clients/me/agents")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun getAgent(): Maybe<AgentHolderResponse?>
+    fun getAgents(): Maybe<AgentsResponse?>
 
     @Multipart
     @POST("store")
