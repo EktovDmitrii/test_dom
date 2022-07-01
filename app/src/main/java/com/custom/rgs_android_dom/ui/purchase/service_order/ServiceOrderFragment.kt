@@ -8,20 +8,18 @@ import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentServiceOrderBinding
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
-import com.custom.rgs_android_dom.domain.purchase.models.DeliveryType
 import com.custom.rgs_android_dom.domain.purchase.models.PurchaseDateTimeModel
 import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.ui.catalog.product.service.ServiceLauncher
 import com.custom.rgs_android_dom.ui.purchase.add.comment.PurchaseCommentListener
-import com.custom.rgs_android_dom.ui.purchase.select.date_time.PurchaseDateTimeFragment
 import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressListener
+import com.custom.rgs_android_dom.ui.purchase.select.date_time.PurchaseDateTimeFragment
 import com.custom.rgs_android_dom.utils.*
 import com.yandex.metrica.YandexMetrica
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
-import java.lang.IllegalArgumentException
 
-class ServiceOrderFragment : BaseFragment<ServiceOrderViewModel, FragmentServiceOrderBinding>(R.layout.fragment_service_order),
+class ServiceOrderFragment :
+    BaseFragment<ServiceOrderViewModel, FragmentServiceOrderBinding>(R.layout.fragment_service_order),
     SelectPurchaseAddressListener,
     PurchaseCommentListener,
     PurchaseDateTimeFragment.PurchaseDateTimeListener {
@@ -160,5 +158,4 @@ class ServiceOrderFragment : BaseFragment<ServiceOrderViewModel, FragmentService
 
         YandexMetrica.reportEvent("service_order_progress_date")
     }
-
 }

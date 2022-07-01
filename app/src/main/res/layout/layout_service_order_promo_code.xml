@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="40dp"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/material_margin_big">
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/material_margin_normal"
+        android:fontFamily="@font/my_service_bold"
+        android:textColor="@color/secondary800"
+        android:textSize="16sp"
+        app:lineHeight="24sp"
+        app:translationTextKey="app.product.purchase.select_promo_code_title" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/promoCodeLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:srcCompat="@drawable/ic_promo_code_black_20px" />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/promoCodeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/suisse_regular"
+            android:textColor="@color/secondary800"
+            android:textSize="16sp"
+            app:translationTextKey="app.product.purchase.select_promo_code_subtitle" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/arrowPromoCodeImageView"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="end|center"
+                android:tint="@color/secondary400"
+                app:srcCompat="@drawable/ic_arrow_right_24px" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/deletePromoCodeImageView"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="end|center"
+                android:tint="@color/secondary400"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_delete_24px" />
+
+        </FrameLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/labeledPromoCodeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:background="@color/primary200"
+        android:fontFamily="@font/suisse_regular"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="2dp"
+        android:textColor="@color/secondary900"
+        android:textSize="10sp"
+        android:visibility="gone"
+        app:translationTextKey="Лето2022" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:id="@+id/errorTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="@dimen/dp_12"
+        android:fontFamily="@font/suisse_regular"
+        android:textColor="@color/error500"
+        android:visibility="gone"
+        android:textSize="13sp"
+        app:translationTextKey="app.product.purchase.select_promo_code_error" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

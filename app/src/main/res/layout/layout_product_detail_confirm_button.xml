@@ -1,34 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
-    android:paddingVertical="12dp"
-    android:paddingHorizontal="20dp">
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp"
+    android:paddingVertical="12dp">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/discountLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/material_margin_big"
+        android:background="@drawable/rectangle_filled_white_top_radius_24dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_12">
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:layout_weight="@integer/material_motion_duration_long_1"
+                android:fontFamily="@font/suisse_regular"
+                android:gravity="center_vertical"
+                android:textColor="@color/secondary900"
+                android:textSize="16sp"
+                app:translationTextKey="app.product.purchase.layout_product_detail.cost_text_view" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/sumCostTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:fontFamily="@font/suisse_bold"
+                android:gravity="center_vertical"
+                android:textColor="@color/secondary600"
+                android:textSize="16sp"
+                app:translationTextKey="1 500 ₽" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_12">
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/discountTextView"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:layout_weight="@integer/material_motion_duration_long_1"
+                android:fontFamily="@font/suisse_regular"
+                android:gravity="center_vertical"
+                android:textColor="@color/secondary900"
+                android:textSize="16sp"
+                app:translationTextKey="app.product.purchase.layout_product_detail.cost_discount_text_view" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/sumDiscountTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:fontFamily="@font/suisse_bold"
+                android:gravity="center_vertical"
+                android:textColor="@color/success500"
+                android:textSize="16sp"
+                app:translationTextKey="-500 ₽" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="7dp"
+            android:background="@color/secondary200" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:layout_weight="@integer/material_motion_duration_long_1"
+                android:fontFamily="@font/suisse_regular"
+                android:gravity="center_vertical"
+                android:textColor="@color/secondary900"
+                android:textSize="16sp"
+                app:translationTextKey="app.product.purchase.layout_product_detail.cost_with_discount_text_view" />
+
+            <com.custom.rgs_android_dom.views.text.MSDTextView
+                android:id="@+id/resultSumTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:fontFamily="@font/suisse_bold"
+                android:gravity="center_vertical"
+                android:textColor="@color/secondary600"
+                android:textSize="16sp"
+                app:translationTextKey="1 000 ₽" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/productArrangeBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="10dp"
-        android:background="@drawable/button_filled_primary_background">
+        android:background="@drawable/button_filled_primary_background"
+        android:paddingVertical="10dp">
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/btnTitle"
             android:layout_width="0dp"
             android:layout_height="28dp"
-            android:paddingStart="24dp"
             android:fontFamily="@font/my_service_bold"
             android:gravity="start|center_vertical"
             android:lines="1"
+            android:paddingStart="24dp"
+            android:paddingEnd="12dp"
             android:textColor="@color/button_filled_primary_text_color"
             android:textSize="14sp"
-            android:paddingEnd="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/separator"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
@@ -36,33 +135,47 @@
             android:layout_width="1dp"
             android:layout_height="20dp"
             android:background="@color/white"
-            app:layout_constraintStart_toEndOf="@id/btnTitle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btnPrice"
+            app:layout_constraintStart_toEndOf="@id/btnTitle"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/btnPrice"
             android:layout_width="wrap_content"
             android:layout_height="28dp"
-            android:paddingEnd="24dp"
-            android:paddingStart="12dp"
             android:fontFamily="@font/my_service_bold"
             android:gravity="center"
-            tools:text="от 230 000 ₽"
+            android:paddingStart="12dp"
+            android:paddingEnd="24dp"
             android:textColor="@color/white"
             android:textSize="14sp"
-            app:layout_constraintStart_toEndOf="@id/separator"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/separator"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="от 230 000 ₽" />
+
+        <ProgressBar
+            android:id="@+id/loadingProgressBar"
+            style="@style/ProgressBarStyle"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/material_margin_large"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btnTitle"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/btnPriceGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="separator, btnPrice" />
+            app:constraint_referenced_ids="separator, btnPrice"
+            app:layout_constraintEnd_toEndOf="@+id/btnPrice"
+            tools:layout_editor_absoluteY="10dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</FrameLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

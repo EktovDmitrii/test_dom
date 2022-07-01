@@ -26,8 +26,15 @@ open class BaseViewModel : ViewModel(), KoinComponent {
     private val isKeyboardOpenController = MutableLiveData(false)
     val isKeyboardOpenObserver: LiveData<Boolean> = isKeyboardOpenController
 
-    fun close(){
+    private val fullScreenController = MutableLiveData<Unit>()
+    val fullScreenObserver: LiveData<Unit> = fullScreenController
+
+    fun close() {
         closeController.value = Unit
+    }
+
+    fun onFullScreen() {
+        fullScreenController.value = Unit
     }
 
     fun onKeyboardOpen() {
@@ -38,7 +45,7 @@ open class BaseViewModel : ViewModel(), KoinComponent {
         isKeyboardOpenController.value = false
     }
 
-    protected fun handleNetworkException(throwable: Throwable){
+    protected fun handleNetworkException(throwable: Throwable) {
         throwable.toMSDErrorModel()?.let {
             networkErrorController.value = TranslationInteractor.getErrorTranslation(it)
         }
@@ -62,7 +69,7 @@ open class BaseViewModel : ViewModel(), KoinComponent {
         }
     }
 
-    enum class LoadingState{
+    enum class LoadingState {
         LOADING,
         CONTENT,
         ERROR

@@ -6,8 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.data.network.toMSDErrorModel
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
 import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.promo_code.add_promo_code.AddPromoCodeFragment
 import com.custom.rgs_android_dom.ui.promo_code.dialogs.PromoCodeDialogFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -16,11 +18,11 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
 class AddAgentPromoCodeViewModel(
-    private val promoCodeId: String,
+    private val promoCode: String,
+    private val shouldShowAgentView: Boolean,
+    private val purchaseModel: PurchaseModel?,
     private val clientInteractor: ClientInteractor
 ) : BaseViewModel() {
-
-    val promoCodeIdString = promoCodeId
 
     companion object {
         private const val ERR_AGENT_NOT_FOUND = "INS-093"
@@ -54,7 +56,19 @@ class AddAgentPromoCodeViewModel(
         clientInteractor.onEditAgentPhoneChanged(agentPhone, isMaskFilled)
     }
 
-    fun onSaveClick(parentFragmentManager: FragmentManager, shouldShowAgentView: Boolean) {
+    fun onBackClick(parentFragmentManager: FragmentManager) {
+        val addPromoBottomFragment = AddPromoCodeFragment.newInstance(shouldShowAgentView, purchaseModel)
+        addPromoBottomFragment.show(parentFragmentManager, addPromoBottomFragment.TAG)
+        close()
+    }
+
+    fun onSkipClick(parentFragmentManager: FragmentManager) {
+        val dialog = PromoCodeDialogFragment.newInstance(promoCode, shouldShowAgentView, purchaseModel)
+        dialog.show(parentFragmentManager, dialog.TAG)
+        close()
+    }
+
+    fun onSaveClick(parentFragmentManager: FragmentManager) {
         clientInteractor.updateAgent()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -62,7 +76,7 @@ class AddAgentPromoCodeViewModel(
             .subscribeBy(
                 onComplete = {
                     val dialog =
-                        PromoCodeDialogFragment.newInstance(promoCodeIdString, shouldShowAgentView)
+                        PromoCodeDialogFragment.newInstance(promoCode, shouldShowAgentView, purchaseModel)
                     dialog.show(parentFragmentManager, dialog.TAG)
                     close()
                 },

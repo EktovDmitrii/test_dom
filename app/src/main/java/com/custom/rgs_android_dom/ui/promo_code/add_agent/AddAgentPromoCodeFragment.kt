@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.View
 import com.custom.rgs_android_dom.databinding.FragmentAddAgentCodeBinding
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
-import com.custom.rgs_android_dom.ui.promo_code.add_promo_code.AddPromoCodeFragment
-import com.custom.rgs_android_dom.ui.promo_code.dialogs.PromoCodeDialogFragment
+import com.custom.rgs_android_dom.utils.activity.hideKeyboardForced
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
@@ -21,17 +21,29 @@ class AddAgentPromoCodeFragment :
     companion object {
 
         private const val KEY_PROMO_CODE_ID = "KEY_PROMO_CODE_ID"
-        private const val KEY_SHOULD_SHOW_AGENT = "KEY_WAS_CODE_AGENT"
+        private const val KEY_SHOULD_SHOW_AGENT = "KEY_SHOULD_SHOW_AGENT"
+        private const val ARG_PURCHASE_SERVICE_MODEL = "ARG_PURCHASE_SERVICE_MODEL"
 
-        fun newInstance(promoCodeId: String, shouldShowAgentView: Boolean) =
+        fun newInstance(
+            promoCode: String,
+            shouldShowAgentView: Boolean,
+            purchaseModel: PurchaseModel?
+        ) =
             AddAgentPromoCodeFragment().args {
-                putString(KEY_PROMO_CODE_ID, promoCodeId)
+                putString(KEY_PROMO_CODE_ID, promoCode)
                 putBoolean(KEY_SHOULD_SHOW_AGENT, shouldShowAgentView)
+                if (purchaseModel != null) putSerializable(ARG_PURCHASE_SERVICE_MODEL, purchaseModel)
             }
     }
 
     override fun getParameters(): ParametersDefinition = {
-        parametersOf(requireArguments().getString(KEY_PROMO_CODE_ID))
+        parametersOf(
+            requireArguments().getString(KEY_PROMO_CODE_ID),
+            requireArguments().getBoolean(KEY_SHOULD_SHOW_AGENT),
+            if (requireArguments().containsKey(ARG_PURCHASE_SERVICE_MODEL)) requireArguments().getSerializable(
+                ARG_PURCHASE_SERVICE_MODEL
+            ) as PurchaseModel else null
+        )
     }
 
     override val TAG: String = "PROMO_CODE_ADD_AGENT_FRAGMENT"
@@ -39,22 +51,16 @@ class AddAgentPromoCodeFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val shouldShowAgentView = requireArguments().getBoolean(KEY_SHOULD_SHOW_AGENT)
-
         binding.backImageView.setOnDebouncedClickListener {
-            val emailBottomFragment = AddPromoCodeFragment.newInstance(shouldShowAgentView)
-            emailBottomFragment.show(parentFragmentManager, emailBottomFragment.TAG)
-            onClose()
+            viewModel.onBackClick(parentFragmentManager)
         }
 
         binding.saveButton.setOnDebouncedClickListener {
-            viewModel.onSaveClick(parentFragmentManager, shouldShowAgentView)
+            viewModel.onSaveClick(parentFragmentManager)
         }
 
         binding.skipButton.setOnDebouncedClickListener {
-            val dialog = PromoCodeDialogFragment.newInstance(viewModel.promoCodeIdString, shouldShowAgentView)
-            dialog.show(parentFragmentManager, dialog.TAG)
-            onClose()
+            viewModel.onSkipClick(parentFragmentManager)
         }
 
         binding.agentCodeEditText.addTextWatcher {
@@ -93,5 +99,10 @@ class AddAgentPromoCodeFragment :
         subscribe(viewModel.networkErrorObserver) {
             binding.agentCodeEditText.setState(MSDLabelEditText.State.ERROR, it)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        requireActivity().hideKeyboardForced()
     }
 }

@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.ui.purchase
 
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -8,27 +9,30 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentPurchaseBinding
+import com.custom.rgs_android_dom.domain.promo_codes.model.PromoCodeItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
+import com.custom.rgs_android_dom.domain.purchase.models.CardModel
 import com.custom.rgs_android_dom.domain.purchase.models.PurchaseDateTimeModel
 import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
-import com.custom.rgs_android_dom.ui.base.BaseFragment
-import com.custom.rgs_android_dom.domain.purchase.models.*
+import com.custom.rgs_android_dom.domain.purchase.models.SavedCardModel
 import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
+import com.custom.rgs_android_dom.ui.constants.PERCENT_PROMO_CODE
+import com.custom.rgs_android_dom.ui.constants.SALE_PROMO_CODE
+import com.custom.rgs_android_dom.ui.constants.ZERO_COST_ORDER
 import com.custom.rgs_android_dom.ui.purchase.add.agent.AddAgentFragment
 import com.custom.rgs_android_dom.ui.purchase.add.agent.PurchaseAgentListener
 import com.custom.rgs_android_dom.ui.purchase.add.comment.PurchaseCommentListener
-import com.custom.rgs_android_dom.ui.purchase.select.date_time.PurchaseDateTimeFragment
+import com.custom.rgs_android_dom.ui.purchase.add.email.PurchaseEmailListener
 import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressListener
 import com.custom.rgs_android_dom.ui.purchase.select.card.SelectCardFragment
-import com.custom.rgs_android_dom.ui.purchase.add.email.PurchaseEmailListener
+import com.custom.rgs_android_dom.ui.purchase.select.date_time.PurchaseDateTimeFragment
 import com.custom.rgs_android_dom.utils.*
 import com.yandex.metrica.YandexMetrica
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
-import java.lang.IllegalArgumentException
 
 class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurchaseBinding>(),
     SelectPurchaseAddressListener,
@@ -40,11 +44,17 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
     ConfirmBottomSheetFragment.ConfirmListener {
 
     companion object {
-        private const val ARG_PURCHASE_SERVICE_MODEL = "ARG_PURCHASE_SERVICE_MODEL"
 
-        fun newInstance(purchaseModel: PurchaseModel): PurchaseFragment {
+        private const val ARG_PURCHASE_SERVICE_MODEL = "ARG_PURCHASE_SERVICE_MODEL"
+        private const val ARG_PROMO_CODE_MODEL = "ARG_PROMO_CODE_MODEL"
+
+        fun newInstance(
+            purchaseModel: PurchaseModel,
+            promoCodeItemModel: PromoCodeItemModel?
+        ): PurchaseFragment {
             return PurchaseFragment().args {
                 putSerializable(ARG_PURCHASE_SERVICE_MODEL, purchaseModel)
+                if (promoCodeItemModel != null) putSerializable(ARG_PROMO_CODE_MODEL, promoCodeItemModel)
             }
         }
     }
@@ -52,12 +62,19 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
     override val TAG = "PURCHASE_FRAGMENT"
 
     override fun getParameters(): ParametersDefinition = {
-        parametersOf(requireArguments().getSerializable(ARG_PURCHASE_SERVICE_MODEL) as PurchaseModel)
+        parametersOf(
+            requireArguments().getSerializable(ARG_PURCHASE_SERVICE_MODEL) as PurchaseModel,
+            if (requireArguments().containsKey(ARG_PROMO_CODE_MODEL)) requireArguments().getSerializable(
+                ARG_PROMO_CODE_MODEL
+            ) as PromoCodeItemModel else null
+        )
     }
 
     override fun getThemeResource(): Int {
         return R.style.BottomSheetNoDim
     }
+
+    private val discountText = TranslationInteractor.getTranslation("app.product.purchase.layout_product_detail.cost_discount_text_view")
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -100,9 +117,30 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
             viewModel.makeOrder()
         }
 
+        binding.layoutIncludedPromoCode.promoCodeLinearLayout.setOnDebouncedClickListener {
+            viewModel.onAddPromoCodeClick(childFragmentManager)
+        }
+
+        binding.layoutIncludedPromoCode.deletePromoCodeImageView.setOnDebouncedClickListener {
+           viewModel.onDeletePromoCodeClick()
+        }
+
+        subscribe(viewModel.hasPromoCodeObserver) { promoCodeModel ->
+            if (promoCodeModel != null) {
+                viewModel.checkPromoCode()
+                binding.layoutIncludedPromoCode.root.setMargins(bottom = 200)
+            }
+            binding.makeOrderButton.discountLayout.visibleIf(promoCodeModel != null)
+            binding.layoutIncludedPromoCode.apply {
+                arrowPromoCodeImageView.visibleIf(promoCodeModel == null)
+                deletePromoCodeImageView.visibleIf(promoCodeModel != null)
+                labeledPromoCodeTextView.visibleIf(promoCodeModel != null)
+            }
+        }
+
         subscribe(viewModel.purchaseObserver) { purchase ->
 
-            binding.makeOrderButton.btnTitle.text =  if (purchase.defaultProduct){
+            binding.makeOrderButton.btnTitle.text = if (purchase.defaultProduct) {
                 TranslationInteractor.getTranslation("app.product_cards.service_detail_view.buy_button_order")
             } else {
                 TranslationInteractor.getTranslation("app.product_cards.service_detail_view.buy_button_arrange")
@@ -124,15 +162,40 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
             binding.layoutDateTime.root.visibleIf(purchase.defaultProduct)
             binding.layoutPurchaseServiceHeader.durationTextView.visibleIf(purchase.duration != null)
 
-            if (purchase.defaultProduct){
+            if (purchase.defaultProduct) {
                 binding.layoutPurchaseServiceHeader.durationTextView.text = TranslationInteractor.getTranslation("app.support_service.prefix_titles.work_estimation") + purchase.deliveryTime
             } else {
                 binding.layoutPurchaseServiceHeader.durationTextView.text = "Действует ${purchase.duration}"
             }
 
             purchase.price?.amount?.let { amount ->
+                val promoCodeItemModel = viewModel.hasPromoCodeObserver.value
                 binding.layoutPurchaseServiceHeader.priceTextView.text = amount.formatPrice(isFixed = purchase.price.fix)
-                binding.makeOrderButton.btnPrice.text = amount.formatPrice(isFixed = purchase.price.fix)
+                if (promoCodeItemModel != null) {
+                    binding.makeOrderButton.root.background = ContextCompat.getDrawable(requireContext(), R.drawable.rectangle_filled_white_top_radius_24dp)
+                    binding.makeOrderButton.sumCostTextView.text = amount.formatPrice(isFixed = purchase.price.fix)
+                    binding.layoutIncludedPromoCode.promoCodeTextView.text =
+                        TranslationInteractor.getTranslation("app.product.purchase.layout_included_promo_code.promo_code_text_view")
+                    binding.layoutIncludedPromoCode.labeledPromoCodeTextView.text = promoCodeItemModel.code
+
+                    when (promoCodeItemModel.type) {
+                        SALE_PROMO_CODE -> {
+                            binding.makeOrderButton.discountTextView.text = discountText.replace("%@", "${promoCodeItemModel.discountInRubles}₽")
+                            binding.makeOrderButton.sumDiscountTextView.text = (promoCodeItemModel.discountInRubles * 100).formatPrice()
+                            val resultCost = amount - (promoCodeItemModel.discountInRubles * 100)
+                            binding.makeOrderButton.resultSumTextView.text = if (resultCost < 0 ) ZERO_COST_ORDER else resultCost.formatPrice(isFixed = purchase.price.fix)
+                            binding.makeOrderButton.btnPrice.text = if (resultCost < 0 ) ZERO_COST_ORDER else resultCost.formatPrice(isFixed = purchase.price.fix)
+                        }
+                        PERCENT_PROMO_CODE -> {
+                            binding.makeOrderButton.discountTextView.text = discountText.replace("%@", "${promoCodeItemModel.discountInPercent}%")
+                            val resultDiscountIn = ((promoCodeItemModel.discountInPercent.toDouble() / 100.toDouble()) * amount.toDouble()).toInt()
+                            val resultCost = amount - resultDiscountIn
+                            binding.makeOrderButton.sumDiscountTextView.text = resultDiscountIn.formatPrice(isFixed = purchase.price.fix)
+                            binding.makeOrderButton.resultSumTextView.text = resultCost.formatPrice(isFixed = purchase.price.fix)
+                            binding.makeOrderButton.btnPrice.text = resultCost.formatPrice(isFixed = purchase.price.fix)
+                        }
+                    }
+                }
             }
 
             purchase.email?.let { email ->
@@ -194,15 +257,15 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
                     }
                 }
             }
-            purchase.purchaseDateTimeModel?.let {
-                binding.layoutDateTime.filledDateTimeGroup.visible()
-                binding.layoutDateTime.chooseDateTimeTextView.gone()
 
-                it.selectedPeriodModel?.let {
-                    binding.layoutDateTime.timesOfDayTextView.text = "${it.timeFrom} – ${it.timeTo}"
-                }
-                binding.layoutDateTime.timeIntervalTextView.text = it.selectedDate.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
+            binding.layoutDateTime.filledDateTimeGroup.visibleIf(purchase.purchaseDateTimeModel != null)
+            binding.layoutDateTime.chooseDateTimeTextView.goneIf(purchase.purchaseDateTimeModel != null)
+
+            purchase.purchaseDateTimeModel?.selectedPeriodModel?.let {
+                binding.layoutDateTime.timesOfDayTextView.text = "${it.timeFrom} – ${it.timeTo}"
             }
+            binding.layoutDateTime.timeIntervalTextView.text =
+                purchase.purchaseDateTimeModel?.selectedDate?.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
         }
 
         subscribe(viewModel.hasCodeAgentObserver) {
@@ -284,5 +347,37 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
 
     override fun isNavigationViewVisible(): Boolean {
         return false
+    }
+
+    override fun onLoading() {
+        super.onLoading()
+        binding.apply {
+            makeOrderButton.loadingProgressBar.visible()
+            makeOrderButton.btnPrice.gone()
+            layoutIncludedPromoCode.errorTextView.gone()
+            makeOrderButton.discountLayout.gone()
+        }
+    }
+
+    override fun onError() {
+        super.onError()
+        binding.apply {
+            layoutIncludedPromoCode.labeledPromoCodeTextView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+            layoutIncludedPromoCode.root.setMargins(bottom = 0)
+            makeOrderButton.loadingProgressBar.gone()
+            makeOrderButton.btnPrice.visible()
+            layoutIncludedPromoCode.errorTextView.visible()
+            makeOrderButton.discountLayout.gone()
+        }
+    }
+
+    override fun onContent() {
+        super.onContent()
+        binding.apply {
+            makeOrderButton.loadingProgressBar.gone()
+            makeOrderButton.btnPrice.visible()
+            layoutIncludedPromoCode.errorTextView.gone()
+            makeOrderButton.discountLayout.visible()
+        }
     }
 }

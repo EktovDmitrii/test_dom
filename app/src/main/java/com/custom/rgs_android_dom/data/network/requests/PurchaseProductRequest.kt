@@ -19,7 +19,10 @@ data class PurchaseProductRequest(
     val order: OrderRequest?,
 
     @SerializedName("businessLine")
-    val businessLine: String
+    val businessLine: String,
+
+    @SerializedName("clientPromoCodeId")
+    val clientPromoCodeId: String?
 )
 
 data class OrderRequest(

@@ -43,6 +43,7 @@
         android:layout_marginTop="16dp"
         android:imeOptions="actionDone"
         android:paddingHorizontal="20dp"
+        android:digits="@string/acceptable_agent_code_chars"
         app:focusedTranslationHintKey="app.promo_codes.add_promo_codes_view.add_promo_codes_title"
         app:isFocused="true"
         app:placeholderText="Код промокода"
@@ -67,7 +68,7 @@
             android:paddingVertical="@dimen/dp_12">
 
             <com.custom.rgs_android_dom.views.text.MSDTextViewLoader
-                android:id="@+id/secondSaveButton"
+                android:id="@+id/agentPromoCodeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -95,7 +96,7 @@
             android:paddingVertical="@dimen/dp_12">
 
             <com.custom.rgs_android_dom.views.text.MSDTextView
-                android:id="@+id/firstSaveButton"
+                android:id="@+id/promoCodeDialogButton"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/button_filled_primary_background"
