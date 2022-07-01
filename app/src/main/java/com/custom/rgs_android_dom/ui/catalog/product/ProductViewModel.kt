@@ -125,7 +125,7 @@ class ProductViewModel(
                     name = it.name,
                     price = it.price
                 )
-                val purchaseFragment = PurchaseFragment.newInstance(purchaseServiceModel)
+                val purchaseFragment = PurchaseFragment.newInstance(purchaseServiceModel, null)
                 //ScreenManager.showScreenScope(purchaseFragment, PAYMENT)
                 ScreenManager.showBottomScreen(purchaseFragment)
             }

@@ -21,7 +21,8 @@ interface PurchaseRepository {
         deliveryDate: String?,
         timeFrom: String?,
         timeTo: String?,
-        withOrder: Boolean
+        withOrder: Boolean,
+        clientPromoCodeId: String?
     ): Single<PurchaseInfoModel>
 
     fun orderServiceOnBalance(

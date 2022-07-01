@@ -21,9 +21,7 @@ class PromoCodesFragment :
         super.onViewCreated(view, savedInstanceState)
         hideSoftwareKeyboard()
 
-        binding.dataStateLayout.recyclerView.adapter = PromoCodesAdapter { id, isActive ->
-            //TODO добавить клик в задаче RGSMSD-1848
-        }
+        binding.dataStateLayout.recyclerView.adapter = PromoCodesAdapter { _ -> }
 
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
@@ -44,7 +42,7 @@ class PromoCodesFragment :
         subscribe(viewModel.promoCodesObserver) {
             binding.emptyStateLayout.root.visibleIf(it.isEmpty())
             binding.dataStateLayout.root.visibleIf(it.isNotEmpty())
-            promoCodesAdapter.setItems(it)
+            promoCodesAdapter.setItems(it, null)
         }
     }
 }

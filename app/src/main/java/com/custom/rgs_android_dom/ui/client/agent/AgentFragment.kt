@@ -7,13 +7,11 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentAgentBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
 import com.custom.rgs_android_dom.ui.client.agent.request_edit.RequestEditAgentFragment
-import com.custom.rgs_android_dom.utils.gone
 import com.custom.rgs_android_dom.utils.makeStringWithLink
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
 
 class AgentFragment : BaseFragment<AgentViewModel, FragmentAgentBinding>(R.layout.fragment_agent) {
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,19 +40,17 @@ class AgentFragment : BaseFragment<AgentViewModel, FragmentAgentBinding>(R.layou
             } else {
                 binding.agentPhoneTextView.setNoValue()
             }
-
         }
 
         subscribe(viewModel.editAgentRequestedObserver) { wasRequested ->
             binding.requestEditLinearLayout.isVisible = !wasRequested
             binding.editAgentRequestedLinearLayout.isVisible = wasRequested
         }
-
     }
 
     private fun makeRequestLink() {
         binding.requestEditTextView.makeStringWithLink(
-            resources.getColor(R.color.primary500,null),
+            resources.getColor(R.color.primary500, null),
             Pair(
                 "оставьте заявку",
                 View.OnClickListener {
@@ -66,5 +62,4 @@ class AgentFragment : BaseFragment<AgentViewModel, FragmentAgentBinding>(R.layou
                 })
         )
     }
-
 }

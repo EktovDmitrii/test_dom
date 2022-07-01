@@ -12,6 +12,7 @@
 
     <declare-styleable name="MSDTextView">
         <attr name="translationTextKey"/>
+        <attr name="android:digits"/>
         <attr name="isUnderlined" format="boolean"/>
     </declare-styleable>
 

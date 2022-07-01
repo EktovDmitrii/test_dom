@@ -43,6 +43,7 @@
         android:layout_marginTop="16dp"
         android:imeOptions="actionDone"
         android:paddingHorizontal="20dp"
+        android:digits="@string/acceptable_agent_code_chars"
         app:focusedTranslationHintKey="app.promo_codes.add_promo_codes_view.add_promo_codes_title"
         app:isFocused="true"
         app:placeholderText="Код промокода"

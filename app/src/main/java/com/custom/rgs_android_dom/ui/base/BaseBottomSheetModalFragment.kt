@@ -11,8 +11,6 @@ import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.custom.rgs_android_dom.R
-import com.custom.rgs_android_dom.utils.activity.hideKeyboardForced
-import com.custom.rgs_android_dom.utils.activity.hideSoftwareKeyboard
 import com.custom.rgs_android_dom.utils.hideSoftwareKeyboard
 import com.custom.rgs_android_dom.utils.subscribe
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -24,7 +22,8 @@ import org.koin.core.parameter.emptyParametersHolder
 import java.lang.reflect.ParameterizedType
 import kotlin.reflect.KClass
 
-abstract class BaseBottomSheetModalFragment<VM : BaseViewModel, VB : ViewBinding>: BottomSheetDialogFragment() {
+abstract class BaseBottomSheetModalFragment<VM : BaseViewModel, VB : ViewBinding> :
+    BottomSheetDialogFragment() {
 
     companion object {
         const val KEYBOARD_VISIBLE_HEIGHT_DIFF = 350
@@ -63,7 +62,11 @@ abstract class BaseBottomSheetModalFragment<VM : BaseViewModel, VB : ViewBinding
         super.onViewCreated(view, savedInstanceState)
         binding.root.setBackgroundResource(R.drawable.rectangle_filled_white_top_radius_24dp)
 
-        if (isFullScreen()){
+        if (isFullScreen()) {
+            expandViewFullScreen()
+        }
+
+        subscribe(viewModel.fullScreenObserver) {
             expandViewFullScreen()
         }
 

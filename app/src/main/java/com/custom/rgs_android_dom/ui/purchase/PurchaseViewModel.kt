@@ -4,6 +4,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
+import com.custom.rgs_android_dom.domain.promo_codes.PromoCodesInteractor
+import com.custom.rgs_android_dom.domain.promo_codes.model.PromoCodeItemModel
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.purchase.PurchaseInteractor
@@ -30,9 +32,11 @@ import org.joda.time.DateTimeZone
 
 class PurchaseViewModel(
     private val model: PurchaseModel,
+    private val promoCodeItemModel: PromoCodeItemModel?,
     private val propertyInteractor: PropertyInteractor,
     private val clientInteractor: ClientInteractor,
-    private val purchaseInteractor: PurchaseInteractor
+    private val purchaseInteractor: PurchaseInteractor,
+    private val promoCodesInteractor: PromoCodesInteractor,
 ) : BaseViewModel() {
 
     private var propertyListSize: Int? = null
@@ -46,7 +50,12 @@ class PurchaseViewModel(
     private val hasCodeAgentController = MutableLiveData<Boolean>()
     val hasCodeAgentObserver: LiveData<Boolean> = hasCodeAgentController
 
+    private val hasPromoCodeController = MutableLiveData<PromoCodeItemModel?>()
+    val hasPromoCodeObserver: LiveData<PromoCodeItemModel?> = hasPromoCodeController
+
     init {
+        hasPromoCodeController.value = promoCodeItemModel
+
         clientInteractor.getClient()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -63,7 +72,7 @@ class PurchaseViewModel(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
-                onSuccess = {personalData->
+                onSuccess = { personalData ->
                     purchaseController.value?.let {
                         purchaseController.value = it.copy(email = personalData.email.ifEmpty { null })
                         validateFields()
@@ -105,8 +114,35 @@ class PurchaseViewModel(
         closeController.value = Unit
     }
 
+    fun checkPromoCode() {
+        purchaseController.value?.let { purchaseModel ->
+            promoCodesInteractor.getOrderPromoCodes(purchaseModel.id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
+                .subscribeBy(
+                    onSuccess = { listPromoCodes ->
+                        hasPromoCodeController.value?.let { promoCode ->
+                            listPromoCodes.filter {
+                                it.id == promoCode.id
+                            }
+                        }
+                        if (listPromoCodes.isNotEmpty()) {
+                            loadingStateController.value = LoadingState.CONTENT
+                        } else {
+                            loadingStateController.value = LoadingState.ERROR
+                        }
+                    },
+                    onError = {
+                        loadingStateController.value = LoadingState.ERROR
+                        logException(this, it)
+                    }
+                ).addTo(dataCompositeDisposable)
+        }
+    }
+
     private fun validateFields() {
-        if (purchaseObserver.value?.defaultProduct == true){
+        if (purchaseObserver.value?.defaultProduct == true) {
             isEnableButtonController.value = purchaseObserver.value?.email != null &&
                     purchaseObserver.value?.card != null &&
                     (purchaseObserver.value?.deliveryType == DeliveryType.ONLINE || purchaseObserver.value?.propertyItemModel != null) &&
@@ -115,7 +151,6 @@ class PurchaseViewModel(
             isEnableButtonController.value = purchaseObserver.value?.email != null &&
                     purchaseObserver.value?.card != null
         }
-
     }
 
     fun updateAddress(propertyItemModel: PropertyItemModel) {
@@ -155,8 +190,9 @@ class PurchaseViewModel(
     }
 
     fun onAddressClick(childFragmentManager: FragmentManager) {
-        val purchaseAddressFragment = SelectPurchaseAddressFragment.newInstance(purchaseController.value?.propertyItemModel)
-        purchaseAddressFragment.show(childFragmentManager,purchaseAddressFragment.TAG)
+        val purchaseAddressFragment =
+            SelectPurchaseAddressFragment.newInstance(purchaseController.value?.propertyItemModel)
+        purchaseAddressFragment.show(childFragmentManager, purchaseAddressFragment.TAG)
     }
 
     fun onDateTimeClick(childFragmentManager: FragmentManager) {
@@ -175,20 +211,27 @@ class PurchaseViewModel(
     }
 
     fun onCodeAgentClick(childFragmentManager: FragmentManager) {
-        if (purchaseController.value?.agentCode.isNullOrEmpty()){
+        if (purchaseController.value?.agentCode.isNullOrEmpty()) {
             val addAgentFragment = AddAgentFragment()
             addAgentFragment.show(childFragmentManager, addAgentFragment.TAG)
         }
     }
 
-    fun onAddCommentClick(childFragmentManager: FragmentManager){
+    fun onAddCommentClick(childFragmentManager: FragmentManager) {
         val editPurchaseServiceComment = AddCommentFragment.newInstance(purchaseController.value?.comment)
         editPurchaseServiceComment.show(childFragmentManager, editPurchaseServiceComment.TAG)
     }
 
-    fun onAddPromoCode(childFragmentManager: FragmentManager) {
-        val modalPromoCodes = ModalPromoCodesFragment()
-        modalPromoCodes.show(childFragmentManager, modalPromoCodes.TAG)
+    fun onAddPromoCodeClick(childFragmentManager: FragmentManager) {
+        purchaseController.value?.let {
+            val modalPromoCodes = ModalPromoCodesFragment.newInstance(it)
+            modalPromoCodes.show(childFragmentManager, modalPromoCodes.TAG)
+        }
+    }
+
+    fun onDeletePromoCodeClick() {
+        hasPromoCodeController.value = null
+        close()
     }
 
     fun updateAgentCode(code: String) {
@@ -215,13 +258,14 @@ class PurchaseViewModel(
                 } else {
                     true
                 },
-                deliveryDate =  purchase.purchaseDateTimeModel?.selectedDate?.toDateTime(
+                deliveryDate = purchase.purchaseDateTimeModel?.selectedDate?.toDateTime(
                     DateTimeZone.UTC).toString(),
                 timeFrom = purchase.purchaseDateTimeModel?.selectedPeriodModel?.timeFrom,
                 timeTo = if (purchase.purchaseDateTimeModel?.selectedPeriodModel?.timeFrom == "18:00")
                     purchase.purchaseDateTimeModel.selectedPeriodModel?.copy(timeTo = "23:59")?.timeTo
                 else purchase.purchaseDateTimeModel?.selectedPeriodModel?.timeTo,
-                withOrder = purchase.defaultProduct
+                withOrder = purchase.defaultProduct,
+                clientPromoCodeId = promoCodeItemModel?.id
             )
                 .doOnSubscribe {
                     isEnableButtonController.postValue(false)

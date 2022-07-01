@@ -1,8 +1,11 @@
 package com.custom.rgs_android_dom.ui.promo_code
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.ItemPromoCodePercentBinding
 import com.custom.rgs_android_dom.databinding.ItemPromoCodeSaleBinding
 import com.custom.rgs_android_dom.databinding.ItemPromoCodeServiceBinding
@@ -10,14 +13,14 @@ import com.custom.rgs_android_dom.domain.promo_codes.model.PromoCodeItemModel
 import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.constants.PERCENT_PROMO_CODE
 import com.custom.rgs_android_dom.ui.constants.SERVICE_PROMO_CODE
-import com.custom.rgs_android_dom.utils.DATE_PATTERN_DATE_ONLY
-import com.custom.rgs_android_dom.utils.formatTo
-import com.custom.rgs_android_dom.utils.insertDate
+import com.custom.rgs_android_dom.utils.*
 
-class PromoCodesAdapter(private val onPromoCodesClick: (String, Boolean) -> Unit) :
+class PromoCodesAdapter(private val onPromoCodesClick: (PromoCodeItemModel) -> Unit) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val promoCodes = mutableListOf<PromoCodeItemModel>()
+    private var onPromoCode: PromoCodeItemModel? = null
+    private var context: Context? = null
     private val durationText =
         TranslationInteractor.getTranslation("app.promo_codes.agent_code_adapter.add_duration")
     private val titleText =
@@ -72,45 +75,86 @@ class PromoCodesAdapter(private val onPromoCodesClick: (String, Boolean) -> Unit
         }
     }
 
-    fun setItems(promoCodes: List<PromoCodeItemModel>) {
+    fun setItems(promoCodes: List<PromoCodeItemModel>, context: Context?) {
         this.promoCodes.clear()
         this.promoCodes.addAll(promoCodes)
+        this.context = context
         notifyDataSetChanged()
     }
 
     inner class PromoCodesSaleViewHolder(
         val binding: ItemPromoCodeSaleBinding,
-        val onPromoCodesClick: (String, Boolean) -> Unit
+        val onPromoCodesClick: (PromoCodeItemModel) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: PromoCodeItemModel) {
             binding.apply {
-                val duration = durationText.replace("%@", " ${model.expiredAt?.formatTo(DATE_PATTERN_DATE_ONLY)}")
+                val duration = durationText.replace(
+                    "%@",
+                    " ${model.expiredAt?.formatTo(DATE_PATTERN_DATE_ONLY)}"
+                )
                 titleText.insertDate(model.expiredAt, null)
-                titleTextView.text = titleText.replace("%@", "${model.discountInRubles} Р")
+                titleTextView.text = titleText.replace("%@", "${model.discountInRubles} ₽")
                 durationTextView.text = duration
+                context?.let {
+                    if (onPromoCode == model && onPromoCode != null) {
+                        promoCodeCheckedImageView.visible()
+                        pictureFrameLayout.background = ContextCompat.getDrawable(
+                            it,
+                            R.drawable.ic_rectangle_orange_border_radius_24dp
+                        )
+                        onPromoCodesClick(model)
+                    } else {
+                        promoCodeCheckedImageView.gone()
+                        pictureFrameLayout.background = null
+                    }
+                }
+
+                root.setOnDebouncedClickListener {
+                    onPromoCode = model
+                    notifyDataSetChanged()
+                }
             }
         }
     }
 
     inner class PromoCodesPercentViewHolder(
         val binding: ItemPromoCodePercentBinding,
-        val onPromoCodesClick: (String, Boolean) -> Unit
+        val onPromoCodesClick: (PromoCodeItemModel) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: PromoCodeItemModel) {
             val duration = durationText.replace("%@", " ${model.expiredAt?.formatTo(DATE_PATTERN_DATE_ONLY)}")
+
             binding.apply {
                 subtitleTextView.text = model.code
                 titleTextView.text = titleText.replace("%@", "${model.discountInPercent}%")
                 durationTextView.text = duration
+                context?.let {
+                    if (onPromoCode == model && onPromoCode != null) {
+                        promoCodeCheckedImageView.visible()
+                        pictureFrameLayout.background = ContextCompat.getDrawable(
+                            it,
+                            R.drawable.ic_rectangle_orange_border_radius_24dp
+                        )
+                        onPromoCodesClick(model)
+                    } else {
+                        promoCodeCheckedImageView.gone()
+                        pictureFrameLayout.background = null
+                    }
+                }
+
+                root.setOnDebouncedClickListener {
+                    onPromoCode = model
+                    notifyDataSetChanged()
+                }
             }
         }
     }
 
     inner class PromoCodesServiceViewHolder(
         val binding: ItemPromoCodeServiceBinding,
-        val onPromoCodesClick: (String, Boolean) -> Unit
+        val onPromoCodesClick: (PromoCodeItemModel) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: PromoCodeItemModel) {
@@ -118,8 +162,27 @@ class PromoCodesAdapter(private val onPromoCodesClick: (String, Boolean) -> Unit
                 durationText.replace("%@", " ${model.expiredAt?.formatTo(DATE_PATTERN_DATE_ONLY)}")
             binding.apply {
                 subtitleTextView.text = model.code
-                titleTextView.text = TranslationInteractor.getTranslation("app.promo_codes.agent_code_adapter.add_title")
+                titleTextView.text =
+                    TranslationInteractor.getTranslation("app.promo_codes.agent_code_adapter.add_title")
                 durationTextView.text = duration
+                context?.let {
+                    if (onPromoCode == model && onPromoCode != null) {
+                        promoCodeCheckedImageView.visible()
+                        pictureFrameLayout.background = ContextCompat.getDrawable(
+                            it,
+                            R.drawable.ic_rectangle_orange_border_radius_24dp
+                        )
+                        onPromoCodesClick(model)
+                    } else {
+                        promoCodeCheckedImageView.gone()
+                        pictureFrameLayout.background = null
+                    }
+                }
+
+                root.setOnDebouncedClickListener {
+                    onPromoCode = model
+                    notifyDataSetChanged()
+                }
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.domain.promo_codes.model
 
 import org.joda.time.DateTime
+import java.io.Serializable
 
 data class PromoCodeItemModel(
     val businessLine: String,
@@ -18,9 +19,9 @@ data class PromoCodeItemModel(
     val promoCampaignId: String,
     val status: String,
     val type: String
-)
+) : Serializable
 
 data class PromoCodeProduct(
     val count: Int,
     val productId: String,
-)
+) : Serializable

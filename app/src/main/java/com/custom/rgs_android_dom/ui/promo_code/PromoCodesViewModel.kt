@@ -50,7 +50,7 @@ class PromoCodesViewModel(
 
     fun onAddClick(childFragmentManager: FragmentManager) {
         isAgentCodeVisibleController.value?.let {
-            val emailBottomFragment = AddPromoCodeFragment.newInstance(it)
+            val emailBottomFragment = AddPromoCodeFragment.newInstance(it, null)
             emailBottomFragment.show(childFragmentManager, emailBottomFragment.TAG)
         }
     }
