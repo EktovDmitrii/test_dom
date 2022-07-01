@@ -18,14 +18,15 @@ class PromoCodesInteractor(
     }
 
     fun getOrderPromoCodes(productId: String): Single<List<PromoCodeItemModel>> {
-        val orderPromoCodes = promoCodesRepository.getPromoCodes().blockingGet().filter { promoCodeProduct ->
-                promoCodeProduct.type != SERVICE_PROMO_CODE
-            if (promoCodeProduct.products.isNotEmpty()) {
-                promoCodeProduct.products.any { it.productId == productId }
-            } else {
-                promoCodeProduct.products.isEmpty()
+        return promoCodesRepository.getPromoCodes().map { listPromoCodes ->
+            listPromoCodes.filter { promoCode ->
+                promoCode.type != SERVICE_PROMO_CODE
+                if (promoCode.products.isNotEmpty()) {
+                    promoCode.products.any { it.productId == productId }
+                } else {
+                    promoCode.products.isEmpty()
+                }
             }
         }
-        return Single.just(orderPromoCodes)
     }
 }

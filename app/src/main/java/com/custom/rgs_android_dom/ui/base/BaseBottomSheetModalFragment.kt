@@ -100,6 +100,10 @@ abstract class BaseBottomSheetModalFragment<VM : BaseViewModel, VB : ViewBinding
         dismissAllowingStateLoss()
     }
 
+    fun onFullScreen() {
+        viewModel.onFullScreen()
+    }
+
     @Suppress("UNCHECKED_CAST")
     protected fun getViewModelKClass(): KClass<VM> {
         val actualClass =

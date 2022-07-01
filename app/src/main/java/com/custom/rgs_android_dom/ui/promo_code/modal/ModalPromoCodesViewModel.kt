@@ -64,10 +64,6 @@ class ModalPromoCodesViewModel(
         applyPromoCodeController.value = promoCodeModel
     }
 
-    fun onFullScreenClick() {
-        onFullScreen()
-    }
-
     private fun getAgent() {
         clientInteractor.getAgent()
             .subscribeOn(Schedulers.io())

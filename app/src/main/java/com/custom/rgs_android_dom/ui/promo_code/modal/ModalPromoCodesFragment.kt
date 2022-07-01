@@ -35,12 +35,11 @@ class ModalPromoCodesFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        hideSoftwareKeyboard()
 
         binding.dataStateLayout.recyclerView.adapter = PromoCodesAdapter { promoCodeModel ->
             binding.applyButtonLayout.visible()
-            viewModel.onFullScreenClick()
             viewModel.saveApplyPromoCode(promoCodeModel)
+            onFullScreen()
         }
 
         binding.emptyStateLayout.root.setOnDebouncedClickListener {
@@ -59,7 +58,7 @@ class ModalPromoCodesFragment :
             binding.emptyStateLayout.root.visibleIf(it.isEmpty())
             binding.addImageView.visibleIf(it.isNotEmpty())
             binding.dataStateLayout.root.visibleIf(it.isNotEmpty())
-            promoCodesAdapter.setItems(it, requireContext())
+            promoCodesAdapter.setItems(it, true)
         }
     }
 }

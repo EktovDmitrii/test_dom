@@ -6,6 +6,7 @@ import com.custom.rgs_android_dom.databinding.FragmentAddAgentCodeBinding
 import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
+import com.custom.rgs_android_dom.utils.activity.hideKeyboardForced
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
@@ -98,5 +99,10 @@ class AddAgentPromoCodeFragment :
         subscribe(viewModel.networkErrorObserver) {
             binding.agentCodeEditText.setState(MSDLabelEditText.State.ERROR, it)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        requireActivity().hideKeyboardForced()
     }
 }

@@ -1,6 +1,5 @@
 package com.custom.rgs_android_dom.ui.promo_code
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -15,16 +14,14 @@ import com.custom.rgs_android_dom.ui.constants.PERCENT_PROMO_CODE
 import com.custom.rgs_android_dom.ui.constants.SERVICE_PROMO_CODE
 import com.custom.rgs_android_dom.utils.*
 
-class PromoCodesAdapter(private val onPromoCodesClick: (PromoCodeItemModel) -> Unit) :
+class PromoCodesAdapter(private val onPromoCodeClick: (PromoCodeItemModel) -> Unit) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val promoCodes = mutableListOf<PromoCodeItemModel>()
     private var onPromoCode: PromoCodeItemModel? = null
-    private var context: Context? = null
-    private val durationText =
-        TranslationInteractor.getTranslation("app.promo_codes.agent_code_adapter.add_duration")
-    private val titleText =
-        TranslationInteractor.getTranslation("app.promo_codes.agent_code_adapter.add_second_title")
+    private var shouldBackgroundClick = false
+    private val durationText = TranslationInteractor.getTranslation("app.promo_codes.agent_code_adapter.add_duration")
+    private val titleText = TranslationInteractor.getTranslation("app.promo_codes.agent_code_adapter.add_second_title")
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -34,7 +31,7 @@ class PromoCodesAdapter(private val onPromoCodesClick: (PromoCodeItemModel) -> U
                     parent,
                     false
                 )
-                PromoCodesSaleViewHolder(binding, onPromoCodesClick)
+                PromoCodesSaleViewHolder(binding, onPromoCodeClick)
             }
             ITEM_TYPE_PERCENT_PROMO_CODE -> {
                 val binding = ItemPromoCodePercentBinding.inflate(
@@ -42,7 +39,7 @@ class PromoCodesAdapter(private val onPromoCodesClick: (PromoCodeItemModel) -> U
                     parent,
                     false
                 )
-                PromoCodesPercentViewHolder(binding, onPromoCodesClick)
+                PromoCodesPercentViewHolder(binding, onPromoCodeClick)
             }
             else -> {
                 val binding = ItemPromoCodeServiceBinding.inflate(
@@ -50,7 +47,7 @@ class PromoCodesAdapter(private val onPromoCodesClick: (PromoCodeItemModel) -> U
                     parent,
                     false
                 )
-                PromoCodesServiceViewHolder(binding, onPromoCodesClick)
+                PromoCodesServiceViewHolder(binding, onPromoCodeClick)
             }
         }
     }
@@ -75,16 +72,16 @@ class PromoCodesAdapter(private val onPromoCodesClick: (PromoCodeItemModel) -> U
         }
     }
 
-    fun setItems(promoCodes: List<PromoCodeItemModel>, context: Context?) {
+    fun setItems(promoCodes: List<PromoCodeItemModel>, shouldBackgroundClick: Boolean) {
         this.promoCodes.clear()
         this.promoCodes.addAll(promoCodes)
-        this.context = context
+        this.shouldBackgroundClick = shouldBackgroundClick
         notifyDataSetChanged()
     }
 
     inner class PromoCodesSaleViewHolder(
         val binding: ItemPromoCodeSaleBinding,
-        val onPromoCodesClick: (PromoCodeItemModel) -> Unit
+        val onPromoCodeClick: (PromoCodeItemModel) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: PromoCodeItemModel) {
@@ -96,14 +93,14 @@ class PromoCodesAdapter(private val onPromoCodesClick: (PromoCodeItemModel) -> U
                 titleText.insertDate(model.expiredAt, null)
                 titleTextView.text = titleText.replace("%@", "${model.discountInRubles} ₽")
                 durationTextView.text = duration
-                context?.let {
+                if (shouldBackgroundClick) {
                     if (onPromoCode == model && onPromoCode != null) {
                         promoCodeCheckedImageView.visible()
                         pictureFrameLayout.background = ContextCompat.getDrawable(
-                            it,
+                            binding.root.context,
                             R.drawable.ic_rectangle_orange_border_radius_24dp
                         )
-                        onPromoCodesClick(model)
+                        onPromoCodeClick(model)
                     } else {
                         promoCodeCheckedImageView.gone()
                         pictureFrameLayout.background = null
@@ -120,7 +117,7 @@ class PromoCodesAdapter(private val onPromoCodesClick: (PromoCodeItemModel) -> U
 
     inner class PromoCodesPercentViewHolder(
         val binding: ItemPromoCodePercentBinding,
-        val onPromoCodesClick: (PromoCodeItemModel) -> Unit
+        val onPromoCodeClick: (PromoCodeItemModel) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: PromoCodeItemModel) {
@@ -130,14 +127,14 @@ class PromoCodesAdapter(private val onPromoCodesClick: (PromoCodeItemModel) -> U
                 subtitleTextView.text = model.code
                 titleTextView.text = titleText.replace("%@", "${model.discountInPercent}%")
                 durationTextView.text = duration
-                context?.let {
+                if (shouldBackgroundClick) {
                     if (onPromoCode == model && onPromoCode != null) {
                         promoCodeCheckedImageView.visible()
                         pictureFrameLayout.background = ContextCompat.getDrawable(
-                            it,
+                            binding.root.context,
                             R.drawable.ic_rectangle_orange_border_radius_24dp
                         )
-                        onPromoCodesClick(model)
+                        onPromoCodeClick(model)
                     } else {
                         promoCodeCheckedImageView.gone()
                         pictureFrameLayout.background = null
@@ -154,7 +151,7 @@ class PromoCodesAdapter(private val onPromoCodesClick: (PromoCodeItemModel) -> U
 
     inner class PromoCodesServiceViewHolder(
         val binding: ItemPromoCodeServiceBinding,
-        val onPromoCodesClick: (PromoCodeItemModel) -> Unit
+        val onPromoCodeClick: (PromoCodeItemModel) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: PromoCodeItemModel) {
@@ -165,14 +162,14 @@ class PromoCodesAdapter(private val onPromoCodesClick: (PromoCodeItemModel) -> U
                 titleTextView.text =
                     TranslationInteractor.getTranslation("app.promo_codes.agent_code_adapter.add_title")
                 durationTextView.text = duration
-                context?.let {
+                if (shouldBackgroundClick) {
                     if (onPromoCode == model && onPromoCode != null) {
                         promoCodeCheckedImageView.visible()
                         pictureFrameLayout.background = ContextCompat.getDrawable(
-                            it,
+                            binding.root.context,
                             R.drawable.ic_rectangle_orange_border_radius_24dp
                         )
-                        onPromoCodesClick(model)
+                        onPromoCodeClick(model)
                     } else {
                         promoCodeCheckedImageView.gone()
                         pictureFrameLayout.background = null

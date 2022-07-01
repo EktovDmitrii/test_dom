@@ -15,7 +15,6 @@ import com.custom.rgs_android_dom.ui.navigation.TargetScreen
 import com.custom.rgs_android_dom.ui.promo_code.PromoCodesFragment
 import com.custom.rgs_android_dom.ui.promo_code.add_promo_code.AddPromoCodeFragment
 import com.custom.rgs_android_dom.ui.promo_code.modal.ModalPromoCodesFragment
-import com.custom.rgs_android_dom.utils.ProgressTransformer
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -30,36 +29,23 @@ class PromoCodeDialogViewModel(
     private val chatInteractor: ChatInteractor
 ) : BaseViewModel() {
 
-    var showOrderTextButton = false
+    var showOrderTextButton = purchaseModel == null
 
     private val promoCodesController = MutableLiveData<PromoCodeItemModel>()
     val promoCodesObserver: LiveData<PromoCodeItemModel> = promoCodesController
 
     init {
-        if (purchaseModel == null) showOrderTextButton = true
-
         promoCodesInteractor.activatePromoCode(promoCode)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .compose(
-                ProgressTransformer(
-                    onLoading = {
-                        loadingStateController.postValue(LoadingState.LOADING)
-                    },
-                    onError = {
-                        logException(this, it)
-                        loadingStateController.value = LoadingState.ERROR
-                    },
-                    onLoaded = {
-                        loadingStateController.value = LoadingState.CONTENT
-                    }
-                )
-            )
+            .doOnSubscribe { loadingStateController.value = LoadingState.LOADING }
             .subscribeBy(
                 onSuccess = {
                     promoCodesController.value = it
+                    loadingStateController.value = LoadingState.CONTENT
                 },
                 onError = {
+                    loadingStateController.value = LoadingState.ERROR
                     logException(this, it)
                 }
             ).addTo(dataCompositeDisposable)
@@ -76,8 +62,8 @@ class PromoCodeDialogViewModel(
     }
 
     fun onChangeDataFailureClick(parentFragmentManager: FragmentManager) {
-        val emailBottomFragment = AddPromoCodeFragment.newInstance(shouldShowAgentView, purchaseModel)
-        emailBottomFragment.show(parentFragmentManager, emailBottomFragment.TAG)
+        val addPromoCodeFragment = AddPromoCodeFragment.newInstance(shouldShowAgentView, purchaseModel)
+        addPromoCodeFragment.show(parentFragmentManager, addPromoCodeFragment.TAG)
         close()
     }
 

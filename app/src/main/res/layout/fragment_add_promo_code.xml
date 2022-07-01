@@ -68,7 +68,7 @@
             android:paddingVertical="@dimen/dp_12">
 
             <com.custom.rgs_android_dom.views.text.MSDTextViewLoader
-                android:id="@+id/secondSaveButton"
+                android:id="@+id/agentPromoCodeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -96,7 +96,7 @@
             android:paddingVertical="@dimen/dp_12">
 
             <com.custom.rgs_android_dom.views.text.MSDTextView
-                android:id="@+id/firstSaveButton"
+                android:id="@+id/promoCodeDialogButton"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/button_filled_primary_background"

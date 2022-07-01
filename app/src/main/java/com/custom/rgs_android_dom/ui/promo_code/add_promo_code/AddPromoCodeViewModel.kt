@@ -17,7 +17,7 @@ class AddPromoCodeViewModel : BaseViewModel() {
         promoCodeController.value = text.trim()
     }
 
-    fun onFirstSaveButtonClick(
+    fun onPromoCodeDialogClick(
         parentFragmentManager: FragmentManager,
         shouldShowAgentView: Boolean,
         purchaseModel: PurchaseModel?
@@ -33,7 +33,7 @@ class AddPromoCodeViewModel : BaseViewModel() {
         }
     }
 
-    fun onSecondSaveButtonClick(
+    fun onAgentPromoCodeButtonClick(
         parentFragmentManager: FragmentManager,
         shouldShowAgentView: Boolean,
         purchaseModel: PurchaseModel?

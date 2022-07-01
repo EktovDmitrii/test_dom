@@ -126,7 +126,6 @@ class ProductViewModel(
                     price = it.price
                 )
                 val purchaseFragment = PurchaseFragment.newInstance(purchaseServiceModel, null)
-                //ScreenManager.showScreenScope(purchaseFragment, PAYMENT)
                 ScreenManager.showBottomScreen(purchaseFragment)
             }
         } else {
@@ -180,5 +179,4 @@ class ProductViewModel(
                 }
             ).addTo(dataCompositeDisposable)
     }
-
 }

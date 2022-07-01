@@ -18,7 +18,6 @@ import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
 import com.custom.rgs_android_dom.domain.purchase.models.SavedCardModel
 import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
-import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
 import com.custom.rgs_android_dom.ui.constants.PERCENT_PROMO_CODE
 import com.custom.rgs_android_dom.ui.constants.SALE_PROMO_CODE
@@ -124,17 +123,6 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
 
         binding.layoutIncludedPromoCode.deletePromoCodeImageView.setOnDebouncedClickListener {
            viewModel.onDeletePromoCodeClick()
-        }
-
-        subscribe(viewModel.loadingStateObserver) {
-            if (it == BaseViewModel.LoadingState.ERROR) {
-                binding.layoutIncludedPromoCode.labeledPromoCodeTextView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-                binding.layoutIncludedPromoCode.root.setMargins(bottom = 0)
-            }
-            binding.makeOrderButton.loadingProgressBar.visibleIf(it == BaseViewModel.LoadingState.LOADING)
-            binding.makeOrderButton.btnPrice.visibleIf(it != BaseViewModel.LoadingState.LOADING)
-            binding.layoutIncludedPromoCode.errorTextView.visibleIf(it == BaseViewModel.LoadingState.ERROR)
-            binding.makeOrderButton.discountLayout.visibleIf(it != BaseViewModel.LoadingState.ERROR)
         }
 
         subscribe(viewModel.hasPromoCodeObserver) { promoCodeModel ->
@@ -270,15 +258,14 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
                 }
             }
 
-            purchase.purchaseDateTimeModel?.let {
-                binding.layoutDateTime.filledDateTimeGroup.visible()
-                binding.layoutDateTime.chooseDateTimeTextView.gone()
+            binding.layoutDateTime.filledDateTimeGroup.visibleIf(purchase.purchaseDateTimeModel != null)
+            binding.layoutDateTime.chooseDateTimeTextView.goneIf(purchase.purchaseDateTimeModel != null)
 
-                it.selectedPeriodModel?.let {
-                    binding.layoutDateTime.timesOfDayTextView.text = "${it.timeFrom} – ${it.timeTo}"
-                }
-                binding.layoutDateTime.timeIntervalTextView.text = it.selectedDate.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
+            purchase.purchaseDateTimeModel?.selectedPeriodModel?.let {
+                binding.layoutDateTime.timesOfDayTextView.text = "${it.timeFrom} – ${it.timeTo}"
             }
+            binding.layoutDateTime.timeIntervalTextView.text =
+                purchase.purchaseDateTimeModel?.selectedDate?.formatTo(DATE_PATTERN_DATE_FULL_MONTH)
         }
 
         subscribe(viewModel.hasCodeAgentObserver) {
@@ -360,5 +347,37 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
 
     override fun isNavigationViewVisible(): Boolean {
         return false
+    }
+
+    override fun onLoading() {
+        super.onLoading()
+        binding.apply {
+            makeOrderButton.loadingProgressBar.visible()
+            makeOrderButton.btnPrice.gone()
+            layoutIncludedPromoCode.errorTextView.gone()
+            makeOrderButton.discountLayout.gone()
+        }
+    }
+
+    override fun onError() {
+        super.onError()
+        binding.apply {
+            layoutIncludedPromoCode.labeledPromoCodeTextView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+            layoutIncludedPromoCode.root.setMargins(bottom = 0)
+            makeOrderButton.loadingProgressBar.gone()
+            makeOrderButton.btnPrice.visible()
+            layoutIncludedPromoCode.errorTextView.visible()
+            makeOrderButton.discountLayout.gone()
+        }
+    }
+
+    override fun onContent() {
+        super.onContent()
+        binding.apply {
+            makeOrderButton.loadingProgressBar.gone()
+            makeOrderButton.btnPrice.visible()
+            layoutIncludedPromoCode.errorTextView.gone()
+            makeOrderButton.discountLayout.visible()
+        }
     }
 }
