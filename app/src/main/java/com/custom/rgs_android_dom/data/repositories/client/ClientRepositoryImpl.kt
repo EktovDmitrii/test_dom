@@ -218,7 +218,6 @@ class ClientRepositoryImpl(
                 }
 
             }
-
     }
 
     override fun getGeneralInvoices(
@@ -294,6 +293,23 @@ class ClientRepositoryImpl(
             clientSharedPreferences.saveClient(client)
             client
         }
+    }
+
+    override fun getAllActiveOrders(size: Long, index: Long): Single<List<Order>> {
+        return api.getOrders(businessLines = "${BuildConfig.BUSINESS_LINE}, auto")
+            .flatMap { orderResponse ->
+                val orders = orderResponse.orders
+                if (orders != null){
+                    val orderIds = orderResponse.orders.map { order -> order.id }
+                    getGeneralInvoices(size = size, index = index, orderIds = orderIds.joinToString(","), withPayments = true)
+                        .flatMap {
+                            Single.just(OrdersMapper.responseToOrders(it, orderResponse))
+                        }
+                } else {
+                    Single.just(listOf())
+                }
+
+            }
     }
 
 }

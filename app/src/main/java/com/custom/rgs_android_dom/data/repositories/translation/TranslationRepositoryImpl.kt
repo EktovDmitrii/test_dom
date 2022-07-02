@@ -720,12 +720,10 @@ class TranslationRepositoryImpl(private val api: MSDApi) :
             "app.profile.client.delete.confirm" to "Удалить профиль",
             "app.profile.delete.no_orders.title" to "Удалить профиль безвозвратно?",
             "app.profile.delete.no_orders.subtitle" to "Все данные о недвижимости и заказах будут удалены безвозвратно, а активные заказы отменены",
-            "app.profile.delete.no_orders.confirm" to "Да, удалить",
-            "app.profile.delete.no_orders.cancel" to "Нет, остаться",
+            "app.profile.delete.confirm" to "Да, удалить",
+            "app.profile.delete.cancel" to "Нет, остаться",
             "app.profile.delete.active_orders.title" to "Удалить профиль вместе\nс активными заказами?",
             "app.profile.delete.active_orders.subtitle" to "Активные заказы будут отменены, а все данные о недвижимости и заказах будут удалены безвозвратно",
-            "app.profile.delete.active_orders.confirm" to "Да, удалить",
-            "app.profile.delete.active_orders.cancel" to "Нет, остаться",
             )
     }
 

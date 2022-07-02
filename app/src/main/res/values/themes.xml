@@ -316,7 +316,6 @@
     <style name="BottomSheet" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
         <item name="android:windowIsFloating">false</item>
-        <item name="android:navigationBarColor">@color/white</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
