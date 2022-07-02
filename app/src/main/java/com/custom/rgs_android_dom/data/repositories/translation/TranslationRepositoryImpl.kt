@@ -723,7 +723,18 @@ class TranslationRepositoryImpl(private val api: MSDApi) :
             "app.ui.update_app.subtitle" to "Некоторые функции могут быть недоступны",
             "app.ui.update_app.button.update" to "Обновить",
             "app.ui.update_app.button.not_now" to "Не сейчас",
-        )
+
+            // Delete profile
+            "app.profile.client.delete.title" to "Удаление профиля",
+            "app.profile.client.delete.subtitle" to "При удалении личного профиля все данные\nо недвижимости и заказах также будут удалены",
+            "app.profile.client.delete.confirm" to "Удалить профиль",
+            "app.profile.delete.no_orders.title" to "Удалить профиль безвозвратно?",
+            "app.profile.delete.no_orders.subtitle" to "Все данные о недвижимости и заказах будут удалены безвозвратно, а активные заказы отменены",
+            "app.profile.delete.confirm" to "Да, удалить",
+            "app.profile.delete.cancel" to "Нет, остаться",
+            "app.profile.delete.active_orders.title" to "Удалить профиль вместе\nс активными заказами?",
+            "app.profile.delete.active_orders.subtitle" to "Активные заказы будут отменены, а все данные о недвижимости и заказах будут удалены безвозвратно",
+            )
     }
 
     override fun loadAndSaveTranslations(): Completable {

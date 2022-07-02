@@ -789,4 +789,11 @@ ClientInteractor(
         return clientRepository.updateNotificationChannel(notificationChannel)
     }
 
+    fun getAllActiveOrders(): Single<List<Order>> {
+        return clientRepository.getAllActiveOrders(1000, 0)
+            .flatMap { orders->
+                Single.just(sortOrderHistory(orders.filter { it.status == OrderStatus.ACTIVE }))
+            }
+    }
+
 }

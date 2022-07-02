@@ -17,7 +17,7 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
     companion object {
         private const val AUTHORIZATION_HEADER = "Authorization"
         private const val AUTHORIZATION_BEARER = "Bearer"
-        private val ERROR_CODE_TOKEN_EXPIRED = arrayOf("AUTH-016")
+        private val ERROR_CODE_TOKEN_EXPIRED = arrayOf("AUTH-016", "API-002")
     }
 
     private val noAuthorizationPaths = listOf(

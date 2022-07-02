@@ -375,4 +375,8 @@ interface MSDApi {
     @PUT("clients/me/notifications/channels")
     fun updateNotificationChannels(@Body updateNotificationsChannelsRequest: UpdateNotificationsChannelsRequest): Single<ClientResponse>
 
+    @DELETE("clients/me")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun deleteClient(): Completable
+
 }

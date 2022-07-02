@@ -52,4 +52,9 @@ class RegistrationInteractor(private val registrationRepository: RegistrationRep
     fun getAuthFlowEndedSubject(): PublishSubject<Unit>{
         return registrationRepository.getAuthFlowEndedSubject()
     }
+
+    fun deleteClient(): Completable {
+        return registrationRepository.deleteClient()
+    }
+
 }

@@ -29,6 +29,10 @@ class PersonalDataFragment : BaseFragment<PersonalDataViewModel, FragmentPersona
             viewModel.onEditClick()
         }
 
+        binding.deleteClientTextView.setOnDebouncedClickListener {
+            viewModel.onDeleteClientClick(parentFragmentManager)
+        }
+
         binding.editPhotoTextView.setOnDebouncedClickListener {
             val addPhotoFragment = AddPhotoFragment()
             addPhotoFragment.show(childFragmentManager, addPhotoFragment.TAG)
@@ -100,8 +104,28 @@ class PersonalDataFragment : BaseFragment<PersonalDataViewModel, FragmentPersona
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(binding.avatarImageView)
             }
-
         }
+    }
+
+    override fun onLoading() {
+        super.onLoading()
+        binding.toolbarAppBar.gone()
+        binding.contentNestedScrollView.gone()
+        binding.loadingProgressBar.visible()
+    }
+
+    override fun onContent() {
+        super.onContent()
+        binding.toolbarAppBar.visible()
+        binding.contentNestedScrollView.visible()
+        binding.loadingProgressBar.gone()
+    }
+
+    override fun onError() {
+        super.onError()
+        binding.toolbarAppBar.visible()
+        binding.contentNestedScrollView.visible()
+        binding.loadingProgressBar.gone()
     }
 
 }

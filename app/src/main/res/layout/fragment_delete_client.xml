@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/swipeAnchorLayout"
+        layout="@layout/layout_bottom_sheet_swipe_anchor"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="28dp"
+        android:gravity="center_horizontal">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iconImageView"
+            android:layout_width="303dp"
+            android:layout_height="160dp"
+            android:layout_marginTop="54dp"
+            app:srcCompat="@drawable/ic_cancel_order"/>
+        
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/my_service_bold"
+            android:textSize="20sp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/secondary900"
+            android:includeFontPadding="false"
+            android:gravity="center"
+            app:translationTextKey="app.profile.delete.no_orders.title"/>
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/descriptionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/suisse_regular"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/secondary600"
+            android:includeFontPadding="false"
+            android:gravity="center"
+            android:lineSpacingExtra="24dp"
+            android:lineSpacingMultiplier="0"
+            app:translationTextKey="app.profile.delete.no_orders.subtitle"/>
+
+        <com.custom.rgs_android_dom.views.MSDRecyclerView
+            android:id="@+id/activeOrdersRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginTop="24dp"
+            android:overScrollMode="never"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:verticalDecorationGap="8dp"
+            tools:visibility="visible"
+            tools:listitem="@layout/item_active_order"/>
+
+        <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullWidth
+            android:id="@+id/confirmTextView"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="32dp"
+            android:paddingHorizontal="4dp"
+            app:translationTextKey="app.profile.delete.confirm" />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextViewSecondary
+            android:id="@+id/cancelTextView"
+            android:layout_width="wrap_content"
+            style="@style/Button.WithoutBg.Secondary"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="22dp"
+            app:translationTextKey="app.profile.delete.cancel"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -42,6 +42,7 @@ import com.custom.rgs_android_dom.ui.client.payment_methods.delete.DeletePayment
 import com.custom.rgs_android_dom.ui.client.payment_methods.error.ErrorDeletePaymentMethodViewModel
 import com.custom.rgs_android_dom.ui.main.MainViewModel
 import com.custom.rgs_android_dom.ui.client.personal_data.add_photo.AddPhotoViewModel
+import com.custom.rgs_android_dom.ui.client.personal_data.delete_client.DeleteClientViewModel
 import com.custom.rgs_android_dom.ui.property.add.details.PropertyDetailsViewModel
 import com.custom.rgs_android_dom.ui.property.add.select_type.SelectPropertyTypeViewModel
 import com.custom.rgs_android_dom.ui.property.info.PropertyInfoViewModel
@@ -190,4 +191,6 @@ val viewModelModule = module {
     viewModel { parameters -> PromoCodeDialogViewModel (promoCode = parameters[0], purchaseModel = parameters[1], shouldShowAgentView =parameters[2], promoCodesInteractor = get(), chatInteractor = get()) }
     viewModel { parameters -> AddAgentPromoCodeViewModel(promoCode = parameters[0], shouldShowAgentView = parameters[1], purchaseModel = parameters[2], clientInteractor = get()) }
     viewModel { parameters -> ModalPromoCodesViewModel(promoCodesInteractor = get(), clientInteractor = get(), purchaseModel = parameters[0]) }
+    viewModel { parameters -> DeleteClientViewModel(activeOrders = parameters[0], registrationInteractor = get()) }
+
 }

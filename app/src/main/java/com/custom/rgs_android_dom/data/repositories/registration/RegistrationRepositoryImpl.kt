@@ -149,4 +149,16 @@ class RegistrationRepositoryImpl(
     override fun finishAuth() {
         authFlowEnded.onNext(Unit)
     }
+
+    override fun deleteClient(): Completable {
+        return api.deleteClient().andThen {
+            database.chatsDao.clearCases()
+            if (isAuthorized()){
+                chatRepository.disconnectFromWebSocket()
+                authContentProviderManager.clear()
+                clientSharedPreferences.clear()
+                logout.onNext(TargetScreen.UNSPECIFIED)
+            }
+        }
+    }
 }

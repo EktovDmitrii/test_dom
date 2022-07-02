@@ -46,4 +46,6 @@ interface RegistrationRepository {
     fun getAuthFlowEndedSubject(): PublishSubject<Unit>
 
     fun finishAuth()
+
+    fun deleteClient(): Completable
 }
