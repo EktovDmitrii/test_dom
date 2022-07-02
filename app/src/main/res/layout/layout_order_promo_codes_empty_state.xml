@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:background="@color/white">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_rectangle_intermittent_border_radius_24dp" />
+
+    <com.custom.rgs_android_dom.views.text.MSDTextView
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:fontFamily="@font/my_service_bold"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textColor="@color/primary500"
+        android:textSize="14sp"
+        app:translationTextKey="app.product.promo_codes.promo_codes_view.empty_promo_codes_label" />
+
+</FrameLayout>

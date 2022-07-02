@@ -14,7 +14,6 @@
         android:orientation="vertical"
         android:overScrollMode="never"
         android:paddingTop="12dp"
-        android:paddingBottom="22dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:verticalDecorationGap="16dp"
         tools:itemCount="5"

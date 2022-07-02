@@ -5,14 +5,24 @@
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    app:layout_constraintCircleRadius="16dp"
-    tools:background="@drawable/rectangle_filled_glasses_radius_16dp">
+    android:background="@drawable/promo_code_background_sale"
+    app:layout_constraintCircleRadius="16dp">
 
     <FrameLayout
         android:id="@+id/pictureFrameLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/promo_code_background_sale" />
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/promoCodeCheckedImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/material_margin_normal"
+        android:layout_marginEnd="@dimen/material_margin_normal"
+        android:src="@drawable/ic_circle_promo_code_checked"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.custom.rgs_android_dom.views.text.MSDTextView
         android:id="@+id/titleTextView"

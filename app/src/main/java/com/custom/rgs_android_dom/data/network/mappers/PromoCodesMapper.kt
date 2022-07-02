@@ -1,5 +1,6 @@
 package com.custom.rgs_android_dom.data.network.mappers
 
+import com.custom.rgs_android_dom.BuildConfig.BUSINESS_LINE
 import com.custom.rgs_android_dom.data.network.responses.PromoCodeItemResponse
 import com.custom.rgs_android_dom.domain.promo_codes.model.PromoCodeProduct
 import com.custom.rgs_android_dom.domain.promo_codes.model.PromoCodeItemModel
@@ -33,7 +34,7 @@ object PromoCodesMapper {
                 status = it.status ?: "",
                 type = it.type ?: "",
             )
-        } ?: emptyList()
+        }?.filter { it.businessLine == BUSINESS_LINE } ?: emptyList()
     }
 
     fun responseToPromoCodesItemModel(responseItem: PromoCodeItemResponse): PromoCodeItemModel {

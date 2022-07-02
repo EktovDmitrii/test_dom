@@ -8,3 +8,5 @@ const val DURATION = 10000L
 const val SALE_PROMO_CODE = "rubles"
 const val PERCENT_PROMO_CODE = "percent"
 const val SERVICE_PROMO_CODE = "product"
+const val ZERO_COST_ORDER = "0 ₽"
+const val LENGTH_PROMO_CODE = 3

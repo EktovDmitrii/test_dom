@@ -3,12 +3,12 @@ package com.custom.rgs_android_dom.ui.promo_code.dialogs
 import android.os.Bundle
 import android.view.View
 import com.custom.rgs_android_dom.databinding.FragmentPromoCodeDialogsBinding
+import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
 import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.constants.PERCENT_PROMO_CODE
 import com.custom.rgs_android_dom.ui.constants.SERVICE_PROMO_CODE
-import com.custom.rgs_android_dom.ui.promo_code.add_promo_code.AddPromoCodeFragment
 import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
@@ -20,17 +20,27 @@ class PromoCodeDialogFragment :
 
         private const val KEY_PROMO_CODE_ID = "KEY_PROMO_CODE_ID"
         private const val KEY_SHOULD_SHOW_AGENT = "KEY_SHOULD_SHOW_AGENT"
+        private const val ARG_PURCHASE_SERVICE_MODEL = "ARG_PURCHASE_SERVICE_MODEL"
 
-        fun newInstance(promoCodeId: String, shouldShowAgentView: Boolean) =
+        fun newInstance(
+            promoCode: String,
+            shouldShowAgentView: Boolean,
+            purchaseModel: PurchaseModel?
+        ) =
             PromoCodeDialogFragment().args {
-                putString(KEY_PROMO_CODE_ID, promoCodeId)
+                putString(KEY_PROMO_CODE_ID, promoCode)
                 putBoolean(KEY_SHOULD_SHOW_AGENT, shouldShowAgentView)
+                if (purchaseModel != null) putSerializable(ARG_PURCHASE_SERVICE_MODEL, purchaseModel)
             }
     }
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
-            requireArguments().getString(KEY_PROMO_CODE_ID)
+            requireArguments().getString(KEY_PROMO_CODE_ID),
+            if (requireArguments().containsKey(ARG_PURCHASE_SERVICE_MODEL)) requireArguments().getSerializable(
+                ARG_PURCHASE_SERVICE_MODEL
+            ) as PurchaseModel else null,
+            requireArguments().getBoolean(KEY_SHOULD_SHOW_AGENT),
         )
     }
 
@@ -41,7 +51,6 @@ class PromoCodeDialogFragment :
 
         val durationText = TranslationInteractor.getTranslation("app.promo_codes.agent_code_adapter.add_duration")
         val titleText = TranslationInteractor.getTranslation("app.promo_codes.agent_code_adapter.add_second_title")
-        val shouldShowAgentView = requireArguments().getBoolean(KEY_SHOULD_SHOW_AGENT)
 
         binding.loadingLayout.closeImageView.setOnDebouncedClickListener {
             onClose()
@@ -52,13 +61,16 @@ class PromoCodeDialogFragment :
         }
 
         binding.bindPolicyFailureLayout.changeDataTextView.setOnDebouncedClickListener {
-            val emailBottomFragment = AddPromoCodeFragment.newInstance(shouldShowAgentView)
-            emailBottomFragment.show(parentFragmentManager, emailBottomFragment.TAG)
-            onClose()
+            viewModel.onChangeDataFailureClick(parentFragmentManager)
         }
 
         binding.bindPolicySuccessLayout.understandTextView.setOnDebouncedClickListener {
-            viewModel.onPromoCodeClick()
+            viewModel.onPromoCodeClick(parentFragmentManager)
+        }
+
+        if (viewModel.showOrderTextButton) {
+            binding.bindPolicySuccessLayout.understandTextView.text =
+                TranslationInteractor.getTranslation("app.product.promo_codes.result_view.confirm_button")
         }
 
         subscribe(viewModel.promoCodesObserver) { model ->

@@ -39,7 +39,8 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
         deliveryDate: String?,
         timeFrom: String?,
         timeTo: String?,
-        withOrder: Boolean
+        withOrder: Boolean,
+        clientPromoCodeId: String?
     ): Single<PurchaseInfoModel> {
 
         var orderRequest: OrderRequest? = null
@@ -83,7 +84,8 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
             saveCard = saveCard,
             objectId = objectId,
             order = orderRequest,
-            businessLine = BuildConfig.BUSINESS_LINE
+            businessLine = BuildConfig.BUSINESS_LINE,
+            clientPromoCodeId = clientPromoCodeId
         )
         return api.makeProductPurchase(
             productId = productId,

@@ -329,7 +329,7 @@
 
                             <ImageView
                                 style="@style/Icon.Filled.Primary500_Alpha12"
-                                app:srcCompat="@drawable/ic_promocode" />
+                                app:srcCompat="@drawable/ic_promo_code" />
 
                             <com.custom.rgs_android_dom.views.text.MSDTextView
                                 android:layout_width="wrap_content"

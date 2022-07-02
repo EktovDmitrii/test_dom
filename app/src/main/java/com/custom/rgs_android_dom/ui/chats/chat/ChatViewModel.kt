@@ -343,7 +343,7 @@ class ChatViewModel(
         .observeOn(AndroidSchedulers.mainThread())
         .subscribeBy(
             onSuccess = {purchaseModel->
-                val purchaseFragment = PurchaseFragment.newInstance(purchaseModel)
+                val purchaseFragment = PurchaseFragment.newInstance(purchaseModel, null)
                 ScreenManager.showBottomScreen(purchaseFragment)
             },
             onError = {

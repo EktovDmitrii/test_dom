@@ -4,13 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/rectangle_filled_white_radius_24dp"
-    tools:context=".ui.purchase.PurchaseFragment">
+    android:background="@drawable/rectangle_filled_white_radius_24dp">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:orientation="vertical">
 
         <include
@@ -38,17 +36,18 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="50dp"
             android:background="@drawable/bg_gradient_gray_white"
             android:fillViewport="true"
-            android:overScrollMode="never"
             app:layout_constraintBottom_toTopOf="@id/makeOrderButton"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/nestedScrollLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:paddingBottom="170dp">
+                android:paddingBottom="100dp">
 
                 <include
                     android:id="@+id/layoutPurchaseServiceHeader"
@@ -78,7 +77,12 @@
 
                 <include
                     android:id="@+id/layoutCodeAgent"
-                    layout="@layout/layout_purchase_agent_code" />
+                    layout="@layout/layout_purchase_agent_code"
+                    android:visibility="gone" />
+
+                <include
+                    android:id="@+id/layoutIncludedPromoCode"
+                    layout="@layout/layout_service_order_promo_code" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -92,4 +96,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
+
 </RelativeLayout>

@@ -95,6 +95,7 @@ import com.custom.rgs_android_dom.ui.stories.tabs.TabGuaranteeViewModel
 import com.custom.rgs_android_dom.ui.stories.tabs.TabNewServiceViewModel
 import com.custom.rgs_android_dom.ui.stories.tabs.TabSupportViewModel
 import com.custom.rgs_android_dom.ui.update_app.UpdateAppViewModel
+import com.custom.rgs_android_dom.ui.promo_code.modal.ModalPromoCodesViewModel
 
 val viewModelModule = module {
     viewModel { parameters -> RegistrationCodeViewModel(phone = parameters[0], token = parameters[1], registrationInteractor = get(), clientInteractor = get()) }
@@ -153,7 +154,7 @@ val viewModelModule = module {
     viewModel { parameters -> CatalogSearchViewModel(tag = parameters[0], catalogInteractor = get(), registrationInteractor = get(), clientInteractor = get(), chatInteractor = get()) }
     viewModel { parameters -> ProductViewModel(product = parameters.get(), registrationInteractor = get(), catalogInteractor = get(), propertyInteractor = get(), purchaseInteractor = get()) }
     viewModel { parameters -> CatalogPrimaryProductsViewModel(category = parameters.get()) }
-    viewModel { parameters -> PurchaseViewModel(parameters.get(), propertyInteractor = get(), clientInteractor = get(), purchaseInteractor = get()) }
+    viewModel { parameters -> PurchaseViewModel(model = parameters[0], promoCodeItemModel = parameters[1], propertyInteractor = get(), clientInteractor = get(), purchaseInteractor = get(), promoCodesInteractor = get()) }
     viewModel { parameters -> SelectPurchaseAddressViewModel(selectedPropertyItem = parameters[0], propertyInteractor = get())}
     viewModel { PurchaseDateTimeViewModel() }
     viewModel { parameters -> SelectCardViewModel(selectedCard = parameters[0], purchaseInteractor = get()) }
@@ -187,7 +188,9 @@ val viewModelModule = module {
     viewModel { UpdateAppViewModel() }
     viewModel { PromoCodesViewModel(promoCodesInteractor = get(), clientInteractor = get()) }
     viewModel { AddPromoCodeViewModel() }
-    viewModel { parameters -> PromoCodeDialogViewModel (promoCodeId = parameters[0], promoCodesInteractor = get(), chatInteractor = get()) }
-    viewModel { parameters -> AddAgentPromoCodeViewModel(promoCodeId = parameters[0], clientInteractor = get()) }
+    viewModel { parameters -> PromoCodeDialogViewModel (promoCode = parameters[0], purchaseModel = parameters[1], shouldShowAgentView =parameters[2], promoCodesInteractor = get(), chatInteractor = get()) }
+    viewModel { parameters -> AddAgentPromoCodeViewModel(promoCode = parameters[0], shouldShowAgentView = parameters[1], purchaseModel = parameters[2], clientInteractor = get()) }
+    viewModel { parameters -> ModalPromoCodesViewModel(promoCodesInteractor = get(), clientInteractor = get(), purchaseModel = parameters[0]) }
     viewModel { parameters -> DeleteClientViewModel(activeOrders = parameters[0], registrationInteractor = get()) }
+
 }
