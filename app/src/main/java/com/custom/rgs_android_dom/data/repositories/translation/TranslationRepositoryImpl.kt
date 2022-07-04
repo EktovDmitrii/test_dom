@@ -676,13 +676,14 @@ class TranslationRepositoryImpl(private val api: MSDApi) :
             "app.product.purchase.select_promo_code_subtitle" to "Используйте промокод",
             "app.product.purchase.select_promo_code_error" to "Выбранный промокод нельзя применить,\nпопробуйте другой промокод",
             "app.product.purchase.select_promo_code_title" to "Дополнительные данные",
-            "app.product.purchase.modal_promo_codes.promo_codes_title" to "Доступные",
+            "app.product.purchase.modal_promo_codes.promo_codes_title" to "Промокоды",
             "app.product.promo_codes.promo_codes_view.empty_promo_codes_label" to "Добавить новый\nпромокод",
             "app.product.promo_codes.result_view.confirm_button" to "Заказать",
             "app.product.purchase.layout_included_promo_code.promo_code_text_view" to "Выбран промокод",
             "app.product.purchase.layout_product_detail.cost_text_view" to "Стоимость",
             "app.product.purchase.layout_product_detail.cost_with_discount_text_view" to "Стоимость со скидкой",
             "app.product.purchase.layout_product_detail.cost_discount_text_view" to "Скидка по промокоду (%@)",
+            "app.promo_codes.search_promo_codes.result_view.confirm_button" to "Понятно",
             "app.promo_code.add_step_two.view_subtitle" to "Введите код агента",
 
             // Object

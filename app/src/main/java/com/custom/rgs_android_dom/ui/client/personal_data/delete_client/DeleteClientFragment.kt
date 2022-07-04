@@ -1,6 +1,7 @@
 package com.custom.rgs_android_dom.ui.client.personal_data.delete_client
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import com.custom.rgs_android_dom.R
@@ -74,6 +75,7 @@ class DeleteClientFragment() : BaseBottomSheetModalFragment<DeleteClientViewMode
     }
 
     override fun onClose() {
+        Log.d("MyLog", "On close call")
         hideSoftwareKeyboard()
         dismissAllowingStateLoss()
     }

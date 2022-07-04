@@ -29,7 +29,7 @@ class PromoCodeDialogViewModel(
     private val chatInteractor: ChatInteractor
 ) : BaseViewModel() {
 
-    var showOrderTextButton = purchaseModel == null
+    var showOrderTextButton = purchaseModel != null
 
     private val promoCodesController = MutableLiveData<PromoCodeItemModel>()
     val promoCodesObserver: LiveData<PromoCodeItemModel> = promoCodesController

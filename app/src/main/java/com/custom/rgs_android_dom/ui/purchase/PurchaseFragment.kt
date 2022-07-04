@@ -170,6 +170,7 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
 
             purchase.price?.amount?.let { amount ->
                 val promoCodeItemModel = viewModel.hasPromoCodeObserver.value
+                binding.makeOrderButton.btnPrice.text = amount.formatPrice(isFixed = purchase.price.fix)
                 binding.layoutPurchaseServiceHeader.priceTextView.text = amount.formatPrice(isFixed = purchase.price.fix)
                 if (promoCodeItemModel != null) {
                     binding.makeOrderButton.root.background = ContextCompat.getDrawable(requireContext(), R.drawable.rectangle_filled_white_top_radius_24dp)
@@ -181,7 +182,7 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
                     when (promoCodeItemModel.type) {
                         SALE_PROMO_CODE -> {
                             binding.makeOrderButton.discountTextView.text = discountText.replace("%@", "${promoCodeItemModel.discountInRubles}₽")
-                            binding.makeOrderButton.sumDiscountTextView.text = (promoCodeItemModel.discountInRubles * 100).formatPrice()
+                            binding.makeOrderButton.sumDiscountTextView.text = "-${(promoCodeItemModel.discountInRubles * 100).formatPrice()}"
                             val resultCost = amount - (promoCodeItemModel.discountInRubles * 100)
                             binding.makeOrderButton.resultSumTextView.text = if (resultCost < 0 ) ZERO_COST_ORDER else resultCost.formatPrice(isFixed = purchase.price.fix)
                             binding.makeOrderButton.btnPrice.text = if (resultCost < 0 ) ZERO_COST_ORDER else resultCost.formatPrice(isFixed = purchase.price.fix)
@@ -190,7 +191,7 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
                             binding.makeOrderButton.discountTextView.text = discountText.replace("%@", "${promoCodeItemModel.discountInPercent}%")
                             val resultDiscountIn = ((promoCodeItemModel.discountInPercent.toDouble() / 100.toDouble()) * amount.toDouble()).toInt()
                             val resultCost = amount - resultDiscountIn
-                            binding.makeOrderButton.sumDiscountTextView.text = resultDiscountIn.formatPrice(isFixed = purchase.price.fix)
+                            binding.makeOrderButton.sumDiscountTextView.text = "-${resultDiscountIn.formatPrice()}"
                             binding.makeOrderButton.resultSumTextView.text = resultCost.formatPrice(isFixed = purchase.price.fix)
                             binding.makeOrderButton.btnPrice.text = resultCost.formatPrice(isFixed = purchase.price.fix)
                         }

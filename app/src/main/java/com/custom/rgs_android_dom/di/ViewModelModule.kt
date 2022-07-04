@@ -68,6 +68,7 @@ import com.custom.rgs_android_dom.ui.promo_code.PromoCodesViewModel
 import com.custom.rgs_android_dom.ui.promo_code.add_agent.AddAgentPromoCodeViewModel
 import com.custom.rgs_android_dom.ui.promo_code.add_promo_code.AddPromoCodeViewModel
 import com.custom.rgs_android_dom.ui.promo_code.dialogs.PromoCodeDialogViewModel
+import com.custom.rgs_android_dom.ui.promo_code.info_promo_code.InfoPromoCodeViewModel
 import com.custom.rgs_android_dom.ui.property.add.details.files.PropertyUploadDocumentsViewModel
 import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressViewModel
 import com.custom.rgs_android_dom.ui.property.delete.DeletePropertyViewModel
@@ -192,5 +193,6 @@ val viewModelModule = module {
     viewModel { parameters -> AddAgentPromoCodeViewModel(promoCode = parameters[0], shouldShowAgentView = parameters[1], purchaseModel = parameters[2], clientInteractor = get()) }
     viewModel { parameters -> ModalPromoCodesViewModel(promoCodesInteractor = get(), clientInteractor = get(), purchaseModel = parameters[0]) }
     viewModel { parameters -> DeleteClientViewModel(activeOrders = parameters[0], registrationInteractor = get()) }
+    viewModel { InfoPromoCodeViewModel() }
 
 }

@@ -28,7 +28,7 @@
             android:includeFontPadding="false"
             android:textColor="@color/secondary900"
             android:textSize="16sp"
-            app:translationTextKey="Промокоды" />
+            app:translationTextKey="app.product.purchase.modal_promo_codes.promo_codes_title" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/addImageView"
