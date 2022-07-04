@@ -684,6 +684,7 @@ class TranslationRepositoryImpl(private val api: MSDApi) :
             "app.product.purchase.layout_product_detail.cost_with_discount_text_view" to "Стоимость со скидкой",
             "app.product.purchase.layout_product_detail.cost_discount_text_view" to "Скидка по промокоду (%@)",
             "app.promo_codes.search_promo_codes.result_view.confirm_button" to "Понятно",
+            "app.promo_code.add_step_two.view_subtitle" to "Введите код агента",
 
             // Object
             "app.object_detail.no_data" to "Нет данных",
