@@ -101,7 +101,6 @@ class PromoCodesAdapter(private val onPromoCodeClick: (PromoCodeItemModel) -> Un
                             binding.root.context,
                             R.drawable.ic_rectangle_orange_border_radius_24dp
                         )
-                        onPromoCodeClick(model)
                     } else {
                         promoCodeCheckedImageView.gone()
                         pictureFrameLayout.background = null
@@ -110,6 +109,7 @@ class PromoCodesAdapter(private val onPromoCodeClick: (PromoCodeItemModel) -> Un
 
                 root.setOnDebouncedClickListener {
                     onPromoCode = model
+                    onPromoCodeClick(model)
                     notifyDataSetChanged()
                 }
             }
@@ -135,7 +135,6 @@ class PromoCodesAdapter(private val onPromoCodeClick: (PromoCodeItemModel) -> Un
                             binding.root.context,
                             R.drawable.ic_rectangle_orange_border_radius_24dp
                         )
-                        onPromoCodeClick(model)
                     } else {
                         promoCodeCheckedImageView.gone()
                         pictureFrameLayout.background = null
@@ -144,6 +143,7 @@ class PromoCodesAdapter(private val onPromoCodeClick: (PromoCodeItemModel) -> Un
 
                 root.setOnDebouncedClickListener {
                     onPromoCode = model
+                    onPromoCodeClick(model)
                     notifyDataSetChanged()
                 }
             }
@@ -170,7 +170,6 @@ class PromoCodesAdapter(private val onPromoCodeClick: (PromoCodeItemModel) -> Un
                             binding.root.context,
                             R.drawable.ic_rectangle_orange_border_radius_24dp
                         )
-                        onPromoCodeClick(model)
                     } else {
                         promoCodeCheckedImageView.gone()
                         pictureFrameLayout.background = null
@@ -179,6 +178,7 @@ class PromoCodesAdapter(private val onPromoCodeClick: (PromoCodeItemModel) -> Un
 
                 root.setOnDebouncedClickListener {
                     onPromoCode = model
+                    onPromoCodeClick(model)
                     notifyDataSetChanged()
                 }
             }
