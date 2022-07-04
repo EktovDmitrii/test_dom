@@ -8,6 +8,7 @@ import com.custom.rgs_android_dom.domain.promo_codes.PromoCodesInteractor
 import com.custom.rgs_android_dom.domain.promo_codes.model.PromoCodeItemModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.promo_code.add_promo_code.AddPromoCodeFragment
+import com.custom.rgs_android_dom.ui.promo_code.info_promo_code.InfoPromoCodeFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -48,10 +49,15 @@ class PromoCodesViewModel(
         close()
     }
 
+    fun onItemClick(promoCode: PromoCodeItemModel, childFragmentManager: FragmentManager) {
+        val infoPromoCodeFragment = InfoPromoCodeFragment.newInstance(promoCode)
+        infoPromoCodeFragment.show(childFragmentManager, infoPromoCodeFragment.TAG)
+    }
+
     fun onAddClick(childFragmentManager: FragmentManager) {
         isAgentCodeVisibleController.value?.let {
-            val emailBottomFragment = AddPromoCodeFragment.newInstance(it, null)
-            emailBottomFragment.show(childFragmentManager, emailBottomFragment.TAG)
+            val addPromoCodeFragment = AddPromoCodeFragment.newInstance(it, null)
+            addPromoCodeFragment.show(childFragmentManager, addPromoCodeFragment.TAG)
         }
     }
 

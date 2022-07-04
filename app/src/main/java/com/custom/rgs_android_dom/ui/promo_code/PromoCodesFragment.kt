@@ -16,7 +16,9 @@ class PromoCodesFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.dataStateLayout.recyclerView.adapter = PromoCodesAdapter { _ -> }
+        binding.dataStateLayout.recyclerView.adapter = PromoCodesAdapter { promoCodeModel ->
+            viewModel.onItemClick(promoCodeModel, childFragmentManager)
+        }
 
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick()
