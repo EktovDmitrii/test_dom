@@ -175,8 +175,8 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
                 if (promoCodeItemModel != null) {
                     binding.makeOrderButton.root.background = ContextCompat.getDrawable(requireContext(), R.drawable.rectangle_filled_white_top_radius_24dp)
                     binding.makeOrderButton.sumCostTextView.text = amount.formatPrice(isFixed = purchase.price.fix)
-                    binding.layoutIncludedPromoCode.promoCodeTextView.text =
-                        TranslationInteractor.getTranslation("app.product.purchase.layout_included_promo_code.promo_code_text_view")
+                    binding.layoutIncludedPromoCode.promoCodeTextView.gone()
+                    binding.layoutIncludedPromoCode.selectedPromoCodeTextView.visible()
                     binding.layoutIncludedPromoCode.labeledPromoCodeTextView.text = promoCodeItemModel.code
 
                     when (promoCodeItemModel.type) {
