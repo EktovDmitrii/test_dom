@@ -96,8 +96,10 @@ class RegistrationRepositoryImpl(
     }
 
     override fun refreshToken(refreshToken: String): Completable {
-        return api.postRefreshToken(refreshToken).flatMapCompletable { tokenResponse ->
+        return api.postRefreshToken("$HEADER_BEARER $refreshToken").flatMapCompletable { tokenResponse ->
             authContentProviderManager.saveAuth(tokenResponse)
+            chatRepository.disconnectFromWebSocket()
+            chatRepository.connectToWebSocket()
             Completable.complete()
         }
     }

@@ -2,6 +2,7 @@ package com.custom.rgs_android_dom.ui.chats.call
 
 import android.Manifest
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -258,7 +259,7 @@ class CallFragment : BaseFragment<CallViewModel, FragmentCallBinding>(R.layout.f
                 }
                 CallState.ACTIVE -> {
                     mediaPlayer.stop()
-                    playTune("track3.mp3")
+                    //playTune("track3.mp3")
                     binding.titleTextView.text = TranslationInteractor.getTranslation("app.call.outgoing.default_consultant_name")
                     binding.subtitleTextView.text = callInfo.duration?.toReadableTime()
 

@@ -20,6 +20,7 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
         private val ERROR_CODE_TOKEN_EXPIRED = arrayOf("AUTH-016", "API-002")
     }
 
+
     private val noAuthorizationPaths = listOf(
         "/api/auth/clients/code",
         "/api/auth/clients/login",
@@ -31,7 +32,7 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
         return if (isAuthorizationNotRequired(originalRequest)) {
             chain.proceed(originalRequest)
         } else {
-            val response = chain.proceed(
+            var response = chain.proceed(
                 originalRequest.newBuilder()
                     .apply {
                         registrationRepository.getAccessToken()?.let { authToken ->
@@ -44,16 +45,35 @@ class AuthTokenInterceptor : Interceptor, KoinComponent {
             if (response.isSuccessful) {
                 return response
             } else {
-                // TODO Finally improve this after we will have all info about tokens and auth error codes
                 response.body.use { body ->
                     val responseString = body?.string() ?: ""
                     val errorResponse = parseError(responseString, response.code)
                     if (errorResponse.code in ERROR_CODE_TOKEN_EXPIRED) {
-                        registrationRepository.clearAuth()
+                        val refreshToken = registrationRepository.getRefreshToken() ?: ""
+                        registrationRepository.refreshToken(refreshToken).blockingGet()
+                        response = chain.proceed(
+                            originalRequest.newBuilder()
+                                .apply {
+                                    registrationRepository.getAccessToken()?.let { authToken ->
+                                        header(AUTHORIZATION_HEADER, "$AUTHORIZATION_BEARER $authToken")
+                                    }
+                                }
+                                .build()
+                        )
+                        if (response.isSuccessful) {
+                            return response
+                        } else {
+                            registrationRepository.clearAuth()
+                            response.newBuilder()
+                                .body(responseString.toResponseBody(body?.contentType()))
+                                .build()
+                        }
+
+                    } else {
+                        response.newBuilder()
+                            .body(responseString.toResponseBody(body?.contentType()))
+                            .build()
                     }
-                    response.newBuilder()
-                        .body(responseString.toResponseBody(body?.contentType()))
-                        .build()
                 }
             }
         }
