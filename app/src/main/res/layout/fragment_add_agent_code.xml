@@ -49,7 +49,7 @@
                 android:includeFontPadding="false"
                 android:textColor="@color/secondary900"
                 android:textSize="16sp"
-                app:translationTextKey="app.polices.add_step_one.view_subtitle" />
+                app:translationTextKey="app.promo_code.add_step_two.view_subtitle" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
