@@ -36,7 +36,19 @@
             android:fontFamily="@font/suisse_regular"
             android:textColor="@color/secondary800"
             android:textSize="16sp"
+            android:visibility="visible"
             app:translationTextKey="app.product.purchase.select_promo_code_subtitle" />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/selectedPromoCodeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/suisse_bold"
+            android:textColor="@color/secondary800"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:translationTextKey="app.product.purchase.layout_included_promo_code.promo_code_text_view" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -86,8 +98,8 @@
         android:layout_marginTop="@dimen/dp_12"
         android:fontFamily="@font/suisse_regular"
         android:textColor="@color/error500"
-        android:visibility="gone"
         android:textSize="13sp"
+        android:visibility="gone"
         app:translationTextKey="app.product.purchase.select_promo_code_error" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
