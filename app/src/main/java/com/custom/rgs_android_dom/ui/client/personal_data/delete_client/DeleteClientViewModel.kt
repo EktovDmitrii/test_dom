@@ -4,15 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.custom.rgs_android_dom.data.network.data_adapters.NetworkException
 import com.custom.rgs_android_dom.data.network.toMSDErrorModel
-import com.custom.rgs_android_dom.domain.client.ClientInteractor
-import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
-import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClientExceptions
-import com.custom.rgs_android_dom.domain.client.exceptions.ValidateFieldModel
 import com.custom.rgs_android_dom.domain.client.models.Order
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.ui.registration.fill_client.RegistrationFillClientViewModel
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -27,6 +22,17 @@ class DeleteClientViewModel(
     private val activeOrdersController = MutableLiveData(activeOrders)
     val activeOrdersObserver: LiveData<List<Order>> = activeOrdersController
 
+    init {
+        registrationInteractor.getLogoutSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    close()
+                }
+            ).addTo(dataCompositeDisposable)
+    }
+
     fun onConfirmClick(){
         registrationInteractor.deleteClient()
             .subscribeOn(Schedulers.io())
@@ -36,6 +42,7 @@ class DeleteClientViewModel(
             }
             .subscribeBy(
                 onComplete = {
+                    loadingStateController.value = LoadingState.CONTENT
                     close()
                 },
                 onError = {
