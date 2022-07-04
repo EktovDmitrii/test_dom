@@ -86,6 +86,7 @@ class PromoCodesAdapter(private val onPromoCodeClick: (PromoCodeItemModel) -> Un
 
         fun bind(model: PromoCodeItemModel) {
             binding.apply {
+                subtitleTextView.text = model.code
                 val duration = durationText.replace(
                     "%@",
                     " ${model.expiredAt?.formatTo(DATE_PATTERN_DATE_ONLY)}"

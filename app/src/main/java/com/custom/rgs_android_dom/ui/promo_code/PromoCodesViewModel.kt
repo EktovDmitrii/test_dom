@@ -7,6 +7,8 @@ import com.custom.rgs_android_dom.domain.client.ClientInteractor
 import com.custom.rgs_android_dom.domain.promo_codes.PromoCodesInteractor
 import com.custom.rgs_android_dom.domain.promo_codes.model.PromoCodeItemModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.client.ClientFragment
+import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.promo_code.add_promo_code.AddPromoCodeFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -45,7 +47,7 @@ class PromoCodesViewModel(
     }
 
     fun onBackClick() {
-        close()
+        ScreenManager.showBottomScreen(ClientFragment())
     }
 
     fun onAddClick(childFragmentManager: FragmentManager) {
