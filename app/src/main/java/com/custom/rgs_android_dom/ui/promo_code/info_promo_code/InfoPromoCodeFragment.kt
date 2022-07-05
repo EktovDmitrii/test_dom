@@ -60,7 +60,7 @@ class InfoPromoCodeFragment : BaseBottomSheetModalFragment<InfoPromoCodeViewMode
                     itemSaleLayout.apply {
                         root.visible()
                         subtitleTextView.text = promoCode.code
-                        titleTextView.text = titleText.replace("%@", "${promoCode.discountInRubles} Р")
+                        titleTextView.text = titleText.replace("%@", "${promoCode.discountInRubles} ₽")
                         durationTextView.text = duration
                     }
                 }
