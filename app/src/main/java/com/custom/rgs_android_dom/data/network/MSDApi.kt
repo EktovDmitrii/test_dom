@@ -291,7 +291,7 @@ interface MSDApi {
     fun orderServiceOnBalance(@Body body: OrderServiceRequest, @Query("confirm") confirmOrder: Boolean): Single<OrderResponse>
 
     @GET("clients/me/orders")
-    fun getOrders(@Query("businessLines") businessLines: String): Single<OrdersResponse>
+    fun getOrders(@Query("businessLines", encoded = true) businessLines: String): Single<OrdersResponse>
 
     @GET("clients/me/billing/general-invoices")
     fun getGeneralInvoices(

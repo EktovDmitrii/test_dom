@@ -295,8 +295,8 @@ class ClientRepositoryImpl(
         }
     }
 
-    override fun getAllActiveOrders(size: Long, index: Long): Single<List<Order>> {
-        return api.getOrders(businessLines = "${BuildConfig.BUSINESS_LINE}, auto")
+    override fun getAllOrders(size: Long, index: Long): Single<List<Order>> {
+        return api.getOrders(businessLines = "${BuildConfig.BUSINESS_LINE},auto")
             .flatMap { orderResponse ->
                 val orders = orderResponse.orders
                 if (orders != null){

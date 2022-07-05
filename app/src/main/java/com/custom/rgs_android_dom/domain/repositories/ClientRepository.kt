@@ -76,6 +76,6 @@ interface ClientRepository {
 
     fun updateNotificationChannel(notificationChannel: NotificationChannelInfo): Single<ClientModel>
 
-    fun getAllActiveOrders(size: Long, index: Long): Single<List<Order>>
+    fun getAllOrders(size: Long, index: Long): Single<List<Order>>
 
 }

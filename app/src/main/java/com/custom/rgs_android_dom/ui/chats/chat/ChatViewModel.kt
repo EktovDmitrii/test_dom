@@ -399,24 +399,40 @@ class ChatViewModel(
         }
     }
 
-    private fun getPurchaseTime(orderTime: OrderTimeModel?) = PurchaseTimePeriodModel(
-        id = when (orderTime?.from.toString()) {
-            "6:00" -> 0
-            "9:00" -> 1
-            "12:00" -> 2
-            "18:00" -> 3
-            else -> throw IllegalArgumentException("wrong argument timeOfDay")
-        },
-        timeOfDay = when (orderTime?.from.toString()) {
-            "6:00" -> "Утро"
-            "9:00" -> "До полудня"
-            "12:00" -> "День"
-            "18:00" -> "Вечер"
-            else -> throw IllegalArgumentException("wrong argument timeOfDay")
-        },
-        timeFrom = orderTime?.from.toString(),
-        timeTo = orderTime?.to.toString(),
-        isSelectable = true,
-        isSelected = true
-    )
+    private fun getPurchaseTime(orderTime: OrderTimeModel?): PurchaseTimePeriodModel {
+        val timeFrom = if (orderTime?.from?.startsWith("0") == true) {
+            orderTime.from.replaceFirst("0", "")
+        } else {
+            orderTime?.from
+        }
+
+        val timeTo = if (orderTime?.to?.startsWith("0") == true) {
+            orderTime.to.replaceFirst("0", "")
+        } else {
+            orderTime?.to
+        }
+
+        return PurchaseTimePeriodModel(
+            id = when (timeFrom.toString()) {
+                "6:00" -> 0
+                "9:00" -> 1
+                "12:00" -> 2
+                "18:00" -> 3
+                else -> throw IllegalArgumentException("wrong argument timeOfDay")
+            },
+            timeOfDay = when (timeFrom.toString()) {
+                "6:00" -> "Утро"
+                "9:00" -> "До полудня"
+                "12:00" -> "День"
+                "18:00" -> "Вечер"
+                else -> throw IllegalArgumentException("wrong argument timeOfDay")
+            },
+            timeFrom = timeFrom.toString(),
+            timeTo = timeTo.toString(),
+            isSelectable = true,
+            isSelected = true
+        )
+
+    }
+
 }

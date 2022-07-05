@@ -23,7 +23,7 @@
             android:layout_height="160dp"
             android:layout_marginTop="54dp"
             app:srcCompat="@drawable/ic_cancel_order"/>
-        
+
         <com.custom.rgs_android_dom.views.text.MSDTextView
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
@@ -60,6 +60,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:verticalDecorationGap="8dp"
             tools:visibility="visible"
+            tools:itemCount="2"
             tools:listitem="@layout/item_active_order"/>
 
         <com.custom.rgs_android_dom.views.text.MSDTextViewLoaderFullWidth
@@ -75,7 +76,6 @@
             android:layout_width="wrap_content"
             style="@style/Button.WithoutBg.Secondary"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="22dp"
             app:translationTextKey="app.profile.delete.cancel"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
