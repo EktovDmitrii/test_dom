@@ -48,6 +48,7 @@ class PromoCodesViewModel(
     }
 
     fun onBackClick() {
+        close()
         ScreenManager.showBottomScreen(ClientFragment())
     }
 
