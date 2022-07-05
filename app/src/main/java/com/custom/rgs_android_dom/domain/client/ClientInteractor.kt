@@ -790,9 +790,9 @@ ClientInteractor(
     }
 
     fun getAllActiveOrders(): Single<List<Order>> {
-        return clientRepository.getAllActiveOrders(1000, 0)
+        return clientRepository.getAllOrders(1000, 0)
             .flatMap { orders->
-                Single.just(sortOrderHistory(orders.filter { it.status == OrderStatus.ACTIVE }))
+                Single.just(sortOrderHistory(orders.filter { it.status != OrderStatus.CANCELLED && it.status != OrderStatus.RESOLVED && it.status != OrderStatus.DRAFT}))
             }
     }
 

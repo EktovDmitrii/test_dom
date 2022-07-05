@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.ui.client.personal_data.delete_client
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentDeleteClientBinding
@@ -62,6 +63,13 @@ class DeleteClientFragment() : BaseBottomSheetModalFragment<DeleteClientViewMode
                 binding.activeOrdersRecyclerView.adapter = ActiveOrdersAdapter().apply {
                     setItems(activeOrders)
                 }
+
+                if (activeOrders.size == 1) {
+                    binding.activeOrdersRecyclerView.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                } else {
+                    binding.activeOrdersRecyclerView.layoutParams.height = 180.dp(requireContext())
+                }
+
             } else {
                 binding.titleTextView.text = TranslationInteractor.getTranslation("app.profile.delete.no_orders.title")
                 binding.descriptionTextView.text = TranslationInteractor.getTranslation("app.profile.delete.no_orders.subtitle")
