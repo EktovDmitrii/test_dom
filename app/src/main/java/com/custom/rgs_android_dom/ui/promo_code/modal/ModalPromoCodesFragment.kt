@@ -5,8 +5,12 @@ import android.view.View
 import com.custom.rgs_android_dom.databinding.FragmentModalPromoCodesBinding
 import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
+import com.custom.rgs_android_dom.ui.constants.SIZE_FOR_FULL_SCREEN
 import com.custom.rgs_android_dom.ui.promo_code.PromoCodesAdapter
-import com.custom.rgs_android_dom.utils.*
+import com.custom.rgs_android_dom.utils.args
+import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
+import com.custom.rgs_android_dom.utils.subscribe
+import com.custom.rgs_android_dom.utils.visibleIf
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -37,9 +41,13 @@ class ModalPromoCodesFragment :
         super.onViewCreated(view, savedInstanceState)
 
         binding.dataStateLayout.recyclerView.adapter = PromoCodesAdapter { promoCodeModel ->
-            binding.applyButtonLayout.visible()
-            viewModel.saveApplyPromoCode(promoCodeModel)
-            onFullScreen()
+            binding.applyButtonLayout.visibleIf(promoCodeModel != null)
+            promoCodeModel?.let {
+                viewModel.saveApplyPromoCode(promoCodeModel)
+            }
+            viewModel.promoCodesObserver.value?.let {
+                if (it.size > SIZE_FOR_FULL_SCREEN) { onFullScreen() }
+            }
         }
 
         binding.emptyStateLayout.root.setOnDebouncedClickListener {

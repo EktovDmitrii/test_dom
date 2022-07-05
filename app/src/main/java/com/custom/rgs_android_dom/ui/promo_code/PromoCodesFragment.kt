@@ -17,7 +17,9 @@ class PromoCodesFragment :
         super.onViewCreated(view, savedInstanceState)
 
         binding.dataStateLayout.recyclerView.adapter = PromoCodesAdapter { promoCodeModel ->
-            viewModel.onItemClick(promoCodeModel, childFragmentManager)
+            promoCodeModel?.let {
+                viewModel.onItemClick(it, childFragmentManager)
+            }
         }
 
         binding.backImageView.setOnDebouncedClickListener {
