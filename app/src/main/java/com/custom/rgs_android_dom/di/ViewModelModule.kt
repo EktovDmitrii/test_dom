@@ -155,7 +155,7 @@ val viewModelModule = module {
     viewModel { parameters -> CatalogSearchViewModel(tag = parameters[0], catalogInteractor = get(), registrationInteractor = get(), clientInteractor = get(), chatInteractor = get()) }
     viewModel { parameters -> ProductViewModel(product = parameters.get(), registrationInteractor = get(), catalogInteractor = get(), propertyInteractor = get(), purchaseInteractor = get()) }
     viewModel { parameters -> CatalogPrimaryProductsViewModel(category = parameters.get()) }
-    viewModel { parameters -> PurchaseViewModel(model = parameters[0], promoCodeItemModel = parameters[1], propertyInteractor = get(), clientInteractor = get(), purchaseInteractor = get(), promoCodesInteractor = get()) }
+    viewModel { parameters -> PurchaseViewModel(model = parameters[0], propertyInteractor = get(), clientInteractor = get(), purchaseInteractor = get(), promoCodesInteractor = get()) }
     viewModel { parameters -> SelectPurchaseAddressViewModel(selectedPropertyItem = parameters[0], propertyInteractor = get())}
     viewModel { PurchaseDateTimeViewModel() }
     viewModel { parameters -> SelectCardViewModel(selectedCard = parameters[0], purchaseInteractor = get()) }

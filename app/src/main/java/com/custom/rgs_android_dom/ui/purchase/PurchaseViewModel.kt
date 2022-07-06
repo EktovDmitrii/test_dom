@@ -32,7 +32,6 @@ import org.joda.time.DateTimeZone
 
 class PurchaseViewModel(
     private val model: PurchaseModel,
-    private val promoCodeItemModel: PromoCodeItemModel?,
     private val propertyInteractor: PropertyInteractor,
     private val clientInteractor: ClientInteractor,
     private val purchaseInteractor: PurchaseInteractor,
@@ -53,9 +52,10 @@ class PurchaseViewModel(
     private val hasPromoCodeController = MutableLiveData<PromoCodeItemModel?>()
     val hasPromoCodeObserver: LiveData<PromoCodeItemModel?> = hasPromoCodeController
 
-    init {
-        hasPromoCodeController.value = promoCodeItemModel
+    private val showDiscountLayoutController = MutableLiveData<Boolean>()
+    val showDiscountLayoutObserver: LiveData<Boolean> = showDiscountLayoutController
 
+    init {
         clientInteractor.getClient()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -231,7 +231,7 @@ class PurchaseViewModel(
 
     fun onDeletePromoCodeClick() {
         hasPromoCodeController.value = null
-        close()
+        showDiscountLayoutController.value = false
     }
 
     fun updateAgentCode(code: String) {
@@ -239,6 +239,11 @@ class PurchaseViewModel(
             purchaseController.value = it.copy(agentCode = code)
             validateFields()
         }
+    }
+
+    fun updatePromoCode(promoCode: PromoCodeItemModel) {
+        hasPromoCodeController.value = promoCode
+        showDiscountLayoutController.value = true
     }
 
     fun makeOrder() {
@@ -265,7 +270,7 @@ class PurchaseViewModel(
                     purchase.purchaseDateTimeModel.selectedPeriodModel?.copy(timeTo = "23:59")?.timeTo
                 else purchase.purchaseDateTimeModel?.selectedPeriodModel?.timeTo,
                 withOrder = purchase.defaultProduct,
-                clientPromoCodeId = promoCodeItemModel?.id
+                clientPromoCodeId = hasPromoCodeController.value?.id
             )
                 .doOnSubscribe {
                     isEnableButtonController.postValue(false)
