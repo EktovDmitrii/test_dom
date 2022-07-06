@@ -12,7 +12,6 @@ import com.custom.rgs_android_dom.ui.chats.chat.ChatFragment
 import com.custom.rgs_android_dom.ui.navigation.ScreenInfo
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.navigation.TargetScreen
-import com.custom.rgs_android_dom.ui.promo_code.PromoCodesFragment
 import com.custom.rgs_android_dom.ui.promo_code.add_promo_code.AddPromoCodeFragment
 import com.custom.rgs_android_dom.ui.promo_code.modal.ModalPromoCodesFragment
 import com.custom.rgs_android_dom.utils.logException
@@ -34,6 +33,9 @@ class PromoCodeDialogViewModel(
     private val promoCodesController = MutableLiveData<PromoCodeItemModel>()
     val promoCodesObserver: LiveData<PromoCodeItemModel> = promoCodesController
 
+    private val getPromoCodesController = MutableLiveData<Boolean>()
+    val getPromoCodesObserver: LiveData<Boolean> = getPromoCodesController
+
     init {
         promoCodesInteractor.activatePromoCode(promoCode)
             .subscribeOn(Schedulers.io())
@@ -53,8 +55,9 @@ class PromoCodeDialogViewModel(
 
     fun onPromoCodeClick(parentFragmentManager: FragmentManager) {
         if (purchaseModel == null) {
-            ScreenManager.showScreen(PromoCodesFragment())
+            getPromoCodesController.value = true
         } else {
+            getPromoCodesController.value = false
             val modalPromoCodes = ModalPromoCodesFragment.newInstance(purchaseModel)
             modalPromoCodes.show(parentFragmentManager, modalPromoCodes.TAG)
         }

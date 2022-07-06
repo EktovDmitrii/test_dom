@@ -5,10 +5,12 @@ import android.view.View
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPromoCodesBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.promo_code.dialogs.PromoCodeDialogFragment
 import com.custom.rgs_android_dom.utils.*
 
 class PromoCodesFragment :
-    BaseFragment<PromoCodesViewModel, FragmentPromoCodesBinding>(R.layout.fragment_promo_codes) {
+    BaseFragment<PromoCodesViewModel, FragmentPromoCodesBinding>(R.layout.fragment_promo_codes),
+    PromoCodeDialogFragment.PromoCodesListener{
 
     private val promoCodesAdapter: PromoCodesAdapter
         get() = binding.dataStateLayout.recyclerView.adapter as PromoCodesAdapter
@@ -52,5 +54,9 @@ class PromoCodesFragment :
     override fun onLoading() {
         super.onLoading()
         binding.promoCodeShimmerLayout.root.visible()
+    }
+
+    override fun onGetNewPromoCodesList(isLoadingList: Boolean) {
+        if (isLoadingList) viewModel.getPromoCodes()
     }
 }
