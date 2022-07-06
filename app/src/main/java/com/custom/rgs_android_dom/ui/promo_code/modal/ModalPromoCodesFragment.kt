@@ -7,10 +7,7 @@ import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.ui.constants.SIZE_FOR_FULL_SCREEN
 import com.custom.rgs_android_dom.ui.promo_code.PromoCodesAdapter
-import com.custom.rgs_android_dom.utils.args
-import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
-import com.custom.rgs_android_dom.utils.subscribe
-import com.custom.rgs_android_dom.utils.visibleIf
+import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 
@@ -35,20 +32,20 @@ class ModalPromoCodesFragment :
     private val promoCodesAdapter: PromoCodesAdapter
         get() = binding.dataStateLayout.recyclerView.adapter as PromoCodesAdapter
 
+    private var isFullScreenClick = false
+
     override val TAG: String = "MODAL_PROMO_CODES_FRAGMENT"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.dataStateLayout.recyclerView.adapter = PromoCodesAdapter { promoCodeModel ->
-            binding.applyButtonLayout.visibleIf(promoCodeModel != null)
-            promoCodeModel?.let {
-                viewModel.saveApplyPromoCode(promoCodeModel)
-            }
-            viewModel.promoCodesObserver.value?.let {
-                if (it.size > SIZE_FOR_FULL_SCREEN) { onFullScreen() }
-            }
-        }
+        binding.dataStateLayout.recyclerView.adapter = PromoCodesAdapter(
+            onPromoCodeClick = { promoCodeModelClick ->
+                viewModel.saveApplyPromoCode(promoCodeModelClick)
+                if (isFullScreenClick) { onFullScreen() }
+            },
+            onShowApplyButton = { binding.applyButtonLayout.visibleIf(it) }
+        )
 
         binding.emptyStateLayout.root.setOnDebouncedClickListener {
             viewModel.onAddClick(parentFragmentManager)
@@ -63,6 +60,7 @@ class ModalPromoCodesFragment :
         }
 
         subscribe(viewModel.promoCodesObserver) {
+            isFullScreenClick = it.size > SIZE_FOR_FULL_SCREEN
             binding.emptyStateLayout.root.visibleIf(it.isEmpty())
             binding.addImageView.visibleIf(it.isNotEmpty())
             binding.dataStateLayout.root.visibleIf(it.isNotEmpty())
