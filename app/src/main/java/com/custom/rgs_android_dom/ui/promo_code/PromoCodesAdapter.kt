@@ -14,12 +14,15 @@ import com.custom.rgs_android_dom.ui.constants.PERCENT_PROMO_CODE
 import com.custom.rgs_android_dom.ui.constants.SERVICE_PROMO_CODE
 import com.custom.rgs_android_dom.utils.*
 
-class PromoCodesAdapter(private val onPromoCodeClick: (PromoCodeItemModel) -> Unit) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PromoCodesAdapter(
+    private val onPromoCodeClick: (PromoCodeItemModel) -> Unit,
+    private val onShowApplyButton: (Boolean) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val promoCodes = mutableListOf<PromoCodeItemModel>()
     private var onPromoCode: PromoCodeItemModel? = null
-    private var shouldBackgroundClick = false
+    private var isSelectedPromoCode = false
+    private var isModalPromoCodes = false
     private val durationText = TranslationInteractor.getTranslation("app.promo_codes.agent_code_adapter.add_duration")
     private val titleText = TranslationInteractor.getTranslation("app.promo_codes.agent_code_adapter.add_second_title")
 
@@ -31,7 +34,7 @@ class PromoCodesAdapter(private val onPromoCodeClick: (PromoCodeItemModel) -> Un
                     parent,
                     false
                 )
-                PromoCodesSaleViewHolder(binding, onPromoCodeClick)
+                PromoCodesSaleViewHolder(binding)
             }
             ITEM_TYPE_PERCENT_PROMO_CODE -> {
                 val binding = ItemPromoCodePercentBinding.inflate(
@@ -39,7 +42,7 @@ class PromoCodesAdapter(private val onPromoCodeClick: (PromoCodeItemModel) -> Un
                     parent,
                     false
                 )
-                PromoCodesPercentViewHolder(binding, onPromoCodeClick)
+                PromoCodesPercentViewHolder(binding)
             }
             else -> {
                 val binding = ItemPromoCodeServiceBinding.inflate(
@@ -47,7 +50,7 @@ class PromoCodesAdapter(private val onPromoCodeClick: (PromoCodeItemModel) -> Un
                     parent,
                     false
                 )
-                PromoCodesServiceViewHolder(binding, onPromoCodeClick)
+                PromoCodesServiceViewHolder(binding)
             }
         }
     }
@@ -72,16 +75,15 @@ class PromoCodesAdapter(private val onPromoCodeClick: (PromoCodeItemModel) -> Un
         }
     }
 
-    fun setItems(promoCodes: List<PromoCodeItemModel>, shouldBackgroundClick: Boolean) {
+    fun setItems(promoCodes: List<PromoCodeItemModel>, isModalPromoCodes: Boolean) {
         this.promoCodes.clear()
         this.promoCodes.addAll(promoCodes)
-        this.shouldBackgroundClick = shouldBackgroundClick
+        this.isModalPromoCodes = isModalPromoCodes
         notifyDataSetChanged()
     }
 
     inner class PromoCodesSaleViewHolder(
         val binding: ItemPromoCodeSaleBinding,
-        val onPromoCodeClick: (PromoCodeItemModel) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: PromoCodeItemModel) {
@@ -94,8 +96,8 @@ class PromoCodesAdapter(private val onPromoCodeClick: (PromoCodeItemModel) -> Un
                 titleText.insertDate(model.expiredAt, null)
                 titleTextView.text = titleText.replace("%@", "${model.discountInRubles} ₽")
                 durationTextView.text = duration
-                if (shouldBackgroundClick) {
-                    if (onPromoCode == model && onPromoCode != null) {
+                if (isModalPromoCodes) {
+                    if (onPromoCode == model && isSelectedPromoCode) {
                         promoCodeCheckedImageView.visible()
                         pictureFrameLayout.background = ContextCompat.getDrawable(
                             binding.root.context,
@@ -108,8 +110,7 @@ class PromoCodesAdapter(private val onPromoCodeClick: (PromoCodeItemModel) -> Un
                 }
 
                 root.setOnDebouncedClickListener {
-                    onPromoCode = model
-                    onPromoCodeClick(model)
+                    onClickedModelPromoCode(model)
                     notifyDataSetChanged()
                 }
             }
@@ -118,7 +119,6 @@ class PromoCodesAdapter(private val onPromoCodeClick: (PromoCodeItemModel) -> Un
 
     inner class PromoCodesPercentViewHolder(
         val binding: ItemPromoCodePercentBinding,
-        val onPromoCodeClick: (PromoCodeItemModel) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: PromoCodeItemModel) {
@@ -128,8 +128,8 @@ class PromoCodesAdapter(private val onPromoCodeClick: (PromoCodeItemModel) -> Un
                 subtitleTextView.text = model.code
                 titleTextView.text = titleText.replace("%@", "${model.discountInPercent}%")
                 durationTextView.text = duration
-                if (shouldBackgroundClick) {
-                    if (onPromoCode == model && onPromoCode != null) {
+                if (isModalPromoCodes) {
+                    if (onPromoCode == model && isSelectedPromoCode) {
                         promoCodeCheckedImageView.visible()
                         pictureFrameLayout.background = ContextCompat.getDrawable(
                             binding.root.context,
@@ -142,8 +142,7 @@ class PromoCodesAdapter(private val onPromoCodeClick: (PromoCodeItemModel) -> Un
                 }
 
                 root.setOnDebouncedClickListener {
-                    onPromoCode = model
-                    onPromoCodeClick(model)
+                    onClickedModelPromoCode(model)
                     notifyDataSetChanged()
                 }
             }
@@ -152,7 +151,6 @@ class PromoCodesAdapter(private val onPromoCodeClick: (PromoCodeItemModel) -> Un
 
     inner class PromoCodesServiceViewHolder(
         val binding: ItemPromoCodeServiceBinding,
-        val onPromoCodeClick: (PromoCodeItemModel) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: PromoCodeItemModel) {
@@ -160,11 +158,10 @@ class PromoCodesAdapter(private val onPromoCodeClick: (PromoCodeItemModel) -> Un
                 durationText.replace("%@", " ${model.expiredAt?.formatTo(DATE_PATTERN_DATE_ONLY)}")
             binding.apply {
                 subtitleTextView.text = model.code
-                titleTextView.text =
-                    TranslationInteractor.getTranslation("app.promo_codes.agent_code_adapter.add_title")
+                titleTextView.text = TranslationInteractor.getTranslation("app.promo_codes.agent_code_adapter.add_title")
                 durationTextView.text = duration
-                if (shouldBackgroundClick) {
-                    if (onPromoCode == model && onPromoCode != null) {
+                if (isModalPromoCodes) {
+                    if (onPromoCode == model && isSelectedPromoCode) {
                         promoCodeCheckedImageView.visible()
                         pictureFrameLayout.background = ContextCompat.getDrawable(
                             binding.root.context,
@@ -177,10 +174,31 @@ class PromoCodesAdapter(private val onPromoCodeClick: (PromoCodeItemModel) -> Un
                 }
 
                 root.setOnDebouncedClickListener {
-                    onPromoCode = model
-                    onPromoCodeClick(model)
+                    onClickedModelPromoCode(model)
                     notifyDataSetChanged()
                 }
+            }
+        }
+    }
+
+    private fun onClickedModelPromoCode(model: PromoCodeItemModel) {
+        if (!isModalPromoCodes) {
+            onPromoCodeClick(model)
+        } else {
+            if (onPromoCode == null && !isSelectedPromoCode) {
+                onPromoCodeClick(model)
+                onShowApplyButton(true)
+                onPromoCode = model
+                isSelectedPromoCode = true
+            } else if (onPromoCode == model && isSelectedPromoCode) {
+                onShowApplyButton(false)
+                onPromoCode = null
+                isSelectedPromoCode = false
+            } else if (onPromoCode != model && isSelectedPromoCode) {
+                onPromoCodeClick(model)
+                onShowApplyButton(true)
+                onPromoCode = model
+                isSelectedPromoCode = true
             }
         }
     }
