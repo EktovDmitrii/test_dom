@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.ui.promo_code.modal
 import android.os.Bundle
 import android.view.View
 import com.custom.rgs_android_dom.databinding.FragmentModalPromoCodesBinding
+import com.custom.rgs_android_dom.domain.promo_codes.model.PromoCodeItemModel
 import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.ui.constants.SIZE_FOR_FULL_SCREEN
@@ -17,11 +18,14 @@ class ModalPromoCodesFragment :
     companion object {
 
         private const val ARG_PURCHASE_SERVICE_MODEL = "ARG_PURCHASE_SERVICE_MODEL"
+        private const val ARG_PROMO_CODE_MODEL = "ARG_PROMO_CODE_MODEL"
 
         fun newInstance(
-            purchaseModel: PurchaseModel
+            purchaseModel: PurchaseModel,
+            promoCodeItemModel: PromoCodeItemModel?
         ) = ModalPromoCodesFragment().args {
             putSerializable(ARG_PURCHASE_SERVICE_MODEL, purchaseModel)
+            if (promoCodeItemModel != null) putSerializable(ARG_PROMO_CODE_MODEL, promoCodeItemModel)
         }
     }
 
@@ -38,6 +42,11 @@ class ModalPromoCodesFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val selectedPromoCodeItem =
+            if (requireArguments().containsKey(ARG_PROMO_CODE_MODEL)) requireArguments().getSerializable(
+                ARG_PROMO_CODE_MODEL
+            ) as PromoCodeItemModel else null
 
         binding.dataStateLayout.recyclerView.adapter = PromoCodesAdapter(
             onPromoCodeClick = { promoCodeModelClick ->
@@ -64,7 +73,7 @@ class ModalPromoCodesFragment :
             binding.emptyStateLayout.root.visibleIf(it.isEmpty())
             binding.addImageView.visibleIf(it.isNotEmpty())
             binding.dataStateLayout.root.visibleIf(it.isNotEmpty())
-            promoCodesAdapter.setItems(it, true)
+            promoCodesAdapter.setItems(it, true, selectedPromoCodeItem)
         }
     }
 }

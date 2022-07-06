@@ -55,7 +55,7 @@ class PromoCodeDialogViewModel(
         if (purchaseModel == null) {
             ScreenManager.showScreen(PromoCodesFragment())
         } else {
-            val modalPromoCodes = ModalPromoCodesFragment.newInstance(purchaseModel)
+            val modalPromoCodes = ModalPromoCodesFragment.newInstance(purchaseModel, null)
             modalPromoCodes.show(parentFragmentManager, modalPromoCodes.TAG)
         }
         close()

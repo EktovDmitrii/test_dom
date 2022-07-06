@@ -224,14 +224,15 @@ class PurchaseViewModel(
 
     fun onAddPromoCodeClick(childFragmentManager: FragmentManager) {
         purchaseController.value?.let {
-            val modalPromoCodes = ModalPromoCodesFragment.newInstance(it)
+            val modalPromoCodes = ModalPromoCodesFragment.newInstance(it, promoCodeItemModel)
             modalPromoCodes.show(childFragmentManager, modalPromoCodes.TAG)
         }
     }
 
     fun onDeletePromoCodeClick() {
-        hasPromoCodeController.value = null
         close()
+        val purchaseFragment = PurchaseFragment.newInstance(model, null)
+        ScreenManager.showBottomScreen(purchaseFragment)
     }
 
     fun updateAgentCode(code: String) {

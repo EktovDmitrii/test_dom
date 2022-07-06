@@ -36,7 +36,7 @@ class PromoCodesFragment :
         subscribe(viewModel.promoCodesObserver) {
             binding.emptyStateLayout.root.visibleIf(it.isEmpty())
             binding.dataStateLayout.root.visibleIf(it.isNotEmpty())
-            promoCodesAdapter.setItems(it, false)
+            promoCodesAdapter.setItems(it, false, null)
         }
     }
 

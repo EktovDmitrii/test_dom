@@ -111,7 +111,6 @@ object ScreenManager {
                 }
             }
         }
-
     }
 
     fun showScreenScope(fragment: BaseFragment<*, *>, scopeId: Int) {
@@ -201,7 +200,6 @@ object ScreenManager {
         } catch (e: Exception){
             logException(this, e)
         }
-
 
         reInit()
         notifyCurrentVisibleFragment()
@@ -317,5 +315,4 @@ object ScreenManager {
             fragmentsToRestore.clear()
         }
     }
-
 }
