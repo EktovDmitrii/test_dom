@@ -54,7 +54,7 @@ class OrdersViewModel(
     }
 
     fun onPayClick(purchaseModel: PurchaseModel) {
-        val purchaseFragment = PurchaseFragment.newInstance(purchaseModel, null)
+        val purchaseFragment = PurchaseFragment.newInstance(purchaseModel)
         ScreenManager.showBottomScreen(purchaseFragment)
     }
 

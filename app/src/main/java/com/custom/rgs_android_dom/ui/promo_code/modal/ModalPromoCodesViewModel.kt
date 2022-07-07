@@ -8,9 +8,7 @@ import com.custom.rgs_android_dom.domain.promo_codes.PromoCodesInteractor
 import com.custom.rgs_android_dom.domain.promo_codes.model.PromoCodeItemModel
 import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.promo_code.add_promo_code.AddPromoCodeFragment
-import com.custom.rgs_android_dom.ui.purchase.PurchaseFragment
 import com.custom.rgs_android_dom.utils.logException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -26,7 +24,6 @@ class ModalPromoCodesViewModel(
     private val promoCodesController = MutableLiveData<List<PromoCodeItemModel>>()
     val promoCodesObserver: LiveData<List<PromoCodeItemModel>> = promoCodesController
 
-    private val applyPromoCodeController = MutableLiveData<PromoCodeItemModel>()
     private val agentCodeController = MutableLiveData<Boolean>()
 
     init {
@@ -50,18 +47,6 @@ class ModalPromoCodesViewModel(
             emailBottomFragment.show(parentFragmentManager, emailBottomFragment.TAG)
             close()
         }
-    }
-
-    fun onApplyClick() {
-        applyPromoCodeController.value?.let {
-            val purchaseFragment = PurchaseFragment.newInstance(purchaseModel, it)
-            ScreenManager.showBottomScreen(purchaseFragment)
-        }
-        close()
-    }
-
-    fun saveApplyPromoCode(promoCodeModel: PromoCodeItemModel) {
-        applyPromoCodeController.value = promoCodeModel
     }
 
     private fun getAgent() {
