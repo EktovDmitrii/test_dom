@@ -64,9 +64,7 @@ class AddAgentFragment : BaseBottomSheetModalFragment<AddAgentViewModel, Fragmen
             dialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
             isKeyboardOpen = it
         }
-
     }
-
 }
 
 interface PurchaseAgentListener : Serializable {
