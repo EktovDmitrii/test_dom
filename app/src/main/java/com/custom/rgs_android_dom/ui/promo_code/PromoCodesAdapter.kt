@@ -21,6 +21,7 @@ class PromoCodesAdapter(
 
     private val promoCodes = mutableListOf<PromoCodeItemModel>()
     private var onPromoCode: PromoCodeItemModel? = null
+    private var selectedPromoCodeItem: PromoCodeItemModel? = null
     private var isSelectedPromoCode = false
     private var isModalPromoCodes = false
     private val durationText = TranslationInteractor.getTranslation("app.promo_codes.agent_code_adapter.add_duration")
@@ -75,10 +76,16 @@ class PromoCodesAdapter(
         }
     }
 
-    fun setItems(promoCodes: List<PromoCodeItemModel>, isModalPromoCodes: Boolean) {
+    fun setItems(
+        promoCodes: List<PromoCodeItemModel>,
+        isModalPromoCodes: Boolean,
+        selectedPromoCodeItem: PromoCodeItemModel?
+    ) {
         this.promoCodes.clear()
         this.promoCodes.addAll(promoCodes)
         this.isModalPromoCodes = isModalPromoCodes
+        this.selectedPromoCodeItem = selectedPromoCodeItem
+        if (selectedPromoCodeItem != null) onPromoCode = selectedPromoCodeItem
         notifyDataSetChanged()
     }
 
@@ -97,7 +104,7 @@ class PromoCodesAdapter(
                 titleTextView.text = titleText.replace("%@", "${model.discountInRubles} ₽")
                 durationTextView.text = duration
                 if (isModalPromoCodes) {
-                    if (onPromoCode == model && isSelectedPromoCode) {
+                    if (onPromoCode == model && isSelectedPromoCode || selectedPromoCodeItem != null && selectedPromoCodeItem == model) {
                         promoCodeCheckedImageView.visible()
                         pictureFrameLayout.background = ContextCompat.getDrawable(
                             binding.root.context,
@@ -129,7 +136,7 @@ class PromoCodesAdapter(
                 titleTextView.text = titleText.replace("%@", "${model.discountInPercent}%")
                 durationTextView.text = duration
                 if (isModalPromoCodes) {
-                    if (onPromoCode == model && isSelectedPromoCode) {
+                    if (onPromoCode == model && isSelectedPromoCode || selectedPromoCodeItem != null && selectedPromoCodeItem == model) {
                         promoCodeCheckedImageView.visible()
                         pictureFrameLayout.background = ContextCompat.getDrawable(
                             binding.root.context,
@@ -161,7 +168,7 @@ class PromoCodesAdapter(
                 titleTextView.text = TranslationInteractor.getTranslation("app.promo_codes.agent_code_adapter.add_title")
                 durationTextView.text = duration
                 if (isModalPromoCodes) {
-                    if (onPromoCode == model && isSelectedPromoCode) {
+                    if (onPromoCode == model && isSelectedPromoCode || selectedPromoCodeItem != null && selectedPromoCodeItem == model) {
                         promoCodeCheckedImageView.visible()
                         pictureFrameLayout.background = ContextCompat.getDrawable(
                             binding.root.context,
@@ -185,20 +192,40 @@ class PromoCodesAdapter(
         if (!isModalPromoCodes) {
             onPromoCodeClick(model)
         } else {
-            if (onPromoCode == null && !isSelectedPromoCode) {
-                onPromoCodeClick(model)
-                onShowApplyButton(true)
-                onPromoCode = model
-                isSelectedPromoCode = true
-            } else if (onPromoCode == model && isSelectedPromoCode) {
-                onShowApplyButton(false)
-                onPromoCode = null
-                isSelectedPromoCode = false
-            } else if (onPromoCode != model && isSelectedPromoCode) {
-                onPromoCodeClick(model)
-                onShowApplyButton(true)
-                onPromoCode = model
-                isSelectedPromoCode = true
+            when {
+                onPromoCode == null && !isSelectedPromoCode && selectedPromoCodeItem == null -> {
+                    onPromoCodeClick(model)
+                    onShowApplyButton(true)
+                    onPromoCode = model
+                    selectedPromoCodeItem = null
+                    isSelectedPromoCode = true
+                }
+                onPromoCode == model && isSelectedPromoCode && selectedPromoCodeItem == null -> {
+                    onShowApplyButton(false)
+                    onPromoCode = null
+                    selectedPromoCodeItem = null
+                    isSelectedPromoCode = false
+                }
+                onPromoCode != model && isSelectedPromoCode && selectedPromoCodeItem == null -> {
+                    onPromoCodeClick(model)
+                    onShowApplyButton(true)
+                    onPromoCode = model
+                    selectedPromoCodeItem = null
+                    isSelectedPromoCode = true
+                }
+                selectedPromoCodeItem != null && onPromoCode == model -> {
+                    onShowApplyButton(false)
+                    onPromoCode = null
+                    selectedPromoCodeItem = null
+                    isSelectedPromoCode = false
+                }
+                selectedPromoCodeItem != null && onPromoCode != model -> {
+                    onPromoCodeClick(model)
+                    onShowApplyButton(true)
+                    onPromoCode = model
+                    selectedPromoCodeItem = null
+                    isSelectedPromoCode = true
+                }
             }
         }
     }

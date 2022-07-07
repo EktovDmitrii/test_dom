@@ -224,7 +224,7 @@ class PurchaseViewModel(
 
     fun onAddPromoCodeClick(childFragmentManager: FragmentManager) {
         purchaseController.value?.let {
-            val modalPromoCodes = ModalPromoCodesFragment.newInstance(it)
+            val modalPromoCodes = ModalPromoCodesFragment.newInstance(it, hasPromoCodeController.value)
             modalPromoCodes.show(childFragmentManager, modalPromoCodes.TAG)
         }
     }
