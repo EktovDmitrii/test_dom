@@ -56,17 +56,7 @@ class PurchaseViewModel(
     val showDiscountLayoutObserver: LiveData<Boolean> = showDiscountLayoutController
 
     init {
-        clientInteractor.getClient()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onSuccess = {
-                    hasCodeAgentController.value = it.hasAgentInfo
-                },
-                onError = {
-                    logException(this, it)
-                }
-            ).addTo(dataCompositeDisposable)
+        checkAgentCode()
 
         clientInteractor.getPersonalData()
             .subscribeOn(Schedulers.io())
@@ -103,6 +93,20 @@ class PurchaseViewModel(
             .subscribeBy(
                 onNext = {
                     close()
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+    }
+
+    fun checkAgentCode() {
+        clientInteractor.getClient()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    hasCodeAgentController.value = it.hasAgentInfo
                 },
                 onError = {
                     logException(this, it)

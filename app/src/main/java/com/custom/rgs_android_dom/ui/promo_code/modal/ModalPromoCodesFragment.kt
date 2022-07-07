@@ -86,6 +86,10 @@ class ModalPromoCodesFragment :
             }
         }
 
+        subscribe(viewModel.agentCodeObserver) {
+            purchasePromoCodeListener?.onAgentCode(it)
+        }
+
         subscribe(viewModel.promoCodesObserver) {
             isFullScreenClick = it.size > SIZE_FOR_FULL_SCREEN
             binding.emptyStateLayout.root.visibleIf(it.isEmpty())
@@ -97,5 +101,6 @@ class ModalPromoCodesFragment :
 
     interface PurchasePromoCodeListener : Serializable {
         fun onSavePromoCodeClick(promoCode: PromoCodeItemModel)
+        fun onAgentCode(isAgentCode: Boolean)
     }
 }
