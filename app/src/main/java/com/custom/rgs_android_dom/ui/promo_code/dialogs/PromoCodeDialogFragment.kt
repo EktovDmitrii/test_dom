@@ -1,7 +1,9 @@
 package com.custom.rgs_android_dom.ui.promo_code.dialogs
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import com.custom.rgs_android_dom.databinding.FragmentPromoCodeDialogsBinding
 import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
 import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
@@ -12,9 +14,9 @@ import com.custom.rgs_android_dom.ui.constants.SERVICE_PROMO_CODE
 import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
+import java.io.Serializable
 
-class PromoCodeDialogFragment :
-    BaseBottomSheetModalFragment<PromoCodeDialogViewModel, FragmentPromoCodeDialogsBinding>() {
+class PromoCodeDialogFragment : BaseBottomSheetModalFragment<PromoCodeDialogViewModel, FragmentPromoCodeDialogsBinding>(){
 
     companion object {
 
@@ -34,6 +36,10 @@ class PromoCodeDialogFragment :
             }
     }
 
+    private var promoCodesListener: PromoCodesListener? = null
+
+    override val TAG: String = "PROMO_CODE_DIALOGS_FRAGMENT"
+
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
             requireArguments().getString(KEY_PROMO_CODE_ID),
@@ -44,7 +50,16 @@ class PromoCodeDialogFragment :
         )
     }
 
-    override val TAG: String = "PROMO_CODE_DIALOGS_FRAGMENT"
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        if (parentFragment is PromoCodesListener) {
+           promoCodesListener = parentFragment as PromoCodesListener
+        }
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -74,6 +89,10 @@ class PromoCodeDialogFragment :
         } else {
             binding.bindPolicySuccessLayout.understandTextView.text =
                 TranslationInteractor.getTranslation("app.promo_codes.search_promo_codes.result_view.confirm_button")
+        }
+
+        subscribe(viewModel.getPromoCodesObserver) {
+            promoCodesListener?.onGetNewPromoCodesList(it)
         }
 
         subscribe(viewModel.promoCodesObserver) { model ->
@@ -117,5 +136,9 @@ class PromoCodeDialogFragment :
             binding.bindPolicyFailureLayout.root.visibleIf(it == BaseViewModel.LoadingState.ERROR)
             binding.bindPolicySuccessLayout.root.visibleIf(it == BaseViewModel.LoadingState.CONTENT)
         }
+    }
+
+    interface PromoCodesListener : Serializable {
+        fun onGetNewPromoCodesList(isLoadingList: Boolean)
     }
 }
