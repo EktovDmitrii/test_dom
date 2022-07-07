@@ -11,3 +11,4 @@ const val SERVICE_PROMO_CODE = "product"
 const val ZERO_COST_ORDER = "0 ₽"
 const val LENGTH_PROMO_CODE = 3
 const val SIZE_FOR_FULL_SCREEN = 2
+const val VIEW_ROOT_HEIGHT = 1500
