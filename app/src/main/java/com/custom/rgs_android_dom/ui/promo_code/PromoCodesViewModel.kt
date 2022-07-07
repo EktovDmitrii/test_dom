@@ -29,7 +29,10 @@ class PromoCodesViewModel(
 
     init {
         getAgent()
+        getPromoCodes()
+    }
 
+    fun getPromoCodes() {
         promoCodesInteractor.getPromoCodes()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

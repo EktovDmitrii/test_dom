@@ -22,6 +22,7 @@ import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
 import com.custom.rgs_android_dom.ui.constants.PERCENT_PROMO_CODE
 import com.custom.rgs_android_dom.ui.constants.SALE_PROMO_CODE
 import com.custom.rgs_android_dom.ui.constants.ZERO_COST_ORDER
+import com.custom.rgs_android_dom.ui.promo_code.modal.ModalPromoCodesFragment
 import com.custom.rgs_android_dom.ui.purchase.add.agent.AddAgentFragment
 import com.custom.rgs_android_dom.ui.purchase.add.agent.PurchaseAgentListener
 import com.custom.rgs_android_dom.ui.purchase.add.comment.PurchaseCommentListener
@@ -41,20 +42,16 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
     PurchaseEmailListener,
     SelectCardFragment.PurchaseCardListener,
     PurchaseAgentListener,
-    ConfirmBottomSheetFragment.ConfirmListener {
+    ConfirmBottomSheetFragment.ConfirmListener,
+    ModalPromoCodesFragment.PurchasePromoCodeListener {
 
     companion object {
 
         private const val ARG_PURCHASE_SERVICE_MODEL = "ARG_PURCHASE_SERVICE_MODEL"
-        private const val ARG_PROMO_CODE_MODEL = "ARG_PROMO_CODE_MODEL"
 
-        fun newInstance(
-            purchaseModel: PurchaseModel,
-            promoCodeItemModel: PromoCodeItemModel?
-        ): PurchaseFragment {
+        fun newInstance(purchaseModel: PurchaseModel): PurchaseFragment {
             return PurchaseFragment().args {
                 putSerializable(ARG_PURCHASE_SERVICE_MODEL, purchaseModel)
-                if (promoCodeItemModel != null) putSerializable(ARG_PROMO_CODE_MODEL, promoCodeItemModel)
             }
         }
     }
@@ -63,10 +60,7 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
-            requireArguments().getSerializable(ARG_PURCHASE_SERVICE_MODEL) as PurchaseModel,
-            if (requireArguments().containsKey(ARG_PROMO_CODE_MODEL)) requireArguments().getSerializable(
-                ARG_PROMO_CODE_MODEL
-            ) as PromoCodeItemModel else null
+            requireArguments().getSerializable(ARG_PURCHASE_SERVICE_MODEL) as PurchaseModel
         )
     }
 
@@ -122,24 +116,57 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
         }
 
         binding.layoutIncludedPromoCode.deletePromoCodeImageView.setOnDebouncedClickListener {
-           viewModel.onDeletePromoCodeClick()
+            viewModel.onDeletePromoCodeClick()
+            binding.layoutIncludedPromoCode.errorTextView.gone()
         }
 
         subscribe(viewModel.hasPromoCodeObserver) { promoCodeModel ->
             if (promoCodeModel != null) {
+                val purchaseModelPrice = viewModel.purchaseObserver.value?.price
                 viewModel.checkPromoCode()
-                binding.layoutIncludedPromoCode.root.setMargins(bottom = 200)
+                binding.makeOrderButton.root.background = ContextCompat.getDrawable(requireContext(), R.drawable.rectangle_filled_white_top_radius_24dp)
+                binding.makeOrderButton.sumCostTextView.text = purchaseModelPrice?.amount?.formatPrice(isFixed = purchaseModelPrice.fix)
+                binding.layoutIncludedPromoCode.labeledPromoCodeTextView.text = promoCodeModel.code
+
+                purchaseModelPrice?.amount?.let { amount ->
+                    when (promoCodeModel.type) {
+                        SALE_PROMO_CODE -> {
+                            binding.makeOrderButton.discountTextView.text = discountText.replace("%@", "${promoCodeModel.discountInRubles / 100}₽")
+                            binding.makeOrderButton.sumDiscountTextView.text = "-${(promoCodeModel.discountInRubles).formatPrice()}"
+                            val resultCost = amount - (promoCodeModel.discountInRubles)
+                            binding.makeOrderButton.resultSumTextView.text = if (resultCost < 0) ZERO_COST_ORDER else resultCost.formatPrice(isFixed = purchaseModelPrice.fix)
+                            binding.makeOrderButton.btnPrice.text = if (resultCost < 0) ZERO_COST_ORDER else resultCost.formatPrice(isFixed = purchaseModelPrice.fix)
+                        }
+                        PERCENT_PROMO_CODE -> {
+                            binding.makeOrderButton.discountTextView.text = discountText.replace("%@", "${promoCodeModel.discountInPercent}%")
+                            val resultDiscountIn = ((promoCodeModel.discountInPercent.toDouble() / 100.toDouble()) * amount.toDouble()).toInt()
+                            val resultCost = amount - resultDiscountIn
+                            binding.makeOrderButton.sumDiscountTextView.text = "-${resultDiscountIn.formatPrice()}"
+                            binding.makeOrderButton.resultSumTextView.text = resultCost.formatPrice(isFixed = purchaseModelPrice.fix)
+                            binding.makeOrderButton.btnPrice.text = resultCost.formatPrice(isFixed = purchaseModelPrice.fix)
+                        }
+                    }
+                }
             }
-            binding.makeOrderButton.discountLayout.visibleIf(promoCodeModel != null)
+        }
+
+        subscribe(viewModel.showDiscountLayoutObserver) { showDiscountLayout ->
+            if (showDiscountLayout) {
+                binding.layoutIncludedPromoCode.root.setMargins(bottom = 200)
+            } else {
+                binding.layoutIncludedPromoCode.root.setMargins(bottom = 0)
+            }
+            binding.layoutIncludedPromoCode.promoCodeTextView.goneIf(showDiscountLayout)
+            binding.layoutIncludedPromoCode.selectedPromoCodeTextView.goneIf(!showDiscountLayout)
+            binding.makeOrderButton.discountLayout.visibleIf(showDiscountLayout)
             binding.layoutIncludedPromoCode.apply {
-                arrowPromoCodeImageView.visibleIf(promoCodeModel == null)
-                deletePromoCodeImageView.visibleIf(promoCodeModel != null)
-                labeledPromoCodeTextView.visibleIf(promoCodeModel != null)
+                arrowPromoCodeImageView.visibleIf(!showDiscountLayout)
+                deletePromoCodeImageView.visibleIf(showDiscountLayout)
+                labeledPromoCodeTextView.visibleIf(showDiscountLayout)
             }
         }
 
         subscribe(viewModel.purchaseObserver) { purchase ->
-
             binding.makeOrderButton.btnTitle.text = if (purchase.defaultProduct) {
                 TranslationInteractor.getTranslation("app.product_cards.service_detail_view.buy_button_order")
             } else {
@@ -169,34 +196,8 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
             }
 
             purchase.price?.amount?.let { amount ->
-                val promoCodeItemModel = viewModel.hasPromoCodeObserver.value
                 binding.makeOrderButton.btnPrice.text = amount.formatPrice(isFixed = purchase.price.fix)
                 binding.layoutPurchaseServiceHeader.priceTextView.text = amount.formatPrice(isFixed = purchase.price.fix)
-                if (promoCodeItemModel != null) {
-                    binding.makeOrderButton.root.background = ContextCompat.getDrawable(requireContext(), R.drawable.rectangle_filled_white_top_radius_24dp)
-                    binding.makeOrderButton.sumCostTextView.text = amount.formatPrice(isFixed = purchase.price.fix)
-                    binding.layoutIncludedPromoCode.promoCodeTextView.gone()
-                    binding.layoutIncludedPromoCode.selectedPromoCodeTextView.visible()
-                    binding.layoutIncludedPromoCode.labeledPromoCodeTextView.text = promoCodeItemModel.code
-
-                    when (promoCodeItemModel.type) {
-                        SALE_PROMO_CODE -> {
-                            binding.makeOrderButton.discountTextView.text = discountText.replace("%@", "${promoCodeItemModel.discountInRubles}₽")
-                            binding.makeOrderButton.sumDiscountTextView.text = "-${(promoCodeItemModel.discountInRubles).formatPrice()}"
-                            val resultCost = amount - (promoCodeItemModel.discountInRubles)
-                            binding.makeOrderButton.resultSumTextView.text = if (resultCost < 0 ) ZERO_COST_ORDER else resultCost.formatPrice(isFixed = purchase.price.fix)
-                            binding.makeOrderButton.btnPrice.text = if (resultCost < 0 ) ZERO_COST_ORDER else resultCost.formatPrice(isFixed = purchase.price.fix)
-                        }
-                        PERCENT_PROMO_CODE -> {
-                            binding.makeOrderButton.discountTextView.text = discountText.replace("%@", "${promoCodeItemModel.discountInPercent}%")
-                            val resultDiscountIn = ((promoCodeItemModel.discountInPercent.toDouble() / 100.toDouble()) * amount.toDouble()).toInt()
-                            val resultCost = amount - resultDiscountIn
-                            binding.makeOrderButton.sumDiscountTextView.text = "-${resultDiscountIn.formatPrice()}"
-                            binding.makeOrderButton.resultSumTextView.text = resultCost.formatPrice(isFixed = purchase.price.fix)
-                            binding.makeOrderButton.btnPrice.text = resultCost.formatPrice(isFixed = purchase.price.fix)
-                        }
-                    }
-                }
             }
 
             purchase.email?.let { email ->
@@ -322,6 +323,10 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
             YandexMetrica.reportEvent("service_order_progress_payment_method")
         else
             YandexMetrica.reportEvent("product_order_progress_payment_method")
+    }
+
+    override fun onSavePromoCodeClick(promoCode: PromoCodeItemModel) {
+        viewModel.updatePromoCode(promoCode)
     }
 
     override fun onSaveCodeError() {
