@@ -133,8 +133,8 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
                 purchaseModelPrice?.amount?.let { amount ->
                     when (promoCodeModel.type) {
                         SALE_PROMO_CODE -> {
-                            binding.makeOrderButton.discountTextView.text = discountText.replace("%@", "${promoCodeModel.discountInRubles / 100}₽")
-                            binding.makeOrderButton.sumDiscountTextView.text = "-${(promoCodeModel.discountInRubles).formatPrice()}"
+                            binding.makeOrderButton.discountTextView.text = discountText.replace("%@", promoCodeModel.discountInRubles.formatPrice())
+                            binding.makeOrderButton.sumDiscountTextView.text = "-${promoCodeModel.discountInRubles.formatPrice()}"
                             val resultCost = amount - (promoCodeModel.discountInRubles)
                             binding.makeOrderButton.resultSumTextView.text = if (resultCost < 0) ZERO_COST_ORDER else resultCost.formatPrice(isFixed = purchaseModelPrice.fix)
                             binding.makeOrderButton.btnPrice.text = if (resultCost < 0) ZERO_COST_ORDER else resultCost.formatPrice(isFixed = purchaseModelPrice.fix)

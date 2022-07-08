@@ -101,7 +101,7 @@ class PromoCodesAdapter(
                     " ${model.expiredAt?.formatTo(DATE_PATTERN_DATE_ONLY)}"
                 )
                 titleText.insertDate(model.expiredAt, null)
-                titleTextView.text = titleText.replace("%@", "${model.discountInRubles} ₽")
+                titleTextView.text = titleText.replace("%@", model.discountInRubles.formatPrice())
                 durationTextView.text = duration
                 if (isModalPromoCodes) {
                     if (onPromoCode == model && isSelectedPromoCode || selectedPromoCodeItem != null && selectedPromoCodeItem == model) {
