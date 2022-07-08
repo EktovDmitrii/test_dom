@@ -24,7 +24,6 @@ import com.custom.rgs_android_dom.ui.constants.SALE_PROMO_CODE
 import com.custom.rgs_android_dom.ui.constants.ZERO_COST_ORDER
 import com.custom.rgs_android_dom.ui.promo_code.modal.ModalPromoCodesFragment
 import com.custom.rgs_android_dom.ui.purchase.add.agent.AddAgentFragment
-import com.custom.rgs_android_dom.ui.purchase.add.agent.PurchaseAgentListener
 import com.custom.rgs_android_dom.ui.purchase.add.comment.PurchaseCommentListener
 import com.custom.rgs_android_dom.ui.purchase.add.email.PurchaseEmailListener
 import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressListener
@@ -41,7 +40,7 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
     PurchaseDateTimeFragment.PurchaseDateTimeListener,
     PurchaseEmailListener,
     SelectCardFragment.PurchaseCardListener,
-    PurchaseAgentListener,
+    AddAgentFragment.PurchaseAgentListener,
     ConfirmBottomSheetFragment.ConfirmListener,
     ModalPromoCodesFragment.PurchasePromoCodeListener {
 
@@ -103,7 +102,7 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
             YandexMetrica.reportEvent("product_order_progress_email")
         }
 
-        binding.layoutCodeAgent.root.setOnDebouncedClickListener {
+        binding.layoutIncludedPromoCode.codeAgentLinearLayout.setOnDebouncedClickListener {
             viewModel.onCodeAgentClick(childFragmentManager)
         }
 
@@ -173,6 +172,9 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
                 TranslationInteractor.getTranslation("app.product_cards.service_detail_view.buy_button_arrange")
             }
 
+            binding.layoutIncludedPromoCode.codeAgentTextView.goneIf(purchase.agentCode != null)
+            binding.layoutIncludedPromoCode.selectedCodeAgentTextView.goneIf(purchase.agentCode == null)
+
             GlideApp.with(requireContext())
                 .load(GlideUrlProvider.makeHeadersGlideUrl(purchase.logoSmall))
                 .transform(RoundedCorners(20.dp(requireContext())))
@@ -206,8 +208,7 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
             }
 
             purchase.agentCode?.let { code ->
-                binding.layoutCodeAgent.codeAgentTextView.text = code
-                binding.layoutCodeAgent.codeAgentTextView.typeface = ResourcesCompat.getFont(requireContext(), R.font.suisse_semi_bold)
+                binding.layoutIncludedPromoCode.selectedCodeAgentTextView.text = code
             }
 
             purchase.card?.let { card ->
@@ -271,7 +272,8 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
         }
 
         subscribe(viewModel.hasCodeAgentObserver) {
-            binding.layoutCodeAgent.root.goneIf(it)
+            binding.layoutIncludedPromoCode.codeAgentLinearLayout.goneIf(it)
+            binding.layoutIncludedPromoCode.dividerCodeAgentView.goneIf(it)
         }
 
         subscribe(viewModel.isEnableButtonObserver) { isEnable ->
@@ -329,15 +331,8 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
         viewModel.updatePromoCode(promoCode)
     }
 
-    override fun onSaveCodeError() {
-        val confirmDialog = ConfirmBottomSheetFragment.newInstance(
-            icon = R.drawable.ic_broken_egg,
-            title = "Невозможно обработать",
-            description = "К сожалению, мы не смогли найти и привязать код агента. Пожалуйста, попробуйте еще раз",
-            confirmText = "Попробовать ещё раз",
-            cancelText = "Нет, спасибо"
-        )
-        confirmDialog.show(childFragmentManager, ConfirmBottomSheetFragment.TAG)
+    override fun onAgentCode(isAgentCode: Boolean) {
+        if (isAgentCode) viewModel.checkAgentCode()
     }
 
     override fun onSaveCodeSuccess(code: String) {

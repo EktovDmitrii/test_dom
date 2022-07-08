@@ -89,12 +89,12 @@ class ClientRepositoryImpl(
             if (agents.isNotEmpty()) {
                 val agent = ClientMapper.responseToAgent(agents[0])
                 client.agent = agent
-                val cachedClient = clientSharedPreferences.getClient()
-                if (cachedClient != null && cachedClient != client || cachedClient == null) {
-                    clientSharedPreferences.saveClient(client)
-                    clientSharedPreferences.saveAgent(agent)
-                    clientUpdatedSubject.onNext(client)
-                }
+                clientSharedPreferences.saveAgent(agent)
+            }
+            val cachedClient = clientSharedPreferences.getClient()
+            if (cachedClient != null && cachedClient != client || cachedClient == null) {
+                clientSharedPreferences.saveClient(client)
+                clientUpdatedSubject.onNext(client)
             }
             return@flatMapCompletable Completable.complete()
         }
