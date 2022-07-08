@@ -2,9 +2,11 @@ package com.custom.rgs_android_dom.ui.promo_code
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewTreeObserver
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentPromoCodesBinding
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.constants.VIEW_ROOT_HEIGHT
 import com.custom.rgs_android_dom.ui.promo_code.dialogs.PromoCodeDialogFragment
 import com.custom.rgs_android_dom.utils.*
 
@@ -18,7 +20,13 @@ class PromoCodesFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.root.viewTreeObserver.addOnGlobalLayoutListener(softwareKeyboardListener(binding.root))
+        val keyboardListener = ViewTreeObserver.OnGlobalLayoutListener {
+            if (binding.root.height < VIEW_ROOT_HEIGHT) {
+                hideSoftwareKeyboard()
+            }
+        }
+
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener(keyboardListener)
 
         binding.dataStateLayout.recyclerView.adapter = PromoCodesAdapter(
             onPromoCodeClick = { viewModel.onItemClick(it, childFragmentManager) },
@@ -26,7 +34,7 @@ class PromoCodesFragment :
         )
 
         binding.backImageView.setOnDebouncedClickListener {
-            binding.root.viewTreeObserver.removeOnGlobalLayoutListener(softwareKeyboardListener(binding.root))
+            binding.root.viewTreeObserver.removeOnGlobalLayoutListener(keyboardListener)
             viewModel.onBackClick()
         }
 

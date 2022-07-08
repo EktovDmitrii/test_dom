@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -17,21 +16,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import com.custom.rgs_android_dom.databinding.ItemPopupBinding
-import com.custom.rgs_android_dom.ui.constants.VIEW_ROOT_HEIGHT
 import com.custom.rgs_android_dom.utils.activity.hideSoftwareKeyboard
 import com.custom.rgs_android_dom.utils.activity.showKeyboard
 import com.custom.rgs_android_dom.utils.activity.showKeyboardForced
 import com.custom.rgs_android_dom.utils.activity.toast
 import org.joda.time.LocalDate
 import java.util.*
-
-fun Fragment.softwareKeyboardListener(view: View): ViewTreeObserver.OnGlobalLayoutListener {
-    return ViewTreeObserver.OnGlobalLayoutListener {
-        if (view.height < VIEW_ROOT_HEIGHT) {
-            hideSoftwareKeyboard()
-        }
-    }
-}
 
 fun Fragment.showSoftwareKeyboard(view: View) {
     activity?.showKeyboard(view)
