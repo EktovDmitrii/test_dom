@@ -1,7 +1,6 @@
 package com.custom.rgs_android_dom.utils
 
 import android.app.DatePickerDialog
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -9,23 +8,30 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.custom.rgs_android_dom.databinding.ItemPopupBinding
+import com.custom.rgs_android_dom.ui.constants.VIEW_ROOT_HEIGHT
 import com.custom.rgs_android_dom.utils.activity.hideSoftwareKeyboard
 import com.custom.rgs_android_dom.utils.activity.showKeyboard
 import com.custom.rgs_android_dom.utils.activity.showKeyboardForced
 import com.custom.rgs_android_dom.utils.activity.toast
 import org.joda.time.LocalDate
 import java.util.*
+
+fun Fragment.softwareKeyboardListener(view: View): ViewTreeObserver.OnGlobalLayoutListener {
+    return ViewTreeObserver.OnGlobalLayoutListener {
+        if (view.height < VIEW_ROOT_HEIGHT) {
+            hideSoftwareKeyboard()
+        }
+    }
+}
 
 fun Fragment.showSoftwareKeyboard(view: View) {
     activity?.showKeyboard(view)
@@ -40,7 +46,7 @@ fun Fragment.hideSoftwareKeyboard() {
 }
 
 fun Fragment.hideSoftwareKeyboard(removeCurrentFocus: Boolean) {
-    if (removeCurrentFocus){
+    if (removeCurrentFocus) {
         requireActivity().currentFocus?.clearFocus()
     }
     requireActivity().hideSoftwareKeyboard()
@@ -71,7 +77,7 @@ fun Fragment.showDatePicker(
     onDateSelect: (LocalDate) -> Unit = {},
 ) {
     val calendar = Calendar.getInstance()
-    if (date != null){
+    if (date != null) {
         calendar.time = date
     }
     val dialog = DatePickerDialog(
@@ -82,37 +88,40 @@ fun Fragment.showDatePicker(
             newCalendar.set(year, month, day)
             onDateSelect(LocalDate(newCalendar.time))
 
-        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
+        },
+        calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH)
     )
 
-    if (title != null){
+    if (title != null) {
         dialog.setTitle(title)
     }
-    if (minDate != null){
+    if (minDate != null) {
         dialog.datePicker.minDate = minDate.time
     }
-    if (maxDate != null){
+    if (maxDate != null) {
         dialog.datePicker.maxDate = maxDate.time
     }
 
     dialog.show()
 }
 
-fun Fragment.setStatusBarColor(colorRes: Int){
+fun Fragment.setStatusBarColor(colorRes: Int) {
     requireActivity().window.statusBarColor = resources.getColor(colorRes, requireActivity().theme)
 }
 
-fun Fragment.openUrl(url: String){
-    try{
+fun Fragment.openUrl(url: String) {
+    try {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(url)
         startActivity(requireActivity(), intent, null)
-    } catch (e: Exception){
+    } catch (e: Exception) {
         logException(this, e)
     }
 }
 
-fun Fragment.notification(message: String, duration: Long = 2000){
+fun Fragment.notification(message: String, duration: Long = 2000) {
     val popupBinding = ItemPopupBinding.inflate(LayoutInflater.from(requireContext()), null, false)
     popupBinding.messageTextView.text = message
 

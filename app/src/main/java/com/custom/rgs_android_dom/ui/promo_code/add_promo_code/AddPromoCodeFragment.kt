@@ -6,7 +6,6 @@ import com.custom.rgs_android_dom.databinding.FragmentAddPromoCodeBinding
 import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.ui.constants.LENGTH_PROMO_CODE
-import com.custom.rgs_android_dom.utils.activity.hideKeyboardForced
 import com.custom.rgs_android_dom.utils.args
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
@@ -61,10 +60,5 @@ class AddPromoCodeFragment :
             binding.promoCodeDialogButton.isEnabled = it.isNotEmpty() && it.length >= LENGTH_PROMO_CODE
             binding.agentPromoCodeButton.isEnabled = it.isNotEmpty() && it.length >= LENGTH_PROMO_CODE
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        requireActivity().hideKeyboardForced()
     }
 }

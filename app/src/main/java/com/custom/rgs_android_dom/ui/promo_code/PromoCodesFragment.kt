@@ -18,12 +18,15 @@ class PromoCodesFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener(softwareKeyboardListener(binding.root))
+
         binding.dataStateLayout.recyclerView.adapter = PromoCodesAdapter(
             onPromoCodeClick = { viewModel.onItemClick(it, childFragmentManager) },
             onShowApplyButton = {}
         )
 
         binding.backImageView.setOnDebouncedClickListener {
+            binding.root.viewTreeObserver.removeOnGlobalLayoutListener(softwareKeyboardListener(binding.root))
             viewModel.onBackClick()
         }
 
