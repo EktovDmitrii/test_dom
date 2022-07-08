@@ -34,8 +34,6 @@ import com.custom.rgs_android_dom.ui.managers.MediaOutputManager
 import com.custom.rgs_android_dom.ui.navigation.TargetScreen
 import com.custom.rgs_android_dom.utils.logException
 import com.custom.rgs_android_dom.views.NavigationScope
-import com.google.firebase.installations.FirebaseInstallations
-import com.google.firebase.messaging.FirebaseMessaging
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -319,7 +317,7 @@ class RootViewModel(
 
     private fun checkSignedAgreement(){
         if (registrationInteractor.isAuthorized()){
-            clientInteractor.getClient()
+            clientInteractor.loadAndSaveClient().andThen(clientInteractor.getClient())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(

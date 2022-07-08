@@ -25,6 +25,7 @@ class ModalPromoCodesViewModel(
     val promoCodesObserver: LiveData<List<PromoCodeItemModel>> = promoCodesController
 
     private val agentCodeController = MutableLiveData<Boolean>()
+    val agentCodeObserver: LiveData<Boolean> = agentCodeController
 
     init {
         getAgent()

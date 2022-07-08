@@ -203,10 +203,10 @@ ClientInteractor(
     }
 
     fun onAgentCodeChanged(agentCode: String) {
-        if (agentCode.isEmpty()) {
-            fillClientViewState = fillClientViewState.copy(agentCode = null)
+        fillClientViewState = if (agentCode.isEmpty()) {
+            fillClientViewState.copy(agentCode = null)
         } else {
-            fillClientViewState = fillClientViewState.copy(agentCode = agentCode)
+            fillClientViewState.copy(agentCode = agentCode)
         }
         validateProfileState()
     }

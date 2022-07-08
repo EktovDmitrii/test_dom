@@ -9,6 +9,7 @@ import com.custom.rgs_android_dom.domain.client.exceptions.SpecificValidateClien
 import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
 import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
+import com.custom.rgs_android_dom.ui.constants.ERR_AGENT_NOT_FOUND
 import com.custom.rgs_android_dom.ui.promo_code.add_promo_code.AddPromoCodeFragment
 import com.custom.rgs_android_dom.ui.promo_code.dialogs.PromoCodeDialogFragment
 import com.custom.rgs_android_dom.utils.logException
@@ -23,10 +24,6 @@ class AddAgentPromoCodeViewModel(
     private val purchaseModel: PurchaseModel?,
     private val clientInteractor: ClientInteractor
 ) : BaseViewModel() {
-
-    companion object {
-        private const val ERR_AGENT_NOT_FOUND = "INS-093"
-    }
 
     private val isSaveTextViewEnabledController = MutableLiveData<Boolean>()
     val isSaveTextViewEnabledObserver: LiveData<Boolean> = isSaveTextViewEnabledController

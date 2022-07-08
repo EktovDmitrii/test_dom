@@ -7,6 +7,7 @@ import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.utils.args
+import com.custom.rgs_android_dom.utils.expand
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
 import com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
@@ -49,6 +50,8 @@ class AddAgentPromoCodeFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        expand()
 
         binding.backImageView.setOnDebouncedClickListener {
             viewModel.onBackClick(parentFragmentManager)
