@@ -1,18 +1,12 @@
 package com.custom.rgs_android_dom.ui.client.personal_data.delete_client
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
-import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentDeleteClientBinding
-import com.custom.rgs_android_dom.databinding.FragmentRequestEditAgentBinding
 import com.custom.rgs_android_dom.domain.client.models.Order
 import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
-import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
-import com.custom.rgs_android_dom.ui.client.orders.OrdersAdapter
 import com.custom.rgs_android_dom.utils.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -83,7 +77,6 @@ class DeleteClientFragment() : BaseBottomSheetModalFragment<DeleteClientViewMode
     }
 
     override fun onClose() {
-        Log.d("MyLog", "On close call")
         hideSoftwareKeyboard()
         dismissAllowingStateLoss()
     }
