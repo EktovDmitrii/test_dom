@@ -76,11 +76,6 @@
                     layout="@layout/layout_purchase_email" />
 
                 <include
-                    android:id="@+id/layoutCodeAgent"
-                    layout="@layout/layout_purchase_agent_code"
-                    android:visibility="gone" />
-
-                <include
                     android:id="@+id/layoutIncludedPromoCode"
                     layout="@layout/layout_service_order_promo_code" />
 

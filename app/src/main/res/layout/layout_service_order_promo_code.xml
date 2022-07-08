@@ -18,6 +18,66 @@
         app:translationTextKey="app.product.purchase.select_promo_code_title" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/codeAgentLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:srcCompat="@drawable/ic_agent_black" />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/codeAgentTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/suisse_regular"
+            android:textColor="@color/secondary800"
+            android:textSize="16sp"
+            android:visibility="visible"
+            app:translationTextKey="Я знаю код агента" />
+
+        <com.custom.rgs_android_dom.views.text.MSDTextView
+            android:id="@+id/selectedCodeAgentTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/suisse_bold"
+            android:textColor="@color/secondary800"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:translationTextKey="99999" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/arrowCodeAgentImageView"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="end|center"
+                android:tint="@color/secondary400"
+                app:srcCompat="@drawable/ic_arrow_right_24px" />
+
+        </FrameLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <View
+        android:id="@+id/dividerCodeAgentView"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="@dimen/material_margin_normal"
+        android:background="@color/secondary200"
+        android:visibility="gone" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/promoCodeLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

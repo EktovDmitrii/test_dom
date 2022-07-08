@@ -5,12 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.custom.rgs_android_dom.databinding.FragmentAddAgentBinding
+import com.custom.rgs_android_dom.domain.client.exceptions.ClientField
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.utils.expand
 import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
 import com.custom.rgs_android_dom.utils.subscribe
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.custom.rgs_android_dom.views.edit_text.MSDLabelEditText
+import com.custom.rgs_android_dom.views.edit_text.MSDMaskedLabelEditText
 import java.io.Serializable
 
 class AddAgentFragment : BaseBottomSheetModalFragment<AddAgentViewModel, FragmentAddAgentBinding>() {
@@ -34,42 +35,54 @@ class AddAgentFragment : BaseBottomSheetModalFragment<AddAgentViewModel, Fragmen
 
         expand()
 
-        binding.agentCodeEditText.addTextWatcher { code ->
-            viewModel.onAgentCodeChanged(code.trim())
+        binding.saveButton.setOnDebouncedClickListener {
+            viewModel.onSaveClick()
+        }
+
+        binding.agentCodeEditText.addTextWatcher {
+            viewModel.onAgentCodeChanged(it)
+            binding.agentCodeEditText.setState(MSDLabelEditText.State.NORMAL)
         }
 
         binding.agentPhoneEditText.addOnTextChangedListener { phone, isMaskFilled ->
             viewModel.onAgentPhoneChanged(phone, isMaskFilled)
+            binding.agentPhoneEditText.setState(MSDMaskedLabelEditText.State.NORMAL)
         }
 
-        binding.saveButton.setOnDebouncedClickListener {
-            viewModel.onSaveClick(
-                onComplete = {
-                    purchaseAgentCodeListener?.onSaveCodeSuccess(binding.agentCodeEditText.getText().trim())
-                    onClose()
-                },
-                onError = {
-                    purchaseAgentCodeListener?.onSaveCodeError()
-                    onClose()
-                }
-            )
+        subscribe(viewModel.agentCodeObserver) {
+            purchaseAgentCodeListener?.onSaveCodeSuccess(it)
+            onClose()
         }
 
-        subscribe(viewModel.isSaveButtonEnabledObserver) {
+        subscribe(viewModel.isSaveTextViewEnabledObserver) {
             binding.saveButton.isEnabled = it
         }
 
-        subscribe(viewModel.isKeyboardOpenObserver) {
-            val dialog = dialog as BottomSheetDialog
-            dialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
-            isKeyboardOpen = it
+        subscribe(viewModel.validateExceptionObserver) { specError ->
+            specError.fields.forEach {
+                when (it.fieldName) {
+                    ClientField.AGENTCODE -> {
+                        binding.agentCodeEditText.setState(
+                            MSDLabelEditText.State.ERROR,
+                            it.errorMessage
+                        )
+                    }
+                    ClientField.AGENTPHONE -> {
+                        binding.agentPhoneEditText.setState(
+                            MSDMaskedLabelEditText.State.ERROR,
+                            it.errorMessage
+                        )
+                    }
+                }
+            }
         }
 
+        subscribe(viewModel.networkErrorObserver) {
+            binding.agentCodeEditText.setState(MSDLabelEditText.State.ERROR, it)
+        }
     }
 
-}
-
-interface PurchaseAgentListener : Serializable {
-    fun onSaveCodeError()
-    fun onSaveCodeSuccess(code: String)
+    interface PurchaseAgentListener : Serializable {
+        fun onSaveCodeSuccess(code: String)
+    }
 }
