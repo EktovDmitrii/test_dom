@@ -79,7 +79,12 @@ class ModalPromoCodesFragment :
             viewModel.onAddClick(parentFragmentManager)
         }
 
+        binding.applyButtonLayout.visibleIf(selectedPromoCodeItem != null)
+
         binding.applyButton.setOnDebouncedClickListener {
+            if (promoCode == null && selectedPromoCodeItem != null) {
+                promoCode = selectedPromoCodeItem
+            }
             promoCode?.let {
                 purchasePromoCodeListener?.onSavePromoCodeClick(it)
                 onClose()
@@ -92,6 +97,9 @@ class ModalPromoCodesFragment :
 
         subscribe(viewModel.promoCodesObserver) {
             isFullScreenClick = it.size > SIZE_FOR_FULL_SCREEN
+            if (isFullScreenClick && selectedPromoCodeItem != null) {
+                onFullScreen()
+            }
             binding.emptyStateLayout.root.visibleIf(it.isEmpty())
             binding.addImageView.visibleIf(it.isNotEmpty())
             binding.dataStateLayout.root.visibleIf(it.isNotEmpty())
