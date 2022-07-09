@@ -10,10 +10,7 @@ import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.ui.constants.SIZE_FOR_FULL_SCREEN
 import com.custom.rgs_android_dom.ui.promo_code.PromoCodesAdapter
-import com.custom.rgs_android_dom.utils.args
-import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
-import com.custom.rgs_android_dom.utils.subscribe
-import com.custom.rgs_android_dom.utils.visibleIf
+import com.custom.rgs_android_dom.utils.*
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 import java.io.Serializable
@@ -68,7 +65,14 @@ class ModalPromoCodesFragment :
                 promoCode = promoCodeModelClick
                 if (isFullScreenClick) { onFullScreen() }
             },
-            onShowApplyButton = { binding.applyButtonLayout.visibleIf(it) }
+            onShowApplyButton = {
+                binding.applyButtonLayout.visibleIf(it)
+                if (it) {
+                    binding.nestedScrollLayout.setMargins(bottom = 150)
+                } else {
+                    binding.nestedScrollLayout.setMargins(bottom = 0)
+                }
+            }
         )
 
         binding.emptyStateLayout.root.setOnDebouncedClickListener {
