@@ -52,9 +52,10 @@
 
             <com.custom.rgs_android_dom.views.text.MSDTextView
                 android:id="@+id/discountTextView"
-                android:layout_width="match_parent"
-                android:layout_height="24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_weight="@integer/material_motion_duration_long_1"
+                android:breakStrategy="balanced"
                 android:fontFamily="@font/suisse_regular"
                 android:gravity="center_vertical"
                 android:textColor="@color/secondary900"

@@ -12,7 +12,7 @@ fun Int.formatPrice(isFixed: Boolean = true): String {
     val symbols: DecimalFormatSymbols = formatter.decimalFormatSymbols
     symbols.groupingSeparator = ' '
 
-    val f = DecimalFormat("###,###.00", symbols)
+    val f = DecimalFormat("###,###", symbols)
     var formatted = f.format(this.toFloat() / 100f).replace(",00", "")
     if (formatted.contains(",") && formatted.endsWith("0")){
         formatted = formatted.replaceRange(formatted.lastIndexOf("0"), formatted.length, "")
