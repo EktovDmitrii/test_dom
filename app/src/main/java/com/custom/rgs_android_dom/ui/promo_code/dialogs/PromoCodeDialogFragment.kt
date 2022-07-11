@@ -83,14 +83,6 @@ class PromoCodeDialogFragment : BaseBottomSheetModalFragment<PromoCodeDialogView
             viewModel.onPromoCodeClick(parentFragmentManager)
         }
 
-        if (viewModel.showOrderTextButton) {
-            binding.bindPolicySuccessLayout.understandTextView.text =
-                TranslationInteractor.getTranslation("app.product.promo_codes.result_view.confirm_button")
-        } else {
-            binding.bindPolicySuccessLayout.understandTextView.text =
-                TranslationInteractor.getTranslation("app.promo_codes.search_promo_codes.result_view.confirm_button")
-        }
-
         subscribe(viewModel.getPromoCodesObserver) {
             promoCodesListener?.onGetNewPromoCodesList(it)
         }
