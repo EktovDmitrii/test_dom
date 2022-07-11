@@ -22,7 +22,10 @@ data class PurchaseProductRequest(
     val businessLine: String,
 
     @SerializedName("clientPromoCodeId")
-    val clientPromoCodeId: String?
+    val clientPromoCodeId: String?,
+
+    @SerializedName("clientPrice")
+    val clientPrice: Int?
 )
 
 data class OrderRequest(

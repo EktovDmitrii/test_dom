@@ -19,6 +19,7 @@ import com.custom.rgs_android_dom.ui.purchase.add.comment.AddCommentFragment
 import com.custom.rgs_android_dom.ui.purchase.add.email.AddEmailFragment
 import com.custom.rgs_android_dom.ui.purchase.payments.PaymentWebViewFragment
 import com.custom.rgs_android_dom.ui.purchase.payments.error.PaymentErrorFragment
+import com.custom.rgs_android_dom.ui.purchase.payments.success.PaymentSuccessFragment
 import com.custom.rgs_android_dom.ui.purchase.select.address.SelectPurchaseAddressFragment
 import com.custom.rgs_android_dom.ui.purchase.select.card.SelectCardFragment
 import com.custom.rgs_android_dom.ui.purchase.select.date_time.PurchaseDateTimeFragment
@@ -55,7 +56,11 @@ class PurchaseViewModel(
     private val showDiscountLayoutController = MutableLiveData<Boolean>()
     val showDiscountLayoutObserver: LiveData<Boolean> = showDiscountLayoutController
 
+    private val isPriceUpdatingController = MutableLiveData<Boolean>()
+    val isPriceUpdatingObserver: LiveData<Boolean> = isPriceUpdatingController
+
     init {
+        updateActualProductPrice(null)
         checkAgentCode()
 
         clientInteractor.getPersonalData()
@@ -248,63 +253,103 @@ class PurchaseViewModel(
     fun updatePromoCode(promoCode: PromoCodeItemModel) {
         hasPromoCodeController.value = promoCode
         showDiscountLayoutController.value = true
+
+        updateActualProductPrice(promoCode.id)
     }
 
     fun makeOrder() {
         purchaseObserver.value?.let { purchase ->
-            purchaseInteractor.makeProductPurchase(
-                productId = purchase.id,
-                bindingId = if (purchase.card is SavedCardModel) {
-                    purchase.card.id
-                } else {
-                    null
-                },
-                email = purchase.email!!,
-                objectId = purchase.propertyItemModel?.id ?: "",
-                comment = purchase.comment,
-                saveCard = if (purchase.card is NewCardModel) {
-                    purchase.card.doSave
-                } else {
-                    true
-                },
-                deliveryDate = purchase.purchaseDateTimeModel?.selectedDate?.toDateTime(
-                    DateTimeZone.UTC).toString(),
-                timeFrom = purchase.purchaseDateTimeModel?.selectedPeriodModel?.timeFrom,
-                timeTo = if (purchase.purchaseDateTimeModel?.selectedPeriodModel?.timeFrom == "18:00")
-                    purchase.purchaseDateTimeModel.selectedPeriodModel?.copy(timeTo = "23:59")?.timeTo
-                else purchase.purchaseDateTimeModel?.selectedPeriodModel?.timeTo,
-                withOrder = purchase.defaultProduct,
-                clientPromoCodeId = hasPromoCodeController.value?.id
-            )
-                .doOnSubscribe {
-                    isEnableButtonController.postValue(false)
-                }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doFinally { isEnableButtonController.value = true }
-                .subscribeBy(
-                    onSuccess = {
-                        YandexMetrica.reportEvent("product_order_finish", "{\"order_id\":\"${it.orderId}\",\"product_item\":\"${purchase.name}\"}")
-
+            purchaseInteractor.getActualProductPrice(purchase.id, hasPromoCodeController.value?.id).flatMap { actualPrice ->
+                purchaseInteractor.makeProductPurchase(
+                    productId = purchase.id,
+                    bindingId = if (purchase.card is SavedCardModel) {
+                        purchase.card.id
+                    } else {
+                        null
+                    },
+                    email = purchase.email ?: "",
+                    objectId = purchase.propertyItemModel?.id ?: "",
+                    comment = purchase.comment,
+                    saveCard = if (purchase.card is NewCardModel) {
+                        purchase.card.doSave
+                    } else {
+                        true
+                    },
+                    deliveryDate = purchase.purchaseDateTimeModel?.selectedDate?.toDateTime(
+                        DateTimeZone.UTC).toString(),
+                    timeFrom = purchase.purchaseDateTimeModel?.selectedPeriodModel?.timeFrom,
+                    timeTo = if (purchase.purchaseDateTimeModel?.selectedPeriodModel?.timeFrom == "18:00")
+                        purchase.purchaseDateTimeModel.selectedPeriodModel?.copy(timeTo = "23:59")?.timeTo
+                    else purchase.purchaseDateTimeModel?.selectedPeriodModel?.timeTo,
+                    withOrder = purchase.defaultProduct,
+                    clientPromoCodeId = hasPromoCodeController.value?.id,
+                    clientPrice = actualPrice
+                )
+            }
+            .doOnSubscribe {
+                isEnableButtonController.postValue(false)
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doFinally { isEnableButtonController.value = true }
+            .subscribeBy(
+                onSuccess = {
+                    YandexMetrica.reportEvent("product_order_finish", "{\"order_id\":\"${it.orderId}\",\"product_item\":\"${purchase.name}\"}")
+                    if (it.noPaymentRequired) {
+                        ScreenManager.showScreenScope(
+                            PaymentSuccessFragment.newInstance(
+                                productId = purchase.id,
+                                productVersionId = purchase.versionId,
+                                email = purchase.email ?: "",
+                                orderId = it.orderId,
+                            ), PAYMENT
+                        )
+                    } else {
                         ScreenManager.showBottomScreen(
                             PaymentWebViewFragment.newInstance(
                                 url = it.paymentUrl,
                                 productId = purchase.id,
                                 productVersionId = purchase.versionId,
-                                email = purchase.email,
+                                email = purchase.email ?: "",
                                 orderId = it.orderId,
                             )
                         )
-                    },
-                    onError = {
-                        logException(this, it)
-
-                        ScreenManager.showScreenScope(
-                            PaymentErrorFragment(),
-                            PAYMENT
-                        )
                     }
-                ).addTo(dataCompositeDisposable)
+
+                },
+                onError = {
+                    logException(this, it)
+
+                    ScreenManager.showScreenScope(
+                        PaymentErrorFragment(),
+                        PAYMENT
+                    )
+                }
+            ).addTo(dataCompositeDisposable)
         }
     }
+
+    private fun updateActualProductPrice(clientPromoCodeId: String?) {
+        purchaseInteractor.getActualProductPrice(model.id, clientPromoCodeId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                isPriceUpdatingController.value = true
+            }
+            .subscribeBy(
+                onSuccess = {newPrice ->
+                    purchaseController.value?.let {purchase->
+                        val price = purchase.price
+                        price?.amount = newPrice
+                        purchaseController.value = purchase.copy(price = price)
+                    }
+                    isPriceUpdatingController.value = false
+                },
+                onError = {
+                    isPriceUpdatingController.value = false
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
+    }
+
 }
