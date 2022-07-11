@@ -3,6 +3,7 @@ package com.custom.rgs_android_dom.ui.purchase
 import android.graphics.Paint
 import android.os.Bundle
 import android.view.View
+import android.view.ViewTreeObserver
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -21,6 +22,7 @@ import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.confirm.ConfirmBottomSheetFragment
 import com.custom.rgs_android_dom.ui.constants.PERCENT_PROMO_CODE
 import com.custom.rgs_android_dom.ui.constants.SALE_PROMO_CODE
+import com.custom.rgs_android_dom.ui.constants.VIEW_ROOT_HEIGHT
 import com.custom.rgs_android_dom.ui.constants.ZERO_COST_ORDER
 import com.custom.rgs_android_dom.ui.promo_code.modal.ModalPromoCodesFragment
 import com.custom.rgs_android_dom.ui.purchase.add.agent.AddAgentFragment
@@ -72,10 +74,16 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.root.viewTreeObserver.addOnGlobalLayoutListener(softwareKeyboardListener(binding.root))
+        val keyboardListener = ViewTreeObserver.OnGlobalLayoutListener {
+            if (binding.root.height < VIEW_ROOT_HEIGHT) {
+                hideSoftwareKeyboard()
+            }
+        }
+
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener(keyboardListener)
 
         binding.backImageView.setOnDebouncedClickListener {
-            binding.root.viewTreeObserver.removeOnGlobalLayoutListener(softwareKeyboardListener(binding.root))
+            binding.root.viewTreeObserver.removeOnGlobalLayoutListener(keyboardListener)
             viewModel.onBackClick()
         }
 
@@ -110,6 +118,7 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
         }
 
         binding.makeOrderButton.productArrangeBtn.setOnDebouncedClickListener {
+            binding.root.viewTreeObserver.removeOnGlobalLayoutListener(keyboardListener)
             viewModel.makeOrder()
         }
 
