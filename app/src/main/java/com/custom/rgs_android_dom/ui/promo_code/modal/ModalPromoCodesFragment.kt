@@ -61,19 +61,21 @@ class ModalPromoCodesFragment :
             ) as PromoCodeItemModel else null
 
         binding.dataStateLayout.recyclerView.adapter = PromoCodesAdapter(
-            onPromoCodeClick = { promoCodeModelClick ->
-                promoCode = promoCodeModelClick
-                if (isFullScreenClick) { onFullScreen() }
-            },
-            onShowApplyButton = {
-                binding.applyButtonLayout.visibleIf(it)
-                if (it) {
+            onPromoCodeClick = { promoCode = it },
+            onShowApplyButton = { isShowApplyButton ->
+                binding.applyButtonLayout.visibleIf(isShowApplyButton)
+                if (isShowApplyButton) {
+                    if (isFullScreenClick) { onFullScreen() }
                     binding.nestedScrollLayout.setMargins(bottom = 150)
                 } else {
                     binding.nestedScrollLayout.setMargins(bottom = 0)
                 }
             }
         )
+
+        if (selectedPromoCodeItem != null) {
+            binding.nestedScrollLayout.setMargins(bottom = 150)
+        }
 
         binding.emptyStateLayout.root.setOnDebouncedClickListener {
             viewModel.onAddClick(parentFragmentManager)
