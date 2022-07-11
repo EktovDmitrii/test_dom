@@ -1,22 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
-
-    <include
-        android:id="@+id/swipeAnchorLayout"
-        layout="@layout/layout_bottom_sheet_swipe_anchor" />
+    android:layout_height="match_parent">
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/contentLinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:visibility="visible">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/swipeAnchorLayout"
+            layout="@layout/layout_bottom_sheet_swipe_anchor" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -42,15 +37,32 @@
 
         </FrameLayout>
 
-        <include
-            android:id="@+id/emptyStateLayout"
-            layout="@layout/layout_order_promo_codes_empty_state"
-            android:visibility="gone" />
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toTopOf="@id/applyButtonLayout"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <include
-            android:id="@+id/dataStateLayout"
-            layout="@layout/layout_promo_codes_available_state"
-            android:visibility="visible" />
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/emptyStateLayout"
+                    layout="@layout/layout_order_promo_codes_empty_state"
+                    android:visibility="gone" />
+
+                <include
+                    android:id="@+id/dataStateLayout"
+                    layout="@layout/layout_promo_codes_available_state"
+                    android:visibility="visible" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -58,9 +70,9 @@
         android:id="@+id/applyButtonLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:layout_alignParentBottom="true"
-        android:paddingHorizontal="20dp"
+        android:background="@color/white"
+        android:paddingHorizontal="@dimen/material_margin_big"
         android:paddingVertical="@dimen/dp_12"
         android:visibility="gone">
 
@@ -77,4 +89,4 @@
 
     </FrameLayout>
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+</RelativeLayout>
