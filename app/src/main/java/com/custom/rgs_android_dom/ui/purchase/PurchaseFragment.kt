@@ -71,10 +71,12 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
 
     private val discountText = TranslationInteractor.getTranslation("app.product.purchase.layout_product_detail.cost_discount_text_view")
 
+    private var keyboardListener: ViewTreeObserver.OnGlobalLayoutListener? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val keyboardListener = ViewTreeObserver.OnGlobalLayoutListener {
+        keyboardListener = ViewTreeObserver.OnGlobalLayoutListener {
             if (binding.root.height < VIEW_ROOT_HEIGHT) {
                 hideSoftwareKeyboard()
             }
@@ -393,4 +395,10 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
             makeOrderButton.discountLayout.visible()
         }
     }
+
+    override fun onStop() {
+        super.onStop()
+        binding.root.viewTreeObserver.removeOnGlobalLayoutListener(keyboardListener)
+    }
+    
 }
