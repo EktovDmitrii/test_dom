@@ -147,14 +147,19 @@ interface MSDApi {
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getAgents(): Maybe<AgentsResponse?>
 
+    @GET("insurance/clients/me/agents")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getAgentsStage(): Maybe<AgentHolderResponse?>
+
     @Multipart
     @POST("store")
     @ErrorType(MSDNetworkErrorResponse::class)
-    fun postPropertyDocument(@Part file: MultipartBody.Part,
-                             @Query("bucketName") bucketName: String,
-                             @Query("extension") extension: String,
-                             @Query("metadata") metadata: String)
-    : Single<PostPropertyDocumentResponse>
+    fun postPropertyDocument(
+        @Part file: MultipartBody.Part,
+        @Query("bucketName") bucketName: String,
+        @Query("extension") extension: String,
+        @Query("metadata") metadata: String
+    ): Single<PostPropertyDocumentResponse>
 
     @GET("clients/me/purchase/catalog")
     @ErrorType(MSDNetworkErrorResponse::class)

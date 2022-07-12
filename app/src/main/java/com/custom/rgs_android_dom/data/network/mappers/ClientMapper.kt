@@ -23,7 +23,7 @@ object ClientMapper {
 
     private const val AVATAR_ENDPOINT = "${BuildConfig.BASE_URL}/api/store"
 
-    fun responseToClient(response: ClientResponse): ClientModel {
+    fun responseToClient(response: ClientResponse, agent: ClientAgent? = null): ClientModel {
 
         return ClientModel(
             userId = response.userId,
@@ -38,7 +38,7 @@ object ClientMapper {
                     type = it.type
                 )
             },
-            agent = null,
+            agent = agent,
             birthDate = response.birthDate,
             contacts = response.contacts?.map {
                 ClientContact(
@@ -230,5 +230,4 @@ object ClientMapper {
             channels = listOf(updateNotificationChannelRequest)
         )
     }
-
 }

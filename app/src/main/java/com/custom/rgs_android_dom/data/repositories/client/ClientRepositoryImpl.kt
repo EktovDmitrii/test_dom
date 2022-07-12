@@ -68,14 +68,22 @@ class ClientRepositoryImpl(
         }
 
         return api.getMyClient().map { response ->
-            val client = ClientMapper.responseToClient(response)
+            var client = ClientMapper.responseToClient(response)
             clientSharedPreferences.saveClient(client)
 
             val agents = api.getAgents().blockingGet()?.list ?: emptyList()
             if (agents.isNotEmpty()) {
                 val agent = ClientMapper.responseToAgent(agents[0])
+                client = ClientMapper.responseToClient(response, agent)
                 clientSharedPreferences.saveAgent(agent)
                 clientUpdatedSubject.onNext(client)
+            } else {
+                val agentResponse = api.getAgentsStage().blockingGet()
+                val agent = ClientMapper.responseToAgent(agentResponse)
+                client = ClientMapper.responseToClient(response, agent)
+                clientSharedPreferences.saveAgent(agent)
+                clientUpdatedSubject.onNext(client)
+                // TODO убрать else после доработки бека
             }
 
             return@map clientSharedPreferences.getClient()
@@ -90,6 +98,12 @@ class ClientRepositoryImpl(
                 val agent = ClientMapper.responseToAgent(agents[0])
                 client.agent = agent
                 clientSharedPreferences.saveAgent(agent)
+            } else {
+                val agentResponse = api.getAgentsStage().blockingGet()
+                val agent = ClientMapper.responseToAgent(agentResponse)
+                client.agent = agent
+                clientSharedPreferences.saveAgent(agent)
+                // TODO убрать else после доработки бека
             }
             val cachedClient = clientSharedPreferences.getClient()
             if (cachedClient != null && cachedClient != client || cachedClient == null) {
@@ -111,6 +125,7 @@ class ClientRepositoryImpl(
                 val agent = ClientMapper.responseToAgent(response)
                 clientSharedPreferences.saveAgent(agent)
                 clientSharedPreferences.getClient()?.let { client ->
+                    client.agent = agent
                     clientUpdatedSubject.onNext(client)
                 }
                 Completable.complete()
