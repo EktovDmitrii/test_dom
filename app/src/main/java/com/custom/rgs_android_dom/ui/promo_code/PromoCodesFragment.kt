@@ -17,10 +17,12 @@ class PromoCodesFragment :
     private val promoCodesAdapter: PromoCodesAdapter
         get() = binding.dataStateLayout.recyclerView.adapter as PromoCodesAdapter
 
+    private var keyboardListener: ViewTreeObserver.OnGlobalLayoutListener? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val keyboardListener = ViewTreeObserver.OnGlobalLayoutListener {
+        keyboardListener = ViewTreeObserver.OnGlobalLayoutListener {
             if (binding.root.height < VIEW_ROOT_HEIGHT) {
                 hideSoftwareKeyboard()
             }
@@ -71,4 +73,10 @@ class PromoCodesFragment :
     override fun onGetNewPromoCodesList(isLoadingList: Boolean) {
         if (isLoadingList) viewModel.getPromoCodes()
     }
+
+    override fun onStop() {
+        super.onStop()
+        binding.root.viewTreeObserver.removeOnGlobalLayoutListener(keyboardListener)
+    }
+
 }
