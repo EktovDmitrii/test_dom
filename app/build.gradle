@@ -27,7 +27,7 @@ android {
         applicationId "ru.moi_service.property"
         minSdkVersion 24
         targetSdkVersion 31
-        versionCode 7
+        versionCode 10
         versionName "1.5.0"
         vectorDrawables.useSupportLibrary = true
     }
@@ -229,7 +229,7 @@ dependencies {
     implementation 'com.yandex.android:maps.mobile:4.0.0-full'
 
     //Yandex AppMetrica
-    implementation 'com.yandex.android:mobmetricalib:4.1.1'
+    implementation 'com.yandex.android:mobmetricalib:5.0.0'
 
     //Shimmer
     implementation "com.github.skydoves:androidveil:1.1.1"
