@@ -3,17 +3,17 @@ package com.custom.rgs_android_dom.ui.main
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.custom.rgs_android_dom.domain.main.CommentModel
 import com.custom.rgs_android_dom.domain.catalog.CatalogInteractor
 import com.custom.rgs_android_dom.domain.catalog.models.CatalogCategoryModel
 import com.custom.rgs_android_dom.domain.catalog.models.ProductShortModel
 import com.custom.rgs_android_dom.domain.client.ClientInteractor
+import com.custom.rgs_android_dom.domain.main.CommentModel
 import com.custom.rgs_android_dom.domain.property.PropertyInteractor
 import com.custom.rgs_android_dom.domain.registration.RegistrationInteractor
 import com.custom.rgs_android_dom.ui.about_app.AboutAppFragment
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
-import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
 import com.custom.rgs_android_dom.ui.catalog.MainCatalogFragment
+import com.custom.rgs_android_dom.ui.catalog.product.ProductFragment
 import com.custom.rgs_android_dom.ui.catalog.product.ProductLauncher
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductFragment
 import com.custom.rgs_android_dom.ui.catalog.product.single.SingleProductLauncher
@@ -29,14 +29,12 @@ import com.custom.rgs_android_dom.ui.navigation.TargetScreen
 import com.custom.rgs_android_dom.ui.policies.PoliciesFragment
 import com.custom.rgs_android_dom.ui.property.add.select_address.SelectAddressFragment
 import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
-import com.custom.rgs_android_dom.utils.ProgressTransformer
 import com.custom.rgs_android_dom.ui.sos.SOSFragment
 import com.custom.rgs_android_dom.ui.stories.StoriesFragment
+import com.custom.rgs_android_dom.utils.ProgressTransformer
 import com.custom.rgs_android_dom.utils.isInternetConnected
 import com.custom.rgs_android_dom.utils.logException
-import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
-import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -67,8 +65,6 @@ class MainViewModel(
     private val popularCategoriesController = MutableLiveData<List<CatalogCategoryModel>>()
     val popularCategoriesObserver: LiveData<List<CatalogCategoryModel>> = popularCategoriesController
 
-    private var openAboutAppScreenAfterLogin = false
-
     private val popularProductsController = MutableLiveData<List<ProductShortModel>>()
     val popularProductsObserver: LiveData<List<ProductShortModel>> = popularProductsController
 
@@ -94,11 +90,6 @@ class MainViewModel(
                 onNext = {
                     registrationController.value = true
                     getPropertyAvailability()
-
-                    if (openAboutAppScreenAfterLogin){
-                        openAboutAppScreenAfterLogin = false
-                        ScreenManager.showScreen(AboutAppFragment())
-                    }
                 },
                 onError = {
                     logException(this, it)
@@ -132,7 +123,7 @@ class MainViewModel(
         registrationInteractor.getAuthFlowEndedSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy (
+            .subscribeBy(
                 onNext = {
                     if (registrationInteractor.isAuthorized()) {
                         when (requestedScreen) {
@@ -232,7 +223,7 @@ class MainViewModel(
 
     fun onPoliciesClick() {
         if (registrationInteractor.isAuthorized()) {
-            ScreenManager.showScreen( PoliciesFragment() )
+            ScreenManager.showScreen(PoliciesFragment())
         } else {
             requestedScreen = TargetScreen.POLICIES
             ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
@@ -247,7 +238,7 @@ class MainViewModel(
         }
     }
 
-    fun onOrdersClick(){
+    fun onOrdersClick() {
         if (registrationInteractor.isAuthorized()) {
             ScreenManager.showScreen(OrdersFragment())
         } else {
@@ -264,17 +255,12 @@ class MainViewModel(
         ScreenManager.showBottomScreen(MainCatalogFragment.newInstance())
     }
 
-    fun onAboutServiceClick(){
-        if (registrationInteractor.isAuthorized()){
-            ScreenManager.showScreen(AboutAppFragment())
-        } else {
-            openAboutAppScreenAfterLogin = true
-            ScreenManager.showScreenScope(RegistrationPhoneFragment(), REGISTRATION)
-        }
+    fun onAboutServiceClick() {
+        ScreenManager.showScreen(AboutAppFragment())
     }
 
     fun onCategoryClick(category: CatalogCategoryModel) {
-        if (category.isPrimary){
+        if (category.isPrimary) {
             val primSubcategoriesFragment = CatalogPrimaryProductsFragment.newInstance(category)
             ScreenManager.showBottomScreen(primSubcategoriesFragment)
         } else {
@@ -318,5 +304,4 @@ class MainViewModel(
             }
         }
     }
-
 }
