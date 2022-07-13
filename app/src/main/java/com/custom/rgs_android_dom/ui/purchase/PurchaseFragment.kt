@@ -10,6 +10,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.data.network.url.GlideUrlProvider
 import com.custom.rgs_android_dom.databinding.FragmentPurchaseBinding
+import com.custom.rgs_android_dom.domain.catalog.models.ProductPriceModel
 import com.custom.rgs_android_dom.domain.promo_codes.model.PromoCodeItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyItemModel
 import com.custom.rgs_android_dom.domain.property.models.PropertyType
@@ -70,8 +71,9 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
     }
 
     private val discountText = TranslationInteractor.getTranslation("app.product.purchase.layout_product_detail.cost_discount_text_view")
-
     private var keyboardListener: ViewTreeObserver.OnGlobalLayoutListener? = null
+    private var purchaseModelPrice: ProductPriceModel? = null
+    private var purchaseModelPriceFix: Boolean = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -135,10 +137,9 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
 
         subscribe(viewModel.hasPromoCodeObserver) { promoCodeModel ->
             if (promoCodeModel != null) {
-                val purchaseModelPrice = viewModel.purchaseObserver.value?.price
                 viewModel.checkPromoCode()
                 binding.makeOrderButton.root.background = ContextCompat.getDrawable(requireContext(), R.drawable.rectangle_filled_white_top_radius_24dp)
-                binding.makeOrderButton.sumCostTextView.text = purchaseModelPrice?.amount?.formatPrice(isFixed = purchaseModelPrice.fix)
+                binding.makeOrderButton.sumCostTextView.text = purchaseModelPrice?.amount?.formatPrice(isFixed = purchaseModelPriceFix)
                 binding.layoutIncludedPromoCode.labeledPromoCodeTextView.text = promoCodeModel.code
 
                 purchaseModelPrice?.amount?.let { amount ->
@@ -147,16 +148,16 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
                             binding.makeOrderButton.discountTextView.text = discountText.replace("%@", promoCodeModel.discountInRubles.formatPrice())
                             binding.makeOrderButton.sumDiscountTextView.text = "-${promoCodeModel.discountInRubles.formatPrice()}"
                             val resultCost = amount - (promoCodeModel.discountInRubles)
-                            binding.makeOrderButton.resultSumTextView.text = if (resultCost < 0) ZERO_COST_ORDER else resultCost.formatPrice(isFixed = purchaseModelPrice.fix)
-                            binding.makeOrderButton.btnPrice.text = if (resultCost < 0) ZERO_COST_ORDER else resultCost.formatPrice(isFixed = purchaseModelPrice.fix)
+                            binding.makeOrderButton.resultSumTextView.text = if (resultCost < 0) ZERO_COST_ORDER else resultCost.formatPrice(isFixed = purchaseModelPriceFix)
+                            binding.makeOrderButton.btnPrice.text = if (resultCost < 0) ZERO_COST_ORDER else resultCost.formatPrice(isFixed = purchaseModelPriceFix)
                         }
                         PERCENT_PROMO_CODE -> {
                             binding.makeOrderButton.discountTextView.text = discountText.replace("%@", "${promoCodeModel.discountInPercent}%")
                             val resultDiscountIn = ((promoCodeModel.discountInPercent.toDouble() / 100.toDouble()) * amount.toDouble()).toInt()
                             val resultCost = amount - resultDiscountIn
                             binding.makeOrderButton.sumDiscountTextView.text = "-${resultDiscountIn.formatPrice()}"
-                            binding.makeOrderButton.resultSumTextView.text = resultCost.formatPrice(isFixed = purchaseModelPrice.fix)
-                            binding.makeOrderButton.btnPrice.text = resultCost.formatPrice(isFixed = purchaseModelPrice.fix)
+                            binding.makeOrderButton.resultSumTextView.text = resultCost.formatPrice(isFixed = purchaseModelPriceFix)
+                            binding.makeOrderButton.btnPrice.text = resultCost.formatPrice(isFixed = purchaseModelPriceFix)
                         }
                     }
                 }
@@ -168,6 +169,9 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
                 binding.layoutIncludedPromoCode.root.setMargins(bottom = 200)
             } else {
                 binding.layoutIncludedPromoCode.root.setMargins(bottom = 0)
+                purchaseModelPrice?.amount?.let { amount ->
+                    binding.makeOrderButton.btnPrice.text = amount.formatPrice(isFixed = purchaseModelPriceFix)
+                }
             }
             binding.layoutIncludedPromoCode.promoCodeTextView.goneIf(showDiscountLayout)
             binding.layoutIncludedPromoCode.selectedPromoCodeTextView.goneIf(!showDiscountLayout)
@@ -180,6 +184,8 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
         }
 
         subscribe(viewModel.purchaseObserver) { purchase ->
+            purchaseModelPrice = purchase.price
+            purchaseModelPriceFix = purchaseModelPrice?.fix ?: false
             binding.makeOrderButton.btnTitle.text = if (purchase.defaultProduct) {
                 TranslationInteractor.getTranslation("app.product_cards.service_detail_view.buy_button_order")
             } else {
