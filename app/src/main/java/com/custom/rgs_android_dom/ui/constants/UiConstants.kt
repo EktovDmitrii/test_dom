@@ -13,3 +13,8 @@ const val LENGTH_PROMO_CODE = 3
 const val SIZE_FOR_FULL_SCREEN = 2
 const val VIEW_ROOT_HEIGHT = 1500
 const val ERR_AGENT_NOT_FOUND = "INS-093"
+const val USER_AGREEMENT_LINK = "https://moi-service.ru/legal/moi-service-dom/polzovatelskoe-soglashenie"
+const val LEGAL_POLICY_LINK = "https://moi-service.ru/legal/policy"
+const val USER_SUPPORT_LINK = "https://domonline.moi-service.ru/support"
+const val PERSONAL_DATE_LINK = "https://moi-service.ru/legal/soglasie-polzovatelya-na-obrabotku-personalnyh-dannyh"
+const val PLAY_GOOGLE_LINK = "https://play.google.com/store/apps/details?id=ru.moi_service.property"

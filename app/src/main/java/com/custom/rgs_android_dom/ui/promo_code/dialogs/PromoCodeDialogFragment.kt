@@ -113,7 +113,7 @@ class PromoCodeDialogFragment : BaseBottomSheetModalFragment<PromoCodeDialogView
                         itemSaleLayout.apply {
                             root.visible()
                             subtitleTextView.text = model.code
-                            titleTextView.text = titleText.replace("%@", "${model.discountInRubles} Р")
+                            titleTextView.text = titleText.replace("%@", model.discountInRubles.formatPrice())
                             durationTextView.text = duration
                         }
                     }
