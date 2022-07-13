@@ -668,7 +668,11 @@ ClientInteractor(
     private fun isAdult(birthday: DateTime): Boolean {
         val now = DateTime.now()
         return if ((now.year - birthday.year) >= 16) {
-            !(now.monthOfYear == birthday.monthOfYear && now.dayOfMonth == birthday.dayOfMonth)
+            if (birthday.monthOfYear > now.monthOfYear) {
+                false
+            } else  {
+                !(now.monthOfYear == birthday.monthOfYear && now.dayOfMonth <= birthday.dayOfMonth)
+            }
         } else {
             false
         }
