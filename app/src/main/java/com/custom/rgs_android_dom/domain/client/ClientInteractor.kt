@@ -24,8 +24,7 @@ import org.joda.time.LocalDateTime
 import org.joda.time.format.DateTimeFormat
 import java.io.File
 
-class
-ClientInteractor(
+class ClientInteractor(
     private val clientRepository: ClientRepository,
     private val registrationRepository: RegistrationRepository,
     private val catalogRepository: CatalogRepository,
@@ -799,5 +798,4 @@ ClientInteractor(
                 Single.just(sortOrderHistory(orders.filter { it.status != OrderStatus.CANCELLED && it.status != OrderStatus.RESOLVED && it.status != OrderStatus.DRAFT}))
             }
     }
-
 }
