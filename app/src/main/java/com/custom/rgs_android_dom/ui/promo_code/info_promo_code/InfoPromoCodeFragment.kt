@@ -29,6 +29,8 @@ class InfoPromoCodeFragment : BaseBottomSheetModalFragment<InfoPromoCodeViewMode
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        expand()
+
         val promoCode = requireArguments().getSerializable(KEY_PROMO_CODE_INFO) as PromoCodeItemModel
         val durationText = TranslationInteractor.getTranslation("app.promo_codes.agent_code_adapter.add_duration")
         val titleText = TranslationInteractor.getTranslation("app.promo_codes.agent_code_adapter.add_second_title")
