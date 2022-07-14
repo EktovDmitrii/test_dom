@@ -59,8 +59,6 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
 
     override val TAG = "PURCHASE_FRAGMENT"
 
-    private var keyboardListener: ViewTreeObserver.OnGlobalLayoutListener? = null
-
     override fun getParameters(): ParametersDefinition = {
         parametersOf(
             requireArguments().getSerializable(ARG_PURCHASE_SERVICE_MODEL) as PurchaseModel
@@ -72,6 +70,8 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
     }
 
     private val discountText = TranslationInteractor.getTranslation("app.product.purchase.layout_product_detail.cost_discount_text_view")
+
+    private var keyboardListener: ViewTreeObserver.OnGlobalLayoutListener? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

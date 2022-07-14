@@ -24,8 +24,7 @@ import org.joda.time.LocalDateTime
 import org.joda.time.format.DateTimeFormat
 import java.io.File
 
-class
-ClientInteractor(
+class ClientInteractor(
     private val clientRepository: ClientRepository,
     private val registrationRepository: RegistrationRepository,
     private val catalogRepository: CatalogRepository,
@@ -668,7 +667,11 @@ ClientInteractor(
     private fun isAdult(birthday: DateTime): Boolean {
         val now = DateTime.now()
         return if ((now.year - birthday.year) >= 16) {
-            !(now.monthOfYear == birthday.monthOfYear && now.dayOfMonth == birthday.dayOfMonth)
+            if (birthday.monthOfYear > now.monthOfYear) {
+                false
+            } else  {
+                !(now.monthOfYear == birthday.monthOfYear && now.dayOfMonth <= birthday.dayOfMonth)
+            }
         } else {
             false
         }
@@ -795,5 +798,4 @@ ClientInteractor(
                 Single.just(sortOrderHistory(orders.filter { it.status != OrderStatus.CANCELLED && it.status != OrderStatus.RESOLVED && it.status != OrderStatus.DRAFT}))
             }
     }
-
 }
