@@ -27,7 +27,8 @@ object PurchaseMapper {
             invoiceId = response.invoiceId ?: "",
             paymentOrderId = response.paymentOrderId ?: "",
             bankOrderId = response.bankOrderId ?: "",
-            orderId = response.orderId ?: ""
+            orderId = response.orderId ?: "",
+            noPaymentRequired = response.noPaymentRequired ?: false
         )
     }
 

@@ -40,7 +40,8 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
         timeFrom: String?,
         timeTo: String?,
         withOrder: Boolean,
-        clientPromoCodeId: String?
+        clientPromoCodeId: String?,
+        clientPrice: Int?
     ): Single<PurchaseInfoModel> {
 
         var orderRequest: OrderRequest? = null
@@ -85,7 +86,8 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
             objectId = objectId,
             order = orderRequest,
             businessLine = BuildConfig.BUSINESS_LINE,
-            clientPromoCodeId = clientPromoCodeId
+            clientPromoCodeId = clientPromoCodeId,
+            clientPrice = clientPrice
         )
         return api.makeProductPurchase(
             productId = productId,
@@ -141,4 +143,15 @@ class PurchaseRepositoryImpl(private val api: MSDApi) : PurchaseRepository {
     override fun getDeletedCardSubject(): PublishSubject<String> {
         return deletedCardSubject
     }
+
+    override fun getActualProductPrice(productId: String, clientPromoCodeId: String?): Single<Int> {
+        val getActualProductPriceRequest = GetActualProductPriceRequest(
+            businessLine = BuildConfig.BUSINESS_LINE,
+            clientPromoCodeId = clientPromoCodeId
+        )
+        return api.getActualProductPrice(productId, getActualProductPriceRequest).map {
+            it.price
+        }
+    }
+
 }

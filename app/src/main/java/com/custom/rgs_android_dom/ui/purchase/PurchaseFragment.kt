@@ -147,16 +147,16 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
                             binding.makeOrderButton.discountTextView.text = discountText.replace("%@", promoCodeModel.discountInRubles.formatPrice())
                             binding.makeOrderButton.sumDiscountTextView.text = "-${promoCodeModel.discountInRubles.formatPrice()}"
                             val resultCost = amount - (promoCodeModel.discountInRubles)
-                            binding.makeOrderButton.resultSumTextView.text = if (resultCost < 0) ZERO_COST_ORDER else resultCost.formatPrice(isFixed = purchaseModelPrice.fix)
-                            binding.makeOrderButton.btnPrice.text = if (resultCost < 0) ZERO_COST_ORDER else resultCost.formatPrice(isFixed = purchaseModelPrice.fix)
+                            //binding.makeOrderButton.resultSumTextView.text = if (resultCost < 0) ZERO_COST_ORDER else resultCost.formatPrice(isFixed = purchaseModelPrice.fix)
+                            //binding.makeOrderButton.btnPrice.text = if (resultCost < 0) ZERO_COST_ORDER else resultCost.formatPrice(isFixed = purchaseModelPrice.fix)
                         }
                         PERCENT_PROMO_CODE -> {
                             binding.makeOrderButton.discountTextView.text = discountText.replace("%@", "${promoCodeModel.discountInPercent}%")
                             val resultDiscountIn = ((promoCodeModel.discountInPercent.toDouble() / 100.toDouble()) * amount.toDouble()).toInt()
                             val resultCost = amount - resultDiscountIn
                             binding.makeOrderButton.sumDiscountTextView.text = "-${resultDiscountIn.formatPrice()}"
-                            binding.makeOrderButton.resultSumTextView.text = resultCost.formatPrice(isFixed = purchaseModelPrice.fix)
-                            binding.makeOrderButton.btnPrice.text = resultCost.formatPrice(isFixed = purchaseModelPrice.fix)
+                            //binding.makeOrderButton.resultSumTextView.text = resultCost.formatPrice(isFixed = purchaseModelPrice.fix)
+                            //binding.makeOrderButton.btnPrice.text = resultCost.formatPrice(isFixed = purchaseModelPrice.fix)
                         }
                     }
                 }
@@ -212,8 +212,11 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
             }
 
             purchase.price?.amount?.let { amount ->
-                binding.makeOrderButton.btnPrice.text = amount.formatPrice(isFixed = purchase.price.fix)
-                binding.layoutPurchaseServiceHeader.priceTextView.text = amount.formatPrice(isFixed = purchase.price.fix)
+                //binding.makeOrderButton.btnPrice.text = amount.formatPrice(isFixed = purchase.price.fix)
+                //binding.layoutPurchaseServiceHeader.priceTextView.text = amount.formatPrice(isFixed = purchase.price.fix)
+                binding.layoutPurchaseServiceHeader.priceTextView.text = if (amount < 0) ZERO_COST_ORDER else amount.formatPrice(isFixed = purchase.price.fix)
+                binding.makeOrderButton.resultSumTextView.text = if (amount < 0) ZERO_COST_ORDER else amount.formatPrice(isFixed = purchase.price.fix)
+                binding.makeOrderButton.btnPrice.text = if (amount < 0) ZERO_COST_ORDER else amount.formatPrice(isFixed = purchase.price.fix)
             }
 
             purchase.email?.let { email ->
@@ -300,6 +303,13 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
                 binding.makeOrderButton.btnTitle.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary500))
                 binding.makeOrderButton.btnPrice.setTextColor(ContextCompat.getColor(requireContext(), R.color.secondary500))
                 binding.makeOrderButton.productArrangeBtn.background = ContextCompat.getDrawable(requireContext(), R.drawable.rectangle_filled_secondary_100_radius_12dp)
+            }
+        }
+
+        subscribe(viewModel.isPriceUpdatingObserver) {
+            binding.apply {
+                makeOrderButton.loadingProgressBar.visibleIf(it)
+                makeOrderButton.btnPrice.goneIf(it)
             }
         }
     }
@@ -400,5 +410,5 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
         super.onStop()
         binding.root.viewTreeObserver.removeOnGlobalLayoutListener(keyboardListener)
     }
-    
+
 }

@@ -52,7 +52,8 @@ class PurchaseInteractor(
         timeFrom: String?,
         timeTo: String?,
         withOrder: Boolean,
-        clientPromoCodeId: String?
+        clientPromoCodeId: String?,
+        clientPrice: Int?
     ): Single<PurchaseInfoModel> {
         return purchaseRepository.makeProductPurchase(
             productId = productId,
@@ -65,7 +66,8 @@ class PurchaseInteractor(
             timeFrom = timeFrom,
             timeTo = timeTo,
             withOrder = withOrder,
-            clientPromoCodeId = clientPromoCodeId
+            clientPromoCodeId = clientPromoCodeId,
+            clientPrice = clientPrice
         )
     }
 
@@ -121,6 +123,10 @@ class PurchaseInteractor(
 
     fun getDeletedCardSubject(): PublishSubject<String>{
         return purchaseRepository.getDeletedCardSubject()
+    }
+
+    fun getActualProductPrice(productId: String, clientPromoCodeId: String?): Single<Int> {
+        return purchaseRepository.getActualProductPrice(productId, clientPromoCodeId)
     }
 
     private fun setPropertyOptional(deliveryType: DeliveryType?) {
