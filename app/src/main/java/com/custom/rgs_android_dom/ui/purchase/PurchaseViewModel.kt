@@ -241,6 +241,7 @@ class PurchaseViewModel(
     fun onDeletePromoCodeClick() {
         hasPromoCodeController.value = null
         showDiscountLayoutController.value = false
+        updateActualProductPrice(null)
     }
 
     fun updateAgentCode(code: String) {
