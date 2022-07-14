@@ -10,10 +10,13 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentAboutAppBinding
 import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.constants.LEGAL_POLICY_LINK
+import com.custom.rgs_android_dom.ui.constants.PLAY_GOOGLE_LINK
+import com.custom.rgs_android_dom.ui.constants.USER_AGREEMENT_LINK
+import com.custom.rgs_android_dom.ui.constants.USER_SUPPORT_LINK
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
 import com.custom.rgs_android_dom.ui.web_view.WebViewFragment
 import com.custom.rgs_android_dom.utils.*
-
 
 class AboutAppFragment : BaseFragment<AboutAppViewModel, FragmentAboutAppBinding>(R.layout.fragment_about_app) {
 
@@ -31,24 +34,22 @@ class AboutAppFragment : BaseFragment<AboutAppViewModel, FragmentAboutAppBinding
                 }
                 startActivity(appStoreIntent)
             } catch (exception: ActivityNotFoundException) {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=ru.moi_service.property")))
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PLAY_GOOGLE_LINK)))
             }
         }
 
         binding.licenseAgreementsLinearLayout.setOnDebouncedClickListener {
-            ScreenManager.showScreen(WebViewFragment.newInstance("https://moi-service.ru/legal/moi-service-dom/polzovatelskoe-soglashenie"))
+            ScreenManager.showScreen(WebViewFragment.newInstance(USER_AGREEMENT_LINK))
         }
 
         binding.privacyPolicyLinearLayout.setOnDebouncedClickListener {
-            ScreenManager.showScreen(WebViewFragment.newInstance("https://moi-service.ru/legal/policy"))
+            ScreenManager.showScreen(WebViewFragment.newInstance(LEGAL_POLICY_LINK))
         }
 
         binding.feedbackLinearLayout.setOnDebouncedClickListener {
-            ScreenManager.showScreen(WebViewFragment.newInstance("https://dom.moi-service.ru/support"))
+            ScreenManager.showScreen(WebViewFragment.newInstance(USER_SUPPORT_LINK))
         }
 
         binding.versionTextView.text = TranslationInteractor.getTranslation("app.about_app.footer.version").replace("%@", BuildConfig.VERSION_NAME)
-
     }
-
 }

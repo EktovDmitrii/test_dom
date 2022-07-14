@@ -41,14 +41,15 @@ import org.joda.time.LocalDateTime
 import java.io.File
 import java.util.concurrent.TimeUnit
 
-class ChatRepositoryImpl(private val api: MSDApi,
-                         private val clientSharedPreferences: ClientSharedPreferences,
-                         private val gson: Gson,
-                         private val authContentProviderManager: AuthContentProviderManager,
-                         private val context: Context,
-                         private val mediaOutputManager: MediaOutputManager,
-                         private val connectivityManager: MSDConnectivityManager,
-                         private val database: MSDDatabase
+class ChatRepositoryImpl(
+    private val api: MSDApi,
+    private val clientSharedPreferences: ClientSharedPreferences,
+    private val gson: Gson,
+    private val authContentProviderManager: AuthContentProviderManager,
+    private val context: Context,
+    private val mediaOutputManager: MediaOutputManager,
+    private val connectivityManager: MSDConnectivityManager,
+    private val database: MSDDatabase
 ) : ChatRepository {
 
     companion object {
@@ -144,7 +145,6 @@ class ChatRepositoryImpl(private val api: MSDApi,
         }
     }
 
-
     private val roomListener = object : RoomListener {
 
         override fun onTrackSubscribed(
@@ -206,7 +206,6 @@ class ChatRepositoryImpl(private val api: MSDApi,
                 }
             }
         }
-
     }
 
     override fun connectToWebSocket(){
@@ -462,7 +461,6 @@ class ChatRepositoryImpl(private val api: MSDApi,
                     callInfoSubject.onNext(callInfo)
                 }
         }
-
     }
 
     private fun startCallTimer(){
@@ -517,7 +515,6 @@ class ChatRepositoryImpl(private val api: MSDApi,
             it.filename ?: ""
         }
     }
-
 
     override fun loadCases(): Completable {
         val client = clientSharedPreferences.getClient()

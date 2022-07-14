@@ -47,7 +47,6 @@ class WebViewFragment : BaseFragment<WebViewViewModel, FragmentWebViewBinding>(R
 
         val url = requireArguments().getString(ARG_URL, "")
         binding.webView.loadUrl(url)
-
     }
 
     override fun onClose() {
@@ -57,5 +56,4 @@ class WebViewFragment : BaseFragment<WebViewViewModel, FragmentWebViewBinding>(R
             super.onClose()
         }
     }
-
 }

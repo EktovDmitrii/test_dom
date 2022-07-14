@@ -6,9 +6,11 @@ import com.custom.rgs_android_dom.R
 import com.custom.rgs_android_dom.databinding.FragmentRegistrationAgreementBinding
 import com.custom.rgs_android_dom.domain.translations.TranslationInteractor
 import com.custom.rgs_android_dom.ui.base.BaseFragment
+import com.custom.rgs_android_dom.ui.constants.LEGAL_POLICY_LINK
+import com.custom.rgs_android_dom.ui.constants.PERSONAL_DATE_LINK
+import com.custom.rgs_android_dom.ui.constants.USER_AGREEMENT_LINK
 import com.custom.rgs_android_dom.ui.navigation.REGISTRATION
 import com.custom.rgs_android_dom.ui.navigation.ScreenManager
-import com.custom.rgs_android_dom.ui.registration.phone.RegistrationPhoneFragment
 import com.custom.rgs_android_dom.ui.web_view.WebViewFragment
 import com.custom.rgs_android_dom.utils.*
 import com.yandex.metrica.YandexMetrica
@@ -103,24 +105,22 @@ class RegistrationAgreementFragment :
        binding.agreementTextView.text = agreement
 
         binding.agreementTextView.makeStringWithLink(
-            resources.getColor(R.color.primary500,null),
+            resources.getColor(R.color.primary500, null),
             Pair(TranslationInteractor.getTranslation("app.registration.agreement.first_link"), View.OnClickListener {
                 val webViewFragment =
-                    WebViewFragment.newInstance("https://moi-service.ru/legal/moi-service-dom/polzovatelskoe-soglashenie")
+                    WebViewFragment.newInstance(USER_AGREEMENT_LINK)
                 ScreenManager.showScreen(webViewFragment)
             }),
             Pair(TranslationInteractor.getTranslation("app.registration.agreement.second_link"), View.OnClickListener {
                 val webViewFragment =
-                    WebViewFragment.newInstance("https://moi-service.ru/legal/policy")
+                    WebViewFragment.newInstance(LEGAL_POLICY_LINK)
                 ScreenManager.showScreen(webViewFragment)
             }),
             Pair(TranslationInteractor.getTranslation("app.registration.agreement.third_link"), View.OnClickListener {
                 val webViewFragment =
-                    WebViewFragment.newInstance("https://moi-service.ru/legal/soglasie-polzovatelya-na-obrabotku-personalnyh-dannyh")
+                    WebViewFragment.newInstance(PERSONAL_DATE_LINK)
                 ScreenManager.showScreen(webViewFragment)
             })
-
         )
     }
-
 }
