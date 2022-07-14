@@ -6,5 +6,6 @@ data class PurchaseInfoModel(
     val invoiceId: String,
     val paymentOrderId: String,
     val bankOrderId: String,
-    val orderId: String
+    val orderId: String,
+    val noPaymentRequired: Boolean
 )

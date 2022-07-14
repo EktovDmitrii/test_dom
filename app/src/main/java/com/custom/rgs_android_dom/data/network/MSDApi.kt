@@ -384,4 +384,8 @@ interface MSDApi {
     @ErrorType(MSDNetworkErrorResponse::class)
     fun deleteClient(): Completable
 
+    @POST("clients/me/purchase/products/{productId}/price")
+    @ErrorType(MSDNetworkErrorResponse::class)
+    fun getActualProductPrice(@Path("productId") productId: String, @Body getActualProductPriceRequest: GetActualProductPriceRequest) : Single<ActualProductPriceResponse>
+
 }

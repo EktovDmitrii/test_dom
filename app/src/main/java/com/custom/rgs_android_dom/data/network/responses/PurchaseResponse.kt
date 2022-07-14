@@ -19,5 +19,8 @@ data class PurchaseResponse(
     val bankOrderId: String?,
 
     @SerializedName("orderId")
-    val orderId: String?
+    val orderId: String?,
+
+    @SerializedName("noPaymentRequired")
+    val noPaymentRequired: Boolean?,
 )

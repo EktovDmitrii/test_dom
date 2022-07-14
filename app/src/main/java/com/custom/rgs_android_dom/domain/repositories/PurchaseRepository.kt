@@ -22,7 +22,8 @@ interface PurchaseRepository {
         timeFrom: String?,
         timeTo: String?,
         withOrder: Boolean,
-        clientPromoCodeId: String?
+        clientPromoCodeId: String?,
+        clientPrice: Int?
     ): Single<PurchaseInfoModel>
 
     fun orderServiceOnBalance(
@@ -44,4 +45,6 @@ interface PurchaseRepository {
     fun deleteCard(bindingId: String): Completable
 
     fun getDeletedCardSubject(): PublishSubject<String>
+
+    fun getActualProductPrice(productId: String, clientPromoCodeId: String?): Single<Int>
 }
