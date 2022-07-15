@@ -70,7 +70,6 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
     }
 
     private val discountText = TranslationInteractor.getTranslation("app.product.purchase.layout_product_detail.cost_discount_text_view")
-
     private var keyboardListener: ViewTreeObserver.OnGlobalLayoutListener? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -146,17 +145,17 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
                         SALE_PROMO_CODE -> {
                             binding.makeOrderButton.discountTextView.text = discountText.replace("%@", promoCodeModel.discountInRubles.formatPrice())
                             binding.makeOrderButton.sumDiscountTextView.text = "-${promoCodeModel.discountInRubles.formatPrice()}"
-                            val resultCost = amount - (promoCodeModel.discountInRubles)
-                            //binding.makeOrderButton.resultSumTextView.text = if (resultCost < 0) ZERO_COST_ORDER else resultCost.formatPrice(isFixed = purchaseModelPrice.fix)
-                            //binding.makeOrderButton.btnPrice.text = if (resultCost < 0) ZERO_COST_ORDER else resultCost.formatPrice(isFixed = purchaseModelPrice.fix)
+//                            val resultCost = amount - (promoCodeModel.discountInRubles)
+//                            binding.makeOrderButton.resultSumTextView.text = if (resultCost < 0) ZERO_COST_ORDER else resultCost.formatPrice(isFixed = purchaseModelPrice.fix)
+//                            binding.makeOrderButton.btnPrice.text = if (resultCost < 0) ZERO_COST_ORDER else resultCost.formatPrice(isFixed = purchaseModelPrice.fix)
                         }
                         PERCENT_PROMO_CODE -> {
                             binding.makeOrderButton.discountTextView.text = discountText.replace("%@", "${promoCodeModel.discountInPercent}%")
                             val resultDiscountIn = ((promoCodeModel.discountInPercent.toDouble() / 100.toDouble()) * amount.toDouble()).toInt()
-                            val resultCost = amount - resultDiscountIn
                             binding.makeOrderButton.sumDiscountTextView.text = "-${resultDiscountIn.formatPrice()}"
-                            //binding.makeOrderButton.resultSumTextView.text = resultCost.formatPrice(isFixed = purchaseModelPrice.fix)
-                            //binding.makeOrderButton.btnPrice.text = resultCost.formatPrice(isFixed = purchaseModelPrice.fix)
+//                            val resultCost = amount - resultDiscountIn
+//                            binding.makeOrderButton.resultSumTextView.text = resultCost.formatPrice(isFixed = purchaseModelPrice.fix)
+//                            binding.makeOrderButton.btnPrice.text = resultCost.formatPrice(isFixed = purchaseModelPrice.fix)
                         }
                     }
                 }
@@ -410,5 +409,4 @@ class PurchaseFragment : BaseBottomSheetFragment<PurchaseViewModel, FragmentPurc
         super.onStop()
         binding.root.viewTreeObserver.removeOnGlobalLayoutListener(keyboardListener)
     }
-
 }

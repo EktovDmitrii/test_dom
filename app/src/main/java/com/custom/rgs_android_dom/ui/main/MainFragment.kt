@@ -11,10 +11,8 @@ import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.update_app.UpdateAppFragment
 import com.custom.rgs_android_dom.utils.*
-import com.custom.rgs_android_dom.views.NavigationScope
 import com.custom.rgs_android_dom.utils.recycler_view.GridThreeSpanItemDecoration
-import com.google.android.play.core.appupdate.AppUpdateManager
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.custom.rgs_android_dom.views.NavigationScope
 import com.skydoves.androidveil.VeilLayout
 import com.yandex.metrica.YandexMetrica
 
@@ -119,7 +117,7 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
 
         GlideApp.with(requireContext())
             .load(R.mipmap.master_male_2)
-            .transform(GranularRoundedCorners(0f,0f, 16f.dp(requireContext()), 0f))
+            .transform(GranularRoundedCorners(0f, 0f, 16f.dp(requireContext()), 0f))
             .into(binding.ratingLayout.ratingMasterMale)
         binding.ratingLayout.ratingRecyclerView.adapter = RatingCommentsAdapter(
             onCommentClick = { YandexMetrica.reportEvent("mp_rating") }
@@ -179,7 +177,7 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             binding.noPropertyLinearLayout.goneIf(it || !isAuthorized)
         }
 
-        subscribe(viewModel.rateCommentsObserver){
+        subscribe(viewModel.rateCommentsObserver) {
             ratingCommentsAdapter.setItems(it)
         }
 
@@ -194,7 +192,7 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             popularProductsAdapter.setItems(it)
         }
 
-        subscribe(viewModel.popularCategoriesObserver){
+        subscribe(viewModel.popularCategoriesObserver) {
             binding.popularCategoriesLayout.root.goneIf(it.isEmpty())
             popularCategoriesAdapter.setItems(it)
         }
@@ -208,7 +206,7 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
             requireActivity().findViewById<View>(R.id.toolbarContentLinearLayout)?.visibleIf(it != BaseViewModel.LoadingState.LOADING)
         }
 
-        subscribe(viewModel.showAppUpdateScreenObserver) { isUpdateForced->
+        subscribe(viewModel.showAppUpdateScreenObserver) { isUpdateForced ->
             val updateAppFragment = UpdateAppFragment.newInstance(isUpdateForced)
             updateAppFragment.show(childFragmentManager, updateAppFragment.TAG)
         }
@@ -225,5 +223,4 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
     override fun getNavigationScope(): NavigationScope? {
         return NavigationScope.NAV_MAIN
     }
-
 }

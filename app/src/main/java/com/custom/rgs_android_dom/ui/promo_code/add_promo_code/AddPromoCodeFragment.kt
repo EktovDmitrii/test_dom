@@ -6,10 +6,7 @@ import com.custom.rgs_android_dom.databinding.FragmentAddPromoCodeBinding
 import com.custom.rgs_android_dom.domain.purchase.models.PurchaseModel
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetModalFragment
 import com.custom.rgs_android_dom.ui.constants.LENGTH_PROMO_CODE
-import com.custom.rgs_android_dom.utils.args
-import com.custom.rgs_android_dom.utils.setOnDebouncedClickListener
-import com.custom.rgs_android_dom.utils.subscribe
-import com.custom.rgs_android_dom.utils.visibleIf
+import com.custom.rgs_android_dom.utils.*
 
 class AddPromoCodeFragment :
     BaseBottomSheetModalFragment<AddPromoCodeViewModel, FragmentAddPromoCodeBinding>() {
@@ -32,6 +29,8 @@ class AddPromoCodeFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        expand()
 
         val shouldShowAgentView = requireArguments().getBoolean(KEY_SHOULD_SHOW_AGENT)
         val purchaseModel =

@@ -352,5 +352,4 @@ class PurchaseViewModel(
                 }
             ).addTo(dataCompositeDisposable)
     }
-
 }

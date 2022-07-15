@@ -64,6 +64,8 @@ class PromoCodeDialogFragment : BaseBottomSheetModalFragment<PromoCodeDialogView
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        expand()
+
         val durationText = TranslationInteractor.getTranslation("app.promo_codes.agent_code_adapter.add_duration")
         val titleText = TranslationInteractor.getTranslation("app.promo_codes.agent_code_adapter.add_second_title")
 
