@@ -77,15 +77,7 @@ class ClientRepositoryImpl(
                 client = ClientMapper.responseToClient(response, agent)
                 clientSharedPreferences.saveAgent(agent)
                 clientUpdatedSubject.onNext(client)
-            } else {
-                val agentResponse = api.getAgentsStage().blockingGet()
-                val agent = ClientMapper.responseToAgent(agentResponse)
-                client = ClientMapper.responseToClient(response, agent)
-                clientSharedPreferences.saveAgent(agent)
-                clientUpdatedSubject.onNext(client)
-                // TODO убрать else после доработки бека
             }
-
             return@map clientSharedPreferences.getClient()
         }
     }
@@ -98,12 +90,6 @@ class ClientRepositoryImpl(
                 val agent = ClientMapper.responseToAgent(agents[0])
                 client.agent = agent
                 clientSharedPreferences.saveAgent(agent)
-            } else {
-                val agentResponse = api.getAgentsStage().blockingGet()
-                val agent = ClientMapper.responseToAgent(agentResponse)
-                client.agent = agent
-                clientSharedPreferences.saveAgent(agent)
-                // TODO убрать else после доработки бека
             }
             val cachedClient = clientSharedPreferences.getClient()
             if (cachedClient != null && cachedClient != client || cachedClient == null) {
