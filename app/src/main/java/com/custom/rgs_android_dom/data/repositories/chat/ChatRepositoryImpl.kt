@@ -208,14 +208,14 @@ class ChatRepositoryImpl(
         }
     }
 
-    override fun connectToWebSocket(){
+    override fun connectToWebSocket() {
         if (isConnecting){
             return
         }
-        isConnecting = true
         val token = authContentProviderManager.getAccessToken()
         Log.d(TAG, "CONNECTING TO SOCKET " + token)
         if (token != null){
+            isConnecting = true
             val wsUrl = BuildConfig.WS_URL.replace("%s", token)
             val clientBuilder = OkHttpClient.Builder()
 

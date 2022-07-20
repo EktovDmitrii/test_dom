@@ -11,7 +11,6 @@ import com.custom.rgs_android_dom.data.providers.auth.manager.AuthState
 import com.custom.rgs_android_dom.domain.repositories.ChatRepository
 import com.custom.rgs_android_dom.ui.navigation.TargetScreen
 import com.custom.rgs_android_dom.utils.formatPhoneForApi
-import com.google.firebase.installations.FirebaseInstallations
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject

@@ -152,10 +152,12 @@ class AuthContentProviderManager(private val context: Context) {
         return null
     }
 
-    fun saveAuth(tokenResponse: TokenResponse){
-        saveAuth(tokenResponse.accessToken,
+    fun saveAuth(tokenResponse: TokenResponse) {
+        saveAuth(
+            tokenResponse.accessToken,
             tokenResponse.refreshToken,
-            tokenResponse.refreshTokenExpiresAt)
+            tokenResponse.refreshTokenExpiresAt
+        )
     }
 
     fun saveAuth(accessToken: String, refreshToken: String, refreshTokenExpiresAt: DateTime){

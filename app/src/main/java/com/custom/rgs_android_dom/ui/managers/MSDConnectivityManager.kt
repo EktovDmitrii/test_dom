@@ -4,14 +4,14 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import com.custom.rgs_android_dom.utils.isInternetConnected
-import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 
 class MSDConnectivityManager(private val context: Context) {
 
     private val connectivityManager: ConnectivityManager
         get() = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-    val connectivitySubject = BehaviorSubject.create<Boolean>()
+    val connectivitySubject = PublishSubject.create<Boolean>()
 
     init {
         connectivityManager.registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {
