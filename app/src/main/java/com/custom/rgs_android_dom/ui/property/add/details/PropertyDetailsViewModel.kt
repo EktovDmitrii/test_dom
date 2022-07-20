@@ -37,12 +37,15 @@ class PropertyDetailsViewModel(
     val internetConnectionObserver: LiveData<Boolean> = internetConnectionController
 
     init {
+        internetConnectionController.value = connectivityManager.isInternetConnected()
+
         connectivityManager.connectivitySubject
             .distinctUntilChanged()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy {
-                internetConnectionController.value = it }
+                internetConnectionController.value = it
+            }
             .addTo(dataCompositeDisposable)
 
         propertyInteractor.propertyDetailsViewStateSubject
@@ -81,7 +84,7 @@ class PropertyDetailsViewModel(
     }
 
     fun onAddClick() {
-        if (internetConnectionController.value == true){
+        if (internetConnectionController.value == true) {
             propertyInteractor.addProperty()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

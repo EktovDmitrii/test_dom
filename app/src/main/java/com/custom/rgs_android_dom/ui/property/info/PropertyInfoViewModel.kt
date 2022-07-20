@@ -50,6 +50,8 @@ class PropertyInfoViewModel(
     private var selectedPropertyDocument: PropertyDocument? = null
 
     init {
+        internetConnectionController.value = connectivityManager.isInternetConnected()
+
         getPropertyItem()
 
         propertyInteractor.propertyInfoStateSubject
