@@ -20,7 +20,7 @@ fun ViewDragHelper.getScroller(): OverScroller? = ViewDragHelper::class.java
     .apply { isAccessible = true }
     .let { field -> field.get(this) as? OverScroller? }
 
-fun BottomSheetDialogFragment.expand(){
+fun BottomSheetDialogFragment.expand() {
     dialog?.setOnShowListener {
         val mainExecutor = ContextCompat.getMainExecutor(requireContext())
         mainExecutor.execute {
@@ -29,5 +29,12 @@ fun BottomSheetDialogFragment.expand(){
                 BottomSheetBehavior.from(it).state = BottomSheetBehavior.STATE_EXPANDED
             }
         }
+    }
+}
+
+fun BottomSheetDialogFragment.expandDialogs() {
+    val bottomSheet = (dialog as? BottomSheetDialog)?.findViewById<View>(R.id.design_bottom_sheet) as? FrameLayout
+    bottomSheet?.let {
+        BottomSheetBehavior.from(it).state = BottomSheetBehavior.STATE_EXPANDED
     }
 }
