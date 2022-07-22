@@ -10,6 +10,7 @@ import com.custom.rgs_android_dom.databinding.FragmentMainBinding
 import com.custom.rgs_android_dom.ui.base.BaseBottomSheetFragment
 import com.custom.rgs_android_dom.ui.base.BaseViewModel
 import com.custom.rgs_android_dom.ui.update_app.UpdateAppFragment
+import com.custom.rgs_android_dom.ui.update_app.UpdateAppModalFragment
 import com.custom.rgs_android_dom.utils.*
 import com.custom.rgs_android_dom.utils.recycler_view.GridThreeSpanItemDecoration
 import com.custom.rgs_android_dom.views.NavigationScope
@@ -207,8 +208,13 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
         }
 
         subscribe(viewModel.showAppUpdateScreenObserver) { isUpdateForced ->
-            val updateAppFragment = UpdateAppFragment.newInstance(isUpdateForced)
-            updateAppFragment.show(childFragmentManager, updateAppFragment.TAG)
+            if (isUpdateForced) {
+                val updateAppFragment = UpdateAppFragment()
+                updateAppFragment.show(childFragmentManager, updateAppFragment.TAG)
+            } else {
+                val updateAppFragment = UpdateAppModalFragment()
+                updateAppFragment.show(childFragmentManager, updateAppFragment.TAG)
+            }
         }
     }
 

@@ -10,6 +10,8 @@ import com.custom.rgs_android_dom.data.network.requests.DeleteContactsRequest
 import com.custom.rgs_android_dom.data.network.requests.SaveTokenRequest
 import com.custom.rgs_android_dom.data.network.requests.UpdateClientRequest
 import com.custom.rgs_android_dom.data.preferences.ClientSharedPreferences
+import com.custom.rgs_android_dom.data.repositories.constants.ENV_APP_ANDROID_CRITICAL_VERSION
+import com.custom.rgs_android_dom.data.repositories.constants.ENV_APP_ANDROID_CURRENT_VERSION
 import com.custom.rgs_android_dom.domain.client.mappers.AgentMapper
 import com.custom.rgs_android_dom.domain.client.models.*
 import com.custom.rgs_android_dom.domain.repositories.ClientRepository
@@ -311,6 +313,27 @@ class ClientRepositoryImpl(
                 }
 
             }
+    }
+
+    override fun getActualAppVersions(): Single<ActualAppVersionsModel> {
+        return Single.zip(api.getSystemEnvironment(ENV_APP_ANDROID_CURRENT_VERSION), api.getSystemEnvironment(ENV_APP_ANDROID_CRITICAL_VERSION)) { currentVersion, criticalVersion ->
+            val clientCurrentVersion = BuildConfig.VERSION_NAME.filter { it.isDigit() }.replace(".", "").toInt()
+            val appCurrentVersion = if (currentVersion.value?.isNotEmpty() == true) {
+                currentVersion.value.replace(".", "").toInt()
+            } else {
+                -1
+            }
+            val appCriticalVersion = if (criticalVersion.value?.isNotEmpty() == true) {
+                criticalVersion.value.replace(".", "").toInt()
+            } else {
+                -1
+            }
+            ActualAppVersionsModel(
+                clientCurrentVersion = clientCurrentVersion,
+                appAndroidCurrentVersion = appCurrentVersion,
+                appAndroidCriticalVersion = appCriticalVersion
+            )
+        }
     }
 
 }
