@@ -658,6 +658,10 @@ class ClientInteractor(
         }
     }
 
+    fun getActualAppVersions(): Single<ActualAppVersionsModel> {
+        return clientRepository.getActualAppVersions()
+    }
+
     private fun isBirthdayValid(birthday: DateTime): Boolean {
         return !(birthday.toLocalDateTime().isAfter(MIN_DATE) || birthday.toLocalDateTime().isBefore(
             MAX_DATE

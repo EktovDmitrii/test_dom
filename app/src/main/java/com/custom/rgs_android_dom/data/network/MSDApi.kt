@@ -388,4 +388,7 @@ interface MSDApi {
     @ErrorType(MSDNetworkErrorResponse::class)
     fun getActualProductPrice(@Path("productId") productId: String, @Body getActualProductPriceRequest: GetActualProductPriceRequest) : Single<ActualProductPriceResponse>
 
+    @GET("catalog/env/{key}")
+    fun getSystemEnvironment(@Path("key") key: String): Single<SystemEnvironmentResponse>
+
 }

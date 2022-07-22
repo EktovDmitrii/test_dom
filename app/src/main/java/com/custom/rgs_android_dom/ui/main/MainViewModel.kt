@@ -34,8 +34,6 @@ import com.custom.rgs_android_dom.ui.stories.StoriesFragment
 import com.custom.rgs_android_dom.utils.ProgressTransformer
 import com.custom.rgs_android_dom.utils.isInternetConnected
 import com.custom.rgs_android_dom.utils.logException
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory
-import com.google.android.play.core.install.model.UpdateAvailability
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -72,8 +70,6 @@ class MainViewModel(
     val showAppUpdateScreenObserver: LiveData<Boolean> = showAppUpdateScreenController
 
     private var requestedScreen = TargetScreen.UNSPECIFIED
-
-    private var appUpdateManager = AppUpdateManagerFactory.create(context)
 
     init {
         checkAppUpdates()
@@ -294,14 +290,21 @@ class MainViewModel(
     }
 
     private fun checkAppUpdates() {
-        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
-        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
-            //TODO Add handling this stuff when backend will be ready
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
-                //showAppUpdateScreenController.value = true
-            } else {
-                //showAppUpdateScreenController.value = true
-            }
-        }
+        clientInteractor.getActualAppVersions()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {versions ->
+                    if (versions.clientCurrentVersion in versions.appAndroidCriticalVersion until versions.appAndroidCurrentVersion) {
+                        showAppUpdateScreenController.value = false
+                    } else if (versions.clientCurrentVersion < versions.appAndroidCriticalVersion) {
+                        showAppUpdateScreenController.value = true
+                    }
+                },
+                onError = {
+                    logException(this, it)
+                }
+            ).addTo(dataCompositeDisposable)
     }
+
 }

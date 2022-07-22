@@ -78,4 +78,6 @@ interface ClientRepository {
 
     fun getAllOrders(size: Long, index: Long): Single<List<Order>>
 
+    fun getActualAppVersions(): Single<ActualAppVersionsModel>
+
 }

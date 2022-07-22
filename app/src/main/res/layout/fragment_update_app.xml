@@ -54,7 +54,6 @@
             android:layout_width="match_parent"
             android:layout_marginTop="32dp"
             android:paddingHorizontal="4dp"
-            android:layout_marginBottom="22dp"
             app:translationTextKey="app.ui.update_app.button.update" />
 
         <com.custom.rgs_android_dom.views.text.MSDTextViewSecondary
@@ -62,10 +61,13 @@
             android:layout_width="wrap_content"
             style="@style/Button.WithoutBg.Secondary"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="22dp"
             android:visibility="gone"
             app:translationTextKey="app.ui.update_app.button.not_now"
             tools:visibility="visible"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="21dp"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

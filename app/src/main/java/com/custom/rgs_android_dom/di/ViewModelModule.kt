@@ -186,7 +186,7 @@ val viewModelModule = module {
     viewModel { parameters -> DeletePaymentMethodViewModel(bindingId = parameters[0], purchaseInteractor = get()) }
     viewModel { parameters -> ErrorDeletePaymentMethodViewModel(errorCode = parameters[0]) }
     viewModel { NotificationsSettingsViewModel(clientInteractor = get()) }
-    viewModel { UpdateAppViewModel() }
+    viewModel { UpdateAppViewModel(clientInteractor = get()) }
     viewModel { PromoCodesViewModel(promoCodesInteractor = get(), clientInteractor = get()) }
     viewModel { AddPromoCodeViewModel() }
     viewModel { parameters -> PromoCodeDialogViewModel (promoCode = parameters[0], purchaseModel = parameters[1], shouldShowAgentView =parameters[2], promoCodesInteractor = get(), chatInteractor = get()) }
