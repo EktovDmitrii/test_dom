@@ -72,7 +72,7 @@ class MainViewModel(
     private var requestedScreen = TargetScreen.UNSPECIFIED
 
     init {
-        //checkAppUpdates()
+        checkAppUpdates()
 
         registrationController.value = registrationInteractor.isAuthorized().let {
             if (it) getPropertyAvailability()

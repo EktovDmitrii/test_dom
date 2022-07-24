@@ -208,13 +208,13 @@ class MainFragment : BaseBottomSheetFragment<MainViewModel, FragmentMainBinding>
         }
 
         subscribe(viewModel.showAppUpdateScreenObserver) { isUpdateForced ->
-            /*if (isUpdateForced) {
+            if (isUpdateForced) {
                 val updateAppFragment = UpdateAppFragment()
                 updateAppFragment.show(childFragmentManager, updateAppFragment.TAG)
             } else {
                 val updateAppFragment = UpdateAppModalFragment()
                 updateAppFragment.show(childFragmentManager, updateAppFragment.TAG)
-            }*/
+            }
         }
     }
 
